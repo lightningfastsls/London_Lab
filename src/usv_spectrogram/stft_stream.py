@@ -11,6 +11,7 @@ import soundfile as sf
 from tqdm import tqdm
 
 from .config import SpectrogramConfig
+from ._stft_core import compute_stft_frames_db, extract_frames
 
 
 def stream_wav_spectrogram_db(
@@ -61,7 +62,9 @@ def stream_wav_spectrogram_db(
         freqs_hz = np.fft.rfftfreq(n_fft, d=1.0 / sample_rate_hz)
         band_mask = (freqs_hz >= cfg.f_min_hz) & (freqs_hz <= cfg.f_max_hz)
 
-        buffer = np.empty(0, dtype=np.float32)
+        # Use list for O(1) append instead of np.concatenate (O(n²))
+        buffer_chunks: list[np.ndarray] = []
+        buffer_len = 0
         frame_offset = 0
         total_frames = wav.frames
 
@@ -76,30 +79,27 @@ def stream_wav_spectrogram_db(
                 if progress_bar:
                     progress_bar.update(block.shape[0])
 
+                # Convert to mono
                 if block.shape[1] > 1:
                     block = block.mean(axis=1)
                 else:
                     block = block[:, 0]
 
-                buffer = np.concatenate([buffer, block])
-                while len(buffer) >= cfg.window_length:
+                # O(1) append to list
+                buffer_chunks.append(block)
+                buffer_len += len(block)
+
+                while buffer_len >= cfg.window_length:
+                    # Convert to contiguous array only when needed
+                    buffer = np.concatenate(buffer_chunks)
+
                     n_frames = 1 + (len(buffer) - cfg.window_length) // hop_length
                     if n_frames <= 0:
                         break
 
-                    frame_start = n_frames * hop_length
-                    frames = np.stack(
-                        [
-                            buffer[i : i + cfg.window_length]
-                            for i in range(0, frame_start, hop_length)
-                        ],
-                        axis=0,
-                    )
-                    windowed = frames * window
-                    stft = np.fft.rfft(windowed, n=n_fft, axis=1)
-                    magnitude = np.abs(stft)
-                    spec_db = 20.0 * np.log10(magnitude + cfg.eps)
-                    spec_db = spec_db[:, band_mask].T
+                    # Extract frames and compute STFT using shared helper
+                    frames = extract_frames(buffer, cfg.window_length, hop_length)
+                    spec_db = compute_stft_frames_db(frames, window, n_fft, band_mask, cfg.eps)
 
                     times_s = (
                         (frame_offset + np.arange(n_frames)) * hop_length
@@ -108,7 +108,11 @@ def stream_wav_spectrogram_db(
                     frame_offset += n_frames
                     yield spec_db, freqs_hz[band_mask], times_s
 
-                    buffer = buffer[frame_start:]
+                    # Keep only the remainder after processed frames
+                    frame_start = n_frames * hop_length
+                    remainder = buffer[frame_start:]
+                    buffer_chunks = [remainder] if len(remainder) > 0 else []
+                    buffer_len = len(remainder)
         finally:
             if progress_bar:
                 progress_bar.close()

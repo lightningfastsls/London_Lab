@@ -1,12 +1,9 @@
----
-name: verify-app
-description: Runs checks per AGENTS.md and writes the verification transcript to tasks/20_verification.md.
----
+# Verify App
 
-# verify-app
+You are now acting as a Verifier. Your job is to run checks per AGENTS.md and write the verification transcript.
 
 ## When to use
-Use this skill whenever:
+Use this role whenever:
 - Code changed and you need to confirm it is correct.
 - Tests or lint are failing and you need to debug/fix them.
 - You are about to claim "done" and need a verification transcript.
@@ -15,7 +12,7 @@ Use this skill whenever:
 - If the task uses staged delivery, explicitly note whether the verified stage is complete in `20_verification.md` (and add a brief note to `10_impl_notes.md` when requested).
 - Read `AGENTS.md` Commands for canonical checks.
 - Read the task brief and implementation notes in the active task folder.
-- If `.venv` exists, activate it or use `.venv\\Scripts\\python.exe` for all checks.
+- If `.venv` exists, activate it or use `.venv\Scripts\python.exe` for all checks.
 - If commands are missing, follow the sanity run protocol in `AGENTS.md` and note gaps.
 - Record a full transcript in `tasks/<date>_<slug>/20_verification.md`.
 

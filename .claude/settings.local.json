@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit",
+      "Write",
+      "Bash(git *)",
+      "Bash(python *)",
+      "Bash(.venv/**)",
+      "Bash(pytest *)",
+      "Bash(streamlit *)",
+      "Bash(pip *)",
+      "Bash(mkdir *)",
+      "Bash(mv *)",
+      "Bash(rm *)",
+      "Bash(gh *)",
+      "WebFetch",
+      "WebSearch",
+      "Bash(ls -la \"C:\\\\Users\\\\light\\\\PycharmProjects\\\\mickey_london_lab\\\\.claude\\\\commands\"\" 2>&1 || ls \"C:UserslightPycharmProjectsmickey_london_lab.claude \")",
+      "Bash(..venvScriptspython.exe -m py_compile:*)",
+      "Bash(..venvScriptspython.exe -m pytest tests/ -v)",
+      "Bash(\"C:/Users/light/PycharmProjects/mickey_london_lab/.venv/Scripts/python.exe\" -m pytest tests/ -v)",
+      "Bash(\"C:/Users/light/PycharmProjects/mickey_london_lab/.venv/Scripts/pip.exe\" install pytest)",
+      "Bash(\"C:/Users/light/PycharmProjects/mickey_london_lab/.venv/Scripts/python.exe\" -m pip install pytest)",
+      "Bash(\"C:/Users/light/PycharmProjects/mickey_london_lab/.venv/Scripts/python.exe\" -m pytest tests/ -v --tb=short)",
+      "Bash(\"C:/Users/light/PycharmProjects/mickey_london_lab/.venv/Scripts/python.exe\" -m py_compile:*)",
+      "Bash(C:UserslightPycharmProjectsmickey_london_lab.venvScriptspython.exe -m pytest C:UserslightPycharmProjectsmickey_london_labteststest_config.py -v)",
+      "Bash(..venvScriptspython.exe -m pytest teststest_config.py -v)",
+      "Bash(..venvScriptspython.exe scripts/make_spectrogram.py --input nonexistent.wav)",
+      "Bash(..venvScriptspython.exe scripts/usv_parameter_lab.py --help)",
+      "Bash(..venvScriptspython.exe scripts/make_spectrogram.py --help)"
+    ]
+  }
+}

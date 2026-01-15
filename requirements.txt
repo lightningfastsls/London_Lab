@@ -1,6 +1,8 @@
-numpy
+﻿numpy
 scipy
 soundfile
 matplotlib
 zarr
 tqdm
+streamlit
+pytest

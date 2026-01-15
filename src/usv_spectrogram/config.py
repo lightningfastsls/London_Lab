@@ -57,3 +57,20 @@ class SpectrogramConfig:
     def hop_length(self, sample_rate_hz: int) -> int:
         """Return hop length in samples derived from hop_ms and sample rate."""
         return max(1, int(round(sample_rate_hz * (self.hop_ms / 1000.0))))
+
+    def __post_init__(self) -> None:
+        """Validate configuration parameters."""
+        if self.window_length <= 0:
+            raise ValueError("window_length must be positive")
+        if self.zero_padding_factor < 1:
+            raise ValueError("zero_padding_factor must be >= 1")
+        if self.f_min_hz >= self.f_max_hz:
+            raise ValueError("f_min_hz must be < f_max_hz")
+        if self.hop_ms <= 0:
+            raise ValueError("hop_ms must be positive")
+        if self.eps <= 0:
+            raise ValueError("eps must be positive")
+        if self.stream_block_size_samples <= 0:
+            raise ValueError("stream_block_size_samples must be positive")
+        if self.zarr_time_chunk_frames <= 0:
+            raise ValueError("zarr_time_chunk_frames must be positive")

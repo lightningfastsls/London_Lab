@@ -1,4 +1,4 @@
-# USV Spectrogram Generator
+﻿# USV Spectrogram Generator
 
 This project provides in-memory and streaming spectrogram generation for
 250 kHz USV WAVs, plus tiled PNG rendering and incremental Zarr storage APIs.
@@ -32,6 +32,15 @@ Sample-rate handling (non-250 kHz data):
 ```powershell
 python scripts/make_spectrogram.py --input path\to\file.wav --auto-sample-rate
 ```
+
+## USV Parameter Lab (Streamlit)
+
+```powershell
+streamlit run scripts/usv_parameter_lab.py
+```
+
+The Streamlit app reads only the selected WAV segment (no full-file loads),
+allows baseline vs variant comparisons, and can export sweep reports.
 
 Streaming + Zarr API (module usage):
 

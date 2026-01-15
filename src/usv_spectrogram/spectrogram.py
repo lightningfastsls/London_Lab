@@ -8,6 +8,7 @@ import numpy as np
 from scipy import signal
 
 from .config import SpectrogramConfig
+from ._stft_core import compute_stft_frames_db, extract_frames
 
 
 def compute_spectrogram_db(
@@ -43,20 +44,11 @@ def compute_spectrogram_db(
     if samples.size < cfg.window_length:
         return np.empty((band_mask.sum(), 0)), freqs_hz[band_mask], np.empty(0)
 
-    n_frames = 1 + (samples.size - cfg.window_length) // hop_length
-    frames = np.stack(
-        [
-            samples[i : i + cfg.window_length]
-            for i in range(0, n_frames * hop_length, hop_length)
-        ],
-        axis=0,
-    )
-    windowed = frames * window
-    stft = np.fft.rfft(windowed, n=n_fft, axis=1)
-    magnitude = np.abs(stft)
-    spec_db = 20.0 * np.log10(magnitude + cfg.eps)
-    spec_db = spec_db[:, band_mask].T
+    # Extract frames and compute STFT using shared helper
+    frames = extract_frames(samples, cfg.window_length, hop_length)
+    spec_db = compute_stft_frames_db(frames, window, n_fft, band_mask, cfg.eps)
 
+    n_frames = frames.shape[0]
     times_s = (
         (np.arange(n_frames) * hop_length) + cfg.window_length / 2.0
     ) / sample_rate_hz

@@ -3,18 +3,21 @@
 This repo appears to be a small Python data analysis and plotting project with standalone scripts and CSV outputs.
 
 ## Real input data location
-- WAV inputs live under `C:\Users\shach\PycharmProjects\mickey_london_lab\5970 USV` when available.
+- WAV inputs live under the path specified by the `USV_WAV_DIR` environment variable.
+- Default fallback: `<repo_root>/5970 USV` if the env var is not set.
+- To set on Windows: `$env:USV_WAV_DIR = "C:\path\to\your\5970 USV"` (PowerShell)
 
 ## Working agreements
 - Plan first, then implement.
 - Keep diffs small; verify continuously.
 - Ask before adding new dependencies or changing public APIs.
 - Always run the smallest relevant tests after edits; run the full suite before a PR.
+- Write to `notes/claude_responses.md` only when the user says they cannot see the full response; exception: if the response is a long dense block (~10+ lines with no spacing), write it there proactively.
 
 ## How to use this workflow
-- Run multiple Codex sessions (tabs) with distinct roles to parallelize.
-- Use skills when appropriate by mentioning their names (e.g., $verify-app, $code-simplifier).
-- Use custom prompts via `/prompts:<name>` (e.g., `/prompts:verify`).
+- Run multiple Claude Code sessions (tabs/terminals) with distinct roles to parallelize.
+- Use custom commands via `/<command-name>` (e.g., `/verify-app`, `/spec-refiner`).
+- Commands are defined in `.claude/commands/` as markdown files.
 
 ## Task intake (Spec Refiner)
 Before any code changes:
@@ -39,6 +42,9 @@ Setup/install (Windows PowerShell; run from repo root):
 
 Lint/format:
 - None configured. Use the sanity run protocol below.
+
+Verifier environment:
+- If `.venv` exists, activate it (`.venv\Scripts\Activate.ps1`) or use `.venv\Scripts\python.exe` for all checks.
 
 Unit tests (fast):
 - None configured (no tests/ or pytest config detected).
@@ -89,6 +95,6 @@ Verification checklist:
 - Reviewer: scans diffs for regressions, API changes, missing tests, and mismatches vs acceptance criteria.
 
 ## Parallel work safety
-- Never allow two Codex sessions to edit the same file at the same time.
+- Never allow two Claude Code sessions to edit the same file at the same time.
 - Assign file ownership per role (e.g., Implementer: scripts, Verifier: tasks/20_verification.md, Docs: README/docs).
 - Coordinate edits through the task folder and avoid overlapping file changes.

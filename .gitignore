@@ -12,3 +12,5 @@ outputs/
 
 # IDE
 .idea/
+*.txt
+nul
