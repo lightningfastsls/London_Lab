@@ -10,11 +10,11 @@
 
 ### Phase 1 Steps (from plan)
 
-- [ ] **Step 1.1** - Set up project structure (detection, labeling, dataset modules)
-- [ ] **Step 1.2** - Implement DetectionConfig dataclass
-- [ ] **Step 1.3** - Implement Candidate dataclass
-- [ ] **Step 1.4** - Implement EnergyDetector.detect() for single file
-- [ ] **Step 1.5** - Write tests for duration filters, frequency band, merging
+- [x] **Step 1.1** - Set up project structure (detection, labeling, dataset modules)
+- [x] **Step 1.2** - Implement DetectionConfig dataclass
+- [x] **Step 1.3** - Implement Candidate dataclass
+- [x] **Step 1.4** - Implement EnergyDetector.detect() for single file
+- [ ] **Step 1.5** - Write tests for duration filters, frequency band, merging ← **NEXT**
 - [ ] **Step 1.6** - Run on sample WAV files and manually verify candidates
 - [ ] **Step 1.7** - Implement analyze_threshold_sensitivity()
 - [ ] **Step 1.8** - Implement verify_detection_coverage()
@@ -54,4 +54,21 @@
 ### 2026-01-16
 
 **Session started** - Beginning Phase 1 implementation
+
+**Completed:**
+- [x] Step 1.1 - Set up project structure (detection module created)
+- [x] Step 1.2 - Implement DetectionConfig dataclass
+- [x] Step 1.3 - Implement Candidate dataclass
+- [x] Step 1.4 - Implement EnergyDetector.detect() for single file
+
+**In Progress:**
+- [ ] Step 1.5 - Write tests for energy detector (NEXT TASK)
+
+**Files created:**
+- `src/usv_spectrogram/detection/__init__.py`
+- `src/usv_spectrogram/detection/config.py`
+- `src/usv_spectrogram/detection/candidate.py`
+- `src/usv_spectrogram/detection/energy_detector.py`
+
+**Session ended** - User switching computers
 
