@@ -34,6 +34,16 @@ class DetectionConfig:
     # Relative to max energy in the frequency band
     energy_threshold_db: float = -50.0  # Tune based on your recordings
 
+    # Energy detection mode
+    # "peak" = use max energy in band per frame (better for narrow-band USVs)
+    # "mean" = use mean energy in band per frame (original behavior)
+    energy_mode: str = "peak"
+
+    # Bandwidth filter - reject broadband noise
+    # USVs typically have energy concentrated in 5-15 kHz bandwidth
+    # Set to 0 to disable bandwidth filtering
+    max_bandwidth_hz: int = 20_000  # Reject candidates with bandwidth > this
+
     # Duration filters - reject obvious non-USVs
     # See Section 2.4: minimum duration filtering
     min_duration_ms: float = 10.0  # USVs are >= 10 ms
@@ -63,6 +73,10 @@ class DetectionConfig:
             raise ValueError("freq_min_hz must be < freq_max_hz")
         if self.freq_max_hz > self.sample_rate // 2:
             raise ValueError("freq_max_hz exceeds Nyquist frequency")
+        if self.energy_mode not in ("peak", "mean"):
+            raise ValueError("energy_mode must be 'peak' or 'mean'")
+        if self.max_bandwidth_hz < 0:
+            raise ValueError("max_bandwidth_hz must be >= 0")
         if self.min_duration_ms <= 0:
             raise ValueError("min_duration_ms must be positive")
         if self.max_duration_ms <= self.min_duration_ms:

@@ -42,13 +42,14 @@ class EnergyDetector:
         Implementation steps:
         1. Load audio
         2. Compute spectrogram (STFT)
-        3. Sum energy in USV frequency band per frame
+        3. Compute energy in USV frequency band per frame (peak or mean mode)
         4. Threshold to get candidate frames
         5. Group adjacent frames into segments
         6. Merge segments separated by < merge_gap_ms
         7. Apply duration filters
-        8. Extract peak frequency for each candidate
-        9. Create Candidate objects with full metadata
+        8. Apply bandwidth filter to reject broadband noise
+        9. Extract peak frequency for each candidate
+        10. Create Candidate objects with full metadata
         """
         wav_path = Path(wav_path)
         cfg = self.config
@@ -69,9 +70,13 @@ class EnergyDetector:
         if spec_db.shape[1] == 0:
             return []  # No frames
 
-        # 3. Sum energy in USV band per frame (convert from dB first)
-        # Use logsumexp-like approach: mean of dB values per frame
-        band_energy_db = np.mean(spec_db, axis=0)
+        # 3. Compute energy per frame in USV band
+        # "peak" mode uses max energy - better for narrow-band USVs
+        # "mean" mode uses mean energy - original behavior
+        if cfg.energy_mode == "peak":
+            band_energy_db = np.max(spec_db, axis=0)
+        else:
+            band_energy_db = np.mean(spec_db, axis=0)
 
         # 4. Threshold to get candidate frames
         max_energy = np.max(band_energy_db)
@@ -273,6 +278,23 @@ class EnergyDetector:
         peak_freq_hz = float(freqs_hz[max_idx[0]])
         peak_energy_db = float(segment_spec[max_idx])
 
+        # Bandwidth filter - reject broadband noise
+        # USVs have energy concentrated in a narrow frequency band
+        # Check bandwidth only at the peak frame (not across entire segment)
+        if cfg.max_bandwidth_hz > 0:
+            peak_frame = max_idx[1]  # Frame index of the peak
+            frame_spectrum = segment_spec[:, peak_frame]
+            # Find frequency range where energy is within 10 dB of peak
+            threshold_for_bandwidth = peak_energy_db - 10.0
+            active_freqs = frame_spectrum >= threshold_for_bandwidth
+            if np.any(active_freqs):
+                active_indices = np.where(active_freqs)[0]
+                min_freq = freqs_hz[active_indices[0]]
+                max_freq = freqs_hz[active_indices[-1]]
+                bandwidth = max_freq - min_freq
+                if bandwidth > cfg.max_bandwidth_hz:
+                    return None  # Reject broadband noise
+
         # Check for interference
         interference_flag = self._is_likely_interference(peak_freq_hz)
 
@@ -329,6 +351,8 @@ def analyze_threshold_sensitivity(
             freq_min_hz=config.freq_min_hz,
             freq_max_hz=config.freq_max_hz,
             energy_threshold_db=threshold,
+            energy_mode=config.energy_mode,
+            max_bandwidth_hz=config.max_bandwidth_hz,
             min_duration_ms=config.min_duration_ms,
             max_duration_ms=config.max_duration_ms,
             merge_gap_ms=config.merge_gap_ms,

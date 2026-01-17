@@ -1,0 +1,27 @@
+# Large data files - never need to read these
+*.wav
+*.png
+*.jpg
+*.jpeg
+*.zarr/
+5970 USV/
+spectrograms*/
+
+# Output files - generated, not source
+candidates*.csv
+*.pyc
+__pycache__/
+.pytest_cache/
+*.egg-info/
+
+# Detailed reference docs - read only when explicitly needed
+# (Don't auto-include in searches)
+usv_signal_processing_reference.md
+USV_DETECTION_IMPLEMENTATION_PLAN.md
+
+# Task folders - old task history, rarely needed
+tasks/
+
+# Virtual environment
+.venv/
+venv/

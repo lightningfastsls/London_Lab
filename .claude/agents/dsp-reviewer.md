@@ -42,9 +42,18 @@ When reviewing code changes:
    - Streaming vs in-memory trade-offs
 
 ## Key Files
+
+### Spectrogram Generation
 - `src/usv_spectrogram/spectrogram.py` - In-memory STFT
 - `src/usv_spectrogram/stft_stream.py` - Streaming API
 - `src/usv_spectrogram/config.py` - SpectrogramConfig parameters
+
+### Detection Pipeline (Energy-based)
+- `src/usv_spectrogram/detection/energy_detector.py` - STFT and energy computation
+- `src/usv_spectrogram/detection/config.py` - DetectionConfig (sample rate, n_fft, etc.)
+
+### Reference Documentation
+- `usv_signal_processing_reference.md` - Design rationale and trade-offs
 
 ## Output Format
 Provide a concise review with:

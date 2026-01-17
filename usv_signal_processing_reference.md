@@ -486,11 +486,84 @@ The ML pipeline is only as fast as your slowest step. Labeling is almost always 
 
 ---
 
+### 3.10 Energy Computation: Peak vs Mean Mode
+
+**The Problem:**
+When computing energy per frame in the USV frequency band, should you use mean or max (peak) energy across frequency bins? The choice significantly affects detection of narrow-band USVs.
+
+**Mean Energy Mode (Original Approach):**
+- Averages energy across all frequency bins in the band
+- Works well when USV energy is spread across multiple bins
+- **Weakness:** Narrow-band USVs (energy concentrated at one frequency) get diluted by low-energy bins
+- A strong 50 kHz tone gets averaged with near-zero energy at 30-45 kHz and 55-110 kHz
+
+**Peak Energy Mode (Improved Approach):**
+- Uses maximum energy in the band per frame
+- Detects signals with energy concentrated at a single frequency
+- Better for narrow-band USVs that are characteristic of mouse vocalizations
+- **Weakness:** May be more sensitive to single-bin noise spikes (mitigated by bandwidth filter)
+
+**Empirical Results (from 300 kHz recordings):**
+| Metric | Mean Mode | Peak Mode |
+|--------|-----------|-----------|
+| Total candidates | 256 | 490 |
+| Missed narrow-band USVs | Many | Few |
+| False positives (broadband noise) | Some | Rejected by bandwidth filter |
+
+**Solution/Consideration:**
+- Use **peak energy mode** as default for USV detection
+- Combine with bandwidth filter to reject broadband noise (see 3.11)
+- The combination maintains high recall while improving precision
+
+---
+
+### 3.11 Bandwidth Filtering for Noise Rejection
+
+**The Problem:**
+Broadband noise (clicks, electrical interference, equipment noise) can have high peak energy but lacks the narrow-band signature of USVs. How do you distinguish them?
+
+**USV Bandwidth Characteristics:**
+- Real USVs typically span 5-15 kHz bandwidth at any given moment
+- Even frequency-modulated sweeps maintain narrow instantaneous bandwidth
+- Noise often has energy spread across 50+ kHz simultaneously
+
+**Implementation:**
+1. At the peak frame of each candidate, measure bandwidth at -10 dB from peak
+2. If bandwidth exceeds threshold (e.g., 20 kHz), reject as broadband noise
+3. Only check at peak frame—checking across entire segment picks up noise from non-peak frames
+
+**Critical Detail:**
+Check bandwidth at **peak frame only**, not across the entire candidate segment. A USV surrounded by noise will have narrow bandwidth at its peak frame but wide bandwidth if measured across all frames.
+
+**Example:**
+```
+Frame analysis at candidate peak:
+- Peak energy: +5 dB at 70 kHz
+- -10 dB threshold: -5 dB
+- Frequencies above -5 dB: 68-72 kHz (4 kHz bandwidth)
+→ Passes filter (4 kHz < 20 kHz threshold)
+
+Broadband noise candidate:
+- Peak energy: +3 dB at 45 kHz
+- Frequencies above -7 dB: 30-100 kHz (70 kHz bandwidth)
+→ Rejected (70 kHz > 20 kHz threshold)
+```
+
+**Recommended Settings:**
+| Parameter | Value | Rationale |
+|-----------|-------|-----------|
+| max_bandwidth_hz | 20,000 | Rejects broadband noise, keeps most USVs |
+| Bandwidth threshold | -10 dB from peak | Standard definition of occupied bandwidth |
+
+---
+
 ## Updated Quick Reference: Detection Pipeline Parameters
 
 | Stage | Parameter | Recommended | Rationale |
 |-------|-----------|-------------|-----------|
 | Energy detector | Threshold | Low (high recall) | Don't miss USV types |
+| Energy detector | Energy mode | Peak | Better for narrow-band USVs |
+| Energy detector | Max bandwidth | 20 kHz | Reject broadband noise |
 | Energy detector | Min duration | 8-10 ms | Reject transient artifacts |
 | Energy detector | Max duration | 500 ms | Reject continuous interference |
 | Candidate extraction | Window size | 300-500 ms | Show call with context |
@@ -792,4 +865,131 @@ Run through this before starting model training:
 
 ---
 
-*Document created during Module 1-4 learning. Ready for implementation phase.*
+## Module 5: Spectrogram Extraction for Labeling/Training
+
+### 5.1 Extraction Pipeline Overview
+
+After candidate detection, each candidate needs a spectrogram image for:
+1. **Human labeling** - Review mode with axes, labels, and candidate markers
+2. **CNN training** - Raw images with consistent dimensions, no decorations
+
+The extraction parameters must balance visual clarity, computational cost, and CNN input requirements.
+
+---
+
+### 5.2 STFT Parameters (Locked for This Dataset)
+
+| Parameter | Value | Rationale |
+|-----------|-------|-----------|
+| sample_rate | 300,000 Hz | Actual recording sample rate (not 250 kHz) |
+| n_fft | 512 | ~586 Hz frequency resolution at 300 kHz |
+| hop_length | 128 | 75% overlap, smooth temporal coverage |
+| window | hann | Standard choice, good spectral leakage suppression |
+
+**Why match detection parameters?**
+The extraction STFT uses the same parameters as the energy detector to ensure the spectrogram shows exactly what the detector "saw" when it flagged the candidate.
+
+---
+
+### 5.3 Frequency Range
+
+| Parameter | Value | Rationale |
+|-----------|-------|-----------|
+| freq_min_hz | 20,000 Hz | Below USV band (25 kHz) for context |
+| freq_max_hz | 120,000 Hz | Above USV band (110 kHz) for context |
+
+**Why wider than detection band?**
+- Detection uses 25-110 kHz (strict USV range)
+- Extraction uses 20-120 kHz to show surrounding frequency context
+- Helps labelers see if energy extends outside expected band (noise indicator)
+- Helps CNN learn frequency boundaries
+
+---
+
+### 5.4 Image Dimensions
+
+| Parameter | Value | Rationale |
+|-----------|-------|-----------|
+| image_height_px | 256 | Fixed height for CNN input consistency |
+| pixels_per_ms | 2.0 | 100ms candidate → 200px width |
+| min_width_px | 128 | Minimum width even for short candidates |
+| max_width_px | 512 | Maximum width to limit memory/computation |
+
+**Temporal resolution:**
+At 2.0 pixels/ms, a typical 50ms USV spans 100 pixels - sufficient to see frequency modulation details.
+
+**Width clamping:**
+- Very short candidates (<64ms) get padded to min_width_px
+- Very long candidates (>256ms) get clamped to max_width_px
+- This ensures CNN receives manageable input sizes
+
+---
+
+### 5.5 Color Scale (dB Mapping)
+
+| Parameter | Value | Rationale |
+|-----------|-------|-----------|
+| db_floor | -80.0 dB | Black level (noise floor) |
+| db_ceiling | 0.0 dB | White level (maximum amplitude) |
+| colormap | magma | Perceptually uniform, good for spectrograms |
+
+**dB range considerations:**
+- 80 dB dynamic range captures both faint USVs and loud ones
+- USVs typically appear in -40 to -10 dB range relative to max
+- Noise floor is usually around -60 to -70 dB
+
+---
+
+### 5.6 Render Modes
+
+**Review Mode (for human labeling):**
+- Matplotlib figure with axes and labels
+- Green vertical lines marking candidate boundaries
+- Title showing candidate ID and peak frequency
+- Colorbar showing dB scale
+- Suitable for manual inspection and labeling
+
+**Training Mode (for CNN input):**
+- Raw image array, no axes or decorations
+- Exact pixel dimensions (height × width)
+- Values normalized to 0-255 grayscale or colormap
+- Ready for direct input to neural network
+
+---
+
+### 5.7 Final Parameters Used (2026-01-17)
+
+**Detection (EnergyDetector):**
+```
+threshold_db: -20.0 (relative to max peak)
+freq_min_hz: 25,000
+freq_max_hz: 110,000
+min_duration_ms: 10.0
+max_duration_ms: 500.0
+energy_mode: peak
+max_bandwidth_hz: 20,000
+merge_gap_ms: 5.0
+```
+
+**Extraction (SpectrogramExtractor):**
+```
+sample_rate: 300,000
+n_fft: 512
+hop_length: 128
+freq_min_hz: 20,000
+freq_max_hz: 120,000
+image_height_px: 256
+pixels_per_ms: 2.0
+db_floor: -80.0
+db_ceiling: 0.0
+colormap: magma
+```
+
+**Results:**
+- 490 candidates detected across 50 recordings
+- 490 spectrogram images extracted in review mode
+- Ready for Phase 3: Labeling Tool
+
+---
+
+*Document updated 2026-01-17 with Module 5 (Spectrogram Extraction).*

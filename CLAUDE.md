@@ -9,44 +9,12 @@ USV Spectrogram Generator - Python tools for analyzing ultrasonic vocalization (
 ## Environment Setup
 
 ```powershell
-# Activate virtual environment (required for all commands)
-.\.venv\Scripts\Activate.ps1
-
-# Or use the venv Python directly
 .\.venv\Scripts\python.exe <script>
-```
-
-## Data Location
-
-WAV files location is determined by:
-1. `$env:USV_WAV_DIR` environment variable (preferred)
-2. Fallback: `<repo>/5970 USV`
-
-## Commands to Run
-
-### Verification (run after every change)
-```powershell
-# Syntax check changed files
-.\.venv\Scripts\python.exe -m py_compile <file.py>
-
-# Run tests
 .\.venv\Scripts\python.exe -m pytest tests/ -v
-
-# Run the Streamlit app
-.\.venv\Scripts\streamlit.exe run scripts/usv_parameter_lab.py
+.\.venv\Scripts\python.exe -m py_compile <file.py>
 ```
 
-### Quick sanity check
-```powershell
-.\.venv\Scripts\python.exe -m py_compile src/usv_spectrogram/*.py src/usv_spectrogram/**/*.py scripts/*.py
-```
-
-## Code Style Rules
-
-- Keep diffs small and focused
-- Add docstrings only for NEW or behavior-changed public functions
-- No verbose comments - prefer self-documenting code
-- Run py_compile after every edit to catch syntax errors immediately
+WAV files: `$env:USV_WAV_DIR` or fallback `<repo>/5970 USV`
 
 ## Project Structure
 
@@ -55,56 +23,107 @@ src/usv_spectrogram/       # Core library
   config.py                # SpectrogramConfig dataclass
   io_wav.py                # WAV loading utilities
   spectrogram.py           # STFT computation
-  stft_stream.py           # Streaming API
-  storage_zarr.py          # Zarr storage
-  render_tiles.py          # PNG rendering
+  detection/               # USV detection pipeline
+    config.py              # DetectionConfig dataclass
+    candidate.py           # Candidate dataclass
+    energy_detector.py     # EnergyDetector class
   param_lab/               # Streamlit app modules
-    app.py                 # Main Streamlit UI
-    heuristic_detect.py    # USV detection
-    sweep.py               # Parameter sweeps
 
 scripts/                   # Entry points
-  make_spectrogram.py      # CLI spectrogram generator
-  usv_parameter_lab.py     # Streamlit launcher
-
-tasks/                     # Task handoff folders
-tools/                     # Helper scripts
 tests/                     # Test files
 ```
 
-## Task Workflow
+## Code Style Rules
 
-Tasks live in `tasks/YYYY-MM-DD_slug/` with three files:
-- `00_task_brief.md` - Goal, scope, acceptance criteria, staged plan
-- `10_impl_notes.md` - Implementation decisions and file changes
-- `20_verification.md` - Test/check transcript
-
-Create new tasks with: `python tools/new_task.py "Task Title"`
-
-## Common Mistakes to Avoid
-
-- Don't forget to activate .venv or use .venv\Scripts\python.exe
-- Don't use hardcoded user paths - use USV_WAV_DIR env var
-- Don't make large changes without verification between steps
-- Don't skip py_compile checks after edits
+- Keep diffs small and focused
+- No verbose comments - prefer self-documenting code
+- Run py_compile after every edit
 - Don't add dependencies without asking first
 
-## Git Practices
+---
 
-- Commit messages: short summary line, then details if needed
-- Keep commits focused on one change
-- Run verification before committing
+## Mandatory Session Workflow
 
-## When to Use Subagents
+### 0. Plan Mode First (REQUIRED for non-trivial tasks)
+**Before writing any code**, enter plan mode for tasks that:
+- Add new features or functionality
+- Modify existing algorithms or logic
+- Touch multiple files
+- Have unclear requirements
 
-Delegate to specialized agents for these tasks:
+### 1. Before Implementation
+- Read `IMPLEMENTATION_PROGRESS.md` to understand current state
+- If working on detection pipeline, read `USV_DETECTION_IMPLEMENTATION_PLAN.md`
 
-| Task | Agent | Invoke |
-|------|-------|--------|
-| Review STFT/DSP/math changes | dsp-reviewer | `@dsp-reviewer` |
-| Implement Streamlit UI features | streamlit-expert | `@streamlit-expert` |
-| Write tests for code | test-writer | `@test-writer` |
-| Validate detection algorithm changes | detection-validator | `@detection-validator` |
-| Final review before commit/PR | pr-reviewer | `@pr-reviewer` |
+### 2. During Implementation
+- Keep diffs small and focused
+- Run `py_compile` after every edit
+- Use subagents for their specialties (see table below) - this is NOT optional
 
-Use agents proactively when the task matches their specialty.
+### 3. After Implementation
+- Update `IMPLEMENTATION_PROGRESS.md` with what was changed
+- Run tests to verify no regressions
+
+### 4. Before Considering Done
+- Run `detection-validator` for any detection algorithm changes
+- Run `dsp-reviewer` for any STFT/signal processing changes
+- Run `pr-reviewer` for final quality check
+
+---
+
+## Model Selection Guide
+
+| Task Type | Model | Rationale |
+|-----------|-------|-----------|
+| Planning & Architecture | `opus` | Complex reasoning, design decisions |
+| Algorithm Implementation | `sonnet` | Good balance of capability and speed |
+| Code Reviews | `sonnet` | Thorough analysis needed |
+| Documentation Writing | `haiku` | Fast, straightforward task |
+| Simple Edits/Fixes | `haiku` | Quick, low complexity |
+| Codebase Exploration | `haiku` | Fast searches, no complex reasoning |
+
+---
+
+## Project-Specific Agents
+
+| Task | Agent | When to Use |
+|------|-------|-------------|
+| Review STFT/DSP/math changes | `dsp-reviewer` | ANY change to energy computation, FFT, dB scaling |
+| Implement Streamlit UI | `streamlit-expert` | ANY Streamlit UI work |
+| Write tests for code | `test-writer` | After implementing new features |
+| Validate detection changes | `detection-validator` | ANY change to detection logic |
+| Final review before commit | `pr-reviewer` | Before telling user "done" |
+
+**These are not suggestions - they are requirements for this project.**
+
+---
+
+## Key Reference Documents
+
+| Document | When to Read |
+|----------|--------------|
+| `IMPLEMENTATION_PROGRESS.md` | **Start of every session** |
+| `USV_DETECTION_IMPLEMENTATION_PLAN.md` | Working on detection pipeline |
+| `usv_signal_processing_reference.md` | Any signal processing work |
+
+---
+
+## Token Usage Optimization
+
+**To reduce context/cost:**
+- Don't re-read files already in conversation context
+- Use `haiku` for exploration and simple tasks
+- Reference docs above should only be read when needed for the task
+
+**When to suggest starting a new chat:**
+- After completing a major feature or phase
+- After extensive file exploration (many reads)
+- When switching to unrelated work
+- If conversation becomes very long (50+ exchanges)
+
+---
+
+**End of response format:**
+```
+**Agents:** [list agents used, or "None"]
+```
