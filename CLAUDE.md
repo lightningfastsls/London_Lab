@@ -1,6 +1,20 @@
 # CLAUDE.md
 
-This file is read by Claude Code at the start of every session.
+## ⛔ STOP - READ BEFORE DOING ANYTHING
+
+**TWO MANDATORY RULES - NO EXCEPTIONS:**
+
+1. **PLAN MODE FIRST** - For ANY task that adds features, modifies logic, or touches multiple files:
+   → Use `EnterPlanMode` tool BEFORE writing any code
+
+2. **END EVERY RESPONSE** with:
+   ```
+   **Agents:** [list agents used, or "None"]
+   ```
+
+Failure to follow these rules wastes user time and requires rework.
+
+---
 
 ## Project Overview
 
@@ -126,7 +140,101 @@ tests/                     # Test files
 
 ---
 
-**End of response format:**
-```
-**Agents:** [list agents used, or "None"]
-```
+## DUAL-AI WORKFLOW: Claude Code + Codex
+
+This project uses two AI assistants to balance quality and token usage.
+
+### Tasks for Claude Code (THIS AI)
+
+Handle these tasks - they require deep reasoning:
+
+1. **Architecture & Design**
+   - Designing class hierarchies and module structure
+   - Data flow decisions
+   - API design
+
+2. **Complex Algorithm Implementation**
+   - Energy detector with all signal processing nuances
+   - Spectrogram extraction with STFT parameter handling
+   - Detection threshold tuning
+   - Stratified dataset splitting
+
+3. **Debugging & Problem Solving**
+   - When tests fail unexpectedly
+   - Performance issues
+   - Integration problems
+
+4. **Refactoring**
+   - Restructuring code while preserving functionality
+   - Simplifying complex functions
+   - Improving code organization
+
+5. **Code Review**
+   - Reviewing implementations for correctness
+   - Checking alignment with reference documents
+   - Verifying signal processing decisions
+
+### Tasks to DEFER to Codex
+
+When the user mentions these tasks, remind them these are good candidates for Codex:
+
+1. **Writing Tests**
+   - Unit tests for existing functions
+   - Test fixtures and mocks
+   - Parameterized test cases
+
+2. **Documentation**
+   - Adding docstrings to functions
+   - Updating README files
+   - Writing usage examples
+
+3. **Type Hints**
+   - Adding type annotations
+   - Creating type stubs
+
+4. **Boilerplate & Scaffolding**
+   - `__init__.py` files
+   - Basic class structures
+   - Config file templates
+
+5. **Simple Utilities**
+   - File I/O helpers
+   - Path manipulation
+   - CSV reading/writing
+   - Basic data validation
+
+6. **Repetitive Edits**
+   - Same change across multiple files
+   - Renaming variables project-wide
+   - Import reorganization
+
+### Workflow Reminder
+
+When starting a task, briefly consider:
+- Is this a "reasoning" task? → Claude Code handles it
+- Is this a "mechanical" task? → Suggest deferring to Codex
+
+Example response when user asks for tests:
+> "Writing tests for existing functions is a good candidate for Codex to save tokens. Would you like me to:
+> (A) Handle it anyway since I'm already here, or
+> (B) You can ask Codex to write tests for [function_name] with these requirements: [brief spec]"
+
+---
+
+## Signal Processing Conventions
+
+- Sample rate: 250,000 Hz (unless specified otherwise)
+- Default n_fft: 512
+- Default hop_length: 128
+- Frequency range: 25-110 kHz
+- Minimum USV duration: 10 ms
+- Maximum USV duration: 500 ms
+
+---
+
+## Common Mistakes to Avoid
+
+- Don't use librosa's default sample rate - always specify sr=250000
+- Don't forget to handle edge cases for short audio segments
+- Always verify FFT parameters match expected frequency resolution
+
