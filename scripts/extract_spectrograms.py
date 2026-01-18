@@ -83,7 +83,7 @@ Examples:
     parser.add_argument(
         "--colormap",
         default="magma",
-        help="Matplotlib colormap name. Default: magma",
+        help="Matplotlib colormap name. Default: magma (dark background)",
     )
     parser.add_argument(
         "--db-floor",
@@ -94,14 +94,20 @@ Examples:
     parser.add_argument(
         "--db-ceiling",
         type=float,
-        default=0.0,
-        help="Maximum dB value (white level). Default: 0",
+        default=-10.0,
+        help="Maximum dB value (white level). Default: -10",
     )
     parser.add_argument(
         "--verbose",
         "-v",
         action="store_true",
         help="Print progress information.",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="Limit extraction to first N candidates (0 = all). Default: 0",
     )
     return parser.parse_args()
 
@@ -167,8 +173,14 @@ def main() -> int:
     with open(candidates_path, "r", encoding="utf-8") as f:
         total_candidates = sum(1 for _ in f) - 1  # Subtract header
 
+    # Apply limit if specified
+    process_count = args.limit if args.limit > 0 else total_candidates
+
     if args.verbose:
-        print(f"Processing {total_candidates} candidates...")
+        if args.limit > 0:
+            print(f"Processing {process_count} of {total_candidates} candidates (limited)...")
+        else:
+            print(f"Processing {total_candidates} candidates...")
 
     # Extract spectrograms
     results = []
@@ -185,7 +197,11 @@ def main() -> int:
             fail_count += 1
 
         if args.verbose and i % 50 == 0:
-            print(f"  Processed {i}/{total_candidates}...")
+            print(f"  Processed {i}/{process_count}...")
+
+        # Stop if limit reached
+        if args.limit > 0 and i >= args.limit:
+            break
 
     # Save updated CSV
     extractor.save_updated_csv(results, output_csv)

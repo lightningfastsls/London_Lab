@@ -1,0 +1,59 @@
+# USV Labeling Tool
+
+A Streamlit-based tool for manually labeling USV candidate spectrograms.
+
+## Quick Start
+
+```powershell
+# Activate virtual environment
+.\.venv\Scripts\Activate.ps1
+
+# Run the labeling tool
+.\.venv\Scripts\streamlit.exe run scripts/usv_labeling_tool.py
+
+# Or use the launcher with options
+.\.venv\Scripts\python.exe scripts/usv_labeling_tool.py --port 8502
+```
+
+## Features
+
+- **One-at-a-time labeling**: Focus on one candidate spectrogram at a time
+- **Three label categories**: USV, Not USV, Uncertain
+- **Navigation**: Previous/Next buttons and "Jump to Unlabeled"
+- **Progress tracking**: See X of Y labeled in sidebar
+- **Keyboard shortcuts**: Press 1 (USV), 2 (Not USV), 3 (Uncertain)
+- **Incremental saving**: Labels saved immediately to prevent data loss
+- **Resume support**: Restart where you left off
+
+## File Structure
+
+The tool expects the following files in the repository root:
+
+- `candidates_optimized.csv` - Candidate metadata (created by detection pipeline)
+- `spectrograms_review/` - Directory with PNG files (one per candidate)
+- `labels.csv` - Output file with labels (created automatically)
+
+## Labeling Workflow
+
+1. **Load the app**: Streamlit will load all candidates from CSV
+2. **Review spectrogram**: View the current candidate's spectrogram image
+3. **Label**: Click a button or use keyboard shortcuts (1/2/3)
+4. **Navigate**: Use Next/Previous or Jump to Unlabeled
+5. **Progress**: Track completion in the sidebar
+
+## Labels CSV Format
+
+Output file: `labels.csv`
+
+Columns:
+- `candidate_id`: Unique identifier matching candidate
+- `label`: One of "USV", "Not USV", "Uncertain"
+- `labeled_at`: ISO timestamp of when label was assigned
+
+## Labeling Guidelines
+
+See the in-app "Labeling Guide" expander for detailed criteria.
+
+**USV**: Clear ultrasonic vocalization patterns (30-110 kHz, 5-100 ms, smooth)
+**Not USV**: Noise, interference, artifacts
+**Uncertain**: Ambiguous cases requiring expert review

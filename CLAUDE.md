@@ -4,7 +4,7 @@ This file is read by Claude Code at the start of every session.
 
 ## Project Overview
 
-USV Spectrogram Generator - Python tools for analyzing ultrasonic vocalization (USV) recordings at 250 kHz. Includes spectrogram generation, tiled PNG rendering, Zarr storage, and a Streamlit-based Parameter Lab.
+USV Spectrogram Generator - Python tools for analyzing ultrasonic vocalization (USV) recordings at 250 kHz. Includes spectrogram generation, tiled PNG rendering, Zarr storage, USV detection pipeline, Streamlit-based Parameter Lab, and candidate labeling tool.
 
 ## Environment Setup
 
@@ -28,8 +28,11 @@ src/usv_spectrogram/       # Core library
     candidate.py           # Candidate dataclass
     energy_detector.py     # EnergyDetector class
   param_lab/               # Streamlit app modules
+  labeling/                # USV labeling tool
+    labeling_app.py        # Streamlit labeling UI
 
 scripts/                   # Entry points
+  usv_labeling_tool.py     # Labeling tool launcher
 tests/                     # Test files
 ```
 

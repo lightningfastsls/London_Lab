@@ -30,9 +30,9 @@
 
 ### Phase 3 Steps (Labeling Tool)
 
-- [ ] **Step 3.1** - Create labeling_guide.md with visual examples
-- [ ] **Step 3.2** - Implement labeling interface (Streamlit)
-- [ ] **Step 3.3** - Test workflow on 20-30 candidates
+- [x] **Step 3.1** - Create labeling_guide.md with visual examples (in-app guide)
+- [x] **Step 3.2** - Implement labeling interface (Streamlit)
+- [ ] **Step 3.3** - Test workflow on 20-30 candidates ← **NEXT**
 - [ ] **Step 3.4** - (User task) Label full dataset
 
 ### Phase 4 Steps (Dataset Preparation)
@@ -233,8 +233,74 @@ python scripts/extract_spectrograms.py --candidates candidates_optimized.csv --w
 
 **Phase 2 COMPLETE**
 
-**Next Steps:**
-- Phase 3 - Labeling Tool (Step 3.1: Create labeling_guide.md)
+---
 
-**Session status:** Phase 2 complete, ready for Phase 3
+## Session 4: Phase 3 - Labeling Tool Implementation
+
+**Date:** 2026-01-17
+**Steps Completed:** 3.1, 3.2
+
+### Changes Made
+
+**New Files Created:**
+- `src/usv_spectrogram/labeling/__init__.py` - Package init
+- `src/usv_spectrogram/labeling/labeling_app.py` - Main Streamlit labeling UI
+- `src/usv_spectrogram/labeling/README.md` - User guide for labeling tool
+- `scripts/usv_labeling_tool.py` - Launcher script
+
+**Files Modified:**
+- `CLAUDE.md` - Added labeling tool to project structure
+- `IMPLEMENTATION_PROGRESS.md` - Updated Phase 3 status
+
+### Labeling Tool Features
+
+**Core Functionality:**
+- Load candidates from `candidates_optimized.csv`
+- Display spectrogram PNGs from `spectrograms_review/` directory
+- One-at-a-time labeling workflow
+- Three label categories: USV, Not USV, Uncertain
+- Save labels incrementally to `labels.csv`
+
+**Navigation:**
+- Previous/Next buttons
+- Jump to Unlabeled feature
+- Progress tracking (X of Y labeled)
+
+**User Experience:**
+- Keyboard shortcuts (1=USV, 2=Not USV, 3=Uncertain)
+- In-app labeling guide with criteria
+- Sidebar statistics (total labeled, percentage, breakdown by label type)
+- Wide layout for optimal spectrogram viewing
+
+**Data Persistence:**
+- Labels saved immediately to prevent data loss
+- Resume support - tool loads existing labels on startup
+- CSV format: candidate_id, label, labeled_at
+
+### Usage
+
+```powershell
+# Run the labeling tool
+.\.venv\Scripts\streamlit.exe run scripts/usv_labeling_tool.py
+
+# Or with launcher (default port 8502)
+.\.venv\Scripts\python.exe scripts/usv_labeling_tool.py
+```
+
+### Implementation Notes
+
+- Follows existing Streamlit patterns from `param_lab/app.py`
+- Uses `st.set_page_config(layout="wide")` for optimal viewing
+- Session state manages current index and labels
+- Sorted candidates by candidate_id for consistent ordering
+- Default port 8502 to avoid conflict with Parameter Lab (8501)
+
+**Next Steps:**
+- Phase 3 Step 3.3 - Test workflow on 20-30 candidates
+- Phase 3 Step 3.4 - (User task) Label full dataset
+
+**Subagents Used:**
+- None (straightforward Streamlit implementation following existing patterns)
+
+**Session status:** Phase 3 Steps 3.1-3.2 complete, ready for testing
 

@@ -36,7 +36,7 @@ class ExtractionConfig:
     # Color scale (dB)
     db_floor: float = -80.0  # Black level
     db_ceiling: float = 0.0  # White level
-    colormap: str = "magma"  # Matplotlib colormap
+    colormap: str = "viridis"  # Dark background, bright signals (like Audacity)
 
     # Render modes
     # "review" - Matplotlib with axes/labels for human labeling

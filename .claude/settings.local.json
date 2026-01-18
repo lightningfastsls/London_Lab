@@ -27,7 +27,11 @@
       "Bash(..venvScriptspython.exe -m pytest teststest_config.py -v)",
       "Bash(..venvScriptspython.exe scripts/make_spectrogram.py --input nonexistent.wav)",
       "Bash(..venvScriptspython.exe scripts/usv_parameter_lab.py --help)",
-      "Bash(..venvScriptspython.exe scripts/make_spectrogram.py --help)"
+      "Bash(..venvScriptspython.exe scripts/make_spectrogram.py --help)",
+      "Bash(C:/Users/shach/PycharmProjects/mickey_london_lab/.venv/Scripts/python.exe:*)",
+      "Bash(.venv/Scripts/python.exe:*)",
+      "Bash(PYTHONPATH=src .venv/Scripts/python.exe:*)",
+      "Bash(C:\\\\Users\\\\shach\\\\PycharmProjects\\\\mickey_london_lab\\\\.venv\\\\Scripts\\\\python.exe -m py_compile:*)"
     ]
   }
 }

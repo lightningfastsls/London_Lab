@@ -1,0 +1,2 @@
+candidate_id,source_file,start_ms,end_ms,duration_ms,context_start_ms,context_end_ms,peak_freq_hz,peak_energy_db,interference_flag,spectrogram_path
+2024-09-30_11-18-17_0000001_00000764,2024-09-30_11-18-17_0000001.wav,764.16,779.9466666666666,15.786666666666633,714.16,829.9466666666666,69726.5625,3.461928954684856,False,spectrograms_review\2024-09-30_11-18-17_0000001_00000764.png

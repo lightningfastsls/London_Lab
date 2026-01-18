@@ -117,7 +117,7 @@ See `usv_signal_processing_reference.md` Section 3.1 and 3.2:
 - Systematic blind spots (e.g., quiet calls, unusual frequencies) propagate through entire pipeline
 
 ### Implementation: `src/usv_spectrogram/detection/energy_detector.py`
-
+``
 ```python
 """
 Energy-based USV candidate detector.

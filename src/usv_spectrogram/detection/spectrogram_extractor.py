@@ -183,9 +183,10 @@ class SpectrogramExtractor:
         freqs_hz = np.fft.rfftfreq(cfg.n_fft, d=1.0 / sample_rate)
         band_mask = (freqs_hz >= cfg.freq_min_hz) & (freqs_hz <= cfg.freq_max_hz)
 
-        # Convert to dB and select band
+        # Convert to dB (normalized to max so loudest = 0 dB)
         eps = 1e-12
-        spec_db = 20.0 * np.log10(magnitude + eps)
+        magnitude_normalized = magnitude / (np.max(magnitude) + eps)
+        spec_db = 20.0 * np.log10(magnitude_normalized + eps)
         spec_db = spec_db[:, band_mask].T  # Shape: (n_freq_bins, n_frames)
 
         # Time array
@@ -204,8 +205,14 @@ class SpectrogramExtractor:
         """Render spectrogram with axes and labels for human review."""
         cfg = self.config
 
-        # Apply color scaling
-        display_db = np.clip(spec_db, cfg.db_floor, cfg.db_ceiling)
+        # Dynamic color scaling based on spectrogram statistics
+        vmax = np.percentile(spec_db, 99)  # Bright level (near max)
+        vmin = np.percentile(spec_db, 5) - 10  # Dark level (below noise floor)
+
+        # Debug: print actual dB range
+        print(f"spec_db - Min: {spec_db.min():.1f}, Max: {spec_db.max():.1f}, Mean: {spec_db.mean():.1f}, vmin: {vmin:.1f}, vmax: {vmax:.1f}")
+
+        display_db = np.clip(spec_db, vmin, vmax)
 
         # Calculate figure size based on duration
         duration_ms = (times_s[-1] - times_s[0]) * 1000 if len(times_s) > 1 else 100
@@ -225,8 +232,8 @@ class SpectrogramExtractor:
             display_db,
             shading="auto",
             cmap=cfg.colormap,
-            vmin=cfg.db_floor,
-            vmax=cfg.db_ceiling,
+            vmin=vmin,
+            vmax=vmax,
         )
 
         # Mark detected region
