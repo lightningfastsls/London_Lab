@@ -6,16 +6,22 @@
 
 ---
 
-## Current Status: Phase 2 - Spectrogram Extraction (COMPLETE)
+## Current Status: Phase 3 Complete, Phase 4 In Progress
 
-### Phase 1 Steps (from plan)
+**Dataset Status:**
+- USV samples: 458 labeled
+- Not USV samples: 374 (62 from original candidates + 312 verified noise samples)
+- Uncertain: 8
+- **Need more noise samples** to improve class balance
+
+### Phase 1 Steps (from plan) - COMPLETE
 
 - [x] **Step 1.1** - Set up project structure (detection, labeling, dataset modules)
 - [x] **Step 1.2** - Implement DetectionConfig dataclass
 - [x] **Step 1.3** - Implement Candidate dataclass
 - [x] **Step 1.4** - Implement EnergyDetector.detect() for single file
 - [x] **Step 1.5** - Write tests for duration filters, frequency band, merging
-- [ ] **Step 1.6** - Run on sample WAV files and manually verify candidates ← **NEXT**
+- [x] **Step 1.6** - Run on sample WAV files and manually verify candidates
 - [x] **Step 1.7** - Implement analyze_threshold_sensitivity()
 - [x] **Step 1.8** - Implement verify_detection_coverage()
 - [x] **Step 1.9** - Implement batch detection across directory
@@ -28,20 +34,22 @@
 - [x] **Step 2.3** - Batch extract all candidates
 - [x] **Step 2.4** - Document parameters used
 
-### Phase 3 Steps (Labeling Tool)
+### Phase 3 Steps (Labeling Tool) - COMPLETE
 
 - [x] **Step 3.1** - Create labeling_guide.md with visual examples (in-app guide)
 - [x] **Step 3.2** - Implement labeling interface (Streamlit)
-- [ ] **Step 3.3** - Test workflow on 20-30 candidates ← **NEXT**
-- [ ] **Step 3.4** - (User task) Label full dataset
+- [x] **Step 3.3** - Test workflow on 20-30 candidates
+- [x] **Step 3.4** - Label full dataset (490 candidates labeled)
+- [x] **Step 3.5** - Extract and review noise samples for dataset balancing
 
-### Phase 4 Steps (Dataset Preparation)
+### Phase 4 Steps (Dataset Preparation) - IN PROGRESS
 
-- [ ] **Step 4.1** - Create recordings_metadata.csv mapping recording -> population
+- [ ] **Step 4.1** - Create recordings_metadata.csv mapping recording -> population ← **NEXT**
 - [ ] **Step 4.2** - Implement create_splits() with stratification
 - [ ] **Step 4.3** - Run quality checks
 - [ ] **Step 4.4** - Implement augmentation
 - [ ] **Step 4.5** - Final quality checks
+- [ ] **Step 4.6** - Extract more noise samples to improve class balance
 
 ### Phase 5 (Model Training)
 
@@ -303,4 +311,55 @@ python scripts/extract_spectrograms.py --candidates candidates_optimized.csv --w
 - None (straightforward Streamlit implementation following existing patterns)
 
 **Session status:** Phase 3 Steps 3.1-3.2 complete, ready for testing
+
+---
+
+### 2026-01-18 (Session 5)
+
+**Session started** - Labeling dataset and creating noise samples for balance
+
+**Completed:**
+- [x] Step 3.3 - Test labeling workflow
+- [x] Step 3.4 - Label full dataset (490 candidates)
+- [x] Step 3.5 - Create noise sample extraction tool
+- [x] Step 3.6 - Create noise sample review tool
+- [x] Step 3.7 - Review and verify noise samples
+
+**Labeling Results (from labels.csv):**
+- USV: 458 (420 original + 38 from noise review)
+- Not USV: 62
+- Uncertain: 8
+
+**Noise Sample Extraction:**
+- Created `scripts/extract_noise_samples.py` - Extracts random segments from time gaps between detected candidates
+- Extracted 350 initial noise samples
+- Created `src/usv_spectrogram/labeling/noise_review_app.py` - Streamlit tool for reviewing noise samples
+- Created `scripts/noise_review_tool.py` - Launcher for noise review tool
+
+**Noise Review Results:**
+- Clean (verified noise): 287
+- Trimmed (partial USV removed): 25
+- Skip (contains USV, moved to USV dataset): 38
+
+**Final Dataset:**
+- `labels.csv` - 528 entries (458 USV, 62 Not USV, 8 Uncertain)
+- `noise_samples/noise_samples_final.csv` - 312 verified noise samples
+- Total "Not USV": 374 (62 + 312)
+- **Class balance: 458 USV vs 374 Not USV (55% vs 45%)**
+
+**Files Created:**
+- `scripts/extract_noise_samples.py` - CLI for extracting noise samples from non-candidate regions
+- `scripts/noise_review_tool.py` - Launcher for noise review Streamlit app
+- `src/usv_spectrogram/labeling/noise_review_app.py` - Streamlit tool for reviewing/trimming noise samples
+- `noise_samples/` - Directory with 350 noise sample PNGs
+- `noise_samples/noise_samples.csv` - Original noise sample metadata
+- `noise_samples/noise_samples_final.csv` - 312 verified clean noise samples
+- `noise_samples/noise_reviews.csv` - Review status for each noise sample
+
+**Next Steps:**
+- Extract more noise samples to improve class balance (target ~100 more)
+- Phase 4.1 - Create recordings_metadata.csv
+- Phase 4.2 - Implement train/val/test splits
+
+**Session status:** Phase 3 complete, Phase 4 ready to start
 

@@ -14,6 +14,8 @@ Tests cover:
 
 from __future__ import annotations
 
+import csv
+import shutil
 import sys
 from pathlib import Path
 
@@ -27,7 +29,10 @@ if str(SRC_ROOT) not in sys.path:
 
 from usv_spectrogram.detection.config import DetectionConfig
 from usv_spectrogram.detection.energy_detector import EnergyDetector
+from usv_spectrogram.detection.energy_detector import analyze_threshold_sensitivity
+from usv_spectrogram.detection.energy_detector import verify_detection_coverage
 from usv_spectrogram.detection.candidate import Candidate
+from usv_spectrogram.io_wav import load_wav_mono
 
 
 class TestMinimumDurationFilter:
@@ -527,6 +532,198 @@ class TestEdgeCases:
         candidates = detector.detect(wav_path)
         # May or may not find candidates, but shouldn't crash
         assert isinstance(candidates, list)
+
+
+class TestBatchDetection:
+    """Test batch detection across multiple WAV files."""
+
+    def test_detect_batch_yields_candidates(self, create_tone_wav, tmp_path):
+        """detect_batch should yield candidates across WAV files."""
+        wav_path_1 = create_tone_wav(
+            freq_hz=55_000, duration_ms=50.0, amplitude=0.8, noise_level=0.001
+        )
+        wav_path_2 = create_tone_wav(
+            freq_hz=60_000, duration_ms=50.0, amplitude=0.8, noise_level=0.001
+        )
+
+        batch_dir = tmp_path / "batch"
+        batch_dir.mkdir()
+        dst_1 = batch_dir / "a.wav"
+        dst_2 = batch_dir / "b.wav"
+        shutil.copy(wav_path_1, dst_1)
+        shutil.copy(wav_path_2, dst_2)
+
+        detector = EnergyDetector()
+        candidates = list(detector.detect_batch(batch_dir))
+
+        assert len(candidates) >= 1, "Expected candidates from batch detection"
+        assert all(isinstance(c, Candidate) for c in candidates)
+        assert {c.source_file for c in candidates}.issubset({dst_1, dst_2})
+
+    def test_detect_batch_isolates_errors(self, create_tone_wav, tmp_path, capsys):
+        """detect_batch should continue after a file fails."""
+        good_wav = create_tone_wav(
+            freq_hz=55_000, duration_ms=50.0, amplitude=0.8, noise_level=0.001
+        )
+        bad_wav = create_tone_wav(
+            freq_hz=55_000,
+            duration_ms=50.0,
+            amplitude=0.8,
+            noise_level=0.001,
+            sample_rate=200_000,
+        )
+
+        batch_dir = tmp_path / "batch_errors"
+        batch_dir.mkdir()
+        good_dst = batch_dir / "good.wav"
+        bad_dst = batch_dir / "bad.wav"
+        shutil.copy(good_wav, good_dst)
+        shutil.copy(bad_wav, bad_dst)
+
+        detector = EnergyDetector()
+        candidates = list(detector.detect_batch(batch_dir))
+
+        captured = capsys.readouterr()
+        assert "Warning: Failed to process bad.wav" in captured.out
+        assert any(c.source_file == good_dst for c in candidates)
+
+
+class TestCSVExport:
+    """Test candidate CSV export behavior."""
+
+    def test_save_candidates_csv_writes_headers(self, create_tone_wav, tmp_path):
+        """CSV should include header matching candidate dict keys."""
+        wav_path = create_tone_wav(
+            freq_hz=55_000, duration_ms=50.0, amplitude=0.8, noise_level=0.001
+        )
+        detector = EnergyDetector()
+        candidates = detector.detect(wav_path)
+
+        assert len(candidates) >= 1, "Expected candidates to export"
+
+        output_path = tmp_path / "exports" / "candidates.csv"
+        detector.save_candidates_csv(candidates, output_path)
+
+        assert output_path.exists()
+
+        with open(output_path, newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            header = next(reader)
+
+        expected_header = list(candidates[0].to_dict().keys())
+        assert header == expected_header
+
+    def test_save_candidates_csv_empty_list(self, tmp_path):
+        """Empty candidate list should not create a CSV file."""
+        output_path = tmp_path / "empty" / "candidates.csv"
+        detector = EnergyDetector()
+        detector.save_candidates_csv([], output_path)
+
+        assert output_path.parent.exists()
+        assert not output_path.exists()
+
+
+class TestThresholdSensitivity:
+    """Test analyze_threshold_sensitivity helper."""
+
+    def test_threshold_sensitivity_returns_mapping(self, create_tone_wav):
+        """Should return mapping of thresholds to candidate counts."""
+        wav_path = create_tone_wav(
+            freq_hz=55_000, duration_ms=50.0, amplitude=0.8, noise_level=0.001
+        )
+        results = analyze_threshold_sensitivity(
+            wav_path,
+            threshold_range=(-60.0, -40.0),
+            threshold_step=10.0,
+        )
+
+        assert list(results.keys()) == [-60.0, -50.0, -40.0]
+        assert all(isinstance(count, int) for count in results.values())
+
+
+class TestDetectionCoverage:
+    """Test verify_detection_coverage helper."""
+
+    def test_verify_detection_coverage_counts(self, create_tone_wav):
+        """Should classify detected vs missed manual times."""
+        wav_path = create_tone_wav(
+            freq_hz=55_000,
+            duration_ms=50.0,
+            amplitude=0.8,
+            noise_level=0.001,
+            start_offset_ms=100.0,
+        )
+        detector = EnergyDetector()
+        candidates = detector.detect(wav_path)
+
+        assert len(candidates) >= 1, "Expected candidates for coverage check"
+
+        manual_times = [120.0, 500.0]
+        coverage = verify_detection_coverage(
+            wav_path, candidates, manual_times, tolerance_ms=20.0
+        )
+
+        assert coverage["total_manual"] == 2
+        assert coverage["total_candidates"] == len(candidates)
+        assert 120.0 in coverage["detected"]
+        assert 500.0 in coverage["missed"]
+        assert coverage["coverage_rate"] == pytest.approx(0.5)
+
+
+class TestSpectrogramHelpers:
+    """Test internal spectrogram-related helpers."""
+
+    def test_compute_band_spectrogram_shape(self, create_tone_wav):
+        """_compute_band_spectrogram should return band-limited arrays."""
+        wav_path = create_tone_wav(
+            freq_hz=55_000, duration_ms=50.0, amplitude=0.8, noise_level=0.001
+        )
+        detector = EnergyDetector()
+        samples, _ = load_wav_mono(wav_path)
+        spec_db, freqs_hz = detector._compute_band_spectrogram(samples)
+
+        assert spec_db.shape[0] == len(freqs_hz)
+        assert spec_db.shape[1] >= 1
+        assert np.all(freqs_hz >= detector.config.freq_min_hz)
+        assert np.all(freqs_hz <= detector.config.freq_max_hz)
+
+
+class TestFrameSegmentationHelpers:
+    """Test internal frame/segment helpers."""
+
+    def test_frames_to_segments(self):
+        """_frames_to_segments should group contiguous True frames."""
+        detector = EnergyDetector()
+        active_frames = np.array([False, True, True, False, True, False])
+        segments = detector._frames_to_segments(active_frames)
+
+        assert segments == [(1, 3), (4, 5)]
+
+    def test_merge_segments(self):
+        """_merge_segments should merge gaps within merge_gap_ms."""
+        config = DetectionConfig(merge_gap_ms=5.0, sample_rate=250_000, hop_length=256)
+        detector = EnergyDetector(config)
+        segments = [(0, 10), (12, 20), (50, 60)]
+
+        merged = detector._merge_segments(segments)
+
+        assert merged[0] == (0, 20)
+        assert merged[1] == (50, 60)
+
+    def test_filter_by_duration(self):
+        """_filter_by_duration should apply min/max duration constraints."""
+        config = DetectionConfig(
+            min_duration_ms=10.0,
+            max_duration_ms=30.0,
+            sample_rate=250_000,
+            hop_length=250,
+        )
+        detector = EnergyDetector(config)
+        segments = [(0, 5), (0, 20), (0, 40)]
+
+        filtered = detector._filter_by_duration(segments)
+
+        assert filtered == [(0, 20)]
 
     def test_pure_noise_no_candidates(self, create_tone_wav):
         """Pure noise (very low amplitude tone) should produce few/no candidates."""

@@ -9,6 +9,7 @@ from typing import Any
 
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
 
 LABEL_OPTIONS = ["USV", "Not USV", "Uncertain"]
@@ -156,12 +157,69 @@ def render_candidate_info(candidate: pd.Series) -> None:
 
 
 def render_labeling_controls(
+    candidates: pd.DataFrame,
     candidate_id: str,
     current_label: str | None,
     labels_path: Path,
+    current_index: int,
+    labels: dict[str, dict[str, Any]],
 ) -> None:
     """Render labeling buttons."""
     st.subheader("Label this Candidate")
+
+    def apply_label(next_label: str) -> None:
+        save_label(
+            labels_path,
+            candidate_id,
+            next_label,
+            labels,
+        )
+        next_index = find_next_unlabeled(
+            candidates,
+            labels,
+            current_index + 1,
+        )
+        if next_index is None:
+            next_index = (
+                current_index + 1
+                if current_index < len(candidates) - 1
+                else current_index
+            )
+        st.session_state.current_index = next_index
+        st.success(f"Labeled as: {next_label}")
+        st.rerun()
+
+    components.html(
+        """
+        <script>
+        (function () {
+            const parentDoc = window.parent && window.parent.document ? window.parent.document : document;
+            if (parentDoc._usvShortcutBound) return;
+            parentDoc._usvShortcutBound = true;
+            parentDoc.addEventListener("keydown", (event) => {
+                if (event.repeat) return;
+                const tag = event.target.tagName.toLowerCase();
+                const isInput = ["input", "textarea", "select"].includes(tag) || event.target.isContentEditable;
+                if (isInput) return;
+                if (!["1", "2", "3"].includes(event.key)) return;
+                event.preventDefault();
+                const labelMap = { "1": "USV", "2": "Not USV", "3": "Uncertain" };
+                const targetLabel = labelMap[event.key];
+                const buttons = Array.from(parentDoc.querySelectorAll("button"));
+                const target = buttons.find((btn) => {
+                    const text = (btn.innerText || "").trim();
+                    return text.startsWith(targetLabel);
+                });
+                if (target) {
+                    target.click();
+                }
+            });
+        })();
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
 
     if current_label:
         st.info(f"Current label: **{current_label}**")
@@ -175,14 +233,7 @@ def render_labeling_controls(
             button_label = f"{label}{keyboard_hint}"
 
             if st.button(button_label, key=f"label_{label}", use_container_width=True):
-                save_label(
-                    labels_path,
-                    candidate_id,
-                    label,
-                    st.session_state.labels,
-                )
-                st.success(f"Labeled as: {label}")
-                st.rerun()
+                apply_label(label)
 
 
 def render_labeling_guide() -> None:
@@ -274,7 +325,14 @@ def run() -> None:
 
     # Labeling controls
     current_label = get_candidate_label(candidate_id, st.session_state.labels)
-    render_labeling_controls(candidate_id, current_label, labels_csv)
+    render_labeling_controls(
+        candidates,
+        candidate_id,
+        current_label,
+        labels_csv,
+        current_index,
+        st.session_state.labels,
+    )
 
     # Show labeling statistics
     with st.sidebar:

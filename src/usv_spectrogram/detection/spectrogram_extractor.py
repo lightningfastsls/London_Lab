@@ -148,6 +148,41 @@ class SpectrogramExtractor:
             for candidate in updated:
                 writer.writerow(candidate.to_dict())
 
+    def _compute_dynamic_range(self, spec_db: np.ndarray) -> tuple[float, float]:
+        """Compute vmin/vmax for color scaling based on config method.
+
+        Returns:
+            (vmin, vmax) tuple for color scaling.
+        """
+        cfg = self.config
+        method = cfg.dynamic_range_method
+
+        if method == "fixed":
+            return cfg.db_floor, cfg.db_ceiling
+
+        elif method == "percentile":
+            vmax = np.percentile(spec_db, 99)
+            vmin = np.percentile(spec_db, 5) - 10
+            return vmin, vmax
+
+        elif method == "std":
+            mean = spec_db.mean()
+            std = spec_db.std()
+            vmin = mean - 2 * std
+            vmax = mean + 3 * std
+            return vmin, vmax
+
+        elif method == "mad":
+            median = np.median(spec_db)
+            mad = np.median(np.abs(spec_db - median))
+            vmin = median - cfg.mad_vmin_scale * mad
+            vmax = median + cfg.mad_vmax_scale * mad
+            return vmin, vmax
+
+        else:
+            # Fallback to fixed
+            return cfg.db_floor, cfg.db_ceiling
+
     def _compute_spectrogram(
         self, samples: np.ndarray, sample_rate: int
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -206,11 +241,7 @@ class SpectrogramExtractor:
         cfg = self.config
 
         # Dynamic color scaling based on spectrogram statistics
-        vmax = np.percentile(spec_db, 99)  # Bright level (near max)
-        vmin = np.percentile(spec_db, 5) - 10  # Dark level (below noise floor)
-
-        # Debug: print actual dB range
-        print(f"spec_db - Min: {spec_db.min():.1f}, Max: {spec_db.max():.1f}, Mean: {spec_db.mean():.1f}, vmin: {vmin:.1f}, vmax: {vmax:.1f}")
+        vmin, vmax = self._compute_dynamic_range(spec_db)
 
         display_db = np.clip(spec_db, vmin, vmax)
 
@@ -273,8 +304,9 @@ class SpectrogramExtractor:
         cfg = self.config
 
         # Apply color scaling and normalize to 0-1
-        display_db = np.clip(spec_db, cfg.db_floor, cfg.db_ceiling)
-        normalized = (display_db - cfg.db_floor) / (cfg.db_ceiling - cfg.db_floor)
+        vmin, vmax = self._compute_dynamic_range(spec_db)
+        display_db = np.clip(spec_db, vmin, vmax)
+        normalized = (display_db - vmin) / (vmax - vmin + 1e-12)
 
         # Get colormap
         cmap = plt.get_cmap(cfg.colormap)

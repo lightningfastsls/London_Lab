@@ -34,9 +34,18 @@ class ExtractionConfig:
     max_width_px: int = 512  # Maximum width (truncate long candidates)
 
     # Color scale (dB)
-    db_floor: float = -80.0  # Black level
-    db_ceiling: float = 0.0  # White level
+    db_floor: float = -80.0  # Black level (used when dynamic_range_method="fixed")
+    db_ceiling: float = 0.0  # White level (used when dynamic_range_method="fixed")
     colormap: str = "viridis"  # Dark background, bright signals (like Audacity)
+
+    # Dynamic range method for adaptive color scaling
+    # "fixed" - Use db_floor/db_ceiling
+    # "percentile" - Use percentiles (99th for vmax, 5th for vmin)
+    # "std" - Use mean +/- std deviations
+    # "mad" - Use median +/- MAD (most robust to outliers)
+    dynamic_range_method: str = "mad"
+    mad_vmin_scale: float = 2.0  # Scale factor for vmin (median - scale*MAD)
+    mad_vmax_scale: float = 4.0  # Scale factor for vmax (median + scale*MAD) - extra headroom for bright USVs
 
     # Render modes
     # "review" - Matplotlib with axes/labels for human labeling
@@ -69,6 +78,12 @@ class ExtractionConfig:
             raise ValueError("db_floor must be < db_ceiling")
         if self.default_render_mode not in ("review", "training"):
             raise ValueError("default_render_mode must be 'review' or 'training'")
+        if self.dynamic_range_method not in ("fixed", "percentile", "std", "mad"):
+            raise ValueError("dynamic_range_method must be 'fixed', 'percentile', 'std', or 'mad'")
+        if self.mad_vmin_scale <= 0:
+            raise ValueError("mad_vmin_scale must be positive")
+        if self.mad_vmax_scale <= 0:
+            raise ValueError("mad_vmax_scale must be positive")
 
     def width_px_for_duration_ms(self, duration_ms: float) -> int:
         """Calculate image width in pixels for a given duration.

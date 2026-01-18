@@ -89,13 +89,31 @@ Examples:
         "--db-floor",
         type=float,
         default=-80.0,
-        help="Minimum dB value (black level). Default: -80",
+        help="Minimum dB value (black level, used with --dynamic-range=fixed). Default: -80",
     )
     parser.add_argument(
         "--db-ceiling",
         type=float,
-        default=-10.0,
-        help="Maximum dB value (white level). Default: -10",
+        default=0.0,
+        help="Maximum dB value (white level, used with --dynamic-range=fixed). Default: 0",
+    )
+    parser.add_argument(
+        "--dynamic-range",
+        choices=["fixed", "percentile", "std", "mad"],
+        default="mad",
+        help="Dynamic range method: 'fixed' (use db-floor/ceiling), 'percentile', 'std', or 'mad' (most robust). Default: mad",
+    )
+    parser.add_argument(
+        "--mad-vmin-scale",
+        type=float,
+        default=2.0,
+        help="Scale factor for vmin with MAD method (median - scale*MAD). Default: 2.0",
+    )
+    parser.add_argument(
+        "--mad-vmax-scale",
+        type=float,
+        default=4.0,
+        help="Scale factor for vmax with MAD method (median + scale*MAD). Default: 4.0",
     )
     parser.add_argument(
         "--verbose",
@@ -152,6 +170,9 @@ def main() -> int:
             db_floor=args.db_floor,
             db_ceiling=args.db_ceiling,
             colormap=args.colormap,
+            dynamic_range_method=args.dynamic_range,
+            mad_vmin_scale=args.mad_vmin_scale,
+            mad_vmax_scale=args.mad_vmax_scale,
             default_render_mode=args.mode,
         )
     except ValueError as e:
@@ -165,6 +186,9 @@ def main() -> int:
         print(f"WAV directory: {wav_dir}")
         print(f"Output directory: {output_dir}")
         print(f"Render mode: {args.mode}")
+        print(f"Dynamic range: {args.dynamic_range}")
+        if args.dynamic_range == "mad":
+            print(f"  MAD scales: vmin={args.mad_vmin_scale}, vmax={args.mad_vmax_scale}")
         print()
 
     t0 = time.perf_counter()

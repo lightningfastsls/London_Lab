@@ -57,7 +57,12 @@ class TestExtractionConfigDefaults:
         # Color scale
         assert config.db_floor == -80.0
         assert config.db_ceiling == 0.0
-        assert config.colormap == "magma"
+        assert config.colormap == "viridis"
+
+        # Dynamic range
+        assert config.dynamic_range_method == "mad"
+        assert config.mad_vmin_scale == 2.0
+        assert config.mad_vmax_scale == 4.0
 
         # Render mode
         assert config.default_render_mode == "review"
@@ -143,6 +148,22 @@ class TestExtractionConfigValidation:
 
         with pytest.raises(ValueError, match="default_render_mode"):
             ExtractionConfig(default_render_mode="export")
+
+    def test_extraction_config_validation_dynamic_range_method(self):
+        """Invalid dynamic_range_method raises ValueError."""
+        with pytest.raises(ValueError, match="dynamic_range_method"):
+            ExtractionConfig(dynamic_range_method="invalid")
+
+    def test_extraction_config_validation_mad_scales(self):
+        """Invalid mad scale values raise ValueError."""
+        with pytest.raises(ValueError, match="mad_vmin_scale"):
+            ExtractionConfig(mad_vmin_scale=0)
+
+        with pytest.raises(ValueError, match="mad_vmin_scale"):
+            ExtractionConfig(mad_vmin_scale=-1)
+
+        with pytest.raises(ValueError, match="mad_vmax_scale"):
+            ExtractionConfig(mad_vmax_scale=0)
 
 
 class TestExtractionConfigMethods:
