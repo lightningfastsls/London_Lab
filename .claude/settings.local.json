@@ -1,28 +1,4 @@
 {
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -File .claude/hooks/check_agents_tag.ps1"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -File .claude/hooks/check_plan_mode.ps1"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Read(*)",
@@ -59,7 +35,11 @@
       "Bash(.venv*)",
       "Bash(.venv/**)",
       "Bash(C:/Users/light/PycharmProjects/mickey_london_lab/.venv/Scripts/python.exe*)",
-      "Bash(C:/Users/light/PycharmProjects/mickey_london_lab/.venv/Scripts/pip.exe*)"
+      "Bash(C:/Users/light/PycharmProjects/mickey_london_lab/.venv/Scripts/pip.exe*)",
+      "Bash(..venvScriptspython.exe scripts/extract_spectrograms.py --candidates candidates_optimized.csv --wav-dir \"5970 USV\" --output-dir spectrograms_review --mode review -v)",
+      "Bash(shuf)",
+      "Bash(xargs -I {} cmd.exe /c start \"\" \"{}\")",
+      "Bash(explorer.exe:*)"
     ],
     "deny": [
       "Read(.env)",
@@ -68,6 +48,30 @@
       "Read(**/credentials*)",
       "Write(.env)",
       "Write(.env.*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -ExecutionPolicy Bypass -File .claude/hooks/check_agents_tag.ps1"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -ExecutionPolicy Bypass -File .claude/hooks/check_plan_mode.ps1"
+          }
+        ]
+      }
     ]
   }
 }

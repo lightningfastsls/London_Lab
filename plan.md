@@ -1,4 +1,4 @@
-# Phase 2: Spectrogram Extraction - Implementation Plan
+x# Phase 2: Spectrogram Extraction - Implementation Plan
 
 ## Overview
 
