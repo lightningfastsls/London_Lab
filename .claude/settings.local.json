@@ -39,7 +39,11 @@
       "Bash(..venvScriptspython.exe scripts/extract_spectrograms.py --candidates candidates_optimized.csv --wav-dir \"5970 USV\" --output-dir spectrograms_review --mode review -v)",
       "Bash(shuf)",
       "Bash(xargs -I {} cmd.exe /c start \"\" \"{}\")",
-      "Bash(explorer.exe:*)"
+      "Bash(explorer.exe:*)",
+      "Bash(grep:*)",
+      "Bash(findstr:*)",
+      "Bash(C:UsersshachPycharmProjectsmickey_london_lab.venvScriptspython.exe -m py_compile \"C:\\\\Users\\\\shach\\\\PycharmProjects\\\\mickey_london_lab\\\\src\\\\usv_spectrogram\\\\dataset\\\\metadata.py\")",
+      "Bash(.venv/Scripts/python.exe:*)"
     ],
     "deny": [
       "Read(.env)",
