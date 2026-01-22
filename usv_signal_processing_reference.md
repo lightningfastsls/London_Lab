@@ -933,6 +933,8 @@ At 2.0 pixels/ms, a typical 50ms USV spans 100 pixels - sufficient to see freque
 | db_ceiling | 0.0 dB | White level (maximum amplitude) |
 | colormap | magma | Perceptually uniform, good for spectrograms |
 
+Default colormap for extraction/labeling PNGs is `magma` (matches labeling app display).
+
 **dB range considerations:**
 - 80 dB dynamic range captures both faint USVs and loud ones
 - USVs typically appear in -40 to -10 dB range relative to max

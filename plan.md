@@ -80,7 +80,7 @@ class ExtractionConfig:
     # Color scale
     db_floor: float = -80.0
     db_ceiling: float = 0.0
-    colormap: str = "magma"
+    colormap: str = "magma"  # Default for review PNGs in labeling app
 ```
 
 ## Reuse Strategy

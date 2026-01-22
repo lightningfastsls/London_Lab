@@ -183,6 +183,37 @@ class SpectrogramExtractor:
             # Fallback to fixed
             return cfg.db_floor, cfg.db_ceiling
 
+    def _build_continuity_kernel(self) -> np.ndarray:
+        """Build the continuity filter kernel with diagonal emphasis."""
+        cfg = self.config
+        size = cfg.continuity_kernel_size
+        radius = size // 2
+        kernel = np.zeros((size, size), dtype=float)
+
+        for dy in range(-radius, radius + 1):
+            for dx in range(-radius, radius + 1):
+                if dx == 0 and dy == 0:
+                    weight = cfg.continuity_weight_center
+                elif dx == 0 or dy == 0:
+                    weight = cfg.continuity_weight_axis / (abs(dx) + abs(dy))
+                elif abs(dx) == abs(dy):
+                    weight = cfg.continuity_weight_diag / max(abs(dx), 1)
+                else:
+                    weight = 0.0
+
+                kernel[dy + radius, dx + radius] = weight
+
+        kernel_sum = kernel.sum()
+        if kernel_sum > 0:
+            kernel /= kernel_sum
+
+        return kernel
+
+    def _apply_continuity_filter(self, spec_db: np.ndarray) -> np.ndarray:
+        """Apply continuity filter to reduce fragmented tracks in review images."""
+        kernel = self._build_continuity_kernel()
+        return signal.convolve2d(spec_db, kernel, mode="same", boundary="symm")
+
     def _compute_spectrogram(
         self, samples: np.ndarray, sample_rate: int
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -239,6 +270,9 @@ class SpectrogramExtractor:
     ) -> None:
         """Render spectrogram with axes and labels for human review."""
         cfg = self.config
+
+        if cfg.continuity_filter_enabled:
+            spec_db = self._apply_continuity_filter(spec_db)
 
         # Dynamic color scaling based on spectrogram statistics
         vmin, vmax = self._compute_dynamic_range(spec_db)

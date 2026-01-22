@@ -13,6 +13,7 @@ Design principles (see usv_signal_processing_reference.md):
 from __future__ import annotations
 
 import csv
+from dataclasses import replace
 from pathlib import Path
 from typing import Iterator, Optional
 
@@ -46,70 +47,92 @@ class EnergyDetector:
         4. Threshold to get candidate frames
         5. Group adjacent frames into segments
         6. Merge segments separated by < merge_gap_ms
-        7. Apply duration filters
-        8. Apply bandwidth filter to reject broadband noise
-        9. Extract peak frequency for each candidate
-        10. Create Candidate objects with full metadata
+        7. Optionally extend/merge segments by continuity
+        8. Apply duration filters
+        9. Apply bandwidth filter to reject broadband noise
+        10. Extract peak frequency for each candidate
+        11. Create Candidate objects with full metadata
         """
         wav_path = Path(wav_path)
-        cfg = self.config
+        original_cfg = self.config
+        cfg = original_cfg
 
         # 1. Load audio
         samples, sample_rate = load_wav_mono(wav_path)
-        if sample_rate != cfg.sample_rate:
+        if cfg.auto_sample_rate:
+            cfg = replace(cfg, sample_rate=sample_rate)
+            self.config = cfg
+        elif sample_rate != cfg.sample_rate:
             raise ValueError(
                 f"Expected sample rate {cfg.sample_rate} Hz, got {sample_rate} Hz. "
                 f"Set config.sample_rate to match your recordings."
             )
 
-        if len(samples) < cfg.n_fft:
-            return []  # Audio too short
+        try:
+            if len(samples) < cfg.n_fft:
+                return []  # Audio too short
 
-        # 2. Compute spectrogram
-        spec_db, freqs_hz = self._compute_band_spectrogram(samples)
-        if spec_db.shape[1] == 0:
-            return []  # No frames
+            # 2. Compute spectrogram
+            spec_db, freqs_hz = self._compute_band_spectrogram(samples)
+            if spec_db.shape[1] == 0:
+                return []  # No frames
 
-        # 3. Compute energy per frame in USV band
-        # "peak" mode uses max energy - better for narrow-band USVs
-        # "mean" mode uses mean energy - original behavior
-        if cfg.energy_mode == "peak":
-            band_energy_db = np.max(spec_db, axis=0)
-        else:
-            band_energy_db = np.mean(spec_db, axis=0)
+            # 3. Compute energy per frame in USV band
+            # "peak" mode uses max energy - better for narrow-band USVs
+            # "mean" mode uses mean energy - original behavior
+            if cfg.energy_mode == "peak":
+                band_energy_db = np.max(spec_db, axis=0)
+            else:
+                band_energy_db = np.mean(spec_db, axis=0)
 
-        # 4. Threshold to get candidate frames
-        max_energy = np.max(band_energy_db)
-        threshold_db = max_energy + cfg.energy_threshold_db
-        active_frames = band_energy_db >= threshold_db
+            # 4. Threshold to get candidate frames
+            max_energy = np.max(band_energy_db)
+            threshold_db = max_energy + cfg.energy_threshold_db
+            active_frames = band_energy_db >= threshold_db
 
-        if not np.any(active_frames):
-            return []  # No detections
+            # Guard against thresholds that mark almost all frames active.
+            # This can collapse into one long segment that fails max_duration_ms.
+            active_fraction = float(np.mean(active_frames)) if active_frames.size else 0.0
+            if active_fraction > 0.9:
+                fallback_threshold_db = float(np.quantile(band_energy_db, 0.9))
+                if fallback_threshold_db > threshold_db:
+                    threshold_db = fallback_threshold_db
+                    active_frames = band_energy_db >= threshold_db
 
-        # 5. Group adjacent frames into segments
-        segments = self._frames_to_segments(active_frames)
+            if not np.any(active_frames):
+                return []  # No detections
 
-        # 6. Merge nearby segments
-        segments = self._merge_segments(segments)
+            # 5. Group adjacent frames into segments
+            segments = self._frames_to_segments(active_frames)
 
-        # 7. Apply duration filters
-        segments = self._filter_by_duration(segments)
+            # 6. Merge nearby segments
+            segments = self._merge_segments(segments)
 
-        if not segments:
-            return []
+            # 7. Optionally extend/merge segments by continuity
+            if cfg.segment_continuity_enabled:
+                segments = self._extend_segments_by_continuity(segments, spec_db, freqs_hz)
 
-        # 8-9. Create Candidate objects with peak frequency and energy
-        candidates = []
-        for start_frame, end_frame in segments:
-            candidate = self._create_candidate(
-                wav_path, spec_db, freqs_hz, start_frame, end_frame
-            )
-            if candidate is not None:
-                candidates.append(candidate)
+            # 8. Apply duration filters
+            segments = self._filter_by_duration(segments)
 
-        # Sort by start time
-        candidates.sort(key=lambda c: c.start_ms)
-        return candidates
+            if not segments:
+                return []
+
+            # 9-10. Create Candidate objects with peak frequency and energy
+            candidates = []
+            for start_frame, end_frame in segments:
+                candidate = self._create_candidate(
+                    wav_path, spec_db, freqs_hz, start_frame, end_frame
+                )
+                if candidate is not None:
+                    candidates.append(candidate)
+
+            # Sort by start time
+            candidates.sort(key=lambda c: c.start_ms)
+            return candidates
+        finally:
+            if self.config is not original_cfg:
+                self.config = original_cfg
 
     def detect_batch(
         self,
@@ -237,6 +260,314 @@ class EnergyDetector:
 
         return merged
 
+    def _compute_frame_peaks(
+        self, spec_db: np.ndarray, freqs_hz: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Compute peak frequency and energy for each frame."""
+        peak_indices = np.argmax(spec_db, axis=0)
+        frame_indices = np.arange(spec_db.shape[1])
+        peak_freqs = freqs_hz[peak_indices]
+        peak_energy_db = spec_db[peak_indices, frame_indices]
+        return peak_freqs, peak_energy_db
+
+    def _compute_band_energy_db(
+        self,
+        spec_db: np.ndarray,
+        freqs_hz: np.ndarray,
+        center_freq_hz: float,
+        bandwidth_hz: float,
+        frame_indices: np.ndarray,
+    ) -> np.ndarray:
+        """Compute mean band energy (dB) per frame around a center frequency."""
+        if frame_indices.size == 0 or spec_db.size == 0:
+            return np.array([], dtype=float)
+
+        if bandwidth_hz <= 0:
+            nearest_idx = int(np.argmin(np.abs(freqs_hz - center_freq_hz)))
+            return spec_db[nearest_idx, frame_indices]
+
+        band_mask = np.abs(freqs_hz - center_freq_hz) <= bandwidth_hz
+        if not np.any(band_mask):
+            nearest_idx = int(np.argmin(np.abs(freqs_hz - center_freq_hz)))
+            return spec_db[nearest_idx, frame_indices]
+
+        band_spec = spec_db[band_mask][:, frame_indices]
+        return np.mean(band_spec, axis=0)
+
+    def _build_continuity_kernel(self) -> np.ndarray:
+        """Build the continuity kernel for smoothing during detection."""
+        cfg = self.config
+        size = cfg.segment_continuity_kernel_size
+        radius = size // 2
+        kernel = np.zeros((size, size), dtype=float)
+
+        for dy in range(-radius, radius + 1):
+            for dx in range(-radius, radius + 1):
+                if dx == 0 and dy == 0:
+                    weight = cfg.segment_continuity_weight_center
+                elif dy == 0:
+                    weight = cfg.segment_continuity_weight_time / abs(dx)
+                elif dx == 0:
+                    weight = cfg.segment_continuity_weight_freq / abs(dy)
+                elif abs(dx) == abs(dy):
+                    weight = cfg.segment_continuity_weight_diag / max(abs(dx), 1)
+                else:
+                    weight = 0.0
+
+                kernel[dy + radius, dx + radius] = weight
+
+        kernel_sum = kernel.sum()
+        if kernel_sum > 0:
+            kernel /= kernel_sum
+
+        return kernel
+
+    def _apply_continuity_smoothing(self, spec_db: np.ndarray) -> np.ndarray:
+        """Apply continuity smoothing to stabilize peak tracking across gaps."""
+        kernel = self._build_continuity_kernel()
+        return signal.convolve2d(spec_db, kernel, mode="same", boundary="symm")
+
+    def _segment_reference(
+        self,
+        peak_freqs: np.ndarray,
+        peak_energy_db: np.ndarray,
+        start_frame: int,
+        end_frame: int,
+    ) -> Optional[tuple[float, float]]:
+        """Return median peak frequency/energy for a segment."""
+        if end_frame <= start_frame:
+            return None
+        segment_freqs = peak_freqs[start_frame:end_frame]
+        segment_energy = peak_energy_db[start_frame:end_frame]
+        if segment_freqs.size == 0:
+            return None
+        return float(np.median(segment_freqs)), float(np.median(segment_energy))
+
+    def _segment_band_reference(
+        self,
+        spec_db: np.ndarray,
+        freqs_hz: np.ndarray,
+        ref_freq_hz: float,
+        start_frame: int,
+        end_frame: int,
+    ) -> Optional[float]:
+        """Return median band energy (dB) for a segment around a reference frequency."""
+        if end_frame <= start_frame:
+            return None
+        frame_indices = np.arange(start_frame, end_frame)
+        cfg = self.config
+        band_energy = self._compute_band_energy_db(
+            spec_db,
+            freqs_hz,
+            ref_freq_hz,
+            cfg.segment_continuity_bandwidth_hz,
+            frame_indices,
+        )
+        if band_energy.size == 0:
+            return None
+        return float(np.median(band_energy))
+
+    def _frame_matches_continuity(
+        self,
+        frame_idx: int,
+        peak_freqs: np.ndarray,
+        peak_energy_db: np.ndarray,
+        ref_freq_hz: float,
+        ref_energy_db: float,
+    ) -> bool:
+        """Check if a frame matches continuity thresholds."""
+        cfg = self.config
+        freq_ok = abs(peak_freqs[frame_idx] - ref_freq_hz) <= cfg.segment_continuity_freq_tolerance_hz
+        energy_ok = peak_energy_db[frame_idx] >= (ref_energy_db - cfg.segment_continuity_energy_tolerance_db)
+        return freq_ok and energy_ok
+
+    def _gap_matches_reference_band(
+        self,
+        gap_start: int,
+        gap_end: int,
+        spec_db: np.ndarray,
+        freqs_hz: np.ndarray,
+        ref_freq_hz: float,
+        ref_band_energy_db: float,
+    ) -> bool:
+        """Check if enough gap frames match the reference band energy."""
+        if gap_end <= gap_start:
+            return True
+        cfg = self.config
+        gap_indices = np.arange(gap_start, gap_end)
+        band_energy = self._compute_band_energy_db(
+            spec_db,
+            freqs_hz,
+            ref_freq_hz,
+            cfg.segment_continuity_bandwidth_hz,
+            gap_indices,
+        )
+        if band_energy.size == 0:
+            return False
+        energy_ok = band_energy >= (ref_band_energy_db - cfg.segment_continuity_band_energy_tolerance_db)
+        match_fraction = float(np.mean(energy_ok)) if gap_indices.size else 1.0
+        return match_fraction >= cfg.segment_continuity_band_match_fraction
+
+    def _gap_matches_reference(
+        self,
+        gap_start: int,
+        gap_end: int,
+        peak_freqs: np.ndarray,
+        peak_energy_db: np.ndarray,
+        ref_freq_hz: float,
+        ref_energy_db: float,
+    ) -> bool:
+        """Check if enough frames in a gap match a reference."""
+        if gap_end <= gap_start:
+            return True
+        cfg = self.config
+        gap_indices = np.arange(gap_start, gap_end)
+        freq_ok = np.abs(peak_freqs[gap_indices] - ref_freq_hz) <= cfg.segment_continuity_freq_tolerance_hz
+        energy_ok = peak_energy_db[gap_indices] >= (ref_energy_db - cfg.segment_continuity_energy_tolerance_db)
+        match_fraction = float(np.mean(freq_ok & energy_ok)) if gap_indices.size else 1.0
+        return match_fraction >= cfg.segment_continuity_gap_match_fraction
+
+    def _segments_continuous(
+        self,
+        prev_ref: tuple[float, float],
+        next_ref: tuple[float, float],
+        peak_freqs: np.ndarray,
+        peak_energy_db: np.ndarray,
+        spec_db: np.ndarray,
+        freqs_hz: np.ndarray,
+        gap_start: int,
+        gap_end: int,
+        prev_start: int,
+        prev_end: int,
+        next_start: int,
+        next_end: int,
+    ) -> bool:
+        """Check if two segments should be bridged based on continuity."""
+        cfg = self.config
+        prev_freq, prev_energy = prev_ref
+        next_freq, next_energy = next_ref
+
+        band_continuity = False
+        prev_band_ref = self._segment_band_reference(
+            spec_db, freqs_hz, prev_freq, prev_start, prev_end
+        )
+        if prev_band_ref is not None:
+            band_continuity = self._gap_matches_reference_band(
+                gap_start, gap_end, spec_db, freqs_hz, prev_freq, prev_band_ref
+            )
+        next_band_ref = self._segment_band_reference(
+            spec_db, freqs_hz, next_freq, next_start, next_end
+        )
+        if next_band_ref is not None:
+            band_continuity = band_continuity or self._gap_matches_reference_band(
+                gap_start, gap_end, spec_db, freqs_hz, next_freq, next_band_ref
+            )
+
+        peak_continuity = False
+        freq_close = abs(prev_freq - next_freq) <= cfg.segment_continuity_freq_tolerance_hz
+        energy_close = abs(prev_energy - next_energy) <= cfg.segment_continuity_energy_tolerance_db
+        if freq_close and energy_close:
+            peak_continuity = self._gap_matches_reference(
+                gap_start, gap_end, peak_freqs, peak_energy_db, prev_freq, prev_energy
+            ) or self._gap_matches_reference(
+                gap_start, gap_end, peak_freqs, peak_energy_db, next_freq, next_energy
+            )
+
+        return band_continuity or peak_continuity
+
+    def _extend_segments_by_continuity(
+        self,
+        segments: list[tuple[int, int]],
+        spec_db: np.ndarray,
+        freqs_hz: np.ndarray,
+    ) -> list[tuple[int, int]]:
+        """Extend/merge segments using peak and band-energy continuity."""
+        if not segments:
+            return []
+
+        cfg = self.config
+        hop_ms = cfg.hop_ms()
+        if hop_ms <= 0:
+            return segments
+
+        max_gap_frames = int(round(cfg.segment_continuity_max_gap_ms / hop_ms))
+        if max_gap_frames <= 0:
+            return segments
+
+        n_frames = spec_db.shape[1]
+        if cfg.segment_continuity_enabled:
+            spec_for_peaks = self._apply_continuity_smoothing(spec_db)
+        else:
+            spec_for_peaks = spec_db
+        peak_freqs, peak_energy_db = self._compute_frame_peaks(spec_for_peaks, freqs_hz)
+
+        # Extend each segment into nearby frames when continuity holds
+        extended = []
+        for start_frame, end_frame in segments:
+            ref = self._segment_reference(peak_freqs, peak_energy_db, start_frame, end_frame)
+            if ref is None:
+                extended.append((start_frame, end_frame))
+                continue
+            ref_freq, ref_energy = ref
+
+            new_start = start_frame
+            for frame_idx in range(start_frame - 1, max(-1, start_frame - max_gap_frames - 1), -1):
+                if self._frame_matches_continuity(
+                    frame_idx, peak_freqs, peak_energy_db, ref_freq, ref_energy
+                ):
+                    new_start = frame_idx
+                else:
+                    break
+
+            new_end = end_frame
+            for frame_idx in range(end_frame, min(n_frames, end_frame + max_gap_frames)):
+                if self._frame_matches_continuity(
+                    frame_idx, peak_freqs, peak_energy_db, ref_freq, ref_energy
+                ):
+                    new_end = frame_idx + 1
+                else:
+                    break
+
+            extended.append((new_start, new_end))
+
+        # Merge overlapping or near segments when continuity holds
+        merged = []
+        for start_frame, end_frame in extended:
+            if not merged:
+                merged.append((start_frame, end_frame))
+                continue
+
+            prev_start, prev_end = merged[-1]
+            if start_frame <= prev_end:
+                merged[-1] = (prev_start, max(prev_end, end_frame))
+                continue
+
+            gap_frames = start_frame - prev_end
+            if gap_frames <= max_gap_frames:
+                prev_ref = self._segment_reference(peak_freqs, peak_energy_db, prev_start, prev_end)
+                next_ref = self._segment_reference(peak_freqs, peak_energy_db, start_frame, end_frame)
+                if prev_ref and next_ref and self._segments_continuous(
+                    prev_ref,
+                    next_ref,
+                    peak_freqs,
+                    peak_energy_db,
+                    spec_db,
+                    freqs_hz,
+                    prev_end,
+                    start_frame,
+                    prev_start,
+                    prev_end,
+                    start_frame,
+                    end_frame,
+                ):
+                    merged[-1] = (prev_start, end_frame)
+                else:
+                    merged.append((start_frame, end_frame))
+            else:
+                merged.append((start_frame, end_frame))
+
+        return merged
+
     def _filter_by_duration(
         self, segments: list[tuple[int, int]]
     ) -> list[tuple[int, int]]:
@@ -346,6 +677,7 @@ def analyze_threshold_sensitivity(
         # Create config with this threshold
         test_config = DetectionConfig(
             sample_rate=config.sample_rate,
+            auto_sample_rate=config.auto_sample_rate,
             n_fft=config.n_fft,
             hop_length=config.hop_length,
             freq_min_hz=config.freq_min_hz,
@@ -356,6 +688,19 @@ def analyze_threshold_sensitivity(
             min_duration_ms=config.min_duration_ms,
             max_duration_ms=config.max_duration_ms,
             merge_gap_ms=config.merge_gap_ms,
+            segment_continuity_enabled=config.segment_continuity_enabled,
+            segment_continuity_max_gap_ms=config.segment_continuity_max_gap_ms,
+            segment_continuity_freq_tolerance_hz=config.segment_continuity_freq_tolerance_hz,
+            segment_continuity_energy_tolerance_db=config.segment_continuity_energy_tolerance_db,
+            segment_continuity_gap_match_fraction=config.segment_continuity_gap_match_fraction,
+            segment_continuity_bandwidth_hz=config.segment_continuity_bandwidth_hz,
+            segment_continuity_band_energy_tolerance_db=config.segment_continuity_band_energy_tolerance_db,
+            segment_continuity_band_match_fraction=config.segment_continuity_band_match_fraction,
+            segment_continuity_kernel_size=config.segment_continuity_kernel_size,
+            segment_continuity_weight_center=config.segment_continuity_weight_center,
+            segment_continuity_weight_time=config.segment_continuity_weight_time,
+            segment_continuity_weight_freq=config.segment_continuity_weight_freq,
+            segment_continuity_weight_diag=config.segment_continuity_weight_diag,
             context_before_ms=config.context_before_ms,
             context_after_ms=config.context_after_ms,
         )

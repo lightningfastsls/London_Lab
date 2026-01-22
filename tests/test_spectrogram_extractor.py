@@ -57,7 +57,7 @@ class TestExtractionConfigDefaults:
         # Color scale
         assert config.db_floor == -80.0
         assert config.db_ceiling == 0.0
-        assert config.colormap == "viridis"
+        assert config.colormap == "magma"
 
         # Dynamic range
         assert config.dynamic_range_method == "mad"

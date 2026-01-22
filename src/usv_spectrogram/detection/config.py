@@ -21,9 +21,13 @@ class DetectionConfig:
     """
 
     # STFT parameters - matched to existing SpectrogramConfig defaults
-    sample_rate: int = 250_000  # Must be >= 2 * max_freq (Nyquist)
-    n_fft: int = 512  # ~488 Hz freq resolution, ~2 ms time resolution at 250 kHz
+    sample_rate: int = 300_000  # Must be >= 2 * max_freq (Nyquist)
+    n_fft: int = 512  # ~586 Hz freq resolution, ~1.7 ms time resolution at 300 kHz
     hop_length: int = 128  # 75% overlap for smooth temporal coverage
+
+    # Sample rate handling
+    # If True, use the WAV file's sample rate during detection.
+    auto_sample_rate: bool = True
 
     # Frequency band for USV detection
     freq_min_hz: int = 25_000  # High-pass: remove sub-ultrasonic noise
@@ -32,7 +36,7 @@ class DetectionConfig:
     # Energy threshold - deliberately LOW for high recall
     # See Section 3.2: threshold bias creates systematic blind spots
     # Relative to max energy in the frequency band
-    energy_threshold_db: float = -50.0  # Tune based on your recordings
+    energy_threshold_db: float = -60.0  # Tune based on your recordings
 
     # Energy detection mode
     # "peak" = use max energy in band per frame (better for narrow-band USVs)
@@ -50,7 +54,25 @@ class DetectionConfig:
     max_duration_ms: float = 500.0  # USVs are <= 300 ms, allow margin for safety
 
     # Merging nearby detections into single candidates
-    merge_gap_ms: float = 5.0  # If two detections are < 5 ms apart, merge them
+    merge_gap_ms: float = 10.0  # If two detections are < 10 ms apart, merge them
+
+    # Continuity-based extension/merge (optional)
+    # Extends segments into nearby frames if peak freq/energy are similar.
+    segment_continuity_enabled: bool = False
+    segment_continuity_max_gap_ms: float = 10.0  # Max gap (ms) to extend/bridge
+    segment_continuity_freq_tolerance_hz: float = 1500.0  # Peak freq tolerance
+    segment_continuity_energy_tolerance_db: float = 8.0  # Peak energy tolerance
+    segment_continuity_gap_match_fraction: float = 0.6  # Fraction of gap frames that must match
+    # Band-energy continuity (optional)
+    # Evaluates energy in a band around the segment's median peak frequency.
+    segment_continuity_bandwidth_hz: float = 6000.0  # +/- bandwidth around reference freq
+    segment_continuity_band_energy_tolerance_db: float = 6.0  # Band energy tolerance
+    segment_continuity_band_match_fraction: float = 0.6  # Fraction of gap frames that must match
+    segment_continuity_kernel_size: int = 3  # Odd kernel size for continuity smoothing
+    segment_continuity_weight_center: float = 1.0
+    segment_continuity_weight_time: float = 0.5
+    segment_continuity_weight_freq: float = 0.2
+    segment_continuity_weight_diag: float = 0.8
 
     # Context window for spectrogram extraction
     # Include context around the detection for visual review
@@ -83,6 +105,41 @@ class DetectionConfig:
             raise ValueError("max_duration_ms must be > min_duration_ms")
         if self.context_before_ms < 0 or self.context_after_ms < 0:
             raise ValueError("context_before_ms and context_after_ms must be >= 0")
+        if self.segment_continuity_max_gap_ms < 0:
+            raise ValueError("segment_continuity_max_gap_ms must be >= 0")
+        if self.segment_continuity_freq_tolerance_hz < 0:
+            raise ValueError("segment_continuity_freq_tolerance_hz must be >= 0")
+        if self.segment_continuity_energy_tolerance_db < 0:
+            raise ValueError("segment_continuity_energy_tolerance_db must be >= 0")
+        if not 0.0 <= self.segment_continuity_gap_match_fraction <= 1.0:
+            raise ValueError("segment_continuity_gap_match_fraction must be between 0 and 1")
+        if self.segment_continuity_bandwidth_hz < 0:
+            raise ValueError("segment_continuity_bandwidth_hz must be >= 0")
+        if self.segment_continuity_band_energy_tolerance_db < 0:
+            raise ValueError("segment_continuity_band_energy_tolerance_db must be >= 0")
+        if not 0.0 <= self.segment_continuity_band_match_fraction <= 1.0:
+            raise ValueError("segment_continuity_band_match_fraction must be between 0 and 1")
+        if self.segment_continuity_kernel_size < 3 or self.segment_continuity_kernel_size % 2 == 0:
+            raise ValueError("segment_continuity_kernel_size must be an odd integer >= 3")
+        if self.segment_continuity_weight_center < 0:
+            raise ValueError("segment_continuity_weight_center must be >= 0")
+        if self.segment_continuity_weight_time < 0:
+            raise ValueError("segment_continuity_weight_time must be >= 0")
+        if self.segment_continuity_weight_freq < 0:
+            raise ValueError("segment_continuity_weight_freq must be >= 0")
+        if self.segment_continuity_weight_diag < 0:
+            raise ValueError("segment_continuity_weight_diag must be >= 0")
+        if (
+            self.segment_continuity_enabled
+            and (
+                self.segment_continuity_weight_center
+                + self.segment_continuity_weight_time
+                + self.segment_continuity_weight_freq
+                + self.segment_continuity_weight_diag
+            )
+            <= 0
+        ):
+            raise ValueError("segment continuity weights must sum to > 0 when enabled")
 
     def hop_ms(self) -> float:
         """Return hop length in milliseconds."""

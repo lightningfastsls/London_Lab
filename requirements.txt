@@ -1,4 +1,4 @@
-﻿numpy
+numpy
 scipy
 soundfile
 matplotlib
@@ -6,3 +6,8 @@ zarr
 tqdm
 streamlit
 pytest
+torch
+torchvision
+pandas
+pillow
+scikit-learn

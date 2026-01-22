@@ -72,6 +72,83 @@ Examples:
         help="Merge detections closer than this (ms). Default: 5",
     )
     parser.add_argument(
+        "--segment-continuity",
+        action="store_true",
+        help="Enable continuity-based extension/merging across small gaps.",
+    )
+    parser.add_argument(
+        "--segment-continuity-gap-ms",
+        type=float,
+        default=3.0,
+        help="Max gap (ms) to extend/bridge when continuity is enabled. Default: 3",
+    )
+    parser.add_argument(
+        "--segment-continuity-freq-tol",
+        type=float,
+        default=1500.0,
+        help="Peak frequency tolerance (Hz) for continuity. Default: 1500",
+    )
+    parser.add_argument(
+        "--segment-continuity-energy-tol",
+        type=float,
+        default=8.0,
+        help="Peak energy tolerance (dB) for continuity. Default: 8",
+    )
+    parser.add_argument(
+        "--segment-continuity-gap-match",
+        type=float,
+        default=0.6,
+        help="Fraction of gap frames that must match continuity (0-1). Default: 0.6",
+    )
+    parser.add_argument(
+        "--segment-continuity-bandwidth",
+        type=float,
+        default=6000.0,
+        help="Band half-width in Hz around reference freq for continuity. Default: 6000",
+    )
+    parser.add_argument(
+        "--segment-continuity-band-energy-tol",
+        type=float,
+        default=6.0,
+        help="Band energy tolerance (dB) for continuity. Default: 6",
+    )
+    parser.add_argument(
+        "--segment-continuity-band-match",
+        type=float,
+        default=0.6,
+        help="Fraction of gap frames that must match band energy (0-1). Default: 0.6",
+    )
+    parser.add_argument(
+        "--segment-continuity-kernel-size",
+        type=int,
+        default=5,
+        help="Odd kernel size for continuity smoothing in detection. Default: 5",
+    )
+    parser.add_argument(
+        "--segment-continuity-weight-center",
+        type=float,
+        default=1.0,
+        help="Continuity smoothing center weight. Default: 1.0",
+    )
+    parser.add_argument(
+        "--segment-continuity-weight-time",
+        type=float,
+        default=0.5,
+        help="Continuity smoothing time-axis weight (left/right). Default: 0.5",
+    )
+    parser.add_argument(
+        "--segment-continuity-weight-freq",
+        type=float,
+        default=0.2,
+        help="Continuity smoothing freq-axis weight (up/down). Default: 0.2",
+    )
+    parser.add_argument(
+        "--segment-continuity-weight-diag",
+        type=float,
+        default=0.8,
+        help="Continuity smoothing diagonal weight. Default: 0.8",
+    )
+    parser.add_argument(
         "--freq-min",
         type=int,
         default=25000,
@@ -86,8 +163,22 @@ Examples:
     parser.add_argument(
         "--sample-rate",
         type=int,
-        default=250000,
-        help="Expected sample rate in Hz. Default: 250000",
+        default=300000,
+        help="Expected sample rate in Hz (used when auto sample-rate is disabled). Default: 300000",
+    )
+    auto_sr_group = parser.add_mutually_exclusive_group()
+    auto_sr_group.add_argument(
+        "--auto-sample-rate",
+        dest="auto_sample_rate",
+        action="store_true",
+        default=True,
+        help="Use the WAV file's sample rate during detection (default).",
+    )
+    auto_sr_group.add_argument(
+        "--no-auto-sample-rate",
+        dest="auto_sample_rate",
+        action="store_false",
+        help="Disable auto sample-rate detection and enforce --sample-rate.",
     )
     parser.add_argument(
         "--energy-mode",
@@ -145,12 +236,26 @@ def main() -> int:
     try:
         config = DetectionConfig(
             sample_rate=args.sample_rate,
+            auto_sample_rate=args.auto_sample_rate,
             energy_threshold_db=args.threshold,
             energy_mode=args.energy_mode,
             max_bandwidth_hz=args.max_bandwidth,
             min_duration_ms=args.min_duration,
             max_duration_ms=args.max_duration,
             merge_gap_ms=args.merge_gap,
+            segment_continuity_enabled=args.segment_continuity,
+            segment_continuity_max_gap_ms=args.segment_continuity_gap_ms,
+            segment_continuity_freq_tolerance_hz=args.segment_continuity_freq_tol,
+            segment_continuity_energy_tolerance_db=args.segment_continuity_energy_tol,
+            segment_continuity_gap_match_fraction=args.segment_continuity_gap_match,
+            segment_continuity_bandwidth_hz=args.segment_continuity_bandwidth,
+            segment_continuity_band_energy_tolerance_db=args.segment_continuity_band_energy_tol,
+            segment_continuity_band_match_fraction=args.segment_continuity_band_match,
+            segment_continuity_kernel_size=args.segment_continuity_kernel_size,
+            segment_continuity_weight_center=args.segment_continuity_weight_center,
+            segment_continuity_weight_time=args.segment_continuity_weight_time,
+            segment_continuity_weight_freq=args.segment_continuity_weight_freq,
+            segment_continuity_weight_diag=args.segment_continuity_weight_diag,
             freq_min_hz=args.freq_min,
             freq_max_hz=args.freq_max,
         )

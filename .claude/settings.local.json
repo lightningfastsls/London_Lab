@@ -43,7 +43,8 @@
       "Bash(grep:*)",
       "Bash(findstr:*)",
       "Bash(C:UsersshachPycharmProjectsmickey_london_lab.venvScriptspython.exe -m py_compile \"C:\\\\Users\\\\shach\\\\PycharmProjects\\\\mickey_london_lab\\\\src\\\\usv_spectrogram\\\\dataset\\\\metadata.py\")",
-      "Bash(.venv/Scripts/python.exe:*)"
+      "Bash(.venv/Scripts/python.exe:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nComplete Phase 4: Dataset preparation with train/val/test splits\n\n- Add dataset module \\(metadata, splits, quality_checks\\)\n- Implement recording-level splitting to prevent data leakage\n- Add 7 quality checks \\(balance, leakage, file existence, etc.\\)\n- Regenerate 350 noise sample spectrograms from CSV metadata\n- Create CLI script for dataset preparation workflow\n\nFinal dataset: 832 samples\n- Train: 618 \\(361 USV, 257 Not USV\\) - 58%/42%\n- Val: 117 \\(60 USV, 57 Not USV\\) - 51%/49%\n- Test: 97 \\(37 USV, 60 Not USV\\) - 38%/62%\n\nAll 7 quality checks pass. Dataset ready for model training.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ],
     "deny": [
       "Read(.env)",
