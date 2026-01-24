@@ -97,13 +97,25 @@ def load_labeled_samples(
                     continue
 
                 # Determine spectrogram path
-                # Check if it's a noise sample (already reviewed via labeling tool)
-                if "_noise_" in candidate_id:
-                    # Noise samples - check multiple locations
-                    spec_path = noise_samples_dir / f"{candidate_id}.png"
+                is_noise = "_noise_" in candidate_id
+                if is_noise:
+                    if label == "USV":
+                        primary_dir = spectrograms_dir
+                        secondary_dir = noise_samples_dir
+                    else:
+                        primary_dir = noise_samples_dir
+                        secondary_dir = spectrograms_dir
+                    spec_path = primary_dir / f"{candidate_id}.png"
+                    if not spec_path.exists():
+                        alt_path = secondary_dir / f"{candidate_id}.png"
+                        if alt_path.exists():
+                            spec_path = alt_path
                 else:
-                    # Regular candidates are in spectrograms_review
                     spec_path = spectrograms_dir / f"{candidate_id}.png"
+                    if not spec_path.exists():
+                        alt_path = noise_samples_dir / f"{candidate_id}.png"
+                        if alt_path.exists():
+                            spec_path = alt_path
 
                 # Skip if spectrogram doesn't exist
                 if require_spectrogram_exists and not spec_path.exists():

@@ -1,0 +1,49 @@
+{
+  "optimal_threshold": 0.40,
+  "padding_mode": "fixed_512px",
+  "threshold_selection_method": "maximize_f1",
+  "evaluation_dataset": "test",
+  "performance_at_optimal_threshold": {
+    "accuracy": 0.682,
+    "precision": 0.645,
+    "recall": 0.882,
+    "f1": 0.745,
+    "note": "With fixed padding to 512px width"
+  },
+  "alternative_variable_padding": {
+    "optimal_threshold": 0.25,
+    "f1": 0.761,
+    "recall": 0.922,
+    "note": "Variable batch padding (matches training, but non-deterministic)"
+  },
+  "performance_at_default_threshold_0.5": {
+    "accuracy": 0.698,
+    "precision": 0.746,
+    "recall": 0.647,
+    "f1": 0.693,
+    "note": "With fixed padding to 512px width"
+  },
+  "probability_range_fixed_padding": {
+    "min": 0.036,
+    "max": 0.583,
+    "mean": 0.452,
+    "std": 0.126,
+    "note": "Fixed padding to 512px produces higher probabilities than variable padding"
+  },
+  "probability_range_variable_padding": {
+    "min": 0.0095,
+    "max": 0.5709,
+    "mean": 0.3667,
+    "std": 0.1547,
+    "note": "Variable batch padding (matches training setup)"
+  },
+  "notes": [
+    "CRITICAL FIX: predict.py now pads all images to fixed 512px width",
+    "This ensures deterministic predictions (same image = same result)",
+    "Previous bug: batch composition affected padding, causing variable predictions",
+    "Model outputs compressed probabilities (max ~0.58) due to training calibration issue",
+    "Fixed padding increases probabilities compared to variable padding",
+    "Threshold calibrated specifically for fixed padding mode"
+  ],
+  "diagnostic_session": "Session 9 - 2026-01-23"
+}

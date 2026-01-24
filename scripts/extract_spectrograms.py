@@ -363,6 +363,14 @@ def main() -> int:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Clean existing PNG files from output directory
+    existing_pngs = list(output_dir.glob("*.png"))
+    if existing_pngs:
+        if args.verbose:
+            print(f"Cleaning {len(existing_pngs)} existing PNG files from {output_dir}...")
+        for png_file in existing_pngs:
+            png_file.unlink()
+
     # Determine output CSV path
     if args.output_csv:
         output_csv = Path(args.output_csv)

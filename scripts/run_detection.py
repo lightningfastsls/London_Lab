@@ -68,31 +68,33 @@ Examples:
     parser.add_argument(
         "--merge-gap",
         type=float,
-        default=5.0,
-        help="Merge detections closer than this (ms). Default: 5",
+        default=3.0,
+        help="Merge detections closer than this (ms). Default: 3 (tuned)",
     )
     parser.add_argument(
-        "--segment-continuity",
-        action="store_true",
-        help="Enable continuity-based extension/merging across small gaps.",
+        "--no-segment-continuity",
+        dest="segment_continuity",
+        action="store_false",
+        default=True,
+        help="Disable continuity-based extension/merging (enabled by default).",
     )
     parser.add_argument(
         "--segment-continuity-gap-ms",
         type=float,
-        default=3.0,
-        help="Max gap (ms) to extend/bridge when continuity is enabled. Default: 3",
+        default=5.0,
+        help="Max gap (ms) to extend/bridge when continuity is enabled. Default: 5 (tuned)",
     )
     parser.add_argument(
         "--segment-continuity-freq-tol",
         type=float,
         default=1500.0,
-        help="Peak frequency tolerance (Hz) for continuity. Default: 1500",
+        help="Peak frequency tolerance (Hz) for continuity. Default: 1500 (tuned)",
     )
     parser.add_argument(
         "--segment-continuity-energy-tol",
         type=float,
-        default=8.0,
-        help="Peak energy tolerance (dB) for continuity. Default: 8",
+        default=15.0,
+        help="Peak energy tolerance (dB) for continuity. Default: 15 (tuned middle-ground)",
     )
     parser.add_argument(
         "--segment-continuity-gap-match",

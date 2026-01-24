@@ -1,619 +1,853 @@
-candidate_id,source_file,label,spectrogram_path
-2024-09-30_11-19-19_0000012_00000783,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00000783.png
-2024-09-30_11-19-19_0000012_00001010,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00001010.png
-2024-09-30_11-19-19_0000012_00001247,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00001247.png
-2024-09-30_11-19-19_0000012_00001358,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00001358.png
-2024-09-30_11-19-19_0000012_00001553,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00001553.png
-2024-09-30_11-19-19_0000012_00001740,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00001740.png
-2024-09-30_11-19-19_0000012_00001843,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00001843.png
-2024-09-30_11-19-19_0000012_00001958,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00001958.png
-2024-09-30_11-19-19_0000012_00002068,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00002068.png
-2024-09-30_11-19-19_0000012_00002753,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00002753.png
-2024-09-30_11-19-19_0000012_00002937,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00002937.png
-2024-09-30_11-19-19_0000012_00003449,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00003449.png
-2024-09-30_11-19-19_0000012_00003476,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00003476.png
-2024-09-30_11-19-19_0000012_00004084,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00004084.png
-2024-09-30_11-19-19_0000012_00004324,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00004324.png
-2024-09-30_11-19-19_0000012_00004557,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00004557.png
-2024-09-30_11-19-19_0000012_00004660,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00004660.png
-2024-09-30_11-19-19_0000012_00004790,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00004790.png
-2024-09-30_11-19-19_0000012_00005652,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00005652.png
-2024-09-30_11-19-19_0000012_00005840,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00005840.png
-2024-09-30_11-19-19_0000012_00005958,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00005958.png
-2024-09-30_11-19-19_0000012_00006061,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00006061.png
-2024-09-30_11-19-19_0000012_00006166,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00006166.png
-2024-09-30_11-19-19_0000012_00006262,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00006262.png
-2024-09-30_11-19-19_0000012_00006722,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00006722.png
-2024-09-30_11-19-19_0000012_00006941,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00006941.png
-2024-09-30_11-19-19_0000012_00007045,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-19_0000012_00007045.png
-2024-09-30_11-19-19_0000012_noise_88a01fa5,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_88a01fa5.png
-2024-09-30_11-19-19_0000012_noise_edc43a1d,2024-09-30_11-19-19_0000012.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_edc43a1d.png
-2024-09-30_11-19-19_0000012_noise_a435c442_trimmed,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_a435c442_trimmed.png
-2024-09-30_11-19-19_0000012_noise_249b6e1a,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_249b6e1a.png
-2024-09-30_11-19-19_0000012_noise_9ad1a960,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_9ad1a960.png
-2024-09-30_11-19-19_0000012_noise_59c6d7af,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_59c6d7af.png
-2024-09-30_11-19-19_0000012_noise_34ea28c6_trimmed,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_34ea28c6_trimmed.png
-2024-09-30_11-19-19_0000012_noise_f0df46c8,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_f0df46c8.png
-2024-09-30_11-19-19_0000012_noise_f7e98e74,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_f7e98e74.png
-2024-09-30_11-19-19_0000012_noise_82d1bd6e,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_82d1bd6e.png
-2024-09-30_11-19-19_0000012_noise_0dcbc636,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_0dcbc636.png
-2024-09-30_11-19-19_0000012_noise_675603aa,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_675603aa.png
-2024-09-30_11-19-19_0000012_noise_8dc4ea93,2024-09-30_11-19-19_0000012.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-19_0000012_noise_8dc4ea93.png
-2024-09-30_11-19-38_0000015_00000999,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00000999.png
-2024-09-30_11-19-38_0000015_00001577,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00001577.png
-2024-09-30_11-19-38_0000015_00001901,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00001901.png
-2024-09-30_11-19-38_0000015_00002584,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00002584.png
-2024-09-30_11-19-38_0000015_00002914,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00002914.png
-2024-09-30_11-19-38_0000015_00003360,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00003360.png
-2024-09-30_11-19-38_0000015_00006879,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00006879.png
-2024-09-30_11-19-38_0000015_00007103,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00007103.png
-2024-09-30_11-19-38_0000015_00007432,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00007432.png
-2024-09-30_11-19-38_0000015_00007932,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00007932.png
-2024-09-30_11-19-38_0000015_00008045,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00008045.png
-2024-09-30_11-19-38_0000015_00008767,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00008767.png
-2024-09-30_11-19-38_0000015_00009770,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00009770.png
-2024-09-30_11-19-38_0000015_00009804,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00009804.png
-2024-09-30_11-19-38_0000015_00009900,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00009900.png
-2024-09-30_11-19-38_0000015_00009999,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00009999.png
-2024-09-30_11-19-38_0000015_00010108,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00010108.png
-2024-09-30_11-19-38_0000015_00010221,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00010221.png
-2024-09-30_11-19-38_0000015_00010333,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00010333.png
-2024-09-30_11-19-38_0000015_00010562,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00010562.png
-2024-09-30_11-19-38_0000015_00010659,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00010659.png
-2024-09-30_11-19-38_0000015_00010793,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00010793.png
-2024-09-30_11-19-38_0000015_00010919,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00010919.png
-2024-09-30_11-19-38_0000015_00011165,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00011165.png
-2024-09-30_11-19-38_0000015_00011270,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00011270.png
-2024-09-30_11-19-38_0000015_00011383,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00011383.png
-2024-09-30_11-19-38_0000015_00011502,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00011502.png
-2024-09-30_11-19-38_0000015_00011523,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00011523.png
-2024-09-30_11-19-38_0000015_00011618,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00011618.png
-2024-09-30_11-19-38_0000015_00011842,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00011842.png
-2024-09-30_11-19-38_0000015_00011954,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00011954.png
-2024-09-30_11-19-38_0000015_00012067,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00012067.png
-2024-09-30_11-19-38_0000015_00012457,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00012457.png
-2024-09-30_11-19-38_0000015_00013328,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00013328.png
-2024-09-30_11-19-38_0000015_00013656,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00013656.png
-2024-09-30_11-19-38_0000015_00013749,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00013749.png
-2024-09-30_11-19-38_0000015_00014001,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00014001.png
-2024-09-30_11-19-38_0000015_00014139,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00014139.png
-2024-09-30_11-19-38_0000015_00014168,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00014168.png
-2024-09-30_11-19-38_0000015_00015136,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-38_0000015_00015136.png
-2024-09-30_11-19-38_0000015_noise_0c4e137a,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_0c4e137a.png
-2024-09-30_11-19-38_0000015_noise_2466db90,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_2466db90.png
-2024-09-30_11-19-38_0000015_noise_808f0ca8,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_808f0ca8.png
-2024-09-30_11-19-38_0000015_noise_899232c6,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_899232c6.png
-2024-09-30_11-19-38_0000015_noise_aedf847f,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_aedf847f.png
-2024-09-30_11-19-38_0000015_noise_b9b649d8,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_b9b649d8.png
-2024-09-30_11-19-38_0000015_noise_c0f309d5,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_c0f309d5.png
-2024-09-30_11-19-38_0000015_noise_fda943e1,2024-09-30_11-19-38_0000015.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_fda943e1.png
-2024-09-30_11-19-38_0000015_noise_14838825,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_14838825.png
-2024-09-30_11-19-38_0000015_noise_d5a27a69,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_d5a27a69.png
-2024-09-30_11-19-38_0000015_noise_7a031534,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_7a031534.png
-2024-09-30_11-19-38_0000015_noise_8efaa824_trimmed,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_8efaa824_trimmed.png
-2024-09-30_11-19-38_0000015_noise_6010d4da,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_6010d4da.png
-2024-09-30_11-19-38_0000015_noise_3e48230e,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_3e48230e.png
-2024-09-30_11-19-38_0000015_noise_1ed386fb,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_1ed386fb.png
-2024-09-30_11-19-38_0000015_noise_d51bbebe,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_d51bbebe.png
-2024-09-30_11-19-38_0000015_noise_30c7adcf_trimmed,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_30c7adcf_trimmed.png
-2024-09-30_11-19-38_0000015_noise_9d31393a,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_9d31393a.png
-2024-09-30_11-19-38_0000015_noise_4671b113,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_4671b113.png
-2024-09-30_11-19-38_0000015_noise_6b2c0a99,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_6b2c0a99.png
-2024-09-30_11-19-38_0000015_noise_9c0d74d1,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_9c0d74d1.png
-2024-09-30_11-19-38_0000015_noise_11d7ebbb,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_11d7ebbb.png
-2024-09-30_11-19-38_0000015_noise_0a828879,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_0a828879.png
-2024-09-30_11-19-38_0000015_noise_98965d21,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_98965d21.png
-2024-09-30_11-19-38_0000015_noise_0868d9da,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_0868d9da.png
-2024-09-30_11-19-38_0000015_noise_d418cdbe,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_d418cdbe.png
-2024-09-30_11-19-38_0000015_noise_cb2b9351,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_cb2b9351.png
-2024-09-30_11-19-38_0000015_noise_a8c616da,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_a8c616da.png
-2024-09-30_11-19-38_0000015_noise_a053fb41_trimmed,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_a053fb41_trimmed.png
-2024-09-30_11-19-38_0000015_noise_c18e2823,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_c18e2823.png
-2024-09-30_11-19-38_0000015_noise_421c1bb1,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_421c1bb1.png
-2024-09-30_11-19-38_0000015_noise_cc098bb2,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_cc098bb2.png
-2024-09-30_11-19-38_0000015_noise_c46c23b0,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_c46c23b0.png
-2024-09-30_11-19-38_0000015_noise_dfcbdf82,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_dfcbdf82.png
-2024-09-30_11-19-38_0000015_noise_9dd74062_trimmed,2024-09-30_11-19-38_0000015.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-38_0000015_noise_9dd74062_trimmed.png
-2024-09-30_11-19-00_0000007_00001012,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00001012.png
-2024-09-30_11-19-00_0000007_00001972,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00001972.png
-2024-09-30_11-19-00_0000007_00002406,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00002406.png
-2024-09-30_11-19-00_0000007_00002571,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00002571.png
-2024-09-30_11-19-00_0000007_00003121,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00003121.png
-2024-09-30_11-19-00_0000007_00003277,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00003277.png
-2024-09-30_11-19-00_0000007_00003943,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00003943.png
-2024-09-30_11-19-00_0000007_00004698,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00004698.png
-2024-09-30_11-19-00_0000007_00004837,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00004837.png
-2024-09-30_11-19-00_0000007_00004892,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00004892.png
-2024-09-30_11-19-00_0000007_00004993,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00004993.png
-2024-09-30_11-19-00_0000007_00005031,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005031.png
-2024-09-30_11-19-00_0000007_00005174,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005174.png
-2024-09-30_11-19-00_0000007_00005200,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005200.png
-2024-09-30_11-19-00_0000007_00005280,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005280.png
-2024-09-30_11-19-00_0000007_00005374,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005374.png
-2024-09-30_11-19-00_0000007_00005399,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005399.png
-2024-09-30_11-19-00_0000007_00005587,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005587.png
-2024-09-30_11-19-00_0000007_00005775,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005775.png
-2024-09-30_11-19-00_0000007_00005871,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00005871.png
-2024-09-30_11-19-00_0000007_00006065,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00006065.png
-2024-09-30_11-19-00_0000007_00006279,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00006279.png
-2024-09-30_11-19-00_0000007_00006508,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00006508.png
-2024-09-30_11-19-00_0000007_00006824,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-00_0000007_00006824.png
-2024-09-30_11-19-00_0000007_noise_1d4e7565,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_1d4e7565.png
-2024-09-30_11-19-00_0000007_noise_4c92e7e2,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_4c92e7e2.png
-2024-09-30_11-19-00_0000007_noise_72a9caec,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_72a9caec.png
-2024-09-30_11-19-00_0000007_noise_9c6cbb24,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_9c6cbb24.png
-2024-09-30_11-19-00_0000007_noise_f34a1a05,2024-09-30_11-19-00_0000007.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_f34a1a05.png
-2024-09-30_11-19-00_0000007_noise_e611cefe,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_e611cefe.png
-2024-09-30_11-19-00_0000007_noise_cec6628f,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_cec6628f.png
-2024-09-30_11-19-00_0000007_noise_64df3509,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_64df3509.png
-2024-09-30_11-19-00_0000007_noise_5533e8f5,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_5533e8f5.png
-2024-09-30_11-19-00_0000007_noise_4c023d3e,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_4c023d3e.png
-2024-09-30_11-19-00_0000007_noise_58d86e63,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_58d86e63.png
-2024-09-30_11-19-00_0000007_noise_b9ad6af4,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_b9ad6af4.png
-2024-09-30_11-19-00_0000007_noise_ab7c85f1,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_ab7c85f1.png
-2024-09-30_11-19-00_0000007_noise_700d1fa2_trimmed,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_700d1fa2_trimmed.png
-2024-09-30_11-19-00_0000007_noise_51a505c7_trimmed,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_51a505c7_trimmed.png
-2024-09-30_11-19-00_0000007_noise_6f69edc2,2024-09-30_11-19-00_0000007.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-00_0000007_noise_6f69edc2.png
-2024-09-30_11-21-26_0000040_00000218,2024-09-30_11-21-26_0000040.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-26_0000040_00000218.png
-2024-09-30_11-21-26_0000040_00000345,2024-09-30_11-21-26_0000040.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-26_0000040_00000345.png
-2024-09-30_11-21-26_0000040_00000824,2024-09-30_11-21-26_0000040.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-26_0000040_00000824.png
-2024-09-30_11-21-26_0000040_00001096,2024-09-30_11-21-26_0000040.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-26_0000040_00001096.png
-2024-09-30_11-21-26_0000040_00001224,2024-09-30_11-21-26_0000040.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-26_0000040_00001224.png
-2024-09-30_11-21-26_0000040_00001352,2024-09-30_11-21-26_0000040.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-26_0000040_00001352.png
-2024-09-30_11-21-26_0000040_00001652,2024-09-30_11-21-26_0000040.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-26_0000040_00001652.png
-2024-09-30_11-21-26_0000040_noise_f2bb935c,2024-09-30_11-21-26_0000040.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-26_0000040_noise_f2bb935c.png
-2024-09-30_11-21-26_0000040_noise_023e0513,2024-09-30_11-21-26_0000040.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-26_0000040_noise_023e0513.png
-2024-09-30_11-21-26_0000040_noise_3c9f459c,2024-09-30_11-21-26_0000040.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-26_0000040_noise_3c9f459c.png
-2024-09-30_11-21-26_0000040_noise_29f5c4d1,2024-09-30_11-21-26_0000040.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-26_0000040_noise_29f5c4d1.png
-2024-09-30_11-21-26_0000040_noise_c7ab86d7,2024-09-30_11-21-26_0000040.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-26_0000040_noise_c7ab86d7.png
-2024-09-30_11-21-50_0000047_00004349,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-50_0000047_00004349.png
-2024-09-30_11-21-50_0000047_00004687,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-50_0000047_00004687.png
-2024-09-30_11-21-50_0000047_noise_c067b020,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_c067b020.png
-2024-09-30_11-21-50_0000047_noise_001cbfd5,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_001cbfd5.png
-2024-09-30_11-21-50_0000047_noise_366136b3,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_366136b3.png
-2024-09-30_11-21-50_0000047_noise_db8f1ed4,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_db8f1ed4.png
-2024-09-30_11-21-50_0000047_noise_b11627b1,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_b11627b1.png
-2024-09-30_11-21-50_0000047_noise_64f38f8e,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_64f38f8e.png
-2024-09-30_11-21-50_0000047_noise_08ee50b9,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_08ee50b9.png
-2024-09-30_11-21-50_0000047_noise_847dc48b,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_847dc48b.png
-2024-09-30_11-21-50_0000047_noise_6319b904,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_6319b904.png
-2024-09-30_11-21-50_0000047_noise_ebf5853e,2024-09-30_11-21-50_0000047.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-50_0000047_noise_ebf5853e.png
-2024-09-30_11-20-35_0000027_00000364,2024-09-30_11-20-35_0000027.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-35_0000027_00000364.png
-2024-09-30_11-20-35_0000027_00000905,2024-09-30_11-20-35_0000027.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-35_0000027_00000905.png
-2024-09-30_11-20-35_0000027_00001417,2024-09-30_11-20-35_0000027.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-35_0000027_00001417.png
-2024-09-30_11-20-35_0000027_noise_d3055f2d,2024-09-30_11-20-35_0000027.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-35_0000027_noise_d3055f2d.png
-2024-09-30_11-20-35_0000027_noise_4f837d8d,2024-09-30_11-20-35_0000027.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-35_0000027_noise_4f837d8d.png
-2024-09-30_11-20-35_0000027_noise_cfab8f6b,2024-09-30_11-20-35_0000027.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-35_0000027_noise_cfab8f6b.png
-2024-09-30_11-20-35_0000027_noise_7519a1ca,2024-09-30_11-20-35_0000027.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-35_0000027_noise_7519a1ca.png
-2024-09-30_11-20-35_0000027_noise_dd0d5526,2024-09-30_11-20-35_0000027.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-35_0000027_noise_dd0d5526.png
-2024-09-30_11-20-35_0000027_noise_c1342d0f,2024-09-30_11-20-35_0000027.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-35_0000027_noise_c1342d0f.png
-2024-09-30_11-21-44_0000045_00001296,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-44_0000045_00001296.png
-2024-09-30_11-21-44_0000045_00001387,2024-09-30_11-21-44_0000045.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-44_0000045_00001387.png
-2024-09-30_11-21-44_0000045_00003099,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-44_0000045_00003099.png
-2024-09-30_11-21-44_0000045_noise_9ba2c1d2,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_9ba2c1d2.png
-2024-09-30_11-21-44_0000045_noise_2e6c915d,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_2e6c915d.png
-2024-09-30_11-21-44_0000045_noise_f275f05a,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_f275f05a.png
-2024-09-30_11-21-44_0000045_noise_57d92144,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_57d92144.png
-2024-09-30_11-21-44_0000045_noise_e578f80a,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_e578f80a.png
-2024-09-30_11-21-44_0000045_noise_eda0a5c1,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_eda0a5c1.png
-2024-09-30_11-21-44_0000045_noise_126b2798,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_126b2798.png
-2024-09-30_11-21-44_0000045_noise_ed25a5bc,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_ed25a5bc.png
-2024-09-30_11-21-44_0000045_noise_59eca375,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_59eca375.png
-2024-09-30_11-21-44_0000045_noise_f84f8fd5,2024-09-30_11-21-44_0000045.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-44_0000045_noise_f84f8fd5.png
-2024-09-30_11-21-01_0000034_00001137,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00001137.png
-2024-09-30_11-21-01_0000034_00001248,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00001248.png
-2024-09-30_11-21-01_0000034_00001354,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00001354.png
-2024-09-30_11-21-01_0000034_00001462,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00001462.png
-2024-09-30_11-21-01_0000034_00001566,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00001566.png
-2024-09-30_11-21-01_0000034_00001765,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00001765.png
-2024-09-30_11-21-01_0000034_00001980,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00001980.png
-2024-09-30_11-21-01_0000034_00002288,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00002288.png
-2024-09-30_11-21-01_0000034_00002328,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00002328.png
-2024-09-30_11-21-01_0000034_00002807,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00002807.png
-2024-09-30_11-21-01_0000034_00003226,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00003226.png
-2024-09-30_11-21-01_0000034_00003773,2024-09-30_11-21-01_0000034.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00003773.png
-2024-09-30_11-21-01_0000034_00003977,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00003977.png
-2024-09-30_11-21-01_0000034_00004051,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00004051.png
-2024-09-30_11-21-01_0000034_00004815,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00004815.png
-2024-09-30_11-21-01_0000034_00004956,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-01_0000034_00004956.png
-2024-09-30_11-21-01_0000034_noise_3f241095,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_3f241095.png
-2024-09-30_11-21-01_0000034_noise_e15cc9f6,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_e15cc9f6.png
-2024-09-30_11-21-01_0000034_noise_ec2bd86f,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_ec2bd86f.png
-2024-09-30_11-21-01_0000034_noise_ed50d01b,2024-09-30_11-21-01_0000034.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_ed50d01b.png
-2024-09-30_11-21-01_0000034_noise_cdcb18ed,2024-09-30_11-21-01_0000034.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_cdcb18ed.png
-2024-09-30_11-21-01_0000034_noise_a30ca596,2024-09-30_11-21-01_0000034.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_a30ca596.png
-2024-09-30_11-21-01_0000034_noise_53c8f4b3,2024-09-30_11-21-01_0000034.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_53c8f4b3.png
-2024-09-30_11-21-01_0000034_noise_61f250af,2024-09-30_11-21-01_0000034.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_61f250af.png
-2024-09-30_11-21-01_0000034_noise_0735ef7a,2024-09-30_11-21-01_0000034.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_0735ef7a.png
-2024-09-30_11-21-01_0000034_noise_f42c43fc,2024-09-30_11-21-01_0000034.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_f42c43fc.png
-2024-09-30_11-21-01_0000034_noise_fe258bdc,2024-09-30_11-21-01_0000034.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-01_0000034_noise_fe258bdc.png
-2024-09-30_11-20-45_0000030_00001006,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001006.png
-2024-09-30_11-20-45_0000030_00001114,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001114.png
-2024-09-30_11-20-45_0000030_00001226,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001226.png
-2024-09-30_11-20-45_0000030_00001342,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001342.png
-2024-09-30_11-20-45_0000030_00001448,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001448.png
-2024-09-30_11-20-45_0000030_00001559,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001559.png
-2024-09-30_11-20-45_0000030_00001662,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001662.png
-2024-09-30_11-20-45_0000030_00001764,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001764.png
-2024-09-30_11-20-45_0000030_00001890,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00001890.png
-2024-09-30_11-20-45_0000030_00002419,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00002419.png
-2024-09-30_11-20-45_0000030_00002618,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00002618.png
-2024-09-30_11-20-45_0000030_00002960,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00002960.png
-2024-09-30_11-20-45_0000030_00003157,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00003157.png
-2024-09-30_11-20-45_0000030_00004172,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-45_0000030_00004172.png
-2024-09-30_11-20-45_0000030_noise_5fac85dd,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_5fac85dd.png
-2024-09-30_11-20-45_0000030_noise_d339e402,2024-09-30_11-20-45_0000030.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_d339e402.png
-2024-09-30_11-20-45_0000030_noise_ef66a863,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_ef66a863.png
-2024-09-30_11-20-45_0000030_noise_cdd588ad,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_cdd588ad.png
-2024-09-30_11-20-45_0000030_noise_c7c03cfb,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_c7c03cfb.png
-2024-09-30_11-20-45_0000030_noise_fe7c657b,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_fe7c657b.png
-2024-09-30_11-20-45_0000030_noise_2fa99600,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_2fa99600.png
-2024-09-30_11-20-45_0000030_noise_0ca8d7c2,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_0ca8d7c2.png
-2024-09-30_11-20-45_0000030_noise_fbec52b2,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_fbec52b2.png
-2024-09-30_11-20-45_0000030_noise_9c0f6b28,2024-09-30_11-20-45_0000030.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-45_0000030_noise_9c0f6b28.png
-2024-09-30_11-21-07_0000035_00001057,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00001057.png
-2024-09-30_11-21-07_0000035_00001073,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00001073.png
-2024-09-30_11-21-07_0000035_00001203,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00001203.png
-2024-09-30_11-21-07_0000035_00001331,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00001331.png
-2024-09-30_11-21-07_0000035_00002313,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00002313.png
-2024-09-30_11-21-07_0000035_00002336,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00002336.png
-2024-09-30_11-21-07_0000035_00003105,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00003105.png
-2024-09-30_11-21-07_0000035_00003215,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00003215.png
-2024-09-30_11-21-07_0000035_00003322,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00003322.png
-2024-09-30_11-21-07_0000035_00003739,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00003739.png
-2024-09-30_11-21-07_0000035_00003965,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00003965.png
-2024-09-30_11-21-07_0000035_00004729,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00004729.png
-2024-09-30_11-21-07_0000035_00004837,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00004837.png
-2024-09-30_11-21-07_0000035_00004957,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00004957.png
-2024-09-30_11-21-07_0000035_00005201,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00005201.png
-2024-09-30_11-21-07_0000035_00005360,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00005360.png
-2024-09-30_11-21-07_0000035_00005612,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00005612.png
-2024-09-30_11-21-07_0000035_00005761,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00005761.png
-2024-09-30_11-21-07_0000035_00005914,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00005914.png
-2024-09-30_11-21-07_0000035_00006040,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00006040.png
-2024-09-30_11-21-07_0000035_00006140,2024-09-30_11-21-07_0000035.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-07_0000035_00006140.png
-2024-09-30_11-21-07_0000035_noise_4906fad6,2024-09-30_11-21-07_0000035.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-07_0000035_noise_4906fad6.png
-2024-09-30_11-21-07_0000035_noise_d5d5fcf8,2024-09-30_11-21-07_0000035.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-07_0000035_noise_d5d5fcf8.png
-2024-09-30_11-21-07_0000035_noise_4617a693,2024-09-30_11-21-07_0000035.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-07_0000035_noise_4617a693.png
-2024-09-30_11-21-07_0000035_noise_6464643c,2024-09-30_11-21-07_0000035.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-07_0000035_noise_6464643c.png
-2024-09-30_11-21-07_0000035_noise_135d61a1,2024-09-30_11-21-07_0000035.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-07_0000035_noise_135d61a1.png
-2024-09-30_11-21-07_0000035_noise_8bb6cc70,2024-09-30_11-21-07_0000035.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-07_0000035_noise_8bb6cc70.png
-2024-09-30_11-21-07_0000035_noise_aa66cd5d,2024-09-30_11-21-07_0000035.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-07_0000035_noise_aa66cd5d.png
-2024-09-30_11-21-48_0000046_00000649,2024-09-30_11-21-48_0000046.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-48_0000046_00000649.png
-2024-09-30_11-21-48_0000046_00000915,2024-09-30_11-21-48_0000046.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-48_0000046_00000915.png
-2024-09-30_11-21-48_0000046_00000948,2024-09-30_11-21-48_0000046.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-48_0000046_00000948.png
-2024-09-30_11-21-48_0000046_00001033,2024-09-30_11-21-48_0000046.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-48_0000046_00001033.png
-2024-09-30_11-21-48_0000046_noise_2a27fa36,2024-09-30_11-21-48_0000046.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-48_0000046_noise_2a27fa36.png
-2024-09-30_11-21-48_0000046_noise_8d91dc39,2024-09-30_11-21-48_0000046.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-48_0000046_noise_8d91dc39.png
-2024-09-30_11-21-48_0000046_noise_3ec1eb17,2024-09-30_11-21-48_0000046.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-48_0000046_noise_3ec1eb17.png
-2024-09-30_11-21-48_0000046_noise_fb7a62ad,2024-09-30_11-21-48_0000046.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-48_0000046_noise_fb7a62ad.png
-2024-09-30_11-19-31_0000013_00001012,2024-09-30_11-19-31_0000013.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-31_0000013_00001012.png
-2024-09-30_11-19-31_0000013_00001554,2024-09-30_11-19-31_0000013.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-31_0000013_00001554.png
-2024-09-30_11-19-31_0000013_00001622,2024-09-30_11-19-31_0000013.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-31_0000013_00001622.png
-2024-09-30_11-19-31_0000013_noise_f23c7e27,2024-09-30_11-19-31_0000013.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-31_0000013_noise_f23c7e27.png
-2024-09-30_11-19-31_0000013_noise_4018ad60,2024-09-30_11-19-31_0000013.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-31_0000013_noise_4018ad60.png
-2024-09-30_11-19-31_0000013_noise_0f781b07,2024-09-30_11-19-31_0000013.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-31_0000013_noise_0f781b07.png
-2024-09-30_11-19-31_0000013_noise_127dff1e,2024-09-30_11-19-31_0000013.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-31_0000013_noise_127dff1e.png
-2024-09-30_11-19-34_0000014_00000975,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00000975.png
-2024-09-30_11-19-34_0000014_00001202,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00001202.png
-2024-09-30_11-19-34_0000014_00001306,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00001306.png
-2024-09-30_11-19-34_0000014_00001488,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00001488.png
-2024-09-30_11-19-34_0000014_00001594,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00001594.png
-2024-09-30_11-19-34_0000014_00001711,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00001711.png
-2024-09-30_11-19-34_0000014_00001821,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00001821.png
-2024-09-30_11-19-34_0000014_00001932,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00001932.png
-2024-09-30_11-19-34_0000014_00002019,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002019.png
-2024-09-30_11-19-34_0000014_00002045,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002045.png
-2024-09-30_11-19-34_0000014_00002114,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002114.png
-2024-09-30_11-19-34_0000014_00002316,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002316.png
-2024-09-30_11-19-34_0000014_00002423,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002423.png
-2024-09-30_11-19-34_0000014_00002508,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002508.png
-2024-09-30_11-19-34_0000014_00002612,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002612.png
-2024-09-30_11-19-34_0000014_00002712,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002712.png
-2024-09-30_11-19-34_0000014_00002807,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002807.png
-2024-09-30_11-19-34_0000014_00002914,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00002914.png
-2024-09-30_11-19-34_0000014_00003026,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00003026.png
-2024-09-30_11-19-34_0000014_00003128,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00003128.png
-2024-09-30_11-19-34_0000014_00003231,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00003231.png
-2024-09-30_11-19-34_0000014_00003331,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00003331.png
-2024-09-30_11-19-34_0000014_00003433,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00003433.png
-2024-09-30_11-19-34_0000014_00003721,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00003721.png
-2024-09-30_11-19-34_0000014_00003834,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00003834.png
-2024-09-30_11-19-34_0000014_00003934,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00003934.png
-2024-09-30_11-19-34_0000014_00004033,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00004033.png
-2024-09-30_11-19-34_0000014_00004308,2024-09-30_11-19-34_0000014.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00004308.png
-2024-09-30_11-19-34_0000014_00004827,2024-09-30_11-19-34_0000014.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-34_0000014_00004827.png
-2024-09-30_11-19-34_0000014_noise_f77309d7,2024-09-30_11-19-34_0000014.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-34_0000014_noise_f77309d7.png
-2024-09-30_11-21-30_0000042_00000619,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-30_0000042_00000619.png
-2024-09-30_11-21-30_0000042_00000995,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-30_0000042_00000995.png
-2024-09-30_11-21-30_0000042_00001502,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-30_0000042_00001502.png
-2024-09-30_11-21-30_0000042_00001900,2024-09-30_11-21-30_0000042.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-30_0000042_00001900.png
-2024-09-30_11-21-30_0000042_00002035,2024-09-30_11-21-30_0000042.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-30_0000042_00002035.png
-2024-09-30_11-21-30_0000042_00002144,2024-09-30_11-21-30_0000042.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-30_0000042_00002144.png
-2024-09-30_11-21-30_0000042_00002237,2024-09-30_11-21-30_0000042.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-30_0000042_00002237.png
-2024-09-30_11-21-30_0000042_00002607,2024-09-30_11-21-30_0000042.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-30_0000042_00002607.png
-2024-09-30_11-21-30_0000042_noise_d005f555,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-30_0000042_noise_d005f555.png
-2024-09-30_11-21-30_0000042_noise_193e224e,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-30_0000042_noise_193e224e.png
-2024-09-30_11-21-30_0000042_noise_7a234c68,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-30_0000042_noise_7a234c68.png
-2024-09-30_11-21-30_0000042_noise_08d44313,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-30_0000042_noise_08d44313.png
-2024-09-30_11-21-30_0000042_noise_9ca806e7,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-30_0000042_noise_9ca806e7.png
-2024-09-30_11-21-30_0000042_noise_f3ce24bb,2024-09-30_11-21-30_0000042.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-30_0000042_noise_f3ce24bb.png
-2024-09-30_11-19-15_0000010_00000407,2024-09-30_11-19-15_0000010.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-15_0000010_00000407.png
-2024-09-30_11-19-15_0000010_noise_d519f317,2024-09-30_11-19-15_0000010.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-15_0000010_noise_d519f317.png
-2024-09-30_11-19-15_0000010_noise_0d5eb967,2024-09-30_11-19-15_0000010.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-15_0000010_noise_0d5eb967.png
-2024-09-30_11-20-38_0000028_00000937,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00000937.png
-2024-09-30_11-20-38_0000028_00001035,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00001035.png
-2024-09-30_11-20-38_0000028_00001337,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00001337.png
-2024-09-30_11-20-38_0000028_00001484,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00001484.png
-2024-09-30_11-20-38_0000028_00001678,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00001678.png
-2024-09-30_11-20-38_0000028_00001792,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00001792.png
-2024-09-30_11-20-38_0000028_00001921,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00001921.png
-2024-09-30_11-20-38_0000028_00001987,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00001987.png
-2024-09-30_11-20-38_0000028_00002112,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00002112.png
-2024-09-30_11-20-38_0000028_00002206,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00002206.png
-2024-09-30_11-20-38_0000028_00002305,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00002305.png
-2024-09-30_11-20-38_0000028_00002439,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00002439.png
-2024-09-30_11-20-38_0000028_00002537,2024-09-30_11-20-38_0000028.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00002537.png
-2024-09-30_11-20-38_0000028_00002612,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00002612.png
-2024-09-30_11-20-38_0000028_00003232,2024-09-30_11-20-38_0000028.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00003232.png
-2024-09-30_11-20-38_0000028_00003369,2024-09-30_11-20-38_0000028.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-38_0000028_00003369.png
-2024-09-30_11-20-38_0000028_noise_0e3d96ae,2024-09-30_11-20-38_0000028.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-38_0000028_noise_0e3d96ae.png
-2024-09-30_11-20-38_0000028_noise_9f453a60,2024-09-30_11-20-38_0000028.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-38_0000028_noise_9f453a60.png
-2024-09-30_11-20-38_0000028_noise_72d3147c,2024-09-30_11-20-38_0000028.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-38_0000028_noise_72d3147c.png
-2024-09-30_11-20-38_0000028_noise_1a4b1f18,2024-09-30_11-20-38_0000028.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-38_0000028_noise_1a4b1f18.png
-2024-09-30_11-20-38_0000028_noise_aa9c72c7,2024-09-30_11-20-38_0000028.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-38_0000028_noise_aa9c72c7.png
-2024-09-30_11-20-14_0000022_00000629,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00000629.png
-2024-09-30_11-20-14_0000022_00000707,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00000707.png
-2024-09-30_11-20-14_0000022_00000809,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00000809.png
-2024-09-30_11-20-14_0000022_00000994,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00000994.png
-2024-09-30_11-20-14_0000022_00001114,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00001114.png
-2024-09-30_11-20-14_0000022_00001243,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00001243.png
-2024-09-30_11-20-14_0000022_00001403,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00001403.png
-2024-09-30_11-20-14_0000022_00001528,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00001528.png
-2024-09-30_11-20-14_0000022_00001612,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00001612.png
-2024-09-30_11-20-14_0000022_00001729,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00001729.png
-2024-09-30_11-20-14_0000022_00001869,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00001869.png
-2024-09-30_11-20-14_0000022_00002080,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00002080.png
-2024-09-30_11-20-14_0000022_00002161,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00002161.png
-2024-09-30_11-20-14_0000022_00002257,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00002257.png
-2024-09-30_11-20-14_0000022_00002534,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00002534.png
-2024-09-30_11-20-14_0000022_00002647,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00002647.png
-2024-09-30_11-20-14_0000022_00002832,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00002832.png
-2024-09-30_11-20-14_0000022_00002947,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00002947.png
-2024-09-30_11-20-14_0000022_00003056,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00003056.png
-2024-09-30_11-20-14_0000022_00003968,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00003968.png
-2024-09-30_11-20-14_0000022_00004358,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00004358.png
-2024-09-30_11-20-14_0000022_00004596,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00004596.png
-2024-09-30_11-20-14_0000022_00005165,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00005165.png
-2024-09-30_11-20-14_0000022_00005353,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00005353.png
-2024-09-30_11-20-14_0000022_00005476,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00005476.png
-2024-09-30_11-20-14_0000022_00005597,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00005597.png
-2024-09-30_11-20-14_0000022_00005710,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00005710.png
-2024-09-30_11-20-14_0000022_00005827,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00005827.png
-2024-09-30_11-20-14_0000022_00005988,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00005988.png
-2024-09-30_11-20-14_0000022_00006109,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00006109.png
-2024-09-30_11-20-14_0000022_00006217,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00006217.png
-2024-09-30_11-20-14_0000022_00006331,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00006331.png
-2024-09-30_11-20-14_0000022_00006611,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00006611.png
-2024-09-30_11-20-14_0000022_00006705,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00006705.png
-2024-09-30_11-20-14_0000022_00007261,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00007261.png
-2024-09-30_11-20-14_0000022_00007284,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00007284.png
-2024-09-30_11-20-14_0000022_00007588,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00007588.png
-2024-09-30_11-20-14_0000022_00007688,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00007688.png
-2024-09-30_11-20-14_0000022_00007780,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00007780.png
-2024-09-30_11-20-14_0000022_00007803,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00007803.png
-2024-09-30_11-20-14_0000022_00007900,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00007900.png
-2024-09-30_11-20-14_0000022_00008095,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00008095.png
-2024-09-30_11-20-14_0000022_00008189,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00008189.png
-2024-09-30_11-20-14_0000022_00008443,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00008443.png
-2024-09-30_11-20-14_0000022_00009029,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00009029.png
-2024-09-30_11-20-14_0000022_00009262,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00009262.png
-2024-09-30_11-20-14_0000022_00010456,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00010456.png
-2024-09-30_11-20-14_0000022_00010603,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00010603.png
-2024-09-30_11-20-14_0000022_00010755,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00010755.png
-2024-09-30_11-20-14_0000022_00012829,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-14_0000022_00012829.png
-2024-09-30_11-20-14_0000022_noise_6507427f,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_6507427f.png
-2024-09-30_11-20-14_0000022_noise_6e31df81,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_6e31df81.png
-2024-09-30_11-20-14_0000022_noise_df780944,2024-09-30_11-20-14_0000022.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_df780944.png
-2024-09-30_11-20-14_0000022_noise_ce92bd63,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_ce92bd63.png
-2024-09-30_11-20-14_0000022_noise_66d52c3d,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_66d52c3d.png
-2024-09-30_11-20-14_0000022_noise_15a5bade,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_15a5bade.png
-2024-09-30_11-20-14_0000022_noise_598d12ff,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_598d12ff.png
-2024-09-30_11-20-14_0000022_noise_74414219_trimmed,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_74414219_trimmed.png
-2024-09-30_11-20-14_0000022_noise_8ebcd583,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_8ebcd583.png
-2024-09-30_11-20-14_0000022_noise_d60a481d,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_d60a481d.png
-2024-09-30_11-20-14_0000022_noise_8d4693ac,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_8d4693ac.png
-2024-09-30_11-20-14_0000022_noise_ca83f1b1,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_ca83f1b1.png
-2024-09-30_11-20-14_0000022_noise_5b783b66_trimmed,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_5b783b66_trimmed.png
-2024-09-30_11-20-14_0000022_noise_17512359,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_17512359.png
-2024-09-30_11-20-14_0000022_noise_1385d18a,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_1385d18a.png
-2024-09-30_11-20-14_0000022_noise_13e7016d,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_13e7016d.png
-2024-09-30_11-20-14_0000022_noise_c6c10e96,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_c6c10e96.png
-2024-09-30_11-20-14_0000022_noise_3d6c1907,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_3d6c1907.png
-2024-09-30_11-20-14_0000022_noise_9705acef,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_9705acef.png
-2024-09-30_11-20-14_0000022_noise_842b6da0,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_842b6da0.png
-2024-09-30_11-20-14_0000022_noise_60b97d3d,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_60b97d3d.png
-2024-09-30_11-20-14_0000022_noise_e2305b57,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_e2305b57.png
-2024-09-30_11-20-14_0000022_noise_56e9c428,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_56e9c428.png
-2024-09-30_11-20-14_0000022_noise_325019f3,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_325019f3.png
-2024-09-30_11-20-14_0000022_noise_c4fb0170,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_c4fb0170.png
-2024-09-30_11-20-14_0000022_noise_20fa2ec6,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_20fa2ec6.png
-2024-09-30_11-20-14_0000022_noise_1be4cfd1,2024-09-30_11-20-14_0000022.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-14_0000022_noise_1be4cfd1.png
-2024-09-30_11-22-01_0000050_00001034,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-22-01_0000050_00001034.png
-2024-09-30_11-22-01_0000050_00001556,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-22-01_0000050_00001556.png
-2024-09-30_11-22-01_0000050_noise_33eb6d37,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-22-01_0000050_noise_33eb6d37.png
-2024-09-30_11-22-01_0000050_noise_a543c762,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-22-01_0000050_noise_a543c762.png
-2024-09-30_11-22-01_0000050_noise_e279a5b4,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-22-01_0000050_noise_e279a5b4.png
-2024-09-30_11-22-01_0000050_noise_08cc3764,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-22-01_0000050_noise_08cc3764.png
-2024-09-30_11-22-01_0000050_noise_f4173576,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-22-01_0000050_noise_f4173576.png
-2024-09-30_11-22-01_0000050_noise_3fed17fb,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-22-01_0000050_noise_3fed17fb.png
-2024-09-30_11-22-01_0000050_noise_69a97609,2024-09-30_11-22-01_0000050.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-22-01_0000050_noise_69a97609.png
-2024-09-30_11-19-09_0000008_00000906,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00000906.png
-2024-09-30_11-19-09_0000008_00001862,2024-09-30_11-19-09_0000008.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00001862.png
-2024-09-30_11-19-09_0000008_00001976,2024-09-30_11-19-09_0000008.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00001976.png
-2024-09-30_11-19-09_0000008_00002115,2024-09-30_11-19-09_0000008.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00002115.png
-2024-09-30_11-19-09_0000008_00002273,2024-09-30_11-19-09_0000008.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00002273.png
-2024-09-30_11-19-09_0000008_00002397,2024-09-30_11-19-09_0000008.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00002397.png
-2024-09-30_11-19-09_0000008_00002624,2024-09-30_11-19-09_0000008.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00002624.png
-2024-09-30_11-19-09_0000008_00003107,2024-09-30_11-19-09_0000008.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00003107.png
-2024-09-30_11-19-09_0000008_00003252,2024-09-30_11-19-09_0000008.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-19-09_0000008_00003252.png
-2024-09-30_11-19-09_0000008_noise_fe04e29f,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-09_0000008_noise_fe04e29f.png
-2024-09-30_11-19-09_0000008_noise_747ca252,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-09_0000008_noise_747ca252.png
-2024-09-30_11-19-09_0000008_noise_540e1e4f,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-09_0000008_noise_540e1e4f.png
-2024-09-30_11-19-09_0000008_noise_c0ae9290,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-09_0000008_noise_c0ae9290.png
-2024-09-30_11-19-09_0000008_noise_be24e58c,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-09_0000008_noise_be24e58c.png
-2024-09-30_11-19-09_0000008_noise_16ef1375,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-09_0000008_noise_16ef1375.png
-2024-09-30_11-19-09_0000008_noise_d4f635d8,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-09_0000008_noise_d4f635d8.png
-2024-09-30_11-19-09_0000008_noise_8393be23,2024-09-30_11-19-09_0000008.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-19-09_0000008_noise_8393be23.png
-2024-09-30_11-20-56_0000033_00000266,2024-09-30_11-20-56_0000033.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-56_0000033_00000266.png
-2024-09-30_11-20-56_0000033_00000384,2024-09-30_11-20-56_0000033.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-56_0000033_00000384.png
-2024-09-30_11-20-56_0000033_00001033,2024-09-30_11-20-56_0000033.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-56_0000033_00001033.png
-2024-09-30_11-20-56_0000033_00001187,2024-09-30_11-20-56_0000033.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-56_0000033_00001187.png
-2024-09-30_11-20-56_0000033_00001315,2024-09-30_11-20-56_0000033.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-56_0000033_00001315.png
-2024-09-30_11-20-56_0000033_00001443,2024-09-30_11-20-56_0000033.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-56_0000033_00001443.png
-2024-09-30_11-20-56_0000033_noise_f62863d3,2024-09-30_11-20-56_0000033.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-56_0000033_noise_f62863d3.png
-2024-09-30_11-20-56_0000033_noise_47e7544f,2024-09-30_11-20-56_0000033.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-56_0000033_noise_47e7544f.png
-2024-09-30_11-20-56_0000033_noise_7462556f,2024-09-30_11-20-56_0000033.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-56_0000033_noise_7462556f.png
-2024-09-30_11-20-56_0000033_noise_cdd940e8,2024-09-30_11-20-56_0000033.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-56_0000033_noise_cdd940e8.png
-2024-09-30_11-18-17_0000001_00000764,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00000764.png
-2024-09-30_11-18-17_0000001_00000788,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00000788.png
-2024-09-30_11-18-17_0000001_00000930,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00000930.png
-2024-09-30_11-18-17_0000001_00001190,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00001190.png
-2024-09-30_11-18-17_0000001_00001318,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00001318.png
-2024-09-30_11-18-17_0000001_00001446,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00001446.png
-2024-09-30_11-18-17_0000001_00001574,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00001574.png
-2024-09-30_11-18-17_0000001_00001702,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00001702.png
-2024-09-30_11-18-17_0000001_00001830,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00001830.png
-2024-09-30_11-18-17_0000001_00002041,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00002041.png
-2024-09-30_11-18-17_0000001_00002115,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00002115.png
-2024-09-30_11-18-17_0000001_00002363,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00002363.png
-2024-09-30_11-18-17_0000001_00002461,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00002461.png
-2024-09-30_11-18-17_0000001_00002566,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00002566.png
-2024-09-30_11-18-17_0000001_00002760,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00002760.png
-2024-09-30_11-18-17_0000001_00002825,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00002825.png
-2024-09-30_11-18-17_0000001_00002946,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00002946.png
-2024-09-30_11-18-17_0000001_00003071,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00003071.png
-2024-09-30_11-18-17_0000001_00003199,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00003199.png
-2024-09-30_11-18-17_0000001_00003312,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00003312.png
-2024-09-30_11-18-17_0000001_00003432,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00003432.png
-2024-09-30_11-18-17_0000001_00003543,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00003543.png
-2024-09-30_11-18-17_0000001_00003793,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00003793.png
-2024-09-30_11-18-17_0000001_00004192,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00004192.png
-2024-09-30_11-18-17_0000001_00004304,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00004304.png
-2024-09-30_11-18-17_0000001_00004419,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00004419.png
-2024-09-30_11-18-17_0000001_00004525,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00004525.png
-2024-09-30_11-18-17_0000001_00004643,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00004643.png
-2024-09-30_11-18-17_0000001_00004777,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00004777.png
-2024-09-30_11-18-17_0000001_00004887,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00004887.png
-2024-09-30_11-18-17_0000001_00005001,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00005001.png
-2024-09-30_11-18-17_0000001_00005114,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00005114.png
-2024-09-30_11-18-17_0000001_00005332,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00005332.png
-2024-09-30_11-18-17_0000001_00005439,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00005439.png
-2024-09-30_11-18-17_0000001_00005659,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00005659.png
-2024-09-30_11-18-17_0000001_00005793,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00005793.png
-2024-09-30_11-18-17_0000001_00006683,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00006683.png
-2024-09-30_11-18-17_0000001_00006867,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00006867.png
-2024-09-30_11-18-17_0000001_00007100,2024-09-30_11-18-17_0000001.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-17_0000001_00007100.png
-2024-09-30_11-18-17_0000001_noise_3da88093,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_3da88093.png
-2024-09-30_11-18-17_0000001_noise_9b0401e3,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_9b0401e3.png
-2024-09-30_11-18-17_0000001_noise_3c485e7b_trimmed,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_3c485e7b_trimmed.png
-2024-09-30_11-18-17_0000001_noise_48708052,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_48708052.png
-2024-09-30_11-18-17_0000001_noise_1ccf9628,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_1ccf9628.png
-2024-09-30_11-18-17_0000001_noise_28e3b4a0,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_28e3b4a0.png
-2024-09-30_11-18-17_0000001_noise_6e263880,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_6e263880.png
-2024-09-30_11-18-17_0000001_noise_164da489,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_164da489.png
-2024-09-30_11-18-17_0000001_noise_f84cab0f,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_f84cab0f.png
-2024-09-30_11-18-17_0000001_noise_c1548833_trimmed,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_c1548833_trimmed.png
-2024-09-30_11-18-17_0000001_noise_a7f3dd27_trimmed,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_a7f3dd27_trimmed.png
-2024-09-30_11-18-17_0000001_noise_1488de82,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_1488de82.png
-2024-09-30_11-18-17_0000001_noise_573a254d_trimmed,2024-09-30_11-18-17_0000001.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-17_0000001_noise_573a254d_trimmed.png
-2024-09-30_11-21-58_0000049_00000274,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-58_0000049_00000274.png
-2024-09-30_11-21-58_0000049_00000537,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-58_0000049_00000537.png
-2024-09-30_11-21-58_0000049_00000981,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-58_0000049_00000981.png
-2024-09-30_11-21-58_0000049_00002181,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-58_0000049_00002181.png
-2024-09-30_11-21-58_0000049_00002491,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-21-58_0000049_00002491.png
-2024-09-30_11-21-58_0000049_noise_b6f17570,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-58_0000049_noise_b6f17570.png
-2024-09-30_11-21-58_0000049_noise_188d488f,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-58_0000049_noise_188d488f.png
-2024-09-30_11-21-58_0000049_noise_629ae2fa,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-58_0000049_noise_629ae2fa.png
-2024-09-30_11-21-58_0000049_noise_fe6348fd,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-58_0000049_noise_fe6348fd.png
-2024-09-30_11-21-58_0000049_noise_3d45cf1e,2024-09-30_11-21-58_0000049.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-21-58_0000049_noise_3d45cf1e.png
-2024-09-30_11-20-03_0000019_00000000,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00000000.png
-2024-09-30_11-20-03_0000019_00000764,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00000764.png
-2024-09-30_11-20-03_0000019_00001118,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00001118.png
-2024-09-30_11-20-03_0000019_00001246,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00001246.png
-2024-09-30_11-20-03_0000019_00001374,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00001374.png
-2024-09-30_11-20-03_0000019_00001561,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00001561.png
-2024-09-30_11-20-03_0000019_00001847,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00001847.png
-2024-09-30_11-20-03_0000019_00002197,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00002197.png
-2024-09-30_11-20-03_0000019_00002319,2024-09-30_11-20-03_0000019.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00002319.png
-2024-09-30_11-20-03_0000019_00002793,2024-09-30_11-20-03_0000019.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-03_0000019_00002793.png
-2024-09-30_11-20-03_0000019_noise_9f03324e,2024-09-30_11-20-03_0000019.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-03_0000019_noise_9f03324e.png
-2024-09-30_11-20-03_0000019_noise_fc217fea,2024-09-30_11-20-03_0000019.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-03_0000019_noise_fc217fea.png
-2024-09-30_11-20-32_0000025_00000793,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00000793.png
-2024-09-30_11-20-32_0000025_00000899,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00000899.png
-2024-09-30_11-20-32_0000025_00001006,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00001006.png
-2024-09-30_11-20-32_0000025_00001049,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00001049.png
-2024-09-30_11-20-32_0000025_00001133,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00001133.png
-2024-09-30_11-20-32_0000025_00001261,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00001261.png
-2024-09-30_11-20-32_0000025_00001355,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00001355.png
-2024-09-30_11-20-32_0000025_00001714,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00001714.png
-2024-09-30_11-20-32_0000025_00001842,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00001842.png
-2024-09-30_11-20-32_0000025_00001884,2024-09-30_11-20-32_0000025.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00001884.png
-2024-09-30_11-20-32_0000025_00002017,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00002017.png
-2024-09-30_11-20-32_0000025_00002185,2024-09-30_11-20-32_0000025.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00002185.png
-2024-09-30_11-20-32_0000025_00002385,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00002385.png
-2024-09-30_11-20-32_0000025_00002502,2024-09-30_11-20-32_0000025.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00002502.png
-2024-09-30_11-20-32_0000025_00002805,2024-09-30_11-20-32_0000025.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-20-32_0000025_00002805.png
-2024-09-30_11-20-32_0000025_noise_3a30a5c8,2024-09-30_11-20-32_0000025.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-32_0000025_noise_3a30a5c8.png
-2024-09-30_11-20-32_0000025_noise_186b6d8c,2024-09-30_11-20-32_0000025.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-32_0000025_noise_186b6d8c.png
-2024-09-30_11-20-32_0000025_noise_a80ebd30,2024-09-30_11-20-32_0000025.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-20-32_0000025_noise_a80ebd30.png
-2024-09-30_11-18-34_0000004_00001550,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00001550.png
-2024-09-30_11-18-34_0000004_00001856,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00001856.png
-2024-09-30_11-18-34_0000004_00002828,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00002828.png
-2024-09-30_11-18-34_0000004_00003024,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00003024.png
-2024-09-30_11-18-34_0000004_00003123,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00003123.png
-2024-09-30_11-18-34_0000004_00005618,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00005618.png
-2024-09-30_11-18-34_0000004_00005655,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00005655.png
-2024-09-30_11-18-34_0000004_00006232,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00006232.png
-2024-09-30_11-18-34_0000004_00006607,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00006607.png
-2024-09-30_11-18-34_0000004_00007090,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00007090.png
-2024-09-30_11-18-34_0000004_00007466,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00007466.png
-2024-09-30_11-18-34_0000004_00007591,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00007591.png
-2024-09-30_11-18-34_0000004_00007745,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00007745.png
-2024-09-30_11-18-34_0000004_00007958,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00007958.png
-2024-09-30_11-18-34_0000004_00008151,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00008151.png
-2024-09-30_11-18-34_0000004_00008262,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00008262.png
-2024-09-30_11-18-34_0000004_00008992,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00008992.png
-2024-09-30_11-18-34_0000004_00009234,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00009234.png
-2024-09-30_11-18-34_0000004_00009265,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\spectrograms_review\2024-09-30_11-18-34_0000004_00009265.png
-2024-09-30_11-18-34_0000004_noise_7ff87a9e,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_7ff87a9e.png
-2024-09-30_11-18-34_0000004_noise_867f0af5,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_867f0af5.png
-2024-09-30_11-18-34_0000004_noise_cce41b79,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_cce41b79.png
-2024-09-30_11-18-34_0000004_noise_e28ca0f4,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_e28ca0f4.png
-2024-09-30_11-18-34_0000004_noise_f0a9843b,2024-09-30_11-18-34_0000004.wav,USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_f0a9843b.png
-2024-09-30_11-18-34_0000004_noise_10e9dc49_trimmed,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_10e9dc49_trimmed.png
-2024-09-30_11-18-34_0000004_noise_91c9b02c,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_91c9b02c.png
-2024-09-30_11-18-34_0000004_noise_95350c04,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_95350c04.png
-2024-09-30_11-18-34_0000004_noise_9ae7aae4,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_9ae7aae4.png
-2024-09-30_11-18-34_0000004_noise_f06950e3,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_f06950e3.png
-2024-09-30_11-18-34_0000004_noise_46aac284,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_46aac284.png
-2024-09-30_11-18-34_0000004_noise_5138eaee,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_5138eaee.png
-2024-09-30_11-18-34_0000004_noise_ea9e2f5d,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_ea9e2f5d.png
-2024-09-30_11-18-34_0000004_noise_6a3de421,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_6a3de421.png
-2024-09-30_11-18-34_0000004_noise_abf90dc9_trimmed,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_abf90dc9_trimmed.png
-2024-09-30_11-18-34_0000004_noise_02026f5b_trimmed,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_02026f5b_trimmed.png
-2024-09-30_11-18-34_0000004_noise_ccafd479,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_ccafd479.png
-2024-09-30_11-18-34_0000004_noise_bef4d7af,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_bef4d7af.png
-2024-09-30_11-18-34_0000004_noise_6146feac,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_6146feac.png
-2024-09-30_11-18-34_0000004_noise_9f344673,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_9f344673.png
-2024-09-30_11-18-34_0000004_noise_f98f5d0a,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_f98f5d0a.png
-2024-09-30_11-18-34_0000004_noise_4b45183f,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_4b45183f.png
-2024-09-30_11-18-34_0000004_noise_c87830da,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_c87830da.png
-2024-09-30_11-18-34_0000004_noise_b590e5a8,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_b590e5a8.png
-2024-09-30_11-18-34_0000004_noise_88516e6b_trimmed,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_88516e6b_trimmed.png
-2024-09-30_11-18-34_0000004_noise_dc0cc5a4_trimmed,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_dc0cc5a4_trimmed.png
-2024-09-30_11-18-34_0000004_noise_4b4132ab,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_4b4132ab.png
-2024-09-30_11-18-34_0000004_noise_c8e2ed56,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_c8e2ed56.png
-2024-09-30_11-18-34_0000004_noise_2bf85717_trimmed,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_2bf85717_trimmed.png
-2024-09-30_11-18-34_0000004_noise_cdfca5dc,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_cdfca5dc.png
-2024-09-30_11-18-34_0000004_noise_8dfae6c7_trimmed,2024-09-30_11-18-34_0000004.wav,Not USV,C:\Users\shach\PycharmProjects\mickey_london_lab\noise_samples\2024-09-30_11-18-34_0000004_noise_8dfae6c7_trimmed.png
+candidate_id,final_label,source_file
+2024-09-30_11-18-17_0000001_00000788,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00000932,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00001014,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00001076,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00001204,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00001332,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00001460,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00001588,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00001716,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00001844,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00002042,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00002458,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00002571,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00002766,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00002828,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00002973,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00003075,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00003106,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00003200,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00003440,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00003548,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00003662,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00003799,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00004192,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00004305,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00004535,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00004648,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00004777,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00004893,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00005004,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00005119,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00005332,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00005439,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00005662,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00005792,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00006688,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00006868,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_00007117,USV,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-25_0000002_00001038,noise,2024-09-30_11-18-25_0000002.wav
+2024-09-30_11-18-25_0000002_00001103,noise,2024-09-30_11-18-25_0000002.wav
+2024-09-30_11-18-27_0000003_00001816,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00001918,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00002505,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00002874,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00003431,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00003588,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00003761,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00003852,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00003959,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00004091,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00004177,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00004259,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00004401,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00004450,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00004787,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00004962,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00005026,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00005078,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00005136,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00005310,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_00005424,USV,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-34_0000004_00000165,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00000840,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00001037,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00001432,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00001546,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00001746,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00001850,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00001967,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00002079,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00002632,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00002724,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00002827,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00002929,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00003019,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00003119,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00003222,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00003942,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00003987,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00004481,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00004925,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00005154,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00005179,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00005278,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00005398,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00005529,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00005614,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00005707,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00005935,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00006043,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00006128,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00006231,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00006324,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00006503,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00006599,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00007085,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00007466,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00007589,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00007734,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00007937,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00008151,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00008259,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00008983,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_00009211,USV,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-57_0000006_00000117,USV,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_00001076,USV,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_00001171,USV,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_00001298,USV,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_00001343,USV,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_00001451,USV,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_00001618,USV,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-19-00_0000007_00001009,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00001972,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00002393,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00002569,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00003107,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00003277,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00003824,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00003943,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00004433,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00004698,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00004836,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00004892,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00004993,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005022,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005174,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005199,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005280,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005374,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005399,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005488,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005586,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005775,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00005871,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00006065,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00006167,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00006280,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00006508,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00006819,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00007107,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_00007439,USV,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-09_0000008_00001861,USV,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_00001978,USV,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_00002115,USV,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_00002272,USV,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_00002397,USV,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_00002624,USV,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_00003107,USV,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_00003252,USV,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-15_0000010_00000452,USV,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_00001007,USV,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_00001198,USV,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_00001326,USV,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_00001501,noise,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_00001915,noise,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_00002071,USV,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_00002128,noise,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-16_0000011_00000222,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00000378,USV,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00000435,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00001021,USV,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00001049,USV,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00001155,USV,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00001634,USV,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00001856,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00001978,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00002056,USV,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00002106,USV,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00002287,USV,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_00002514,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-19_0000012_00000561,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00000783,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00001009,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00001247,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00001358,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00001450,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00001553,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00001740,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00001843,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00001958,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00002066,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00002749,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00002940,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00003446,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00003475,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00004084,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00004193,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00004324,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00004557,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00004660,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00004790,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00005652,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00005840,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00005958,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00006061,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00006165,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00006262,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00006722,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00006811,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00006941,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_00007045,USV,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-31_0000013_00001012,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-31_0000013_00001550,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-31_0000013_00001617,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-54_0000016_00000928,USV,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_00001018,USV,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_00001078,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_00001439,USV,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_00001763,USV,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_00002121,USV,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-55_0000017_00000292,USV,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_00000623,USV,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_00000975,USV,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_00001090,noise,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_00001716,USV,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_00002376,USV,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_00002566,USV,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_00003452,USV,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_00003532,noise,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-20-03_0000019_00000037,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00000893,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00001007,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00001132,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00001260,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00001387,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00001481,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00001619,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00002076,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00002268,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00002425,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00002474,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00002504,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_00002807,USV,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-07_0000020_00001046,USV,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_00001449,USV,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_00001585,USV,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_00001696,USV,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_00001790,USV,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_00002019,USV,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_00002621,USV,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-09_0000021_00001060,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_00001243,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_00001350,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_00001580,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_00001899,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-26_0000023_00000087,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00000212,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00000428,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00000799,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00000919,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00001032,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00001175,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00001284,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00001379,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00001586,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_00001783,USV,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-29_0000024_00001005,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_00001294,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_00001592,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_00001746,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_00002079,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_00002181,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_00002299,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_00002674,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_00002777,USV,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-32_0000025_00000807,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00000904,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00001016,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00001136,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00001264,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00001382,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00001742,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00001843,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00001884,noise,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00002025,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00002199,noise,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00002402,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00002505,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00002605,USV,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_00002834,noise,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-41_0000029_00001027,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00001450,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00001696,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00001716,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00001811,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00001923,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00001965,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00002093,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00002206,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00002342,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00002438,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00002656,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00002865,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00002986,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00003011,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_00003184,USV,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-53_0000032_00000638,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00000782,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00000893,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00000983,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00002151,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00002252,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00002444,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00002557,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00002752,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00002787,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00002900,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00002923,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00003014,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00003046,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_00003764,USV,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-56_0000033_00000266,USV,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_00000376,USV,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_00001033,USV,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_00001187,USV,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_00001315,USV,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_00001443,USV,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-21-01_0000034_00001135,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001248,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001350,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001460,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001565,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001676,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001764,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001781,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001870,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00001976,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00002177,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00002288,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00002388,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00002797,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00003226,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00003514,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00003747,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00003977,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00004042,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00004815,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_00004955,USV,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-07_0000035_00001038,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00001128,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00001256,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00001386,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00002306,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00002817,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003102,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003213,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003322,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003422,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003520,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003616,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003739,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003856,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00003959,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00004448,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00004722,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00004837,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00004957,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00005199,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00005339,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00005594,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00005761,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00005914,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00006040,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00006140,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00006702,USV,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_00006908,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-14_0000036_00000203,USV,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_00000407,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_00000889,USV,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_00001046,USV,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_00001102,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_00001437,USV,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_00001606,USV,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_00003092,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_00003126,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-18_0000037_00000676,USV,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_00000902,USV,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_00000960,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_00001002,USV,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_00001083,USV,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_00001244,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_00001529,USV,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-22_0000038_00000890,USV,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_00001003,USV,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_00001395,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_00001455,USV,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_00001642,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_00001740,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_00001940,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-24_0000039_00000947,USV,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_00001070,USV,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_00001196,USV,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_00001295,USV,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_00001570,USV,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_00001966,USV,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_00002105,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-26_0000040_00000218,USV,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00000357,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00000823,USV,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00000898,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00000930,USV,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00000990,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00001097,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00001125,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00001156,USV,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00001225,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00001253,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00001284,USV,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00001353,USV,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_00001440,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-28_0000041_00001034,noise,2024-09-30_11-21-28_0000041.wav
+2024-09-30_11-21-28_0000041_00001089,noise,2024-09-30_11-21-28_0000041.wav
+2024-09-30_11-21-30_0000042_00000994,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_00001072,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_00001363,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_00001506,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_00001899,USV,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_00002034,USV,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_00002135,USV,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_00002254,USV,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_00002641,USV,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-34_0000043_00001029,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00001130,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00001181,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00001258,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00001309,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00001413,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00001780,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00001907,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00002054,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00002414,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00003034,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00003117,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00003912,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00004026,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_00004423,USV,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-40_0000044_00000801,USV,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_00000995,USV,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_00001123,USV,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_00001626,USV,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_00001748,USV,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_00001962,USV,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_00002076,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_00002905,USV,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_00003001,USV,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-18-17_0000001_noise_3b6bd41a,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_57c82955,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_66261061,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_79f3132c,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_ca4f71d5,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-25_0000002_noise_2d5fb8e6,noise,2024-09-30_11-18-25_0000002.wav
+2024-09-30_11-18-25_0000002_noise_3027324b,noise,2024-09-30_11-18-25_0000002.wav
+2024-09-30_11-18-25_0000002_noise_8cfc4138,noise,2024-09-30_11-18-25_0000002.wav
+2024-09-30_11-18-25_0000002_noise_b1d84e4f,noise,2024-09-30_11-18-25_0000002.wav
+2024-09-30_11-18-27_0000003_noise_0311b479,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_514429f0,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_58624ae7,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_87d7561b,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_c960e61f,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_e1567e4e,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_f34e4eeb,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-34_0000004_noise_01742422,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_05044801,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_56112103,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_73939e11,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_9a8c3fcc,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_a5cf1bc5,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_b29d5880,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_b9ada7d9,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_bbd13e3f,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-57_0000006_noise_2f355263,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_noise_56bf1c43,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_noise_5d7b1295,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_noise_f16b2fbb,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-19-00_0000007_noise_22942aca,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_2a380230,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_3e5ae455,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_47446209,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_59072935,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_5c4ebc84,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_6e029c81,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_7c0f80ad,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_a4962c1f,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_aefe6222,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_b1330e5a,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_b169a437,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_b344d001,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_bd9d8061,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_da3b1956,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_daa120ed,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-09_0000008_noise_0ee37d49,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_21b4c901,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_5dc1db89,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_6f535677,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_a0150faf,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_bec13e21,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_ed39f09e,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-16_0000011_noise_3a61a6c7,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_noise_3c91eb30,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_noise_8f3dd792,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_noise_95dcc5d7,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_noise_c5305bf9,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-19_0000012_noise_13654f7d,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_1632eb89,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_2112fd94,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_2ad0c308,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_3e9e8170,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_4d032330,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_51605560,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_55f08ace,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_5ff12103,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_6456e69a,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_7095e40e,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_7869e875,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_882a2515,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_a148340e,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_c7abc494,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_ce5de4e8,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_e4b9c9fb,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_fead725e,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-31_0000013_noise_2371b439,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-31_0000013_noise_3984225a,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-31_0000013_noise_54b8e091,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-31_0000013_noise_dd0d7cc6,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-54_0000016_noise_80f3b3a1,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_noise_895b0a33,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_noise_a36a420e,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_noise_a38e8134,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_noise_f058d9ba,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-55_0000017_noise_5a919fe3,noise,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_noise_83b3c6dd,noise,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_noise_bc45442b,noise,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-20-03_0000019_noise_364214a1,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_noise_3cd42874,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_noise_6a70d98f,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_noise_7759fcd5,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_noise_84f237ac,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_noise_bcf7eae4,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_noise_f05a0739,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-07_0000020_noise_4b466f7c,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_noise_553bbb8a,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_noise_5a449623,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_noise_90c14c94,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_noise_a44a536f,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_noise_fa92037c,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-09_0000021_noise_ea054ad6,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-26_0000023_noise_46fece6b,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_4c43f361,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_82a55151,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_a39c7f6a,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_e58fba79,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_ee6f438f,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-29_0000024_noise_65271d20,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_688349b3,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_6dc542e0,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_9d1689b6,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_b2b83723,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_c85c1fe6,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-41_0000029_noise_1ee1a9f6,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_47e02c1d,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_62c63bb9,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_91b3b774,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_c1aead10,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-53_0000032_noise_0df0b92d,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_28724e24,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_29b24615,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_487239eb,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_6314a3a0,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_a0b7e1b1,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_b457f7bc,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_ba09b299,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_bab7e49c,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_db1f341f,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_de494231,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-56_0000033_noise_012bf969,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_noise_26fbe79e,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-21-01_0000034_noise_004f82dd,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_127e0656,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_2a415bd0,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_6caa2e4b,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_818c0f0d,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_cccc84ce,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_ddc4c6b1,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-07_0000035_noise_0f73db2e,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_3d66dbc5,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_4d25da19,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_7da267e1,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_8b414062,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_98c49b06,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_a5d1fd16,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_b663f4ab,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_d5e6e097,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_f5e3708b,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-14_0000036_noise_57ff7c46,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_59c94578,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_8f40d0bd,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_8fff0d9b,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_b0259fc8,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-18_0000037_noise_64c38a9a,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_noise_8118b7b9,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_noise_b4e86e51,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_noise_ffe03ff6,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-22_0000038_noise_4bc64e4c,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_noise_5521d6d0,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_noise_8930c2e7,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-24_0000039_noise_64f42ce5,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_noise_a2cf4893,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_noise_f771c515,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-26_0000040_noise_2442ee53,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_noise_5e7cb651,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_noise_9653e237,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_noise_cdbca5f1,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_noise_f926fbe3,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-28_0000041_noise_04c408c7,noise,2024-09-30_11-21-28_0000041.wav
+2024-09-30_11-21-28_0000041_noise_6374d8f0,noise,2024-09-30_11-21-28_0000041.wav
+2024-09-30_11-21-28_0000041_noise_a47a5b05,noise,2024-09-30_11-21-28_0000041.wav
+2024-09-30_11-21-30_0000042_noise_2cedb5ba,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_5c4710c6,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_6e8ca4d0,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_73570aea,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_875407ad,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_90fe8b5f,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_9b8e8a7d,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_af5bb916,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_d1c3532a,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-34_0000043_noise_0a2095e2,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_1a15fe18,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_1fec7a1e,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_37150bb1,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_779f433d,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_88aa26dd,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_c60ccdb0,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_ec221234,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_f1d094d6,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-40_0000044_noise_87ab41e0,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_8c0aab73,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_8f81641e,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_987ab09e,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_d1c025fb,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_dffecb25,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-18-17_0000001_noise_13227a6f,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_291e28aa,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_38034989,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_40c354f6,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_4b2f801c,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_7372822e,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_8f11a5f8,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_942ed8fd,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_c39777a7,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-17_0000001_noise_d2ada32a,noise,2024-09-30_11-18-17_0000001.wav
+2024-09-30_11-18-25_0000002_noise_8e44df63,noise,2024-09-30_11-18-25_0000002.wav
+2024-09-30_11-18-25_0000002_noise_aa118388,noise,2024-09-30_11-18-25_0000002.wav
+2024-09-30_11-18-27_0000003_noise_2b97e070,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_50782a60,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_58d81933,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_b46a9589,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_da00411c,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_e67e8077,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_fae1069d,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-27_0000003_noise_ff6fa076,noise,2024-09-30_11-18-27_0000003.wav
+2024-09-30_11-18-34_0000004_noise_093264af,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_098b5644,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_36830166,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_76c1783b,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_7cff98ef,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_7fc4b08c,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_a346d26a,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_baa24adb,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_c2b134ee,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_d1dbea0e,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-34_0000004_noise_f6d38125,noise,2024-09-30_11-18-34_0000004.wav
+2024-09-30_11-18-57_0000006_noise_368d855e,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_noise_6a47e9e8,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_noise_81081742,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_noise_92f33cf4,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_noise_c8d2f3ac,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-18-57_0000006_noise_d4f7c94c,noise,2024-09-30_11-18-57_0000006.wav
+2024-09-30_11-19-00_0000007_noise_03cacfd2,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_05163efc,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_0b8186b6,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_1a793862,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_1f69f91e,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_31f1780e,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_39379685,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_582fc7ff,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_584daed6,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_8473ebda,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_d83eb118,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-00_0000007_noise_f21fde5a,noise,2024-09-30_11-19-00_0000007.wav
+2024-09-30_11-19-09_0000008_noise_31a7cdfe,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_37365c4a,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_3c91e0d2,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_3d4ba3d1,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_6ba7a375,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_8eae33dd,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_b5e5f7e8,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_c043d485,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-09_0000008_noise_cc224a41,noise,2024-09-30_11-19-09_0000008.wav
+2024-09-30_11-19-15_0000010_noise_62fa8641,noise,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_noise_7ba701c5,noise,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_noise_9377a9ef,noise,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-15_0000010_noise_f7f8fc08,noise,2024-09-30_11-19-15_0000010.wav
+2024-09-30_11-19-16_0000011_noise_05be9b28,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_noise_16813d2b,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_noise_16b804b0,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-16_0000011_noise_3affccaf,noise,2024-09-30_11-19-16_0000011.wav
+2024-09-30_11-19-19_0000012_noise_046269f1,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_1302887b,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_163eeb01,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_7cf7e498,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_8616d35d,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_928a2a4d,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_9e66a6e8,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_a608cc39,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_b68dac18,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_bd1a6255,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-19_0000012_noise_d1d58157,noise,2024-09-30_11-19-19_0000012.wav
+2024-09-30_11-19-31_0000013_noise_2247941a,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-31_0000013_noise_2c5eda03,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-31_0000013_noise_8f04f66b,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-31_0000013_noise_e2a0c900,noise,2024-09-30_11-19-31_0000013.wav
+2024-09-30_11-19-54_0000016_noise_007bb63b,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_noise_1d2f2ed6,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_noise_2ac124ad,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-54_0000016_noise_dd9f94b7,noise,2024-09-30_11-19-54_0000016.wav
+2024-09-30_11-19-55_0000017_noise_130ad604,noise,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-19-55_0000017_noise_ee8036b4,noise,2024-09-30_11-19-55_0000017.wav
+2024-09-30_11-20-03_0000019_noise_4d80a6db,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_noise_924eb410,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-03_0000019_noise_cb3235a3,noise,2024-09-30_11-20-03_0000019.wav
+2024-09-30_11-20-07_0000020_noise_0e3e83f1,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_noise_209ec246,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_noise_786a28d0,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-07_0000020_noise_826459b8,noise,2024-09-30_11-20-07_0000020.wav
+2024-09-30_11-20-09_0000021_noise_0a75e7f3,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_0f8d23b2,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_2d530956,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_3b14c105,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_410a1e74,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_4b01af33,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_798dd330,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_acab87ba,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_eeff87e5,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-09_0000021_noise_ef825b56,noise,2024-09-30_11-20-09_0000021.wav
+2024-09-30_11-20-26_0000023_noise_0521dd95,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_0f6eb31d,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_3ba43ecc,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_89d7081e,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_ca4f6023,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-26_0000023_noise_da49f55f,noise,2024-09-30_11-20-26_0000023.wav
+2024-09-30_11-20-29_0000024_noise_1c8bac50,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_20fb201e,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_8ad27c65,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_e60dfefa,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-29_0000024_noise_fc755109,noise,2024-09-30_11-20-29_0000024.wav
+2024-09-30_11-20-32_0000025_noise_0780f9b2,noise,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_noise_582ddc41,noise,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_noise_748325bd,noise,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-32_0000025_noise_7c721604,noise,2024-09-30_11-20-32_0000025.wav
+2024-09-30_11-20-41_0000029_noise_351ddc6a,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_3e2d9389,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_63935c14,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_6d1d5fe3,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_91ecf04c,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_a05703fd,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_d4c7051d,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-41_0000029_noise_e6a2184b,noise,2024-09-30_11-20-41_0000029.wav
+2024-09-30_11-20-53_0000032_noise_47a31ee3,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_983040f1,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_a31926f1,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_c96ca020,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_d20cc3f0,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-53_0000032_noise_df8219bf,noise,2024-09-30_11-20-53_0000032.wav
+2024-09-30_11-20-56_0000033_noise_292bde04,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_noise_3cc26847,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_noise_6285ccbe,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_noise_68d9a642,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_noise_69834143,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_noise_98021428,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-20-56_0000033_noise_e49ac95f,noise,2024-09-30_11-20-56_0000033.wav
+2024-09-30_11-21-01_0000034_noise_03404759,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_2862af09,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_3906d96e,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_503f3aa1,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_5f9d2086,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_7695a51d,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_8a59f2d2,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_9da2185c,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_a4a6c96d,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_ad3e104e,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_c7c315c8,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_d79979de,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-01_0000034_noise_f0eece76,noise,2024-09-30_11-21-01_0000034.wav
+2024-09-30_11-21-07_0000035_noise_018940cc,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_16966d69,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_3359784a,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_3af8d08b,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_415bad95,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_4bff9991,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_4c60d320,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_4ca74f0e,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_5c09eea0,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_7218cc47,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_bb63a2d4,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-07_0000035_noise_d0cf6a34,noise,2024-09-30_11-21-07_0000035.wav
+2024-09-30_11-21-14_0000036_noise_112e7e31,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_15046f54,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_5121a403,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_51f46ca5,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_620e3b9f,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_859d209d,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_9043259a,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-14_0000036_noise_f75a172f,noise,2024-09-30_11-21-14_0000036.wav
+2024-09-30_11-21-18_0000037_noise_59b1567f,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_noise_5f4e3df9,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_noise_89425dfd,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-18_0000037_noise_d4affc93,noise,2024-09-30_11-21-18_0000037.wav
+2024-09-30_11-21-22_0000038_noise_43bad5a7,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_noise_584ce3f8,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_noise_59f2263a,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_noise_ba619481,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-22_0000038_noise_e317343b,noise,2024-09-30_11-21-22_0000038.wav
+2024-09-30_11-21-24_0000039_noise_1da7cba3,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_noise_7c6302ef,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_noise_86da27ad,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_noise_8c7a711f,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_noise_b2a87002,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-24_0000039_noise_e84e1dd8,noise,2024-09-30_11-21-24_0000039.wav
+2024-09-30_11-21-26_0000040_noise_7551c490,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_noise_a163c2ea,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-26_0000040_noise_ca6b3e2b,noise,2024-09-30_11-21-26_0000040.wav
+2024-09-30_11-21-28_0000041_noise_09b49f7a,noise,2024-09-30_11-21-28_0000041.wav
+2024-09-30_11-21-28_0000041_noise_f6f87fc0,noise,2024-09-30_11-21-28_0000041.wav
+2024-09-30_11-21-30_0000042_noise_2c970a8e,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_332b470a,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_45810ae7,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_4a7dd213,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_a7408a46,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-30_0000042_noise_c91d1237,noise,2024-09-30_11-21-30_0000042.wav
+2024-09-30_11-21-34_0000043_noise_2bd2dd66,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_3c45ac19,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_6048320d,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_857114c0,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_99817f9c,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_a2fe137f,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-34_0000043_noise_bdc2196a,noise,2024-09-30_11-21-34_0000043.wav
+2024-09-30_11-21-40_0000044_noise_00e3feb3,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_0b1af1c8,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_215c5d76,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_3cd44a1e,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_76c25a00,noise,2024-09-30_11-21-40_0000044.wav
+2024-09-30_11-21-40_0000044_noise_8019af73,noise,2024-09-30_11-21-40_0000044.wav

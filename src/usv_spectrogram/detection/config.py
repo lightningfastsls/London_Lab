@@ -54,14 +54,18 @@ class DetectionConfig:
     max_duration_ms: float = 500.0  # USVs are <= 300 ms, allow margin for safety
 
     # Merging nearby detections into single candidates
-    merge_gap_ms: float = 10.0  # If two detections are < 10 ms apart, merge them
+    merge_gap_ms: float = 3.0  # If two detections are < 3 ms apart, merge them
 
     # Continuity-based extension/merge (optional)
     # Extends segments into nearby frames if peak freq/energy are similar.
-    segment_continuity_enabled: bool = False
-    segment_continuity_max_gap_ms: float = 10.0  # Max gap (ms) to extend/bridge
-    segment_continuity_freq_tolerance_hz: float = 1500.0  # Peak freq tolerance
-    segment_continuity_energy_tolerance_db: float = 8.0  # Peak energy tolerance
+    # TUNED to bridge energy dips within single USVs while splitting multi-syllable calls:
+    # - Energy dips in single USVs: typically < 5ms (gets bridged)
+    # - Gaps between syllables: typically > 5ms (stays split)
+    # - Energy tolerance allows capturing quiet tails without extreme merging
+    segment_continuity_enabled: bool = True
+    segment_continuity_max_gap_ms: float = 5.0  # Max gap (ms) to extend/bridge - KEY PARAMETER
+    segment_continuity_freq_tolerance_hz: float = 1500.0  # Peak freq tolerance (tighter)
+    segment_continuity_energy_tolerance_db: float = 15.0  # Peak energy tolerance (middle ground)
     segment_continuity_gap_match_fraction: float = 0.6  # Fraction of gap frames that must match
     # Band-energy continuity (optional)
     # Evaluates energy in a band around the segment's median peak frequency.

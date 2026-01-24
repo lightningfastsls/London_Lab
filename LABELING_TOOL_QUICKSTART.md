@@ -65,6 +65,31 @@ The tool will launch on **port 8502** by default (Parameter Lab uses 8501).
 ### Data Persistence
 - Labels saved **immediately** after each click
 - No data loss on refresh or crash
+
+### Selecting Custom Candidates + Spectrograms
+If your spectrograms were generated from a different candidates CSV, use the sidebar
+**Controls** section to set:
+- **Candidates CSV**: path to the CSV used for extraction
+- **Spectrograms folder**: directory containing the PNGs
+
+Click **Use paths** to reload. Paths can be absolute or repo-relative.
+
+### Refresh After Regenerating Spectrograms
+If you regenerate `spectrograms_review/` while the app is running, use the sidebar
+**Controls ? Reload data from disk** button to clear cached state and reload the
+latest PNGs.
+
+### Restart / Archive Labeling Pass
+Use this when you want to re-label from scratch or keep an older pass.
+
+1. Open the app and go to the sidebar **Archive / Reset** section.
+2. Check the confirmation box and click **Archive labels + labeled spectrograms**.
+3. The app creates `labeling_archives/labeling_archive_<timestamp>/` with:
+   - `labels.csv` (backup of your labels)
+   - `spectrograms/` (all labeled PNGs moved from `spectrograms_review/`)
+4. `labels.csv` is cleared and labeling starts fresh.
+
+If you want to re-label everything with improved images, regenerate `spectrograms_review/` after archiving (e.g., re-run `scripts/extract_spectrograms.py`).
 - Resume where you left off - existing labels loaded on startup
 
 ## Expected Files

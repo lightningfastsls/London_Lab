@@ -24,6 +24,7 @@ A Streamlit-based tool for manually labeling USV candidate spectrograms.
 - **Keyboard shortcuts**: Press 1 (USV), 2 (Not USV), 3 (Uncertain)
 - **Incremental saving**: Labels saved immediately to prevent data loss
 - **Resume support**: Restart where you left off
+- **Expand detection preview**: Optional expand controls with preview/save for wider context
 
 ## File Structure
 
@@ -41,8 +42,9 @@ colormap is `magma`; override with `--colormap` if needed.
 1. **Load the app**: Streamlit will load all candidates from CSV
 2. **Review spectrogram**: View the current candidate's spectrogram image
 3. **Label**: Click a button or use keyboard shortcuts (1/2/3)
-4. **Navigate**: Use Next/Previous or Jump to Unlabeled
-5. **Progress**: Track completion in the sidebar
+4. **Optional expand**: Expand detection boundaries for more context and save expanded PNG
+5. **Navigate**: Use Next/Previous or Jump to Unlabeled
+6. **Progress**: Track completion in the sidebar
 
 ## Labels CSV Format
 
@@ -52,6 +54,12 @@ Columns:
 - `candidate_id`: Unique identifier matching candidate
 - `label`: One of "USV", "Not USV", "Uncertain"
 - `labeled_at`: ISO timestamp of when label was assigned
+- `expand_ms`: Signed milliseconds used for expansion (positive expands start earlier, negative expands end later)
+
+## Expanded Spectrograms
+
+Expanded PNGs are saved under `spectrograms_review/expanded/` by default. Preview images are saved under
+`spectrograms_review/expanded/preview/`. Original PNGs are not overwritten.
 
 ## Labeling Guidelines
 
