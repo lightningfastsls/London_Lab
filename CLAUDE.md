@@ -113,6 +113,26 @@ tests/                     # Test files
 
 **These are not suggestions - they are requirements for this project.**
 
+### Proactive Agent Usage Strategy
+
+**BEFORE implementing signal processing:**
+1. Run `dsp-reviewer` on reference code or similar existing code
+2. Learn patterns, conventions, edge case handling
+3. Implement following those patterns
+4. Run `dsp-reviewer` again on your implementation
+
+**BEFORE implementing UI:**
+1. Run `streamlit-expert` on existing param_lab code
+2. Learn UI patterns, state management, layout conventions
+3. Implement following those patterns
+
+**AFTER implementing (always):**
+- `detection-validator` for detection logic changes
+- `dsp-reviewer` for signal processing changes
+- `pr-reviewer` before marking task complete
+
+This "review → learn → implement → review" cycle prevents issues rather than fixing them after, saving tokens and time.
+
 ---
 
 ## Key Reference Documents
@@ -127,97 +147,106 @@ tests/                     # Test files
 
 ## Token Usage Optimization
 
-**To reduce context/cost:**
-- Don't re-read files already in conversation context
-- Use `haiku` for exploration and simple tasks
-- Reference docs above should only be read when needed for the task
+### Proactive Strategies (Prevent Token Waste)
 
-**When to suggest starting a new chat:**
-- After completing a major feature or phase
-- After extensive file exploration (many reads)
-- When switching to unrelated work
-- If conversation becomes very long (50+ exchanges)
+1. **Use specialized agents to learn first**
+   - Before implementing signal processing, run `dsp-reviewer` on reference code
+   - Learn patterns once, implement correctly first time
+   - Avoids: implement (15K tokens) → debug (10K) → fix (8K) = 33K
+   - Cost: review (5K) → implement correctly (15K) = 20K
+   - **Savings: 40% reduction**
+
+2. **Use Task tool with model="haiku" for exploration**
+   - Codebase searches, file discoveries, pattern finding
+   - 10x cheaper than sonnet for these tasks
+   - Reserve sonnet for implementation and review
+
+3. **Don't re-read files already in context**
+   - Check conversation history before using Read tool
+   - Exception: If file changed since last read
+
+4. **Read targeted, not speculatively**
+   - Use Grep to find specific patterns, then Read only matches
+   - Don't "read 5 files to see which is relevant"
+
+### When to Suggest New Session
+
+Suggest starting fresh conversation when:
+- Completing major feature or phase (clean break point)
+- After extensive exploration (20+ file reads)
+- Switching to unrelated work area
+- Conversation >50 exchanges (context getting large)
+
+**How to suggest:** "We've completed [X]. This is a good time to start a new session for [Y] to optimize token usage."
 
 ---
 
 ## DUAL-AI WORKFLOW: Claude Code + Codex
 
-This project uses two AI assistants to balance quality and token usage.
+This project uses manual Codex handoff to save tokens and extend session length.
 
-### Tasks for Claude Code (THIS AI)
+### Delegation Decision Tree (Claude Code Uses This)
 
-Handle these tasks - they require deep reasoning:
+When user requests a task, evaluate:
 
-1. **Architecture & Design**
-   - Designing class hierarchies and module structure
-   - Data flow decisions
-   - API design
+**✅ PROACTIVELY SUGGEST CODEX for:**
+1. **Writing tests for existing code**
+   - Function already implemented and tested manually
+   - Just need pytest test cases
+   - Example: "Write tests for energy_detector.py"
 
-2. **Complex Algorithm Implementation**
-   - Energy detector with all signal processing nuances
-   - Spectrogram extraction with STFT parameter handling
-   - Detection threshold tuning
-   - Stratified dataset splitting
+2. **Adding documentation**
+   - Docstrings for existing functions
+   - README updates
+   - Type annotations
 
-3. **Debugging & Problem Solving**
-   - When tests fail unexpectedly
-   - Performance issues
-   - Integration problems
-
-4. **Refactoring**
-   - Restructuring code while preserving functionality
-   - Simplifying complex functions
-   - Improving code organization
-
-5. **Code Review**
-   - Reviewing implementations for correctness
-   - Checking alignment with reference documents
-   - Verifying signal processing decisions
-
-### Tasks to DEFER to Codex
-
-When the user mentions these tasks, remind them these are good candidates for Codex:
-
-1. **Writing Tests**
-   - Unit tests for existing functions
-   - Test fixtures and mocks
-   - Parameterized test cases
-
-2. **Documentation**
-   - Adding docstrings to functions
-   - Updating README files
-   - Writing usage examples
-
-3. **Type Hints**
-   - Adding type annotations
-   - Creating type stubs
-
-4. **Boilerplate & Scaffolding**
+3. **Boilerplate & scaffolding**
    - `__init__.py` files
-   - Basic class structures
    - Config file templates
+   - Basic class structures
 
-5. **Simple Utilities**
-   - File I/O helpers
-   - Path manipulation
-   - CSV reading/writing
-   - Basic data validation
-
-6. **Repetitive Edits**
+4. **Repetitive edits**
    - Same change across multiple files
-   - Renaming variables project-wide
    - Import reorganization
+   - Variable renaming project-wide
 
-### Workflow Reminder
+5. **Long-running background work**
+   - Model training (>30 min)
+   - Dataset generation
+   - Batch processing
 
-When starting a task, briefly consider:
-- Is this a "reasoning" task? → Claude Code handles it
-- Is this a "mechanical" task? → Suggest deferring to Codex
+**❌ CLAUDE CODE HANDLES (don't delegate):**
+- Architecture & design decisions
+- Complex algorithm implementation
+- Debugging unexpected behavior
+- Performance optimization (requires profiling judgment)
+- Signal processing (requires domain knowledge)
+- Any task requiring real-time oversight
 
-Example response when user asks for tests:
-> "Writing tests for existing functions is a good candidate for Codex to save tokens. Would you like me to:
-> (A) Handle it anyway since I'm already here, or
-> (B) You can ask Codex to write tests for [function_name] with these requirements: [brief spec]"
+### How to Suggest Delegation
+
+When task matches criteria above, say:
+> "This is a good candidate for Codex to save tokens. I can generate a detailed spec using `/codex-task <description>`, or I can handle it now if you prefer. Which would you like?"
+
+**Be proactive:** Don't wait for user to remember - identify opportunities and suggest them.
+
+### Generating Specifications
+
+When user says "use Codex" or runs `/codex-task <description>`:
+1. Generate detailed specification (see AGENTS.md format)
+2. Include: exact file paths, mathematical formulas, test cases, edge cases
+3. Provide copy-paste ready spec for user to hand to Codex
+4. Make specs detailed enough that Codex succeeds first try
+
+### Token Savings Math
+
+Example - Writing 20 tests:
+- Claude Code: ~12K tokens
+- Codex spec: ~3K tokens (Claude generates spec)
+- User copies to Codex: ~0 tokens (runs locally/different API)
+- **Savings: 9K tokens (75% reduction)**
+
+For 5 such tasks per session: **45K tokens saved** = multiple extra hours of session time
 
 ---
 

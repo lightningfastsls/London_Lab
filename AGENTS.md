@@ -1,5 +1,19 @@
 ﻿# AGENTS.md
 
+## Relationship to CLAUDE.md
+
+**CLAUDE.md** contains detailed technical guidance for Claude Code (architecture, algorithms, specialized agents, planning workflows).
+
+**THIS FILE (AGENTS.md)** describes the manual Codex handoff protocol for background/long-running tasks.
+
+When to use which:
+- **Claude Code (CLAUDE.md workflow):** Real-time implementation, architecture, debugging (default)
+- **Codex handoff (THIS file):** User triggers via `/codex-task` for background work
+
+This file focuses on the **file-based coordination protocol** (tasks/ folder structure) for manual handoffs.
+
+---
+
 This repo appears to be a small Python data analysis and plotting project with standalone scripts and CSV outputs.
 
 ## Real input data location
@@ -34,33 +48,29 @@ Do not copy/paste task content between agents; always read/write the shared file
 
 ## Commands
 
-Packaging detection:
-- None detected: no `pyproject.toml`, `requirements.txt`, `setup.cfg`, or `setup.py` found.
+Dependencies:
+- Managed via `requirements.txt` (exists in repo root)
+- To install: `.\.venv\Scripts\python.exe -m pip install -r requirements.txt`
 
-Setup/install (Windows PowerShell; run from repo root):
-- None configured. If you add dependencies, add exact setup/install commands here.
+Unit tests:
+- Test suite: `tests/` directory with 12+ test files
+- Run tests: `.\.venv\Scripts\python.exe -m pytest tests/ -v`
+- Fast subset: `.\.venv\Scripts\python.exe -m pytest tests/test_energy_detector.py -v`
 
-Lint/format:
-- None configured. Use the sanity run protocol below.
-
-Verifier environment:
-- If `.venv` exists, activate it (`.venv\Scripts\Activate.ps1`) or use `.venv\Scripts\python.exe` for all checks.
-
-Unit tests (fast):
-- None configured (no tests/ or pytest config detected).
-
-Full test suite:
-- None configured.
-
-Sanity run protocol (when no tests/lint):
-- `python -m py_compile <script>.py` for any touched script files.
-- `python <entrypoint_script>.py [args]` if the script has documented arguments.
-- Validate any expected output files exist and are non-empty.
+Sanity checks:
+- Syntax check: `.\.venv\Scripts\python.exe -m py_compile <file.py>`
+- After any edit, run py_compile on modified files
 
 Run the app / typical workflow:
-- Primary script run (PowerShell): `python <entrypoint_script>.py [args]`
-- If unclear, choose an entrypoint from: `analysis.py`, `data_processing.py`, `loader_mice_files.py`, `plot_training.py`, `water_formater.py`, `wav_format.py`, `playground.py`.
-- WSL/macOS note: use `python3 <entrypoint_script>.py [args]`.
+- **USV Detection pipeline:** `python scripts/run_detection.py --help`
+- **Spectrogram extraction:** `python scripts/extract_spectrograms.py --help`
+- **Labeling tool:** `.\.venv\Scripts\streamlit.exe run scripts/usv_labeling_tool.py`
+- **Parameter lab:** `python src/usv_spectrogram/param_lab/app.py`
+- **CNN training:** `python scripts/train_cnn.py --help`
+- **Model evaluation:** `python scripts/evaluate_model.py --help`
+
+Legacy scripts (in mice_learning_files/): analysis.py, data_processing.py, plot_training.py
+(These are older utilities; primary workflow is USV pipeline above)
 
 ## Definition of done
 Verification checklist:
@@ -86,15 +96,20 @@ Verification checklist:
   - The script/module docstring (top-of-file) OR a short section in README (whichever is already used in this repo).
 - Keep docs aligned with the "small diffs" rule: document as you go, not in a later sweep.
 
-## Parallel sessions suggestion
-- Spec Refiner (Prompt Engineer): creates the Task Brief in `00_task_brief.md` and captures assumptions and acceptance criteria.
-- Implementer: makes code changes according to the Task Brief and records decisions in `10_impl_notes.md`.
-- Verifier: runs checks per Commands and writes a verification transcript to `20_verification.md`.
-- Refactorer: simplifies/cleans up after functionality is stable (no behavior changes), then re-runs verification.
-- Docs: updates docstrings for new/changed public code and updates README/docs if user-facing usage changed.
-- Reviewer: scans diffs for regressions, API changes, missing tests, and mismatches vs acceptance criteria.
+## Parallel Sessions Coordination
 
-## Parallel work safety
-- Never allow two Claude Code sessions to edit the same file at the same time.
-- Assign file ownership per role (e.g., Implementer: scripts, Verifier: tasks/20_verification.md, Docs: README/docs).
-- Coordinate edits through the task folder and avoid overlapping file changes.
+When user runs multiple Codex sessions via this workflow:
+
+**File ownership (prevents conflicts):**
+- Never edit same file simultaneously in multiple sessions
+- Each session owns specific files in `tasks/<date>_<slug>/`
+- Session 1 (Spec Refiner): writes `00_task_brief.md`
+- Session 2 (Implementer): writes `10_impl_notes.md`, code files
+- Session 3 (Verifier): writes `20_verification.md`
+
+**Coordination:**
+- Sessions communicate via task folder files (no copy/paste)
+- Each session reads previous outputs from files
+- Update IMPLEMENTATION_PROGRESS.md when completing work
+
+**Note:** For real-time Claude Code work, use specialized agents in CLAUDE.md instead of parallel sessions.
