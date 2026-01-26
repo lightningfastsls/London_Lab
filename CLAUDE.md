@@ -70,7 +70,8 @@ tests/                     # Test files
 
 ### 1. Before Implementation
 - Read `IMPLEMENTATION_PROGRESS.md` to understand current state
-- If working on detection pipeline, read `USV_DETECTION_IMPLEMENTATION_PLAN.md`
+- If working on training data pipeline, read `USV_TRAINING_PIPELINE_PLAN.md`
+- If building the PyQt6 detection app, read `USV_DETECTION_APP_IMPLEMENTATION.md`
 
 ### 2. During Implementation
 - Keep diffs small and focused
@@ -140,7 +141,8 @@ This "review → learn → implement → review" cycle prevents issues rather th
 | Document | When to Read |
 |----------|--------------|
 | `IMPLEMENTATION_PROGRESS.md` | **Start of every session** |
-| `USV_DETECTION_IMPLEMENTATION_PLAN.md` | Working on detection pipeline |
+| `USV_TRAINING_PIPELINE_PLAN.md` | Building training data generation pipeline (energy detection → labeling → dataset prep) |
+| `USV_DETECTION_APP_IMPLEMENTATION.md` | Building PyQt6 desktop app for real-time USV detection (uses trained CNN model) |
 | `usv_signal_processing_reference.md` | Any signal processing work |
 
 ---

@@ -696,3 +696,105 @@ Poor test performance is NOT due to data leakage or distribution shift. Likely c
 - `scripts/extract_visual_samples.py`
 - `analysis/DIAGNOSTIC_SUMMARY.md`
 - `models/clean_test/optimal_threshold.json`
+
+---
+
+### 2026-01-26 (Session 10)
+
+**Session started** - Implementing PyQt6 USV Detection Desktop App
+
+**Completed:**
+- [x] Phase 1: Backend Core (No GUI) - ALL STEPS COMPLETE
+- [x] Phase 2: PyQt6 GUI - MVP IMPLEMENTATION COMPLETE
+
+### Phase 1: Backend Core Implementation
+
+**New Files Created:**
+- `src/usv_spectrogram/app/__init__.py` - App package
+- `src/usv_spectrogram/app/core/__init__.py` - Core backend package
+- `src/usv_spectrogram/app/core/audio_loader.py` - AudioLoader class + AudioData dataclass
+- `src/usv_spectrogram/app/core/sliding_inference.py` - SlidingInference class + InferenceResult
+- `src/usv_spectrogram/app/core/detection_logic.py` - HysteresisDetector + DetectedUSV + DetectionResult
+- `src/usv_spectrogram/app/core/label_storage.py` - LabelStorage for JSON save/load and image export
+- `scripts/test_detection_backend.py` - CLI test script for Phase 1 pipeline
+
+**Backend Features Implemented:**
+1. **AudioLoader** - Wraps io_wav + spectrogram, uses extraction_config.py parameters (n_fft=512, hop=128, freq=20-120kHz)
+2. **SlidingInference** - Loads trained CNN model, sliding window inference (150px window, 10px hop, batch_size=32)
+3. **HysteresisDetector** - Hysteresis thresholding (high=0.40, low=0.28), merges nearby detections (gap < 3 cols)
+4. **LabelStorage** - Save/load JSON labels with metadata, export annotated PNG with matplotlib
+
+**Testing Results (Phase 1):**
+- Test file: `5970 USV/2024-09-30_11-18-17_0000001.wav` (8.05s, 300kHz)
+- Spectrogram shape: (170 freqs, 18852 time bins)
+- CNN inference: 1871 windows processed
+- Probability range: [0.000, 1.000]
+- Detections: 34 USV events identified
+- Output: JSON labels + annotated PNG image saved successfully
+
+**Critical Fixes:**
+- Fixed PyTorch 2.6 model loading: Added `weights_only=False` parameter
+- Fixed Unicode encoding: Replaced checkmark character with `[OK]` for Windows console
+
+### Phase 2: PyQt6 GUI Implementation
+
+**New Files Created:**
+- `src/usv_spectrogram/app/main.py` - Application entry point
+- `src/usv_spectrogram/app/main_window.py` - MainWindow class with InferenceWorker thread
+- `src/usv_spectrogram/app/widgets/__init__.py` - Widgets package
+- `src/usv_spectrogram/app/widgets/spectrogram_view.py` - SpectrogramView + SpectrogramCanvas
+- `src/usv_spectrogram/app/widgets/probability_view.py` - ProbabilityView + ProbabilityCanvas
+- `scripts/run_app.py` - Application launcher
+
+**Files Modified:**
+- `requirements.txt` - Added PyQt6
+
+**GUI Features Implemented:**
+1. **MainWindow**
+   - Menu bar: File menu (Open, Save, Export, Quit) with keyboard shortcuts
+   - Control panel: Open WAV, Run Detection buttons
+   - Threshold panel: High/Low threshold sliders (0.00-1.00 range)
+   - Status bar: Real-time progress updates
+   - InferenceWorker: Background QThread for CNN inference
+
+2. **SpectrogramView**
+   - Displays spectrogram as RGB image (grayscale for MVP)
+   - Overlays USV detection boundaries (green=start, red=end)
+   - Time-to-pixel coordinate mapping
+
+3. **ProbabilityView**
+   - Plots probability curve with antialiasing
+   - Dashed threshold lines (red=high, orange=low)
+   - Shaded detection regions (green)
+   - Axis labels (time and probability)
+
+**App Workflow:**
+1. Open WAV File → AudioLoader computes spectrogram → Display in SpectrogramView
+2. Run Detection → InferenceWorker runs CNN in background → Display probability curve
+3. Adjust Thresholds → HysteresisDetector re-runs (no re-inference) → Views update
+4. Save Labels → Export JSON with metadata + probability curve
+5. Export Image → Create annotated PNG with matplotlib
+
+**Design Decisions:**
+- MVP focused on core functionality (no scrolling, no zoom, no colormap options yet)
+- Background thread for inference prevents UI freeze
+- Threshold adjustment is instant (re-uses inference results)
+- Fixed canvas sizes based on data dimensions
+
+**Known Limitations (MVP):**
+- Spectrogram uses grayscale (magma colormap TODO in Phase 3)
+- No horizontal scrolling for long files (views scale to fit)
+- No zoom/pan functionality
+- No time slider synchronization between views
+- No keyboard shortcuts for threshold adjustment
+
+**Next Steps (Phase 3 - Optional Enhancements):**
+- [ ] Implement magma colormap for spectrogram
+- [ ] Add scrollable views with synchronized scrolling
+- [ ] Implement zoom/pan controls
+- [ ] Add keyboard shortcuts (arrows for threshold)
+- [ ] Add time slider for navigation
+- [ ] Settings persistence (last model, thresholds)
+- [ ] File recent history
+
+**Session status:** Phase 1 + Phase 2 MVP complete, app is functional and ready for user testing

@@ -11,3 +11,4 @@ torchvision
 pandas
 pillow
 scikit-learn
+PyQt6
