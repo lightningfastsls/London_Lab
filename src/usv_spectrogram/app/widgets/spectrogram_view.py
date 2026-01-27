@@ -5,9 +5,10 @@ from __future__ import annotations
 from typing import Optional, List
 
 import numpy as np
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel
+import matplotlib.pyplot as plt
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QScrollArea
 from PyQt6.QtGui import QPainter, QPixmap, QImage, QPen, QColor
-from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtCore import Qt, QRect, pyqtSignal
 
 from ..core.detection_logic import DetectedUSV
 
@@ -80,12 +81,13 @@ class SpectrogramCanvas(QWidget):
         else:
             spec_norm = np.zeros_like(spec_db)
 
-        # Apply colormap (simple grayscale for MVP, can add magma later)
-        img = (spec_norm * 255).astype(np.uint8)
+        # Apply magma colormap
+        magma = plt.cm.magma
+        img_rgba = magma(spec_norm)  # Returns RGBA in [0, 1]
 
-        # Convert to RGB (flip vertically for display)
-        img = np.flip(img, axis=0)
-        img_rgb = np.stack([img, img, img], axis=-1)
+        # Convert to RGB uint8 (flip vertically for display)
+        img_rgb = (img_rgba[:, :, :3] * 255).astype(np.uint8)
+        img_rgb = np.flip(img_rgb, axis=0)
 
         return img_rgb
 
@@ -142,16 +144,32 @@ class SpectrogramCanvas(QWidget):
 class SpectrogramView(QWidget):
     """Spectrogram view with scrolling support."""
 
+    # Signal emitted when horizontal scroll position changes
+    scroll_changed = pyqtSignal(int)
+
     def __init__(self):
         super().__init__()
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
 
+        # Create scroll area
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(False)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+
         self.canvas = SpectrogramCanvas()
-        layout.addWidget(self.canvas)
+        self.scroll_area.setWidget(self.canvas)
+
+        layout.addWidget(self.scroll_area)
 
         self.setMinimumHeight(400)
+
+        # Connect scroll bar to emit signal
+        self.scroll_area.horizontalScrollBar().valueChanged.connect(
+            lambda value: self.scroll_changed.emit(value)
+        )
 
     def set_data(
         self,
@@ -165,3 +183,14 @@ class SpectrogramView(QWidget):
     def set_detections(self, detections: List[DetectedUSV]):
         """Set detection overlays."""
         self.canvas.set_detections(detections)
+
+    def set_scroll_position(self, value: int):
+        """Set horizontal scroll position (for synchronization).
+
+        Args:
+            value: Scroll position value
+        """
+        # Block signals to prevent feedback loop
+        self.scroll_area.horizontalScrollBar().blockSignals(True)
+        self.scroll_area.horizontalScrollBar().setValue(value)
+        self.scroll_area.horizontalScrollBar().blockSignals(False)

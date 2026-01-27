@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtCore import Qt, QThread, pyqtSignal, QSettings
 from PyQt6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -20,7 +20,7 @@ from PyQt6.QtWidgets import (
     QScrollArea,
     QSplitter
 )
-from PyQt6.QtGui import QAction
+from PyQt6.QtGui import QAction, QKeyEvent, QShortcut, QKeySequence
 
 from .core.audio_loader import AudioLoader, AudioData
 from .core.sliding_inference import SlidingInference, InferenceResult
@@ -81,11 +81,15 @@ class MainWindow(QMainWindow):
         self.inference_result: Optional[InferenceResult] = None
         self.detection_result: Optional[DetectionResult] = None
 
-        # Detection parameters
-        self.high_threshold = 0.40
-        self.low_threshold = 0.28
+        # Settings
+        self.settings = QSettings("USV Lab", "USV Detection")
+
+        # Detection parameters (load from settings)
+        self.high_threshold = self.settings.value("high_threshold", 0.40, type=float)
+        self.low_threshold = self.settings.value("low_threshold", 0.28, type=float)
 
         self._init_ui()
+        self._load_window_geometry()
 
     def _init_ui(self):
         """Initialize the user interface."""
@@ -133,6 +137,13 @@ class MainWindow(QMainWindow):
         self.statusBar = QStatusBar()
         self.setStatusBar(self.statusBar)
         self.statusBar.showMessage("Ready")
+
+        # Connect scroll synchronization
+        self.spectrogram_view.scroll_changed.connect(self.probability_view.set_scroll_position)
+        self.probability_view.scroll_changed.connect(self.spectrogram_view.set_scroll_position)
+
+        # Setup keyboard shortcuts
+        self._setup_keyboard_shortcuts()
 
     def _create_menu_bar(self):
         """Create menu bar."""
@@ -436,3 +447,73 @@ class MainWindow(QMainWindow):
                     "Export Error",
                     f"Failed to export image:\n{str(e)}"
                 )
+
+    def _setup_keyboard_shortcuts(self):
+        """Setup keyboard shortcuts for threshold adjustment."""
+        # Arrow up/down for high threshold
+        up_shortcut = QShortcut(QKeySequence(Qt.Key.Key_Up), self)
+        up_shortcut.activated.connect(self._increase_high_threshold)
+
+        down_shortcut = QShortcut(QKeySequence(Qt.Key.Key_Down), self)
+        down_shortcut.activated.connect(self._decrease_high_threshold)
+
+        # Left/right for low threshold
+        left_shortcut = QShortcut(QKeySequence(Qt.Key.Key_Left), self)
+        left_shortcut.activated.connect(self._decrease_low_threshold)
+
+        right_shortcut = QShortcut(QKeySequence(Qt.Key.Key_Right), self)
+        right_shortcut.activated.connect(self._increase_low_threshold)
+
+        # Space for run detection
+        space_shortcut = QShortcut(QKeySequence(Qt.Key.Key_Space), self)
+        space_shortcut.activated.connect(self._run_detection)
+
+    def _increase_high_threshold(self):
+        """Increase high threshold by 0.01."""
+        new_value = min(100, self.high_threshold_slider.value() + 1)
+        self.high_threshold_slider.setValue(new_value)
+        if self.inference_result is not None:
+            self._apply_thresholds()
+
+    def _decrease_high_threshold(self):
+        """Decrease high threshold by 0.01."""
+        new_value = max(0, self.high_threshold_slider.value() - 1)
+        self.high_threshold_slider.setValue(new_value)
+        if self.inference_result is not None:
+            self._apply_thresholds()
+
+    def _increase_low_threshold(self):
+        """Increase low threshold by 0.01."""
+        new_value = min(100, self.low_threshold_slider.value() + 1)
+        self.low_threshold_slider.setValue(new_value)
+        if self.inference_result is not None:
+            self._apply_thresholds()
+
+    def _decrease_low_threshold(self):
+        """Decrease low threshold by 0.01."""
+        new_value = max(0, self.low_threshold_slider.value() - 1)
+        self.low_threshold_slider.setValue(new_value)
+        if self.inference_result is not None:
+            self._apply_thresholds()
+
+    def _load_window_geometry(self):
+        """Load window geometry from settings."""
+        geometry = self.settings.value("window_geometry")
+        if geometry:
+            self.restoreGeometry(geometry)
+
+        state = self.settings.value("window_state")
+        if state:
+            self.restoreState(state)
+
+    def _save_settings(self):
+        """Save window geometry and threshold settings."""
+        self.settings.setValue("window_geometry", self.saveGeometry())
+        self.settings.setValue("window_state", self.saveState())
+        self.settings.setValue("high_threshold", self.high_threshold)
+        self.settings.setValue("low_threshold", self.low_threshold)
+
+    def closeEvent(self, event):
+        """Handle window close event to save settings."""
+        self._save_settings()
+        event.accept()

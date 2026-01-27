@@ -798,3 +798,88 @@ Poor test performance is NOT due to data leakage or distribution shift. Likely c
 - [ ] File recent history
 
 **Session status:** Phase 1 + Phase 2 MVP complete, app is functional and ready for user testing
+
+---
+
+### 2026-01-27 (Session 11)
+
+**Session started** - Implementing Phase 3: Enhanced Features
+
+**Completed:**
+- [x] Magma colormap for spectrogram visualization
+- [x] Scrollable views with synchronized scrolling
+- [x] Keyboard shortcuts for threshold adjustment
+- [x] Settings persistence (window geometry and thresholds)
+
+### Phase 3: Enhanced Features Implementation
+
+**Files Modified:**
+- `src/usv_spectrogram/app/widgets/spectrogram_view.py` - Added magma colormap, QScrollArea, scroll synchronization
+- `src/usv_spectrogram/app/widgets/probability_view.py` - Added QScrollArea, scroll synchronization
+- `src/usv_spectrogram/app/main_window.py` - Added keyboard shortcuts, settings persistence, scroll sync
+
+**Enhancements Implemented:**
+
+1. **Magma Colormap**
+   - Replaced grayscale with matplotlib's magma colormap
+   - Better visualization of spectrogram intensities
+   - Matches scientific visualization standards
+
+2. **Scrollable Views with Synchronization**
+   - Added QScrollArea to both SpectrogramView and ProbabilityView
+   - Synchronized horizontal scrolling between views
+   - Signal-based communication (scroll_changed pyqtSignal)
+   - Prevents feedback loops with blockSignals()
+
+3. **Keyboard Shortcuts**
+   - ↑/↓ arrows: Adjust high threshold by 0.01
+   - ←/→ arrows: Adjust low threshold by 0.01
+   - Space: Run detection (if WAV loaded)
+   - Auto-applies thresholds when inference results available
+   - Efficient threshold exploration without mouse
+
+4. **Settings Persistence**
+   - Uses QSettings for cross-platform settings storage
+   - Saves/loads: window geometry, window state, thresholds
+   - Settings auto-loaded on startup
+   - Settings auto-saved on window close
+   - Default thresholds: high=0.40, low=0.28
+
+**Technical Details:**
+
+**Scroll Synchronization:**
+```python
+# Connect signals bidirectionally
+spectrogram_view.scroll_changed.connect(probability_view.set_scroll_position)
+probability_view.scroll_changed.connect(spectrogram_view.set_scroll_position)
+
+# Block signals to prevent feedback loop
+scroll_bar.blockSignals(True)
+scroll_bar.setValue(value)
+scroll_bar.blockSignals(False)
+```
+
+**Keyboard Shortcuts:**
+- QShortcut for each key binding
+- Direct connection to threshold adjustment methods
+- Automatic threshold application after adjustment
+- Non-blocking (doesn't interfere with text input)
+
+**Settings Storage:**
+- Organization: "USV Lab"
+- Application: "USV Detection"
+- Platform-specific location (Registry on Windows, .config on Linux)
+
+**User Experience Improvements:**
+- Instant visual feedback when adjusting thresholds with keyboard
+- Views stay synchronized when scrolling long recordings
+- Thresholds remembered across sessions
+- Window size/position remembered
+- More ergonomic threshold exploration
+
+**Known Limitations:**
+- No zoom/pan controls (deferred - requires coordinate system refactor)
+- No time slider (deferred - would require additional UI space)
+- No file history menu (deferred - nice to have)
+
+**Session status:** Phase 3 core features complete, app significantly enhanced
