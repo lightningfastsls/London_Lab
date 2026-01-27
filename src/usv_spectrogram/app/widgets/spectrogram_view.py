@@ -41,18 +41,22 @@ class SpectrogramCanvas(QWidget):
         # Convert spectrogram to RGB image
         img = self._spectrogram_to_image(spectrogram_db)
 
-        # Convert to QPixmap
+        # Convert to QPixmap (ensure contiguous array for PyQt6)
         height, width, channels = img.shape
+
+        # Make sure array is contiguous and convert to bytes
+        img_contiguous = np.ascontiguousarray(img)
         bytes_per_line = channels * width
+
         q_img = QImage(
-            img.data,
+            img_contiguous.tobytes(),
             width,
             height,
             bytes_per_line,
             QImage.Format.Format_RGB888
         )
 
-        self.pixmap = QPixmap.fromImage(q_img)
+        self.pixmap = QPixmap.fromImage(q_img.copy())  # Copy to avoid data lifetime issues
         self.setFixedSize(self.pixmap.size())
         self.update()
 
