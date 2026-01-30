@@ -11,6 +11,7 @@ def compute_stft_frames_db(
     n_fft: int,
     band_mask: np.ndarray,
     eps: float,
+    normalize_magnitude: bool = False,
 ) -> np.ndarray:
     """Compute dB spectrogram from windowed frames.
 
@@ -26,6 +27,10 @@ def compute_stft_frames_db(
         Boolean mask for frequency bins to keep.
     eps:
         Small constant to avoid log(0).
+    normalize_magnitude:
+        If True, normalize magnitude by global max before dB conversion.
+        This matches the training pipeline's approach and ensures max dB = 0.
+        Default False for backward compatibility.
 
     Returns
     -------
@@ -35,6 +40,11 @@ def compute_stft_frames_db(
     windowed = frames * window
     stft = np.fft.rfft(windowed, n=n_fft, axis=1)
     magnitude = np.abs(stft)
+
+    # Optional magnitude normalization (matches training pipeline)
+    if normalize_magnitude:
+        magnitude = magnitude / (np.max(magnitude) + eps)
+
     spec_db = 20.0 * np.log10(magnitude + eps)
     return spec_db[:, band_mask].T
 

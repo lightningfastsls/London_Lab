@@ -124,9 +124,13 @@ class AudioLoader:
         # Get window
         window = signal.get_window(self.config.window, self.config.n_fft, fftbins=True)
 
-        # Compute STFT in dB
+        # Compute STFT in dB with magnitude normalization
+        # normalize_magnitude=True matches training pipeline (max dB = 0)
         eps = 1e-10  # Epsilon for log calculation
-        spec_db = compute_stft_frames_db(frames, window, self.config.n_fft, band_mask, eps)
+        spec_db = compute_stft_frames_db(
+            frames, window, self.config.n_fft, band_mask, eps,
+            normalize_magnitude=True
+        )
 
         # Compute time bins (center of each frame)
         n_frames = frames.shape[0]

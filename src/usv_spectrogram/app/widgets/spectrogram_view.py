@@ -21,7 +21,7 @@ class SpectrogramCanvas(QWidget):
         self.pixmap: Optional[QPixmap] = None
         self.detections: List[DetectedUSV] = []
         self.times: Optional[np.ndarray] = None
-        self.setMinimumHeight(400)
+        self.setMinimumHeight(150)  # Reduced for compact layout
 
     def set_data(
         self,
@@ -72,16 +72,31 @@ class SpectrogramCanvas(QWidget):
     def _spectrogram_to_image(self, spec_db: np.ndarray) -> np.ndarray:
         """Convert spectrogram to RGB image using magma colormap.
 
+        Uses MAD-based dynamic range normalization for better contrast,
+        matching the labeling app's visualization.
+
         Args:
             spec_db: Spectrogram in dB, shape (freqs, times)
 
         Returns:
             RGB image, shape (height, width, 3), uint8
         """
-        # Normalize to [0, 1]
-        vmin, vmax = spec_db.min(), spec_db.max()
+        # Use MAD (median absolute deviation) based normalization
+        # This gives much better contrast than min/max
+        median = np.median(spec_db)
+        mad = np.median(np.abs(spec_db - median))
+
+        # MAD scale factors from ExtractionConfig
+        mad_vmin_scale = 2.0
+        mad_vmax_scale = 4.0
+
+        vmin = median - mad_vmin_scale * mad
+        vmax = median + mad_vmax_scale * mad
+
+        # Normalize to [0, 1] and clip
         if vmax > vmin:
             spec_norm = (spec_db - vmin) / (vmax - vmin)
+            spec_norm = np.clip(spec_norm, 0, 1)
         else:
             spec_norm = np.zeros_like(spec_db)
 
@@ -112,13 +127,13 @@ class SpectrogramCanvas(QWidget):
                 start_x = self._time_to_pixel(usv.start_time_s)
                 end_x = self._time_to_pixel(usv.end_time_s)
 
-                # Draw start line (green)
-                pen = QPen(QColor(0, 255, 0), 2)
+                # Draw start line (bright green, solid)
+                pen = QPen(QColor(0, 255, 0), 2, Qt.PenStyle.SolidLine)
                 painter.setPen(pen)
                 painter.drawLine(start_x, 0, start_x, self.height())
 
-                # Draw end line (red)
-                pen = QPen(QColor(255, 0, 0), 2)
+                # Draw end line (cyan for visibility on magma, dashed)
+                pen = QPen(QColor(0, 255, 255), 2, Qt.PenStyle.DashLine)
                 painter.setPen(pen)
                 painter.drawLine(end_x, 0, end_x, self.height())
 
@@ -148,8 +163,8 @@ class SpectrogramCanvas(QWidget):
 class SpectrogramView(QWidget):
     """Spectrogram view with scrolling support."""
 
-    # Signal emitted when horizontal scroll position changes
-    scroll_changed = pyqtSignal(int)
+    # Signal emitted when horizontal scroll position changes (normalized 0.0-1.0)
+    scroll_changed = pyqtSignal(float)
 
     def __init__(self):
         super().__init__()
@@ -168,12 +183,22 @@ class SpectrogramView(QWidget):
 
         layout.addWidget(self.scroll_area)
 
-        self.setMinimumHeight(400)
+        self.setMinimumHeight(200)  # Reduced for compact layout
 
-        # Connect scroll bar to emit signal
+        # Connect scroll bar to emit normalized position
         self.scroll_area.horizontalScrollBar().valueChanged.connect(
-            lambda value: self.scroll_changed.emit(value)
+            self._on_scroll_changed
         )
+
+    def _on_scroll_changed(self, value: int):
+        """Emit normalized scroll position (0.0 to 1.0)."""
+        scrollbar = self.scroll_area.horizontalScrollBar()
+        scroll_range = scrollbar.maximum() - scrollbar.minimum()
+        if scroll_range > 0:
+            normalized_pos = (value - scrollbar.minimum()) / scroll_range
+        else:
+            normalized_pos = 0.0
+        self.scroll_changed.emit(normalized_pos)
 
     def set_data(
         self,
@@ -188,13 +213,25 @@ class SpectrogramView(QWidget):
         """Set detection overlays."""
         self.canvas.set_detections(detections)
 
-    def set_scroll_position(self, value: int):
-        """Set horizontal scroll position (for synchronization).
+    def get_canvas_width(self) -> int:
+        """Get the width of the spectrogram canvas in pixels."""
+        if self.canvas.pixmap is not None:
+            return self.canvas.pixmap.width()
+        return 800  # Default fallback
+
+    def set_scroll_position(self, normalized_pos: float):
+        """Set horizontal scroll position from normalized position (0.0-1.0).
 
         Args:
-            value: Scroll position value
+            normalized_pos: Normalized scroll position (0.0 = start, 1.0 = end)
         """
-        # Block signals to prevent feedback loop
-        self.scroll_area.horizontalScrollBar().blockSignals(True)
-        self.scroll_area.horizontalScrollBar().setValue(value)
-        self.scroll_area.horizontalScrollBar().blockSignals(False)
+        scrollbar = self.scroll_area.horizontalScrollBar()
+        scroll_range = scrollbar.maximum() - scrollbar.minimum()
+
+        if scroll_range <= 0:
+            return
+
+        target_value = scrollbar.minimum() + int(normalized_pos * scroll_range)
+
+        # No need to block signals - we only have one-way connection now
+        scrollbar.setValue(target_value)

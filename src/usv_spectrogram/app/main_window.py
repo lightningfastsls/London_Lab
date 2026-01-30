@@ -18,7 +18,8 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QStatusBar,
     QScrollArea,
-    QSplitter
+    QSplitter,
+    QProgressDialog
 )
 from PyQt6.QtGui import QAction, QKeyEvent, QShortcut, QKeySequence
 
@@ -26,6 +27,8 @@ from .core.audio_loader import AudioLoader, AudioData
 from .core.sliding_inference import SlidingInference, InferenceResult
 from .core.detection_logic import HysteresisDetector, DetectionResult
 from .core.label_storage import LabelStorage
+from .core.saved_detection_tracker import SavedDetectionTracker
+from .core.detection_exporter import DetectionExporter
 from .widgets.spectrogram_view import SpectrogramView
 from .widgets.probability_view import ProbabilityView
 
@@ -52,9 +55,11 @@ class InferenceWorker(QThread):
             self.progress.emit("Loading CNN model...")
             inference = SlidingInference(
                 model_path=self.model_path,
-                window_width_px=150,
-                hop_px=10,
-                batch_size=32
+                window_width_px=100,  # ~43ms, matches median training USV duration
+                hop_px=10,            # 90% overlap for robust detection
+                batch_size=32,
+                energy_threshold=0.35,  # Skip windows with max < 0.35 (quiet noise regions)
+                enable_per_window_norm=False  # Training only uses per-image norm after colormap
             )
 
             self.progress.emit("Running inference...")
@@ -84,9 +89,18 @@ class MainWindow(QMainWindow):
         # Settings
         self.settings = QSettings("USV Lab", "USV Detection")
 
+        # Detection saving
+        self.detection_exporter: Optional[DetectionExporter] = None
+        self.saved_tracker: Optional[SavedDetectionTracker] = None
+        self.output_dir = Path(self.settings.value("detection_output_dir",
+                                                    str(Path.home() / "USV_Detections")))
+
         # Detection parameters (load from settings)
         self.high_threshold = self.settings.value("high_threshold", 0.40, type=float)
         self.low_threshold = self.settings.value("low_threshold", 0.28, type=float)
+        self.min_sustained_prob = self.settings.value("min_sustained_prob", 0.82, type=float)
+        self.exclude_start_sec = self.settings.value("exclude_start_sec", 0.5, type=float)
+        self.exclude_end_sec = self.settings.value("exclude_end_sec", 0.5, type=float)
 
         self._init_ui()
         self._load_window_geometry()
@@ -138,9 +152,9 @@ class MainWindow(QMainWindow):
         self.setStatusBar(self.statusBar)
         self.statusBar.showMessage("Ready")
 
-        # Connect scroll synchronization
+        # Connect scroll synchronization - one scrollbar controls both views
+        # Only spectrogram scrollbar is visible, it controls probability view
         self.spectrogram_view.scroll_changed.connect(self.probability_view.set_scroll_position)
-        self.probability_view.scroll_changed.connect(self.spectrogram_view.set_scroll_position)
 
         # Setup keyboard shortcuts
         self._setup_keyboard_shortcuts()
@@ -169,6 +183,12 @@ class MainWindow(QMainWindow):
 
         file_menu.addSeparator()
 
+        output_dir_action = QAction("Set Output &Directory...", self)
+        output_dir_action.triggered.connect(self._change_output_directory)
+        file_menu.addAction(output_dir_action)
+
+        file_menu.addSeparator()
+
         quit_action = QAction("&Quit", self)
         quit_action.setShortcut("Ctrl+Q")
         quit_action.triggered.connect(self.close)
@@ -187,6 +207,17 @@ class MainWindow(QMainWindow):
         self.detect_btn.clicked.connect(self._run_detection)
         self.detect_btn.setEnabled(False)
         layout.addWidget(self.detect_btn)
+
+        # Save buttons
+        self.save_current_btn = QPushButton("Save Current View")
+        self.save_current_btn.clicked.connect(self._save_current_view)
+        self.save_current_btn.setEnabled(False)
+        layout.addWidget(self.save_current_btn)
+
+        self.save_all_btn = QPushButton("Save All Detections")
+        self.save_all_btn.clicked.connect(self._save_all_detections)
+        self.save_all_btn.setEnabled(False)
+        layout.addWidget(self.save_all_btn)
 
         layout.addStretch()
 
@@ -227,6 +258,48 @@ class MainWindow(QMainWindow):
 
         layout.addSpacing(20)
 
+        # Min sustained probability slider
+        layout.addWidget(QLabel("Min Sustained Probability:"))
+        self.min_sustained_prob_label = QLabel(f"{self.min_sustained_prob:.2f}")
+        layout.addWidget(self.min_sustained_prob_label)
+
+        self.min_sustained_prob_slider = QSlider(Qt.Orientation.Horizontal)
+        self.min_sustained_prob_slider.setMinimum(0)
+        self.min_sustained_prob_slider.setMaximum(100)
+        self.min_sustained_prob_slider.setValue(int(self.min_sustained_prob * 100))
+        self.min_sustained_prob_slider.valueChanged.connect(self._on_min_sustained_prob_changed)
+        layout.addWidget(self.min_sustained_prob_slider)
+
+        layout.addSpacing(20)
+
+        # Exclude start seconds slider
+        layout.addWidget(QLabel("Exclude Start (seconds):"))
+        self.exclude_start_label = QLabel(f"{self.exclude_start_sec:.1f}s")
+        layout.addWidget(self.exclude_start_label)
+
+        self.exclude_start_slider = QSlider(Qt.Orientation.Horizontal)
+        self.exclude_start_slider.setMinimum(0)
+        self.exclude_start_slider.setMaximum(200)  # 0.0 to 2.0 seconds (step 0.01)
+        self.exclude_start_slider.setValue(int(self.exclude_start_sec * 100))
+        self.exclude_start_slider.valueChanged.connect(self._on_exclude_start_changed)
+        layout.addWidget(self.exclude_start_slider)
+
+        layout.addSpacing(20)
+
+        # Exclude end seconds slider
+        layout.addWidget(QLabel("Exclude End (seconds):"))
+        self.exclude_end_label = QLabel(f"{self.exclude_end_sec:.1f}s")
+        layout.addWidget(self.exclude_end_label)
+
+        self.exclude_end_slider = QSlider(Qt.Orientation.Horizontal)
+        self.exclude_end_slider.setMinimum(0)
+        self.exclude_end_slider.setMaximum(200)  # 0.0 to 2.0 seconds (step 0.01)
+        self.exclude_end_slider.setValue(int(self.exclude_end_sec * 100))
+        self.exclude_end_slider.valueChanged.connect(self._on_exclude_end_changed)
+        layout.addWidget(self.exclude_end_slider)
+
+        layout.addSpacing(20)
+
         # Apply button
         self.apply_btn = QPushButton("Apply Thresholds")
         self.apply_btn.clicked.connect(self._apply_thresholds)
@@ -253,8 +326,27 @@ class MainWindow(QMainWindow):
         self.low_threshold = value / 100.0
         self.low_threshold_label.setText(f"{self.low_threshold:.2f}")
 
+    def _on_min_sustained_prob_changed(self, value: int):
+        """Handle min sustained probability slider change."""
+        self.min_sustained_prob = value / 100.0
+        self.min_sustained_prob_label.setText(f"{self.min_sustained_prob:.2f}")
+
+    def _on_exclude_start_changed(self, value: int):
+        """Handle exclude start slider change."""
+        self.exclude_start_sec = value / 100.0
+        self.exclude_start_label.setText(f"{self.exclude_start_sec:.1f}s")
+
+    def _on_exclude_end_changed(self, value: int):
+        """Handle exclude end slider change."""
+        self.exclude_end_sec = value / 100.0
+        self.exclude_end_label.setText(f"{self.exclude_end_sec:.1f}s")
+
     def _open_wav(self):
         """Open WAV file dialog and load audio."""
+        # Check for unsaved detections before switching files
+        if not self._check_unsaved_detections():
+            return  # User cancelled
+
         file_path, _ = QFileDialog.getOpenFileName(
             self,
             "Open WAV File",
@@ -319,8 +411,15 @@ class MainWindow(QMainWindow):
         # Apply detection
         self._apply_thresholds()
 
+        # Initialize detection saving components
+        wav_name = self.current_wav_path.stem
+        self.saved_tracker = SavedDetectionTracker(wav_name, self.output_dir)
+        self.detection_exporter = DetectionExporter(self.output_dir, context_ms=20.0)
+
         self.detect_btn.setEnabled(True)
         self.apply_btn.setEnabled(True)
+        self.save_current_btn.setEnabled(True)
+        self.save_all_btn.setEnabled(True)
         self.statusBar.showMessage("Detection complete", 3000)
 
     def _on_inference_error(self, error_msg: str):
@@ -342,7 +441,12 @@ class MainWindow(QMainWindow):
         detector = HysteresisDetector(
             high_threshold=self.high_threshold,
             low_threshold=self.low_threshold,
-            merge_gap_columns=3
+            merge_gap_columns=3,
+            min_duration_ms=10.0,  # Reject events < 10ms (noise artifacts)
+            max_duration_ms=500.0,  # Reject events > 500ms (non-USV vocalizations)
+            min_sustained_prob=self.min_sustained_prob,  # Reject events with brief probability dips
+            exclude_start_sec=self.exclude_start_sec,  # Reject detections near file start
+            exclude_end_sec=self.exclude_end_sec  # Reject detections near file end
         )
 
         self.detection_result = detector.detect(
@@ -351,13 +455,16 @@ class MainWindow(QMainWindow):
             self.inference_result.times
         )
 
-        # Update views
+        # Update views - pass spectrogram width AND column indices for pixel-perfect alignment
+        spectrogram_width = self.spectrogram_view.get_canvas_width()
         self.probability_view.set_data(
             self.detection_result.times,
             self.detection_result.probabilities,
             self.high_threshold,
             self.low_threshold,
-            self.detection_result.usvs
+            self.detection_result.usvs,
+            column_indices=self.detection_result.column_indices,  # For pixel-perfect alignment
+            target_width=spectrogram_width
         )
 
         self.spectrogram_view.set_detections(self.detection_result.usvs)
@@ -512,8 +619,245 @@ class MainWindow(QMainWindow):
         self.settings.setValue("window_state", self.saveState())
         self.settings.setValue("high_threshold", self.high_threshold)
         self.settings.setValue("low_threshold", self.low_threshold)
+        self.settings.setValue("min_sustained_prob", self.min_sustained_prob)
+        self.settings.setValue("exclude_start_sec", self.exclude_start_sec)
+        self.settings.setValue("exclude_end_sec", self.exclude_end_sec)
+        self.settings.setValue("detection_output_dir", str(self.output_dir))
 
     def closeEvent(self, event):
-        """Handle window close event to save settings."""
+        """Handle window close event to save settings and check unsaved detections."""
+        # Check for unsaved detections
+        if not self._check_unsaved_detections():
+            event.ignore()  # User cancelled close
+            return
+
         self._save_settings()
         event.accept()
+
+    def _save_current_view(self):
+        """Save detections visible in current viewport."""
+        if self.detection_result is None:
+            return
+
+        # 1. Get visible detection indices
+        visible_detections = self._get_visible_detections()
+
+        if not visible_detections:
+            QMessageBox.information(self, "No Detections",
+                                    "No detections in current view.")
+            return
+
+        # 2. Filter out already-saved detections
+        unsaved = [d for d in visible_detections if not self.saved_tracker.is_saved(d)]
+
+        if not unsaved:
+            QMessageBox.information(self, "Already Saved",
+                                    "All detections in view already saved.")
+            return
+
+        # 3. Confirm save with user (since multiple detections might be visible)
+        reply = QMessageBox.question(
+            self, "Confirm Save",
+            f"Save {len(unsaved)} detection(s) from current view?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+
+        # 4. Save each unsaved detection
+        # Show progress for multiple detections
+        if len(unsaved) > 1:
+            progress = QProgressDialog("Saving detections...", "Cancel", 0, len(unsaved), self)
+            progress.setWindowTitle("Save Current View")
+            progress.setWindowModality(Qt.WindowModality.WindowModal)
+        else:
+            progress = None
+
+        saved_count = 0
+        for i, detection in enumerate(unsaved):
+            if progress and progress.wasCanceled():
+                break
+
+            idx = self.detection_result.usvs.index(detection)
+            try:
+                png, json_file, csv = self.detection_exporter.export_detection(
+                    detection=detection,
+                    audio_data=self.audio_data,
+                    wav_filename=self.current_wav_path.stem,
+                    detection_index=idx
+                )
+                self.saved_tracker.mark_saved(detection, str(png))
+                saved_count += 1
+            except Exception as e:
+                print(f"Error saving detection {idx}: {e}")
+
+            if progress:
+                progress.setValue(i + 1)
+
+        if progress:
+            progress.close()
+
+        # 5. Show success message
+        self.statusBar.showMessage(f"Saved {saved_count} detection(s)", 3000)
+
+    def _save_all_detections(self):
+        """Save all detections in current file."""
+        if self.detection_result is None:
+            return
+
+        all_detections = self.detection_result.usvs
+
+        if not all_detections:
+            QMessageBox.information(self, "No Detections", "No detections to save.")
+            return
+
+        # Filter out already-saved
+        unsaved = self.saved_tracker.get_unsaved_detections(all_detections)
+
+        if not unsaved:
+            QMessageBox.information(self, "Already Saved", "All detections already saved.")
+            return
+
+        # Confirm batch save
+        reply = QMessageBox.question(
+            self, "Confirm Save All",
+            f"Save {len(unsaved)} unsaved detection(s)?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+
+        # Progress dialog
+        progress = QProgressDialog("Saving detections...", "Cancel", 0, len(unsaved), self)
+        progress.setWindowTitle("Save All Detections")
+        progress.setWindowModality(Qt.WindowModality.WindowModal)
+
+        saved_count = 0
+        for i, detection in enumerate(unsaved):
+            if progress.wasCanceled():
+                break
+
+            idx = self.detection_result.usvs.index(detection)
+            try:
+                png, json_file, csv = self.detection_exporter.export_detection(
+                    detection=detection,
+                    audio_data=self.audio_data,
+                    wav_filename=self.current_wav_path.stem,
+                    detection_index=idx
+                )
+                self.saved_tracker.mark_saved(detection, str(png))
+                saved_count += 1
+            except Exception as e:
+                print(f"Error saving detection {idx}: {e}")
+
+            progress.setValue(i + 1)
+
+        progress.close()
+        self.statusBar.showMessage(f"Saved {saved_count} detection(s)", 3000)
+
+    def _get_visible_detections(self):
+        """Get detections currently visible in viewport.
+
+        Returns:
+            List of DetectedUSV objects that are visible in current viewport
+        """
+        if self.detection_result is None:
+            return []
+
+        scrollbar = self.spectrogram_view.scroll_area.horizontalScrollBar()
+        scroll_value = scrollbar.value()
+        viewport_width = self.spectrogram_view.scroll_area.viewport().width()
+        canvas_width = self.spectrogram_view.canvas.width()
+
+        # Calculate visible time range
+        t_min = self.audio_data.times[0]
+        t_max = self.audio_data.times[-1]
+
+        visible_start_frac = scroll_value / canvas_width if canvas_width > 0 else 0
+        visible_end_frac = (scroll_value + viewport_width) / canvas_width if canvas_width > 0 else 1
+
+        visible_start_time = t_min + visible_start_frac * (t_max - t_min)
+        visible_end_time = t_min + visible_end_frac * (t_max - t_min)
+
+        # Filter detections in visible range (detection overlaps visible window)
+        visible = [
+            d for d in self.detection_result.usvs
+            if not (d.end_time_s < visible_start_time or d.start_time_s > visible_end_time)
+        ]
+
+        return visible
+
+    def _check_unsaved_detections(self) -> bool:
+        """Check for unsaved detections and prompt user.
+
+        Returns:
+            True if OK to proceed (no unsaved or user confirmed)
+            False if user cancelled
+        """
+        if self.detection_result is None or self.saved_tracker is None:
+            return True
+
+        unsaved = self.saved_tracker.get_unsaved_detections(self.detection_result.usvs)
+
+        if not unsaved:
+            return True
+
+        # Show warning dialog
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Icon.Warning)
+        msg.setWindowTitle("Unsaved Detections")
+        msg.setText(f"You have {len(unsaved)} unsaved detection(s).")
+        msg.setInformativeText("What would you like to do?")
+
+        review_btn = msg.addButton("Review Unsaved", QMessageBox.ButtonRole.ActionRole)
+        discard_btn = msg.addButton("Discard", QMessageBox.ButtonRole.DestructiveRole)
+        cancel_btn = msg.addButton("Cancel", QMessageBox.ButtonRole.RejectRole)
+
+        msg.exec()
+        clicked = msg.clickedButton()
+
+        if clicked == review_btn:
+            # Scroll to first unsaved detection
+            first_unsaved = unsaved[0]
+            self._scroll_to_detection(first_unsaved)
+            return False  # Don't proceed with file switch
+        elif clicked == discard_btn:
+            return True  # Proceed, discard unsaved
+        else:  # Cancel
+            return False
+
+    def _scroll_to_detection(self, detection):
+        """Scroll viewport to show the given detection.
+
+        Args:
+            detection: DetectedUSV object to scroll to
+        """
+        # Calculate pixel position of detection center
+        t_min = self.audio_data.times[0]
+        t_max = self.audio_data.times[-1]
+
+        detection_center_time = (detection.start_time_s + detection.end_time_s) / 2
+        center_fraction = (detection_center_time - t_min) / (t_max - t_min)
+
+        canvas_width = self.spectrogram_view.canvas.width()
+        viewport_width = self.spectrogram_view.scroll_area.viewport().width()
+
+        # Center the detection in viewport
+        target_scroll = int(center_fraction * canvas_width - viewport_width / 2)
+        target_scroll = max(0, min(target_scroll, canvas_width - viewport_width))
+
+        scrollbar = self.spectrogram_view.scroll_area.horizontalScrollBar()
+        scrollbar.setValue(target_scroll)
+
+    def _change_output_directory(self):
+        """Allow user to change detection output directory."""
+        directory = QFileDialog.getExistingDirectory(
+            self, "Select Detection Output Directory",
+            str(self.output_dir)
+        )
+        if directory:
+            self.output_dir = Path(directory)
+            self.settings.setValue("detection_output_dir", str(self.output_dir))
+            self.statusBar.showMessage(f"Output directory: {directory}", 3000)
