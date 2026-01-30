@@ -1,4 +1,4 @@
-﻿# AGENTS.md
+# AGENTS.md
 
 ## Relationship to CLAUDE.md
 
@@ -10,11 +10,18 @@ When to use which:
 - **Claude Code (CLAUDE.md workflow):** Real-time implementation, architecture, debugging (default)
 - **Codex handoff (THIS file):** User triggers via `/codex-task` for background work
 
-This file focuses on the **file-based coordination protocol** (tasks/ folder structure) for manual handoffs.
-
 ---
 
-This repo appears to be a small Python data analysis and plotting project with standalone scripts and CSV outputs.
+This repo is a Python USV (ultrasonic vocalization) analysis project with spectrogram generation, detection pipeline, and labeling tools.
+
+## ⛔ Integrity Rules (Non-Negotiable)
+
+These rules apply regardless of task:
+
+1. **No test corruption**: Never modify test expected values to make tests pass. Fix the code or flag for discussion.
+2. **No fabrication**: Don't claim a file contains something without reading it. Don't claim tests pass without running them.
+3. **No silent scope creep**: Do exactly what the task brief specifies. If you discover something that needs different work, note it in impl_notes and STOP.
+4. **Surface blockers**: If stuck after 2-3 attempts, write a BLOCKED section in your notes file instead of continuing to try random approaches.
 
 ## Real input data location
 - WAV inputs live under the path specified by the `USV_WAV_DIR` environment variable.
@@ -46,70 +53,123 @@ All roles communicate via files in a task folder under `tasks/`:
 - Verifier reads both and writes: `tasks/<date>_<slug>/20_verification.md`.
 Do not copy/paste task content between agents; always read/write the shared files.
 
+## Struggle Protocol
+
+If you hit a blocker (can't figure out approach, tests keep failing unexpectedly, requirements unclear), write this in your notes file:
+
+```markdown
+## 🚨 BLOCKED
+
+**What I understand**: [specific understanding of the task]
+**What I tried**:
+1. [Attempt 1 - outcome]
+2. [Attempt 2 - outcome]
+**Where I'm stuck**: [specific blocker]
+**What would help**: [specific request - clarification, different approach, human review]
+```
+
+Then STOP. Do not continue trying random approaches. Surfacing blockers is correct behavior, not failure.
+
 ## Commands
 
+Setup/install (Windows PowerShell; run from repo root):
+```powershell
+# If .venv exists, activate it
+.\.venv\Scripts\Activate.ps1
+# Or use the Python directly
+.\.venv\Scripts\python.exe <script>
+```
+
 Dependencies:
-- Managed via `requirements.txt` (exists in repo root)
-- To install: `.\.venv\Scripts\python.exe -m pip install -r requirements.txt`
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Lint/format:
+- Run `py_compile` on any touched files: `.\.venv\Scripts\python.exe -m py_compile <file.py>`
 
 Unit tests:
-- Test suite: `tests/` directory with 12+ test files
-- Run tests: `.\.venv\Scripts\python.exe -m pytest tests/ -v`
-- Fast subset: `.\.venv\Scripts\python.exe -m pytest tests/test_energy_detector.py -v`
-
-Sanity checks:
-- Syntax check: `.\.venv\Scripts\python.exe -m py_compile <file.py>`
-- After any edit, run py_compile on modified files
+```powershell
+.\.venv\Scripts\python.exe -m pytest tests/ -v
+# Fast subset for detection work:
+.\.venv\Scripts\python.exe -m pytest tests/test_energy_detector.py -v
+```
 
 Run the app / typical workflow:
-- **USV Detection pipeline:** `python scripts/run_detection.py --help`
-- **Spectrogram extraction:** `python scripts/extract_spectrograms.py --help`
-- **Labeling tool:** `.\.venv\Scripts\streamlit.exe run scripts/usv_labeling_tool.py`
-- **Parameter lab:** `python src/usv_spectrogram/param_lab/app.py`
-- **CNN training:** `python scripts/train_cnn.py --help`
-- **Model evaluation:** `python scripts/evaluate_model.py --help`
+```powershell
+# USV Detection pipeline
+python scripts/run_detection.py --help
 
-Legacy scripts (in mice_learning_files/): analysis.py, data_processing.py, plot_training.py
-(These are older utilities; primary workflow is USV pipeline above)
+# Spectrogram extraction
+python scripts/extract_spectrograms.py --help
 
-## Definition of done
-Verification checklist:
-- Lint/format pass (if configured).
-- Unit tests pass.
-- Full test suite pass (if configured).
-- Build/package steps pass (if applicable).
-- Documentation updated:
-  - Docstrings added/updated for NEW or behavior-changed public code.
-  - README/docs updated if user-facing usage changed.
-- Paste a verification transcript with commands run and results in `tasks/<date>_<slug>/20_verification.md`.
+# Labeling tool (Streamlit)
+.\.venv\Scripts\streamlit.exe run scripts/usv_labeling_tool.py
+
+# Parameter lab (Streamlit)
+python src/usv_spectrogram/param_lab/app.py
+
+# CNN training
+python scripts/train_cnn.py --help
+
+# Model evaluation
+python scripts/evaluate_model.py --help
+```
+
+Sanity run protocol:
+- `python -m py_compile <script>.py` for any touched script files.
+- `python <entrypoint_script>.py [args]` if the script has documented arguments.
+- Validate any expected output files exist and are non-empty.
+
+## Definition of Done
+
+Verification checklist (write results to `20_verification.md`):
+- [ ] py_compile passes on all touched files
+- [ ] Unit tests pass (paste output)
+- [ ] Changes match task brief scope (no scope creep)
+- [ ] Docstrings added/updated for new or behavior-changed public code
+- [ ] If user-facing usage changed, README/docs updated
+- [ ] IMPLEMENTATION_PROGRESS.md updated with what changed
 
 ## Code documentation standards
 - For any NEW public function/class/module (or any function/class whose behavior you change):
-  - Add/maintain a short docstring that states:
-    - Purpose (1-2 lines)
-    - Parameters + types (if not obvious)
-    - Return value (and type) or side effects
-    - Errors/edge cases only if non-obvious
+  - Add/maintain a short docstring: Purpose, Parameters + types, Return value, Errors/edge cases if non-obvious
 - Do NOT add verbose comments everywhere.
-  - Prefer docstrings for "what/why," and inline comments only for tricky logic, non-obvious math, or critical assumptions.
-- If a change affects expected inputs/outputs of a script, update:
-  - The script/module docstring (top-of-file) OR a short section in README (whichever is already used in this repo).
-- Keep docs aligned with the "small diffs" rule: document as you go, not in a later sweep.
+- Keep docs aligned with the "small diffs" rule: document as you go.
 
-## Parallel Sessions Coordination
+## Parallel sessions suggestion
+- **Spec Refiner**: Creates Task Brief in `00_task_brief.md`, captures assumptions and acceptance criteria.
+- **Implementer**: Makes code changes per Task Brief, records decisions in `10_impl_notes.md`.
+- **Verifier**: Runs checks per Commands, writes verification transcript to `20_verification.md`.
+- **Refactorer**: Simplifies/cleans up after functionality stable (no behavior changes), re-runs verification.
+- **Docs**: Updates docstrings for new/changed public code, updates README if user-facing usage changed.
+- **Reviewer**: Scans diffs for regressions, API changes, missing tests, mismatches vs acceptance criteria.
 
-When user runs multiple Codex sessions via this workflow:
+## Parallel work safety
+- Never allow two sessions to edit the same file at the same time.
+- Assign file ownership per role.
+- Coordinate edits through the task folder.
 
-**File ownership (prevents conflicts):**
-- Never edit same file simultaneously in multiple sessions
-- Each session owns specific files in `tasks/<date>_<slug>/`
-- Session 1 (Spec Refiner): writes `00_task_brief.md`
-- Session 2 (Implementer): writes `10_impl_notes.md`, code files
-- Session 3 (Verifier): writes `20_verification.md`
+## Signal Processing Reminders (USV-Specific)
 
-**Coordination:**
-- Sessions communicate via task folder files (no copy/paste)
-- Each session reads previous outputs from files
-- Update IMPLEMENTATION_PROGRESS.md when completing work
+- Sample rate is 250,000 Hz - always specify, never use librosa defaults
+- n_fft: 512, hop_length: 128
+- Frequency range: 25-110 kHz
+- Don't change STFT parameters without noting frequency resolution impact
+- Detection threshold changes need baseline comparison
 
-**Note:** For real-time Claude Code work, use specialized agents in CLAUDE.md instead of parallel sessions.
+## What Claude Code Handles vs What You Handle
+
+**Claude Code** is for reasoning-heavy tasks:
+- Architecture decisions
+- Complex debugging
+- Algorithm design
+- Code review
+
+**You (Codex)** are better for:
+- Writing tests for existing functions
+- Adding docstrings and type hints
+- Boilerplate and scaffolding
+- Repetitive mechanical edits
+
+If a task feels like it needs deep reasoning about the approach, note it in impl_notes and suggest human route it to Claude Code.

@@ -17,8 +17,9 @@ def main():
     app.setOrganizationName("USV Lab")
 
     # Set default model path
+    # Use models/production which works correctly with sliding inference
     repo_root = Path(__file__).resolve().parents[3]
-    default_model = repo_root / "checkpoints" / "best_model.pt"
+    default_model = repo_root / "models" / "production" / "best_model.pt"
 
     window = MainWindow(default_model_path=default_model)
     window.show()

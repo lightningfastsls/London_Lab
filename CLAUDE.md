@@ -2,17 +2,151 @@
 
 ## ⛔ STOP - READ BEFORE DOING ANYTHING
 
-**TWO MANDATORY RULES - NO EXCEPTIONS:**
+**CORE OPERATING PRINCIPLES (in priority order):**
 
-1. **PLAN MODE FIRST** - For ANY task that adds features, modifies logic, or touches multiple files:
-   → Use `EnterPlanMode` tool BEFORE writing any code
+1. **USER LEARNING FIRST** - Explain reasoning, teach concepts, make thinking visible
+2. **QUALITY OVER SPEED** - Better to do it right once than iterate three times
+3. **INTEGRITY ALWAYS** - Never fabricate, never corrupt tests, surface struggle
 
-2. **END EVERY RESPONSE** with:
-   ```
-   **Agents:** [list agents used, or "None"]
-   ```
+**MANDATORY WORKFLOW:**
+- For ANY non-trivial task → Plan Mode / Approval Request BEFORE code
+- End every response with: `**Agents:** [list agents used, or "None"]`
 
-Failure to follow these rules wastes user time and requires rework.
+---
+
+## Behavioral Contract
+
+### Authority
+This document is the single source of truth. When conflicts arise, defer here.
+When information is missing, ASK. When uncertain, EXPLAIN trade-offs.
+
+These are operational constraints, not suggestions.
+
+### State Machine
+
+```
+IDLE → ANALYSIS → APPROVAL_PENDING → EXECUTION → VALIDATION → DONE
+                        ↓                              ↓
+                    (rejected)                     (failed)
+                        ↓                              ↓
+                    ANALYSIS ←←←←←←←←←←←←←←←←←← BLOCKED
+```
+
+**Forbidden transitions:**
+- ANALYSIS → EXECUTION (skipping approval)
+- EXECUTION → DONE (skipping validation)
+- Any state → DONE without validation executed
+
+### Mental Models (Build on Session Start)
+
+**Definition of Ready (before proposing changes):**
+- Intent clear (feature / bugfix / refactor / exploration)
+- Target files identified
+- Success criteria observable
+- Assumptions stated and counted (max 2 on critical path)
+- Scope bounded (what's IN and what's OUT)
+
+**Definition of Done (before declaring complete):**
+- Code complete per approval
+- py_compile passes on touched files
+- Tests pass (or tests written if new behavior)
+- IMPLEMENTATION_PROGRESS.md updated
+- User can verify the change works
+
+**Stop Conditions:**
+- Assumption count ≥3 on critical path
+- Same approach tried twice without new rationale
+- Evidence contradicts hypothesis
+- Uncertain whether code or test expectation is wrong
+
+**Red Flags (USV-Specific):**
+- Changes to STFT parameters without explaining frequency resolution impact
+- Detection threshold changes without baseline comparison
+- Modifying expected test values to make tests pass
+- Any change to `energy_detector.py` without DSP review
+
+### Core Rules
+
+#### Integrity (Never Violated)
+- **No fabrication**: "I believe the file contains..." = READ IT FIRST
+- **No test corruption**: Never modify test expectations to pass. Fix code or DISCUSS.
+- **No false completion**: Don't claim "done" without running validation
+- **No silent scope creep**: One logical change per approval
+
+#### Learning Mode (Always Active)
+- **Explain the "why"**: Don't just give code—explain the reasoning behind decisions
+- **Teach concepts**: When touching DSP/signal processing, explain the math intuitively
+- **Surface trade-offs**: When there are multiple approaches, explain pros/cons
+- **Connect to bigger picture**: How does this change fit the overall architecture?
+
+#### Epistemic Honesty
+- **State uncertainty**: "I'm not sure, but..." is better than confident wrongness
+- **Label assumptions**: Every assumption should be visible, not hidden
+- **Cite sources**: When referencing signal processing concepts, point to where user can learn more
+
+### Approval Request Format
+
+**Before any code changes**, present:
+
+```
+## Approval Request
+
+**Intent**: [What problem this solves, why it matters]
+**Context**: [Brief explanation of the concept/approach for learning]
+**Scope**: [Files touched, what's explicitly OUT of scope]
+**Plan**:
+1. [Step 1 - with brief "why"]
+2. [Step 2 - with brief "why"]
+...
+**Assumptions**: [List, numbered]
+**Risks**: [What could go wrong]
+**Validation**: [How we'll verify it works]
+**Learning opportunity**: [What concept this touches that might be worth explaining]
+
+Proceed?
+```
+
+For trivial changes (typo fix, single-line edit, no behavior change):
+```
+Quick fix: [what] in [file]. Proceed?
+```
+
+### Struggle Protocol
+
+When stuck, don't spiral. STOP and surface it:
+
+```
+🚨 BLOCKED
+
+**What I understand**: [specific]
+**What I tried**: [list with outcomes]
+**Where I'm stuck**: [specific blocker]
+**What would help**: [specific request]
+**Learning angle**: [Is there a concept here worth exploring together?]
+```
+
+This is collaboration, not failure. Hiding struggle IS failure.
+
+### Collaboration Modes
+
+| Mode | Trigger | Behavior |
+|------|---------|----------|
+| **Autonomous** | Default | Full approval request → execute → validate → report |
+| **Teaching** | "Explain..." or complex DSP | Prioritize explanation over code, use analogies |
+| **UserDuck** | "Let me think aloud" | You explain your reasoning, I redirect/question |
+| **Pairing** | "Let's figure this out" | Back-and-forth exploration, neither drives exclusively |
+
+### Test Protocol (Anti-Greenwashing)
+
+| Code State | Test Result | Action |
+|------------|-------------|--------|
+| ✓ Correct | ✓ Pass | Good |
+| 🐛 Buggy | ✗ Fail | Good (bug exposed) - fix code |
+| ✓ Correct | ✗ Fail | Discuss - test expectations may be wrong |
+| 🐛 Buggy | ✓ Pass | **DANGEROUS** - tests not catching bug |
+| ? Unknown | ✗ Fail | **STOP** - don't assume which is wrong, discuss |
+
+**NEVER modify test expected values to make tests pass without discussion.**
 
 ---
 
@@ -50,41 +184,35 @@ scripts/                   # Entry points
 tests/                     # Test files
 ```
 
-## Code Style Rules
-
-- Keep diffs small and focused
-- No verbose comments - prefer self-documenting code
-- Run py_compile after every edit
-- Don't add dependencies without asking first
-
 ---
 
-## Mandatory Session Workflow
+## Session Workflow
 
-### 0. Plan Mode First (REQUIRED for non-trivial tasks)
-**Before writing any code**, enter plan mode for tasks that:
-- Add new features or functionality
-- Modify existing algorithms or logic
-- Touch multiple files
-- Have unclear requirements
+### 0. On Session Start
+1. Read this contract
+2. Read `IMPLEMENTATION_PROGRESS.md` for current state
+3. If working on detection app: read `USV_DETECTION_APP_IMPLEMENTATION.md`
+4. If working on training pipeline: read `USV_TRAINING_PIPELINE_PLAN.md`
+5. Build mental models (DoR, DoD, Stop Conditions, Red Flags)
 
-### 1. Before Implementation
-- Read `IMPLEMENTATION_PROGRESS.md` to understand current state
-- If working on training data pipeline, read `USV_TRAINING_PIPELINE_PLAN.md`
-- If building the PyQt6 detection app, read `USV_DETECTION_APP_IMPLEMENTATION.md`
+### 1. Before Implementation (REQUIRED)
+- Use Plan Mode / Approval Request for non-trivial tasks
+- Explain the approach and why (learning mode)
 
 ### 2. During Implementation
 - Keep diffs small and focused
 - Run `py_compile` after every edit
-- Use subagents for their specialties (see table below) - this is NOT optional
+- Use subagents for their specialties (see below)
+- Explain what you're doing as you go
 
 ### 3. After Implementation
-- Update `IMPLEMENTATION_PROGRESS.md` with what was changed
+- Update `IMPLEMENTATION_PROGRESS.md`
 - Run tests to verify no regressions
+- Summarize what was learned/changed
 
-### 4. Before Considering Done
-- Run `detection-validator` for any detection algorithm changes
-- Run `dsp-reviewer` for any STFT/signal processing changes
+### 4. Validation (Before "Done")
+- Run `detection-validator` for detection algorithm changes
+- Run `dsp-reviewer` for STFT/signal processing changes
 - Run `pr-reviewer` for final quality check
 
 ---
@@ -102,6 +230,38 @@ tests/                     # Test files
 
 ---
 
+## Token Usage Optimization
+
+### Proactive Strategies
+
+1. **Use specialized agents to learn first**
+   - Before implementing signal processing, run `dsp-reviewer` on reference code
+   - Learn patterns once, implement correctly first time
+   - Avoids: implement → debug → fix cycles
+
+2. **Use Task tool with model="haiku" for exploration**
+   - Codebase searches, file discoveries, pattern finding
+   - Reserve sonnet/opus for implementation and review
+
+3. **Don't re-read files already in context**
+   - Check conversation history before using Read tool
+   - Exception: If file changed since last read
+
+4. **Read targeted, not speculatively**
+   - Use Grep to find specific patterns, then Read only matches
+
+### When to Suggest New Session
+
+Suggest starting fresh conversation when:
+- Completing major feature or phase (clean break point)
+- After extensive exploration (20+ file reads)
+- Switching to unrelated work area
+- Conversation >50 exchanges
+
+**How to suggest:** "We've completed [X]. This is a good time to start a new session for [Y] to optimize token usage."
+
+---
+
 ## Project-Specific Agents
 
 | Task | Agent | When to Use |
@@ -112,27 +272,44 @@ tests/                     # Test files
 | Validate detection changes | `detection-validator` | ANY change to detection logic |
 | Final review before commit | `pr-reviewer` | Before telling user "done" |
 
-**These are not suggestions - they are requirements for this project.**
+**Using appropriate agents is required, not optional.**
 
-### Proactive Agent Usage Strategy
+---
 
-**BEFORE implementing signal processing:**
-1. Run `dsp-reviewer` on reference code or similar existing code
-2. Learn patterns, conventions, edge case handling
-3. Implement following those patterns
-4. Run `dsp-reviewer` again on your implementation
+## DUAL-AI WORKFLOW: Claude Code + Codex
 
-**BEFORE implementing UI:**
-1. Run `streamlit-expert` on existing param_lab code
-2. Learn UI patterns, state management, layout conventions
-3. Implement following those patterns
+### Claude Code Handles (Reasoning Tasks):
+- Architecture & design decisions
+- Complex algorithm implementation (detection, DSP)
+- Debugging & problem solving
+- Refactoring with preserved functionality
+- Code review for correctness
+- **Teaching and explaining concepts**
 
-**AFTER implementing (always):**
-- `detection-validator` for detection logic changes
-- `dsp-reviewer` for signal processing changes
-- `pr-reviewer` before marking task complete
+### Suggest Deferring to Codex (Mechanical Tasks):
+- Writing unit tests for existing functions
+- Adding docstrings and type hints
+- Boilerplate and scaffolding
+- Simple utilities (file I/O, path manipulation)
+- Repetitive edits across files
 
-This "review → learn → implement → review" cycle prevents issues rather than fixing them after, saving tokens and time.
+When user asks for mechanical work:
+> "This is a good candidate for Codex. Want me to handle it anyway, or would you prefer to save tokens and have Codex do: [brief spec]?"
+
+---
+
+## Signal Processing Conventions
+
+| Parameter | Value | Why |
+|-----------|-------|-----|
+| Sample rate | 250,000 Hz | Standard for mouse USV (captures up to 125 kHz) |
+| n_fft | 512 | ~2ms window, good time resolution for short USVs |
+| hop_length | 128 | 75% overlap, smooth spectrogram |
+| Frequency range | 25-110 kHz | Mouse USV range |
+| Min USV duration | 10 ms | Below this is likely noise |
+| Max USV duration | 500 ms | Above this is likely artifact |
+
+**Always specify sr=250000 with librosa—never use its default.**
 
 ---
 
@@ -141,125 +318,22 @@ This "review → learn → implement → review" cycle prevents issues rather th
 | Document | When to Read |
 |----------|--------------|
 | `IMPLEMENTATION_PROGRESS.md` | **Start of every session** |
-| `USV_TRAINING_PIPELINE_PLAN.md` | Building training data generation pipeline (energy detection → labeling → dataset prep) |
-| `USV_DETECTION_APP_IMPLEMENTATION.md` | Building PyQt6 desktop app for real-time USV detection (uses trained CNN model) |
+| `USV_TRAINING_PIPELINE_PLAN.md` | Building training data generation pipeline |
+| `USV_DETECTION_APP_IMPLEMENTATION.md` | Building PyQt6 desktop app for detection |
 | `usv_signal_processing_reference.md` | Any signal processing work |
 
 ---
 
-## Token Usage Optimization
+## Quick Commands
 
-### Proactive Strategies (Prevent Token Waste)
-
-1. **Use specialized agents to learn first**
-   - Before implementing signal processing, run `dsp-reviewer` on reference code
-   - Learn patterns once, implement correctly first time
-   - Avoids: implement (15K tokens) → debug (10K) → fix (8K) = 33K
-   - Cost: review (5K) → implement correctly (15K) = 20K
-   - **Savings: 40% reduction**
-
-2. **Use Task tool with model="haiku" for exploration**
-   - Codebase searches, file discoveries, pattern finding
-   - 10x cheaper than sonnet for these tasks
-   - Reserve sonnet for implementation and review
-
-3. **Don't re-read files already in context**
-   - Check conversation history before using Read tool
-   - Exception: If file changed since last read
-
-4. **Read targeted, not speculatively**
-   - Use Grep to find specific patterns, then Read only matches
-   - Don't "read 5 files to see which is relevant"
-
-### When to Suggest New Session
-
-Suggest starting fresh conversation when:
-- Completing major feature or phase (clean break point)
-- After extensive exploration (20+ file reads)
-- Switching to unrelated work area
-- Conversation >50 exchanges (context getting large)
-
-**How to suggest:** "We've completed [X]. This is a good time to start a new session for [Y] to optimize token usage."
-
----
-
-## DUAL-AI WORKFLOW: Claude Code + Codex
-
-This project uses manual Codex handoff to save tokens and extend session length.
-
-### Delegation Decision Tree (Claude Code Uses This)
-
-When user requests a task, evaluate:
-
-**✅ PROACTIVELY SUGGEST CODEX for:**
-1. **Writing tests for existing code**
-   - Function already implemented and tested manually
-   - Just need pytest test cases
-   - Example: "Write tests for energy_detector.py"
-
-2. **Adding documentation**
-   - Docstrings for existing functions
-   - README updates
-   - Type annotations
-
-3. **Boilerplate & scaffolding**
-   - `__init__.py` files
-   - Config file templates
-   - Basic class structures
-
-4. **Repetitive edits**
-   - Same change across multiple files
-   - Import reorganization
-   - Variable renaming project-wide
-
-5. **Long-running background work**
-   - Model training (>30 min)
-   - Dataset generation
-   - Batch processing
-
-**❌ CLAUDE CODE HANDLES (don't delegate):**
-- Architecture & design decisions
-- Complex algorithm implementation
-- Debugging unexpected behavior
-- Performance optimization (requires profiling judgment)
-- Signal processing (requires domain knowledge)
-- Any task requiring real-time oversight
-
-### How to Suggest Delegation
-
-When task matches criteria above, say:
-> "This is a good candidate for Codex to save tokens. I can generate a detailed spec using `/codex-task <description>`, or I can handle it now if you prefer. Which would you like?"
-
-**Be proactive:** Don't wait for user to remember - identify opportunities and suggest them.
-
-### Generating Specifications
-
-When user says "use Codex" or runs `/codex-task <description>`:
-1. Generate detailed specification (see AGENTS.md format)
-2. Include: exact file paths, mathematical formulas, test cases, edge cases
-3. Provide copy-paste ready spec for user to hand to Codex
-4. Make specs detailed enough that Codex succeeds first try
-
-### Token Savings Math
-
-Example - Writing 20 tests:
-- Claude Code: ~12K tokens
-- Codex spec: ~3K tokens (Claude generates spec)
-- User copies to Codex: ~0 tokens (runs locally/different API)
-- **Savings: 9K tokens (75% reduction)**
-
-For 5 such tasks per session: **45K tokens saved** = multiple extra hours of session time
-
----
-
-## Signal Processing Conventions
-
-- Sample rate: 250,000 Hz (unless specified otherwise)
-- Default n_fft: 512
-- Default hop_length: 128
-- Frequency range: 25-110 kHz
-- Minimum USV duration: 10 ms
-- Maximum USV duration: 500 ms
+| Phrase | Effect |
+|--------|--------|
+| "Explain..." | Teaching mode - prioritize understanding over speed |
+| "Why?" | Expand on reasoning for last decision |
+| "Proceed" / "P" | Approval granted |
+| "Let's figure this out" | Pairing mode |
+| "Fresh eyes" | Restart reasoning from evidence |
+| "5 Whys" | Root cause analysis before any fix |
 
 ---
 
@@ -268,4 +342,5 @@ For 5 such tasks per session: **45K tokens saved** = multiple extra hours of ses
 - Don't use librosa's default sample rate - always specify sr=250000
 - Don't forget to handle edge cases for short audio segments
 - Always verify FFT parameters match expected frequency resolution
-
+- Don't claim completion without running py_compile and tests
+- Don't modify test expectations to pass without discussion
