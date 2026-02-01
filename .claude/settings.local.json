@@ -108,7 +108,20 @@
       "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile \"src\\\\usv_spectrogram\\\\app\\\\main_window.py\")",
       "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -c \"with open\\(''IMPLEMENTATION_PROGRESS.md'', ''r'', encoding=''utf-8''\\) as f: lines = f.readlines\\(\\); print\\(''''.join\\(lines[-100:]\\)\\)\")",
       "Bash(./.venv/Scripts/python.exe:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(measure-object:*)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/batch_detect_for_clustering.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m pip install umap-learn hdbscan tqdm)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile src/usv_spectrogram/clustering/feature_extractor.py scripts/clustering_extract_features.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile src/usv_spectrogram/clustering/visualizer.py scripts/clustering_visualize.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile src/usv_spectrogram/clustering/clusterer.py scripts/clustering_cluster.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile src/usv_spectrogram/clustering/analyzer.py scripts/clustering_analyze.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/test_cnn_on_new_data.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/test_cnn_on_new_data.py scripts/batch_detect_for_clustering.py)",
+      "Bash(readlink:*)",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m py_compile scripts/batch_detect_for_clustering.py\")",
+      "Bash(cmd /c \"del scripts\\\\test_cnn_on_new_data.py\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts/batch_detect_for_clustering.py --help\")"
     ],
     "deny": [
       "Read(.env)",
