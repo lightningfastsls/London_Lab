@@ -15,3 +15,7 @@ outputs/
 .idea/
 *.txt
 nul
+
+# Local working dirs
+USV_*/
+tmp/
