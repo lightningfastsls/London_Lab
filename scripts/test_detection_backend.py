@@ -34,8 +34,8 @@ def main():
     )
     parser.add_argument(
         "--model",
-        default="checkpoints/best_model.pt",
-        help="Path to trained CNN model (default: checkpoints/best_model.pt)"
+        default="models/production/best_model.pt",
+        help="Path to trained CNN model (default: models/production/best_model.pt)"
     )
     parser.add_argument(
         "--threshold",
@@ -119,7 +119,8 @@ def main():
     detector = HysteresisDetector(
         high_threshold=args.threshold,
         low_threshold=None,  # Auto: 0.7 × high
-        merge_gap_columns=3
+        merge_gap_columns=3,
+        min_sustained_prob=0.0  # Disabled for retrained model (outputs 0.05-0.16 range)
     )
     detection_result = detector.detect(
         inference_result.probabilities,

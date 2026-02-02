@@ -2,10 +2,10 @@
 
 Usage:
     # Single image
-    python scripts/predict.py --model checkpoints/best_model.pt --image path/to/spectrogram.png
+    python scripts/predict.py --model models/production/best_model.pt --image path/to/spectrogram.png
 
     # Batch prediction from CSV
-    python scripts/predict.py --model checkpoints/best_model.pt --csv candidates.csv --output predictions.csv
+    python scripts/predict.py --model models/production/best_model.pt --csv candidates.csv --output predictions.csv
 """
 
 import argparse

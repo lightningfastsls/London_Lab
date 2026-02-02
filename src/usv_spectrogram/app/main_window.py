@@ -96,9 +96,11 @@ class MainWindow(QMainWindow):
                                                     str(Path.home() / "USV_Detections")))
 
         # Detection parameters (load from settings)
-        self.high_threshold = self.settings.value("high_threshold", 0.40, type=float)
-        self.low_threshold = self.settings.value("low_threshold", 0.28, type=float)
-        self.min_sustained_prob = self.settings.value("min_sustained_prob", 0.82, type=float)
+        # Updated to use thresholds from full retraining (Session 19 & 20)
+        # Retrained model outputs conservative probabilities (0.05-0.16 range)
+        self.high_threshold = self.settings.value("high_threshold", 0.10, type=float)
+        self.low_threshold = self.settings.value("low_threshold", 0.05, type=float)
+        self.min_sustained_prob = self.settings.value("min_sustained_prob", 0.0, type=float)  # Disabled: retrained model has low probs
         self.exclude_start_sec = self.settings.value("exclude_start_sec", 0.5, type=float)
         self.exclude_end_sec = self.settings.value("exclude_end_sec", 0.5, type=float)
 

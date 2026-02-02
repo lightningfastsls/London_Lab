@@ -18,14 +18,14 @@ class USVClassifierCNN(nn.Module):
     Args:
         num_filters: Number of filters in each conv layer (default: [32, 64, 128])
         dropout_rate: Dropout probability in classifier head (default: 0.5)
-        optimal_threshold: Calibrated classification threshold (default: 0.40, with fixed padding to 512px)
+        optimal_threshold: Calibrated classification threshold (default: 0.05, from full retraining)
     """
 
     def __init__(
         self,
         num_filters: List[int] = None,
         dropout_rate: float = 0.5,
-        optimal_threshold: float = 0.40
+        optimal_threshold: float = 0.05
     ):
         super().__init__()
 

@@ -309,6 +309,17 @@ class SlidingInference:
         # Convert to torch tensor
         batch_tensor = torch.from_numpy(batch).float()
 
+        # CRITICAL FIX: Pad to 512px width to match training
+        # Training used variable-width spectrograms padded to 512px for batch consistency
+        # Even though CNN has global pooling, it was trained with padded inputs
+        MAX_WIDTH = 512
+        current_width = batch_tensor.shape[3]
+        if current_width < MAX_WIDTH:
+            pad_width = MAX_WIDTH - current_width
+            batch_tensor = torch.nn.functional.pad(
+                batch_tensor, (0, pad_width, 0, 0), value=0
+            )
+
         return batch_tensor
 
     def _normalize_window_to_training_distribution(self, window: np.ndarray) -> np.ndarray:

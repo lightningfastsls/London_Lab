@@ -1,0 +1,34 @@
+{
+  "model_path": "models\\experiment_random_negatives\\best_model.pt",
+  "test_csv": "spectrograms_training\\test.csv",
+  "usv_samples": {
+    "n_samples": 65,
+    "mean": 0.6244475372708761,
+    "median": 0.7148935198783875,
+    "std": 0.28724252962249025,
+    "min": 0.06454481929540634,
+    "max": 0.9796059727668762,
+    "pct_above_0.5": 63.07692307692307,
+    "pct_above_0.9": 23.076923076923077
+  },
+  "not_usv_samples": {
+    "n_samples": 97,
+    "mean": 0.11986505107059427,
+    "median": 0.04655223712325096,
+    "std": 0.190024939655911,
+    "min": 0.000193425701581873,
+    "max": 0.8636599183082581,
+    "pct_above_0.5": 5.154639175257731,
+    "pct_above_0.9": 0.0
+  },
+  "random_chunks": {
+    "n_samples": 100,
+    "mean": 3.3575274974232717e-07,
+    "median": 9.609252629716458e-12,
+    "std": 2.14354846891714e-06,
+    "min": 7.409085958686237e-14,
+    "max": 1.6598894944763742e-05,
+    "pct_above_0.5": 0.0,
+    "pct_above_0.9": 0.0
+  }
+}

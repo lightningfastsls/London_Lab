@@ -1,4 +1,4 @@
-"""Launch the USV Detection App."""
+"""Launch the USV Detection App with explicit import order."""
 
 import sys
 from pathlib import Path
@@ -7,9 +7,11 @@ from pathlib import Path
 repo_root = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(repo_root / "src"))
 
-# CRITICAL: Import torch before PyQt6 to avoid Windows DLL loading conflicts
+# Import torch FIRST (before PyQt6)
 import torch
+print(f"Loaded PyTorch {torch.__version__}")
 
+# Now import and run the app
 from usv_spectrogram.app.main import main
 
 if __name__ == "__main__":

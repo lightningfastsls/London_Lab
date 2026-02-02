@@ -280,7 +280,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Diagnose CNN batch detection issues")
-    parser.add_argument("--model", type=Path, default=Path("checkpoints/best_model.pt"))
+    parser.add_argument("--model", type=Path, default=Path("models/production/best_model.pt"))
     parser.add_argument("--test-csv", type=Path, default=Path("splits/test.csv"))
     parser.add_argument("--spec-dir", type=Path, default=Path("spectrograms_training"))
     parser.add_argument("--wav-dir", type=Path, default=Path("5970 USV"))

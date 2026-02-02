@@ -121,7 +121,13 @@
       "Bash(readlink:*)",
       "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m py_compile scripts/batch_detect_for_clustering.py\")",
       "Bash(cmd /c \"del scripts\\\\test_cnn_on_new_data.py\")",
-      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts/batch_detect_for_clustering.py --help\")"
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts/batch_detect_for_clustering.py --help\")",
+      "Bash(identify:*)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/generate_random_negatives.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/create_experiment_dataset.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/evaluate_experiment.py)",
+      "Bash(test:*)",
+      "Bash(powershell -Command:*)"
     ],
     "deny": [
       "Read(.env)",

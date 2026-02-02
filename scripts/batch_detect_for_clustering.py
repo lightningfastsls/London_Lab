@@ -139,7 +139,7 @@ def batch_detect_usvs(
     wav_dir: Path,
     model_path: Path,
     output_dir: Path,
-    threshold: float = 0.90,
+    threshold: float = 0.05,
     min_duration_ms: float = 10.0,
     max_duration_ms: float = 500.0,
     device: str = 'cpu',
@@ -333,8 +333,8 @@ def main():
     parser.add_argument(
         "--model",
         type=Path,
-        default=Path("checkpoints/best_model.pt"),
-        help="Path to trained CNN model (default: checkpoints/best_model.pt)"
+        default=Path("models/production/best_model.pt"),
+        help="Path to trained CNN model (default: models/production/best_model.pt)"
     )
     parser.add_argument(
         "--output-dir",
@@ -345,8 +345,8 @@ def main():
     parser.add_argument(
         "--threshold",
         type=float,
-        default=0.90,
-        help="Probability threshold for positive classification (default: 0.90)"
+        default=0.05,
+        help="Probability threshold for positive classification (default: 0.05, from full retraining)"
     )
     parser.add_argument(
         "--min-duration",

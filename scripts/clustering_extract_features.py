@@ -67,8 +67,8 @@ def main():
     parser.add_argument(
         "--model",
         type=Path,
-        default=Path("checkpoints/best_model.pt"),
-        help="Path to trained CNN model (default: checkpoints/best_model.pt)"
+        default=Path("models/production/best_model.pt"),
+        help="Path to trained CNN model (default: models/production/best_model.pt)"
     )
     parser.add_argument(
         "--labeled-csv-dir",

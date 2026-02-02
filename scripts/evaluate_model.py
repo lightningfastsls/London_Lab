@@ -1,7 +1,7 @@
 """Evaluate trained CNN model on test set.
 
 Usage:
-    python scripts/evaluate_model.py --model checkpoints/best_model.pt --test-csv splits/test.csv
+    python scripts/evaluate_model.py --model models/production/best_model.pt --test-csv splits/test.csv
 """
 
 import argparse
