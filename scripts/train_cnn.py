@@ -54,6 +54,12 @@ def main():
         help='Initial learning rate (default: 0.001)'
     )
     parser.add_argument(
+        '--weight-decay',
+        type=float,
+        default=1e-4,
+        help='Weight decay (L2 regularization) coefficient (default: 1e-4)'
+    )
+    parser.add_argument(
         '--num-epochs',
         type=int,
         default=100,
@@ -133,6 +139,7 @@ def main():
     print(f"Val CSV: {args.val_csv}")
     print(f"Batch size: {args.batch_size}")
     print(f"Learning rate: {args.learning_rate}")
+    print(f"Weight decay: {args.weight_decay}")
     print(f"Max epochs: {args.num_epochs}")
     print(f"Patience: {args.patience}")
     print(f"Dropout rate: {args.dropout_rate}")
@@ -170,6 +177,7 @@ def main():
         val_loader=val_loader,
         class_weights=class_weights if args.use_class_weights else None,
         learning_rate=args.learning_rate,
+        weight_decay=args.weight_decay,
         patience=args.patience,
         checkpoint_dir=args.output_dir,
         device=args.device

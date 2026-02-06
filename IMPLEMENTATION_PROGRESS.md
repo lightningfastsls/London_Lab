@@ -2480,3 +2480,64 @@ Early stopping marker (vertical line showing when training stopped early) - can 
 **Session Status:** ✅ COMPLETE - Training curves now automatically generated
 
 **Agents:** None
+
+---
+
+### Phase 4B: Weight Decay Integration (2026-02-06)
+
+**Objective:**
+Add L2 regularization (weight decay) support to help prevent overfitting as model size and dataset grow.
+
+**Context:**
+Weight decay penalizes large weights, encouraging smoother decision boundaries. Using AdamW optimizer which properly decouples weight decay from adaptive learning rate (unlike Adam where weight decay interferes with adaptive gradients).
+
+**Implementation:**
+
+1. **Modified Trainer Class** ✅
+   - Added `weight_decay` parameter to `__init__` (default 1e-4)
+   - Changed `torch.optim.Adam` → `torch.optim.AdamW` for proper weight decay implementation
+   - Stored weight_decay as instance variable
+   - Updated docstring
+
+2. **Modified Training Script** ✅
+   - Added `--weight-decay` argument (default 1e-4, type float)
+   - Passed weight_decay to Trainer initialization
+   - Added weight decay to configuration printout
+
+**Files Modified:**
+- ✅ `src/usv_spectrogram/models/trainer.py` (added weight_decay parameter, changed to AdamW)
+- ✅ `scripts/train_cnn.py` (added --weight-decay CLI argument)
+
+**Verification:**
+```powershell
+# Syntax check
+.\.venv\Scripts\python.exe -m py_compile src/usv_spectrogram/models/trainer.py
+.\.venv\Scripts\python.exe -m py_compile scripts/train_cnn.py
+# Result: Both compile without errors ✓
+
+# Help text verification
+.\.venv\Scripts\python.exe scripts/train_cnn.py --help
+# Result: --weight-decay parameter visible with correct default (1e-4) ✓
+```
+
+**Usage:**
+```powershell
+# Use default weight decay (1e-4)
+python scripts/train_cnn.py --train-csv splits/train.csv --val-csv splits/val.csv
+
+# Custom weight decay
+python scripts/train_cnn.py --weight-decay 1e-3 ...
+
+# Disable weight decay
+python scripts/train_cnn.py --weight-decay 0.0 ...
+```
+
+**Benefits:**
+- ✅ Helps prevent overfitting as model capacity increases
+- ✅ Backward compatible (default behavior includes mild regularization)
+- ✅ Can be disabled by setting to 0.0
+- ✅ Uses AdamW (superior to Adam for weight decay)
+
+**Session Status:** ✅ COMPLETE - Weight decay integrated
+
+**Agents:** None

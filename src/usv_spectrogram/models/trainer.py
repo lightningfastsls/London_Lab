@@ -49,6 +49,7 @@ class Trainer:
         val_loader: DataLoader for validation set
         class_weights: Optional class weights for imbalanced data
         learning_rate: Initial learning rate
+        weight_decay: Weight decay (L2 regularization) coefficient
         patience: Early stopping patience (epochs)
         min_delta: Minimum improvement for early stopping
         lr_scheduler_patience: ReduceLROnPlateau patience
@@ -64,6 +65,7 @@ class Trainer:
         val_loader,
         class_weights: Optional[Dict[int, float]] = None,
         learning_rate: float = 0.001,
+        weight_decay: float = 1e-4,
         patience: int = 15,
         min_delta: float = 0.001,
         lr_scheduler_patience: int = 5,
@@ -75,6 +77,7 @@ class Trainer:
         self.train_loader = train_loader
         self.val_loader = val_loader
         self.learning_rate = learning_rate
+        self.weight_decay = weight_decay
         self.patience = patience
         self.min_delta = min_delta
         self.checkpoint_dir = Path(checkpoint_dir)
@@ -98,10 +101,11 @@ class Trainer:
         else:
             self.criterion = nn.BCEWithLogitsLoss()
 
-        # Optimizer
-        self.optimizer = torch.optim.Adam(
+        # Optimizer: AdamW for proper weight decay implementation
+        self.optimizer = torch.optim.AdamW(
             self.model.parameters(),
-            lr=learning_rate
+            lr=learning_rate,
+            weight_decay=weight_decay
         )
 
         # Learning rate scheduler
