@@ -7,7 +7,7 @@ from typing import Optional, List
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QScrollArea
-from PyQt6.QtGui import QPainter, QPixmap, QImage, QPen, QColor
+from PyQt6.QtGui import QPainter, QPixmap, QImage, QPen, QColor, QMouseEvent, QKeyEvent
 from PyQt6.QtCore import Qt, QRect, pyqtSignal
 
 from ..core.detection_logic import DetectedUSV
@@ -16,18 +16,36 @@ from ..core.detection_logic import DetectedUSV
 class SpectrogramCanvas(QWidget):
     """Canvas for drawing spectrogram with detection overlays."""
 
+    # Signal emitted when user adjusts detection boundary
+    boundary_adjusted = pyqtSignal(object, float, float)  # (detection, new_start, new_end)
+
     def __init__(self):
         super().__init__()
         self.pixmap: Optional[QPixmap] = None
         self.detections: List[DetectedUSV] = []
         self.times: Optional[np.ndarray] = None
+        self.total_columns: int = 0  # Total spectrogram columns for pixel-perfect alignment
         self.setMinimumHeight(150)  # Reduced for compact layout
+
+        # Enable mouse tracking for hover cursor feedback
+        self.setMouseTracking(True)
+
+        # Enable keyboard focus for Escape key handling
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+        # Detection boundary adjustment state
+        self._selected_detection: Optional[DetectedUSV] = None
+        self._selected_detection_idx: Optional[int] = None  # Track by index, not reference
+        self._dragging_edge: Optional[str] = None  # 'start' or 'end'
+        self._original_time: Optional[float] = None  # For cancel/undo
+        self._is_dragging: bool = False
 
     def set_data(
         self,
         spectrogram_db: np.ndarray,
         times: np.ndarray,
-        frequencies: np.ndarray
+        frequencies: np.ndarray,
+        total_columns: int = 0
     ):
         """Set spectrogram data and render to pixmap.
 
@@ -35,8 +53,10 @@ class SpectrogramCanvas(QWidget):
             spectrogram_db: Spectrogram in dB, shape (freqs, times)
             times: Time values in seconds
             frequencies: Frequency values in Hz
+            total_columns: Total spectrogram columns for coordinate mapping
         """
         self.times = times
+        self.total_columns = total_columns if total_columns > 0 else spectrogram_db.shape[1]
 
         # Convert spectrogram to RGB image
         img = self._spectrogram_to_image(spectrogram_db)
@@ -67,6 +87,13 @@ class SpectrogramCanvas(QWidget):
             detections: List of detected USV events
         """
         self.detections = detections
+
+        # If currently dragging, update the selected detection reference
+        # to point to the updated object at the same index
+        if self._is_dragging and self._selected_detection_idx is not None:
+            if 0 <= self._selected_detection_idx < len(self.detections):
+                self._selected_detection = self.detections[self._selected_detection_idx]
+
         self.update()
 
     def _spectrogram_to_image(self, spec_db: np.ndarray) -> np.ndarray:
@@ -121,11 +148,11 @@ class SpectrogramCanvas(QWidget):
         painter.drawPixmap(0, 0, self.pixmap)
 
         # Draw detection boundaries
-        if self.detections and self.times is not None:
+        if self.detections and self.total_columns > 0:
             for usv in self.detections:
-                # Convert time to pixel coordinate
-                start_x = self._time_to_pixel(usv.start_time_s)
-                end_x = self._time_to_pixel(usv.end_time_s)
+                # Convert column index to pixel coordinate (pixel-perfect alignment)
+                start_x = self._col_to_pixel(usv.start_col)
+                end_x = self._col_to_pixel(usv.end_col)
 
                 # Draw start line (bright green, solid)
                 pen = QPen(QColor(0, 255, 0), 2, Qt.PenStyle.SolidLine)
@@ -135,6 +162,16 @@ class SpectrogramCanvas(QWidget):
                 # Draw end line (cyan for visibility on magma, dashed)
                 pen = QPen(QColor(0, 255, 255), 2, Qt.PenStyle.DashLine)
                 painter.setPen(pen)
+                painter.drawLine(end_x, 0, end_x, self.height())
+
+        # Highlight selected detection boundary
+        if self._selected_detection is not None and self.total_columns > 0:
+            painter.setPen(QPen(QColor(255, 255, 0), 3))  # Yellow highlight
+            if self._dragging_edge == 'start':
+                start_x = self._col_to_pixel(self._selected_detection.start_col)
+                painter.drawLine(start_x, 0, start_x, self.height())
+            else:
+                end_x = self._col_to_pixel(self._selected_detection.end_col)
                 painter.drawLine(end_x, 0, end_x, self.height())
 
         painter.end()
@@ -158,6 +195,187 @@ class SpectrogramCanvas(QWidget):
             return int(fraction * self.width())
 
         return 0
+
+    def _pixel_to_time(self, x: int) -> float:
+        """Convert pixel x-coordinate to time in seconds.
+
+        Args:
+            x: Pixel x-coordinate
+
+        Returns:
+            Time in seconds
+        """
+        if self.times is None or len(self.times) == 0:
+            return 0.0
+
+        t_min, t_max = self.times[0], self.times[-1]
+
+        if t_max <= t_min:
+            return t_min
+
+        width = self.width()
+        if width == 0:
+            return t_min
+
+        fraction = x / width
+        return t_min + fraction * (t_max - t_min)
+
+    def _col_to_pixel(self, col_idx: int) -> int:
+        """Convert column index to pixel x-coordinate (pixel-perfect alignment).
+
+        Args:
+            col_idx: Column index in spectrogram
+
+        Returns:
+            Pixel x-coordinate
+        """
+        if self.total_columns <= 0:
+            return 0
+        return int((col_idx / self.total_columns) * self.width())
+
+    def mousePressEvent(self, event: QMouseEvent):
+        """Handle mouse click to select detection boundary."""
+        if event.button() != Qt.MouseButton.LeftButton:
+            return
+
+        if self.detections is None:
+            return
+
+        click_x = event.position().x()
+
+        # Check if click is near any detection boundary (5px tolerance)
+        for usv in self.detections:
+            start_x = self._col_to_pixel(usv.start_col)
+            end_x = self._col_to_pixel(usv.end_col)
+
+            if abs(click_x - start_x) < 5:
+                # Find index of this detection in the list
+                try:
+                    detection_idx = self.detections.index(usv)
+                except ValueError:
+                    return  # Detection not in list
+
+                self._selected_detection = usv
+                self._selected_detection_idx = detection_idx  # Store index
+                self._dragging_edge = 'start'
+                self._original_time = usv.start_time_s
+                self._is_dragging = True
+                self.setFocus()  # Ensure keyboard events are received
+                self.setCursor(Qt.CursorShape.SizeHorCursor)
+                self.update()
+                return
+            elif abs(click_x - end_x) < 5:
+                # Find index of this detection in the list
+                try:
+                    detection_idx = self.detections.index(usv)
+                except ValueError:
+                    return  # Detection not in list
+
+                self._selected_detection = usv
+                self._selected_detection_idx = detection_idx  # Store index
+                self._dragging_edge = 'end'
+                self._original_time = usv.end_time_s
+                self._is_dragging = True
+                self.setFocus()  # Ensure keyboard events are received
+                self.setCursor(Qt.CursorShape.SizeHorCursor)
+                self.update()
+                return
+
+        # Click not near any boundary - clear selection
+        self._selected_detection = None
+        self._dragging_edge = None
+        self.unsetCursor()
+        self.update()
+
+    def mouseMoveEvent(self, event: QMouseEvent):
+        """Handle drag to adjust boundary position."""
+        if not self._is_dragging or self._selected_detection is None:
+            # Not dragging - check if hovering near boundary for cursor feedback
+            if self.detections is not None:
+                x = event.position().x()
+                near_boundary = False
+                for usv in self.detections:
+                    start_x = self._col_to_pixel(usv.start_col)
+                    end_x = self._col_to_pixel(usv.end_col)
+                    if abs(x - start_x) < 5 or abs(x - end_x) < 5:
+                        near_boundary = True
+                        break
+
+                if near_boundary:
+                    self.setCursor(Qt.CursorShape.SizeHorCursor)
+                else:
+                    self.unsetCursor()
+            return
+
+        # Calculate new time from mouse position
+        new_time = self._pixel_to_time(int(event.position().x()))
+
+        # Validation: prevent start >= end
+        if self._dragging_edge == 'start':
+            if new_time >= self._selected_detection.end_time_s:
+                new_time = self._selected_detection.end_time_s - 0.001  # Min 1ms duration
+        else:  # dragging end
+            if new_time <= self._selected_detection.start_time_s:
+                new_time = self._selected_detection.start_time_s + 0.001
+
+        # Clamp to valid time range
+        if self.times is not None and len(self.times) > 0:
+            new_time = max(self.times[0], min(self.times[-1], new_time))
+
+        # Emit signal for MainWindow to update data
+        # (Don't modify detection here - MainWindow owns the data)
+        if self._dragging_edge == 'start':
+            self.boundary_adjusted.emit(
+                self._selected_detection,
+                new_time,
+                self._selected_detection.end_time_s
+            )
+        else:
+            self.boundary_adjusted.emit(
+                self._selected_detection,
+                self._selected_detection.start_time_s,
+                new_time
+            )
+
+    def mouseReleaseEvent(self, event: QMouseEvent):
+        """Finalize boundary adjustment."""
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._is_dragging = False
+            self._selected_detection_idx = None  # Clear index tracking
+            # Keep selection but stop dragging
+            # User can press Escape to clear selection
+
+    def keyPressEvent(self, event: QKeyEvent):
+        """Handle keyboard shortcuts for boundary adjustment."""
+        if event.key() == Qt.Key.Key_Escape:
+            if self._selected_detection is not None:
+                # Cancel adjustment - restore original
+                if self._original_time is not None:
+                    if self._dragging_edge == 'start':
+                        self.boundary_adjusted.emit(
+                            self._selected_detection,
+                            self._original_time,
+                            self._selected_detection.end_time_s
+                        )
+                    else:
+                        self.boundary_adjusted.emit(
+                            self._selected_detection,
+                            self._selected_detection.start_time_s,
+                            self._original_time
+                        )
+
+                # Clear selection
+                self._is_dragging = False
+                self._selected_detection = None
+                self._selected_detection_idx = None  # Clear index tracking
+                self._dragging_edge = None
+                self._original_time = None
+                self.unsetCursor()
+                self.update()
+                event.accept()
+                return
+
+        super().keyPressEvent(event)
 
 
 class SpectrogramView(QWidget):
@@ -204,10 +422,11 @@ class SpectrogramView(QWidget):
         self,
         spectrogram_db: np.ndarray,
         times: np.ndarray,
-        frequencies: np.ndarray
+        frequencies: np.ndarray,
+        total_columns: int = 0
     ):
         """Set spectrogram data."""
-        self.canvas.set_data(spectrogram_db, times, frequencies)
+        self.canvas.set_data(spectrogram_db, times, frequencies, total_columns)
 
     def set_detections(self, detections: List[DetectedUSV]):
         """Set detection overlays."""

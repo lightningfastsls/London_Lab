@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
+import numpy as np
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QSettings
 from PyQt6.QtWidgets import (
     QMainWindow,
@@ -25,12 +26,16 @@ from PyQt6.QtGui import QAction, QKeyEvent, QShortcut, QKeySequence
 
 from .core.audio_loader import AudioLoader, AudioData
 from .core.sliding_inference import SlidingInference, InferenceResult
-from .core.detection_logic import HysteresisDetector, DetectionResult
+from .core.detection_logic import HysteresisDetector, DetectionResult, DetectedUSV
 from .core.label_storage import LabelStorage
 from .core.saved_detection_tracker import SavedDetectionTracker
 from .core.detection_exporter import DetectionExporter
 from .widgets.spectrogram_view import SpectrogramView
 from .widgets.probability_view import ProbabilityView
+
+# App version for settings migration
+# Increment when default settings change
+APP_VERSION = "1.1.0"  # Bumped for threshold changes (2026-02-06)
 
 
 class InferenceWorker(QThread):
@@ -89,18 +94,42 @@ class MainWindow(QMainWindow):
         # Settings
         self.settings = QSettings("USV Lab", "USV Detection")
 
+        # Settings migration: Reset specific settings when version changes
+        last_version = self.settings.value("app_version", "0.0.0", type=str)
+
+        if last_version != APP_VERSION:
+            print(f"[Settings Migration] Version changed: {last_version} → {APP_VERSION}")
+            print("[Settings Migration] Resetting detection parameters...")
+
+            # Reset detection thresholds to new defaults
+            self.settings.remove("high_threshold")      # Forces reload: 0.04
+            self.settings.remove("low_threshold")       # Forces reload: 0.03
+            self.settings.remove("min_sustained_prob")  # Forces reload: 0.0
+
+            # Reset output directory to project folder
+            self.settings.remove("detection_output_dir")
+
+            # Preserve window geometry (user customization)
+            # DO NOT remove: window_geometry, window_state
+
+            # Update version marker
+            self.settings.setValue("app_version", APP_VERSION)
+            print("[Settings Migration] Complete. Using new defaults.")
+
         # Detection saving
         self.detection_exporter: Optional[DetectionExporter] = None
         self.saved_tracker: Optional[SavedDetectionTracker] = None
-        self.output_dir = Path(self.settings.value("detection_output_dir",
-                                                    str(Path.home() / "USV_Detections")))
+        # Default output dir: project folder instead of home directory
+        repo_root = Path(__file__).resolve().parents[3]
+        default_output = str(repo_root / "USV_Detections")
+        self.output_dir = Path(self.settings.value("detection_output_dir", default_output))
 
         # Detection parameters (load from settings)
-        # Updated to use thresholds from full retraining (Session 19 & 20)
-        # Retrained model outputs conservative probabilities (0.05-0.16 range)
-        self.high_threshold = self.settings.value("high_threshold", 0.10, type=float)
-        self.low_threshold = self.settings.value("low_threshold", 0.05, type=float)
-        self.min_sustained_prob = self.settings.value("min_sustained_prob", 0.0, type=float)  # Disabled: retrained model has low probs
+        # Updated defaults per user request (2026-02-06)
+        # Lower thresholds to catch more USVs, continuity disabled
+        self.high_threshold = self.settings.value("high_threshold", 0.04, type=float)
+        self.low_threshold = self.settings.value("low_threshold", 0.03, type=float)
+        self.min_sustained_prob = self.settings.value("min_sustained_prob", 0.0, type=float)  # Continuity disabled
         self.exclude_start_sec = self.settings.value("exclude_start_sec", 0.5, type=float)
         self.exclude_end_sec = self.settings.value("exclude_end_sec", 0.5, type=float)
 
@@ -154,9 +183,17 @@ class MainWindow(QMainWindow):
         self.setStatusBar(self.statusBar)
         self.statusBar.showMessage("Ready")
 
+        # Add persistent file info label
+        self.file_info_label = QLabel("No file loaded")
+        self.file_info_label.setStyleSheet("QLabel { color: #555; margin-right: 10px; }")
+        self.statusBar.addPermanentWidget(self.file_info_label)
+
         # Connect scroll synchronization - one scrollbar controls both views
         # Only spectrogram scrollbar is visible, it controls probability view
         self.spectrogram_view.scroll_changed.connect(self.probability_view.set_scroll_position)
+
+        # Connect boundary adjustment signal
+        self.spectrogram_view.canvas.boundary_adjusted.connect(self._on_boundary_adjusted)
 
         # Setup keyboard shortcuts
         self._setup_keyboard_shortcuts()
@@ -176,6 +213,7 @@ class MainWindow(QMainWindow):
         save_action = QAction("&Save Labels...", self)
         save_action.setShortcut("Ctrl+S")
         save_action.triggered.connect(self._save_labels)
+        save_action.setStatusTip("Save all detections to single JSON with adjustment history")
         file_menu.addAction(save_action)
 
         export_action = QAction("&Export Image...", self)
@@ -211,14 +249,20 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.detect_btn)
 
         # Save buttons
-        self.save_current_btn = QPushButton("Save Current View")
+        self.save_current_btn = QPushButton("Export Current View")
         self.save_current_btn.clicked.connect(self._save_current_view)
         self.save_current_btn.setEnabled(False)
+        self.save_current_btn.setToolTip(
+            "Export visible detections as individual PNG/JSON files (visualization format)"
+        )
         layout.addWidget(self.save_current_btn)
 
-        self.save_all_btn = QPushButton("Save All Detections")
+        self.save_all_btn = QPushButton("Export All as PNGs")
         self.save_all_btn.clicked.connect(self._save_all_detections)
         self.save_all_btn.setEnabled(False)
+        self.save_all_btn.setToolTip(
+            "Export all detections as individual PNG/JSON files (visualization format)"
+        )
         layout.addWidget(self.save_all_btn)
 
         layout.addStretch()
@@ -320,12 +364,40 @@ class MainWindow(QMainWindow):
 
     def _on_high_threshold_changed(self, value: int):
         """Handle high threshold slider change."""
-        self.high_threshold = value / 100.0
+        new_high = value / 100.0
+
+        # Validate: high threshold must be >= low threshold
+        if new_high < self.low_threshold:
+            QMessageBox.warning(
+                self,
+                "Invalid Threshold",
+                f"High threshold ({new_high:.2f}) must be ≥ low threshold ({self.low_threshold:.2f}).\n\n"
+                "Please adjust low threshold first."
+            )
+            # Revert slider to previous valid value
+            self.high_threshold_slider.setValue(int(self.high_threshold * 100))
+            return
+
+        self.high_threshold = new_high
         self.high_threshold_label.setText(f"{self.high_threshold:.2f}")
 
     def _on_low_threshold_changed(self, value: int):
         """Handle low threshold slider change."""
-        self.low_threshold = value / 100.0
+        new_low = value / 100.0
+
+        # Validate: low threshold must be <= high threshold
+        if new_low > self.high_threshold:
+            QMessageBox.warning(
+                self,
+                "Invalid Threshold",
+                f"Low threshold ({new_low:.2f}) must be ≤ high threshold ({self.high_threshold:.2f}).\n\n"
+                "Please adjust high threshold first."
+            )
+            # Revert slider to previous valid value
+            self.low_threshold_slider.setValue(int(self.low_threshold * 100))
+            return
+
+        self.low_threshold = new_low
         self.low_threshold_label.setText(f"{self.low_threshold:.2f}")
 
     def _on_min_sustained_prob_changed(self, value: int):
@@ -349,6 +421,9 @@ class MainWindow(QMainWindow):
         if not self._check_unsaved_detections():
             return  # User cancelled
 
+        # Show loading state
+        self.file_info_label.setText("Loading...")
+
         file_path, _ = QFileDialog.getOpenFileName(
             self,
             "Open WAV File",
@@ -368,11 +443,16 @@ class MainWindow(QMainWindow):
             self.audio_data = audio_loader.load(wav_path)
             self.current_wav_path = wav_path
 
-            # Display spectrogram
+            # Update file info display
+            self.file_info_label.setText(f"File: {wav_path.name}")
+
+            # Display spectrogram with total_columns for pixel-perfect alignment
+            total_columns = self.audio_data.spectrogram_db.shape[1]
             self.spectrogram_view.set_data(
                 self.audio_data.spectrogram_db,
                 self.audio_data.times,
-                self.audio_data.frequencies
+                self.audio_data.frequencies,
+                total_columns=total_columns
             )
 
             # Enable detection button
@@ -474,6 +554,86 @@ class MainWindow(QMainWindow):
         # Update info label
         n_detections = len(self.detection_result.usvs)
         self.detection_info_label.setText(f"Detected: {n_detections} USVs")
+
+    def _on_boundary_adjusted(self, original_detection, new_start: float, new_end: float):
+        """Handle boundary adjustment from SpectrogramCanvas.
+
+        Args:
+            original_detection: The DetectedUSV being adjusted
+            new_start: New start time in seconds
+            new_end: New end time in seconds
+        """
+        if self.detection_result is None or self.inference_result is None:
+            return
+
+        # Find index of original detection
+        try:
+            idx = self.detection_result.usvs.index(original_detection)
+        except ValueError:
+            return  # Detection not found
+
+        # Convert times to column indices
+        # Use times from inference result to map time -> column
+        times = self.inference_result.times
+
+        def time_to_col(time_s: float) -> int:
+            """Convert time to column index."""
+            if len(times) == 0:
+                return 0
+            # Find nearest column
+            col_idx = np.argmin(np.abs(times - time_s))
+            return int(col_idx)
+
+        new_start_col = time_to_col(new_start)
+        new_end_col = time_to_col(new_end)
+
+        # Create new DetectedUSV with adjusted boundaries
+        # Preserve probability metadata from original
+        # Track adjustment history
+        adjusted_usv = DetectedUSV(
+            start_time_s=new_start,
+            end_time_s=new_end,
+            start_col=new_start_col,
+            end_col=new_end_col,
+            max_probability=original_detection.max_probability,
+            mean_probability=original_detection.mean_probability,
+            user_adjusted=True,
+            original_start_time_s=(
+                original_detection.start_time_s
+                if not original_detection.user_adjusted
+                else original_detection.original_start_time_s
+            ),
+            original_end_time_s=(
+                original_detection.end_time_s
+                if not original_detection.user_adjusted
+                else original_detection.original_end_time_s
+            )
+        )
+
+        # Replace in detection result
+        self.detection_result.usvs[idx] = adjusted_usv
+
+        # Redraw both views with updated detections
+        self.spectrogram_view.set_detections(self.detection_result.usvs)
+
+        spectrogram_width = self.spectrogram_view.get_canvas_width()
+        self.probability_view.set_data(
+            self.detection_result.times,
+            self.detection_result.probabilities,
+            self.high_threshold,
+            self.low_threshold,
+            self.detection_result.usvs,
+            column_indices=self.detection_result.column_indices,
+            target_width=spectrogram_width
+        )
+
+        # Show status message with updated duration
+        duration_ms = (new_end - new_start) * 1000
+        self.statusBar.showMessage(
+            f"Adjusted detection: {new_start:.3f}s - {new_end:.3f}s "
+            f"(duration: {duration_ms:.1f}ms)",
+            3000
+        )
 
     def _save_labels(self):
         """Save detection results to JSON."""

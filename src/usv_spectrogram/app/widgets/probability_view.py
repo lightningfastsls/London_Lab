@@ -24,9 +24,19 @@ class ProbabilityCanvas(QWidget):
         self.high_threshold: float = 0.40
         self.low_threshold: float = 0.28
         self.detections: List[DetectedUSV] = []
+        self._scroll_offset: int = 0  # Horizontal scroll offset for sticky Y-axis labels
 
         self.setMinimumHeight(200)
         self.setMinimumWidth(800)
+
+    def set_scroll_offset(self, offset: int):
+        """Update scroll offset for Y-axis label positioning.
+
+        Args:
+            offset: Horizontal scroll position in pixels
+        """
+        self._scroll_offset = offset
+        self.update()
 
     def set_data(
         self,
@@ -94,10 +104,10 @@ class ProbabilityCanvas(QWidget):
         # Draw background
         painter.fillRect(0, 0, width, height, QColor(255, 255, 255))
 
-        # Draw detection regions (shaded)
+        # Draw detection regions (shaded) - use column indices for pixel-perfect alignment
         for usv in self.detections:
-            start_x = self._time_to_x(usv.start_time_s, margin_left, draw_width)
-            end_x = self._time_to_x(usv.end_time_s, margin_left, draw_width)
+            start_x = self._col_to_x(usv.start_col, margin_left, draw_width)
+            end_x = self._col_to_x(usv.end_col, margin_left, draw_width)
 
             painter.fillRect(
                 int(start_x),
@@ -155,10 +165,10 @@ class ProbabilityCanvas(QWidget):
         pen = QPen(QColor(0, 0, 0), 1)
         painter.setPen(pen)
 
-        # Y-axis labels (in top margin area)
+        # Y-axis labels (sticky - adjust for scroll position)
         for p in [0.0, 0.5, 1.0]:
             y = self._prob_to_y(p, margin_top, draw_height)
-            painter.drawText(5, int(y) + 5, f"{p:.1f}")
+            painter.drawText(self._scroll_offset + 5, int(y) + 5, f"{p:.1f}")
 
         # X-axis labels (time) - only show at edges to avoid clutter
         t_min, t_max = self.times[0], self.times[-1]
@@ -247,8 +257,10 @@ class ProbabilityView(QWidget):
 
         self.setMinimumHeight(200)
 
-        # Note: scroll_changed signal not used since scrollbar is hidden
-        # Kept for potential future use
+        # Connect scroll to update Y-axis label position
+        self.scroll_area.horizontalScrollBar().valueChanged.connect(
+            self.canvas.set_scroll_offset
+        )
 
     def set_data(
         self,
