@@ -17,6 +17,7 @@ class USVClassifierCNN(nn.Module):
 
     Args:
         num_filters: Number of filters in each conv layer (default: [32, 64, 128])
+        dense_units: Number of units in the dense layer (default: 64)
         dropout_rate: Dropout probability in classifier head (default: 0.5)
         optimal_threshold: Calibrated classification threshold (default: 0.05, from full retraining)
     """
@@ -24,6 +25,7 @@ class USVClassifierCNN(nn.Module):
     def __init__(
         self,
         num_filters: List[int] = None,
+        dense_units: int = 64,
         dropout_rate: float = 0.5,
         optimal_threshold: float = 0.05
     ):
@@ -33,6 +35,7 @@ class USVClassifierCNN(nn.Module):
             num_filters = [32, 64, 128]
 
         self.num_filters = num_filters
+        self.dense_units = dense_units
         self.dropout_rate = dropout_rate
         self.optimal_threshold = optimal_threshold
 
@@ -62,10 +65,10 @@ class USVClassifierCNN(nn.Module):
         # Classifier head (outputs logits, NOT probabilities)
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(num_filters[-1], 64),
+            nn.Linear(num_filters[-1], dense_units),
             nn.ReLU(inplace=True),
             nn.Dropout(dropout_rate),
-            nn.Linear(64, 1)  # Single logit output (NO sigmoid)
+            nn.Linear(dense_units, 1)  # Single logit output (NO sigmoid)
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

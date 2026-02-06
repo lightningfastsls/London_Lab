@@ -2541,3 +2541,80 @@ python scripts/train_cnn.py --weight-decay 0.0 ...
 **Session Status:** ✅ COMPLETE - Weight decay integrated
 
 **Agents:** None
+
+---
+
+### Phase 4C: Model Scaling Preparation (2026-02-06)
+
+**Objective:**
+Add configurable model size options (small/medium/large) to support scaling model capacity as dataset grows from 2K to 30K samples.
+
+**Context:**
+Model capacity should match dataset size to prevent underfitting (model too small) or overfitting (model too large). The rough heuristic is ~50-100 samples per 1K parameters.
+
+**Implementation:**
+
+1. **Added Model Configurations** ✅
+   - Created MODEL_CONFIGS dictionary with three predefined sizes
+   - **small**: [32, 64, 128] filters, 64 dense units → 101K params (2K-10K samples)
+   - **medium**: [64, 128, 256] filters, 128 dense units → 403K params (10K-20K samples)
+   - **large**: [128, 256, 512] filters, 256 dense units → 1.6M params (20K+ samples)
+
+2. **Made CNN Classifier Configurable** ✅
+   - Added `dense_units` parameter to `USVClassifierCNN` constructor
+   - Classifier head now scales with model size
+   - Backward compatible (defaults to small configuration)
+
+3. **Added CLI Parameter** ✅
+   - Added `--model-size {small,medium,large}` argument (default: small)
+   - Updated configuration printout to show model size and recommended dataset range
+   - Display shows actual parameter count and architecture details
+
+4. **Added Scaling Guidelines** ✅
+   - Documented decision criteria in train_cnn.py comments
+   - Underfitting: train & val loss both high → scale up model
+   - Overfitting: train loss low, val loss high → add data/regularization
+   - Good fit: both losses low and close → current size appropriate
+
+**Files Modified:**
+- ✅ `src/usv_spectrogram/models/cnn_classifier.py` (added dense_units parameter)
+- ✅ `scripts/train_cnn.py` (added MODEL_CONFIGS and --model-size argument)
+
+**Verification:**
+```powershell
+# Syntax check
+.\.venv\Scripts\python.exe -m py_compile src/usv_spectrogram/models/cnn_classifier.py
+.\.venv\Scripts\python.exe -m py_compile scripts/train_cnn.py
+# Result: Both compile without errors ✓
+
+# Help text verification
+.\.venv\Scripts\python.exe scripts/train_cnn.py --help
+# Result: --model-size parameter visible with all three choices ✓
+
+# Parameter count verification
+# small: 101,441 parameters ✓
+# medium: 403,585 parameters ✓
+# large: 1,609,985 parameters ✓
+```
+
+**Usage:**
+```powershell
+# Default (small)
+python scripts/train_cnn.py --train-csv splits/train.csv --val-csv splits/val.csv
+
+# Medium model for 10K-20K samples
+python scripts/train_cnn.py --model-size medium ...
+
+# Large model for 20K+ samples
+python scripts/train_cnn.py --model-size large --weight-decay 1e-3 ...
+```
+
+**Benefits:**
+- ✅ Easy model scaling as dataset grows
+- ✅ Clear guidance on when to scale up
+- ✅ Backward compatible (defaults to current behavior)
+- ✅ Prevents common mistakes (oversized models on small data)
+
+**Session Status:** ✅ COMPLETE - Model scaling configurations added
+
+**Agents:** None

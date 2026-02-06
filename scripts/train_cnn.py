@@ -21,6 +21,38 @@ from usv_spectrogram.models import (
 )
 
 
+# Model size configurations
+# Guidelines for model selection based on dataset size:
+# - small (~101K params): 2K-10K samples - good starting point
+# - medium (~400K params): 10K-20K samples - use when small model shows underfitting
+# - large (~1.6M params): 20K-30K+ samples - only with large datasets and strong regularization
+#
+# Scaling decision criteria:
+# - Train loss AND val loss both high, plateau together → Underfitting → Scale up
+# - Train loss low, val loss much higher and diverging → Overfitting → More data/regularization
+# - Both losses low and close together → Good fit → Current size appropriate
+MODEL_CONFIGS = {
+    "small": {
+        "filters": [32, 64, 128],
+        "dense_units": 64,
+        "params_approx": "~101K",
+        "recommended_samples": "2K-10K"
+    },
+    "medium": {
+        "filters": [64, 128, 256],
+        "dense_units": 128,
+        "params_approx": "~400K",
+        "recommended_samples": "10K-20K"
+    },
+    "large": {
+        "filters": [128, 256, 512],
+        "dense_units": 256,
+        "params_approx": "~1.6M",
+        "recommended_samples": "20K-30K+"
+    }
+}
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Train CNN classifier for USV detection'
@@ -78,6 +110,15 @@ def main():
         help='Dropout rate in classifier head (default: 0.5)'
     )
     parser.add_argument(
+        '--model-size',
+        type=str,
+        default='small',
+        choices=['small', 'medium', 'large'],
+        help='Model size configuration: small (~101K params, 2K-10K samples), '
+             'medium (~400K params, 10K-20K samples), large (~1.6M params, 20K-30K+ samples). '
+             'Default: small'
+    )
+    parser.add_argument(
         '--use-class-weights',
         action='store_true',
         default=False,
@@ -131,6 +172,9 @@ def main():
     # Create output directory
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Get model configuration
+    model_config = MODEL_CONFIGS[args.model_size]
+
     # Print configuration
     print("=" * 80)
     print("Training Configuration")
@@ -143,6 +187,8 @@ def main():
     print(f"Max epochs: {args.num_epochs}")
     print(f"Patience: {args.patience}")
     print(f"Dropout rate: {args.dropout_rate}")
+    print(f"Model size: {args.model_size} ({model_config['params_approx']} params, "
+          f"recommended for {model_config['recommended_samples']} samples)")
     print(f"Use class weights: {args.use_class_weights}")
     print(f"Normalize mode: {args.normalize_mode}")
     print(f"Output directory: {args.output_dir}")
@@ -164,10 +210,16 @@ def main():
 
     # Create model
     print("Creating model...")
-    model = USVClassifierCNN(dropout_rate=args.dropout_rate)
+    model = USVClassifierCNN(
+        num_filters=model_config['filters'],
+        dense_units=model_config['dense_units'],
+        dropout_rate=args.dropout_rate
+    )
     num_params = sum(p.numel() for p in model.parameters())
-    print(f"Model: USVClassifierCNN")
+    print(f"Model: USVClassifierCNN ({args.model_size})")
+    print(f"Architecture: {model_config['filters']} filters, {model_config['dense_units']} dense units")
     print(f"Total parameters: {num_params:,}")
+    print(f"Recommended dataset size: {model_config['recommended_samples']} samples")
     print()
 
     # Create trainer
