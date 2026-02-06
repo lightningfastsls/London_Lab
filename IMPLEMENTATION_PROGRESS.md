@@ -2407,3 +2407,76 @@ The hysteresis thresholds (high/low) already provide adequate filtering. The `mi
 **Session Status:** ✅ COMPLETE - Both PyQt6 app and CLI detection now fully functional
 
 **Agents:** None
+
+---
+
+## Session 21: Phase 4A - Training Curves and Monitoring (2026-02-06)
+
+**Date:** 2026-02-06
+**Context:** Part of USV Scaling Implementation Plan - Stage 1
+
+**Objective:**
+Add automatic training curve visualization to the training pipeline for easy monitoring of training progress and diagnosis of overfitting/underfitting.
+
+**Discovery:**
+The codebase already has a comprehensive `plot_training_history()` function in `src/usv_spectrogram/models/evaluate.py` (lines 120-183) that creates a 2x2 grid showing:
+1. Training vs Validation Loss
+2. Training vs Validation Accuracy
+3. Validation Precision, Recall, F1
+4. Learning Rate Schedule
+
+The gap was that this function was never called automatically - users had to manually import and call it.
+
+**Implementation:**
+
+1. **Automatic Plot Generation in Trainer** ✅
+   - Modified `src/usv_spectrogram/models/trainer.py` to auto-generate plots after saving training history
+   - Added try/except wrapper for graceful degradation (if matplotlib fails, training doesn't crash)
+   - Plots saved as `checkpoints/training_curves.png`
+   - Users get immediate visual feedback with zero code changes required
+
+2. **Standalone CLI Replotting Script** ✅
+   - Created `scripts/plot_training_curves.py` for regenerating plots from existing training history
+   - Supports custom input/output paths and interactive display mode
+   - Includes comprehensive help text and error handling
+
+**Files Modified:**
+- ✅ `src/usv_spectrogram/models/trainer.py` (added automatic plot generation after line 345)
+
+**Files Created:**
+- ✅ `scripts/plot_training_curves.py` (standalone CLI script with argparse)
+
+**Verification:**
+```powershell
+# Syntax check
+.\.venv\Scripts\python.exe -m py_compile src\usv_spectrogram\models\trainer.py
+.\.venv\Scripts\python.exe -m py_compile scripts\plot_training_curves.py
+# Result: Both compile without errors ✓
+
+# Test standalone script
+.\.venv\Scripts\python.exe scripts/plot_training_curves.py
+# Result: Loading training history from: checkpoints\training_history.json
+#         Plot saved to: checkpoints\training_curves.png ✓
+
+# Test custom output path
+.\.venv\Scripts\python.exe scripts/plot_training_curves.py --output test_curves.png
+# Result: Custom output works ✓
+
+# Test error handling
+.\.venv\Scripts\python.exe scripts/plot_training_curves.py --history nonexistent.json
+# Result: Clear error message with expected format ✓
+```
+
+**Benefits:**
+- ✅ Zero code changes required in user training scripts (backward compatible)
+- ✅ Automatic plot generation after every training run
+- ✅ Standalone script allows replotting without retraining
+- ✅ Graceful failure (plotting errors don't crash training)
+- ✅ High-quality matplotlib plots (150 dpi, 2x2 grid layout)
+
+**Optional Enhancement (Deferred):**
+Early stopping marker (vertical line showing when training stopped early) - can be added later if users request it.
+
+**Session Status:** ✅ COMPLETE - Training curves now automatically generated
+
+**Agents:** None

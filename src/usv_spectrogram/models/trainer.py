@@ -344,6 +344,22 @@ class Trainer:
         with open(history_path, 'w') as f:
             json.dump(history.to_dict(), f, indent=2)
 
+        # Auto-generate training curves
+        try:
+            from .evaluate import plot_training_history
+
+            plot_path = self.checkpoint_dir / 'training_curves.png'
+            plot_training_history(
+                history_path=history_path,
+                output_path=plot_path,
+                show=False
+            )
+            if verbose:
+                print(f"Training curves saved to: {plot_path}")
+        except Exception as e:
+            if verbose:
+                print(f"Warning: Could not generate training curves: {e}")
+
         if verbose:
             print(f"\nTraining complete!")
             print(f"Final model saved to: {final_path}")
