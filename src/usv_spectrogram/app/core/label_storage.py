@@ -138,8 +138,8 @@ class LabelStorage:
             max_probability=detection_dict["max_probability"],
             mean_probability=detection_dict["mean_probability"],
             user_adjusted=detection_dict.get("user_adjusted", False),
-            original_start_time_s=detection_dict.get("original_start_time_s"),
-            original_end_time_s=detection_dict.get("original_end_time_s")
+            original_start_time_s=detection_dict.get("original_start_time_s", 0.0),
+            original_end_time_s=detection_dict.get("original_end_time_s", 0.0)
         )
 
     @staticmethod
