@@ -16,6 +16,11 @@ class SavedDetectionRecord:
     end_time_s: float
     save_timestamp: str  # ISO format
     output_path: str
+    threshold_preset: str | None = None
+    threshold_high: float | None = None
+    threshold_low: float | None = None
+    session_id: str | None = None
+    user_action: str | None = None  # None (CNN), "added_manually", or "deleted_by_user"
 
 
 class SavedDetectionTracker:
@@ -48,9 +53,14 @@ class SavedDetectionTracker:
             with open(tracking_file, 'r') as f:
                 data = json.load(f)
 
-            self.saved_detections = [
-                SavedDetectionRecord(**record) for record in data
-            ]
+            self.saved_detections = []
+            for record in data:
+                # Handle old tracking files missing new optional fields
+                filtered = {
+                    k: v for k, v in record.items()
+                    if k in SavedDetectionRecord.__dataclass_fields__
+                }
+                self.saved_detections.append(SavedDetectionRecord(**filtered))
         except Exception as e:
             print(f"Warning: Could not load tracking file {tracking_file}: {e}")
             self.saved_detections = []
@@ -84,18 +94,37 @@ class SavedDetectionTracker:
                 return True
         return False
 
-    def mark_saved(self, detection: DetectedUSV, output_path: str):
+    def mark_saved(
+        self,
+        detection: DetectedUSV,
+        output_path: str,
+        threshold_preset: str | None = None,
+        threshold_high: float | None = None,
+        threshold_low: float | None = None,
+        session_id: str | None = None,
+        user_action: str | None = None
+    ):
         """Mark detection as saved.
 
         Args:
             detection: Detection that was saved
             output_path: Path where detection was saved
+            threshold_preset: Name of threshold preset used (if any)
+            threshold_high: High threshold value at time of save
+            threshold_low: Low threshold value at time of save
+            session_id: Session UUID for tracking labeling sessions
+            user_action: User action type (None, "added_manually", "deleted_by_user")
         """
         record = SavedDetectionRecord(
             start_time_s=detection.start_time_s,
             end_time_s=detection.end_time_s,
             save_timestamp=datetime.now().isoformat(),
-            output_path=output_path
+            output_path=output_path,
+            threshold_preset=threshold_preset,
+            threshold_high=threshold_high,
+            threshold_low=threshold_low,
+            session_id=session_id,
+            user_action=user_action
         )
         self.saved_detections.append(record)
         self._save_tracking_file()

@@ -19,6 +19,9 @@ class SpectrogramCanvas(QWidget):
     # Signal emitted when user adjusts detection boundary
     boundary_adjusted = pyqtSignal(object, float, float)  # (detection, new_start, new_end)
 
+    # Signal emitted when user creates new detection (right-click-drag)
+    detection_created = pyqtSignal(float, float)  # (start_time_s, end_time_s)
+
     def __init__(self):
         super().__init__()
         self.pixmap: Optional[QPixmap] = None
@@ -39,6 +42,11 @@ class SpectrogramCanvas(QWidget):
         self._dragging_edge: Optional[str] = None  # 'start' or 'end'
         self._original_time: Optional[float] = None  # For cancel/undo
         self._is_dragging: bool = False
+
+        # Detection creation state (right-click-drag)
+        self._creating_detection: bool = False
+        self._creation_start_x: int = 0
+        self._creation_current_x: int = 0
 
     def set_data(
         self,
@@ -149,7 +157,15 @@ class SpectrogramCanvas(QWidget):
 
         # Draw detection boundaries
         if self.detections and self.total_columns > 0:
-            for usv in self.detections:
+            for idx, usv in enumerate(self.detections):
+                # Skip selected detection - it will be drawn differently below
+                if self._selected_detection_idx is not None and idx == self._selected_detection_idx:
+                    continue
+
+                # Skip ghost (previously saved) detections - too cluttered
+                if usv.save_state == "saved_previous":
+                    continue
+
                 # Convert column index to pixel coordinate (pixel-perfect alignment)
                 start_x = self._col_to_pixel(usv.start_col)
                 end_x = self._col_to_pixel(usv.end_col)
@@ -164,15 +180,42 @@ class SpectrogramCanvas(QWidget):
                 painter.setPen(pen)
                 painter.drawLine(end_x, 0, end_x, self.height())
 
-        # Highlight selected detection boundary
-        if self._selected_detection is not None and self.total_columns > 0:
-            painter.setPen(QPen(QColor(255, 255, 0), 3))  # Yellow highlight
-            if self._dragging_edge == 'start':
-                start_x = self._col_to_pixel(self._selected_detection.start_col)
-                painter.drawLine(start_x, 0, start_x, self.height())
-            else:
-                end_x = self._col_to_pixel(self._selected_detection.end_col)
-                painter.drawLine(end_x, 0, end_x, self.height())
+        # Draw selected detection with highlights
+        if self._selected_detection_idx is not None and self.total_columns > 0:
+            # Bounds check before accessing by index
+            if 0 <= self._selected_detection_idx < len(self.detections):
+                selected_usv = self.detections[self._selected_detection_idx]
+                start_x = self._col_to_pixel(selected_usv.start_col)
+                end_x = self._col_to_pixel(selected_usv.end_col)
+
+                # Draw the boundary being adjusted in yellow (highlighted)
+                if self._dragging_edge == 'start':
+                    painter.setPen(QPen(QColor(255, 255, 0), 3, Qt.PenStyle.SolidLine))
+                    painter.drawLine(start_x, 0, start_x, self.height())
+                    # Draw the other boundary normally
+                    painter.setPen(QPen(QColor(0, 255, 255), 2, Qt.PenStyle.DashLine))
+                    painter.drawLine(end_x, 0, end_x, self.height())
+                else:  # dragging end
+                    # Draw the other boundary normally
+                    painter.setPen(QPen(QColor(0, 255, 0), 2, Qt.PenStyle.SolidLine))
+                    painter.drawLine(start_x, 0, start_x, self.height())
+                    # Draw the boundary being adjusted in yellow (highlighted)
+                    painter.setPen(QPen(QColor(255, 255, 0), 3, Qt.PenStyle.DashLine))
+                    painter.drawLine(end_x, 0, end_x, self.height())
+
+        # Draw creation preview box (right-click-drag)
+        if self._creating_detection:
+            start_x = min(self._creation_start_x, self._creation_current_x)
+            end_x = max(self._creation_start_x, self._creation_current_x)
+
+            # Draw semi-transparent yellow rectangle
+            painter.fillRect(start_x, 0, end_x - start_x, self.height(),
+                           QColor(255, 255, 0, 50))
+
+            # Draw boundary lines
+            painter.setPen(QPen(QColor(255, 255, 0), 2, Qt.PenStyle.SolidLine))
+            painter.drawLine(start_x, 0, start_x, self.height())
+            painter.drawLine(end_x, 0, end_x, self.height())
 
         painter.end()
 
@@ -234,14 +277,24 @@ class SpectrogramCanvas(QWidget):
         return int((col_idx / self.total_columns) * self.width())
 
     def mousePressEvent(self, event: QMouseEvent):
-        """Handle mouse click to select detection boundary."""
+        """Handle mouse click to select detection boundary or start creating new detection."""
+        click_x = int(event.position().x())
+
+        # Right-click: start creating new detection
+        if event.button() == Qt.MouseButton.RightButton:
+            self._creating_detection = True
+            self._creation_start_x = click_x
+            self._creation_current_x = click_x
+            self.setCursor(Qt.CursorShape.CrossCursor)
+            self.update()
+            return
+
+        # Left-click: boundary adjustment (existing behavior)
         if event.button() != Qt.MouseButton.LeftButton:
             return
 
         if self.detections is None:
             return
-
-        click_x = event.position().x()
 
         # Check if click is near any detection boundary (5px tolerance)
         for usv in self.detections:
@@ -283,12 +336,19 @@ class SpectrogramCanvas(QWidget):
 
         # Click not near any boundary - clear selection
         self._selected_detection = None
+        self._selected_detection_idx = None
         self._dragging_edge = None
         self.unsetCursor()
         self.update()
 
     def mouseMoveEvent(self, event: QMouseEvent):
-        """Handle drag to adjust boundary position."""
+        """Handle drag to adjust boundary position or update creation preview."""
+        # Handle detection creation mode
+        if self._creating_detection:
+            self._creation_current_x = int(event.position().x())
+            self.update()  # Repaint to show preview box
+            return
+
         if not self._is_dragging or self._selected_detection is None:
             # Not dragging - check if hovering near boundary for cursor feedback
             if self.detections is not None:
@@ -338,16 +398,46 @@ class SpectrogramCanvas(QWidget):
             )
 
     def mouseReleaseEvent(self, event: QMouseEvent):
-        """Finalize boundary adjustment."""
+        """Finalize boundary adjustment or detection creation."""
+        # Handle detection creation completion
+        if event.button() == Qt.MouseButton.RightButton and self._creating_detection:
+            self._creating_detection = False
+            self.unsetCursor()
+
+            # Convert pixel positions to times
+            start_x = min(self._creation_start_x, self._creation_current_x)
+            end_x = max(self._creation_start_x, self._creation_current_x)
+
+            # Minimum width check (at least 10px)
+            if (end_x - start_x) < 10:
+                self.update()
+                return
+
+            start_time = self._pixel_to_time(start_x)
+            end_time = self._pixel_to_time(end_x)
+
+            # Emit signal for MainWindow to create detection
+            self.detection_created.emit(start_time, end_time)
+            self.update()
+            return
+
         if event.button() == Qt.MouseButton.LeftButton:
             self._is_dragging = False
-            self._selected_detection_idx = None  # Clear index tracking
-            # Keep selection but stop dragging
+            # Keep index tracking and selection - only clear on Escape or new selection
             # User can press Escape to clear selection
+            self.update()  # Redraw to show selection persists
 
     def keyPressEvent(self, event: QKeyEvent):
-        """Handle keyboard shortcuts for boundary adjustment."""
+        """Handle keyboard shortcuts for boundary adjustment and creation cancellation."""
         if event.key() == Qt.Key.Key_Escape:
+            # Cancel creation mode
+            if self._creating_detection:
+                self._creating_detection = False
+                self.unsetCursor()
+                self.update()
+                event.accept()
+                return
+
             if self._selected_detection is not None:
                 # Cancel adjustment - restore original
                 if self._original_time is not None:

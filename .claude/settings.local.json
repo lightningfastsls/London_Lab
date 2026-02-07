@@ -144,7 +144,16 @@
       "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile src/usv_spectrogram/models/cnn_classifier.py)",
       "Bash(\"..\\\\..\\\\.venv\\\\Scripts\\\\python.exe\" -c:*)",
       "Bash(python:*)",
-      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile \"src/usv_spectrogram/app/widgets/spectrogram_view.py\")"
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile \"src/usv_spectrogram/app/widgets/spectrogram_view.py\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m py_compile src\\\\usv_spectrogram\\\\app\\\\main_window.py\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m pytest tests/ -v --timeout=30 2>&1\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m pytest tests/ -v --timeout=30\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m pytest tests/ -v 2>&1\")",
+      "Bash(C:UsersshachPycharmProjectsmickey_london_lab.venvScriptspython.exe -m py_compile scriptsgenerate_jittered_training_data.py)",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m py_compile scripts\\\\generate_jittered_training_data.py\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts\\\\generate_jittered_training_data.py --help\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts\\\\generate_jittered_training_data.py --help 2>&1\")",
+      "Bash(cmd /c:*)"
     ],
     "deny": [
       "Read(.env)",

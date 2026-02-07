@@ -33,7 +33,11 @@ class DetectionExporter:
         detection: DetectedUSV,
         audio_data: AudioData,
         wav_filename: str,
-        detection_index: int
+        detection_index: int,
+        session_id: str | None = None,
+        threshold_preset: str | None = None,
+        threshold_high: float | None = None,
+        threshold_low: float | None = None
     ) -> Tuple[Path, Path, Path]:
         """Export detection as PNG, JSON, and CSV entry.
 
@@ -42,6 +46,10 @@ class DetectionExporter:
             audio_data: Full audio data (spectrogram, times, frequencies)
             wav_filename: Name of WAV file (without extension)
             detection_index: Index of this detection in the full detection list
+            session_id: Session UUID for tracking
+            threshold_preset: Name of threshold preset used
+            threshold_high: High threshold value
+            threshold_low: Low threshold value
 
         Returns:
             Tuple of (png_path, json_path, csv_path)
@@ -81,7 +89,11 @@ class DetectionExporter:
         self._save_json_metadata(
             detection, detection_index,
             start_time_with_context, end_time_with_context,
-            json_path
+            json_path,
+            session_id=session_id,
+            threshold_preset=threshold_preset,
+            threshold_high=threshold_high,
+            threshold_low=threshold_low
         )
 
         # 7. Append to CSV summary
@@ -168,7 +180,11 @@ class DetectionExporter:
         index: int,
         t_start_ctx: float,
         t_end_ctx: float,
-        output_path: Path
+        output_path: Path,
+        session_id: str | None = None,
+        threshold_preset: str | None = None,
+        threshold_high: float | None = None,
+        threshold_low: float | None = None
     ):
         """Save detection metadata as JSON.
 
@@ -178,6 +194,10 @@ class DetectionExporter:
             t_start_ctx: Start time with context
             t_end_ctx: End time with context
             output_path: Where to save JSON
+            session_id: Session UUID for tracking
+            threshold_preset: Name of threshold preset used
+            threshold_high: High threshold value
+            threshold_low: Low threshold value
         """
         metadata = {
             "detection_index": index,
@@ -193,11 +213,19 @@ class DetectionExporter:
             },
             "probabilities": {
                 "max": detection.max_probability,
-                "mean": detection.mean_probability
+                "mean": detection.mean_probability,
+                "original_cnn_probability": detection.original_cnn_probability
             },
             "spectrogram_columns": {
                 "start_col": int(detection.start_col),  # Convert numpy.int64 → Python int
                 "end_col": int(detection.end_col)        # Convert numpy.int64 → Python int
+            },
+            "user_action": detection.user_action,
+            "session": {
+                "session_id": session_id,
+                "threshold_preset": threshold_preset,
+                "threshold_high": threshold_high,
+                "threshold_low": threshold_low
             },
             "timestamp": datetime.now().isoformat()
         }
@@ -244,6 +272,7 @@ class DetectionExporter:
                     'duration_ms',
                     'max_prob',
                     'mean_prob',
+                    'user_action',
                     'timestamp'
                 ])
 
@@ -257,5 +286,6 @@ class DetectionExporter:
                 f'{duration_ms:.2f}',
                 f'{detection.max_probability:.6f}',
                 f'{detection.mean_probability:.6f}',
+                detection.user_action or '',  # Empty string if None
                 datetime.now().isoformat()
             ])

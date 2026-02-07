@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import uuid
 from pathlib import Path
 from typing import Optional
 
@@ -25,6 +26,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QAction, QKeyEvent, QShortcut, QKeySequence
 
 from .core.audio_loader import AudioLoader, AudioData
+from .core.preset_config import PresetManager
 from .core.sliding_inference import SlidingInference, InferenceResult
 from .core.detection_logic import HysteresisDetector, DetectionResult, DetectedUSV
 from .core.label_storage import LabelStorage
@@ -116,6 +118,13 @@ class MainWindow(QMainWindow):
             self.settings.setValue("app_version", APP_VERSION)
             print("[Settings Migration] Complete. Using new defaults.")
 
+        # Session tracking
+        self.session_id = str(uuid.uuid4())
+        self.current_preset: str | None = None
+
+        # Preset manager
+        self.preset_manager = PresetManager()
+
         # Detection saving
         self.detection_exporter: Optional[DetectionExporter] = None
         self.saved_tracker: Optional[SavedDetectionTracker] = None
@@ -195,6 +204,9 @@ class MainWindow(QMainWindow):
         # Connect boundary adjustment signal
         self.spectrogram_view.canvas.boundary_adjusted.connect(self._on_boundary_adjusted)
 
+        # Connect detection creation signal
+        self.spectrogram_view.canvas.detection_created.connect(self._add_detection)
+
         # Setup keyboard shortcuts
         self._setup_keyboard_shortcuts()
 
@@ -265,6 +277,17 @@ class MainWindow(QMainWindow):
         )
         layout.addWidget(self.save_all_btn)
 
+        layout.addSpacing(20)
+
+        # Manual editing buttons
+        self.remove_detection_btn = QPushButton("Remove Detection")
+        self.remove_detection_btn.clicked.connect(self._remove_detection)
+        self.remove_detection_btn.setEnabled(False)
+        self.remove_detection_btn.setToolTip(
+            "Remove selected detection (click a boundary line first, or press Del)"
+        )
+        layout.addWidget(self.remove_detection_btn)
+
         layout.addStretch()
 
         return panel
@@ -275,6 +298,17 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(panel)
 
         layout.addWidget(QLabel("<b>Threshold Settings</b>"))
+
+        # Preset buttons
+        preset_layout = QHBoxLayout()
+        for preset in self.preset_manager.presets:
+            btn = QPushButton(preset.name)
+            btn.setToolTip(f"High: {preset.high_threshold:.2f}, Low: {preset.low_threshold:.2f}")
+            btn.clicked.connect(lambda checked, p=preset: self._apply_preset(p))
+            preset_layout.addWidget(btn)
+        layout.addLayout(preset_layout)
+
+        layout.addSpacing(10)
 
         # High threshold slider
         layout.addWidget(QLabel("High Threshold:"))
@@ -415,6 +449,41 @@ class MainWindow(QMainWindow):
         self.exclude_end_sec = value / 100.0
         self.exclude_end_label.setText(f"{self.exclude_end_sec:.1f}s")
 
+    def _apply_preset(self, preset):
+        """Apply a threshold preset to sliders.
+
+        Sets high slider first, then low, to avoid validation rejection.
+        Uses blockSignals to batch the update.
+
+        Args:
+            preset: ThresholdPreset to apply
+        """
+        self.current_preset = preset.name
+
+        # Block signals to prevent validation popups during batch update
+        self.high_threshold_slider.blockSignals(True)
+        self.low_threshold_slider.blockSignals(True)
+
+        # Set high first (must be >= low)
+        self.high_threshold = preset.high_threshold
+        self.high_threshold_slider.setValue(int(preset.high_threshold * 100))
+        self.high_threshold_label.setText(f"{preset.high_threshold:.2f}")
+
+        # Then set low
+        self.low_threshold = preset.low_threshold
+        self.low_threshold_slider.setValue(int(preset.low_threshold * 100))
+        self.low_threshold_label.setText(f"{preset.low_threshold:.2f}")
+
+        # Re-enable signals
+        self.high_threshold_slider.blockSignals(False)
+        self.low_threshold_slider.blockSignals(False)
+
+        # Auto-apply if inference has run
+        if self.inference_result is not None:
+            self._apply_thresholds()
+
+        self.statusBar.showMessage(f"Applied preset: {preset.name}", 3000)
+
     def _open_wav(self):
         """Open WAV file dialog and load audio."""
         # Check for unsaved detections before switching files
@@ -502,6 +571,7 @@ class MainWindow(QMainWindow):
         self.apply_btn.setEnabled(True)
         self.save_current_btn.setEnabled(True)
         self.save_all_btn.setEnabled(True)
+        self.remove_detection_btn.setEnabled(True)
         self.statusBar.showMessage("Detection complete", 3000)
 
     def _on_inference_error(self, error_msg: str):
@@ -537,6 +607,18 @@ class MainWindow(QMainWindow):
             self.inference_result.times
         )
 
+        # Mark save state for current detections
+        if self.saved_tracker is not None:
+            for det in self.detection_result.usvs:
+                if self.saved_tracker.is_saved(det):
+                    det.save_state = "saved_current"
+
+        # Load ghost detections from previous sessions
+        ghost_detections = self._load_previous_saved_detections()
+
+        # Combine current + ghost for views
+        all_detections = self.detection_result.usvs + ghost_detections
+
         # Update views - pass spectrogram width AND column indices for pixel-perfect alignment
         spectrogram_width = self.spectrogram_view.get_canvas_width()
         self.probability_view.set_data(
@@ -544,16 +626,65 @@ class MainWindow(QMainWindow):
             self.detection_result.probabilities,
             self.high_threshold,
             self.low_threshold,
-            self.detection_result.usvs,
+            all_detections,
             column_indices=self.detection_result.column_indices,  # For pixel-perfect alignment
             target_width=spectrogram_width
         )
 
-        self.spectrogram_view.set_detections(self.detection_result.usvs)
+        self.spectrogram_view.set_detections(all_detections)
 
         # Update info label
         n_detections = len(self.detection_result.usvs)
-        self.detection_info_label.setText(f"Detected: {n_detections} USVs")
+        n_ghosts = len(ghost_detections)
+        info_text = f"Detected: {n_detections} USVs"
+        if n_ghosts > 0:
+            info_text += f" ({n_ghosts} previously saved)"
+        self.detection_info_label.setText(info_text)
+
+    def _load_previous_saved_detections(self) -> list:
+        """Load previously saved detections as ghost DetectedUSV objects.
+
+        Returns:
+            List of DetectedUSV with save_state="saved_previous"
+        """
+        if self.saved_tracker is None or self.audio_data is None:
+            return []
+
+        ghosts = []
+        times = self.audio_data.times
+
+        for record in self.saved_tracker.saved_detections:
+            # Check if this record overlaps with any current detection
+            # (those are already marked "saved_current", skip to avoid duplicates)
+            is_current = False
+            if self.detection_result is not None:
+                for det in self.detection_result.usvs:
+                    if det.save_state == "saved_current":
+                        # Check overlap
+                        if not (det.end_time_s <= record.start_time_s or
+                                record.end_time_s <= det.start_time_s):
+                            is_current = True
+                            break
+
+            if is_current:
+                continue
+
+            # Estimate column indices via searchsorted
+            start_col = int(np.searchsorted(times, record.start_time_s))
+            end_col = int(np.searchsorted(times, record.end_time_s))
+
+            ghost = DetectedUSV(
+                start_time_s=record.start_time_s,
+                end_time_s=record.end_time_s,
+                start_col=start_col,
+                end_col=end_col,
+                max_probability=0.0,
+                mean_probability=0.0,
+                save_state="saved_previous"
+            )
+            ghosts.append(ghost)
+
+        return ghosts
 
     def _on_boundary_adjusted(self, original_detection, new_start: float, new_end: float):
         """Handle boundary adjustment from SpectrogramCanvas.
@@ -573,16 +704,16 @@ class MainWindow(QMainWindow):
             return  # Detection not found
 
         # Convert times to column indices
-        # Use times from inference result to map time -> column
-        times = self.inference_result.times
+        # Use times from detection result (matches spectrogram columns)
+        times = self.detection_result.times
 
         def time_to_col(time_s: float) -> int:
-            """Convert time to column index."""
+            """Convert time to spectrogram column index."""
             if len(times) == 0:
                 return 0
-            # Find nearest column
-            col_idx = np.argmin(np.abs(times - time_s))
-            return int(col_idx)
+            # Find nearest probability array index, then map to spectrogram column
+            prob_idx = np.argmin(np.abs(times - time_s))
+            return int(self.detection_result.column_indices[prob_idx])
 
         new_start_col = time_to_col(new_start)
         new_end_col = time_to_col(new_end)
@@ -613,25 +744,196 @@ class MainWindow(QMainWindow):
         # Replace in detection result
         self.detection_result.usvs[idx] = adjusted_usv
 
-        # Redraw both views with updated detections
-        self.spectrogram_view.set_detections(self.detection_result.usvs)
-
-        spectrogram_width = self.spectrogram_view.get_canvas_width()
-        self.probability_view.set_data(
-            self.detection_result.times,
-            self.detection_result.probabilities,
-            self.high_threshold,
-            self.low_threshold,
-            self.detection_result.usvs,
-            column_indices=self.detection_result.column_indices,
-            target_width=spectrogram_width
-        )
+        # Redraw both views with updated detections (including ghosts)
+        self._refresh_detection_views()
 
         # Show status message with updated duration
         duration_ms = (new_end - new_start) * 1000
         self.statusBar.showMessage(
             f"Adjusted detection: {new_start:.3f}s - {new_end:.3f}s "
             f"(duration: {duration_ms:.1f}ms)",
+            3000
+        )
+
+    def _remove_detection(self):
+        """Remove selected detection from detection list.
+
+        User must first select a detection by clicking a boundary line.
+        Ghost detections (saved_previous) cannot be removed.
+        """
+        if self.detection_result is None:
+            return
+
+        # Get selected detection index from spectrogram canvas
+        selected_idx = self.spectrogram_view.canvas._selected_detection_idx
+
+        if selected_idx is None:
+            QMessageBox.information(
+                self,
+                "No Selection",
+                "Please select a detection first by clicking on a boundary line."
+            )
+            return
+
+        # Bounds check
+        if not (0 <= selected_idx < len(self.detection_result.usvs)):
+            return
+
+        selected_detection = self.detection_result.usvs[selected_idx]
+
+        # Don't allow removing ghost detections (read-only)
+        if selected_detection.save_state == "saved_previous":
+            QMessageBox.warning(
+                self,
+                "Cannot Remove",
+                "Previously saved detections cannot be removed.\n\n"
+                "These are shown in gray and represent detections from earlier sessions."
+            )
+            return
+
+        # Confirm removal
+        duration_ms = (selected_detection.end_time_s - selected_detection.start_time_s) * 1000
+        reply = QMessageBox.question(
+            self,
+            "Confirm Removal",
+            f"Remove detection at {selected_detection.start_time_s:.3f}s - "
+            f"{selected_detection.end_time_s:.3f}s ({duration_ms:.1f}ms)?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+
+        # Export to rejected_detections/ before deleting (for training data)
+        if self.detection_exporter is not None and self.audio_data is not None:
+            try:
+                # Create modified detection for export
+                deleted_detection = DetectedUSV(
+                    start_time_s=selected_detection.start_time_s,
+                    end_time_s=selected_detection.end_time_s,
+                    start_col=selected_detection.start_col,
+                    end_col=selected_detection.end_col,
+                    max_probability=selected_detection.max_probability,
+                    mean_probability=selected_detection.mean_probability,
+                    user_adjusted=selected_detection.user_adjusted,
+                    original_start_time_s=selected_detection.original_start_time_s,
+                    original_end_time_s=selected_detection.original_end_time_s,
+                    save_state=selected_detection.save_state,
+                    user_action="deleted_by_user",
+                    original_cnn_probability=selected_detection.max_probability  # Preserve CNN's prediction
+                )
+
+                # Export to rejected_detections subfolder
+                rejected_output_dir = self.output_dir / "rejected_detections"
+                rejected_exporter = DetectionExporter(rejected_output_dir, context_ms=20.0)
+
+                png, json_file, csv = rejected_exporter.export_detection(
+                    detection=deleted_detection,
+                    audio_data=self.audio_data,
+                    wav_filename=self.current_wav_path.stem,
+                    detection_index=selected_idx,
+                    session_id=self.session_id,
+                    threshold_preset=self.current_preset,
+                    threshold_high=self.high_threshold,
+                    threshold_low=self.low_threshold
+                )
+
+                # Also track in saved_tracker for rejected detections
+                if self.saved_tracker is not None:
+                    self.saved_tracker.mark_saved(
+                        deleted_detection, str(png),
+                        threshold_preset=self.current_preset,
+                        threshold_high=self.high_threshold,
+                        threshold_low=self.low_threshold,
+                        session_id=self.session_id,
+                        user_action="deleted_by_user"
+                    )
+
+            except Exception as e:
+                print(f"Warning: Could not export deleted detection: {e}")
+                # Continue with deletion even if export fails
+
+        # Remove from detection list
+        del self.detection_result.usvs[selected_idx]
+
+        # Clear selection in canvas
+        self.spectrogram_view.canvas._selected_detection = None
+        self.spectrogram_view.canvas._selected_detection_idx = None
+
+        # Refresh views
+        self._refresh_detection_views()
+
+        # Update info label
+        n_detections = len(self.detection_result.usvs)
+        ghost_detections = self._load_previous_saved_detections()
+        n_ghosts = len(ghost_detections)
+        info_text = f"Detected: {n_detections} USVs"
+        if n_ghosts > 0:
+            info_text += f" ({n_ghosts} previously saved)"
+        self.detection_info_label.setText(info_text)
+
+        self.statusBar.showMessage("Detection removed", 2000)
+
+    def _add_detection(self, start_time_s: float, end_time_s: float):
+        """Add manually created detection.
+
+        Args:
+            start_time_s: Start time in seconds
+            end_time_s: End time in seconds
+        """
+        if self.detection_result is None or self.audio_data is None:
+            return
+
+        # Convert times to column indices
+        times = self.audio_data.times
+
+        def time_to_col(time_s: float) -> int:
+            """Convert time to column index."""
+            if len(times) == 0:
+                return 0
+            col_idx = np.searchsorted(times, time_s)
+            return int(col_idx)
+
+        start_col = time_to_col(start_time_s)
+        end_col = time_to_col(end_time_s)
+
+        # Create new DetectedUSV (manual, no CNN probabilities)
+        new_detection = DetectedUSV(
+            start_time_s=start_time_s,
+            end_time_s=end_time_s,
+            start_col=start_col,
+            end_col=end_col,
+            max_probability=0.0,
+            mean_probability=0.0,
+            user_adjusted=False,
+            original_start_time_s=0.0,
+            original_end_time_s=0.0,
+            save_state="unsaved",
+            user_action="added_manually",
+            original_cnn_probability=None
+        )
+
+        # Add to detection list
+        self.detection_result.usvs.append(new_detection)
+
+        # Sort by start time (keep detections ordered)
+        self.detection_result.usvs.sort(key=lambda d: d.start_time_s)
+
+        # Refresh views
+        self._refresh_detection_views()
+
+        # Update info label
+        n_detections = len(self.detection_result.usvs)
+        ghost_detections = self._load_previous_saved_detections()
+        n_ghosts = len(ghost_detections)
+        info_text = f"Detected: {n_detections} USVs"
+        if n_ghosts > 0:
+            info_text += f" ({n_ghosts} previously saved)"
+        self.detection_info_label.setText(info_text)
+
+        duration_ms = (end_time_s - start_time_s) * 1000
+        self.statusBar.showMessage(
+            f"Added detection: {start_time_s:.3f}s - {end_time_s:.3f}s ({duration_ms:.1f}ms)",
             3000
         )
 
@@ -736,6 +1038,10 @@ class MainWindow(QMainWindow):
         # Space for run detection
         space_shortcut = QShortcut(QKeySequence(Qt.Key.Key_Space), self)
         space_shortcut.activated.connect(self._run_detection)
+
+        # Delete for remove detection
+        delete_shortcut = QShortcut(QKeySequence(Qt.Key.Key_Delete), self)
+        delete_shortcut.activated.connect(self._remove_detection)
 
     def _increase_high_threshold(self):
         """Increase high threshold by 0.01."""
@@ -847,9 +1153,21 @@ class MainWindow(QMainWindow):
                     detection=detection,
                     audio_data=self.audio_data,
                     wav_filename=self.current_wav_path.stem,
-                    detection_index=idx
+                    detection_index=idx,
+                    session_id=self.session_id,
+                    threshold_preset=self.current_preset,
+                    threshold_high=self.high_threshold,
+                    threshold_low=self.low_threshold
                 )
-                self.saved_tracker.mark_saved(detection, str(png))
+                self.saved_tracker.mark_saved(
+                    detection, str(png),
+                    threshold_preset=self.current_preset,
+                    threshold_high=self.high_threshold,
+                    threshold_low=self.low_threshold,
+                    session_id=self.session_id,
+                    user_action=detection.user_action
+                )
+                detection.save_state = "saved_current"
                 saved_count += 1
             except Exception as e:
                 print(f"Error saving detection {idx}: {e}")
@@ -860,7 +1178,10 @@ class MainWindow(QMainWindow):
         if progress:
             progress.close()
 
-        # 5. Show success message
+        # 5. Refresh views to show updated save states
+        self._refresh_detection_views()
+
+        # 6. Show success message
         self.statusBar.showMessage(f"Saved {saved_count} detection(s)", 3000)
 
     def _save_all_detections(self):
@@ -907,9 +1228,21 @@ class MainWindow(QMainWindow):
                     detection=detection,
                     audio_data=self.audio_data,
                     wav_filename=self.current_wav_path.stem,
-                    detection_index=idx
+                    detection_index=idx,
+                    session_id=self.session_id,
+                    threshold_preset=self.current_preset,
+                    threshold_high=self.high_threshold,
+                    threshold_low=self.low_threshold
                 )
-                self.saved_tracker.mark_saved(detection, str(png))
+                self.saved_tracker.mark_saved(
+                    detection, str(png),
+                    threshold_preset=self.current_preset,
+                    threshold_high=self.high_threshold,
+                    threshold_low=self.low_threshold,
+                    session_id=self.session_id,
+                    user_action=detection.user_action
+                )
+                detection.save_state = "saved_current"
                 saved_count += 1
             except Exception as e:
                 print(f"Error saving detection {idx}: {e}")
@@ -917,7 +1250,31 @@ class MainWindow(QMainWindow):
             progress.setValue(i + 1)
 
         progress.close()
+
+        # Refresh views to show updated save states
+        self._refresh_detection_views()
+
         self.statusBar.showMessage(f"Saved {saved_count} detection(s)", 3000)
+
+    def _refresh_detection_views(self):
+        """Refresh both views with current detections + ghosts."""
+        if self.detection_result is None:
+            return
+
+        ghost_detections = self._load_previous_saved_detections()
+        all_detections = self.detection_result.usvs + ghost_detections
+
+        spectrogram_width = self.spectrogram_view.get_canvas_width()
+        self.probability_view.set_data(
+            self.detection_result.times,
+            self.detection_result.probabilities,
+            self.high_threshold,
+            self.low_threshold,
+            all_detections,
+            column_indices=self.detection_result.column_indices,
+            target_width=spectrogram_width
+        )
+        self.spectrogram_view.set_detections(all_detections)
 
     def _get_visible_detections(self):
         """Get detections currently visible in viewport.
