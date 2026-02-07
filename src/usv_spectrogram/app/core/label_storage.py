@@ -61,23 +61,34 @@ class LabelStorage:
                 "high_threshold": high_threshold,
                 "low_threshold": low_threshold
             },
-            "detections": [
-                {
-                    "start_time_s": usv.start_time_s,
-                    "end_time_s": usv.end_time_s,
-                    "duration_s": usv.end_time_s - usv.start_time_s,
-                    "start_col": int(usv.start_col),
-                    "end_col": int(usv.end_col),
-                    "max_probability": usv.max_probability,
-                    "mean_probability": usv.mean_probability
-                }
-                for usv in detection_result.usvs
-            ],
-            "probability_curve": {
-                "times": detection_result.times.tolist(),
-                "probabilities": detection_result.probabilities.tolist(),
-                "column_indices": detection_result.column_indices.tolist()
+            "detections": []
+        }
+
+        # Build detections list with optional adjustment metadata
+        for usv in detection_result.usvs:
+            detection_dict = {
+                "start_time_s": usv.start_time_s,
+                "end_time_s": usv.end_time_s,
+                "duration_s": usv.end_time_s - usv.start_time_s,
+                "start_col": int(usv.start_col),
+                "end_col": int(usv.end_col),
+                "max_probability": usv.max_probability,
+                "mean_probability": usv.mean_probability
             }
+
+            # Add adjustment metadata if present
+            if hasattr(usv, 'user_adjusted') and usv.user_adjusted:
+                detection_dict["user_adjusted"] = True
+                detection_dict["original_start_time_s"] = usv.original_start_time_s
+                detection_dict["original_end_time_s"] = usv.original_end_time_s
+
+            data["detections"].append(detection_dict)
+
+        # Add probability curve
+        data["probability_curve"] = {
+            "times": detection_result.times.tolist(),
+            "probabilities": detection_result.probabilities.tolist(),
+            "column_indices": detection_result.column_indices.tolist()
         }
 
         # Write JSON with pretty formatting
@@ -93,7 +104,8 @@ class LabelStorage:
             input_path: Path to JSON file
 
         Returns:
-            Dictionary with detection data
+            Dictionary with detection data. Use reconstruct_detected_usv()
+            to convert detection dicts back to DetectedUSV objects.
 
         Raises:
             FileNotFoundError: If JSON file doesn't exist
@@ -107,6 +119,28 @@ class LabelStorage:
             data = json.load(f)
 
         return data
+
+    @staticmethod
+    def reconstruct_detected_usv(detection_dict: Dict[str, Any]) -> DetectedUSV:
+        """Reconstruct a DetectedUSV object from a JSON dictionary.
+
+        Args:
+            detection_dict: Dictionary from JSON file
+
+        Returns:
+            DetectedUSV object with all fields including adjustment metadata
+        """
+        return DetectedUSV(
+            start_time_s=detection_dict["start_time_s"],
+            end_time_s=detection_dict["end_time_s"],
+            start_col=detection_dict["start_col"],
+            end_col=detection_dict["end_col"],
+            max_probability=detection_dict["max_probability"],
+            mean_probability=detection_dict["mean_probability"],
+            user_adjusted=detection_dict.get("user_adjusted", False),
+            original_start_time_s=detection_dict.get("original_start_time_s"),
+            original_end_time_s=detection_dict.get("original_end_time_s")
+        )
 
     @staticmethod
     def export_annotated_image(

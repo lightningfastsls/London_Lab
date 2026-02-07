@@ -6,7 +6,9 @@
 
 ---
 
-## Current Status: Phase 3 Complete, Phase 4 In Progress
+## Current Status: Phase 4 Complete, Scaling Implementation Phase 1 Complete
+
+**Latest Update (2026-02-06):** Fixed stale object reference bug - boundary dragging now works correctly (USV Scaling Plan Phase 1)
 
 **Dataset Status:**
 - USV samples: 458 labeled
@@ -2617,4 +2619,147 @@ python scripts/train_cnn.py --model-size large --weight-decay 1e-3 ...
 
 **Session Status:** ✅ COMPLETE - Model scaling configurations added
 
+---
+
+## USV Scaling Implementation (2026-02-06)
+
+**Plan Document:** `USV_SCALING_IMPLEMENTATION_PLAN.md`
+**Summary:** `PHASE_1_IMPLEMENTATION_SUMMARY.md`
+
+### Phase 1: Boundary Adjustment for Detection App - ✅ COMPLETE
+
+Implemented draggable boundary handles to enable manual refinement of detection boundaries in the PyQt6 app. This provides high-quality labels for constrained jittering (Phase 3).
+
+**Completed Tasks:**
+
+1. **Extended DetectedUSV Dataclass** ✅
+   - Added `user_adjusted: bool` flag
+   - Added `original_start_time_s` and `original_end_time_s` for history tracking
+   - File: `src/usv_spectrogram/app/core/detection_logic.py`
+
+2. **Implemented Mouse Event Handling** ✅
+   - Added click detection near boundaries (±5px tolerance)
+   - Implemented drag-to-adjust with real-time visual feedback
+   - Added Escape key to cancel adjustment
+   - Added `_pixel_to_time()` coordinate conversion
+   - Updated `paintEvent()` for yellow boundary highlight
+   - File: `src/usv_spectrogram/app/widgets/spectrogram_view.py`
+
+3. **Connected MainWindow Handler** ✅
+   - Connected `boundary_adjusted` signal
+   - Implemented `_on_boundary_adjusted()` slot
+   - Time-to-column index conversion
+   - Created new DetectedUSV with preserved metadata
+   - Synchronized both spectrogram and probability views
+   - Added status bar feedback
+   - File: `src/usv_spectrogram/app/main_window.py`
+
+4. **Updated JSON Persistence** ✅
+   - Modified `save()` to include adjustment metadata
+   - Added `reconstruct_detected_usv()` helper for future load functionality
+   - Backward compatible with old JSON files
+   - File: `src/usv_spectrogram/app/core/label_storage.py`
+
+**Features Implemented:**
+- ✅ Click and drag boundary lines (green = start, cyan = end)
+- ✅ 5-pixel click tolerance for easy selection
+- ✅ Real-time visual feedback (yellow highlight, resize cursor)
+- ✅ Validation: prevents start >= end, enforces 1ms minimum duration
+- ✅ Escape key to cancel and revert
+- ✅ Status bar shows updated time range and duration
+- ✅ Both views update together (spectrogram + probability)
+- ✅ Saves adjustment metadata to JSON
+
+**Documentation Created:**
+- ✅ `PHASE_1_IMPLEMENTATION_SUMMARY.md` - Technical implementation details
+- ✅ `docs/BOUNDARY_ADJUSTMENT_USER_GUIDE.md` - User-facing guide
+
+**Verification:**
+```powershell
+# All files compile successfully
+.\.venv\Scripts\python.exe -m py_compile src\usv_spectrogram\app\widgets\spectrogram_view.py
+.\.venv\Scripts\python.exe -m py_compile src\usv_spectrogram\app\main_window.py
+.\.venv\Scripts\python.exe -m py_compile src\usv_spectrogram\app\core\detection_logic.py
+.\.venv\Scripts\python.exe -m py_compile src\usv_spectrogram\app\core\label_storage.py
+# Result: All pass ✓
+```
+
+**Ready for:**
+- Manual testing in the detection app
+- Integration with Phase 2 (CNN model scaling)
+- Integration with Phase 3 (constrained jittering)
+
+### Phase 2: CNN Model Multi-Scale Architecture - 🔲 NOT STARTED
+
+Plan: Implement 32px, 48px, and 64px window sizes with adaptive architecture
+
+### Phase 3: Constrained Jittering - 🔲 NOT STARTED
+
+Plan: Use adjusted boundaries for controlled data augmentation
+
+---
+
 **Agents:** None
+
+### Phase 1 Bug Fixes: Boundary Adjustment Feature - ✅ COMPLETE (2026-02-06)
+
+**Issues Found During Manual Testing:**
+1. ❌ Cursor doesn't change on hover (only changes when clicking)
+2. ❌ Dragging doesn't work smoothly (requires rapid clicking)
+3. ❌ Escape key doesn't revert (cancellation not working)
+4. ⚠️ Save functionality confusion (user used "Export" instead of "Save Labels")
+5. ⚠️ Exported JSON files missing adjustment metadata
+
+**Root Causes Identified:**
+1. Missing `setMouseTracking(True)` in SpectrogramCanvas.__init__
+2. Missing `setFocusPolicy()` to enable keyboard focus
+3. Missing `setFocus()` when drag starts
+4. Unclear button labels and tooltips
+5. DetectionExporter not preserving adjustment metadata
+
+**Fixes Implemented:**
+
+1. **Enable Mouse Tracking** ✅
+   - Added `self.setMouseTracking(True)` to SpectrogramCanvas.__init__
+   - Enables cursor change on hover without clicking
+   - File: `src/usv_spectrogram/app/widgets/spectrogram_view.py:27`
+
+2. **Enable Keyboard Focus** ✅
+   - Added `self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)` to __init__
+   - Added `self.setFocus()` in mousePressEvent when drag starts
+   - Enables Escape key to revert changes
+   - Files: `src/usv_spectrogram/app/widgets/spectrogram_view.py:30,227,238`
+
+3. **Clarify Save UI** ✅
+   - Renamed "Save Current View" → "Export Current View"
+   - Renamed "Save All Detections" → "Export All as PNGs"
+   - Added tooltips explaining visualization format vs. training format
+   - Added status tip to "Save Labels" menu item
+   - File: `src/usv_spectrogram/app/main_window.py:211,246-258`
+
+4. **Preserve Adjustment Metadata in Exports** ✅
+   - DetectionExporter now includes `user_adjusted` and `original_boundaries` fields
+   - Ensures adjustment history saved regardless of save method
+   - File: `src/usv_spectrogram/app/core/detection_exporter.py:205-210`
+
+**Verification:**
+```powershell
+# All files compile successfully
+.venv/Scripts/python.exe -m py_compile src/usv_spectrogram/app/widgets/spectrogram_view.py
+.venv/Scripts/python.exe -m py_compile src/usv_spectrogram/app/main_window.py
+.venv/Scripts/python.exe -m py_compile src/usv_spectrogram/app/core/detection_exporter.py
+# Result: All pass ✓
+```
+
+**Testing Checklist:**
+- [ ] Cursor changes to resize cursor (↔) when hovering near boundaries
+- [ ] Smooth continuous dragging works without rapid clicking
+- [ ] Escape key reverts boundary to original position
+- [ ] Adjustment metadata saved in both "Save Labels" and "Export" methods
+- [ ] Tooltips clearly differentiate save/export buttons
+
+**PNG Format Decision:**
+- Deferred training-ready PNG export to Phase 3 chunking tool
+- Current visualization PNGs remain for manual review
+- Phase 3 will handle: breaking >40ms detections into chunks + correct PNG formatting
+

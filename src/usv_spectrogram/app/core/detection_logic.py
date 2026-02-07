@@ -22,6 +22,10 @@ class DetectedUSV:
     end_col: int  # End column index
     max_probability: float  # Peak probability within event
     mean_probability: float  # Mean probability within event
+    # Track if user manually adjusted boundaries
+    user_adjusted: bool = False
+    original_start_time_s: float | None = None
+    original_end_time_s: float | None = None
 
 
 @dataclass

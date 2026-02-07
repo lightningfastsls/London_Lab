@@ -196,11 +196,19 @@ class DetectionExporter:
                 "mean": detection.mean_probability
             },
             "spectrogram_columns": {
-                "start_col": detection.start_col,
-                "end_col": detection.end_col
+                "start_col": int(detection.start_col),  # Convert numpy.int64 → Python int
+                "end_col": int(detection.end_col)        # Convert numpy.int64 → Python int
             },
             "timestamp": datetime.now().isoformat()
         }
+
+        # Add adjustment metadata if present
+        if hasattr(detection, 'user_adjusted') and detection.user_adjusted:
+            metadata["user_adjusted"] = True
+            metadata["original_boundaries"] = {
+                "start_s": detection.original_start_time_s,
+                "end_s": detection.original_end_time_s
+            }
 
         with open(output_path, 'w') as f:
             json.dump(metadata, f, indent=2)
