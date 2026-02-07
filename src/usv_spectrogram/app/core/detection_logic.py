@@ -22,6 +22,12 @@ class DetectedUSV:
     end_col: int  # End column index
     max_probability: float  # Peak probability within event
     mean_probability: float  # Mean probability within event
+    user_adjusted: bool = False  # True if user manually adjusted boundaries
+    original_start_time_s: float = 0.0  # Original start before user adjustment
+    original_end_time_s: float = 0.0  # Original end before user adjustment
+    save_state: str = "unsaved"  # "unsaved", "saved_current", or "saved_previous"
+    user_action: str | None = None  # None (CNN), "added_manually", or "deleted_by_user"
+    original_cnn_probability: float | None = None  # For deletions, what CNN originally predicted
 
 
 @dataclass

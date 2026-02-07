@@ -104,17 +104,24 @@ class ProbabilityCanvas(QWidget):
         # Draw background
         painter.fillRect(0, 0, width, height, QColor(255, 255, 255))
 
-        # Draw detection regions (shaded) - use column indices for pixel-perfect alignment
+        # Draw detection regions (shaded) - color based on save_state
         for usv in self.detections:
             start_x = self._col_to_x(usv.start_col, margin_left, draw_width)
             end_x = self._col_to_x(usv.end_col, margin_left, draw_width)
+
+            if usv.save_state == "saved_current":
+                color = QColor(0, 100, 255, 40)  # Blue
+            elif usv.save_state == "saved_previous":
+                color = QColor(128, 128, 128, 25)  # Gray
+            else:
+                color = QColor(0, 255, 0, 30)  # Green (unsaved)
 
             painter.fillRect(
                 int(start_x),
                 margin_top,
                 int(end_x - start_x),
                 draw_height,
-                QColor(0, 255, 0, 30)
+                color
             )
 
         # Draw threshold lines (use actual widget width for full-width lines)

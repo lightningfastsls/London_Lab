@@ -127,7 +127,16 @@
       "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/create_experiment_dataset.py)",
       "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/evaluate_experiment.py)",
       "Bash(test:*)",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m py_compile src\\\\usv_spectrogram\\\\app\\\\main_window.py\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m pytest tests/ -v --timeout=30 2>&1\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m pytest tests/ -v --timeout=30\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m pytest tests/ -v 2>&1\")",
+      "Bash(C:UsersshachPycharmProjectsmickey_london_lab.venvScriptspython.exe -m py_compile scriptsgenerate_jittered_training_data.py)",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m py_compile scripts\\\\generate_jittered_training_data.py\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts\\\\generate_jittered_training_data.py --help\")",
+      "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts\\\\generate_jittered_training_data.py --help 2>&1\")",
+      "Bash(cmd /c:*)"
     ],
     "deny": [
       "Read(.env)",

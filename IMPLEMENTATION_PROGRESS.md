@@ -6,7 +6,7 @@
 
 ---
 
-## Current Status: Phase 3 Complete, Phase 4 In Progress
+## Current Status: Scaling Plan Phase 2 Complete
 
 **Dataset Status:**
 - USV samples: 458 labeled
@@ -2616,5 +2616,234 @@ python scripts/train_cnn.py --model-size large --weight-decay 1e-3 ...
 - ✅ Prevents common mistakes (oversized models on small data)
 
 **Session Status:** ✅ COMPLETE - Model scaling configurations added
+
+**Agents:** None
+
+---
+
+### Scaling Plan Phase 3: Constrained Jittering for Training Data (2026-02-07)
+
+**Objective:**
+Generate jittered positive training samples where USVs appear at varied horizontal positions within extraction windows, preventing the CNN from learning positional bias ("energy in the middle = USV").
+
+**Context:**
+Part of USV Scaling Implementation Plan - Phase 3. The CNN trains on centered USV crops, which teaches a shortcut. Constrained jittering creates N samples per detection with evenly-spaced offsets, ensuring at least `min_overlap_fraction` of the USV remains visible in each window.
+
+**Implementation:**
+
+1. **Created `scripts/generate_jittered_training_data.py`** ✅
+   - Reads detection JSONs (`*_detections.json`) with `start_time_s`/`end_time_s`
+   - Computes evenly-spaced jitter offsets per detection
+   - Uses `Candidate.create()` → `SpectrogramExtractor.extract_single()` pipeline
+   - Handles edge cases: USV longer than window (centered only), boundary clamping
+   - Outputs: spectrograms PNG dir + `jittered_samples.csv` + `jittering_metadata.json`
+
+2. **CLI arguments:**
+   - `--input-dir` - Directory with detection JSONs and WAV files
+   - `--output-dir` - Output directory
+   - `--window-ms` (default: 40) - Extraction window size
+   - `--context-padding-ms` (default: 20) - Padding each side
+   - `--min-overlap-fraction` (default: 0.5) - Min USV visibility
+   - `--n-samples` (default: 5) - Jittered samples per detection
+   - `--seed` (default: 42) - Reproducibility
+
+**Verification:**
+```powershell
+# Syntax check
+.\.venv\Scripts\python.exe -m py_compile scripts/generate_jittered_training_data.py
+# Result: Compiles without errors ✓
+
+# End-to-end test (3 samples per detection, 34 detections)
+.\.venv\Scripts\python.exe scripts/generate_jittered_training_data.py --input-dir "5970 USV" --output-dir data/jittered_test --n-samples 3
+# Result: 78 samples generated ✓
+# All spectrograms valid: 256px height, 157px width ✓
+# CSV columns: candidate_id, spectrogram_path, label, source_file, sample_type ✓
+# Jitter range: -20.0 to +20.0 ms ✓
+# Overlap fraction: 0.00 to 1.00 (mean: 0.81) ✓
+# Note: 0.0 overlap from zero-duration detections in source JSON (edge case)
+```
+
+**Usage:**
+```powershell
+.\.venv\Scripts\python.exe scripts/generate_jittered_training_data.py \
+    --input-dir "5970 USV" \
+    --output-dir data/jittered_training \
+    --n-samples 5 \
+    --seed 42
+```
+
+**Files Created:**
+- `scripts/generate_jittered_training_data.py` (~300 lines)
+
+**Session Status:** ✅ COMPLETE - Constrained jittering script implemented and validated
+
+**Agents:** None
+
+---
+
+### Scaling Plan Phase 2: Progressive Labeling Workflow (2026-02-07)
+
+**Objective:**
+Speed up labeling at scale (30K+ labels) with threshold presets, session tracking, and visual indicators for saved detections.
+
+**Implementation:**
+
+1. **Sub-phase 2.1: Threshold Presets** ✅
+   - Created `src/usv_spectrogram/app/core/preset_config.py` — `ThresholdPreset` dataclass + `PresetManager` class
+   - 3 default presets: High Confidence (0.10/0.08), Medium (0.06/0.04), Low (0.04/0.03)
+   - JSON persistence with fallback to hardcoded defaults
+   - 3 preset buttons added to threshold panel in `main_window.py`
+   - `blockSignals()` used to batch slider updates (high first, then low)
+   - Auto-applies thresholds if inference has already run
+
+2. **Sub-phase 2.2: Session Tracking Metadata** ✅
+   - Session UUID (`uuid.uuid4()`) generated per app launch in `main_window.py`
+   - `current_preset` tracked when presets are applied
+   - `SavedDetectionRecord` extended with: `threshold_preset`, `threshold_high`, `threshold_low`, `session_id`
+   - Old tracking files load gracefully (unknown fields filtered out)
+   - `DetectionExporter._save_json_metadata()` includes `"session"` block
+   - Session metadata passed through both `_save_current_view()` and `_save_all_detections()`
+
+3. **Sub-phase 2.3: Visual Indication of Saved Detections** ✅
+   - `DetectedUSV.save_state` field added: `"unsaved"` | `"saved_current"` | `"saved_previous"`
+   - After threshold application, existing saved detections marked `"saved_current"`
+   - Ghost detections loaded from `saved_tracker` for previously saved regions not matching current detections
+   - Probability view color-coded: green (unsaved), blue (saved_current), gray (saved_previous)
+   - Spectrogram view skips boundary lines for `"saved_previous"` detections (reduces clutter)
+   - Save operations update `save_state` and refresh views immediately
+
+**Files Created:**
+- `src/usv_spectrogram/app/core/preset_config.py`
+
+**Files Modified:**
+- `src/usv_spectrogram/app/core/detection_logic.py` — added `save_state` field
+- `src/usv_spectrogram/app/core/saved_detection_tracker.py` — extended record + mark_saved
+- `src/usv_spectrogram/app/core/detection_exporter.py` — session metadata in exports
+- `src/usv_spectrogram/app/main_window.py` — presets UI, session ID, ghost loading, save state
+- `src/usv_spectrogram/app/widgets/probability_view.py` — color-coded detection regions
+- `src/usv_spectrogram/app/widgets/spectrogram_view.py` — skip ghost boundary lines
+
+**Verification:**
+- All 7 files pass `py_compile` ✓
+- 122/123 tests pass (1 pre-existing failure in `test_long_continuous_tone_rejected`) ✓
+
+**Session Status:** ✅ COMPLETE - Progressive labeling workflow implemented
+
+**Agents:** None
+
+---
+
+### Manual Detection Add/Remove (2026-02-07)
+
+**Objective:**
+Enable manual correction of CNN detections — add missed USVs and remove false positives.
+
+**Implementation:**
+
+1. **Remove Detection** ✅
+   - "Remove Detection" button added to control panel (enabled after inference)
+   - Delete key shortcut
+   - User selects detection by clicking boundary line, then removes
+   - Ghost detections (saved_previous) are protected from removal
+   - Confirmation dialog shows detection time range and duration
+   - Views and detection count auto-refresh after removal
+
+2. **Add Detection (Right-Click-Drag)** ✅
+   - Right-click-and-drag on spectrogram creates new detection box
+   - Yellow preview box with semi-transparent fill during drag
+   - Minimum width check (10px) prevents accidental tiny detections
+   - Escape key cancels creation mode
+   - Creates `DetectedUSV` with `max_probability=0.0` (manual, not CNN)
+   - `save_state="unsaved"` by default
+   - Detections auto-sorted by start time after creation
+   - Status message confirms creation with time range
+
+**User Workflow:**
+- **Add:** Right-click-drag across spectrogram region → release to create
+- **Remove:** Click boundary line to select → press Del or click "Remove Detection" button
+
+**Files Modified:**
+- `src/usv_spectrogram/app/main_window.py` — Remove button, remove/add handlers, signal connections
+- `src/usv_spectrogram/app/widgets/spectrogram_view.py` — Right-click-drag creation mode, preview box rendering
+
+**Verification:**
+- Both files pass `py_compile` ✓
+
+**Session Status:** ✅ COMPLETE - Manual detection add/remove implemented
+
+**Agents:** None
+
+---
+
+### User Action Tracking for Active Learning (2026-02-07)
+
+**Objective:**
+Track user corrections (deletions/additions) as metadata to create targeted training data from CNN mistakes, enabling iterative model improvement through active learning.
+
+**Rationale:**
+- **Deleted detections** = Hard negatives (CNN false positives) → train model what NOT to detect
+- **Added detections** = Hard positives (CNN false negatives) → train model on missed examples
+- More efficient than random labeling — focuses on model weaknesses
+- Enables post-hoc analysis: "What patterns does CNN miss/hallucinate?"
+
+**Implementation:**
+
+1. **Extended Metadata Fields** ✅
+   - `DetectedUSV.user_action`: `None` (CNN), `"added_manually"`, or `"deleted_by_user"`
+   - `DetectedUSV.original_cnn_probability`: Preserves CNN's prediction for deleted detections
+   - `SavedDetectionRecord.user_action`: Tracking in saved detection tracker
+   - Backward compatible (fields optional/nullable)
+
+2. **Export Deleted Detections** ✅
+   - Before deletion, export to `{output_dir}/rejected_detections/{wav_name}/`
+   - Same format as regular exports (PNG + JSON + CSV)
+   - JSON includes `"user_action": "deleted_by_user"` and `"original_cnn_probability"`
+   - CSV includes `user_action` column (empty for CNN detections, `"deleted_by_user"` for rejections)
+   - Fails gracefully if export error (deletion proceeds anyway)
+
+3. **Flag Manual Additions** ✅
+   - `user_action="added_manually"` set in `_add_detection()`
+   - `original_cnn_probability=None` (CNN never saw this as detection)
+   - Exported normally with user_action metadata in JSON/CSV
+
+4. **CSV Format Update** ✅
+   - New column: `user_action` (empty string for None, preserves backward compatibility)
+   - Header: `...,max_prob,mean_prob,user_action,timestamp`
+   - Consumers can filter by `user_action` for training data subsets
+
+**Data Flow:**
+```
+User deletes detection → Export to rejected_detections/ → Mark in tracking → Delete from list
+User adds detection → Create with user_action="added_manually" → Normal export path → Mark in tracking
+```
+
+**Training Data Benefits:**
+- **Hard negatives**: `rejected_detections/` folder contains CNN mistakes (label: not_usv)
+- **Hard positives**: Regular exports filtered by `user_action="added_manually"` (label: usv)
+- **Session-level metrics**: Track deletion rate (high = model quality issue)
+- **Pattern analysis**: Cluster deleted/added samples to find systematic weaknesses
+
+**Files Modified:**
+- `src/usv_spectrogram/app/core/detection_logic.py` — Add `user_action`, `original_cnn_probability` fields
+- `src/usv_spectrogram/app/core/saved_detection_tracker.py` — Add `user_action` to SavedDetectionRecord
+- `src/usv_spectrogram/app/core/detection_exporter.py` — Include `user_action` in JSON/CSV exports
+- `src/usv_spectrogram/app/main_window.py` — Export deletions, set user_action fields, pass through saves
+
+**Verification:**
+- All 4 files pass `py_compile` ✓
+
+**Usage Example:**
+```python
+# After labeling session, collect hard negatives:
+import pandas as pd
+rejected = pd.read_csv("rejected_detections/file_001/detections_summary.csv")
+# All rows have user_action="deleted_by_user", use for training
+
+# Collect hard positives:
+regular = pd.read_csv("USV_Detections/file_001/detections_summary.csv")
+manual_adds = regular[regular['user_action'] == 'added_manually']
+```
+
+**Session Status:** ✅ COMPLETE - User action tracking for active learning implemented
 
 **Agents:** None
