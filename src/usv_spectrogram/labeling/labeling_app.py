@@ -253,6 +253,8 @@ def initialize_session_state(
         st.session_state.expand_value = 0
     if "pending_expands" not in st.session_state:
         st.session_state.pending_expands = {}
+    if "label_filter" not in st.session_state:
+        st.session_state.label_filter = "All"
 
 
 def reset_session_state() -> None:
@@ -279,6 +281,47 @@ def get_candidate_label(candidate_id: str, labels: dict[str, dict[str, Any]]) ->
 def count_labeled(candidates: pd.DataFrame, labels: dict[str, dict[str, Any]]) -> int:
     """Count how many candidates have been labeled."""
     return sum(1 for cid in candidates["candidate_id"] if cid in labels)
+
+
+def filter_candidates(
+    candidates: pd.DataFrame,
+    labels: dict[str, dict[str, Any]],
+    filter_type: str,
+) -> pd.DataFrame:
+    """Filter candidates based on label status.
+
+    Args:
+        candidates: All candidates DataFrame
+        labels: Dictionary of labels
+        filter_type: One of "All", "Only USV", "Only Not USV", "Only Uncertain", "Unlabeled"
+
+    Returns:
+        Filtered DataFrame with original indices preserved
+    """
+    if filter_type == "All":
+        return candidates
+
+    if filter_type == "Unlabeled":
+        mask = [cid not in labels for cid in candidates["candidate_id"]]
+        return candidates[mask].reset_index(drop=True)
+
+    # Filter by specific label
+    target_label = None
+    if filter_type == "Only USV":
+        target_label = "USV"
+    elif filter_type == "Only Not USV":
+        target_label = "Not USV"
+    elif filter_type == "Only Uncertain":
+        target_label = "Uncertain"
+
+    if target_label:
+        mask = [
+            cid in labels and labels[cid]["label"] == target_label
+            for cid in candidates["candidate_id"]
+        ]
+        return candidates[mask].reset_index(drop=True)
+
+    return candidates
 
 
 def find_next_unlabeled(
@@ -625,6 +668,21 @@ def run() -> None:
         st.caption("Use after regenerating spectrograms in spectrograms_review.")
         st.divider()
 
+        # Label filter
+        st.subheader("Filter")
+        filter_options = ["All", "Only USV", "Only Not USV", "Only Uncertain", "Unlabeled"]
+        selected_filter = st.selectbox(
+            "Show candidates:",
+            options=filter_options,
+            index=filter_options.index(st.session_state.get("label_filter", "All")),
+            key="filter_selector"
+        )
+        if selected_filter != st.session_state.get("label_filter"):
+            st.session_state.label_filter = selected_filter
+            st.session_state.current_index = 0  # Reset to first item when filter changes
+            st.rerun()
+        st.divider()
+
     candidates_csv = resolve_input_path(candidates_csv_text, repo_root)
     spectrograms_dir = resolve_input_path(spectrograms_dir_text, repo_root)
 
@@ -643,17 +701,34 @@ def run() -> None:
     # Initialize session state
     initialize_session_state(candidates, existing_labels)
 
+    # Apply filter
+    filtered_candidates = filter_candidates(
+        candidates,
+        st.session_state.labels,
+        st.session_state.label_filter
+    )
+
+    # Check if filter resulted in empty set
+    if len(filtered_candidates) == 0:
+        st.warning(f"No candidates match filter: {st.session_state.label_filter}")
+        st.info("Try selecting a different filter from the sidebar.")
+        return
+
+    # Ensure current_index is valid for filtered view
+    if st.session_state.current_index >= len(filtered_candidates):
+        st.session_state.current_index = 0
+
     # Render labeling guide
     render_labeling_guide()
 
     # Navigation
-    render_navigation(candidates, st.session_state.labels)
+    render_navigation(filtered_candidates, st.session_state.labels)
 
     st.divider()
 
     # Get current candidate
     current_index = st.session_state.current_index
-    candidate = candidates.iloc[current_index]
+    candidate = filtered_candidates.iloc[current_index]
     candidate_id = candidate["candidate_id"]
     pending_expand = st.session_state.pending_expands.get(candidate_id, 0.0)
     current_expand = float(
@@ -664,8 +739,14 @@ def run() -> None:
         st.session_state.expand_preview_path = None
         st.session_state.last_candidate_id = candidate_id
 
-    # Display candidate info
-    st.write(f"### Candidate {current_index + 1} of {len(candidates)}")
+    # Display candidate info with filter context
+    if st.session_state.label_filter == "All":
+        st.write(f"### Candidate {current_index + 1} of {len(filtered_candidates)}")
+    else:
+        st.write(
+            f"### Candidate {current_index + 1} of {len(filtered_candidates)} "
+            f"({len(candidates)} total, filter: {st.session_state.label_filter})"
+        )
     render_candidate_info(candidate)
 
     st.divider()
@@ -683,7 +764,7 @@ def run() -> None:
     # Labeling controls
     current_label = get_candidate_label(candidate_id, st.session_state.labels)
     render_labeling_controls(
-        candidates,
+        filtered_candidates,
         candidate_id,
         current_label,
         float(st.session_state.expand_value),
@@ -695,7 +776,7 @@ def run() -> None:
     st.divider()
 
     render_expand_controls(
-        candidates,
+        filtered_candidates,
         candidate,
         candidate_id,
         current_label,
@@ -709,6 +790,11 @@ def run() -> None:
     # Show labeling statistics
     with st.sidebar:
         st.header("Statistics")
+
+        # Show filtered view stats
+        if st.session_state.label_filter != "All":
+            st.metric("Filtered View", f"{len(filtered_candidates)} candidates")
+
         labeled_count = count_labeled(candidates, st.session_state.labels)
         st.metric("Total Labeled", f"{labeled_count} / {len(candidates)}")
 

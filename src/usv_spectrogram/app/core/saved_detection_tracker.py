@@ -78,14 +78,32 @@ class SavedDetectionTracker:
             print(f"Error saving tracking file {tracking_file}: {e}")
 
     def is_saved(self, detection: DetectedUSV) -> bool:
-        """Check if detection already saved (by core time range overlap).
+        """Check if detection already saved.
+
+        For manual detections (user_action="added_manually"), checks the
+        detection's own save_state since they are new by definition and
+        should not be matched against tracker records by time overlap.
+
+        For user-adjusted detections (user_adjusted=True, save_state="unsaved"),
+        returns False since they need re-saving with new boundaries.
+
+        For CNN detections, checks tracker records by time range overlap.
 
         Args:
             detection: Detection to check
 
         Returns:
-            True if this detection overlaps with any saved detection
+            True if this detection is already saved
         """
+        # Manual detections are new — only trust their own save_state
+        if detection.user_action == "added_manually":
+            return detection.save_state != "unsaved"
+
+        # Boundary-adjusted detections that haven't been re-saved need saving
+        if detection.user_adjusted and detection.save_state == "unsaved":
+            return False
+
+        # CNN detections: check tracker by time overlap
         for record in self.saved_detections:
             if self._time_ranges_overlap(
                 detection.start_time_s, detection.end_time_s,

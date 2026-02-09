@@ -1,0 +1,20 @@
+[
+  {
+    "start_time_s": 1.80992,
+    "end_time_s": 1.8469180590048437,
+    "save_timestamp": "2026-02-06T18:17:30.321977",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-27_0000003\\detection_000_1.810s-1.847s.png"
+  },
+  {
+    "start_time_s": 2.76992,
+    "end_time_s": 2.8358660678115366,
+    "save_timestamp": "2026-02-06T18:56:34.945060",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-27_0000003\\detection_001_2.770s-2.836s.png"
+  },
+  {
+    "start_time_s": 2.868053333333333,
+    "end_time_s": 2.8808533333333335,
+    "save_timestamp": "2026-02-06T18:56:35.301060",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-27_0000003\\detection_002_2.868s-2.881s.png"
+  }
+]

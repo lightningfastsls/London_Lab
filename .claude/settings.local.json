@@ -153,7 +153,11 @@
       "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe -m py_compile scripts\\\\generate_jittered_training_data.py\")",
       "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts\\\\generate_jittered_training_data.py --help\")",
       "Bash(cmd /c \".venv\\\\Scripts\\\\python.exe scripts\\\\generate_jittered_training_data.py --help 2>&1\")",
-      "Bash(cmd /c:*)"
+      "Bash(cmd /c:*)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/mine_hard_negatives.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" scripts/mine_hard_negatives.py --help)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile scripts/find_label_outliers.py)",
+      "Bash(\".\\\\.venv\\\\Scripts\\\\python.exe\" scripts/find_label_outliers.py --help)"
     ],
     "deny": [
       "Read(.env)",

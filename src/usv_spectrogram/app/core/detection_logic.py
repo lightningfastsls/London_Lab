@@ -38,6 +38,42 @@ class DetectionResult:
     probabilities: np.ndarray  # Original probability array
     column_indices: np.ndarray  # Column indices for probabilities
     times: np.ndarray  # Time values for probabilities
+    file_label: str | None = None  # "noise" or None
+
+
+def mark_as_noise(detection_result: DetectionResult, clear_detections: bool = True) -> DetectionResult:
+    """Mark detection result as noise file.
+
+    Args:
+        detection_result: DetectionResult to modify
+        clear_detections: If True, clear all detections (default)
+
+    Returns:
+        New DetectionResult with file_label="noise"
+    """
+    usvs = [] if clear_detections else detection_result.usvs
+    return DetectionResult(
+        usvs=usvs,
+        probabilities=detection_result.probabilities,
+        column_indices=detection_result.column_indices,
+        times=detection_result.times,
+        file_label="noise"
+    )
+
+
+def clear_noise_label(detection_result: DetectionResult) -> DetectionResult:
+    """Remove noise label from detection result.
+
+    Returns:
+        New DetectionResult with file_label=None
+    """
+    return DetectionResult(
+        usvs=detection_result.usvs,
+        probabilities=detection_result.probabilities,
+        column_indices=detection_result.column_indices,
+        times=detection_result.times,
+        file_label=None
+    )
 
 
 class HysteresisDetector:

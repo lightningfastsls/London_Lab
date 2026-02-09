@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import shutil
 import uuid
 from pathlib import Path
 from typing import Optional
@@ -228,6 +229,12 @@ class MainWindow(QMainWindow):
         save_action.setStatusTip("Save all detections to single JSON with adjustment history")
         file_menu.addAction(save_action)
 
+        load_action = QAction("&Load Labels...", self)
+        load_action.setShortcut("Ctrl+L")
+        load_action.triggered.connect(self._load_labels)
+        load_action.setStatusTip("Load detections and labels from JSON file")
+        file_menu.addAction(load_action)
+
         export_action = QAction("&Export Image...", self)
         export_action.setShortcut("Ctrl+E")
         export_action.triggered.connect(self._export_image)
@@ -287,6 +294,15 @@ class MainWindow(QMainWindow):
             "Remove selected detection (click a boundary line first, or press Del)"
         )
         layout.addWidget(self.remove_detection_btn)
+
+        # Noise labeling button
+        self.label_noise_btn = QPushButton("Label File as Noise")
+        self.label_noise_btn.clicked.connect(self._toggle_noise_label)
+        self.label_noise_btn.setEnabled(False)
+        self.label_noise_btn.setToolTip(
+            "Mark entire file as noise (no valid USVs). Clears all detections."
+        )
+        layout.addWidget(self.label_noise_btn)
 
         layout.addStretch()
 
@@ -506,6 +522,9 @@ class MainWindow(QMainWindow):
     def _load_wav_file(self, wav_path: Path):
         """Load WAV file and compute spectrogram."""
         try:
+            # Save reference to old file before loading new one
+            old_wav_path = self.current_wav_path
+
             self.statusBar.showMessage(f"Loading {wav_path.name}...")
 
             audio_loader = AudioLoader()
@@ -515,6 +534,16 @@ class MainWindow(QMainWindow):
             # Update file info display
             self.file_info_label.setText(f"File: {wav_path.name}")
 
+            # Clear previous detection results when loading new file
+            self.detection_result = None
+            self.inference_result = None
+            self.saved_tracker = None
+            self.detection_exporter = None
+
+            # Move old file to _reviewed folder (after successful load)
+            if old_wav_path is not None and old_wav_path != wav_path:
+                self._move_reviewed_file(old_wav_path)
+
             # Display spectrogram with total_columns for pixel-perfect alignment
             total_columns = self.audio_data.spectrogram_db.shape[1]
             self.spectrogram_view.set_data(
@@ -523,6 +552,12 @@ class MainWindow(QMainWindow):
                 self.audio_data.frequencies,
                 total_columns=total_columns
             )
+
+            # Reset noise label button state for new file
+            if hasattr(self, 'label_noise_btn'):
+                self.label_noise_btn.setEnabled(False)
+                self.label_noise_btn.setText("Label File as Noise")
+                self.label_noise_btn.setStyleSheet("")
 
             # Enable detection button
             self.detect_btn.setEnabled(True)
@@ -540,10 +575,89 @@ class MainWindow(QMainWindow):
             )
             self.statusBar.showMessage("Error loading WAV", 3000)
 
+    def _move_reviewed_file(self, old_wav_path: Path):
+        """Move reviewed WAV file to _reviewed folder.
+
+        Args:
+            old_wav_path: Path to the WAV file that was just reviewed
+
+        When user opens a new file, the previous file is automatically moved
+        to a parallel _reviewed folder to prevent re-reviewing.
+
+        Example:
+            USV_1/usv_lmt_034/file.wav → USV_1_reviewed/usv_lmt_034/file.wav
+        """
+        try:
+            source = old_wav_path
+
+            # Check if file still exists
+            if not source.exists():
+                return  # Already moved or deleted
+
+            # Extract path components
+            parts = source.parts
+            if len(parts) < 2:
+                return  # Can't determine structure
+
+            # Find project folder (starts with "USV" or contains "usv")
+            project_folder_idx = None
+            for i, part in enumerate(parts):
+                if "USV" in part or "usv" in part:
+                    project_folder_idx = i
+                    break
+
+            if project_folder_idx is None:
+                # Can't find recognizable folder pattern, use immediate parent
+                project_folder_idx = len(parts) - 2
+
+            # Build destination path with _reviewed suffix
+            reviewed_parts = list(parts)
+            original_folder = parts[project_folder_idx]
+            reviewed_folder = f"{original_folder}_reviewed"
+            reviewed_parts[project_folder_idx] = reviewed_folder
+            destination = Path(*reviewed_parts)
+
+            # Create destination directory
+            destination.parent.mkdir(parents=True, exist_ok=True)
+
+            # Move file (overwrites if exists)
+            shutil.move(str(source), str(destination))
+
+            # Show brief success message
+            self.statusBar.showMessage(
+                f"✓ Moved {source.name} to {reviewed_folder}/",
+                2000
+            )
+
+        except PermissionError:
+            self.statusBar.showMessage(
+                f"⚠ Could not move {old_wav_path.name} (file in use)",
+                4000
+            )
+        except Exception as e:
+            self.statusBar.showMessage(
+                f"⚠ Could not move file: {str(e)[:40]}",
+                4000
+            )
+
     def _run_detection(self):
         """Run CNN inference and detection."""
         if self.audio_data is None or self.default_model_path is None:
             return
+
+        # Check if file is currently labeled as noise
+        if (self.detection_result is not None and
+            self.detection_result.file_label == "noise"):
+            reply = QMessageBox.question(
+                self,
+                "File Labeled as Noise",
+                "This file is labeled as noise. Re-running detection will clear "
+                "the noise label.\n\nContinue?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+
+            if reply != QMessageBox.StandardButton.Yes:
+                return
 
         self.statusBar.showMessage("Running detection...")
         self.detect_btn.setEnabled(False)
@@ -572,6 +686,7 @@ class MainWindow(QMainWindow):
         self.save_current_btn.setEnabled(True)
         self.save_all_btn.setEnabled(True)
         self.remove_detection_btn.setEnabled(True)
+        self.label_noise_btn.setEnabled(True)
         self.statusBar.showMessage("Detection complete", 3000)
 
     def _on_inference_error(self, error_msg: str):
@@ -588,6 +703,14 @@ class MainWindow(QMainWindow):
         """Apply current thresholds to detection."""
         if self.inference_result is None:
             return
+
+        # Preserve manual detections before re-running CNN detection
+        manual_detections = []
+        if self.detection_result is not None:
+            manual_detections = [
+                d for d in self.detection_result.usvs
+                if d.user_action == "added_manually"
+            ]
 
         # Run hysteresis detection
         detector = HysteresisDetector(
@@ -606,6 +729,11 @@ class MainWindow(QMainWindow):
             self.inference_result.column_indices,
             self.inference_result.times
         )
+
+        # Restore manual detections and re-sort
+        if manual_detections:
+            self.detection_result.usvs.extend(manual_detections)
+            self.detection_result.usvs.sort(key=lambda d: d.start_time_s)
 
         # Mark save state for current detections
         if self.saved_tracker is not None:
@@ -634,12 +762,7 @@ class MainWindow(QMainWindow):
         self.spectrogram_view.set_detections(all_detections)
 
         # Update info label
-        n_detections = len(self.detection_result.usvs)
-        n_ghosts = len(ghost_detections)
-        info_text = f"Detected: {n_detections} USVs"
-        if n_ghosts > 0:
-            info_text += f" ({n_ghosts} previously saved)"
-        self.detection_info_label.setText(info_text)
+        self._update_detection_info()
 
     def _load_previous_saved_detections(self) -> list:
         """Load previously saved detections as ghost DetectedUSV objects.
@@ -719,7 +842,7 @@ class MainWindow(QMainWindow):
         new_end_col = time_to_col(new_end)
 
         # Create new DetectedUSV with adjusted boundaries
-        # Preserve probability metadata from original
+        # Preserve probability metadata and user_action from original
         # Track adjustment history
         adjusted_usv = DetectedUSV(
             start_time_s=new_start,
@@ -738,7 +861,10 @@ class MainWindow(QMainWindow):
                 original_detection.end_time_s
                 if not original_detection.user_adjusted
                 else original_detection.original_end_time_s
-            )
+            ),
+            save_state="unsaved",
+            user_action=original_detection.user_action,
+            original_cnn_probability=original_detection.original_cnn_probability
         )
 
         # Replace in detection result
@@ -864,15 +990,127 @@ class MainWindow(QMainWindow):
         self._refresh_detection_views()
 
         # Update info label
+        self._update_detection_info()
+
+        self.statusBar.showMessage("Detection removed", 2000)
+
+    def _toggle_noise_label(self):
+        """Toggle noise label for current file."""
+        if self.detection_result is None or self.audio_data is None:
+            return
+
+        is_noise_labeled = (self.detection_result.file_label == "noise")
+
+        if is_noise_labeled:
+            # Clear noise label
+            from .core.detection_logic import clear_noise_label
+            self.detection_result = clear_noise_label(self.detection_result)
+
+            # Update UI
+            self.label_noise_btn.setText("Label File as Noise")
+            self.label_noise_btn.setStyleSheet("")
+            self._enable_threshold_controls(True)
+            self.statusBar.showMessage("Noise label cleared", 2000)
+            self._update_detection_info()
+
+        else:
+            # Confirm if detections exist
+            if len(self.detection_result.usvs) > 0:
+                reply = QMessageBox.question(
+                    self,
+                    "Confirm Label as Noise",
+                    f"This will clear all {len(self.detection_result.usvs)} detection(s) "
+                    "and mark the file as containing no valid USVs.\n\nContinue?",
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+                )
+
+                if reply != QMessageBox.StandardButton.Yes:
+                    return
+
+            # Label as noise and clear detections
+            from .core.detection_logic import mark_as_noise
+            self.detection_result = mark_as_noise(self.detection_result, clear_detections=True)
+
+            # Clear saved tracker
+            if self.saved_tracker is not None:
+                self.saved_tracker.saved_detections.clear()
+
+            # Auto-save noise label to dedicated folder
+            self._auto_save_noise_label()
+
+            # Update UI
+            self.label_noise_btn.setText("Clear Noise Label")
+            self.label_noise_btn.setStyleSheet(
+                "QPushButton { background-color: #ff9999; font-weight: bold; }"
+            )
+            self._enable_threshold_controls(False)
+
+            # Refresh views
+            self._refresh_detection_views()
+            self._update_detection_info()
+
+    def _auto_save_noise_label(self):
+        """Automatically save noise-labeled file to dedicated folder."""
+        try:
+            # Create noise_labeled_files directory
+            noise_dir = self.output_dir / "noise_labeled_files"
+            noise_dir.mkdir(parents=True, exist_ok=True)
+
+            # Generate output path: noise_labeled_files/wavname.json
+            output_path = noise_dir / f"{self.current_wav_path.stem}.json"
+
+            # Save using LabelStorage (includes all metadata)
+            LabelStorage.save(
+                output_path=output_path,
+                audio_data=self.audio_data,
+                detection_result=self.detection_result,
+                wav_path=self.current_wav_path,
+                model_path=self.default_model_path,
+                high_threshold=self.high_threshold,
+                low_threshold=self.low_threshold
+            )
+
+            self.statusBar.showMessage(
+                f"File labeled as NOISE and saved to noise_labeled_files/{output_path.name}",
+                3000
+            )
+
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Save Warning",
+                f"Labeled as noise but failed to save:\n{str(e)}\n\n"
+                "You can manually save with Ctrl+S if needed."
+            )
+            self.statusBar.showMessage("File labeled as NOISE (save failed)", 3000)
+
+    def _enable_threshold_controls(self, enabled: bool):
+        """Enable or disable threshold adjustment controls."""
+        self.high_threshold_slider.setEnabled(enabled)
+        self.low_threshold_slider.setEnabled(enabled)
+        self.min_sustained_prob_slider.setEnabled(enabled)
+        self.exclude_start_slider.setEnabled(enabled)
+        self.exclude_end_slider.setEnabled(enabled)
+        self.apply_btn.setEnabled(enabled and self.inference_result is not None)
+
+    def _update_detection_info(self):
+        """Update detection info label with current counts and noise status."""
+        if self.detection_result is None:
+            self.detection_info_label.setText("No detections")
+            return
+
         n_detections = len(self.detection_result.usvs)
         ghost_detections = self._load_previous_saved_detections()
         n_ghosts = len(ghost_detections)
-        info_text = f"Detected: {n_detections} USVs"
-        if n_ghosts > 0:
-            info_text += f" ({n_ghosts} previously saved)"
-        self.detection_info_label.setText(info_text)
 
-        self.statusBar.showMessage("Detection removed", 2000)
+        if self.detection_result.file_label == "noise":
+            info_text = "🔇 File labeled as NOISE (no valid USVs)"
+        else:
+            info_text = f"Detected: {n_detections} USVs"
+            if n_ghosts > 0:
+                info_text += f" ({n_ghosts} previously saved)"
+
+        self.detection_info_label.setText(info_text)
 
     def _add_detection(self, start_time_s: float, end_time_s: float):
         """Add manually created detection.
@@ -882,6 +1120,16 @@ class MainWindow(QMainWindow):
             end_time_s: End time in seconds
         """
         if self.detection_result is None or self.audio_data is None:
+            return
+
+        # Check if file is labeled as noise
+        if self.detection_result.file_label == "noise":
+            QMessageBox.information(
+                self,
+                "File Labeled as Noise",
+                "Cannot add detections to noise-labeled file. "
+                "Clear the noise label first."
+            )
             return
 
         # Convert times to column indices
@@ -923,13 +1171,7 @@ class MainWindow(QMainWindow):
         self._refresh_detection_views()
 
         # Update info label
-        n_detections = len(self.detection_result.usvs)
-        ghost_detections = self._load_previous_saved_detections()
-        n_ghosts = len(ghost_detections)
-        info_text = f"Detected: {n_detections} USVs"
-        if n_ghosts > 0:
-            info_text += f" ({n_ghosts} previously saved)"
-        self.detection_info_label.setText(info_text)
+        self._update_detection_info()
 
         duration_ms = (end_time_s - start_time_s) * 1000
         self.statusBar.showMessage(
@@ -1018,6 +1260,83 @@ class MainWindow(QMainWindow):
                     "Export Error",
                     f"Failed to export image:\n{str(e)}"
                 )
+
+    def _load_labels(self):
+        """Load detection results from JSON file."""
+        if self.audio_data is None:
+            QMessageBox.warning(
+                self,
+                "No File Loaded",
+                "Load a WAV file first before loading labels."
+            )
+            return
+
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Load Labels",
+            str(self.current_wav_path.with_suffix('.json')),
+            "JSON Files (*.json);;All Files (*)"
+        )
+
+        if not file_path:
+            return
+
+        try:
+            # Load JSON data
+            from .core.label_storage import LabelStorage
+            data = LabelStorage.load(file_path)
+
+            # Reconstruct detection result
+            self.detection_result = LabelStorage.reconstruct_detection_result(data)
+
+            # Initialize components if needed
+            if self.saved_tracker is None:
+                from .core.saved_detection_tracker import SavedDetectionTracker
+                wav_name = self.current_wav_path.stem
+                self.saved_tracker = SavedDetectionTracker(wav_name, self.output_dir)
+            if self.detection_exporter is None:
+                from .core.detection_exporter import DetectionExporter
+                self.detection_exporter = DetectionExporter(self.output_dir, context_ms=20.0)
+
+            # Reconstruct inference result from probability curve
+            from .core.sliding_inference import InferenceResult
+            self.inference_result = InferenceResult(
+                probabilities=self.detection_result.probabilities,
+                column_indices=self.detection_result.column_indices,
+                times=self.detection_result.times
+            )
+
+            # Update UI based on file_label
+            if self.detection_result.file_label == "noise":
+                self.label_noise_btn.setText("Clear Noise Label")
+                self.label_noise_btn.setStyleSheet(
+                    "QPushButton { background-color: #ff9999; font-weight: bold; }"
+                )
+                self._enable_threshold_controls(False)
+            else:
+                self.label_noise_btn.setText("Label File as Noise")
+                self.label_noise_btn.setStyleSheet("")
+                self._enable_threshold_controls(True)
+
+            # Enable buttons
+            self.apply_btn.setEnabled(self.detection_result.file_label != "noise")
+            self.save_current_btn.setEnabled(True)
+            self.save_all_btn.setEnabled(True)
+            self.remove_detection_btn.setEnabled(True)
+            self.label_noise_btn.setEnabled(True)
+
+            # Refresh views
+            self._refresh_detection_views()
+            self._update_detection_info()
+
+            self.statusBar.showMessage(f"Loaded labels from {Path(file_path).name}", 3000)
+
+        except Exception as e:
+            QMessageBox.critical(
+                self,
+                "Load Error",
+                f"Failed to load labels:\n{str(e)}"
+            )
 
     def _setup_keyboard_shortcuts(self):
         """Setup keyboard shortcuts for threshold adjustment."""

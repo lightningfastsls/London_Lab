@@ -55,7 +55,8 @@ class LabelStorage:
                 "created_at": datetime.now().isoformat(),
                 "duration_s": audio_data.duration_s,
                 "sample_rate": audio_data.sample_rate,
-                "n_detections": len(detection_result.usvs)
+                "n_detections": len(detection_result.usvs),
+                "file_label": detection_result.file_label
             },
             "detection_params": {
                 "high_threshold": high_threshold,
@@ -81,6 +82,10 @@ class LabelStorage:
                 detection_dict["user_adjusted"] = True
                 detection_dict["original_start_time_s"] = usv.original_start_time_s
                 detection_dict["original_end_time_s"] = usv.original_end_time_s
+
+            # Preserve user action (e.g., "added_manually")
+            if hasattr(usv, 'user_action') and usv.user_action is not None:
+                detection_dict["user_action"] = usv.user_action
 
             data["detections"].append(detection_dict)
 
@@ -139,7 +144,41 @@ class LabelStorage:
             mean_probability=detection_dict["mean_probability"],
             user_adjusted=detection_dict.get("user_adjusted", False),
             original_start_time_s=detection_dict.get("original_start_time_s", 0.0),
-            original_end_time_s=detection_dict.get("original_end_time_s", 0.0)
+            original_end_time_s=detection_dict.get("original_end_time_s", 0.0),
+            user_action=detection_dict.get("user_action", None)
+        )
+
+    @staticmethod
+    def reconstruct_detection_result(data: Dict[str, Any]) -> DetectionResult:
+        """Reconstruct DetectionResult from JSON data.
+
+        Args:
+            data: Dictionary loaded from JSON file
+
+        Returns:
+            DetectionResult with all fields including file_label
+        """
+        # Reconstruct USV detections
+        usvs = [
+            LabelStorage.reconstruct_detected_usv(det_dict)
+            for det_dict in data["detections"]
+        ]
+
+        # Reconstruct probability curve
+        prob_curve = data["probability_curve"]
+        probabilities = np.array(prob_curve["probabilities"])
+        times = np.array(prob_curve["times"])
+        column_indices = np.array(prob_curve["column_indices"])
+
+        # Restore file_label from metadata (backward compatible)
+        file_label = data["metadata"].get("file_label", None)
+
+        return DetectionResult(
+            usvs=usvs,
+            probabilities=probabilities,
+            column_indices=column_indices,
+            times=times,
+            file_label=file_label
         )
 
     @staticmethod

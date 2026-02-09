@@ -8,7 +8,14 @@
 
 ## Current Status: Phase 4 Complete, Scaling Plan Phases 1-3 Complete
 
-**Latest Update (2026-02-07):**
+**Latest Update (2026-02-08):**
+- **Auto-Move Reviewed Files:** Implemented automatic file relocation to `_reviewed` folders when switching files
+  - Moves previous WAV file after successful load of new file
+  - Preserves directory structure (e.g., `USV_1/subfolder/` → `USV_1_reviewed/subfolder/`)
+  - Non-blocking warnings if move fails (file locked, permission errors)
+  - Status bar shows move confirmation
+
+**Previous Update (2026-02-07):**
 - **Computer 1:** Scaling Plan Phase 1 complete (Boundary Adjustment + bug fixes)
 - **Computer 2:** Scaling Plan Phases 2-3 complete (Progressive Labeling + Constrained Jittering)
 
@@ -2993,5 +3000,267 @@ manual_adds = regular[regular['user_action'] == 'added_manually']
 ```
 
 **Session Status:** ✅ COMPLETE - User action tracking for active learning implemented
+
+**Agents:** None
+
+---
+
+### Scaling Plan Phase 5: Hard Negative Mining (2026-02-07)
+
+**Objective:**
+Implement active learning by mining CNN false positives as hard negatives for targeted retraining.
+
+**Context:**
+Hard negatives are regions where the CNN incorrectly predicts high USV probability but humans did not save them. These represent the model's specific weaknesses and make excellent training data to reduce false positives. This is more efficient than random negative sampling because it focuses on the model's actual mistakes.
+
+**Implementation:**
+
+**Created ** - Active learning script for false positive mining
+
+**Key Features:**
+1. **Sliding Window Inference**
+   - Runs CNN on unlabeled/partially-labeled recordings
+   - Uses same ExtractionConfig as training data generation
+   - Generates probability predictions for all windows
+
+2. **False Positive Detection**
+   - Loads human-saved detections from JSON files
+   - Identifies high-probability regions (> threshold) NOT saved by humans
+   - Uses buffer zone (default: 100ms) to avoid near-misses
+
+3. **Candidate Export**
+   - Saves spectrograms (PNG) matching training data format
+   - Includes JSON metadata with CNN probability
+   - Creates CSV summary for easy review
+
+4. **Configurable Parameters**
+   -  (default: 0.3) - minimum probability to flag
+   -  (default: 100) - buffer around saved detections
+   -  (default: 50) - limit per recording
+   -  - CPU or CUDA inference
+
+**CLI Arguments:**
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Users\light\PycharmProjects\mickey_london_lab> 
+
+**Output Structure:**
+
+
+**Workflow Integration:**
+1. Label initial dataset with detection app
+2. Train CNN
+3. Run hard negative mining on unlabeled/partially-labeled recordings
+4. Manually review candidates (confirm false positives)
+5. Add confirmed FPs to training set with label="Not USV"
+6. Retrain model with augmented dataset
+7. Repeat cycle - model learns from its mistakes
+
+**Benefits:**
+- **Targeted data collection** - focuses on model weaknesses
+- **Reduces false positives** - trains on actual CNN errors
+- **Efficient** - less manual labeling than random sampling
+- **Active learning loop** - iterative improvement
+
+**Files Created:**
+-  (~500 lines)
+
+**Verification:**
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Users\light\PycharmProjects\mickey_london_lab> 
+
+**Session Status:** ? COMPLETE - Hard negative mining script implemented
+
+**Next Steps:**
+- Phase 6: Quality Control Infrastructure (label review tool, outlier detection)
+
+**Agents:** None
+
+---
+
+### Scaling Plan Phase 5: Hard Negative Mining (2026-02-07)
+
+**Objective:**
+Implement active learning by mining CNN false positives as hard negatives for targeted retraining.
+
+**Context:**
+Hard negatives are regions where the CNN incorrectly predicts high USV probability but humans did not save them. These represent the model's specific weaknesses and make excellent training data to reduce false positives. This is more efficient than random negative sampling because it focuses on the model's actual mistakes.
+
+**Implementation:**
+
+**Created `scripts/mine_hard_negatives.py`** - Active learning script for false positive mining
+
+**Key Features:**
+1. **Sliding Window Inference**
+   - Runs CNN on unlabeled/partially-labeled recordings
+   - Uses same ExtractionConfig as training data generation
+   - Generates probability predictions for all windows
+
+2. **False Positive Detection**
+   - Loads human-saved detections from JSON files
+   - Identifies high-probability regions (> threshold) NOT saved by humans
+   - Uses buffer zone (default: 100ms) to avoid near-misses
+
+3. **Candidate Export**
+   - Saves spectrograms (PNG) matching training data format
+   - Includes JSON metadata with CNN probability
+   - Creates CSV summary for easy review
+
+4. **Configurable Parameters**
+   - --probability-threshold (default: 0.3) - minimum probability to flag
+   - --buffer-ms (default: 100) - buffer around saved detections
+   - --max-candidates-per-file (default: 50) - limit per recording
+   - --device - CPU or CUDA inference
+
+**Workflow Integration:**
+1. Label initial dataset with detection app
+2. Train CNN
+3. Run hard negative mining on unlabeled/partially-labeled recordings
+4. Manually review candidates (confirm false positives)
+5. Add confirmed FPs to training set with label="Not USV"
+6. Retrain model with augmented dataset
+7. Repeat cycle - model learns from its mistakes
+
+**Benefits:**
+- **Targeted data collection** - focuses on model weaknesses
+- **Reduces false positives** - trains on actual CNN errors
+- **Efficient** - less manual labeling than random sampling
+- **Active learning loop** - iterative improvement
+
+**Files Created:**
+- scripts/mine_hard_negatives.py (~500 lines)
+
+**Verification:**
+- Script compiles successfully (py_compile)
+- Help output displays correctly
+- CLI arguments validated
+
+**Session Status:** COMPLETE - Hard negative mining script implemented
+
+**Next Steps:**
+- Phase 6: Quality Control Infrastructure (label review tool, outlier detection)
+
+**Agents:** None
+
+---
+
+### Scaling Plan Phase 6: Quality Control Infrastructure (2026-02-07)
+
+**Objective:**
+Implement automated quality control tools to detect and correct labeling errors at scale.
+
+**Context:**
+As datasets grow to 30K+ samples, manual errors are inevitable. Automated outlier detection uses the trained model to find samples where human labels strongly disagree with model predictions, surfacing potential labeling errors for review.
+
+**Implementation:**
+
+#### Phase 6C: Outlier Detection - COMPLETE
+
+**Created `scripts/find_label_outliers.py`** - Automated label error detection
+
+**Key Features:**
+1. **Model-Label Disagreement Analysis**
+   - Runs CNN inference on entire training set
+   - Identifies high-disagreement samples
+   - Two outlier types:
+     - False Negative Candidates: Label=USV but model prob <0.3
+     - False Positive Candidates: Label=Not USV but model prob >0.7
+
+2. **Smart Filtering**
+   - Configurable disagreement threshold (default: 0.7)
+   - Sorts by disagreement magnitude (worst first)
+   - Separates outlier types for targeted review
+
+3. **Export for Review**
+   - Copies outlier spectrograms to review directories
+   - Generates CSV summaries with probabilities
+   - Creates detailed summary report with statistics
+
+4. **Summary Report Includes**
+   - Total outlier counts and percentages
+   - Top 10 outliers by disagreement
+   - Recommendations based on outlier rate:
+     - >10%: High rate - systematic issues
+     - 5-10%: Moderate - edge cases
+     - <5%: Low - good label quality
+
+**CLI Arguments:**
+```powershell
+python scripts/find_label_outliers.py \
+    --model models/full_retrained_cnn/best_model.pt \
+    --data-csv data/full_training_dataset/train.csv \
+    --spec-dir data/full_training_dataset/spectrograms \
+    --output-dir analysis/label_outliers \
+    --threshold 0.7
+```
+
+**Output Structure:**
+```
+analysis/label_outliers/
+├── summary_report.txt
+├── false_negative_candidates/
+│   ├── spectrograms/
+│   │   └── *.png
+│   └── outliers_summary.csv
+└── false_positive_candidates/
+    ├── spectrograms/
+    │   └── *.png
+    └── outliers_summary.csv
+```
+
+**Workflow Integration:**
+1. Train CNN on labeled dataset
+2. Run outlier detection on training set
+3. Review summary_report.txt for outlier statistics
+4. Use existing Streamlit labeling app to review outliers
+5. Correct confirmed labeling errors
+6. Retrain model with corrected labels
+7. Re-run outlier detection to verify improvements
+
+**Why This Works:**
+- Model learns from overall patterns in data
+- If model strongly disagrees with a label, either:
+  - Human made a mistake (labeling error)
+  - Sample is genuinely ambiguous (edge case)
+  - Model needs more examples (data gap)
+- All three cases benefit from review
+
+**Phase 6A Decision:**
+- SKIPPED - User already has sophisticated Streamlit labeling app
+- Outlier detection + existing app is more efficient than building CLI review tool
+
+**Phase 6B Decision:**
+- Cross-validation checks already implemented in training pipeline
+- Train/val split by recording (prevents data leakage)
+
+**Files Created:**
+- scripts/find_label_outliers.py (~400 lines)
+
+**Verification:**
+```powershell
+# Test help output
+.\.venv\Scripts\python.exe scripts/find_label_outliers.py --help
+# Result: Help displayed successfully
+```
+
+**Session Status:** COMPLETE - Quality control infrastructure implemented
+
+**Scaling Plan Status:**
+- Phase 0: Verification - Assumed complete (not documented)
+- Phase 1: Boundary Adjustment - COMPLETE
+- Phase 2: Progressive Labeling - COMPLETE
+- Phase 3: Constrained Jittering - COMPLETE
+- Phase 4: Training Infrastructure - COMPLETE (4A, 4B, 4C)
+- Phase 5: Hard Negative Mining - COMPLETE
+- Phase 6: Quality Control - COMPLETE (6C implemented, 6A skipped, 6B already exists)
+
+**All scaling plan phases complete!**
 
 **Agents:** None
