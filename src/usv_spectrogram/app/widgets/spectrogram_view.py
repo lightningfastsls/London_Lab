@@ -7,7 +7,7 @@ from typing import Optional, List
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QScrollArea
-from PyQt6.QtGui import QPainter, QPixmap, QImage, QPen, QColor, QMouseEvent, QKeyEvent
+from PyQt6.QtGui import QPainter, QPixmap, QImage, QPen, QColor, QMouseEvent, QKeyEvent, QWheelEvent
 from PyQt6.QtCore import Qt, QRect, pyqtSignal
 
 from ..core.detection_logic import DetectedUSV
@@ -544,3 +544,11 @@ class SpectrogramView(QWidget):
 
         # No need to block signals - we only have one-way connection now
         scrollbar.setValue(target_value)
+
+    def wheelEvent(self, event: QWheelEvent):
+        """Redirect mouse wheel to horizontal scrollbar for spectrogram navigation."""
+        scrollbar = self.scroll_area.horizontalScrollBar()
+        # angleDelta().y() is the standard wheel axis (positive = scroll up/left)
+        delta = event.angleDelta().y()
+        scrollbar.setValue(scrollbar.value() - delta)
+        event.accept()
