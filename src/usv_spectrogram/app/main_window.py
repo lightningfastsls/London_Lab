@@ -1418,6 +1418,10 @@ class MainWindow(QMainWindow):
             event.ignore()  # User cancelled close
             return
 
+        # Move current file to _reviewed folder on close
+        if self.current_wav_path is not None:
+            self._move_reviewed_file(self.current_wav_path)
+
         self._save_settings()
         event.accept()
 

@@ -87,6 +87,10 @@ class LabelStorage:
             if hasattr(usv, 'user_action') and usv.user_action is not None:
                 detection_dict["user_action"] = usv.user_action
 
+            # Preserve original CNN probability (for deletions/manual edits)
+            if hasattr(usv, 'original_cnn_probability') and usv.original_cnn_probability is not None:
+                detection_dict["original_cnn_probability"] = usv.original_cnn_probability
+
             data["detections"].append(detection_dict)
 
         # Add probability curve
@@ -145,7 +149,8 @@ class LabelStorage:
             user_adjusted=detection_dict.get("user_adjusted", False),
             original_start_time_s=detection_dict.get("original_start_time_s", 0.0),
             original_end_time_s=detection_dict.get("original_end_time_s", 0.0),
-            user_action=detection_dict.get("user_action", None)
+            user_action=detection_dict.get("user_action", None),
+            original_cnn_probability=detection_dict.get("original_cnn_probability", None),
         )
 
     @staticmethod

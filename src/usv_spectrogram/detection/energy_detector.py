@@ -90,15 +90,6 @@ class EnergyDetector:
             threshold_db = max_energy + cfg.energy_threshold_db
             active_frames = band_energy_db >= threshold_db
 
-            # Guard against thresholds that mark almost all frames active.
-            # This can collapse into one long segment that fails max_duration_ms.
-            active_fraction = float(np.mean(active_frames)) if active_frames.size else 0.0
-            if active_fraction > 0.9:
-                fallback_threshold_db = float(np.quantile(band_energy_db, 0.9))
-                if fallback_threshold_db > threshold_db:
-                    threshold_db = fallback_threshold_db
-                    active_frames = band_energy_db >= threshold_db
-
             if not np.any(active_frames):
                 return []  # No detections
 

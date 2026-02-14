@@ -6,9 +6,32 @@
 
 ---
 
-## Current Status: Phase 4 Complete, Scaling Plan Phases 1-3 Complete
+## Current Status: Phase 4 Complete, Scaling Plan Phases 1-3 Complete, VQ-VAE Phases 0-6 Implemented
 
-**Latest Update (2026-02-08):**
+**Latest Update (2026-02-14):**
+- **Bug Fix: Duration filter fragmentation** — Removed the 90% active-fraction guard in `energy_detector.py` (lines 93-100). This guard was intended to prevent one giant segment from being rejected, but it counterproductively fragmented continuous long signals into small pieces that *passed* the `max_duration_ms` filter. A 600ms tone now correctly produces 0 candidates. All 42 energy detector tests pass. *File changed: `src/usv_spectrogram/detection/energy_detector.py`*
+- **Bug Fix: LabelStorage metadata persistence** — Added `original_cnn_probability` to `LabelStorage.save()` and `reconstruct_detected_usv()`. Previously this field was lost on save/load round-trips via the label storage path (the main `DetectionExporter` path was already correct). *File changed: `src/usv_spectrogram/app/core/label_storage.py`*
+- **New Script: WAV sampling for labeling** — Created `scripts/sample_wav_subset.py` to proportionally sample 1/5 of WAV files from USV_1 through USV_5 (1,299 of 6,491 files). Supports `--dry-run`, `--fraction`, `--seed`, `--dest`. Copies files to `USV_sample/` preserving folder structure. *File created: `scripts/sample_wav_subset.py`*
+- **New Tests: Dataset splits** — 30 tests covering `SplitConfig` validation, `group_samples_by_recording`, `split_recordings` (including data leakage prevention and stratification), `load_labeled_samples`, `create_splits` end-to-end, and CSV round-trips. *File created: `tests/test_dataset_splits.py`*
+- **New Tests: Quality checks & metadata** — 41 tests covering `check_no_recording_leakage`, `check_class_balance`, `check_no_duplicate_ids`, `check_population_coverage`, `check_split_sizes`, `QualityReport`, `extract_source_file_from_candidate_id`, `extract_mouse_id_from_source_file`, `load_metadata`, and `generate_metadata_csv`. *File created: `tests/test_dataset_quality.py`*
+- **New Tests: CNN model components** — 38 tests covering `USVClassifier` (instantiation, forward pass, predict, parameter count), `USVDataset` (creation, indexing, normalization, class weights), `pad_collate_fn`, `create_data_loaders`, `TrainingConfig` (defaults, validation, frozen), `USVTrainer` (instantiation, training step, validation step, checkpoint save/load, full loop), `TrainingHistory`, and `evaluate_model`. *File created: `tests/test_cnn_model.py`*
+- **Test Suite Summary:** 232 main tests + 63 VQ-VAE tests = **295 total, all passing**
+
+**Previous Update (2026-02-09):**
+- **VQ-VAE + Transformer Implementation:** Full `usv_language/` module implemented (Phases 0-6)
+  - Phase 0: Project setup, configs (data.yaml, model.yaml, training.yaml), import bootstrap
+  - Phase 1: Data pipeline (STFTConfig, WAV→spectrogram→HDF5, normalization, PyTorch Dataset)
+  - Phase 2: ColumnEncoder/ColumnDecoder (MLP with LayerNorm + GELU)
+  - Phase 3: VectorQuantizer (EMA updates, dead code reset, straight-through estimator)
+  - Phase 4: CausalTransformer (pre-norm, causal masked) + full VQVAE assembly
+  - Phase 5: Training pipeline (VQVAELoss, VQVAETrainer, StagedTrainer, CosineWarmupScheduler)
+  - Phase 6: Analysis tools (codebook viz, transition matrices, n-grams, MI, generative probing)
+  - 6 CLI scripts (preprocess, train, analyze, validate_autoencoder, validate_vq, validate_shapes)
+  - 63 tests, all passing
+  - Shape validation confirmed: 437K params, forward+backward pass works, gradient flow verified
+  - **Next:** Preprocess real WAV data, train on HPC cluster (Phase 5 execution)
+
+**Previous Update (2026-02-08):**
 - **Auto-Move Reviewed Files:** Implemented automatic file relocation to `_reviewed` folders when switching files
   - Moves previous WAV file after successful load of new file
   - Preserves directory structure (e.g., `USV_1/subfolder/` → `USV_1_reviewed/subfolder/`)
