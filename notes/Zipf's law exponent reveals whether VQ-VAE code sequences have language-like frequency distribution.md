@@ -1,0 +1,19 @@
+---
+description: Fitting a power law to code frequency vs rank and comparing the exponent to natural language (alpha ~1.0) tests whether USV code sequences show language-like statistical structure.
+type: method
+confidence: experimental
+topics:
+  - "[[classification]]"
+---
+
+# Zipf's law exponent reveals whether VQ-VAE code sequences have language-like frequency distribution
+
+Count the frequency of each codebook entry across all bout sequences, rank entries by frequency (rank 1 = most common), plot log(frequency) vs log(rank), and fit a power law: frequency proportional to rank^(-alpha). Natural language word frequency distributions follow Zipf's law with alpha approximately 1.0 — a few words are extremely common, most words are rare, and the distribution follows a straight line on a log-log plot. If USV code sequences show a similar distribution, this is evidence of language-like statistical structure in the learned vocabulary.
+
+The interpretation of the alpha value carries nuance. Alpha close to 1.0 suggests rich combinatorial structure similar to human language. Alpha much larger than 1.0 (steeper slope) suggests a highly skewed distribution where a few codes dominate and most are rarely used — potentially indicating insufficient codebook diversity or dataset bias toward common vocalizations. Alpha much smaller than 1.0 (flatter slope) suggests a more uniform distribution, inconsistent with Zipf's law and potentially indicating that codes are not organized along a frequency-of-use axis. A minimum count threshold of 5 excludes rare noise codes that might distort the tail of the distribution.
+
+This analysis is one of several sequential structure tests. It captures the marginal frequency distribution but says nothing about transition patterns. The complementary analyses — [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] and [[excess entropy measures long-range structure complexity in discrete code sequences]] — probe the sequential and long-range structure respectively. Together they form a test battery for language-likeness. Whether Zipf's law holds depends critically on [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] — if the codebook is too small, a few codes will dominate regardless of true structure; if too large, the distribution will be artificially flattened by dead codes.
+
+---
+
+Source: [[ROADMAP.md]], Phase 8
