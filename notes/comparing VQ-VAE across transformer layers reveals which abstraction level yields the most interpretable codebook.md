@@ -1,0 +1,19 @@
+---
+description: Training identical VQ-VAE models on hidden states from layers 2, 4, 6, and 8 separately identifies which abstraction level best supports an interpretable discrete vocabulary.
+type: method
+confidence: experimental
+topics:
+  - "[[classification]]"
+---
+
+# comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook
+
+Train an identical VQ-VAE (same architecture, same hyperparameters, same training procedure) on the hidden states extracted from each of layers 2, 4, 6, and 8 of the trained transformer. The layer is the only variable. This controlled comparison isolates the effect of abstraction level on codebook quality, avoiding confounds from different VQ-VAE capacity or training dynamics.
+
+Three metrics drive the comparison. Codebook perplexity (interpretability proxy) measures how uniformly the codebook is utilized — perplexity close to K means all codes are used equally, suggesting rich diversity; target is perplexity > 0.5×K. Codebook utilization (stability proxy) measures what fraction of codebook entries are used at all; target > 90% indicates no dead codes. Reconstruction loss measures how much information the layer's hidden states carry about the original spectrogram — lower is better for preserving acoustic content. Critically, the comparison emphasizes perplexity over reconstruction loss, because the goal is an interpretable discrete vocabulary, not maximal reconstruction fidelity.
+
+The default extraction point is layer 4 (middle of the 8-block model) per [[middle-layer hidden states capture mid-level concepts better than early or late layers for VQ-VAE input]], but this experiment validates or overrides that default with empirical evidence. Early layers (layer 2) likely encode low-level frequency patterns; late layers (layer 8) likely encode high-level predictive context; middle layers balance both. The chosen layer's codebook then feeds downstream analysis including [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]], where the choice of K must match the actual diversity of concepts the layer encodes.
+
+---
+
+Source: [[ROADMAP.md]], Phase 8
