@@ -11,7 +11,7 @@ Tell me which you want next:
 3) Both.
 You can run it in the same terminal (PowerShell) you used before, but use the Streamlit command instead of running the Python file directly.
 
-From the repo root (`C:\Users\light\PycharmProjects\mickey_london_lab`), run:
+From the repo root (`D:\mickey_london_lab`), run:
 
 streamlit run scripts/usv_parameter_lab.py
 
@@ -20,7 +20,7 @@ If you prefer the venv?s Streamlit explicitly:
 .\.venv\Scripts\streamlit.exe run scripts\usv_parameter_lab.py
 
 Either way, Streamlit will open a browser tab with the app.
-I can set the default WAV folder in this repo (e.g., in `src/usv_spectrogram/param_lab/app.py`) to `C:\Users\light\PycharmProjects\mickey_london_lab\5970 USV`. That will apply to this project only.
+I can set the default WAV folder in this repo (e.g., in `src/usv_spectrogram/param_lab/app.py`) to `D:\mickey_london_lab\5970 USV`. That will apply to this project only.
 
 If you want it for *all* of your projects, that?s outside this repo. I?d need to know where you want a shared default to live (e.g., a global config file, environment variable, or a shared .codex skill).
 

@@ -1,0 +1,13 @@
+{
+  "schema_version": 3,
+  "tasks": [],
+  "maintenance_conditions": {
+    "orphan_threshold": 5,
+    "inbox_threshold": 3,
+    "stale_days": 30,
+    "moc_max_notes": 40,
+    "observation_threshold": 10,
+    "tension_threshold": 5,
+    "session_mining_threshold": 5
+  }
+}
