@@ -2,13 +2,122 @@
 
 **Started:** 2026-01-16
 **Plan Document:** USV_DETECTION_IMPLEMENTATION_PLAN.md
-**Reference:** usv_signal_processing_reference.md
+**Reference:** docs/reference/usv_signal_processing_reference.md
 
 ---
 
-## Current Status: Phase 4 Complete, Scaling Plan Phases 1-3 Complete, VQ-VAE Phases 0-6 Implemented
+## Current Status: Knowledge Graph /reflect Complete; Notion Notes Link Command Complete; USV Phase 8.1 Data Pipeline Complete
 
-**Latest Update (2026-02-14):**
+**Latest Update (2026-02-18):**
+- **Knowledge Graph: /reflect pass on full vault** -- Complete
+  - Added 12 new cross-note wiki-link connections across 12 atomic notes
+  - Added 2 notes to experimental-methods topic map (class weight boosting, recall/precision tradeoff)
+  - Updated frontmatter and footer topics for 2 notes gaining new topic map membership
+  - All connections pass articulation test (each has explicit "why" context phrase)
+  - Key connection themes: recall bias compounding across stages, temporal grouping at two levels (within-USV vs between-USV), resolution tradeoff implications for window choice and sample rate safety
+  - qmd index synced (37 documents, 37 embedded)
+
+**Previous Update (2026-02-18):**
+- **Notion Notes Phase 4.1: Link Command** — Complete
+  - Created `notion_notes/commands/link.py`: `Linker` class, `LinkConfig`, `Connection`, `LinkResult`
+  - Two-stage filtering: fast pre-filter by tag/domain overlap, then Claude (Sonnet) semantic comparison
+  - Candidate filtering: tag overlap threshold OR same domain, excludes self and cached pairs, sorted by overlap, limited to max_candidates
+  - JSON cache at `.cache/link_pairs.json` prevents O(n^2) re-evaluation; canonical pair keys ensure A-B == B-A
+  - Bidirectional `Related Notes` relations created via `add_relation()` for each connection
+  - Connection types: same-concept-different-context, prerequisite-builds-on, contradicts-alternative-view, shares-mechanism-principle, part-of-same-system
+  - CLI: `python -m notion_notes link --page|--all-unlinked|--recent N [--dry-run]`
+  - 17 new tests (all mocked), 0 regressions (375 passed, 2 pre-existing failures in test_notion_client.py)
+  - ROADMAP Phase 1-3 gate checkboxes updated, Phase 4.1 status set to DONE
+  - Handoff: `docs/reviews/link-command-handoff.md`
+
+**Previous Update (2026-02-18):**
+- **Notion Notes Step 2: Tag Command** — Complete
+  - Created `notion_notes/commands/` package with `tag.py`: `Tagger` class, `TagConfig`, `TagResult`
+  - Claude Haiku classifies pages into domain + tags from a growing `taxonomy.json`
+  - JSON extraction handles markdown fences, retries once on bad JSON
+  - CLI: `python -m notion_notes tag --page|--untagged|--retag-all [--dry-run] [--taxonomy]`
+  - Added `kb_database_id` field to `NotionNotesConfig` (from `KB_DATABASE_ID` env var)
+  - 19 new tests (all mocked), 0 regressions
+  - Handoff: `docs/reviews/tag-command-handoff.md`
+
+**Previous Update (2026-02-18):**
+- **Notion Notes Phase 1.1: Project Scaffold & API Client** — Complete
+  - Created `notion_notes/` package (5 modules): `config.py`, `claude_client.py`, `notion_client.py`, `cli.py`, `__init__.py`/`__main__.py`
+  - `NotionNotesConfig` frozen dataclass with manual .env parsing (no python-dotenv dep)
+  - `ClaudeClient` with `prompt()` and `prompt_json()` wrapping Anthropic SDK
+  - `NotionClientWrapper` with read ops (get_page, get_page_blocks, query_database, search_database), write ops (create_page, update_page_properties, append_blocks, add_relation), helpers (blocks_to_markdown, extract_title, extract_property), and rate limiting (3 req/s + exponential backoff on 429)
+  - Click CLI entry point with `--dry-run`, `--env-file`, `--verbose` options and `list-pages` smoke-test command
+  - 41 new tests (all mocked, no live API calls), 273 total passing, 0 regressions
+  - Support files: `.env.example`, `.gitignore` update, `requirements.txt` update (notion-client, anthropic)
+  - Handoff: `docs/reviews/notion-notes-1.1-handoff.md`
+
+**Previous Update (2026-02-18):**
+- **Phase 8.1: USV Bout Data Preparation Pipeline** — Complete (v2 architecture data foundation)
+  - Created `usv_language/data/` package with 5 modules + CLI script:
+    - `bout_extractor.py`: `BoutExtractionConfig`, `Bout`, `BoutExtractor` — groups USV detections into bouts (500ms gap, ±200ms padding per ADR-014)
+    - `spectrogram.py`: `BoutSpectrogramConfig`, `compute_bout_spectrogram()` — STFT via shared `_stft_core.py` (sr=300k, n_fft=512, hop=128, 20-120kHz → 170 bins per ADR-001/ADR-002)
+    - `normalization.py`: `NormalizationStats`, per-frequency Welford's algorithm, save/load `.npz`
+    - `dataset.py`: `USVBoutDataset` (PyTorch), `BucketedBatchSampler`, augmentation transforms, next-column prediction
+    - `prepare_data.py`: CLI end-to-end pipeline (extract → spectrogram → split → normalize → save)
+    - `__init__.py`: Public API exports
+  - Created `usv_language/configs/default_config.yaml` — master config reference
+  - 56 new tests (15 bout_extractor + 12 spectrogram + 8 normalization + 21 dataset), all passing
+  - Full test suite: 351/351 passing, 0 regressions
+  - Key design decisions: recording-based splits (ADR-004), Welford's online algorithm for numerical stability, bucketed batching with 6 length buckets, 4 augmentation types (noise/gain/freq-mask/time-mask)
+  - *Files created: `usv_language/data/__init__.py`, `usv_language/data/bout_extractor.py`, `usv_language/data/spectrogram.py`, `usv_language/data/normalization.py`, `usv_language/data/dataset.py`, `usv_language/data/prepare_data.py`, `usv_language/configs/default_config.yaml`, 4 test files*
+
+**Previous Update (2026-02-18):**
+- **VQ-VAE Architecture Redesign (v1 → v2):** Replaced the end-to-end VQ-VAE + Transformer approach with a two-phase pipeline
+  - **v1 (superseded):** End-to-end VQ-VAE with causal transformer (~437K params, d_model=64, K=512 codebook, 4 layers, 4 heads). Code complete in `usv_language/`, 63 tests passing. To be archived.
+  - **v2 (new):** Phase 1 trains a large autoregressive transformer (~25-30M params, d_model=512, 8 layers, 8 heads) on raw spectrogram columns (next-column prediction). Phase 2 applies a VQ-VAE (K=64) to the frozen transformer's hidden states as a post-hoc interpretability tool.
+  - **Rationale:** Training the transformer first (without discretization) lets it freely learn whatever representations are most useful. The VQ-VAE then discovers discrete "concepts" within those learned representations. See `docs/plans/theoretical_guide.md` for full scientific rationale.
+  - ROADMAP.md Phase 8 rewritten with 4 sub-phases (8.1 Data Pipeline, 8.2 Transformer, 8.3 VQ-VAE, 8.4 Analysis)
+  - ROADMAP.md Phase 11 restructured (11.1 Preprocessing, 11.2 Train Transformer, 11.3 Extract + Train VQ-VAE, 11.4 Analysis)
+  - ADR-007 updated in DECISIONS.md to reflect v2 architecture
+  - ADR-014 added for bout-level data approach (500ms gap threshold, ±200ms padding)
+  - Old v1 plan (`docs/plans/vq_vae_transformer_plan.md`) marked as superseded
+  - New reference docs: `docs/plans/theoretical_guide.md`, `docs/plans/implementation_plan.md`
+  - *Files modified: `ROADMAP.md`, `DECISIONS.md`, `IMPLEMENTATION_PROGRESS.md`*
+  - *Files moved: `theoretical_guide.md` → `docs/plans/`, `implementation_plan.md` → `docs/plans/`*
+
+**Previous Update (2026-02-16):**
+- **Workflow Migration Session 4: Patterns + Module Docs** — Completed final migration session
+  - Created `docs/architecture/patterns.md` with 8 established patterns (Config Dataclass, Candidate Data Flow, Test Fixtures, Script CLI, PyQt6 Widget Structure, Label Storage, STFT Core, Import Bootstrap)
+  - Created `docs/modules/energy-detector.md` — full module doc with Purpose, Public Interface, Data Model, Usage Examples, Key Decisions, Integration Points
+  - Created `docs/modules/cnn-classifier.md` — full module doc with same structure plus Architecture and Model Artifacts sections
+  - All 6 Session 4 verification checklist items pass
+  - **Workflow migration complete** — all 4 sessions finished
+  - *Files created: `docs/architecture/patterns.md`, `docs/modules/energy-detector.md`, `docs/modules/cnn-classifier.md`*
+  - *File updated: `IMPLEMENTATION_PROGRESS.md`*
+- **Workflow Migration Session 3: ROADMAP.md** — Created unified implementation roadmap
+  - Read all 7 prerequisite planning documents to build complete picture
+  - Documented Phases 1-8 as DONE with key files, decisions, and test counts
+  - Wrote full `/implement` specs for 5 upcoming phases (9-13) with exact file paths, data structures, test plans, exit criteria
+  - Phase 9: Training Data Assembly Pipeline (READY) — automates label collection → jittering → negative generation → splitting
+  - Phase 10: Active Learning Cycle Runner (READY) — orchestrates full train/evaluate/mine cycle
+  - Phase 11: VQ-VAE Real Data Execution (BLOCKED on HPC) — preprocessing, training, analysis
+  - Phase 12: Cross-Population USV Comparison (FUTURE) — wild vs lab statistical analysis
+  - Phase 13: Batch Detection Pipeline (FUTURE) — headless processing of ~6,500 WAV files
+  - Includes dependency graph, recommended execution order, model size selection guide
+  - All 8 Session 3 verification checklist items pass
+  - *File created: `ROADMAP.md`*
+  - *File updated: `IMPLEMENTATION_PROGRESS.md`*
+- **Workflow Migration Session 2: CLAUDE.md Update** — Integrated structured review loop workflow into CLAUDE.md
+  - Removed obsolete Dual-AI Workflow section (Claude Code + Codex)
+  - Added 3 new sections: Implementation Completion Sequence, Module Reviews, Documentation: Document As You Build
+  - Fixed stale sample rate references throughout (250 kHz → 300 kHz per ADR-001)
+  - Moved Token Usage Optimization to `docs/workflow/token-optimization.md` to slim CLAUDE.md
+  - Replaced Signal Processing Conventions table with pointer to DECISIONS.md ADR-001/ADR-002
+  - Updated Session Workflow and Key Reference Documents with new doc references
+  - *Files modified: `CLAUDE.md`, `IMPLEMENTATION_PROGRESS.md`*
+  - *File created: `docs/workflow/token-optimization.md`*
+- **Workflow Migration Session 1 (2026-02-16):** Created foundation for structured review loop
+  - Created `DECISIONS.md` with 13 ADRs extracted from existing planning docs
+  - Created `docs/reviews/REVIEW-TEMPLATE.md` with 3-tier review system
+  - Created `docs/workflow/completion-sequence.md` with 7-step implementation sequence
+  - Created directory stubs: `docs/reviews/`, `docs/modules/`, `docs/architecture/`, `docs/workflow/`
+
+**Previous Update (2026-02-14):**
 - **Bug Fix: Duration filter fragmentation** — Removed the 90% active-fraction guard in `energy_detector.py` (lines 93-100). This guard was intended to prevent one giant segment from being rejected, but it counterproductively fragmented continuous long signals into small pieces that *passed* the `max_duration_ms` filter. A 600ms tone now correctly produces 0 candidates. All 42 energy detector tests pass. *File changed: `src/usv_spectrogram/detection/energy_detector.py`*
 - **Bug Fix: LabelStorage metadata persistence** — Added `original_cnn_probability` to `LabelStorage.save()` and `reconstruct_detected_usv()`. Previously this field was lost on save/load round-trips via the label storage path (the main `DetectionExporter` path was already correct). *File changed: `src/usv_spectrogram/app/core/label_storage.py`*
 - **New Script: WAV sampling for labeling** — Created `scripts/sample_wav_subset.py` to proportionally sample 1/5 of WAV files from USV_1 through USV_5 (1,299 of 6,491 files). Supports `--dry-run`, `--fraction`, `--seed`, `--dest`. Copies files to `USV_sample/` preserving folder structure. *File created: `scripts/sample_wav_subset.py`*
@@ -3068,7 +3177,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
 
 Try the new cross-platform PowerShell https://aka.ms/pscore6
 
-PS C:\Users\light\PycharmProjects\mickey_london_lab> 
+PS D:\mickey_london_lab> 
 
 **Output Structure:**
 
@@ -3097,7 +3206,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
 
 Try the new cross-platform PowerShell https://aka.ms/pscore6
 
-PS C:\Users\light\PycharmProjects\mickey_london_lab> 
+PS D:\mickey_london_lab> 
 
 **Session Status:** ? COMPLETE - Hard negative mining script implemented
 
