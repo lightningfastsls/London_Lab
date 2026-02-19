@@ -11,6 +11,8 @@ import click
 from notion_notes.claude_client import ClaudeClient
 from notion_notes.commands.atomize import AtomizeConfig, Atomizer
 from notion_notes.commands.link import LinkConfig, Linker
+from notion_notes.commands.move import Mover
+from notion_notes.commands.process import ProcessConfig, Processor
 from notion_notes.commands.tag import TagConfig, Tagger
 from notion_notes.config import load_config
 from notion_notes.migration import MigrationConfig, NoteMigrator
@@ -384,3 +386,97 @@ def link(
         f"\nDone: {len(results) - errors} linked, "
         f"{total_connections} connections found, {errors} errors."
     )
+
+
+@cli.command("process")
+@click.option("--recent", default=None, type=int, help="Process the N most recently created pages.")
+@click.option("--unprocessed", is_flag=True, help="Process all pages with Status = 'Raw'.")
+@click.option(
+    "--taxonomy",
+    type=click.Path(),
+    default="taxonomy.json",
+    help="Path to taxonomy JSON (default: taxonomy.json).",
+)
+@click.pass_context
+def process(
+    ctx: click.Context,
+    recent: int | None,
+    unprocessed: bool,
+    taxonomy: str,
+) -> None:
+    """Run full pipeline: tag -> atomize -> link on KB pages."""
+    cfg, notion, claude = _load_cfg_and_clients(ctx)
+
+    if not cfg.kb_database_id:
+        raise click.ClickException(
+            "KB_DATABASE_ID not set. Add it to your .env file or environment."
+        )
+
+    # Determine which pages to process
+    if recent is not None:
+        pages = notion.query_database(
+            cfg.kb_database_id,
+            sorts=[{"timestamp": "created_time", "direction": "descending"}],
+            page_size=recent,
+        )
+    elif unprocessed:
+        pages = notion.query_database(
+            cfg.kb_database_id,
+            filter={"property": "Status", "select": {"equals": "Raw"}},
+        )
+    else:
+        raise click.ClickException(
+            "Specify one of: --recent N or --unprocessed"
+        )
+
+    if not pages:
+        click.echo("No pages to process.")
+        return
+
+    click.echo(
+        f"Processing {len(pages)} page(s){'  [DRY RUN]' if cfg.dry_run else ''}..."
+    )
+
+    process_config = ProcessConfig(
+        tag_config=TagConfig(taxonomy_path=Path(taxonomy)),
+        atomize_config=AtomizeConfig(taxonomy_path=Path(taxonomy)),
+        link_config=LinkConfig(),
+        kb_database_id=cfg.kb_database_id,
+    )
+    processor = Processor(
+        notion=notion,
+        claude=claude,
+        config=process_config,
+        dry_run=cfg.dry_run,
+    )
+    report = processor.process(pages)
+    click.echo("\n" + report.summary())
+
+
+@cli.command("move")
+@click.option("--page", required=True, help="Page ID to move from Notes inbox to KB.")
+@click.pass_context
+def move(ctx: click.Context, page: str) -> None:
+    """Move a page from Notes inbox to Knowledge Base."""
+    cfg, notion, _ = _load_cfg_and_clients(ctx)
+
+    if not cfg.kb_database_id:
+        raise click.ClickException(
+            "KB_DATABASE_ID not set. Add it to your .env file or environment."
+        )
+
+    mover = Mover(
+        notion=notion,
+        target_db_id=cfg.kb_database_id,
+        dry_run=cfg.dry_run,
+    )
+    result = mover.move_page(page)
+
+    if result.error:
+        click.echo(f"ERROR: {result.error}")
+        raise SystemExit(1)
+    else:
+        click.echo(
+            f"Moved '{result.source_title}' -> {result.new_page_id}"
+            f"{'  [DRY RUN]' if cfg.dry_run else ''}"
+        )

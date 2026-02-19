@@ -838,7 +838,7 @@ Before starting Phase 5:
 ### 5.1 Process Command & Move Utility
 
 **What:** `process` command that runs tag -> atomize -> link in sequence on unprocessed notes. `move` command that transfers a page from Notes inbox to Knowledge Base. Both are thin wrappers around existing functionality.
-**Status:** BLOCKED (depends on Phase 4)
+**Status:** DONE
 **Review Tier:** 1
 **Depends on:** Phases 2, 3, 4
 

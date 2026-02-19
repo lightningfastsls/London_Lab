@@ -20,6 +20,7 @@ class NotionNotesConfig:
     claude_model: str = "claude-sonnet-4-6"
     notion_rate_limit_rps: float = 3.0
     kb_database_id: str = ""
+    notes_database_id: str = ""
     dry_run: bool = False
 
     def __post_init__(self) -> None:
@@ -105,5 +106,6 @@ def load_config(
             os.environ.get("NOTION_RATE_LIMIT_RPS", "3.0")
         ),
         kb_database_id=os.environ.get("NOTION_KB_DATABASE_ID", os.environ.get("KB_DATABASE_ID", "")),
+        notes_database_id=os.environ.get("NOTION_NOTES_DATABASE_ID", ""),
         dry_run=dry_run,
     )
