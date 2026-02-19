@@ -1,6 +1,26 @@
 {
   "schema_version": 3,
-  "tasks": [],
+  "tasks": [
+    {
+      "id": "seed-001",
+      "type": "extract",
+      "phase": "reduce",
+      "source": "inbox/learn-vqvae-bioacoustics-state-of-art-2026-02.md",
+      "description": "Extract atomic notes from VQ-VAE bioacoustics state-of-art synthesis (Feb 2026)",
+      "status": "pending",
+      "created": "2026-02-19",
+      "notes": [
+        "Update [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] with 2025 evidence from Sarkar NeurIPS workshop",
+        "New note: post-hoc VQ on frozen HuBERT embeddings underperforms end-to-end training (Sarkar NeurIPS 2025)",
+        "New note: Best 2023 convolutional AE shows learned representations beat handcrafted features for repertoire clustering",
+        "New note: AVES (Hagiwara ICASSP 2023) as potential backbone architecture",
+        "New note: FSQ (Mentzer ICLR 2024) as alternative to VQ-VAE that eliminates codebook collapse",
+        "New note: STSG discrete token approach (K-means 16k tokens) significantly underperforms transfer learning baselines",
+        "New note: speech SSL models transfer to bioacoustics with only marginal gain from domain-specific pretraining",
+        "Synthesis note: gap analysis table — what combinations of discrete/end-to-end/learned codebook exist in literature"
+      ]
+    }
+  ],
   "maintenance_conditions": {
     "orphan_threshold": 5,
     "inbox_threshold": 3,
