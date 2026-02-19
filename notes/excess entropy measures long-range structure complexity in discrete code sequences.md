@@ -3,7 +3,7 @@ description: Mutual information between past and future halves of sequences quan
 type: method
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # excess entropy measures long-range structure complexity in discrete code sequences

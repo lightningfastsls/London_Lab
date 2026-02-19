@@ -33,6 +33,9 @@ The operational classification system. A small CNN (~101K params) classifies ene
 - [[Chabout et al 2015 established that male mice change syllable syntax with social context]] -- motivates sequence analysis
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- supports sequence modeling
 - [[Ivanenko et al 2020 showed DNNs achieve 77-84 percent accuracy classifying emitter sex from spectrograms]] -- identity information in spectrograms
+- [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- cross-species AE clustering with NMI 0.5-0.75
+- [[AVES self-supervised model pretrained on general audio outperformed supervised baselines for bioacoustic tasks]] -- SSL backbone outperforming supervised methods
+- [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- speech SSL transfers to animal domains
 
 ## Open Questions
 - Scaling behavior of small CNN as labeled dataset grows from 2K to 30K

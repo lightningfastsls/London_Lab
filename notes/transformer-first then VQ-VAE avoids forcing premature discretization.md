@@ -5,7 +5,7 @@ confidence: experimental
 conditions: []
 meta_state: current
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # Transformer-first then VQ-VAE avoids forcing premature discretization

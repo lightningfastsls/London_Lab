@@ -3,7 +3,7 @@ description: Method of finding N=10 nearest encoder outputs per codebook entry a
 type: method
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # exemplar galleries ground abstract codebook entries in concrete acoustic examples

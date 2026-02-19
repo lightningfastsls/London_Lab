@@ -3,7 +3,7 @@ description: Open question on whether transformer attention heads learn long-ran
 type: open-question
 confidence: speculative
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # whether attention patterns in the trained transformer attend beyond the immediately preceding frame

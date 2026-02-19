@@ -3,7 +3,7 @@ description: Fitting a power law to code frequency vs rank and comparing the exp
 type: method
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # Zipf's law exponent reveals whether VQ-VAE code sequences have language-like frequency distribution

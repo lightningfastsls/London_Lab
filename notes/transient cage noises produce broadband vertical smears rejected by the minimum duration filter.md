@@ -23,6 +23,7 @@ Relevant Notes:
 - [[maximum bandwidth filter of 20 kHz rejects broadband noise in energy detection]] -- also catches these broadband transients
 - [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] -- the other major artifact type (narrowband vs broadband)
 - [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- the recording environment that produces these cage noise artifacts
+- [[20-120 kHz detection range pads the mouse USV band to avoid clipping edge-case calls]] -- the 20 kHz lower bound avoids admitting the worst of the broadband cage noise
 
 Topics:
 - [[signal-processing]]

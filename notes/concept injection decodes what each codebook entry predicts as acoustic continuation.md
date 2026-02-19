@@ -3,7 +3,7 @@ description: Replacing a hidden state with a decoded codebook entry then generat
 type: method
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # concept injection decodes what each codebook entry predicts as acoustic continuation

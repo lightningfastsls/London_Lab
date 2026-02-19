@@ -1,6 +1,7 @@
 ---
-status: pending
+status: resolved
 created: 2026-02-19
+resolved: 2026-02-19
 ---
 
 # VQ-VAE imposes discrete codes on a continuum that Goffinet showed resists discrete categorization
@@ -12,5 +13,12 @@ The fundamental methodological tension: Goffinet et al. (2021) showed that USVs 
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]]
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]]
 
-## Resolution Path
-May resolve empirically: if the VQ-VAE codebook entries are interpretable, well-utilized, and discriminate between wild and lab populations, the discretization is justified pragmatically even if the underlying reality is continuous. The [[comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook]] experiment will provide evidence.
+## Resolution
+**Resolved: pragmatic discretization of a continuum, not a categorical claim.**
+
+Three factors dissolve the tension:
+1. The v2 architecture ([[transformer-first then VQ-VAE avoids forcing premature discretization]]) means the VQ-VAE is a post-hoc interpretability lens, not a generative assumption. The transformer learns continuous representations first.
+2. A codebook of K=64 doesn't claim 64 discrete "types" — it provides 64 reference points along the continuum, analogous to naming colors on a continuous spectrum. Useful labels ≠ ontological categories.
+3. The empirical test ([[comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook]]) will validate whether the discretization captures meaningful structure.
+
+Goffinet's finding remains correct (the continuum is real), AND the VQ-VAE is a valid tool (discretization is useful). No contradiction.

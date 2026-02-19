@@ -3,7 +3,7 @@ description: MSE averages over multimodal futures, producing blurry predictions;
 type: finding
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # MSE loss for next-column prediction may produce blurry spectrograms requiring a mixture density output head

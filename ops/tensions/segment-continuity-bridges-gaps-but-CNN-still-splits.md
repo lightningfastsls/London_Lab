@@ -1,6 +1,7 @@
 ---
-status: pending
+status: dissolved
 created: 2026-02-19
+resolved: 2026-02-19
 ---
 
 # Segment continuity bridges gaps in the energy detector but noise-interrupted long USVs still get split at the CNN level
@@ -11,5 +12,9 @@ The energy detector has segment continuity bridging (5 ms max gap), but the rese
 - [[segment continuity bridges brief amplitude dips that fragment single USVs]] -- describes pre-CNN bridging
 - [[noise-interrupted long USVs get split into two detections by the CNN sliding window]] -- describes post-CNN splitting
 
-## Resolution Path
-Could be resolved by: (a) accepting the split as correct behavior (each fragment is real), (b) adding post-CNN merging logic, or (c) widening the sliding window receptive field.
+## Resolution
+**Dissolved.** These operate at different pipeline stages on different phenomena:
+- Energy detector bridging handles brief amplitude dips (sub-5ms) within a single USV
+- CNN splitting happens at actual noise interruptions where the signal is genuinely absent
+
+Both observations are correct. The tension was a framing issue, not a contradiction. Whether to add post-CNN merging is a feature decision, not a conflict — and the answer depends on whether noise-interrupted fragments should be treated as one call or two (a domain question, not an implementation bug).

@@ -6,6 +6,7 @@ conditions: []
 meta_state: current
 topics:
   - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization

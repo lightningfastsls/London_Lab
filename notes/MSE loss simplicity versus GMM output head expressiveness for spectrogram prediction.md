@@ -3,7 +3,7 @@ description: Tension between MSE simplicity and GMM expressiveness for spectrogr
 type: finding
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # MSE loss simplicity versus GMM output head expressiveness for spectrogram prediction

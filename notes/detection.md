@@ -9,6 +9,7 @@ How we find USVs in raw audio. The pipeline uses a two-stage architecture: a per
 
 ## Core Ideas
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- the architectural pattern: energy for recall, CNN for precision
+- [[20-120 kHz detection range pads the mouse USV band to avoid clipping edge-case calls]] -- padded 30-110 kHz band defining the frequency domain for detection
 - [[energy threshold at negative 60 dB is deliberately low to maximize recall in the first stage]] -- permissive first stage by design
 - [[peak energy mode detects narrow-band USVs better than mean energy across the frequency band]] -- max energy per frame avoids signal dilution
 - [[maximum bandwidth filter of 20 kHz rejects broadband noise in energy detection]] -- rejects candidates spanning more than 20 kHz

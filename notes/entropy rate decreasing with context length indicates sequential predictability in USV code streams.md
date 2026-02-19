@@ -3,7 +3,7 @@ description: Approximating entropy rate with increasing n-gram context (1 throug
 type: method
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # entropy rate decreasing with context length indicates sequential predictability in USV code streams

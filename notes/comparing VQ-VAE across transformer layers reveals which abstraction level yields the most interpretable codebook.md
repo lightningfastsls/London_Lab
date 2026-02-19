@@ -3,7 +3,7 @@ description: Training identical VQ-VAE models on hidden states from layers 2, 4,
 type: method
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook

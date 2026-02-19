@@ -3,7 +3,7 @@ description: Causal masking aligns with the research question by preventing atte
 type: decision
 confidence: proven
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams

@@ -3,7 +3,7 @@ description: Pre-norm (LayerNorm before attention/FFN) prevents gradient explosi
 type: decision
 confidence: proven
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # pre-norm transformer architecture improves training stability for spectrogram prediction

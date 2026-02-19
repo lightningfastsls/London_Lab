@@ -3,7 +3,7 @@ description: Unique observed bigrams divided by K-squared quantifies whether cod
 type: method
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # bigram productivity ratio measures compositionality of USV code sequences

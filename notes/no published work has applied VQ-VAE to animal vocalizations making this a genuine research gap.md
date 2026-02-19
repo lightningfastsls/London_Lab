@@ -6,6 +6,7 @@ conditions: []
 meta_state: current
 topics:
   - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # No published work has applied VQ-VAE to animal vocalizations making this a genuine research gap

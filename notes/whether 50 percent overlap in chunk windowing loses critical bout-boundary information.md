@@ -3,7 +3,7 @@ description: Open question on whether 50% stride chunking of long bouts causes p
 type: open-question
 confidence: speculative
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # whether 50 percent overlap in chunk windowing loses critical bout-boundary information

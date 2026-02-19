@@ -5,7 +5,7 @@ confidence: experimental
 conditions: []
 meta_state: current
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # separating representation learning from discretization enables richer feature discovery

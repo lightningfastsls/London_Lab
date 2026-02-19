@@ -36,12 +36,31 @@ Unsupervised discovery of structure in USV vocalizations. A transformer predicts
 
 ## Literature Context
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the key finding that motivated the VQ-VAE approach
+- [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- quantitative baseline for information retention in learned representations
 - [[Tjandra et al 2020 applied transformer VQ-VAE for unsupervised unit discovery in human speech with K equals 128]] -- closest architectural analog from speech domain
-- [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- novelty claim
+- [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- original novelty claim (2026-02-19)
+- [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- updated gap analysis with 2024-2025 evidence confirming novelty
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- unsupervised predecessor using handcrafted features
 
-## Open Questions
+## Adjacent Approaches (Not End-to-End VQ-VAE)
+- [[Sarkar and Magimai-Doss 2025 applied post-hoc VQ to frozen HuBERT embeddings for marmoset and dog vocalizations]] -- first discrete tokens in bioacoustics, post-hoc not end-to-end
+- [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- 35% vs 49% UAR gap validates end-to-end design
+- [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- GVQ negative result validates standard VQ-VAE choice
+- [[single codebook with V=50 was insufficient for complex vocalization structure in discrete token experiments]] -- may need RVQ or larger K
+- [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- continuous AE for repertoire discovery across species
+- [[STSG spectrogram token skip-gram achieved only 0.559 AUC versus 0.810 for transfer learning on bioacoustic classification]] -- K-means tokens dramatically underperform
+- [[Garrobe Fonollosa 2024 showed VAE plus temporal convolutional network achieved AUC over 0.9 for sperm whale click classification]] -- VAE for cetacean feature extraction
+
+## Self-Supervised Transfer Learning
+- [[AVES self-supervised model pretrained on general audio outperformed supervised baselines for bioacoustic tasks]] -- potential alternative backbone for VQ-VAE
+- [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- speech SSL models as bootstrap strategy
+
+## Quantization Methods
 - [[whether FSQ provides more stable discretization than VQ-VAE for USV codebook learning]] -- FSQ achieves 100% utilization by design
+- [[FSQ eliminates codebook collapse by construction achieving 100 percent utilization through fixed scalar quantization]] -- ICLR 2024 evidence for FSQ at 400-700 bps speech codecs
+- [[discrete audio token taxonomy from 2025 survey covers quantization methods beyond simple VQ]] -- comprehensive taxonomy: RVQ, SVQ, GVQ, FSQ, PQ and more
+
+## Open Questions
 - [[whether attention patterns in the trained transformer attend beyond the immediately preceding frame]] -- purely local attention would mean no long-range learning
 - [[whether 50 percent overlap in chunk windowing loses critical bout-boundary information]] -- same event gets different positional encodings
 

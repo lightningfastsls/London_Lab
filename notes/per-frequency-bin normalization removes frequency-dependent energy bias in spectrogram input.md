@@ -15,7 +15,7 @@ The normalization formula is S_norm[f,t] = (S[f,t] - mean[f]) / (std[f] + 1e-8),
 
 Statistics are computed exclusively from the training split and saved to an npz file. This saved state is essential for reproducibility: the same mean and std vectors must be applied at inference time as were applied during training. Applying different statistics at inference would shift the input distribution and silently degrade model performance. See [[normalization statistics must be computed on training set only to prevent data leakage]] for the rationale behind this constraint.
 
-The 170-bin resolution follows from [[512-point FFT at 300 kHz gives 1.7 ms temporal resolution with 586 Hz frequency bins]] and the decision to crop to the 20-120 kHz USV-relevant band. At 586 Hz per bin, the 100 kHz band contains approximately 170 bins. This resolution is sufficient because [[frequency resolution of 586 Hz per bin suffices to distinguish USV subtypes in the 20-120 kHz range]].
+The 170-bin resolution follows from [[512-point FFT at 300 kHz gives 1.7 ms temporal resolution with 586 Hz frequency bins]] and the decision to crop to the 20-120 kHz USV-relevant band (see [[20-120 kHz detection range pads the mouse USV band to avoid clipping edge-case calls]]). At 586 Hz per bin, the 100 kHz band contains approximately 170 bins. This resolution is sufficient because [[frequency resolution of 586 Hz per bin suffices to distinguish USV subtypes in the 20-120 kHz range]].
 
 ---
 

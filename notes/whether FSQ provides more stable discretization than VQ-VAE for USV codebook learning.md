@@ -5,7 +5,7 @@ confidence: speculative
 conditions: []
 meta_state: current
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # whether FSQ provides more stable discretization than VQ-VAE for USV codebook learning

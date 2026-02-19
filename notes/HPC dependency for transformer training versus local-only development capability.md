@@ -3,7 +3,7 @@ description: The ~25-30M param transformer cannot train on the local AMD RX 5700
 type: finding
 confidence: proven
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # HPC dependency for transformer training versus local-only development capability

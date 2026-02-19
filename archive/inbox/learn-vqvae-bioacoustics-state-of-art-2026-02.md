@@ -6,7 +6,7 @@ author: "Claude /learn synthesis"
 date_accessed: "2026-02-19"
 research_tool: "WebSearch + WebFetch"
 research_query: "VQ-VAE vector quantized variational autoencoder animal bioacoustics vocalization 2024 2025"
-status: unprocessed
+status: processed
 ---
 
 # State of VQ-VAE and Discrete Representation Learning in Animal Bioacoustics (Feb 2026)

@@ -5,7 +5,7 @@ confidence: experimental
 conditions: []
 meta_state: current
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # Codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types

@@ -6,6 +6,7 @@ conditions: []
 meta_state: current
 topics:
   - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types

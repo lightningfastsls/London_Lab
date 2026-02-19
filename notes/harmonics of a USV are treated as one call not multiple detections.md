@@ -20,6 +20,7 @@ Source:
 Relevant Notes:
 - [[frequency resolution of 586 Hz per bin suffices to distinguish USV subtypes in the 20-120 kHz range]] -- resolution for resolving harmonic structure
 - [[maximum bandwidth filter of 20 kHz rejects broadband noise in energy detection]] -- harmonics may span more than 20 kHz, potentially interacting with the bandwidth filter
+- [[20-120 kHz detection range pads the mouse USV band to avoid clipping edge-case calls]] -- the detection band must be wide enough to capture both fundamental and harmonic
 
 Topics:
 - [[detection]]

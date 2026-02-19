@@ -5,7 +5,7 @@ confidence: experimental
 conditions: []
 meta_state: current
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # Middle-layer hidden states capture mid-level concepts better than early or late layers for VQ-VAE input

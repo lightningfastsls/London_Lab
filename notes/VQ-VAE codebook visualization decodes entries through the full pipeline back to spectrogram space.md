@@ -3,7 +3,7 @@ description: Method for interpreting VQ-VAE codebook entries by decoding each th
 type: method
 confidence: experimental
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # VQ-VAE codebook visualization decodes entries through the full pipeline back to spectrogram space

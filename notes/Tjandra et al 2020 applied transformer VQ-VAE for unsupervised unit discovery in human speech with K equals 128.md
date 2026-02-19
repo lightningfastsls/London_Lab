@@ -6,6 +6,7 @@ conditions: []
 meta_state: current
 topics:
   - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # Tjandra et al 2020 applied transformer VQ-VAE for unsupervised unit discovery in human speech with K equals 128

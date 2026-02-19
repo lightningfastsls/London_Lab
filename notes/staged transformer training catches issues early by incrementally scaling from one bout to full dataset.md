@@ -3,7 +3,7 @@ description: Four training stages (1 bout, 10 bouts, 100 bouts, full dataset) wi
 type: method
 confidence: likely
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
   - "[[experimental-methods]]"
 ---
 

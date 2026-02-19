@@ -5,7 +5,7 @@ confidence: experimental
 conditions: []
 meta_state: current
 topics:
-  - "[[classification]]"
+  - "[[representation-learning]]"
 ---
 
 # codebook collapse prevention requires simultaneous EMA updates plus dead code reset plus k-means init plus L2 normalization
