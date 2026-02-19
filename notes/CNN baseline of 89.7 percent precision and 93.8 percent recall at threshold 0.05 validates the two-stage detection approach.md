@@ -17,6 +17,8 @@ The 93.8% recall means approximately 6% of real USVs are missed by the CNN stage
 
 The CNN architecture producing these results is described in [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]], confirming that a compact model is sufficient at this data scale.
 
+This baseline establishes the starting point for the [[active learning cycle automates the label-train-evaluate-mine loop for iterative CNN improvement]], where each subsequent milestone (5K, 10K, 20K, 30K labels) should improve upon these numbers. The precision and recall values also inform the [[split ratio inconsistency between DECISIONS.md 80-10-10 and ROADMAP Phase 9 70-15-15 needs resolution]], since the ~840-label test set that produced these metrics may be too small for reliable confidence intervals under 80/10/10 splits.
+
 ---
 
 Source: [[ROADMAP.md]]

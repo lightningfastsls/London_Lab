@@ -12,8 +12,16 @@ Bigram productivity is computed as: (number of unique observed code pairs) / K^2
 
 The compositionality test extends this: take code pairs that were never observed in training data (held-out bigrams), decode each pair using the VQ-VAE decoder, and assess whether the decoded spectrogram is coherent — does it resemble a plausible USV segment? If unseen bigrams decode to coherent spectrograms, this suggests the codes maintain independent acoustic identity regardless of context, a stronger form of compositionality. If unseen bigrams decode to noise or artifacts, codes are context-dependent and compositional combination fails.
 
-This connects to [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] — a codebook that is too small will artificially inflate productivity (all K^2 pairs observed by necessity if K is tiny relative to data volume) while a codebook that is too large will deflate it (many codes never co-occur). The productivity ratio and compositionality test together address whether the learned vocabulary is genuinely combinatorial or merely a lookup table of fixed sequences. Compare with [[Zipf's law exponent reveals whether VQ-VAE code sequences have language-like frequency distribution]] for the marginal (single-code) frequency structure — compositionality is the joint (two-code) generalization.
+This connects to [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] — a codebook that is too small will artificially inflate productivity (all K^2 pairs observed by necessity if K is tiny relative to data volume) while a codebook that is too large will deflate it (many codes never co-occur). The productivity ratio and compositionality test together address whether the learned vocabulary is genuinely combinatorial or merely a lookup table of fixed sequences. Compare with [[Zipf's law exponent reveals whether VQ-VAE code sequences have language-like frequency distribution]] for the marginal (single-code) frequency structure — compositionality is the joint (two-code) generalization. This analysis forms part of a four-part sequential structure test battery that also includes [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] (conditional entropy curves) and [[excess entropy measures long-range structure complexity in discrete code sequences]] (long-range mutual information). Each measures a different facet of language-likeness: frequency distribution, pairwise composition, context-dependent predictability, and long-range dependency.
 
 ---
 
 Source: [[ROADMAP.md]], Phase 8
+
+Relevant Notes:
+- [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- transition probabilities (which bigrams probe) are part of the sequence statistics Hertz showed are informative
+- [[Chabout et al 2015 established that male mice change syllable syntax with social context]] -- syntax changes imply flexible combination of syllable types, which bigram productivity would detect
+- [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- K=64 defines the denominator K^2=4096 for the productivity ratio
+
+Topics:
+- [[classification]]

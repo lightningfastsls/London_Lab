@@ -21,6 +21,8 @@ Relevant Notes:
 - [[USVs are one component of a multimodal courtship behavior suite including mounting approach and movement]] -- the multimodal framework
 - [[temporal alignment between USV detections and LMT behavioral events enables USV-behavior correlation analysis]] -- the temporal alignment method
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the infrastructure
+- [[inbreeding and absence of courtship selection pressure in captivity caused lab mice to degrade courtship vocal competence]] -- the directional hypothesis this evidence strategy tests
+- [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the comparison framework this cross-modal evidence strengthens
 
 Topics:
 - [[experimental-methods]]

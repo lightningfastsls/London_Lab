@@ -14,8 +14,17 @@ This creates a structural gap: code can be fully written, tested for correctness
 
 The staged training protocol partially mitigates this gap. Stage A (single bout, ~2K frames) and Stage B (10 bouts, curriculum ordering) are small enough that they may run on the local GPU with reduced batch size, giving early feedback on whether the architecture is learning anything before committing HPC compute. Stages C and D (full dataset, fine-tuning with VQ-VAE) clearly require HPC.
 
-This dependency connects to [[transformer-first then VQ-VAE avoids forcing premature discretization]], which motivates why the transformer is the first major investment despite its compute cost, and [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]], which is the primary mitigation for the HPC dependency.
+This dependency connects to [[transformer-first then VQ-VAE avoids forcing premature discretization]], which motivates why the transformer is the first major investment despite its compute cost, and [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]], which is the primary mitigation for the HPC dependency. Architecture stability is critical for remote HPC runs where interactive debugging is impractical, making [[pre-norm transformer architecture improves training stability for spectrogram prediction]] an essential prerequisite for HPC deployment.
 
 ---
 
 Source: [[ROADMAP.md]]
+
+Relevant Notes:
+- [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- why the transformer investment is justified despite compute cost
+- [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]] -- primary mitigation for the HPC gap
+- [[pre-norm transformer architecture improves training stability for spectrogram prediction]] -- stability is critical for non-interactive HPC runs
+- [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the data format that determines training compute requirements
+
+Topics:
+- [[classification]]

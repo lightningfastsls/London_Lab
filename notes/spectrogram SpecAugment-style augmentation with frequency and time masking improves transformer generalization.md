@@ -15,8 +15,18 @@ Four augmentation operations are applied independently with probability 0.5 duri
 
 These augmentations are applied exclusively to transformer training inputs. The CNN pipeline uses [[constrained jittering generates diverse positive training examples by shifting detection boundaries within overlap constraints]] instead, which is better suited to the fixed-window CNN architecture. The two augmentation strategies are not interchangeable: jittering operates at the sample-selection level before spectrogram computation, while SpecAugment-style masking operates on the computed spectrogram tensor.
 
-The confidence is rated "experimental" because SpecAugment benefits have been validated primarily in speech (human voice, ~1-8 kHz) rather than ultrasonic mouse vocalizations (20-120 kHz). The frequency structure and temporal statistics of mouse USVs differ from speech. Whether the same augmentation parameters transfer is an empirical question. The augmentation applies to [[bout-level spectrograms preserve inter-USV timing context for transformer training]], which carry the full temporal context needed for sequence-level classification.
+The confidence is rated "experimental" because SpecAugment benefits have been validated primarily in speech (human voice, ~1-8 kHz) rather than ultrasonic mouse vocalizations (20-120 kHz). The frequency structure and temporal statistics of mouse USVs differ from speech. Whether the same augmentation parameters transfer is an empirical question. The augmentation applies to [[bout-level spectrograms preserve inter-USV timing context for transformer training]], which carry the full temporal context needed for sequence-level classification. The masking values are set to zero specifically because [[per-frequency-bin normalization removes frequency-dependent energy bias in spectrogram input]] centers each frequency bin at zero mean, making zero the natural "uninformative" value.
 
 ---
 
 Source: [[ROADMAP.md]], Phase 4
+
+Relevant Notes:
+- [[constrained jittering generates diverse positive training examples by shifting detection boundaries within overlap constraints]] -- CNN augmentation strategy; SpecAugment is the transformer counterpart
+- [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the input format these augmentations are applied to
+- [[per-frequency-bin normalization removes frequency-dependent energy bias in spectrogram input]] -- why masked regions are set to zero (post-normalization mean)
+- [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- Gaussian noise augmentation simulates the noisy recording environment
+
+Topics:
+- [[experimental-methods]]
+- [[classification]]

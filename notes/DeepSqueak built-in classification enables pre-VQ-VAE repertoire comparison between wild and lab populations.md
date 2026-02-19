@@ -22,6 +22,8 @@ Relevant Notes:
 - [[DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision]] -- DeepSqueak's detection limitation vs classification utility
 - [[VQ-VAE investigation of language-like sequential structure in USVs is a separate deeper question from courtship degradation]] -- the two-tier research strategy
 - [[wild mice show more diverse USV repertoires than lab mice as preliminary evidence for courtship vocal degradation]] -- the finding this approach would formalize
+- [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the research question this approach directly serves
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- DeepSqueak classification uses traditional types; VQ-VAE later tests whether continuum-based discretization is more informative
 
 Topics:
 - [[classification]]

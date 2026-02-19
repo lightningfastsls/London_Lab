@@ -22,6 +22,8 @@ Relevant Notes:
 - [[maximum bandwidth filter of 20 kHz rejects broadband noise in energy detection]] -- catches broadband noise upstream, but narrowband-like patterns within noise pass through
 - [[noisy USVs are valid positive training samples because the model must learn detection in degraded conditions]] -- training on noisy positives may help reduce this failure mode
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- the CNN is the precision stage, so these FPs directly affect system precision
+- [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- the recording environment that generates the noise regions where FPs cluster
+- [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] -- one specific noise pattern; FPs arise from subtler energy patterns that mimic USV structure
 
 Topics:
 - [[detection]]

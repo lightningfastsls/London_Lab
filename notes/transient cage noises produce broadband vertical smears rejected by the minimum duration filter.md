@@ -22,6 +22,7 @@ Relevant Notes:
 - [[whether very short USV signals near the 8-10 ms boundary should be included or excluded from training]] -- the duration boundary this artifact pattern motivates
 - [[maximum bandwidth filter of 20 kHz rejects broadband noise in energy detection]] -- also catches these broadband transients
 - [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] -- the other major artifact type (narrowband vs broadband)
+- [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- the recording environment that produces these cage noise artifacts
 
 Topics:
 - [[signal-processing]]

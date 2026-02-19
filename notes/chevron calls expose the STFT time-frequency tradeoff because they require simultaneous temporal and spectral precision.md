@@ -20,6 +20,8 @@ Source:
 Relevant Notes:
 - [[temporal resolution versus frequency resolution in STFT parameter selection]] -- the general tradeoff this example concretizes
 - [[512-point FFT at 300 kHz gives 1.7 ms temporal resolution with 586 Hz frequency bins]] -- the specific parameter compromise
+- [[visualization STFT uses different parameters than detection STFT by design]] -- visualization n_fft=2048 gives finer frequency resolution that would render chevron trajectories more clearly
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- chevrons are one of the named discrete call types in the traditional taxonomy
 
 Topics:
 - [[signal-processing]]

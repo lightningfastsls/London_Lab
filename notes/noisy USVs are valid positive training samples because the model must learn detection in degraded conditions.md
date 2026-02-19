@@ -15,6 +15,8 @@ A USV does not stop being a USV because there is background noise around it. Whe
 
 This complements the negative sampling strategy where [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] — together they define the full labeling policy: positives include noise-embedded USVs, negatives must be unambiguously non-USV.
 
+The need for noise-robust training is grounded in the recording environment: since [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]], noisy recordings are the norm rather than the exception.
+
 ---
 
 Source:

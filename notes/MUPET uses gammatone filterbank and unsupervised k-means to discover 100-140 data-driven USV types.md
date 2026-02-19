@@ -21,6 +21,8 @@ Relevant Notes:
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- our K=64 vs MUPET's 100-140 types
 - [[VocalMat represents supervised classification with predefined categories achieving 86 percent accuracy on 11 USV types]] -- supervised alternative
 - [[separating representation learning from discretization enables richer feature discovery]] -- our VQ-VAE learns representations MUPET's k-means cannot
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- MUPET's 100-140 types already challenge the traditional ~10-15 categories
+- [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- MUPET's high cluster count foreshadows Goffinet's continuum finding
 
 Topics:
 - [[classification]]

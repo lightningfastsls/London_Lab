@@ -15,7 +15,7 @@ Each cycle executes five automated stages in sequence. First, training data is a
 
 Each cycle concludes by generating a markdown report containing precision, recall, F1, and a comparison to the previous cycle's metrics. This report closes the feedback loop: if a cycle does not improve metrics, the hard negatives mined in that cycle likely expose the model's current failure mode, and the human labeler can focus on those examples in the next annotation round.
 
-The five milestones (2K, 5K, 10K, 20K, 30K labels) define checkpoints at which model capacity may be increased according to [[model size should scale with labeled dataset size to balance underfitting and overfitting]]. The confidence rating is "likely" because the specific cycle count needed to reach each milestone depends on annotation throughput, which varies across sessions.
+The five milestones (2K, 5K, 10K, 20K, 30K labels) define checkpoints at which model capacity may be increased according to [[model size should scale with labeled dataset size to balance underfitting and overfitting]]. The starting point for this scaling is [[CNN baseline of 89.7 percent precision and 93.8 percent recall at threshold 0.05 validates the two-stage detection approach]], established on ~840 labels. The raw candidate pool from which hard negatives are mined comes from [[batch detection with skip-existing enables incremental processing of large WAV collections]], which must have completed at least a partial run before the active learning cycle can mine effectively. The confidence rating is "likely" because the specific cycle count needed to reach each milestone depends on annotation throughput, which varies across sessions.
 
 ---
 

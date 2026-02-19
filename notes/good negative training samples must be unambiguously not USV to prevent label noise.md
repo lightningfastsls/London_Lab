@@ -22,6 +22,8 @@ Relevant Notes:
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- diversity of negatives (what); this note covers quality of negatives (how)
 - [[noisy USVs are valid positive training samples because the model must learn detection in degraded conditions]] -- the mirror principle for the positive class
 - [[multi-source negative sampling is necessary when the training pipeline pre-filters candidates]] -- the general pattern this quality criterion applies to
+- [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] -- one unambiguous negative category: constant-frequency electrical artifacts
+- [[transient cage noises produce broadband vertical smears rejected by the minimum duration filter]] -- another unambiguous negative category: broadband transient cage impacts
 
 Topics:
 - [[classification]]

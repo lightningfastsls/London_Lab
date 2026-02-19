@@ -14,7 +14,7 @@ Whether this constitutes meaningful information loss depends on two unknowns: ho
 
 A diagnostic is to compare loss curves on chunks that span bout boundaries versus chunks that fall entirely within bouts. If boundary-crossing chunks have systematically higher loss, the overlap strategy is insufficient and alternatives — such as relative positional encoding (RoPE or ALiBi) or treating each bout as a single variable-length sequence with truncation only at the HPC memory limit — should be evaluated.
 
-This connects to [[bout-level spectrograms preserve inter-USV timing context for transformer training]] (which motivates preserving bout context) and [[length-bucketed batching minimizes padding waste when sequences vary in duration]] (which handles the variable-length consequence of not chunking).
+This connects to [[bout-level spectrograms preserve inter-USV timing context for transformer training]] (which motivates preserving bout context) and [[length-bucketed batching minimizes padding waste when sequences vary in duration]] (which handles the variable-length consequence of not chunking). The diagnostic comparison of boundary-crossing vs intra-bout chunks should be performed during [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]], specifically at Stage C where enough bouts are present to observe the pattern. If boundary artifacts are confirmed, alternative positional encodings would affect the architecture choices documented in [[pre-norm transformer architecture improves training stability for spectrogram prediction]].
 
 ---
 

@@ -21,6 +21,9 @@ Source:
 Relevant Notes:
 - [[frequency resolution of 586 Hz per bin suffices to distinguish USV subtypes in the 20-120 kHz range]] -- resolution within this band
 - [[300 kHz sample rate provides comfortable Nyquist headroom for mouse USVs up to 120 kHz]] -- Nyquist coverage of the upper bound
+- [[maximum bandwidth filter of 20 kHz rejects broadband noise in energy detection]] -- bandwidth filter operates within this detection range
+- [[peak energy mode detects narrow-band USVs better than mean energy across the frequency band]] -- energy detection mode choice operates across this frequency range
+- [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] -- 60 kHz harmonics fall within this detection range
 
 Topics:
 - [[signal-processing]]

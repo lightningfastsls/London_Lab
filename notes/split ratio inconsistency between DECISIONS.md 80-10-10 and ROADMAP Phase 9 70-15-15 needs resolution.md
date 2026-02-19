@@ -14,7 +14,7 @@ The trade-off is straightforward: larger validation and test sets (15% each at 7
 
 A sensible resolution is to adopt 70/15/15 for the current small-data regime and plan to switch to 80/10/10 once the dataset exceeds ~15K labels, formalizing this as a conditional in ADR-004 rather than treating it as a fixed ratio. This would need to be documented explicitly so that DatasetAssembler implements the correct ratio for the current label count and so that metric comparisons across training runs use the same split consistently.
 
-This question intersects with [[recording-level splits reduce effective training set size but prevent data leakage]] (which explains why recording-level splitting makes the effective training set smaller than the label count suggests) and [[model size should scale with labeled dataset size to balance underfitting and overfitting]] (where split ratio affects the training set size that determines model capacity).
+This question intersects with [[recording-level splits reduce effective training set size but prevent data leakage]] (which explains why recording-level splitting makes the effective training set smaller than the label count suggests) and [[model size should scale with labeled dataset size to balance underfitting and overfitting]] (where split ratio affects the training set size that determines model capacity). The resolution is needed before the first milestone of the [[active learning cycle automates the label-train-evaluate-mine loop for iterative CNN improvement]], since metric comparisons across milestones must use consistent splits.
 
 ---
 

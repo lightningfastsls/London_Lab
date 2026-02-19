@@ -22,6 +22,8 @@ Relevant Notes:
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the neutral comparison framing
 - [[wild mice show more diverse USV repertoires than lab mice as preliminary evidence for courtship vocal degradation]] -- preliminary evidence
 - [[USVs are one component of a multimodal courtship behavior suite including mounting approach and movement]] -- broader behavioral context
+- [[Chabout et al 2015 established that male mice change syllable syntax with social context]] -- establishes that USVs serve a courtship signaling function that could degrade under relaxed selection pressure
+- [[combined cross-modal evidence from USV repertoire and MiceCraft movement data builds a stronger case for courtship degradation]] -- cross-modal evidence strategy to test this hypothesis
 
 Topics:
 - [[experimental-methods]]

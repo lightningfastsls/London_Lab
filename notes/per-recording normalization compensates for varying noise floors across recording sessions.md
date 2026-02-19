@@ -22,6 +22,8 @@ Relevant Notes:
 - [[per-frequency-bin normalization removes frequency-dependent energy bias in spectrogram input]] -- complementary normalization on the frequency axis
 - [[normalization statistics must be computed on training set only to prevent data leakage]] -- data leakage constraint on normalization
 - [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- why noise floors vary
+- [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] -- one source of varying noise floor: electrical interference intensity differs between sessions
+- [[transient cage noises produce broadband vertical smears rejected by the minimum duration filter]] -- another source of session-varying noise that per-recording normalization helps compensate
 
 Topics:
 - [[signal-processing]]

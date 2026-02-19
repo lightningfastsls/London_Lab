@@ -21,6 +21,8 @@ Relevant Notes:
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the infrastructure for capturing multimodal data
 - [[combined cross-modal evidence from USV repertoire and MiceCraft movement data builds a stronger case for courtship degradation]] -- the analytical strategy
 - [[inbreeding and absence of courtship selection pressure in captivity caused lab mice to degrade courtship vocal competence]] -- the degradation hypothesis this multimodal view supports
+- [[whether specific USV call types predict specific courtship outcomes like female receptivity to mounting]] -- tests functional specificity within this multimodal suite
+- [[temporal alignment between USV detections and LMT behavioral events enables USV-behavior correlation analysis]] -- the method for analyzing cross-modal temporal coordination
 
 Topics:
 - [[experimental-methods]]

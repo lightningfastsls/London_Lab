@@ -14,8 +14,18 @@ The diagnostic is straightforward: during staged training, periodically visualiz
 
 Interpreting attention patterns in transformers is itself an open research area. High attention weight to a frame is not equivalent to that frame being causally important to the prediction — attention is a routing mechanism, not a causal graph. However, the absence of any long-range attention (all heads purely local) would be strong evidence that the architecture is not leveraging the long context window. Probing tasks — predicting bout-level statistics from internal representations — provide a complementary diagnostic.
 
-This open question is resolvable only after staged training on real bout data, making it a monitoring priority during [[bout-level spectrograms preserve inter-USV timing context for transformer training]].
+This open question is resolvable only after staged training on real bout data, making it a monitoring priority during [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]]. The answer directly constrains interpretation of [[excess entropy measures long-range structure complexity in discrete code sequences]] -- if attention is purely local, high excess entropy in code sequences would indicate structure imposed by the VQ-VAE quantization rather than learned by the transformer. The training context for this monitoring is described in [[bout-level spectrograms preserve inter-USV timing context for transformer training]].
 
 ---
 
 Source: [[ROADMAP.md]]
+
+Relevant Notes:
+- [[causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams]] -- the architecture whose attention this question evaluates
+- [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]] -- monitoring priority during staged training
+- [[excess entropy measures long-range structure complexity in discrete code sequences]] -- interpretation depends on whether attention is local or global
+- [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the data format providing the long context to attend over
+- [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- if attention is purely local, it cannot capture the sequence-level statistics Hertz identified
+
+Topics:
+- [[classification]]

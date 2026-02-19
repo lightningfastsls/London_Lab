@@ -14,7 +14,7 @@ Without exemplar galleries, codebook entries are abstract vectors in a high-dime
 
 The ±50 frame context window is chosen to include the call that triggered the assignment plus neighboring calls. This is important because a codebook entry may represent not a call type per se but a temporal context — for example, "the first call in a new bout" or "a call following a long silence." Context windows too narrow would miss this temporal structure; too wide would include so much surrounding content that the distinctive trigger becomes obscured.
 
-Exemplar galleries complement [[VQ-VAE codebook visualization decodes entries through the full pipeline back to spectrogram space]], which provides the predictive view. Together they constitute a full characterization: what the model has seen (exemplars) and what it expects to come next (decoding). The choice of which hidden layer feeds the VQ-VAE is discussed in [[middle-layer hidden states capture mid-level concepts better than early or late layers for VQ-VAE input]].
+Exemplar galleries complement [[VQ-VAE codebook visualization decodes entries through the full pipeline back to spectrogram space]], which provides the predictive view, and [[concept injection decodes what each codebook entry predicts as acoustic continuation]], which provides the generative view. Together these three methods constitute a full characterization: what the model has seen (exemplars), what it predicts at inference (decoded visualization), and what it generates when forced (concept injection). The choice of which hidden layer feeds the VQ-VAE is discussed in [[middle-layer hidden states capture mid-level concepts better than early or late layers for VQ-VAE input]].
 
 ---
 

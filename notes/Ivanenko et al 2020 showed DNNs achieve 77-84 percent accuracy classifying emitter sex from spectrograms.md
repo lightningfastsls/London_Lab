@@ -21,6 +21,8 @@ Source:
 Relevant Notes:
 - [[whether population-level metadata is available for context-dependent VQ-VAE analysis]] -- metadata needed to leverage identity information
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- can wild/lab distinction be detected in spectrograms?
+- [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]] -- our CNN architecture processes the same spectrogram features that Ivanenko showed encode identity
+- [[comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook]] -- VQ-VAE codebook entries might capture emitter-level features at different abstraction levels
 
 Topics:
 - [[classification]]

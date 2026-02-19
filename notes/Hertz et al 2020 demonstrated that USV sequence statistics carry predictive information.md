@@ -22,6 +22,9 @@ Relevant Notes:
 - [[Chabout et al 2015 established that male mice change syllable syntax with social context]] -- complementary evidence for sequential structure
 - [[causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams]] -- our approach to capturing this structure
 - [[bigram productivity ratio measures compositionality of USV code sequences]] -- one way to quantify sequence statistics
+- [[excess entropy measures long-range structure complexity in discrete code sequences]] -- quantifies long-range mutual information in the sequences Hertz showed are informative
+- [[Zipf's law exponent reveals whether VQ-VAE code sequences have language-like frequency distribution]] -- tests whether code frequency distributions follow language-like patterns
+- [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- measures how much predictive information each additional context frame adds
 
 Topics:
 - [[classification]]

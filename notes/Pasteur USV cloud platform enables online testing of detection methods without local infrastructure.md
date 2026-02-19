@@ -20,7 +20,9 @@ Source:
 
 Relevant Notes:
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the parent system
+- [[LMT USV Toolbox provides Python-based offline USV processing as a reference implementation]] -- the offline counterpart from the same team
 - [[CNN baseline of 89.7 percent precision and 93.8 percent recall at threshold 0.05 validates the two-stage detection approach]] -- our baseline to compare against
+- [[DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision]] -- another external detection tool for comparison
 
 Topics:
 - [[experimental-methods]]
