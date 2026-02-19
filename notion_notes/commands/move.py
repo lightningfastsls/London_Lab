@@ -75,9 +75,9 @@ class Mover:
         # Build target properties — minimal mapping for inbox pages
         target_props = self._build_target_properties(page)
 
-        # Read and clean content blocks
+        # Read and clean content blocks (recursive for tables, toggles, etc.)
         try:
-            blocks = self._notion.get_page_blocks(page_id)
+            blocks = self._fetch_blocks_recursive(page_id)
         except Exception as e:
             return MoveResult(
                 source_page_id=page_id,
@@ -90,19 +90,20 @@ class Mover:
         ]
 
         if self._dry_run:
-            logger.info("[DRY RUN] Would create page '%s' in KB", title)
+            logger.info("[DRY RUN] Would create page '%s' in KB (%d blocks)", title, len(cleaned_blocks))
             return MoveResult(
                 source_page_id=page_id,
                 source_title=title,
                 new_page_id="dry-run",
             )
 
-        # Create page in KB
+        # Create page in KB (first 100 blocks, then append rest in chunks)
         try:
+            initial_blocks = cleaned_blocks[:100] if cleaned_blocks else None
             new_id = self._notion.create_page(
                 database_id=self._target_db_id,
                 properties=target_props,
-                children=cleaned_blocks,
+                children=initial_blocks,
             )
         except Exception as e:
             return MoveResult(
@@ -110,6 +111,17 @@ class Mover:
                 source_title=title,
                 error=f"Failed to create KB page: {e}",
             )
+
+        # Append remaining blocks in chunks of 100
+        if len(cleaned_blocks) > 100:
+            try:
+                for i in range(100, len(cleaned_blocks), 100):
+                    chunk = cleaned_blocks[i : i + 100]
+                    self._notion.append_blocks(new_id, chunk)
+            except Exception as e:
+                logger.warning(
+                    "Page created but failed to append all blocks: %s", e
+                )
 
         # Mark source page with callout
         try:
@@ -126,6 +138,26 @@ class Mover:
             source_title=title,
             new_page_id=new_id,
         )
+
+    def _fetch_blocks_recursive(self, page_id: str) -> list[dict]:
+        """Fetch all blocks for a page, recursively fetching children.
+
+        Notion's blocks.children.list only returns top-level blocks.
+        Blocks with has_children=True (tables, toggles, columns) need
+        their children fetched and nested under the parent block's type key.
+        """
+        blocks = self._notion.get_page_blocks(page_id)
+        result: list[dict] = []
+        for block in blocks:
+            result.append(block)
+            if block.get("has_children"):
+                children = self._fetch_blocks_recursive(block["id"])
+                block_type = block.get("type", "")
+                if block_type in block and isinstance(block[block_type], dict):
+                    block[block_type]["children"] = [
+                        NoteMigrator._strip_block_metadata(c) for c in children
+                    ]
+        return result
 
     def _build_target_properties(self, page: NotionPage) -> dict[str, Any]:
         """Build KB properties for a moved page.
@@ -161,6 +193,15 @@ class Mover:
         )
         if evergreen is not None:
             props["Evergreen"] = {"checkbox": bool(evergreen)}
+
+        # Copy Projects relation (Notes DB: "🔬 Projects" -> KB: "Projects")
+        project_ids = NotionClientWrapper.extract_property(
+            page.properties, "\U0001f52c Projects"
+        )
+        if project_ids and isinstance(project_ids, list):
+            props["Projects"] = {
+                "relation": [{"id": pid} for pid in project_ids],
+            }
 
         return props
 
