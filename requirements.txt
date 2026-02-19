@@ -12,3 +12,5 @@ pandas
 pillow
 scikit-learn
 PyQt6
+notion-client
+anthropic
