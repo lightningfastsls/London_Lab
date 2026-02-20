@@ -263,11 +263,11 @@ def atomize(
             filter={"property": "Status", "select": {"equals": "Raw"}},
         )
     elif recent is not None:
-        pages = notion.query_database(
+        all_pages = notion.query_database(
             cfg.kb_database_id,
             sorts=[{"timestamp": "created_time", "direction": "descending"}],
-            page_size=recent,
         )
+        pages = all_pages[:recent]
         # Skip already-atomized (Atomizer also checks, but filter here for cleaner output)
         pages = [
             p for p in pages
@@ -414,11 +414,11 @@ def process(
 
     # Determine which pages to process
     if recent is not None:
-        pages = notion.query_database(
+        all_pages = notion.query_database(
             cfg.kb_database_id,
             sorts=[{"timestamp": "created_time", "direction": "descending"}],
-            page_size=recent,
         )
+        pages = all_pages[:recent]
     elif unprocessed:
         pages = notion.query_database(
             cfg.kb_database_id,
