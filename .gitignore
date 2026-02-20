@@ -16,6 +16,11 @@ outputs/
 *.txt
 nul
 
+# Notion Notes secrets & caches
+.env
+.cache/
+taxonomy.json
+
 # Local working dirs
 USV_*/
 tmp/

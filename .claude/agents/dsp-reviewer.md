@@ -55,6 +55,20 @@ When reviewing code changes:
 ### Reference Documentation
 - `usv_signal_processing_reference.md` - Design rationale and trade-offs
 
+## Knowledge Graph
+
+Before reviewing, check the vault for established DSP findings that the code should respect:
+
+1. Read `notes/signal-processing.md` topic map for prior claims about STFT parameters,
+   frequency resolution, energy computation, and windowing
+2. Grep `notes/` for keywords relevant to the code under review — e.g., `STFT`, `frequency
+   resolution`, `energy`, `dB`, `window`, `hop`, `n_fft`, `bin`
+3. Cross-check DSP parameters in the code against vault findings (e.g., notes about 586 Hz
+   frequency bins, 1.7 ms temporal resolution, specific threshold values)
+4. If vault notes establish baselines or constraints, verify the code honors them
+5. Cite relevant vault notes in your findings when they support or contradict the code —
+   only reference notes you actually read
+
 ## Output Format
 Provide a concise review with:
 - Issues found (with line numbers)

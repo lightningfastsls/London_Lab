@@ -22,6 +22,9 @@ Relevant Notes:
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- our architectural response to DeepSqueak's limitation
 - [[two-stage coarse-to-fine filtering is effective for imbalanced detection tasks]] -- the general pattern behind our approach
 - [[VocalMat represents supervised classification with predefined categories achieving 86 percent accuracy on 11 USV types]] -- another detection tool comparison
+- [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- pragmatic strategy: use DeepSqueak's classification immediately while building our VQ-VAE pipeline
+- [[LMT USV Toolbox provides Python-based offline USV processing as a reference implementation]] -- another USV tool in the competitive landscape
 
 Topics:
 - [[detection]]
+- [[classification]]

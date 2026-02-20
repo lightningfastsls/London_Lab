@@ -20,6 +20,7 @@ Source:
 - Goffinet et al. (2021), eLife — AVA tool
 
 Relevant Notes:
+- [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- quantitative evidence that the AVA VAE preserves meaningful acoustic information
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- architectural response to the continuum finding
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the paradigm shift
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- the discrete vocabulary our approach discovers
@@ -27,3 +28,4 @@ Relevant Notes:
 
 Topics:
 - [[classification]]
+- [[representation-learning]]

@@ -5,7 +5,7 @@ import matplotlib.dates as mdates
 import os
 
 # --- CONFIGURATION ---
-BASE_PATH = r"C:\Users\shach\PycharmProjects\mickey_london_lab"
+BASE_PATH = r"D:\mickey_london_lab"
 MOUSE_ID = "mouse_2"  # Change this to plot a different mouse
 
 # Load the Daily Data

@@ -41,6 +41,21 @@ Used for interactive exploration in Parameter Lab:
 - `src/usv_spectrogram/param_lab/heuristic_detect.py`
 - `tests/test_param_lab_heuristic.py`
 
+## Knowledge Graph
+
+Before validating, check the vault for established detection findings and baselines:
+
+1. Read `notes/detection.md` topic map for prior claims about detection algorithms,
+   thresholds, and performance characteristics
+2. Check for baseline notes — the vault tracks established metrics (e.g., 89.7% precision,
+   93.8% recall at threshold 0.05) that changes should be compared against
+3. Grep `notes/` for parameter names being changed — e.g., `threshold`, `bandwidth`,
+   `duration`, `merge_gap`, `energy_mode` — to find relevant context
+4. Flag any changes that contradict established findings in the vault (e.g., a threshold
+   change that a vault note warns degrades recall)
+5. Reference relevant vault notes in your validation report — only cite notes you actually
+   read, never fabricate references
+
 ## Validation Steps
 
 1. **Run detection tests**

@@ -7,7 +7,7 @@ from datetime import datetime
 # --- CONFIGURATION ---
 BASE_PATH = r"C:\Users\shach\OneDrive\שולחן העבודה\Miki London Lab\Mice learning analysis\mouse_2\mouse_2"
 # Ensure this points to your CLEANED csv
-WATER_LOG_PATH = r"C:\Users\shach\PycharmProjects\mickey_london_lab\mice_water_consumption_cleaned.csv"
+WATER_LOG_PATH = r"D:\mickey_london_lab\mice_water_consumption_cleaned.csv"
 
 # --- MOUSE MAPPING ---
 MOUSE_WATER_MAP = {

@@ -28,6 +28,7 @@ Source:
 
 Relevant Notes:
 - [[Sarkar and Magimai-Doss 2025 applied post-hoc VQ to frozen HuBERT embeddings for marmoset and dog vocalizations]] -- the primary evidence
+- [[STSG spectrogram token skip-gram achieved only 0.559 AUC versus 0.810 for transfer learning on bioacoustic classification]] -- even worse performance from K-means tokens, forming a progression: K-means < post-hoc VQ < continuous baselines
 - [[separating representation learning from discretization enables richer feature discovery]] -- our architecture's principle
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- our two-phase approach that avoids the post-hoc trap
 

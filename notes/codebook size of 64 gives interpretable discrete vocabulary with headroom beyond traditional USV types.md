@@ -27,6 +27,8 @@ Relevant Notes:
 - [[whether FSQ provides more stable discretization than VQ-VAE for USV codebook learning]] -- alternative approach
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- empirical precedent for data-driven type discovery (MUPET finds 100-140 types, placing K=64 in a comparable order of magnitude)
 - [[Tjandra et al 2020 applied transformer VQ-VAE for unsupervised unit discovery in human speech with K equals 128]] -- closest architectural analog uses K=128 for human speech
+- [[single codebook with V=50 was insufficient for complex vocalization structure in discrete token experiments]] -- Sarkar 2025 found V=50 insufficient for marmoset calls, suggesting K=64 may also need RVQ or larger K
+- [[discrete audio token taxonomy from 2025 survey covers quantization methods beyond simple VQ]] -- RVQ and PQ as alternatives if single codebook proves limiting
 
 Topics:
-- [[classification]]
+- [[representation-learning]]

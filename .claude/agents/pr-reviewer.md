@@ -57,6 +57,11 @@ You perform thorough final reviews before code is committed or merged.
    .\.venv\Scripts\python.exe -m pytest tests/ -v
    ```
 
+2.5. **Cross-check with knowledge graph**
+   - Grep `notes/` for keywords from changed file names and function names
+   - If matches found, read the matching notes for relevant domain context
+   - Flag if the PR contradicts any existing vault claims (only cite notes you actually read)
+
 3. **Check each changed file**
    - Read the full context around changes
    - Verify the change matches its stated purpose

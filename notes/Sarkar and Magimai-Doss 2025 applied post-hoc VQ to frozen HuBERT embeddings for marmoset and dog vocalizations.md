@@ -25,6 +25,7 @@ Source:
 
 Relevant Notes:
 - [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- the gap this work narrows but does not close
+- [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- updated gap analysis table explicitly positions Sarkar as closest approach
 - [[Tjandra et al 2020 applied transformer VQ-VAE for unsupervised unit discovery in human speech with K equals 128]] -- end-to-end approach our project follows
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- our K=64 is comparable to their V=50
 - [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- their negative result with GVQ

@@ -591,6 +591,16 @@ Run `/arscontexta:health` for diagnostic reports:
 - **full** -- All 8 categories including description quality and three-space boundaries
 - **three-space** -- Boundary violation checks only
 
+### Weekly Maintenance (target: 15 min)
+```
+/arscontexta:health   # diagnostic report (~1 min)
+/reflect              # update connections (~3 min)
+/reweave              # backward pass on old notes (~5 min)
+/stats                # growth metrics snapshot (~1 min)
+```
+
+Run once per week. Condition triggers (above) handle urgent items between weekly runs.
+
 ---
 
 ## Self-Evolution

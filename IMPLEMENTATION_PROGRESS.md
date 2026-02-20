@@ -6,9 +6,46 @@
 
 ---
 
-## Current Status: Knowledge Graph /reflect Complete; Notion Notes Link Command Complete; USV Phase 8.1 Data Pipeline Complete
+## Current Status: v2 Phase 1 Spectrogram Transformer Implemented
 
-**Latest Update (2026-02-18):**
+**Latest Update (2026-02-20):**
+- **Phase 9.1: Spectrogram Autoregressive Transformer (v2 Phase 1)** -- Complete
+  - Created `usv_language/models/` package with `transformer.py`:
+    - `TransformerConfig`: frozen dataclass, n_freq=170, d_model=512, n_heads=8, n_layers=8, d_ffn=2048
+    - `TransformerBlock`: pre-norm architecture (LayerNorm before attention/FFN)
+    - `SpectrogramTransformer`: ~25.6M params, causal masked, learned positional embeddings
+  - Created `usv_language/training/` package:
+    - `train_transformer.py`: CLI training script with masked MSE loss, CosineWarmupScheduler,
+      AdamW with decay/no-decay parameter groups, early stopping, checkpointing, DataParallel support
+    - `extract_hidden_states.py`: CLI script to extract hidden states from target layers as
+      memory-mapped numpy arrays + metadata JSON (for Phase 2 VQ-VAE)
+  - 11 tests (8 spec + 3 config validation), all passing, 130 total suite green
+  - Key design: pre-norm blocks, GELU activation, True=padding mask convention aligned with PyTorch
+
+**Previous Update (2026-02-19):**
+- **Phase 4.3: Reviewer Agent Knowledge Graph Integration** -- Complete
+  - Added "Knowledge Graph" sections to all 4 reviewer agents (master-reviewer, dsp-reviewer, detection-validator, pr-reviewer)
+  - master-reviewer: Step 2.5 reads index.md, relevant topic maps, greps notes/ for module keywords, references findings in report
+  - dsp-reviewer: New section reads signal-processing.md, cross-checks DSP parameters against vault findings (586 Hz bins, 1.7 ms resolution)
+  - detection-validator: New section reads detection.md, checks baselines (89.7% precision, 93.8% recall), greps for parameter names
+  - pr-reviewer: Step 2.5 lightweight grep of notes/ for changed file/function keywords
+  - All sections include anti-fabrication guard: "only cite notes you actually read"
+  - No new tools needed — agents use existing Read/Grep/Glob capabilities
+
+**Previous Update (2026-02-19):**
+- **Knowledge Graph: /reflect pass 2 (post-ROADMAP extraction)** -- Complete
+  - Added ~30 new inline wiki-link connections across 19 atomic notes
+  - Four thematic clusters woven:
+    1. **Sequential structure test battery** (4 notes): Zipf's law, bigram productivity, entropy rate, excess entropy -- all now fully cross-linked as a four-part analysis battery
+    2. **Interpretability toolkit** (3 notes): exemplar galleries, VQ-VAE visualization, concept injection -- linked as observational/predictive/generative complements
+    3. **Transformer training chain** (4 notes): pre-norm architecture, staged training, HPC dependency, MSE vs GMM -- linked through stability/compute/diagnostic dependencies
+    4. **Active learning dependencies** (4 notes): batch detection, CNN baseline, split ratio, model size growth -- linked to active learning cycle as prerequisite/starting-point/checkpoint
+  - Additional connections: SpecAugment to per-frequency-bin normalization, attention patterns to excess entropy, population metadata to codebook analysis, chunk overlap to staged training
+  - Topic maps: already comprehensive from Phase 1 extraction, no updates needed
+  - qmd index synced from 1 to 66 documents (stale from initial vault generation)
+  - All connections pass articulation test (each has explicit "why" context phrase)
+
+**Previous Update (2026-02-18):**
 - **Knowledge Graph: /reflect pass on full vault** -- Complete
   - Added 12 new cross-note wiki-link connections across 12 atomic notes
   - Added 2 notes to experimental-methods topic map (class weight boosting, recall/precision tradeoff)

@@ -33,7 +33,9 @@ Source:
 
 Relevant Notes:
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- VAE applied to USVs
-- [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- another learned embedding approach
+- [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- quantitative baseline for VAE information retention in another species (mice vs whales)
+- [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- another learned embedding approach across multiple species
+- [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- Garrobe Fonollosa is a continuous VAE approach, appearing in the gap analysis
 - [[causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams]] -- our temporal modeling approach
 
 Topics:

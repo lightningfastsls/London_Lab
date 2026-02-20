@@ -36,6 +36,10 @@ The operational classification system. A small CNN (~101K params) classifies ene
 - [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- cross-species AE clustering with NMI 0.5-0.75
 - [[AVES self-supervised model pretrained on general audio outperformed supervised baselines for bioacoustic tasks]] -- SSL backbone outperforming supervised methods
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- speech SSL transfers to animal domains
+- [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- quantitative baseline for information retention in learned representations
+- [[Garrobe Fonollosa 2024 showed VAE plus temporal convolutional network achieved AUC over 0.9 for sperm whale click classification]] -- VAE-based feature extraction for cetacean classification
+- [[STSG spectrogram token skip-gram achieved only 0.559 AUC versus 0.810 for transfer learning on bioacoustic classification]] -- K-means token discretization dramatically underperforms
+- [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- systematic gap analysis confirming novelty of VQ-VAE for bioacoustics
 
 ## Open Questions
 - Scaling behavior of small CNN as labeled dataset grows from 2K to 30K

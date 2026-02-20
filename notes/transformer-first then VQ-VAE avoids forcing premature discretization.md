@@ -26,6 +26,8 @@ Relevant Notes:
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- codebook sizing
 - [[middle-layer hidden states capture mid-level concepts better than early or late layers for VQ-VAE input]] -- layer selection
 - [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the input data format
+- [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- empirical validation: post-hoc VQ (35% UAR) vs continuous features (49% UAR) shows the cost of the post-hoc approach our architecture avoids
+- [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- this two-phase architecture fills an open gap in the field
 
 Topics:
-- [[classification]]
+- [[representation-learning]]

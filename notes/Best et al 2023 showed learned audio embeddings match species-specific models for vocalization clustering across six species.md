@@ -31,6 +31,8 @@ Source:
 
 Relevant Notes:
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- continuous VAE approach for mice
+- [[Garrobe Fonollosa 2024 showed VAE plus temporal convolutional network achieved AUC over 0.9 for sperm whale click classification]] -- another continuous VAE approach for bioacoustics, extending to cetaceans
+- [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- Best 2023 uses continuous AE (not VQ-VAE), appearing in the gap analysis table
 - [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- Best 2023 uses continuous AE, not VQ-VAE
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- another unsupervised clustering approach
 

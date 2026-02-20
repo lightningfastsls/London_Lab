@@ -29,6 +29,8 @@ Relevant Notes:
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the parent finding
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- our codebook must retain comparable information
 - [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- quantifying the information loss from discretization
+- [[Garrobe Fonollosa 2024 showed VAE plus temporal convolutional network achieved AUC over 0.9 for sperm whale click classification]] -- VAE information retention demonstrated in another species (cetaceans)
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the 64-95% retention quantifies how well learned features capture what the traditional taxonomy describes
 
 Topics:
 - [[representation-learning]]

@@ -34,6 +34,7 @@ Relevant Notes:
 - [[whether FSQ provides more stable discretization than VQ-VAE for USV codebook learning]] -- the open question this evidence informs
 - [[codebook collapse prevention requires simultaneous EMA updates plus dead code reset plus k-means init plus L2 normalization]] -- the complexity FSQ eliminates
 - [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- another quantization approach that failed
+- [[discrete audio token taxonomy from 2025 survey covers quantization methods beyond simple VQ]] -- FSQ is one entry in a comprehensive taxonomy that catalogs 8+ quantization methods
 
 Topics:
 - [[representation-learning]]

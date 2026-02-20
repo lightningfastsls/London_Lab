@@ -10,7 +10,7 @@ topics:
 
 # separating representation learning from discretization enables richer feature discovery
 
-The transformer-first-then-VQ-VAE architecture (ADR-007) instantiates a general principle: separating the learning of continuous representations from the discovery of discrete structure produces richer features than end-to-end joint training. When discretization is imposed simultaneously with representation learning, the model is constrained in what it can represent -- the information bottleneck of the codebook limits exploration. By first training the transformer without any bottleneck, it freely develops whatever representations best predict the next spectrogram column. The VQ-VAE then discovers discrete structure within these already-rich representations. Since [[transformer-first then VQ-VAE avoids forcing premature discretization]], the discrete vocabulary emerges from the model's own learned features rather than being imposed during learning. This principle applies beyond USV analysis to any task where discovering a discrete vocabulary from continuous data is the goal.
+The transformer-first-then-VQ-VAE architecture (ADR-007) instantiates a general principle: separating the learning of continuous representations from the discovery of discrete structure produces richer features than end-to-end joint training. When discretization is imposed simultaneously with representation learning, the model is constrained in what it can represent -- the information bottleneck of the codebook limits exploration. By first training the transformer without any bottleneck, it freely develops whatever representations best predict the next spectrogram column. The VQ-VAE then discovers discrete structure within these already-rich representations. Since [[transformer-first then VQ-VAE avoids forcing premature discretization]], the discrete vocabulary emerges from the model's own learned features rather than being imposed during learning. This principle applies beyond USV analysis to any task where discovering a discrete vocabulary from continuous data is the goal. Empirical evidence from bioacoustics now supports this: [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- post-hoc VQ on frozen HuBERT features achieved only 35% UAR versus 49% for continuous representations, a 14 percentage point gap that demonstrates the cost of applying discretization after the fact rather than jointly training it.
 
 ---
 
@@ -21,6 +21,8 @@ Relevant Notes:
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- the specific instantiation
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- the resulting discrete vocabulary
 - [[middle-layer hidden states capture mid-level concepts better than early or late layers for VQ-VAE input]] -- where to extract representations
+- [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- empirical evidence: post-hoc discretization loses 14pp UAR vs continuous baselines
+- [[STSG spectrogram token skip-gram achieved only 0.559 AUC versus 0.810 for transfer learning on bioacoustic classification]] -- even harsher evidence: K-means discretization without learned representations performs dramatically worse
 
 Topics:
-- [[classification]]
+- [[representation-learning]]

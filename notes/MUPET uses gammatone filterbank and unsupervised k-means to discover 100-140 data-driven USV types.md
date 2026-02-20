@@ -24,6 +24,7 @@ Relevant Notes:
 - [[separating representation learning from discretization enables richer feature discovery]] -- our VQ-VAE learns representations MUPET's k-means cannot
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- MUPET's 100-140 types already challenge the traditional ~10-15 categories
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- MUPET's high cluster count foreshadows Goffinet's continuum finding
+- [[STSG spectrogram token skip-gram achieved only 0.559 AUC versus 0.810 for transfer learning on bioacoustic classification]] -- another K-means-based approach that dramatically underperformed, suggesting fixed clustering of spectrograms has inherent limitations
 
 Topics:
 - [[classification]]

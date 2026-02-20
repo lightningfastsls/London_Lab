@@ -1,7 +1,7 @@
 # Verification Transcript
 
 Task: 2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png (Stage 1)
-Environment: Windows PowerShell, repo root C:\Users\shach\PycharmProjects\mickey_london_lab
+Environment: Windows PowerShell, repo root D:\mickey_london_lab
 
 ## Commands and results
 
@@ -54,7 +54,7 @@ Get-Item -Path tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-s
 ```
 - Output:
 ```
-FullName : C:\Users\shach\PycharmProjects\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz.png
+FullName : D:\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz.png
 Length   : 31189
 ```
 
@@ -66,7 +66,7 @@ Length   : 31189
 
 # Stage 3 Verification
 
-Environment: Windows PowerShell, repo root C:\Users\shach\PycharmProjects\mickey_london_lab
+Environment: Windows PowerShell, repo root D:\mickey_london_lab
 
 ## Commands and results
 
@@ -90,7 +90,7 @@ from __future__ import annotations
 from pathlib import Path
 import sys
 
-repo = Path(r"C:\Users\shach\PycharmProjects\mickey_london_lab")
+repo = Path(r"D:\mickey_london_lab")
 src_root = repo / "src"
 if str(src_root) not in sys.path:
     sys.path.insert(0, str(src_root))
@@ -145,7 +145,7 @@ print("freqs_shape", store[FREQS_KEY].shape)
 ```
 Traceback (most recent call last):
   File "<stdin>", line 46, in <module>
-  File "C:\Users\shach\PycharmProjects\mickey_london_lab\src\usv_spectrogram\storage_zarr.py", line 43, in init_spectrogram_store
+  File "D:\mickey_london_lab\src\usv_spectrogram\storage_zarr.py", line 43, in init_spectrogram_store
     group.create_dataset(
   File "C:\Users\shach\PycharmProjects\pythonProject\.venv\Lib\site-packages\typing_extensions.py", line 2853, in wrapper
     return arg(*args, **kwargs)
@@ -167,7 +167,7 @@ from __future__ import annotations
 from pathlib import Path
 import sys
 
-repo = Path(r"C:\Users\shach\PycharmProjects\mickey_london_lab")
+repo = Path(r"D:\mickey_london_lab")
 src_root = repo / "src"
 if str(src_root) not in sys.path:
     sys.path.insert(0, str(src_root))
@@ -222,7 +222,7 @@ print("freqs_shape", store[FREQS_KEY].shape)
 ```
 Traceback (most recent call last):
   File "<stdin>", line 46, in <module>
-  File "C:\Users\shach\PycharmProjects\mickey_london_lab\src\usv_spectrogram\storage_zarr.py", line 49, in init_spectrogram_store
+  File "D:\mickey_london_lab\src\usv_spectrogram\storage_zarr.py", line 49, in init_spectrogram_store
     group.create_dataset(
   File "C:\Users\shach\PycharmProjects\pythonProject\.venv\Lib\site-packages\typing_extensions.py", line 2853, in wrapper
     return arg(*args, **kwargs)
@@ -256,7 +256,7 @@ from __future__ import annotations
 from pathlib import Path
 import sys
 
-repo = Path(r"C:\Users\shach\PycharmProjects\mickey_london_lab")
+repo = Path(r"D:\mickey_london_lab")
 src_root = repo / "src"
 if str(src_root) not in sys.path:
     sys.path.insert(0, str(src_root))
@@ -309,7 +309,7 @@ print("freqs_shape", store[FREQS_KEY].shape)
 ```
 - Output:
 ```
-zarr_path C:\Users\shach\PycharmProjects\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\streaming_test_stage3.zarr
+zarr_path D:\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\streaming_test_stage3.zarr
 spec_shape (1557, 17)
 spec_dtype int16
 times_shape (17,)
@@ -324,7 +324,7 @@ freqs_shape (1557,)
 
 # Stage 4 Verification
 
-Environment: Windows PowerShell, repo root C:\Users\shach\PycharmProjects\mickey_london_lab
+Environment: Windows PowerShell, repo root D:\mickey_london_lab
 
 ## Commands and results
 
@@ -337,22 +337,22 @@ python scripts\make_spectrogram.py --input tasks\2026-01-07_usv-spectrogram-gene
 ```
 - Result:
 ```
-soundfile.LibsndfileError: Error opening 'C:\Users\shach\PycharmProjects\mickey_london_lab\5970 USV\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz.wav': System error.
+soundfile.LibsndfileError: Error opening 'D:\mickey_london_lab\5970 USV\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz.wav': System error.
 ```
 
 3) Tiled render (absolute input path):
 ```
-python scripts\make_spectrogram.py --input C:\Users\shach\PycharmProjects\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz.wav --tiled --tile-dir C:\Users\shach\PycharmProjects\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts --tile-base test_250khz_tiled
+python scripts\make_spectrogram.py --input D:\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz.wav --tiled --tile-dir D:\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts --tile-base test_250khz_tiled
 ```
 - Result: exit code 0, stderr warning about tight_layout.
 
 4) Validate output PNG exists and non-empty:
 ```
-Get-Item -Path C:\Users\shach\PycharmProjects\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz_tiled_page001.png | Format-List FullName,Length
+Get-Item -Path D:\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz_tiled_page001.png | Format-List FullName,Length
 ```
 - Output:
 ```
-FullName : C:\Users\shach\PycharmProjects\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz_tiled_page001.png
+FullName : D:\mickey_london_lab\tasks\2026-01-07_usv-spectrogram-generator-250khz-wav-streaming-stft-zarr-tiled-png\verify_artifacts\test_250khz_tiled_page001.png
 Length   : 29752
 ```
 
@@ -363,7 +363,7 @@ Length   : 29752
 
 # Stage 5 Verification
 
-Environment: Windows PowerShell, repo root C:\Users\shach\PycharmProjects\mickey_london_lab
+Environment: Windows PowerShell, repo root D:\mickey_london_lab
 
 ## Commands and results
 
@@ -407,7 +407,7 @@ OK
 
 # Final Verification Sweep
 
-Environment: Windows PowerShell, repo root C:\Users\shach\PycharmProjects\mickey_london_lab
+Environment: Windows PowerShell, repo root D:\mickey_london_lab
 
 ## Commands and results
 

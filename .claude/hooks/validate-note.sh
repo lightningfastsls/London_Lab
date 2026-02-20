@@ -38,3 +38,5 @@ fi
 if ! grep -q '^topics:' "$FILE_PATH" 2>/dev/null; then
   echo "WARN: $FILE_PATH missing required 'topics' field"
 fi
+
+exit 0

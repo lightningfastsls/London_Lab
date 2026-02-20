@@ -20,7 +20,7 @@ python scripts/make_spectrogram.py --input path\to\file.wav --output out.png
 - Script inserts `src/` into `sys.path` for direct execution without installation.
 - Implemented streaming STFT with overlap carry and FFT via `np.fft.rfft`.
 - Added Zarr storage with int16 dB encoding and metadata.
-- Default input WAV folder set to `C:\Users\shach\PycharmProjects\mickey_london_lab\5970 USV` for relative inputs.
+- Default input WAV folder set to `D:\mickey_london_lab\5970 USV` for relative inputs.
 - Added tiled page rendering with configurable tile size and page layout.
 - Align in-memory STFT implementation with streaming FFT framing to support equivalence testing.
 - Added `--auto-sample-rate` flag for non-250 kHz WAVs.

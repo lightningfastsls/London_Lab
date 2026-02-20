@@ -69,7 +69,7 @@ def analyze_learning(master_df, bin_size=20):
 
 # --- 2. EXECUTION ---
 # Configuration
-base_path = r"C:\Users\shach\PycharmProjects\mickey_london_lab"
+base_path = r"D:\mickey_london_lab"
 current_mouse = "mouse_2"  # Replace with logic if looping through mice
 
 # Construct path safely

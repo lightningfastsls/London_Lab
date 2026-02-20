@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "wav_file": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\5970 USV\\2024-09-30_11-18-17_0000001.wav",
-    "model_file": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\checkpoints\\best_model.pt",
+    "wav_file": "D:\\mickey_london_lab\\5970 USV\\2024-09-30_11-18-17_0000001.wav",
+    "model_file": "D:\\mickey_london_lab\\checkpoints\\best_model.pt",
     "created_at": "2026-01-26T23:41:20.397308",
     "duration_s": 8.04512,
     "sample_rate": 300000,

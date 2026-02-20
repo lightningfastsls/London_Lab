@@ -8,7 +8,7 @@ Document the real input data location for all agents and run the pipeline on a r
 
 ## Context
 Assumptions:
-- Real input WAVs live under `C:\Users\shach\PycharmProjects\mickey_london_lab\5970 USV`.
+- Real input WAVs live under `D:\mickey_london_lab\5970 USV`.
 Uncertainties:
 - Which specific WAV file should be used for the verification run if multiple exist.
 

@@ -21,6 +21,8 @@ Relevant Notes:
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the finding that challenges predefined categories
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- our approach vs VocalMat's 11 types
 - [[DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision]] -- another competitor tool
+- [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- unsupervised alternative that discovers 100-140 types vs VocalMat's 11 predefined categories
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the paradigm VocalMat implements vs the continuum reality
 
 Topics:
 - [[classification]]

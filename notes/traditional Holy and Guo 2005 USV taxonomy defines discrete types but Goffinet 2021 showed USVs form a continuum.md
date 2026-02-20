@@ -20,8 +20,12 @@ Source:
 
 Relevant Notes:
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the challenge to discrete taxonomy
+- [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- quantifies how much of the traditional feature information the learned representation retains
 - [[VocalMat represents supervised classification with predefined categories achieving 86 percent accuracy on 11 USV types]] -- tool based on the traditional taxonomy
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- our data-driven alternative
+- [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- unsupervised clustering already finds 100-140 types, far exceeding Holy & Guo's ~10-15, foreshadowing the continuum finding
+- [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- the next step beyond both taxonomic and unsupervised approaches
 
 Topics:
 - [[classification]]
+- [[representation-learning]]

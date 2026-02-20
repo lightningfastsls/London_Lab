@@ -26,6 +26,9 @@ Relevant Notes:
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- the codebook being stabilized
 - [[whether FSQ provides more stable discretization than VQ-VAE for USV codebook learning]] -- fallback approach
 - [[separating representation learning from discretization enables richer feature discovery]] -- collapse prevention is specifically needed because discretization is a separate phase operating on already-learned representations
+- [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- external validation: GVQ collapsed in Sarkar 2025, confirming collapse is a real risk requiring our multi-mechanism prevention
+- [[FSQ eliminates codebook collapse by construction achieving 100 percent utilization through fixed scalar quantization]] -- the alternative that eliminates collapse by design (Mentzer ICLR 2024)
+- [[discrete audio token taxonomy from 2025 survey covers quantization methods beyond simple VQ]] -- 2025 survey identifies codebook collapse as a critical challenge across quantization methods
 
 Topics:
-- [[classification]]
+- [[representation-learning]]

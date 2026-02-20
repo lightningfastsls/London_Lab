@@ -1,8 +1,11 @@
 {
   "mcpServers": {
     "qmd": {
-      "command": "qmd",
-      "args": ["mcp"],
+      "command": "node",
+      "args": ["D:/npm-global/node_modules/@tobilu/qmd/dist/qmd.js", "mcp"],
+      "env": {
+        "XDG_CACHE_HOME": "D:\\qmd-cache"
+      },
       "autoapprove": [
         "mcp__qmd__search",
         "mcp__qmd__vector_search",

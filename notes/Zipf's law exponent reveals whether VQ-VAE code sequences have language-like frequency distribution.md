@@ -25,4 +25,4 @@ Relevant Notes:
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- if VQ-VAE codes show Zipf-like distribution, the learned discretization may be more natural than imposed taxonomies
 
 Topics:
-- [[classification]]
+- [[representation-learning]]
