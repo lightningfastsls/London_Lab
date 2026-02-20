@@ -1,5 +1,8 @@
 # Hook: Remind about plan mode before editing code files
 # Triggered on: PreToolUse (Edit|Write)
+# NOTE: This hook is advisory only (always exits 0). Plan mode enforcement
+# is via model compliance (CLAUDE.md behavioral contract), not this hook.
+# Making this blocking would prevent trivial .py fixes without plan mode.
 
 $ErrorActionPreference = 'SilentlyContinue'
 

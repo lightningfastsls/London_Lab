@@ -1,11 +1,18 @@
 # Hook: Session capture - save session metadata on Stop
-# Triggered on: Stop event (receives stdin JSON)
+# Triggered on: Stop event (receives stdin JSON with transcript_path)
+# Only creates a file when transcript_path is present, avoiding empty stubs.
 
 $ErrorActionPreference = 'SilentlyContinue'
 
 try {
     $raw = [Console]::In.ReadToEnd()
     if (-not $raw) { [Environment]::Exit(0) }
+
+    $input_json = $raw | ConvertFrom-Json
+    if (-not $input_json) { [Environment]::Exit(0) }
+
+    # Only create session file if we have a transcript to reference
+    if (-not $input_json.transcript_path) { [Environment]::Exit(0) }
 
     $VaultRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 
@@ -25,15 +32,14 @@ try {
 
     $sessionFile = Join-Path $sessionDir "$sessionId.json"
 
-    if (-not (Test-Path $sessionFile)) {
-        $timestamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ss"
-        $sessionData = @{
-            session_id = $sessionId
-            start_time = $timestamp
-            status = "completed"
-        } | ConvertTo-Json
-        Set-Content -Path $sessionFile -Value $sessionData -Encoding UTF8
-    }
+    $timestamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ss"
+    $sessionData = @{
+        session_id      = $sessionId
+        timestamp       = $timestamp
+        transcript_path = $input_json.transcript_path
+        status          = "completed"
+    } | ConvertTo-Json
+    Set-Content -Path $sessionFile -Value $sessionData -Encoding UTF8
 } catch {
     [Console]::Error.WriteLine("[HOOK session-capture] $($_.Exception.Message)")
 }

@@ -26,6 +26,8 @@ try {
     $diff = git diff --cached --quiet 2>$null
     if ($LASTEXITCODE -ne 0) {
         $basename = Split-Path $path -Leaf
+        # --no-verify: vault auto-commits are single-file markdown adds;
+        # git pre-commit hooks (linting, formatting) don't apply to vault notes
         git commit -m "vault: update $basename" --no-verify 2>$null
     }
 } catch {

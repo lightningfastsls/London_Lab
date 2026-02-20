@@ -1,5 +1,6 @@
 # Hook: Validate note schema - check frontmatter on notes written to notes/
 # Triggered on: PostToolUse (Write) - receives stdin JSON
+# All checks are advisory (exit 0) - warns but never blocks.
 
 $ErrorActionPreference = 'SilentlyContinue'
 
@@ -29,19 +30,57 @@ try {
         [Environment]::Exit(0)
     }
 
-    # Check required fields
+    # Parse frontmatter fields
     $hasDescription = $false
     $hasTopics = $false
+    $hasType = $false
+    $typeValue = ""
+    $descriptionValue = ""
+    $inFrontmatter = $false
+
     foreach ($line in $content) {
-        if ($line -match '^description:') { $hasDescription = $true }
-        if ($line -match '^topics:') { $hasTopics = $true }
+        if ($line -eq '---' -and -not $inFrontmatter) {
+            $inFrontmatter = $true
+            continue
+        }
+        if ($line -eq '---' -and $inFrontmatter) {
+            break
+        }
+        if ($inFrontmatter) {
+            if ($line -match '^description:\s*(.*)') {
+                $hasDescription = $true
+                $descriptionValue = $Matches[1].Trim().Trim('"').Trim("'")
+            }
+            if ($line -match '^topics:') { $hasTopics = $true }
+            if ($line -match '^type:\s*(.*)') {
+                $hasType = $true
+                $typeValue = $Matches[1].Trim()
+            }
+        }
     }
 
+    # Required field checks
     if (-not $hasDescription) {
         Write-Host "WARN: $path missing required 'description' field"
     }
     if (-not $hasTopics) {
         Write-Host "WARN: $path missing required 'topics' field"
+    }
+
+    # Soft warning: type field missing
+    if (-not $hasType) {
+        Write-Host "WARN: $path missing 'type' field (finding|decision|method|hypothesis|baseline|open-question|pattern)"
+    }
+
+    # Soft warning: type enum validation
+    $validTypes = @("finding", "decision", "method", "hypothesis", "baseline", "open-question", "pattern")
+    if ($hasType -and $typeValue -and $typeValue -notin $validTypes) {
+        Write-Host "WARN: $path has invalid type '$typeValue' - expected one of: $($validTypes -join ', ')"
+    }
+
+    # Soft warning: description length
+    if ($hasDescription -and $descriptionValue.Length -gt 200) {
+        Write-Host "WARN: $path description is $($descriptionValue.Length) chars (max 200)"
     }
 } catch {
     [Console]::Error.WriteLine("[HOOK validate-note] $($_.Exception.Message)")

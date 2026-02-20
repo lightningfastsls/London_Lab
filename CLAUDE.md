@@ -123,7 +123,7 @@ tests/                     # Test files
 
 | Document | When to Read |
 |----------|--------------|
-| `IMPLEMENTATION_PROGRESS.md` | **Start of every session** |
+| `IMPLEMENTATION_PROGRESS.md` | **Start of every session**; **update after implementation** |
 | `ROADMAP.md` | **Before implementing any module** |
 | `DECISIONS.md` | **Before any architectural/design choice** |
 | `docs/architecture/patterns.md` | Before implementing (follow established patterns) |
@@ -134,6 +134,8 @@ tests/                     # Test files
 | `docs/plans/USV_TRAINING_PIPELINE_PLAN.md` | Building training data generation pipeline |
 | `docs/plans/USV_DETECTION_APP_IMPLEMENTATION.md` | Building PyQt6 desktop app for detection |
 | `docs/reference/usv_signal_processing_reference.md` | Any signal processing work |
+
+**After implementing a module**, also update: module doc (`docs/modules/<module>.md`), `docs/architecture/patterns.md` (if new pattern), `DECISIONS.md` (if non-obvious architectural decision).
 
 ---
 
