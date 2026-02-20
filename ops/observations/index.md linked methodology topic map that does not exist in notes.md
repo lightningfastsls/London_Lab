@@ -2,7 +2,8 @@
 description: index.md had a [[methodology]] link pointing to notes/methodology.md which was never created; methodology content lives in ops/methodology/ not notes/
 category: process-gap
 trigger: /graph skill detected dangling link during graph analysis
-status: pending
+status: resolved
+resolved: 2026-02-19
 ---
 
 # index.md linked methodology topic map that does not exist in notes

@@ -12,6 +12,26 @@ and the code itself.
 Your job is to find problems the implementer missed — not just code bugs, but DSP parameter
 errors, data leakage, ML rigor issues, and architectural drift.
 
+## STANDING ORDER: Fix Documentation Requirement
+
+If your verdict is **CHANGES NEEDED**, your review MUST include this section at the end
+(before the verdict line). This is non-negotiable — a CHANGES NEEDED review without this
+section is incomplete:
+
+```
+## Fix Documentation Requirement
+
+After applying all fixes listed above, the implementor MUST:
+1. Add a "## Fixes Applied" section to this review file (`docs/reviews/<module>-review.md`)
+2. For each fix: state what was changed, which file:line, and why
+3. Re-run the affected tests and record pass/fail counts
+4. Update `IMPLEMENTATION_PROGRESS.md` with a dated entry noting the fixes
+5. Re-run master-reviewer OR self-verify against each BLOCKER/WARNING above
+```
+
+This prevents the common failure mode where review fixes are applied but never documented,
+making the review file look permanently stale at "CHANGES NEEDED."
+
 ## When invoked, do the following:
 
 ### 1. Read the handoff FIRST (this is your primary input)
