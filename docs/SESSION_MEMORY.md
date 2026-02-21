@@ -1,0 +1,57 @@
+# Session Memory
+
+> **Sync rule:** This file mirrors `.claude/projects/D--mickey-london-lab/memory/MEMORY.md`.
+> Update this file whenever MEMORY.md changes, and include it in the next commit/push.
+
+## arscontexta Setup (USV Research Pipeline)
+- **Status**: Vault generated and committed (2026-02-18, commit aafe406)
+- **Preset**: Research (atomic, flat, explicit+implicit linking, heavy processing, full automation)
+- **Self-space**: Disabled (research preset) — ops/ absorbs identity/methodology
+- **Semantic search**: qmd v1.0.6 installed and working (Vulkan GPU, AMD Radeon RX 5700). Config in `.mcp.json`. After adding notes: `qmd update && qmd embed`.
+  - **Vulkan fix**: Patched `llm.js:253` to prefer `["vulkan", "cuda", "metal"]` — re-apply after qmd updates.
+- **Skills**: 16 vocabulary-transformed skills in .claude/skills/ (reduce, reflect, reweave, verify, validate, seed, ralph, pipeline, tasks, stats, graph, next, learn, remember, rethink, refactor)
+- **Hooks**: Two layers — project hooks (`.claude/hooks/*.ps1`, working) and plugin hooks (plugin cache `hooks.json`, disabled).
+  - Project hooks in `settings.local.json`: session-orient.ps1 (SessionStart), session-capture.ps1 (Stop), check_agents_tag.cmd (Stop), check_plan_mode.cmd (PreToolUse), validate-note.cmd + auto-commit.cmd (PostToolUse:Write).
+  - Plugin `hooks.json` emptied (2026-02-20) — bash `.sh` scripts don't work on Windows. **Re-empty after arscontexta plugin updates.**
+  - Hook chain: `.cmd` wrappers -> `powershell.exe` via `cmd.exe /c` -> `.ps1` scripts.
+- **Hook errors (KNOWN BUG)**: SessionStart/Stop hook errors on Windows are cosmetic (upstream bug #12671). Hooks work despite error messages. Don't try to fix.
+- **Session continuity** (2026-02-20): Orient hook enhanced with overdue reminder detection, last-session bridge, pending tasks, status-filtered counts, queue.json thresholds, lifecycle archival. Capture hook writes `ops/last-session.md` and enforces State Update Rule. Dead `.sh` files deleted from project.
+- **Implementation plan**: `skill-graph-implementation-plan.md` — Phases 1-4 ALL DONE. Phase 5.1 DONE (weekly routine, 2026-02-20). Remaining: Phase 5.2 (two-week validation, starts 2026-03-06)
+- **USV Pipeline Phase 9.1 DONE** (2026-02-21): Dataset Assembler — DatasetAssembler, AssemblyConfig, AssemblyReport in `src/usv_spectrogram/dataset/assembler.py` (~480 lines), CLI `scripts/assemble_training_data.py`, 10 tests (434 total). Key fixes: Hamilton's allocation, frame-level buffer masking, .gitignore case-sensitivity. Handoff at `docs/reviews/dataset-assembler-handoff.md`. Review at `docs/reviews/dataset-assembler-review.md`.
+- **USV Pipeline Phase 8.4 DONE** (2026-02-21): Analysis & Interpretation Tools — 9 modules in `usv_language/analysis/` (config, transformer_suffix, codebook_viz, sequence_analysis, concept_manipulation, context_analysis, compositionality, run_analysis), 17 tests (599 total). Key fixes: batch decode (K,1,d_model) not (1,K,d_model), excess_entropy via entropy rate convergence. Handoff at `docs/reviews/analysis-tools-handoff.md`. Review at `docs/reviews/analysis-tools-review.md`.
+- **USV Pipeline Phase 8.3 DONE** (2026-02-20): Hidden State VQ-VAE — VQVAEConfig, VectorQuantizerV2, HiddenStateVQVAE (~820K params), train_vqvae.py, compare_layers.py, 21 tests (151 total). Handoff at `docs/reviews/hidden-state-vqvae-handoff.md`.
+- **Skills updated** (2026-02-20): `/implement` now includes Phase 4 REVIEW (spawns master-reviewer, writes review file). New `/roadmap-from-plan` skill converts web Claude plans into ROADMAP.md format with `/implement` blocks.
+
+## State Update Rule (CRITICAL — every session)
+- Before ending ANY session where a milestone/phase/task was completed, update ALL THREE:
+  1. `ops/goals.md` — move from Active to Completed (orient hook reads this — stale = stale start)
+  2. The tracking file (e.g. `skill-graph-implementation-plan.md`) — mark DONE
+  3. This MEMORY.md — update summary so next session's system prompt is correct
+- **This applies to work done in THIS repo too** — Phase 4.3 was completed here and goals.md wasn't updated, causing the next session to treat it as active.
+- **Cross-repo**: When tevel-erp work affects files here, that session must note in its own MEMORY.md what needs syncing next USV session.
+
+## Sync Rule: docs/SESSION_MEMORY.md
+- `docs/SESSION_MEMORY.md` in the repo mirrors this file. **Update it on every push.**
+- This ensures the memory is version-controlled and visible outside Claude Code.
+
+## Bash Permissions
+- settings.local.json has restrictive Bash permissions (allowlist-based)
+- Use `git` commands for shell operations (always allowed)
+- Use Glob/Grep/Read tools instead of bash for file operations
+- `echo`, `ls`, `cd` are whitelisted but may fail due to shell quoting issues
+
+## Notion Integration
+- **Package**: `notion_notes/` — CLI toolkit for Notion KB automation (tag, atomize, link, process, move)
+- **Credentials**: `.env` file at repo root (NOT in env vars — must load via `load_config(env_path=Path('.env'))`)
+  - `NOTION_TOKEN` (ntn_...), `ANTHROPIC_API_KEY`, `NOTION_KB_DATABASE_ID`, `NOTION_NOTES_DATABASE_ID`
+- **KB Database ID**: `30b2bc599f6e8032b337fbda2c975dda`
+- **"Miki London lab" page ID**: `2ad2bc59-9f6e-80f1-8ee0-e85e0ef3d8a8` (used in "Projects" relation)
+- **Upload script**: `scripts/upload_report_to_notion.py` — handles tables, batching (100-block limit), rich text splitting
+- **Project State Report**: Uploaded 2026-02-20, page ID `30d2bc59-9f6e-81e4-ae8f-e97649f29014`
+
+## Project Structure
+- USV spectrogram/detection pipeline: `src/usv_spectrogram/`
+- Tests: `tests/`
+- Python venv: `.venv/Scripts/python.exe`
+- WAV files: `5970 USV/`
+- Knowledge graph vault: notes/, inbox/, ops/, templates/, manual/, archive/
