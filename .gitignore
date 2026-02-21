@@ -25,6 +25,6 @@ taxonomy.json
 ops/sessions/
 ops/last-session.md
 
-# Local working dirs
-USV_*/
+# Local working dirs (anchored to root to avoid matching src/usv_spectrogram/ on Windows)
+/USV_*/
 tmp/

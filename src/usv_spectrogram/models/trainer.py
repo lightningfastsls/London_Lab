@@ -229,6 +229,11 @@ class Trainer:
             'scheduler_state_dict': self.scheduler.state_dict(),
             'metrics': metrics,
         }
+        # Save architecture metadata so loaders can reconstruct the model
+        if hasattr(self.model, 'num_filters'):
+            checkpoint['num_filters'] = self.model.num_filters
+        if hasattr(self.model, 'dense_units'):
+            checkpoint['dense_units'] = self.model.dense_units
         torch.save(checkpoint, filepath)
 
     def load_checkpoint(self, filepath: Path):

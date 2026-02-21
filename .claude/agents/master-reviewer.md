@@ -145,5 +145,18 @@ End with one of:
 - **APPROVED** — No blockers, safe to move to next module
 - **CHANGES NEEDED** — Has blockers, list exactly what to fix before proceeding
 
-**IMPORTANT:** Return your findings as text to the main session. The main session will write
-the review file to `docs/reviews/<module>-review.md`. Do NOT write the file yourself.
+**IMPORTANT:** Your output format must follow this structure exactly:
+
+```
+ACTION REQUIRED: Write the review below to `docs/reviews/<module>-review.md`
+
+---BEGIN REVIEW FILE---
+# <Module Name> Module Review
+...your full review content...
+---END REVIEW FILE---
+```
+
+The content between `---BEGIN REVIEW FILE---` and `---END REVIEW FILE---` must be a complete,
+ready-to-write markdown file following the format in `docs/reviews/spectrogram-transformer-review.md`.
+Do NOT write the file yourself (you don't have the Write tool). The main session will extract
+the content and write it.

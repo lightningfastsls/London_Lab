@@ -207,9 +207,17 @@ All foundation work is complete:
 ### 8.1 Data Preparation Pipeline
 
 **What:** Extract bout-level spectrograms from raw WAV files using CNN detection results, normalize per-frequency-bin, and create PyTorch datasets with length-bucketed batching for transformer training. Bouts are continuous recording segments containing clusters of USV activity with surrounding context — preserving inter-USV timing, silence gaps, and transitions.
-**Status:** READY
+**Status:** DONE
 **Review Tier:** 2
 **Depends on:** Phase 1 (CNN detection results for bout grouping)
+
+**Key files:**
+- `usv_language/data/bout_extractor.py` — BoutExtractionConfig, Bout, BoutExtractor
+- `usv_language/data/spectrogram.py` — BoutSpectrogramConfig, compute_bout_spectrogram()
+- `usv_language/data/normalization.py` — NormalizationStats, per-frequency Welford's algorithm
+- `usv_language/data/dataset.py` — USVBoutDataset (PyTorch), BucketedBatchSampler, augmentation
+- `usv_language/data/prepare_data.py` — CLI end-to-end pipeline
+- `usv_language/configs/default_config.yaml` — Master config reference
 
 /implement USV Bout Data Preparation Pipeline
 
@@ -315,9 +323,17 @@ Saves: processed dataset splits, normalization stats, dataset summary.
 ### 8.2 Autoregressive Transformer
 
 **What:** GPT-style autoregressive transformer for next-spectrogram-column prediction. Processes sequences of spectrogram columns (170-dim vectors) and predicts the next column given all previous columns. Includes training loop with warmup/cosine schedule and hidden state extraction for Phase 2 (VQ-VAE).
-**Status:** BLOCKED (depends on 8.1)
+**Status:** DONE
 **Review Tier:** 3
 **Depends on:** Phase 8.1
+
+**Key files:**
+- `usv_language/models/transformer.py` — TransformerConfig, TransformerBlock, SpectrogramTransformer (~25.6M params)
+- `usv_language/training/train_transformer.py` — CLI training with masked MSE, CosineWarmupScheduler, AdamW, early stopping
+- `usv_language/training/extract_hidden_states.py` — Hidden state extraction as memory-mapped numpy arrays + metadata JSON
+- 11 tests passing
+
+**Key design:** Pre-norm architecture, GELU activation, causal masking, learned positional embeddings, True=padding mask convention.
 
 /implement Spectrogram Autoregressive Transformer
 
@@ -422,9 +438,17 @@ Output format per layer L:
 ### 8.3 VQ-VAE on Hidden States
 
 **What:** VQ-VAE that operates on transformer hidden state vectors to discover discrete "concepts." Each codebook entry becomes an interpretable recurring pattern the transformer has learned to recognize. Uses EMA codebook updates, dead code reinitialization, L2 normalization, and k-means initialization to prevent codebook collapse.
-**Status:** BLOCKED (depends on 8.2)
+**Status:** DONE
 **Review Tier:** 3
 **Depends on:** Phase 8.2
+
+**Key files:**
+- `usv_language/models/vqvae.py` — VQVAEConfig, VectorQuantizerV2, HiddenStateVQVAE (~820K params)
+- `usv_language/training/train_vqvae.py` — HiddenStateDataset, training CLI with CosineWarmupScheduler
+- `usv_language/training/compare_layers.py` — Multi-layer comparison with weighted scoring report
+- `usv_language/tests/test_hidden_state_vqvae.py` — 21 tests (config, forward pass, STE gradients, EMA, dead code reset, k-means init, overfit, utilization, checkpointing, dataset windowing)
+
+**Key design:** Fresh VectorQuantizerV2 (not v1 import), L2-normalized codebook with re-normalization after EMA update, raw commitment loss (beta applied by caller), sequential val split (no temporal leakage), codebook excluded from optimizer (EMA-only), k-means++ init on GPU tensors.
 
 /implement Hidden State VQ-VAE
 
@@ -549,7 +573,7 @@ Train VQ-VAE separately on hidden states from layers 2, 4, 6, 8 with identical h
 ### 8.4 Analysis & Interpretation Tools
 
 **What:** Comprehensive analysis suite for probing the learned representations: decode codebook entries to spectrograms, visualize exemplar galleries, analyze sequential structure (Zipf's law, transition matrices, entropy rate, mutual information), concept manipulation experiments, context-dependent analysis, and compositionality tests.
-**Status:** BLOCKED (depends on 8.3)
+**Status:** DONE (2026-02-21)
 **Review Tier:** 2
 **Depends on:** Phase 8.3
 

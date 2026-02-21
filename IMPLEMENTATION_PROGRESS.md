@@ -6,9 +6,66 @@
 
 ---
 
-## Current Status: v2 Phase 1 Spectrogram Transformer Implemented
+## Current Status: Phase 9.1 Training Data Assembly Pipeline Implemented
 
-**Latest Update (2026-02-20):**
+**Latest Update (2026-02-21):**
+- **Phase 9.1: Training Data Assembly Pipeline** -- Complete
+  - Created `src/usv_spectrogram/dataset/assembler.py`:
+    - `AssemblyConfig`: frozen dataclass with validation (split ratios, negative fractions, all positive)
+    - `AssemblyReport`: pipeline statistics dataclass
+    - `DatasetAssembler`: unified pipeline — collect labels -> jitter positives -> 3-source negatives -> extract spectrograms -> recording-based splits -> validate -> write CSVs
+  - Created `scripts/assemble_training_data.py`: CLI entry point with argparse, `--dry-run` support
+  - Updated `src/usv_spectrogram/dataset/__init__.py`: exported new classes
+  - 10 new tests (assembly, leakage prevention, 3-source negatives, jitter counts, dry-run,
+    report accuracy, empty labels, spectrogram existence, long-USV jitter failure, all-deleted labels)
+  - 434 total suite tests passing (10 new + 424 existing)
+  - Key decisions: direct JSON parsing (no PyQt6 dependency), Hamilton's method for negative allocation,
+    frame-level detection buffer masking for low-energy regions, jitter-before-split (no leakage),
+    early return on wrong sample rate
+  - Handoff: `docs/reviews/dataset-assembler-handoff.md`
+  - Review: `docs/reviews/dataset-assembler-review.md` (4 warnings, all fixed)
+  - Module doc: `docs/modules/dataset-assembler.md`
+
+**Previous Update (2026-02-21):**
+- **Phase 8.4: Analysis & Interpretation Tools (v2 Phase 3)** -- Complete
+  - Created `usv_language/analysis/` package (9 modules):
+    - `config.py`: AnalysisConfig frozen dataclass with validation
+    - `transformer_suffix.py`: `decode_hidden_to_spectrogram`, `inject_and_continue` (bridges VQ-VAE codes to spectrograms)
+    - `codebook_viz.py`: Decode all entries, exemplar galleries, usage histograms, t-SNE/UMAP projections
+    - `sequence_analysis.py`: Zipf's law, transition matrices, entropy rate, conditional entropy, MI, excess entropy
+    - `concept_manipulation.py`: Concept injection with autoregressive generation, concept scanning, top-k competing
+    - `context_analysis.py`: Metadata-based grouping, chi-squared, KL divergence, differential usage, context reports
+    - `compositionality.py`: Bigram productivity, positional independence, held-out bigram decoding
+    - `run_analysis.py`: CLI orchestrator running all 5 modules with JSON summary output
+  - 17 new tests (config validation x4, transformer suffix, codebook decode, Zipf, transition matrix,
+    entropy rate, code extraction, concept injection, n-gram edges, conditional entropy, MI, bigram
+    productivity, concept scan, chi-squared)
+  - 599 total suite tests passing (17 new + 582 existing)
+  - Key decisions: batch decode (K,1,d_model) to avoid causal cross-contamination, excess entropy via
+    entropy rate convergence E=sum(h_n-h_L), transformer suffix as separate module (not model method)
+  - Handoff: `docs/reviews/analysis-tools-handoff.md`
+  - Review: `docs/reviews/analysis-tools-review.md` (4 blockers found and fixed)
+
+**Previous Update (2026-02-20):**
+- **Phase 8.3: Hidden State VQ-VAE (v2 Phase 2)** -- Complete
+  - Created `usv_language/models/vqvae.py`:
+    - `VQVAEConfig`: frozen dataclass (d_model=512, K=64, codebook_dim=64, EMA decay=0.99)
+    - `VectorQuantizerV2`: L2-normalized codebook, EMA updates, dead code reset, k-means++ init
+    - `HiddenStateVQVAE`: Conv1d encoder, vector quantizer, linear decoder (~820K params)
+    - `_Transpose`: helper module for Conv1d dim swapping in nn.Sequential
+  - Created `usv_language/training/train_vqvae.py`:
+    - `HiddenStateDataset`: memory-mapped .npy with overlapping windows, `.close()` for Windows mmap cleanup
+    - Training loop with CosineWarmupScheduler, sequential 90/10 val split, codebook excluded from optimizer
+  - Created `usv_language/training/compare_layers.py`:
+    - Trains VQ-VAE on layers 2,4,6,8, generates markdown report with weighted scoring
+  - 21 new tests (config validation, forward pass, STE gradients, EMA updates, dead code reset,
+    k-means init, single-batch overfit <0.01, codebook utilization >50%, checkpointing, dataset windowing)
+  - 151 total suite tests passing
+  - Key decisions: fresh V2 quantizer (not v1 import), L2 normalization with post-EMA re-normalization,
+    raw commitment loss (beta applied by caller), k-means++ on GPU tensors (no sklearn dependency)
+  - Handoff: `docs/reviews/hidden-state-vqvae-handoff.md`
+
+**Previous Update (2026-02-20):**
 - **Phase 9.1: Spectrogram Autoregressive Transformer (v2 Phase 1)** -- Complete
   - Created `usv_language/models/` package with `transformer.py`:
     - `TransformerConfig`: frozen dataclass, n_freq=170, d_model=512, n_heads=8, n_layers=8, d_ffn=2048

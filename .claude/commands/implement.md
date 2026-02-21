@@ -62,10 +62,26 @@ After tests pass:
 3. If you made a non-obvious decision -> add to `DECISIONS.md`
 4. Write the handoff: `docs/reviews/<module>-handoff.md` (the task should be sitting in your list as `pending` — write it and mark completed)
 
-## Phase 4: REPORT
+## Phase 4: REVIEW
+
+After writing the handoff, spawn the `master-reviewer` agent (subagent_type: `master-reviewer`). Use the review tier from ROADMAP.md to set the prompt:
+
+1. **Spawn master-reviewer** with this prompt structure:
+   ```
+   Review module [MODULE NAME] in the USV Detection project.
+   This is a TIER [N] ([tier name]) review.
+   Read the handoff first: docs/reviews/[module]-handoff.md
+   ```
+   See `docs/reviews/REVIEW-TEMPLATE.md` for the full tier-specific prompts (Tier 1/2/3).
+
+2. **Write the review file** to `docs/reviews/<module>-review.md` based on the master-reviewer's findings. The agent returns text — you write the file.
+
+3. **If CHANGES NEEDED:** Fix all blockers, add a "Fixes Applied" section to the review file, re-run tests. Only re-review if blockers were found.
+
+## Phase 5: REPORT
 Summarize to the user:
 - What was created (files, classes, functions)
 - Test results (pass counts)
+- Review verdict and any issues found
 - Any known limitations
-- Handoff is ready for review (mention the review tier from ROADMAP.md)
 
