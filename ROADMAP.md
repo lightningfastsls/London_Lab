@@ -976,7 +976,7 @@ data/training/milestone_1/
 ### 10.1 Active Learning Automation
 
 **What:** Orchestrate one complete active learning cycle: assemble training data → train CNN → evaluate → optimize threshold → mine hard negatives → generate comparison report. Automates the manual milestone workflow from `SCALING_TO_30K_ROADMAP.md`.
-**Status:** READY
+**Status:** DONE (2026-02-21)
 **Review Tier:** 2
 **Depends on:** Phase 9
 

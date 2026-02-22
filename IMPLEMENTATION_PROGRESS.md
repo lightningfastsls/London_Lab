@@ -6,9 +6,21 @@
 
 ---
 
-## Current Status: Phase 9.1 Training Data Assembly Pipeline Implemented
+## Current Status: Phase 10.1 Active Learning Cycle Runner Implemented
 
 **Latest Update (2026-02-21):**
+- **Phase 10.1: Active Learning Cycle Runner** -- Complete
+  - Created `src/usv_spectrogram/training/cycle_report.py`:
+    - `CycleMetrics`: non-frozen dataclass populated incrementally across 7 pipeline steps
+    - `generate_cycle_report()`: markdown report with data/training/evaluation/mining/comparison sections
+  - Created `scripts/run_training_cycle.py` (427 lines):
+    - 7-step orchestration: assemble -> train -> evaluate -> optimize -> mine -> compare -> report
+    - CLI with `--model-size` (small/medium/large), `--skip-mining`, `--compare-model`, `--dry-run`
+    - Step-level error handling with graceful fallback to report on failure
+  - Created `tests/test_training_cycle.py`: 34 tests covering metrics, reports, model configs, CLI parsing, step ordering
+  - Handoff: `docs/reviews/training-cycle-handoff.md`
+  - Review: `docs/reviews/training-cycle-review.md` (1 blocker found: architecture mismatch for non-default model sizes)
+
 - **Phase 9.1: Training Data Assembly Pipeline** -- Complete
   - Created `src/usv_spectrogram/dataset/assembler.py`:
     - `AssemblyConfig`: frozen dataclass with validation (split ratios, negative fractions, all positive)

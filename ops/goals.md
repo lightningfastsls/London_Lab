@@ -12,6 +12,8 @@ type: moc
 - CC weekly routine first execution -- deferred to a session in D:\we_do_this\tevel-erp
 
 ## Completed
+- Phase 10.1 -- Active Learning Cycle Runner implemented (2026-02-21): CycleMetrics + generate_cycle_report in training/cycle_report.py, 7-step orchestration CLI in run_training_cycle.py, 34 tests, handoff + review written
+- Phase 9.1 -- Dataset Assembler implemented (2026-02-21): DatasetAssembler, AssemblyConfig, AssemblyReport in dataset/assembler.py, CLI assemble_training_data.py, 10 tests, handoff + review written
 - Phase 8.4 -- Analysis & Interpretation Tools implemented (2026-02-21): 9 analysis modules (config, transformer_suffix, codebook_viz, sequence_analysis, concept_manipulation, context_analysis, compositionality, run_analysis), 17 tests (599 total), 4 reviewer blockers fixed, handoff + review written
 - Phase 8.3 -- Hidden State VQ-VAE implemented (2026-02-20): VQVAEConfig, VectorQuantizerV2, HiddenStateVQVAE, training CLI, multi-layer comparison, 21 tests (151 total), handoff written
 - Phase 1.1 -- arscontexta plugin installed (2026-02-18)
