@@ -1,0 +1,46 @@
+============================================================
+LABEL OUTLIER DETECTION SUMMARY
+============================================================
+
+Total samples processed: 316
+
+------------------------------------------------------------
+FALSE NEGATIVE CANDIDATES
+(Label=USV but model thinks NOT USV)
+------------------------------------------------------------
+Count: 268
+Percentage: 84.81%
+
+Top 10 by disagreement:
+  1. 2024-09-30_11-20-26_0000023_00001032: prob=0.0000, disagreement=1.0000
+  2. 2024-09-30_11-21-24_0000039_00001966: prob=0.0000, disagreement=1.0000
+  3. 2024-09-30_11-21-26_0000040_00000218: prob=0.0000, disagreement=1.0000
+  4. 2024-09-30_11-20-29_0000024_00001294: prob=0.0000, disagreement=1.0000
+  5. 2024-09-30_11-21-40_0000044_00002905: prob=0.0000, disagreement=1.0000
+  6. 2024-09-30_11-20-32_0000025_00001843: prob=0.0000, disagreement=1.0000
+  7. 2024-09-30_11-20-07_0000020_00002621: prob=0.0000, disagreement=1.0000
+  8. 2024-09-30_11-18-27_0000003_00001918: prob=0.0000, disagreement=1.0000
+  9. 2024-09-30_11-18-17_0000001_00005439: prob=0.0000, disagreement=1.0000
+  10. 2024-09-30_11-21-07_0000035_00003616: prob=0.0000, disagreement=1.0000
+
+------------------------------------------------------------
+FALSE POSITIVE CANDIDATES
+(Label=Not USV but model thinks USV)
+------------------------------------------------------------
+Count: 0
+Percentage: 0.00%
+
+
+------------------------------------------------------------
+RECOMMENDATIONS
+------------------------------------------------------------
+⚠ HIGH OUTLIER RATE (>10%)
+- Review top outliers for systematic labeling errors
+- Consider if model needs more training data
+- Check labeling guidelines for consistency
+
+Next steps:
+1. Review outliers using labeling app
+2. Correct confirmed labeling errors
+3. Retrain model with corrected labels
+4. Re-run outlier detection to verify improvements

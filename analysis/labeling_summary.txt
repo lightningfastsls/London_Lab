@@ -1,0 +1,12 @@
+LABELING SUMMARY
+================================================================================
+Date: 2026-01-24T20:27:24.553380
+
+total_labeled: 1429
+usv_candidates_labeled: 729
+noise_samples_labeled: 700
+excluded_uncertain: 3
+excluded_skip: 47
+final_training_samples: 1379
+final_usv_count: 596
+final_noise_count: 783

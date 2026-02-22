@@ -14,6 +14,10 @@ outputs/
 # IDE
 .idea/
 *.txt
+!requirements*.txt
+!usv_language/requirements.txt
+!analysis/labeling_summary.txt
+!analysis/label_outliers/summary_report.txt
 nul
 
 # Notion Notes secrets & caches
