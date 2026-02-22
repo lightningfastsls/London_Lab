@@ -6,9 +6,21 @@
 
 ---
 
-## Current Status: Phase 10.1 Active Learning Cycle Runner Implemented
+## Current Status: Phase 11.1 Bout Extraction & Preprocessing on Real Data
 
-**Latest Update (2026-02-21):**
+**Latest Update (2026-02-22):**
+- **Phase 11.1: Bout Extraction & Preprocessing on Real Data** -- Complete
+  - Fixed `bout_extractor.py` to filter `deleted_by_user` records from tracking JSONs (both `_parse_tracking_json` and `extract_from_tracking_json`)
+  - Added recursive WAV path resolution with lazy-built index for future nested directory support
+  - Created `usv_language/scripts/validate_preprocessing.py` validation CLI (directory structure, sample shapes, normalization stats, optional DataLoader test and plotting)
+  - Ran pipeline on real data: 124 bouts extracted, 27 valid spectrograms (19 train / 4 val / 4 test), 103,089 frames for normalization
+  - Added 9 new tests (184 total usv_language tests, all passing)
+  - Updated `.gitignore` for `usv_language/prepared_data/`
+  - Tier 1 review: APPROVED (0 blockers, 0 warnings)
+  - *Files modified: `usv_language/data/bout_extractor.py`, `usv_language/tests/test_bout_extractor.py`, `.gitignore`*
+  - *Files created: `usv_language/scripts/validate_preprocessing.py`, `docs/reviews/preprocessing-real-data-handoff.md`, `docs/reviews/preprocessing-real-data-review.md`*
+
+**Previous Update (2026-02-21):**
 - **Phase 10.1: Active Learning Cycle Runner** -- Complete
   - Created `src/usv_spectrogram/training/cycle_report.py`:
     - `CycleMetrics`: non-frozen dataclass populated incrementally across 7 pipeline steps

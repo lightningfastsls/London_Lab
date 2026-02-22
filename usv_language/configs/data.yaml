@@ -1,0 +1,23 @@
+# Data pipeline configuration for VQ-VAE USV language model
+
+stft:
+  sample_rate: 300000
+  n_fft: 512
+  hop_length: 128
+  freq_min_hz: 20000
+  freq_max_hz: 120000
+  eps: 1.0e-12
+
+preprocessing:
+  normalization_method: "min_max"  # "min_max" or "standard"
+  output_dtype: "float32"
+
+dataset:
+  chunk_length: 256          # ~109 ms at sr=300k, hop=128
+  overlap_fraction: 0.5      # 50% overlap between chunks
+  silence_threshold: 0.05    # mean energy below this => skip chunk
+  val_fraction: 0.1
+  test_fraction: 0.1
+  seed: 42
+  num_workers: 0             # DataLoader workers (0 = main process)
+  batch_size: 32

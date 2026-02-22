@@ -1,0 +1,24 @@
+# Model architecture configuration for VQ-VAE USV language model
+
+encoder:
+  hidden_dims: [256, 128]    # MLP hidden layers: n_freq -> 256 -> 128 -> d_model
+  dropout: 0.1
+
+decoder:
+  hidden_dims: [128, 256]    # MLP hidden layers: d_model -> 128 -> 256 -> n_freq
+  dropout: 0.1
+
+quantizer:
+  codebook_size: 512         # Number of discrete codes (K)
+  ema_decay: 0.99            # EMA update rate for codebook
+  commitment_weight: 0.25    # Beta: weight of commitment loss
+  dead_code_threshold: 2     # Reset code if unused for N batches
+  epsilon: 1.0e-5            # EMA laplace smoothing
+
+transformer:
+  d_model: 64                # Model dimension (also encoder output / VQ dim)
+  n_heads: 4                 # Multi-head attention heads
+  n_layers: 4                # Number of transformer blocks
+  d_ff: 256                  # Feed-forward hidden dimension
+  dropout: 0.1
+  max_seq_len: 512           # Maximum sequence length for positional encoding

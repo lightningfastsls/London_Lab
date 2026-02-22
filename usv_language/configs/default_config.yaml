@@ -1,0 +1,53 @@
+# Master configuration for USV language model v2 pipeline
+# Phase 8.1: Data preparation pipeline
+# See DECISIONS.md ADR-007 (v2 architecture), ADR-014 (bout grouping)
+
+bout_extraction:
+  bout_gap_threshold_ms: 500.0    # ADR-014: gap between USVs to start new bout
+  context_padding_ms: 200.0       # ADR-014: padding before first / after last USV
+  min_bout_duration_ms: 50.0      # ADR-014: discard shorter bouts
+  max_bout_duration_ms: 10000.0   # ADR-014: split longer bouts
+
+spectrogram:
+  sample_rate: 300000             # ADR-001: always explicit
+  n_fft: 512                      # ADR-002: 1.707ms window
+  hop_length: 128                 # ADR-002: 0.427ms hop
+  freq_min_hz: 20000              # ADR-002: USV frequency range
+  freq_max_hz: 120000             # ADR-002: USV frequency range
+  window: "hann"                  # ADR-002
+  eps: 1.0e-10                    # floor for 20*log10(|S|+eps)
+
+normalization:
+  method: "per_frequency"         # normalize each of 170 freq bins independently
+  eps: 1.0e-8                     # guard against zero std
+
+dataset:
+  max_seq_len: 512                # max columns per chunk (tokens for transformer)
+  overlap_ratio: 0.5              # stride = max_seq_len * (1 - overlap_ratio)
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  batch_size: 32
+  num_workers: 4
+  seed: 42
+
+augmentation:
+  enabled: true                   # only applied during training
+  probability: 0.5                # per-augmentation application probability
+  gaussian_noise_snr_db: 17.5     # SNR for additive Gaussian noise
+  gain_range_db: [-3.0, 3.0]     # uniform gain in dB
+  freq_mask_bands: [1, 2]        # number of frequency bands to mask
+  freq_mask_width: [20, 30]      # width of each masked band in bins
+  time_mask_count: [1, 2]        # number of time spans to mask
+  time_mask_ratio: 0.1           # fraction of sequence length per mask
+
+analysis:
+  n_exemplars: 10                 # exemplar frames per codebook entry
+  context_frames: 50              # context window for exemplar galleries
+  zipf_min_count: 5               # minimum code count for Zipf fit
+  max_ngram_order: 8              # maximum n-gram order for entropy rate
+  manipulation_n_future_steps: 50 # autoregressive steps for concept injection
+  source_layer: 4                 # 1-indexed transformer layer for hidden states
+  tsne_perplexity: 5.0            # t-SNE perplexity for codebook projection
+  umap_n_neighbors: 10            # UMAP neighbors for codebook projection
+  output_dpi: 150                 # DPI for saved figures

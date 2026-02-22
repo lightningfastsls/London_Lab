@@ -1,0 +1,45 @@
+# Training configuration for VQ-VAE USV language model
+
+optimizer:
+  type: "adamw"
+  lr: 3.0e-4
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+
+scheduler:
+  type: "cosine_warmup"
+  warmup_steps: 500
+  min_lr: 1.0e-6
+
+loss_weights:
+  reconstruction: 1.0        # MSE reconstruction loss
+  vq_commitment: 0.25        # VQ commitment loss (from quantizer)
+  next_code_prediction: 0.1  # Cross-entropy next-code loss
+
+training:
+  max_epochs: 100
+  gradient_clip_norm: 1.0
+  early_stopping_patience: 10
+  checkpoint_every_n_epochs: 5
+  mixed_precision: false      # Enable for GPU training
+  device: "cpu"               # "cpu" or "cuda"
+
+staged_training:
+  stages:
+    - name: "single_file"
+      num_files: 1
+      max_epochs: 20
+    - name: "small_subset"
+      num_files: 10
+      max_epochs: 50
+    - name: "reviewed_data"
+      num_files: null          # All reviewed files
+      max_epochs: 100
+    - name: "full_dataset"
+      num_files: null          # All files
+      max_epochs: 100
+
+logging:
+  log_every_n_steps: 50
+  use_wandb: false
+  wandb_project: "usv-language"
