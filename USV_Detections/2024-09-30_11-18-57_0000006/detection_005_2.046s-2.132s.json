@@ -1,0 +1,22 @@
+{
+  "detection_index": 5,
+  "core_time": {
+    "start_s": 2.0464360096242826,
+    "end_s": 2.1317574976864706,
+    "duration_ms": 85.32148806218798
+  },
+  "saved_region": {
+    "start_s": 2.0264360096242826,
+    "end_s": 2.1517574976864706,
+    "context_ms": 20.0
+  },
+  "probabilities": {
+    "max": 0.15591152012348175,
+    "mean": 0.08057603240013123
+  },
+  "spectrogram_columns": {
+    "start_col": 474,
+    "end_col": 494
+  },
+  "timestamp": "2026-02-06T14:48:27.764500"
+}

@@ -6,9 +6,111 @@
 
 ---
 
-## Current Status: Phase 11.1 Bout Extraction & Preprocessing on Real Data
+## Current Status: LMT Data Access Layer
 
-**Latest Update (2026-02-22):**
+**Latest Update (2026-02-24):**
+- **LMT Data Access Layer** -- Complete
+  - Created `src/usv_spectrogram/lmt/__init__.py` (19 lines): Package init with `__all__` exports
+  - Created `src/usv_spectrogram/lmt/db_loader.py` (~170 lines):
+    - 2 frozen dataclasses: BehavioralEvent (7 fields), AnimalInfo (6 fields)
+    - LMTDatabaseLoader: read-only SQLite access with context manager, flexible ANIMAL schema (3-9 cols)
+    - Query methods: get_animals, get_events (with type/animal/time_range filters), get_event_types, get_timeline
+  - Created `src/usv_spectrogram/lmt/synchronizer.py` (~150 lines):
+    - 1 frozen dataclass: SyncConfig (lmt_frame_rate, wav_sample_rate, time_offset_s) with __post_init__ validation
+    - LMTSynchronizer: lmt_frame_to_seconds, seconds_to_wav_sample, seconds_to_spectrogram_frame
+    - align_events_with_detections: temporal overlap + specificity ranking (pairwise > behavioral > general > environmental)
+  - 23 tests (22 pass + 1 skip-guarded integration test), total suite 331 passed
+  - Key decisions: read-only URI mode (?mode=ro), math.ceil for boundary-correct SQL filtering, _s suffix on dict keys for pipeline consistency, detection dicts (not DetectedUSV) for decoupling
+  - Review: `docs/reviews/lmt-data-access-review.md` (Tier 2, 5 warnings all fixed)
+  - Module doc: `docs/modules/lmt-data-access.md`
+  - Handoff: `docs/reviews/lmt-data-access-handoff.md`
+  - *Files created: `src/usv_spectrogram/lmt/__init__.py`, `src/usv_spectrogram/lmt/db_loader.py`, `src/usv_spectrogram/lmt/synchronizer.py`, `tests/test_lmt.py`*
+
+**Previous Update (2026-02-24):**
+- **Probing Framework for Hidden State Interpretability** -- Complete
+  - Created `usv_language/analysis/probing.py` (~470 lines):
+    - 2 frozen dataclasses: ProbingConfig (11 fields with validation), ProbingResult (8 fields)
+    - 1 mutable dataclass: ProbingAnalysisResult (heatmap_data, best_layer_by_property, best_overall_layer, summary)
+    - ProbingExperiment: single-probe cross-validation with StandardScaler inside sklearn Pipeline (data leakage prevention)
+    - ProbingAnalysisPipeline: orchestrates all (layer, property, probe_type) combinations
+    - 2 visualization functions: plot_probing_heatmap (seaborn/matplotlib fallback), plot_layer_comparison
+    - Supports linear (Ridge/LogisticRegression) and MLP probes with KFold/StratifiedKFold CV
+  - Created `usv_language/scripts/run_probing.py` (~250 lines):
+    - CLI: loads transformer checkpoint, extracts hidden states from all layers, extracts acoustic properties, runs probing
+    - Outputs: results.json, probing_report.md, probing_heatmap_{type}.png, layer_comparison.png
+    - Uses model.config.n_freq for spectrogram orientation (not fragile shape heuristic)
+  - 16 new tests (270 total usv_language), all passing
+  - Key decisions: StandardScaler inside Pipeline (anti-leakage), frame-level probing (no temporal pooling), -1.0 sentinel filter for time_since_last_usv, R^2 clamped to 0 in heatmap display
+  - Review: `docs/reviews/probing-review.md` (Tier 2, 0 blockers, 4 warnings all fixed)
+  - Module doc: `docs/modules/probing.md`
+  - *Files created: `usv_language/analysis/probing.py`, `usv_language/tests/test_probing.py`, `usv_language/scripts/run_probing.py`*
+  - *Files modified: `usv_language/analysis/__init__.py`*
+
+**Previous Update (2026-02-24):**
+- **Acoustic Property Extractors (Probing Targets)** -- Complete
+  - Created `usv_language/analysis/acoustic_properties.py` (~280 lines):
+    - 1 frozen dataclass: AcousticPropertyConfig (7 fields, ADR-001/ADR-002 compliant)
+    - 6 single-column functions: peak_frequency, spectral_centroid, energy, is_voiced, frequency_direction, bout_position
+    - 1 temporal function: time_since_last_usv (binary search + defensive sort)
+    - 1 batch extractor: extract_all_properties (vectorized NumPy, O(T+N) onset scan)
+    - Pure NumPy — no torch/scipy/matplotlib dependencies
+  - 22 new tests (254 total usv_language), all passing
+  - Key decisions: dB→power via 10^(S_db/10), linspace freq axis matching codebook_viz.py, defensive onset sorting
+  - Review findings: 0 blockers, 6 warnings (all fixed — unsorted onsets, direction_threshold validation, docstring accuracy, non-2D input guard, module doc, progress doc)
+  - Handoff: `docs/reviews/acoustic-properties-handoff.md`
+  - Review: `docs/reviews/acoustic-properties-review.md`
+  - Module doc: `docs/modules/acoustic-properties.md`
+  - *Files created: `usv_language/analysis/acoustic_properties.py`, `usv_language/tests/test_acoustic_properties.py`*
+  - *Files modified: `usv_language/analysis/__init__.py`*
+
+**Previous Update (2026-02-24):**
+- **Phase 8.4 Extension: Statistical Comparison Framework** -- Complete
+  - Created `usv_language/analysis/statistical_tests.py` (~430 lines):
+    - 2 frozen dataclasses: MetricComparison, FullAnalysisResult
+    - `NullModelComparison` class: compare(), _compute_metric(), full_analysis()
+    - Compares 7 info-theory metrics against all null model surrogates
+    - z-score (Bessel-corrected) + rank-based p-value, scientific hierarchy table ordering
+    - to_markdown() (no deps) and to_dataframe() (optional pandas) output formatters
+    - Plain-language summary with metric-specific interpretation
+  - Created `usv_language/scripts/run_null_model_analysis.py` (~195 lines):
+    - CLI: loads VQ-VAE checkpoint + hidden states, extracts codes, runs comparison
+    - Outputs: comparison_table.csv, comparison_table.md, summary.txt, raw_results.json, metric_distributions/*.png
+  - 14 new tests (232 total usv_language), all passing
+  - Key decisions: burstiness excluded from comparison (timestamps vs codes), OR significance criterion (handles degenerate null_std=0), n_bootstrap=1 for surrogate productivity
+  - Handoff: `docs/reviews/statistical-tests-handoff.md`
+  - Review: `docs/reviews/statistical-tests-review.md` (Tier 2, all findings addressed)
+  - Module doc: `docs/modules/statistical-tests.md`
+  - *Files created: `usv_language/analysis/statistical_tests.py`, `usv_language/scripts/run_null_model_analysis.py`, `usv_language/tests/test_statistical_tests.py`*
+  - *Files modified: `usv_language/analysis/__init__.py`*
+
+**Previous Update (2026-02-24):**
+- **Phase 8.4 Extension: Information Theory Metrics** -- Complete
+  - Created `usv_language/analysis/information_theory.py` (10 modules, ~480 lines):
+    - 6 frozen dataclasses: ZipfResult, ZipfEntropyResult, EntropyRateResult, IdiomResult, BurstinessResult, ProductivityResult
+    - MLE Zipf (Clauset et al. 2009 discrete MLE, scipy fallback, optional `powerlaw` package)
+    - PLC entropy inversion via `scipy.optimize.brentq` (alternative Zipf alpha)
+    - Bias-corrected (Miller-Madow) entropy rates with convergence detection
+    - Shuffle-surrogate idiom detection with manual Benjamini-Hochberg FDR correction
+    - Bootstrap null-hypothesis reference intervals for n-gram productivity
+    - Burstiness coefficient (CV of inter-event intervals, simplified burst detection)
+    - Conditional entropy by lag, MI decay curve wrappers
+  - Integrated into `run_analysis.py` as Section 6 (all 9 public functions called, 8 summary JSON fields)
+  - 16 new tests, all passing
+  - Fixed pre-existing conftest.py h5py import blocker (lazy import via `pytest.importorskip`)
+  - Key decisions: scipy-based MLE as primary path (powerlaw optional), manual BH FDR (scipy version independence), null CI semantics (i.i.d. bootstrap = null hypothesis, not parametric CI)
+  - Handoff: `docs/reviews/information-theory-handoff.md`
+  - Review: `docs/reviews/information-theory-review.md` (2 blockers + 3 warnings found and fixed)
+  - Module doc: `docs/modules/information-theory.md`
+  - *Files created: `usv_language/analysis/information_theory.py`, `usv_language/tests/test_information_theory.py`*
+  - *Files modified: `usv_language/analysis/__init__.py`, `usv_language/analysis/run_analysis.py`, `usv_language/tests/conftest.py`*
+
+**Previous Update (2026-02-22):**
+- **Phase 14.1: Raven Selection Table Export** -- Complete
+  - Created `src/usv_spectrogram/classification/raven_export.py` — converts detection JSONs to Raven Pro selection table format
+  - Created `scripts/export_raven_tables.py` — CLI entry point
+  - Exported 5 Raven selection tables to `raven_tables/` (from `USV_Detections/` tracking JSONs)
+  - *Files created: `src/usv_spectrogram/classification/__init__.py`, `src/usv_spectrogram/classification/raven_export.py`, `scripts/export_raven_tables.py`*
+  - *Output: `raven_tables/*.Table.1.selections.txt`, `raven_tables/export_summary.json`*
 - **Phase 11.1: Bout Extraction & Preprocessing on Real Data** -- Complete
   - Fixed `bout_extractor.py` to filter `deleted_by_user` records from tracking JSONs (both `_parse_tracking_json` and `extract_from_tracking_json`)
   - Added recursive WAV path resolution with lazy-built index for future nested directory support
