@@ -1,0 +1,40 @@
+{
+  "_comment": "Hebrew-to-English vehicle name mapping for Israeli registry data (data.gov.il). Extend by adding entries — no code changes needed.",
+  "makes": {
+    "טויוטה": "Toyota",
+    "יונדאי": "Hyundai",
+    "קיה": "Kia",
+    "מאזדה": "Mazda",
+    "סקודה": "Skoda",
+    "פולקסווגן": "Volkswagen",
+    "סוזוקי": "Suzuki",
+    "מיצובישי": "Mitsubishi",
+    "הונדה": "Honda",
+    "ניסאן": "Nissan",
+    "ב.מ.וו": "BMW",
+    "מרצדס": "Mercedes-Benz",
+    "אאודי": "Audi",
+    "סובארו": "Subaru",
+    "פיג'ו": "Peugeot",
+    "סיטרואן": "Citroen",
+    "רנו": "Renault",
+    "פיאט": "Fiat",
+    "שברולט": "Chevrolet",
+    "פורד": "Ford",
+    "סיאט": "Seat",
+    "דייהטסו": "Daihatsu",
+    "אופל": "Opel",
+    "וולוו": "Volvo"
+  },
+  "models": {
+    "קורולה": "Corolla",
+    "יאריס": "Yaris",
+    "טוסון": "Tucson",
+    "ספורטאג'": "Sportage",
+    "אוקטביה": "Octavia",
+    "ג'טה": "Jetta",
+    "גולף": "Golf",
+    "סיוויק": "Civic",
+    "לנסר": "Lancer"
+  }
+}
