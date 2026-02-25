@@ -22,6 +22,7 @@ Relevant Notes:
 - [[causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams]] -- our architectural response to the sequence structure finding
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- metric for measuring the structure Chabout identified
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- complementary evidence for sequential structure
+- [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- formalizes syllable syntax comparison between populations as transition probability matrices
 
 Topics:
 - [[classification]]

@@ -24,6 +24,8 @@ Relevant Notes:
 - [[USVs are one component of a multimodal courtship behavior suite including mounting approach and movement]] -- broader behavioral context
 - [[Chabout et al 2015 established that male mice change syllable syntax with social context]] -- establishes that USVs serve a courtship signaling function that could degrade under relaxed selection pressure
 - [[combined cross-modal evidence from USV repertoire and MiceCraft movement data builds a stronger case for courtship degradation]] -- cross-modal evidence strategy to test this hypothesis
+- [[Shannon entropy quantifies USV repertoire diversity with higher values indicating more evenly distributed syllable usage]] -- the specific metric predicting lower H in lab populations as a measurable consequence of degradation
+- [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- sequential syntax degradation as another testable prediction
 
 Topics:
 - [[experimental-methods]]

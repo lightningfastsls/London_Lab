@@ -21,6 +21,7 @@ Relevant Notes:
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the recording infrastructure that makes this possible
 - [[USVs are one component of a multimodal courtship behavior suite including mounting approach and movement]] -- the multimodal framework
 - [[whether specific USV call types predict specific courtship outcomes like female receptivity to mounting]] -- the open question this method addresses
+- [[timestamp proximity matching with configurable tolerance bridges detection systems that use different internal time representations]] -- the same engineering pattern of aligning timestamps across different analysis systems
 
 Topics:
 - [[experimental-methods]]

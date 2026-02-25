@@ -31,6 +31,7 @@ Relevant Notes:
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- this band defines the frequency domain for the first-stage energy scan
 - [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- noisy environment motivates not lowering the 20 kHz floor further
 - [[transient cage noises produce broadband vertical smears rejected by the minimum duration filter]] -- broadband cage noise spans below 20 kHz, supporting the lower bound choice
+- [[25000-125000 Hz is the standard mouse USV frequency band used across bioacoustic tools for defining regions of interest]] -- cross-tool convention differs slightly (25-125 kHz vs our 20-120 kHz); for Raven export the standard band is preferred
 
 Topics:
 - [[signal-processing]]

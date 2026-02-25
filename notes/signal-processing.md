@@ -26,6 +26,17 @@ The DSP foundation for everything else. All audio is recorded at 300 kHz (Nyquis
 - [[transient cage noises produce broadband vertical smears rejected by the minimum duration filter]] -- broadband vertical artifacts from cage impacts
 - [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- the recording environment that produces both artifact types
 
+## Acoustic Property Extraction
+- [[acoustic property extraction from spectrogram data produces ground truth targets for probing experiments]] -- seven properties computed directly from spectrogram columns (170 bins, 20-120 kHz) as probe labels
+
+## Classification-Specific STFT
+- [[fine frequency resolution matters more than time resolution for CNN classification of USV spectrogram patches]] -- at least 512-point FFT, 1024 preferred for ~293 Hz resolution
+- [[DeepSqueak 3.2 ms FFT window with 2.8 ms overlap translates to 960-sample FFTs at 300 kHz]] -- DeepSqueak's duration-based FFT specification accepts any sample rate
+- [[gammatone spectrograms outperform standard STFTs for USV classification according to BootSnap]] -- auditory-model-inspired alternative to uniform STFT bins
+
+## Frequency-Domain Null Models
+- [[phase randomized null model preserves autocorrelation spectrum while destroying higher-order structure]] -- FFT phase randomization tests whether linear temporal correlations explain code sequence patterns
+
 ## Open Questions
 - Whether alternative window functions could improve USV detection
 - Optimal frequency resolution for USV subtype discrimination

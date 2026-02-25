@@ -1,4 +1,4 @@
----
+﻿---
 description: Current active threads and what the agent is working on
 type: moc
 ---
@@ -6,6 +6,7 @@ type: moc
 # goals
 
 ## Active Threads
+- **DeepSqueak Classification Bridge** -- Phase 2 (Raven export) DONE, Phase 3 (MATLAB import+clustering) IN PROGRESS. Resume: open MATLAB â†’ `DeepSqueak` â†’ Import from Raven (5 files in `raven_tables/`). See `PROJECTS.md` Section 6 for full steps.
 - Phase 5.2 -- Two-week validation checkpoint (starts 2026-03-06, after 2 weeks of active use)
 
 ## Waiting

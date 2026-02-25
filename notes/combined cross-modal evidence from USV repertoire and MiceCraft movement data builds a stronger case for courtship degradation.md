@@ -23,6 +23,9 @@ Relevant Notes:
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the infrastructure
 - [[inbreeding and absence of courtship selection pressure in captivity caused lab mice to degrade courtship vocal competence]] -- the directional hypothesis this evidence strategy tests
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the comparison framework this cross-modal evidence strengthens
+- [[Shannon entropy quantifies USV repertoire diversity with higher values indicating more evenly distributed syllable usage]] -- one specific USV repertoire metric contributing to the cross-modal evidence
+- [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- primary statistical test for the USV repertoire dimension of the cross-modal case
+- [[Jensen-Shannon divergence on categorical syllable proportions provides a symmetric bounded measure for comparing repertoire distributions between populations]] -- distributional distance quantifying how different the two populations' vocal profiles are
 
 Topics:
 - [[experimental-methods]]

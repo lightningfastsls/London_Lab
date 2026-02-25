@@ -19,8 +19,11 @@ Source:
 
 Relevant Notes:
 - [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- how question 1 gets answered first
+- [[Raven selection table format is the standard interchange format between bioacoustic analysis tools]] -- the bridge format that enables question 1 using our detections + DeepSqueak classification
 - [[Chabout et al 2015 established that male mice change syllable syntax with social context]] -- motivation for question 2
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- motivation for question 2
+- [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- question 1's primary statistical test
+- [[Shannon entropy quantifies USV repertoire diversity with higher values indicating more evenly distributed syllable usage]] -- question 1's diversity metric
 
 Topics:
 - [[classification]]

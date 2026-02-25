@@ -20,6 +20,73 @@
         "New note: speech SSL models transfer to bioacoustics with only marginal gain from domain-specific pretraining",
         "Synthesis note: gap analysis table — what combinations of discrete/end-to-end/learned codebook exist in literature"
       ]
+    },
+    {
+      "id": "seed-003",
+      "type": "extract",
+      "phase": "reduce",
+      "source": "inbox/vacation-master-plan-v2.md",
+      "description": "Extract atomic notes from Vacation Master Plan v2 — information theory + null models merged spec (Zipf MLE, Shannon entropy cross-validation, entropy rate, excess entropy, burstiness, idiom detection), probing framework design, LMT integration tiers, and workstream convergence narrative",
+      "status": "done",
+      "completed": "2026-02-24",
+      "created": "2026-02-23",
+      "priority": "high",
+      "notes": [
+        "1 new note: pooling strategy choice over the time dimension determines what information probing experiments can access from hidden states",
+        "33 candidate claims already existed in vault from prior extraction — near-complete prior coverage confirmed"
+      ],
+      "note_candidates": [
+        "zipf_via_shannon_entropy cross-validates MLE Zipf estimate and is more robust for datasets < 10K tokens",
+        "ngram_idioms detects compositional phrases by comparing observed n-gram frequency to independence baseline (z-score > 3 or FDR p < 0.01)",
+        "burstiness CV distinguishes Poisson (CV=1), bursty (CV>1), and regular (CV<1) USV emission patterns",
+        "burstiness_by_context bridges information-theoretic analysis and LMT behavioral annotation",
+        "null models are prerequisite for interpreting information-theoretic metrics — without them Zipf and entropy rate are uninterpretable",
+        "conditional_entropy_by_lag (single token at lag k) is complementary to entropy_rate (contiguous history up to order k)",
+        "LMT-USV-Toolbox already implements WAV-behavioral synchronization — no need to build from scratch",
+        "probing heatmap of (layer × acoustic property) directly guides VQ-VAE layer selection",
+        "excess entropy I(past;future) distinguishes language-like structure from Markov chains",
+        "phase-randomized surrogates preserve autocorrelation but destroy higher-order structure — tests whether structure is just pairwise temporal correlation",
+        "HMM surrogate tests the hidden behavioral states hypothesis as alternative to compositional structure"
+      ]
+    },
+    {
+      "id": "seed-004",
+      "type": "extract",
+      "current_phase": "reweave",
+      "completed_phases": ["reduce", "reflect"],
+      "source": "inbox/raven-deepsqueak-classification-bridge-plan.md",
+      "description": "Extract atomic notes from Raven-DeepSqueak bridge plan — Raven format spec, DeepSqueak classification features, statistical methods for repertoire comparison (PERMANOVA, Shannon entropy, JSD, transition matrices)",
+      "status": "done",
+      "completed": "2026-02-24",
+      "created": "2026-02-24",
+      "priority": "high",
+      "notes": [
+        "8 new notes: Raven format standard, DeepSqueak spectrogram regeneration, 25-125kHz band, PERMANOVA method, Shannon entropy diversity, JSD categorical, transition matrix Frobenius, timestamp proximity matching",
+        "3 enrichments: DeepSqueak classification note (16 features + hybrid rationale), wild-vs-lab note (entropy prediction + chi-squared)",
+        "1 tension: 20-120 kHz vs 25-125 kHz band",
+        "1 open question: chi-squared vs PERMANOVA sample size threshold",
+        "2 implementation ideas skipped (already in ROADMAP Phase 14.1/14.2)"
+      ],
+      "reflect_summary": "2026-02-24: 28 new connections added across 8 notes. Key weaving: (1) repertoire comparison quartet cross-linked (PERMANOVA, Shannon entropy, JSD, transition matrices), (2) transition matrices connected to Markov null model hierarchy and entropy rate, (3) timestamp proximity matching connected to LMT temporal alignment as shared pattern, (4) Raven format connected to batch detection pipeline, (5) DeepSqueak regeneration connected to frequency band and timestamp matching notes. No synthesis opportunities identified beyond existing converging-hypothesis note.",
+      "reweave_summary": "2026-02-24: 22 backward links added across 16 notes (13 older notes enriched + 3 new notes enriched). Key backward connections: (1) Shannon entropy linked back from wild-mice-diversity, inbreeding-hypothesis, Zala-2020, VQ-VAE-separate-question, combined-cross-modal, (2) PERMANOVA linked back from null-model-framework, classifiers-generalize-poorly, distributional-latent-space, combined-cross-modal, DeepSqueak-k-means, VQ-VAE-separate-question, (3) row-stochastic-transitions linked back from Chabout-2015, Hertz-2020-sequence, Hertz-SIS, inbreeding-hypothesis, (4) Raven-format linked back from DeepSqueak-monolithic, VQ-VAE-separate-question, dual-supervised-unsupervised, (5) DeepSqueak-regenerates linked back from DeepSqueak-monolithic, DeepSqueak-FFT-window, (6) 25000-125000-Hz linked back from 20-120-kHz-detection-range, (7) JSD linked back from DeepSqueak-k-means, distributional-latent-space, combined-cross-modal. Zero dangling links introduced. 2 pre-existing dangling links noted: chi-squared-PERMANOVA open question, forcing-discrete-categories tension."
+    },
+    {
+      "id": "seed-002",
+      "type": "extract",
+      "phase": "reduce",
+      "source": "inbox/deepsqueak-usv-syllable-classification-practical-guide.md",
+      "description": "Extract atomic notes from Compass synthesis on DeepSqueak, Python USV classification alternatives (BootSnap, AMVOC, DAS, WhisperSeg), custom CNN strategy, continuous-vs-discrete USV debate, and statistical methods for wild-vs-lab repertoire comparison",
+      "status": "done",
+      "completed": "2026-02-23",
+      "created": "2026-02-23",
+      "priority": "high",
+      "notes": [
+        "14 new notes: DeepSqueak v3/YOLO, DeepSqueak k-means k=20, BootSnap F1 67%, AMVOC autoencoder, DAS 98%/99%, WhisperSeg cross-species, DeepSqueak 960-sample FFT, fine freq resolution, gammatone > STFT, Goffinet GMM k<=2, Hertz SIS, classifiers lab/wild poor generalization, Zala 9/6 types, VocalMat 12954 dataset",
+        "3 method notes: dual supervised+unsupervised, noise class in classifier, distributional latent space comparisons (EMD/JSD)",
+        "2 tensions: forcing discrete categories obscures continuous variation; no Python tool accepts pre-detected segments",
+        "7 enrichments: DeepSqueak monolithic (version history/reqs/formats), Goffinet continuum (GMM k<=2/AVA URL), Hertz sequence (SIS/no mapping), VocalMat (12954/AlexNet), wild-vs-lab (statistical framework/Zala), MUPET (gammatone validation), DeepSqueak classification (Raven import/scipy.io)",
+        "1 open question: whether BootSnap code is publicly available"
+      ]
     }
   ],
   "maintenance_conditions": {

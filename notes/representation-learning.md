@@ -34,6 +34,13 @@ Unsupervised discovery of structure in USV vocalizations. A transformer predicts
 - [[excess entropy measures long-range structure complexity in discrete code sequences]] -- mutual information between past and future halves
 - [[bigram productivity ratio measures compositionality of USV code sequences]] -- unique bigrams / K^2 measures combinatorial freedom
 
+## Unsupervised Clustering Evidence
+- [[Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs]] -- quantitative evidence that USVs resist discrete clustering (GMM k<=2)
+- [[DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method]] -- k-means finds k=20 but GMM finds k<=2 on learned representations
+- [[AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering]] -- MIT-licensed Python autoencoder alternative
+- [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- SIS evaluates whether any discretization captures meaningful sequential structure
+- [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- continuous comparison alternative to categorical methods
+
 ## Literature Context
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the key finding that motivated the VQ-VAE approach
 - [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- quantitative baseline for information retention in learned representations
@@ -59,6 +66,25 @@ Unsupervised discovery of structure in USV vocalizations. A transformer predicts
 - [[whether FSQ provides more stable discretization than VQ-VAE for USV codebook learning]] -- FSQ achieves 100% utilization by design
 - [[FSQ eliminates codebook collapse by construction achieving 100 percent utilization through fixed scalar quantization]] -- ICLR 2024 evidence for FSQ at 400-700 bps speech codecs
 - [[discrete audio token taxonomy from 2025 survey covers quantization methods beyond simple VQ]] -- comprehensive taxonomy: RVQ, SVQ, GVQ, FSQ, PQ and more
+
+## Null Model Hierarchy
+- [[shuffled null model preserves code frequencies but destroys all sequential structure]] -- simplest baseline: tests whether metrics exceed independent-code expectation
+- [[Markov order-k null model generates surrogates preserving k-step transition dependencies]] -- tests whether structure exceeds k-step local dependencies
+- [[HMM surrogate null model tests whether USV sequences arise from hidden behavioral state switching]] -- tests the Chabout et al hidden behavioral state switching hypothesis
+- [[phase randomized null model preserves autocorrelation spectrum while destroying higher-order structure]] -- tests whether linear temporal correlations alone explain patterns
+- [[renewal process null model fits inter-event interval distribution for temporal structure testing]] -- preserves IEI distribution and code frequencies but destroys code-to-code identity dependencies
+- [[analytically verifiable test cases validate information-theoretic metric implementations]] -- ground-truth sanity checks with known analytical solutions
+- [[null model comparison framework produces z-scores rank-based p-values and effect sizes as the publishable statistical output]] -- the statistical machinery that turns surrogates into publishable z-scores, p-values, and effect sizes
+
+## Probing & Interpretability
+- [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] -- standard NLP interpretability technique adapted for USV transformer
+- [[probe selectivity measured as accuracy minus majority baseline distinguishes genuine encoding from trivial prediction]] -- corrects for class imbalance in probe accuracy
+- [[layer-property heatmap is the key output showing where acoustic information lives across transformer depth]] -- primary deliverable of probing experiments, guides VQ-VAE layer selection
+- [[acoustic property extraction from spectrogram data produces ground truth targets for probing experiments]] -- seven properties (peak freq, centroid, energy, is_voiced, freq direction, bout position, time since last USV) as probe labels
+- [[pooling strategy choice over the time dimension determines what information probing experiments can access from hidden states]] -- mean/max/first/last pooling each emphasize different temporal information, a necessary control variable
+
+## Converging Hypothesis
+- [[the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations]] -- integration point where information theory, probing, and LMT workstreams converge
 
 ## Open Questions
 - [[whether attention patterns in the trained transformer attend beyond the immediately preceding frame]] -- purely local attention would mean no long-range learning

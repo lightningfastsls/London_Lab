@@ -27,6 +27,12 @@ How we find USVs in raw audio. The pipeline uses a two-stage architecture: a per
 - [[low-amplitude and short-duration USVs are the primary source of false negatives and training bias]] -- faint/short calls are the hardest to detect
 - [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- noise structural mimicry triggers false positives
 
+## Alternative Detection Tools
+- [[DeepSqueak v3 switched from Faster R-CNN to YOLO v2 improving speed and accuracy for USV detection]] -- DeepSqueak's MATLAB-only detection architecture evolution
+- [[DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input]] -- highest reported detection metrics (Python, TensorFlow)
+- [[WhisperSeg adapts OpenAI Whisper transformer for animal vocalization segmentation with positive cross-species transfer]] -- outperforms DAS with cross-species transfer
+- [[including a noise-false-positive class in the USV classifier catches residual detection errors]] -- classification-stage noise class as second-pass detection filter
+
 ## Open Questions
 - [[optimal bout gap threshold may vary across behavioral contexts and recording conditions]]
 - [[whether very short USV signals near the 8-10 ms boundary should be included or excluded from training]]

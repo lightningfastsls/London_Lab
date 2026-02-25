@@ -21,6 +21,8 @@ Source:
 Relevant Notes:
 - [[inbreeding and absence of courtship selection pressure in captivity caused lab mice to degrade courtship vocal competence]] -- the hypothesis this evidence supports
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the analytical framework for testing this
+- [[Shannon entropy quantifies USV repertoire diversity with higher values indicating more evenly distributed syllable usage]] -- the specific metric that would quantify "more diverse" as higher H for wild mice
+- [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- the multivariate test for formalizing this observation statistically
 
 Topics:
 - [[experimental-methods]]
