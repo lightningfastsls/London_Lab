@@ -2,9 +2,9 @@
   "mcpServers": {
     "qmd": {
       "command": "node",
-      "args": ["D:/npm-global/node_modules/@tobilu/qmd/dist/qmd.js", "mcp"],
+      "args": ["C:/Users/shach/AppData/Roaming/npm/node_modules/@tobilu/qmd/dist/qmd.js", "mcp"],
       "env": {
-        "XDG_CACHE_HOME": "D:\\qmd-cache"
+        "XDG_CACHE_HOME": "C:\\Users\\shach\\.qmd-cache"
       },
       "autoapprove": [
         "mcp__qmd__search",

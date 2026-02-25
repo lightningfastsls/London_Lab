@@ -115,6 +115,8 @@ src/usv_spectrogram/       # Core library
 scripts/                   # Entry points
   usv_labeling_tool.py     # Labeling tool launcher
 tests/                     # Test files
+methodology/               # arscontexta reference graph (249 research claims, READ-ONLY)
+reference/                 # arscontexta structured reference docs (routing indexes, constraints, templates)
 ```
 
 ---
@@ -182,6 +184,12 @@ See `DECISIONS.md` ADR-001 (sample rate) and ADR-002 (STFT parameters) for full 
 - Don't claim completion without running py_compile and tests
 - Don't modify test expectations to pass without discussion
 
+### Git Data Safety
+- **NEVER use `git add -A` or `git add .` without reviewing `git status` first** — bulk staging can record accidental deletions of data directories (this happened to `USV_Detections/` in commit 78d1c70, deleting 656 files)
+- **Before any "cleanup" commit**, run `git diff --cached --stat` and check for unexpected deletions — hundreds of deletions is a red flag
+- **Always stage specific files by name** for data directories like `USV_Detections/`, `5970 USV/`, training data, or model artifacts
+- If data goes missing locally, check `git log -- <path>` — it may still exist in history and can be restored with `git checkout <commit> -- <path>`
+
 ---
 
 # Knowledge Graph
@@ -216,8 +224,21 @@ Every session follows: **Orient -> Work -> Persist**
 | Processing state, queue, config | ops/ |
 | Friction signals, patterns | ops/observations/ |
 | Methodology self-knowledge | ops/methodology/ |
+| arscontexta reference claims (READ-ONLY) | methodology/ |
+| arscontexta structured reference (READ-ONLY) | reference/ |
 
 Durable knowledge -> notes/. Temporal coordination -> ops/.
+
+**methodology/ — arscontexta Reference Graph (249 research claims)**
+Read-only reference material backing the knowledge management system. Search here when:
+- Explaining WHY a vault convention exists (e.g., why atomic notes, why MOCs, why descriptions)
+- Justifying a knowledge graph design decision
+- Answering questions about note-taking methodology, knowledge systems, or agent cognition
+- A skill like /reduce, /reflect, or /reweave needs theoretical grounding
+
+**reference/ — arscontexta Structured Reference Docs (routing indexes, constraints, templates)**
+Companion to methodology/. Contains structured reference files that skills like /ask, /architect, /recommend, and /health use as routing indexes into the research graph. Key files: `claim-map.md` (topic→claim routing), `dimension-claim-map.md` (config dimensions→claims), `interaction-constraints.md` (dimension interaction rules), `failure-modes.md` (10 failure patterns), `three-spaces.md` (self/notes/ops boundaries). READ-ONLY.
+Do NOT write to this directory. Do NOT mix these files into notes/ graph metrics.
 
 ## Atomic Notes
 

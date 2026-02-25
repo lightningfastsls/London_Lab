@@ -311,12 +311,12 @@ Saves: processed dataset splits, normalization stats, dataset summary.
 ```
 
 **Exit criteria:**
-- [ ] `prepare_data.py` runs end-to-end on test data
-- [ ] Output spectrograms visually match expected frequency content
-- [ ] Normalization stats saved and reproducible
-- [ ] DataLoader yields batches with correct shapes
-- [ ] All tests pass
-- [ ] py_compile passes on all new files
+- [x] `prepare_data.py` runs end-to-end on test data
+- [x] Output spectrograms visually match expected frequency content
+- [x] Normalization stats saved and reproducible
+- [x] DataLoader yields batches with correct shapes
+- [x] All tests pass
+- [x] py_compile passes on all new files
 
 ---
 
@@ -426,12 +426,12 @@ Output format per layer L:
 ```
 
 **Exit criteria:**
-- [ ] Model parameter count verified (~25-30M)
-- [ ] Forward pass on dummy data: correct shapes, no errors
-- [ ] 5-epoch training run: loss decreases, predicted spectrograms show structure
-- [ ] Hidden state extraction produces correct output files with metadata
-- [ ] All tests pass
-- [ ] py_compile passes on all new files
+- [x] Model parameter count verified (~25-30M)
+- [x] Forward pass on dummy data: correct shapes, no errors
+- [x] 5-epoch training run: loss decreases, predicted spectrograms show structure
+- [x] Hidden state extraction produces correct output files with metadata
+- [x] All tests pass
+- [x] py_compile passes on all new files
 
 ---
 
@@ -560,13 +560,13 @@ Train VQ-VAE separately on hidden states from layers 2, 4, 6, 8 with identical h
 ```
 
 **Exit criteria:**
-- [ ] Forward pass on dummy hidden states: correct shapes, valid indices
-- [ ] Gradient flow verified through straight-through estimator
-- [ ] Single-batch overfit: reconstruction loss < 0.01
-- [ ] Codebook utilization > 50% on synthetic data
-- [ ] Compare_layers script produces comparison table for 4 layers
-- [ ] All tests pass
-- [ ] py_compile passes on all new files
+- [x] Forward pass on dummy hidden states: correct shapes, valid indices
+- [x] Gradient flow verified through straight-through estimator
+- [x] Single-batch overfit: reconstruction loss < 0.01
+- [x] Codebook utilization > 50% on synthetic data
+- [x] Compare_layers script produces comparison table for 4 layers
+- [x] All tests pass
+- [x] py_compile passes on all new files
 
 ---
 
@@ -642,12 +642,12 @@ Logic:
 ```
 
 **Exit criteria:**
-- [ ] All visualizations generate without errors on synthetic data
-- [ ] Zipf analysis correctly recovers known α from synthetic power-law data
-- [ ] Transition matrix heatmap is readable and informative
-- [ ] Concept manipulation produces interpretable predicted spectrograms
-- [ ] All tests pass
-- [ ] py_compile passes on all new files
+- [x] All visualizations generate without errors on synthetic data
+- [x] Zipf analysis correctly recovers known α from synthetic power-law data
+- [x] Transition matrix heatmap is readable and informative
+- [x] Concept manipulation produces interpretable predicted spectrograms
+- [x] All tests pass
+- [x] py_compile passes on all new files
 
 ---
 
@@ -806,12 +806,12 @@ pyyaml             # config loading
 ## Phase 8 Gate
 
 Before starting Phase 9:
-- [ ] Data preparation pipeline (8.1) runs end-to-end on test data
-- [ ] Transformer architecture (8.2) verified: correct param count, forward pass, loss decreases
-- [ ] VQ-VAE (8.3) verified: codebook utilization > 50%, gradient flow through STE
-- [ ] Analysis tools (8.4) generate visualizations without errors on synthetic data
-- [ ] All Phase 8 tests pass
-- [ ] py_compile passes on all new files
+- [x] Data preparation pipeline (8.1) runs end-to-end on test data
+- [x] Transformer architecture (8.2) verified: correct param count, forward pass, loss decreases
+- [x] VQ-VAE (8.3) verified: codebook utilization > 50%, gradient flow through STE
+- [x] Analysis tools (8.4) generate visualizations without errors on synthetic data
+- [x] All Phase 8 tests pass
+- [x] py_compile passes on all new files
 
 ---
 
@@ -820,7 +820,7 @@ Before starting Phase 9:
 ### 9.1 Unified Dataset Assembly
 
 **What:** Automate the full training data preparation cycle: collect app labels → generate jittered positive spectrograms → generate negative spectrograms from 3 sources → combine into a unified train/val/test dataset with recording-based splits and quality validation. Currently this requires manually running 3-4 separate scripts.
-**Status:** READY
+**Status:** DONE (2026-02-21)
 **Review Tier:** 2
 **Depends on:** Phase 5, Phase 6
 
@@ -962,12 +962,12 @@ data/training/milestone_1/
 ```
 
 **Exit criteria:**
-- [ ] `assemble_training_data.py --dry-run` runs without error on real label data
-- [ ] Full assembly produces train.csv, val.csv, test.csv in correct format
-- [ ] Quality checks pass: no leakage, acceptable class balance, all files exist
+- [x] `assemble_training_data.py --dry-run` runs without error on real label data
+- [x] Full assembly produces train.csv, val.csv, test.csv in correct format
+- [x] Quality checks pass: no leakage, acceptable class balance, all files exist
 - [ ] Output can be fed directly to `train_cnn.py` and training starts successfully
-- [ ] All tests pass
-- [ ] py_compile passes on all new files
+- [x] All tests pass
+- [x] py_compile passes on all new files
 
 ---
 
@@ -1109,19 +1109,19 @@ def generate_cycle_report(metrics: CycleMetrics, output_path: Path) -> None:
 - [ ] Full cycle completes on real data with small model
 - [ ] `cycle_report.md` contains: label count, train/val/test sizes, precision/recall/F1, threshold, comparison delta
 - [ ] Output model loadable by the detection app (`run_app.py`)
-- [ ] All tests pass
-- [ ] py_compile passes on all new files
+- [x] All tests pass
+- [x] py_compile passes on all new files
 
 ---
 
 ## Phase 9–10 Gate
 
 Before starting Phase 11:
-- [ ] Dataset assembly (9.1) produces correct train/val/test splits from real labels
+- [x] Dataset assembly (9.1) produces correct train/val/test splits from real labels
 - [ ] Active learning cycle runner (10.1) completes end-to-end on real data
 - [ ] At least one training cycle report generated with precision/recall/F1
 - [ ] Output model loadable by the detection app
-- [ ] All tests pass
+- [x] All tests pass
 
 ---
 
@@ -1132,7 +1132,7 @@ Before starting Phase 11:
 ### 11.1 Bout Extraction & Spectrogram Preprocessing
 
 **What:** Run the data preparation pipeline (Phase 8.1) on the full WAV dataset (~6,500 files). Extract bouts using CNN detection results, compute spectrograms, normalize, and save as HDF5 for efficient loading.
-**Status:** BLOCKED (needs CNN detection results from batch detection; preprocessing can run locally)
+**Status:** DONE (2026-02-22)
 **Review Tier:** 1
 **Depends on:** Phase 8.1, Phase 13 (batch detection results)
 
@@ -1160,10 +1160,10 @@ Validation script:
 5. Print dataset summary: total bouts, total frames, duration stats, frames per split
 
 **Exit criteria:**
-- [ ] All WAV files with detections processed into bouts
-- [ ] Validation script reports no issues on 5 random samples
-- [ ] Dataset summary shows expected bout count and duration distribution
-- [ ] DataLoader yields batches with correct shapes from processed data
+- [x] All WAV files with detections processed into bouts
+- [x] Validation script reports no issues on 5 random samples
+- [x] Dataset summary shows expected bout count and duration distribution
+- [x] DataLoader yields batches with correct shapes from processed data
 
 ---
 
@@ -1617,6 +1617,417 @@ analysis/batch_detections/
 
 ---
 
+## Phase 14: DeepSqueak Classification Bridge
+
+> **Strategy:** Use DeepSqueak's built-in syllable classification to get immediate repertoire comparison data between wild and lab populations, without waiting for the custom VQ-VAE pipeline (Phase 11). This bridges our detection pipeline output → DeepSqueak → back into our analysis pipeline. See `[[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]]` for the strategic rationale.
+
+### 14.1 Raven Selection Table Export
+
+**What:** Convert exported detection JSONs from the app (Phase 6) into Raven Pro selection table format (.txt), enabling batch syllable classification in DeepSqueak without re-running detection. One Raven file per WAV file, with all detections from that recording.
+**Status:** DONE (2026-02-22)
+**Review Tier:** 2
+**Depends on:** Phase 6 (detection export JSONs in `USV_Detections/`)
+
+**Key files (to create):**
+- `src/usv_spectrogram/classification/__init__.py` — Package init
+- `src/usv_spectrogram/classification/raven_export.py` — Core export module
+- `scripts/export_raven_tables.py` — CLI entry point
+- `tests/test_classification/test_raven_export.py` — Tests
+
+**Key decisions:**
+- **Frequency bounds:** Fixed 25000–125000 Hz (standard mouse USV band). DeepSqueak regenerates its own spectrograms from audio, so the bounding box is a region of interest, not precise boundaries. Can refine later.
+- **Time values:** Use `core_time.start_s` and `core_time.end_s` from each detection JSON (NOT `saved_region` which includes context padding)
+- **WAV→JSON mapping:** Discovered from directory structure: `USV_Detections/{wav_stem}/detection_*.json` maps to `5970 USV/{wav_stem}.wav`
+- **Naming convention:** `{wav_stem}.Table.1.selections.txt` (standard Raven convention)
+
+/implement Raven Selection Table Export Adapter
+
+Build a module that converts our exported detection JSONs into Raven Pro selection table format (.txt files), enabling batch classification in DeepSqueak.
+
+**Context:** We have ~840 positive USV detections across ~200-300 WAV files in the 5970 mouse group. Detections are stored as individual JSON files (one per detection) in `USV_Detections/{wav_stem}/detection_*.json`. Each JSON has `core_time.start_s`, `core_time.end_s`, and `core_time.duration_ms` (see `detection_exporter.py` for the exact format). WAV files live at `5970 USV/{wav_stem}.wav`. The directory mapping is: subdirectory name in `USV_Detections/` matches the WAV filename stem.
+
+**Raven Selection Table Format:** Tab-separated `.txt` file:
+```
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)
+1	Spectrogram 1	1	1.7006	1.7420	25000	125000
+2	Spectrogram 1	1	3.5020	3.5580	25000	125000
+```
+
+**Files to create:**
+
+1. `src/usv_spectrogram/classification/__init__.py` (NEW) — Package init
+
+2. `src/usv_spectrogram/classification/raven_export.py` (NEW) — Core module
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+import pandas as pd
+
+@dataclass(frozen=True)
+class RavenExportConfig:
+    """Configuration for Raven selection table export."""
+    detections_dir: Path          # USV_Detections/ directory
+    wav_dir: Path                 # WAV file directory (5970 USV/)
+    output_dir: Path              # Where to write Raven .txt files
+    low_freq_hz: float = 25000   # Standard mouse USV band lower bound
+    high_freq_hz: float = 125000 # Standard mouse USV band upper bound
+
+
+def load_detection_json(json_path: Path) -> dict:
+    """Load a single detection JSON and extract core_time fields.
+    Returns dict with start_s, end_s, duration_ms.
+    Skip _saved_tracking.json and detections_summary.csv."""
+
+def discover_wav_detection_mapping(detections_dir: Path, wav_dir: Path) -> dict[str, list[Path]]:
+    """Walk USV_Detections/ subdirectories. For each subdirectory, check if
+    a matching WAV file exists in wav_dir. Return {wav_stem: [json_paths]}.
+    Log warnings for subdirectories with no matching WAV."""
+
+def detections_to_raven_table(
+    detections: list[dict],
+    low_freq_hz: float = 25000,
+    high_freq_hz: float = 125000,
+) -> pd.DataFrame:
+    """Convert detection dicts to a Raven selection table DataFrame.
+    Columns: Selection, View, Channel, Begin Time (s), End Time (s), Low Freq (Hz), High Freq (Hz).
+    Sort by Begin Time. Selection numbers are 1-indexed."""
+
+def export_raven_tables(config: RavenExportConfig) -> list[Path]:
+    """Main pipeline: discover mapping, export one Raven .txt per WAV.
+    Naming: {wav_stem}.Table.1.selections.txt
+    Return list of created file paths."""
+```
+
+3. `scripts/export_raven_tables.py` (NEW) — CLI entry point
+
+```
+Usage:
+  .\.venv\Scripts\python.exe scripts/export_raven_tables.py \
+      --detections-dir USV_Detections \
+      --wav-dir "5970 USV" \
+      --output-dir raven_tables
+```
+
+Arguments:
+- `--detections-dir` (required): Directory with exported detection JSONs (subdirectory per WAV)
+- `--wav-dir` (required): Root WAV file directory
+- `--output-dir` (default: `raven_tables`): Output directory for .txt files
+- `--low-freq` (default: 25000): Low frequency bound in Hz
+- `--high-freq` (default: 125000): High frequency bound in Hz
+- `--dry-run`: Show mapping discovery results without writing files
+
+Output structure:
+```
+raven_tables/
+├── 2024-09-30_11-18-34_0000004.Table.1.selections.txt
+├── 2024-09-30_11-18-52_0000005.Table.1.selections.txt
+├── ...
+└── export_summary.json    # {total_wavs, total_detections, unmapped_count}
+```
+
+4. `tests/test_classification/test_raven_export.py` (NEW) — Tests
+
+**Integration points:**
+- Reads detection JSONs from `DetectionExporter` format (see `detection_exporter.py:202-242`)
+- Validates WAV file existence in the WAV directory
+- Output naming follows Raven Pro conventions
+
+**Test plan:**
+```
+1. Raven table has correct columns (Selection, View, Channel, Begin Time (s), End Time (s), Low Freq (Hz), High Freq (Hz))
+2. Output is tab-separated with correct header line
+3. Selection numbers are 1-indexed and sequential
+4. Frequency bounds are in Hz (not kHz) — assert Low Freq == 25000, not 25
+5. One output .txt per WAV file that has detections
+6. WAV files with no detections produce no output (not empty files)
+7. discover_wav_detection_mapping skips _saved_tracking.json and non-JSON files
+8. Time values come from core_time (not saved_region)
+9. Detections are sorted by Begin Time within each file
+10. CLI --dry-run flag produces summary without writing files
+```
+
+**Exit criteria:**
+- [x] `export_raven_tables.py --dry-run` reports correct mapping from real `USV_Detections/`
+- [x] Full export produces one .txt per WAV with correct Raven format
+- [x] Exported .txt files loadable in Raven Pro (if available for testing)
+- [x] `export_summary.json` shows total WAVs, total detections, any unmapped directories
+- [x] All tests pass
+- [x] py_compile passes on all new files
+
+---
+
+### 14.2 DeepSqueak Results Ingestion
+
+**What:** Read DeepSqueak's Excel classification output back into our pipeline, matching classified syllables to original detection JSONs by timestamp proximity. This completes the round-trip: our detections → Raven → DeepSqueak → classified results back in our pipeline.
+**Status:** BLOCKED (needs DeepSqueak classification results from manual MATLAB step)
+**Review Tier:** 2
+**Depends on:** Phase 14.1 (Raven export must run first; DeepSqueak classification is manual)
+
+**Key files (to create):**
+- `src/usv_spectrogram/classification/deepsqueak_import.py` — Import module
+- `tests/test_classification/test_deepsqueak_import.py` — Tests
+
+/implement DeepSqueak Results Ingestion Module
+
+Build a module that reads DeepSqueak Excel classification output and matches it back to our original detection JSONs by timestamp proximity.
+
+**Context:** After exporting Raven selection tables (Phase 14.1) and running DeepSqueak classification in MATLAB, the user will have Excel files with per-call classification labels and acoustic features. This module reads them back and re-merges with our detection metadata.
+
+**DeepSqueak Excel output columns (16 fields):**
+- ID, Label/Type, Begin Time, End Time, Call Length, Principal Frequency
+- Low Freq, High Freq, Bandwidth, Freq Std Dev, Slope, Sinuosity
+- Mean Power, Tonality, Peak Frequency
+
+**Files to create:**
+
+1. `src/usv_spectrogram/classification/deepsqueak_import.py` (NEW)
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+import pandas as pd
+
+@dataclass(frozen=True)
+class DeepSqueakImportConfig:
+    """Configuration for DeepSqueak results import."""
+    results_dir: Path             # Directory with DeepSqueak Excel files
+    detections_dir: Path          # USV_Detections/ directory (for re-merging)
+    output_path: Path             # Where to write merged results
+    tolerance_ms: float = 5.0    # Max time difference for matching (ms)
+
+
+def load_deepsqueak_excel(excel_path: Path) -> pd.DataFrame:
+    """Load a DeepSqueak Excel export into a standardized DataFrame.
+    Normalize column names. Extract wav_stem from filename."""
+
+def load_all_deepsqueak_results(results_dir: Path) -> pd.DataFrame:
+    """Load all Excel files from a directory, adding source_file column.
+    Concatenate into single DataFrame."""
+
+def merge_with_detections(
+    ds_results: pd.DataFrame,
+    detections_dir: Path,
+    tolerance_ms: float = 5.0,
+) -> pd.DataFrame:
+    """Match DeepSqueak classifications back to original detection JSONs
+    using timestamp proximity matching (within tolerance_ms).
+    Returns merged DataFrame with both DeepSqueak features and our metadata.
+    Report unmatched detections (both directions) as warnings."""
+
+def export_classified_detections(
+    merged_df: pd.DataFrame,
+    output_path: Path,
+) -> None:
+    """Save merged results as CSV with all columns from both sources.
+    Include match_quality column (exact, fuzzy, unmatched)."""
+```
+
+2. `scripts/import_deepsqueak_results.py` (NEW) — CLI entry point
+
+```
+Usage:
+  .\.venv\Scripts\python.exe scripts/import_deepsqueak_results.py \
+      --results-dir deepsqueak_output \
+      --detections-dir USV_Detections \
+      --output classified_detections.csv \
+      --tolerance-ms 5.0
+```
+
+3. `tests/test_classification/test_deepsqueak_import.py` (NEW)
+
+**Test plan:**
+```
+1. Excel loading normalizes column names correctly
+2. Timestamp matching finds exact match (0ms difference)
+3. Timestamp matching finds fuzzy match within tolerance
+4. Timestamp matching rejects match beyond tolerance
+5. Unmatched detections from both sides reported as warnings
+6. Multiple Excel files concatenated with source_file column
+7. Empty Excel file handled gracefully
+8. Merged output preserves all DeepSqueak acoustic features (16 columns)
+```
+
+**Exit criteria:**
+- [ ] Can load mock DeepSqueak Excel output with all 16 columns
+- [ ] Timestamp matching correctly merges with >=95% match rate on synthetic data
+- [ ] Unmatched detections clearly reported
+- [ ] Output CSV contains both DeepSqueak features and original detection metadata
+- [ ] All tests pass
+- [ ] py_compile passes on all new files
+
+---
+
+### 14.3 Repertoire Statistical Analysis
+
+**What:** Statistical comparison of syllable repertoires between mouse populations (wild vs lab) using DeepSqueak classification labels. Includes syllable proportions, Shannon entropy, transition matrices, and publication-ready visualizations. This is the scientific payoff: quantifying whether wild mice vocalize differently from lab mice.
+**Status:** BLOCKED (needs classified data from Phase 14.2)
+**Review Tier:** 2
+**Depends on:** Phase 14.2
+
+**Key files (to create):**
+- `src/usv_spectrogram/classification/repertoire_stats.py` — Statistical analysis
+- `scripts/analyze_repertoire.py` — CLI entry point
+- `tests/test_classification/test_repertoire_stats.py` — Tests
+
+/implement Syllable Repertoire Statistical Analysis
+
+Build a module for comparing syllable repertoires between mouse populations using DeepSqueak classification results.
+
+**Context:** The core research question: do wild mice vocalize differently than lab mice? This module provides the statistical machinery to answer it using DeepSqueak's syllable type labels (from Phase 14.2). Methods: per-animal proportions, Shannon entropy (diversity), transition matrices (sequential structure), PERMANOVA (multivariate distribution comparison). See `[[Chabout et al 2015 established that male mice change syllable syntax with social context]]` for evidence that USV sequences carry behavioral information.
+
+**Files to create:**
+
+1. `src/usv_spectrogram/classification/repertoire_stats.py` (NEW)
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+import numpy as np
+import pandas as pd
+
+@dataclass(frozen=True)
+class RepertoireConfig:
+    """Configuration for repertoire analysis."""
+    classified_data_path: Path    # Output from Phase 14.2
+    population_column: str = "population"  # Column with 'wild' or 'lab'
+    animal_id_column: str = "animal_id"
+    syllable_column: str = "label"  # DeepSqueak syllable type label
+    n_permutations: int = 1000    # For permutation tests
+    random_seed: int = 42
+    output_dir: Path = Path("analysis/repertoire")
+
+
+def syllable_proportions(
+    classified_df: pd.DataFrame,
+    group_col: str,
+    syllable_col: str = "label",
+) -> pd.DataFrame:
+    """Per-animal syllable type proportions.
+    Returns DataFrame: animal_id, syllable_type, proportion, count."""
+
+def syllable_diversity(
+    classified_df: pd.DataFrame,
+    group_col: str,
+    syllable_col: str = "label",
+) -> pd.DataFrame:
+    """Shannon entropy (H) per animal — measures repertoire diversity.
+    H = -sum(p_i * log2(p_i)) for each animal's syllable distribution.
+    Higher H = more diverse repertoire."""
+
+def transition_matrix(
+    classified_df: pd.DataFrame,
+    animal_id: str,
+    syllable_col: str = "label",
+) -> tuple[np.ndarray, list[str]]:
+    """Syllable-to-syllable transition probability matrix for one animal.
+    Sort detections by time, compute P(type_{t+1} | type_t).
+    Returns (K x K matrix, list of syllable labels).
+    Matrix rows must sum to 1.0 (row-stochastic)."""
+
+def compare_repertoires(
+    classified_df: pd.DataFrame,
+    population_column: str = "population",
+    method: str = "permanova",
+    n_permutations: int = 1000,
+    seed: int = 42,
+) -> dict:
+    """Compare syllable repertoire distributions between populations.
+    Methods:
+    - 'permanova': PERMANOVA on Bray-Curtis dissimilarity of syllable proportions
+    - 'chi_square': Chi-squared test on pooled syllable counts
+    - 'jsd': Jensen-Shannon Divergence between population distributions
+    Returns {method, statistic, p_value, effect_size, interpretation}."""
+
+def compare_transition_matrices(
+    classified_df: pd.DataFrame,
+    population_column: str = "population",
+    n_permutations: int = 1000,
+    seed: int = 42,
+) -> dict:
+    """Compare transition structure between populations.
+    Compute mean transition matrix per population, test difference
+    using Frobenius norm with permutation test.
+    Returns {frobenius_norm, p_value, differentially_used_transitions}."""
+
+def plot_repertoire_comparison(
+    classified_df: pd.DataFrame,
+    population_column: str = "population",
+    output_dir: Path = Path("analysis/repertoire"),
+) -> list[Path]:
+    """Generate publication-ready figures:
+    - Stacked bar chart: syllable proportions per population
+    - Box plot: Shannon entropy by population (diversity comparison)
+    - Heatmaps: transition matrices per population (side-by-side)
+    - Scatter: animal-level proportions colored by population
+    Returns list of created figure paths."""
+```
+
+2. `scripts/analyze_repertoire.py` (NEW) — CLI entry point
+
+```
+Usage:
+  .\.venv\Scripts\python.exe scripts/analyze_repertoire.py \
+      --classified-data classified_detections.csv \
+      --population-column population \
+      --output-dir analysis/repertoire \
+      --method permanova \
+      --n-permutations 1000
+```
+
+Output:
+```
+analysis/repertoire/
+├── syllable_proportions.csv         # Per-animal proportions
+├── diversity_comparison.csv         # Shannon entropy per animal
+├── transition_matrices/             # Per-population matrices
+├── figures/
+│   ├── syllable_proportions.png     # Stacked bar chart
+│   ├── diversity_boxplot.png        # Shannon entropy comparison
+│   ├── transition_heatmaps.png      # Side-by-side transition matrices
+│   └── animal_scatter.png           # PCA of syllable proportions
+├── statistical_tests.json           # All test results
+└── repertoire_report.md             # Plain-language summary
+```
+
+3. `tests/test_classification/test_repertoire_stats.py` (NEW)
+
+**Test plan:**
+```
+1. Syllable proportions sum to 1.0 per animal
+2. Shannon entropy is 0 for single-type repertoire, log2(K) for uniform
+3. Transition matrix rows sum to 1.0 (row-stochastic)
+4. PERMANOVA with identical distributions yields p > 0.05
+5. PERMANOVA with very different distributions yields p < 0.05
+6. JSD is 0 for identical distributions, >0 for different
+7. Chi-squared detects known frequency differences in synthetic data
+8. Transition comparison detects known structural differences
+9. Single-animal data produces valid results (no div-by-zero)
+10. Missing population label raises clear error
+```
+
+**Exit criteria:**
+- [ ] All statistical methods run without error on synthetic classified data
+- [ ] Visualizations are publication-quality (labeled axes, legend, appropriate colors)
+- [ ] `repertoire_report.md` provides plain-language interpretation
+- [ ] On synthetic data with known differences: methods correctly detect them (p < 0.05)
+- [ ] On synthetic data with no differences: methods correctly fail to reject (p > 0.05)
+- [ ] All tests pass
+- [ ] py_compile passes on all new files
+
+---
+
+### Phase 14 Gate
+
+Before using results for publication:
+- [ ] Raven export (14.1) verified loadable in Raven Pro or DeepSqueak
+- [ ] DeepSqueak classification completed on exported selection tables (manual MATLAB step)
+- [ ] Import (14.2) successfully merges >=95% of classifications with original detections
+- [ ] Statistical analysis (14.3) produces interpretable comparison with p-values
+- [ ] Results reviewed for biological plausibility
+
+---
+
 ## Dependency Graph
 
 ```
@@ -1625,6 +2036,8 @@ Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6
                                           Phase 7    Phase 9 → Phase 10 → Phase 13
                                               ↓                              ↓
                                           Phase 12 ←←←←←←←←←←←←← (detection results)
+
+Phase 6 → Phase 14.1 → 14.2 → 14.3 → Phase 12 (syllable data, optional)
 
 Phase 8.1 → 8.2 → 8.3 → 8.4
   ↓
@@ -1643,15 +2056,18 @@ For upcoming work, prioritize based on research impact:
 
 | Priority | Module | Why |
 |----------|--------|-----|
-| **1** | Phase 9 (Assembly) | Foundation for all future CNN training cycles |
-| **2** | Phase 10 (Active Learning) | Enables scaling to 30K labels efficiently |
+| **~~1~~** | ~~Phase 14.1 (Raven Export)~~ | DONE (2026-02-22) |
+| **~~2~~** | ~~Phase 9 (Assembly)~~ | DONE (2026-02-21) |
+| **~~3~~** | ~~Phase 10 (Active Learning)~~ | DONE (2026-02-21) |
+| **1** | Phase 14.2 (DeepSqueak Import) | **NEXT:** After DeepSqueak classification is done in MATLAB |
+| **2** | Phase 14.3 (Repertoire Stats) | Scientific payoff from the DeepSqueak bridge |
 | **3** | Phase 8.1 (Data Pipeline) | Code can be written locally, no GPU needed |
 | **4** | Phase 13 (Batch Detection) | Needed for bulk analysis + bout extraction input |
 | **5** | Phase 8.2-8.3 (Transformer + VQ-VAE code) | Code can be written/tested locally with dummy data |
-| **6** | Phase 11.1 (Preprocessing) | Can run locally after batch detection results exist |
-| **7** | Phase 11.2-11.4 (Training + Analysis) | Requires HPC access |
-| **8** | Phase 8.4 (Analysis tools) | Can be written in parallel with training |
-| **9** | Phase 12 (Population Comparison) | Requires sufficient data from Phases 10 + 11 |
+| **~~6~~** | ~~Phase 11.1 (Preprocessing)~~ | DONE (2026-02-22) |
+| **6** | Phase 11.2-11.4 (Training + Analysis) | Requires HPC access |
+| **~~7~~** | ~~Phase 8.4 (Analysis tools)~~ | DONE (2026-02-24) |
+| **7** | Phase 12 (Population Comparison) | Requires sufficient data from Phases 10 + 11 + 14 |
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: roadmap-from-plan
-description: Convert a web Claude implementation plan into ROADMAP.md format with /implement blocks for each step.
+description: Convert a web Claude implementation plan into a standalone ROADMAP file with /implement blocks, then extract theoretical knowledge to the KG.
 ---
 
 Convert the following implementation plan into structured ROADMAP.md format: $ARGUMENTS
@@ -126,11 +126,24 @@ Show the generated ROADMAP section and ask the user:
 4. Should any steps be split further or merged?
 5. Any context from the web Claude conversation that should be added to the `/implement` blocks?
 
-**Do NOT write to ROADMAP.md yet.** Present the formatted output and wait for approval. After approval, append to ROADMAP.md.
+**Do NOT write to ROADMAP.md yet.** Present the formatted output and wait for approval. After approval, write to a **new standalone file** named `ROADMAP_<PLAN_NAME>.md` (e.g., `ROADMAP_VACATION_DRAFT.md`). Do NOT append to the main ROADMAP.md — standalone roadmap files work with `/implement` just as well, and keeping them separate avoids bloating the main ROADMAP.
+
+## Step 6: Extract Theoretical Knowledge to KG
+
+Web Claude plans frequently contain rich theoretical content — scientific rationale, methodology choices, statistical methods, domain insights — that goes beyond implementation instructions. This knowledge must be captured in the knowledge graph, not just preserved in `/implement` Context sections.
+
+**After the ROADMAP file is written**, do the following:
+
+1. **Scan the original plan** for theoretical content: scientific methods, domain insights, design rationale, statistical approaches, literature references, methodology decisions
+2. **Ask the user**: "This plan contains theoretical knowledge about [topics]. Should I run `/reduce` on the source to extract it into the knowledge graph?" — present a brief summary of what would be extracted
+3. **If approved**, run `/reduce` on the source plan file (or the inbox copy if it was `/seed`'d). This extracts atomic notes, enriches existing notes, and identifies tensions/open questions
+4. **If the plan is not yet in inbox/**, suggest `/seed` first to establish provenance before `/reduce`
+
+**Why this step is mandatory:** Implementation plans from web Claude are dual-purpose documents — they contain both task specifications AND domain knowledge. The ROADMAP captures the "what to build" but loses the "why this method" and "how this connects to the literature." Without this step, theoretical knowledge evaporates after the session ends.
 
 ## Important Notes
 
 - The `/implement` blocks are the most critical part. They serve as the specification that Claude Code will follow during implementation. Err on the side of MORE detail, not less.
-- If the plan from web Claude includes scientific rationale or theoretical motivation, preserve it in the **Context** section — it helps Claude Code make better design decisions.
+- If the plan from web Claude includes scientific rationale or theoretical motivation, preserve it in the **Context** section — it helps Claude Code make better design decisions. Additionally, this theoretical content should be extracted to the knowledge graph via Step 6.
 - If the plan references external papers or techniques, mention them so Claude Code can search for implementation details.
 - Preserve any code snippets, architecture diagrams, or formulas from the original plan.

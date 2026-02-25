@@ -6,9 +6,29 @@
 
 ---
 
-## Current Status: LMT Data Access Layer
+## Current Status: Repertoire Statistical Analysis
 
-**Latest Update (2026-02-24):**
+**Latest Update (2026-02-25):**
+- **Syllable Repertoire Statistical Analysis (Phase 14.3)** -- Complete
+  - Created `src/usv_spectrogram/classification/repertoire_stats.py` (~700 lines):
+    - 1 frozen dataclass: RepertoireConfig (8 fields) with `__post_init__` validation
+    - Core analysis: syllable_proportions, syllable_diversity (Shannon entropy), transition_matrix (row-stochastic K x K)
+    - 3 comparison methods: PERMANOVA (Bray-Curtis + pseudo-F), Jensen-Shannon divergence, chi-squared (Cramer's V)
+    - Transition matrix comparison via Frobenius norm + permutation test
+    - 4 publication-ready matplotlib figures (Agg backend, 150 dpi)
+    - Markdown report generator with plain-language interpretation
+    - Full pipeline orchestrator: analyze_repertoire()
+  - Created `scripts/analyze_repertoire.py` (~185 lines): CLI with metadata join, dry-run, argparse
+  - Created `tests/test_classification/test_repertoire_stats.py` (33 tests): synthetic fixtures with known statistical properties
+  - Modified `src/usv_spectrogram/classification/__init__.py`: Added 9 repertoire_stats exports
+  - Created `docs/modules/repertoire-stats.md`: Module documentation
+  - 33 tests pass, 109 classification+event suite passes (no regressions)
+  - Key decisions: pure-scipy PERMANOVA (no skbio Windows dep, Anderson 2001), JSD = jensenshannon()^2 (divergence not distance), all_labels param for consistent transition matrix dims, metadata join in CLI not library
+  - Review: `docs/reviews/repertoire-stats-review.md` (Tier 2, 3 warnings fixed: W1 population validation, W2 module doc, W3 progress update)
+  - Module doc: `docs/modules/repertoire-stats.md`
+  - *Files created: `src/usv_spectrogram/classification/repertoire_stats.py`, `scripts/analyze_repertoire.py`, `tests/test_classification/test_repertoire_stats.py`, `docs/modules/repertoire-stats.md`*
+
+**Previous Update (2026-02-24):**
 - **LMT Data Access Layer** -- Complete
   - Created `src/usv_spectrogram/lmt/__init__.py` (19 lines): Package init with `__all__` exports
   - Created `src/usv_spectrogram/lmt/db_loader.py` (~170 lines):

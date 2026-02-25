@@ -23,6 +23,8 @@
 - **USV Pipeline Phase 8.4 DONE** (2026-02-21): Analysis & Interpretation Tools — 9 modules in `usv_language/analysis/` (config, transformer_suffix, codebook_viz, sequence_analysis, concept_manipulation, context_analysis, compositionality, run_analysis), 17 tests (599 total). Key fixes: batch decode (K,1,d_model) not (1,K,d_model), excess_entropy via entropy rate convergence. Handoff at `docs/reviews/analysis-tools-handoff.md`. Review at `docs/reviews/analysis-tools-review.md`.
 - **USV Pipeline Phase 8.3 DONE** (2026-02-20): Hidden State VQ-VAE — VQVAEConfig, VectorQuantizerV2, HiddenStateVQVAE (~820K params), train_vqvae.py, compare_layers.py, 21 tests (151 total). Handoff at `docs/reviews/hidden-state-vqvae-handoff.md`.
 - **Skills updated** (2026-02-20): `/implement` now includes Phase 4 REVIEW (spawns master-reviewer, writes review file). New `/roadmap-from-plan` skill converts web Claude plans into ROADMAP.md format with `/implement` blocks.
+- **Methodology knowledge graph** (2026-02-23): 249 research claim .md files installed at `./methodology/` (project root). Sparse-cloned from `github.com/agenticnotetaking/arscontexta`. Git-tracked so it travels with the repo. These back arscontexta reasoning commands.
+- **Plugin skills + reference** (2026-02-23): 4 plugin-level skills installed as local skills: `/ask` (query research graph), `/architect` (research-backed evolution), `/recommend` (architecture advice), `/health` (vault diagnostics — 8 categories, FAIL/WARN/PASS). Reference directory (`reference/`, 37 files) provides routing indexes, dimension maps, constraint docs, and templates that these skills depend on. All `${CLAUDE_PLUGIN_ROOT}` paths replaced with relative paths.
 
 ## State Update Rule (CRITICAL — every session)
 - Before ending ANY session where a milestone/phase/task was completed, update ALL THREE:
@@ -58,3 +60,6 @@
 - Python venv: `.venv/Scripts/python.exe`
 - WAV files: `5970 USV/`
 - Knowledge graph vault: notes/, inbox/, ops/, templates/, manual/, archive/
+- arscontexta methodology: methodology/ (249 research claim files, git-tracked)
+- arscontexta reference: reference/ (37 structured reference files — routing indexes, constraints, templates)
+- Plugin skills: .claude/skills/{ask,architect,recommend,health}/ (4 research-graph reasoning commands)
