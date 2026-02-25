@@ -8,12 +8,13 @@ Usage:
         --output-dir analysis_output \\
         --source-layer 4
 
-Orchestrates all five analysis modules:
+Orchestrates all six analysis modules:
 1. Codebook visualization (profiles, usage, projection, exemplars)
 2. Sequence analysis (Zipf, transitions, entropy, MI)
 3. Concept manipulation (injection, scan)
 4. Context analysis (group comparison, if metadata available)
 5. Compositionality (bigram productivity, positional independence)
+6. Information theory (MLE Zipf, bias-corrected entropy, idioms, burstiness)
 """
 
 from __future__ import annotations
@@ -94,6 +95,7 @@ def run_analysis(
     from usv_language.analysis import concept_manipulation
     from usv_language.analysis import context_analysis
     from usv_language.analysis import compositionality
+    from usv_language.analysis import information_theory
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -237,6 +239,54 @@ def run_analysis(
     )
 
     # ---------------------------------------------------------------
+    # 6. Information theory (rigorous metrics)
+    # ---------------------------------------------------------------
+    print("\n=== Information Theory ===")
+
+    zipf_mle = information_theory.zipf_exponent_mle(codes)
+    print(f"  Zipf MLE: count_alpha={zipf_mle.alpha:.3f}, "
+          f"rank_alpha={zipf_mle.rank_alpha:.3f}, "
+          f"xmin={zipf_mle.xmin:.1f}, p={zipf_mle.p_value:.3f}")
+
+    zipf_ent = information_theory.zipf_via_shannon_entropy(codes, K)
+    print(f"  Zipf entropy inversion: rank_alpha={zipf_ent.alpha_estimate:.3f}, "
+          f"H_obs={zipf_ent.entropy_observed:.3f} bits, "
+          f"method={zipf_ent.method}")
+
+    ent_rate = information_theory.entropy_rate(codes, max_order=config.max_ngram_order)
+    print(f"  Entropy rate (corrected): "
+          f"{[f'{r:.3f}' for r in ent_rate.rates_corrected]}")
+    if ent_rate.convergence_order > 0:
+        print(f"  Convergence at order {ent_rate.convergence_order}")
+
+    idioms = information_theory.ngram_idioms(codes, K, max_n=4, n_shuffles=100)
+    print(f"  Significant idioms: {len(idioms)}")
+    for idiom in idioms[:5]:
+        print(f"    {idiom.ngram}: z={idiom.z_score:.2f}, count={idiom.observed_count}")
+
+    prod_ci = information_theory.ngram_productivity(codes, K, n=2, n_bootstrap=500)
+    print(f"  Bigram productivity (bootstrap): {prod_ci.productivity_ratio:.1%} "
+          f"null CI [{prod_ci.null_ci_lower:.1%}, {prod_ci.null_ci_upper:.1%}]")
+
+    cond_ent_by_lag = information_theory.conditional_entropy_by_lag(codes, K, max_lag=10)
+    print(f"  Cond. entropy by lag (1-3): "
+          f"{[f'{v:.3f}' for v in cond_ent_by_lag[:3]]}")
+
+    mi_decay = information_theory.mutual_information_rate(codes, K, max_lag=20)
+    print(f"  MI decay (lags 1-3): "
+          f"{[f'{v:.3f}' for v in mi_decay[:3]]}")
+
+    # Burstiness: compute from code-change events (not all frame times).
+    # Using all frames gives np.arange(N)*const => perfectly uniform IEIs => CV=0
+    # always.  Code-change events capture the actual temporal dynamics.
+    hop_duration_s = 128 / 300_000  # ADR-001/002: hop_length / sample_rate
+    change_mask = np.concatenate([[True], np.diff(codes) != 0])
+    change_times = np.where(change_mask)[0].astype(np.float64) * hop_duration_s
+    burst = information_theory.burstiness_coefficient(change_times)
+    print(f"  Burstiness: CV={burst.cv:.3f} ({burst.interpretation}), "
+          f"n_bursts={burst.n_bursts}")
+
+    # ---------------------------------------------------------------
     # Summary
     # ---------------------------------------------------------------
     summary = {
@@ -252,6 +302,15 @@ def run_analysis(
         "entropy_rates": rates,
         "bigram_productivity": prod["productivity_ratio"],
         "positional_independence": pos_ind["mean_abs_correlation"],
+        "zipf_mle_count_alpha": zipf_mle.alpha,
+        "zipf_mle_rank_alpha": zipf_mle.rank_alpha,
+        "zipf_entropy_rank_alpha": zipf_ent.alpha_estimate,
+        "entropy_rates_corrected": ent_rate.rates_corrected,
+        "entropy_convergence_order": ent_rate.convergence_order,
+        "n_significant_idioms": len(idioms),
+        "bigram_productivity_null_ci": [prod_ci.null_ci_lower, prod_ci.null_ci_upper],
+        "burstiness_cv": burst.cv,
+        "burstiness_interpretation": burst.interpretation,
     }
     summary_path = output_dir / "analysis_summary.json"
     with open(summary_path, "w") as f:

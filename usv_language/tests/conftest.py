@@ -6,7 +6,6 @@ import sys
 import tempfile
 from pathlib import Path
 
-import h5py
 import numpy as np
 import pytest
 
@@ -31,6 +30,7 @@ def synthetic_spectrogram() -> np.ndarray:
 @pytest.fixture
 def synthetic_hdf5(synthetic_spectrogram, tmp_path):
     """Create a temporary HDF5 file with 3 synthetic spectrograms."""
+    h5py = pytest.importorskip("h5py")
     hdf5_path = tmp_path / "test_data.h5"
     with h5py.File(hdf5_path, "w") as f:
         f.attrs["sample_rate"] = 300_000

@@ -9,12 +9,24 @@ WAV samples (300 kHz), and spectrogram frames (hop_length-dependent).
 """
 
 from .db_loader import BehavioralEvent, AnimalInfo, LMTDatabaseLoader
+from .event_triggered import (
+    PETHConfig,
+    PETHResult,
+    compare_populations,
+    compute_all_peths,
+    compute_peth,
+)
 from .synchronizer import SyncConfig, LMTSynchronizer
 
 __all__ = [
     "BehavioralEvent",
     "AnimalInfo",
     "LMTDatabaseLoader",
+    "PETHConfig",
+    "PETHResult",
     "SyncConfig",
     "LMTSynchronizer",
+    "compare_populations",
+    "compute_all_peths",
+    "compute_peth",
 ]

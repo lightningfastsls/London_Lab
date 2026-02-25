@@ -7,3 +7,4 @@ pyyaml>=6.0
 matplotlib>=3.7
 seaborn>=0.12
 wandb>=0.15
+# hmmlearn>=0.3  # optional: HMM surrogates in null_models.py
