@@ -64,6 +64,20 @@ making the review file look permanently stale at "CHANGES NEEDED."
 .\.venv\Scripts\python.exe -m pytest tests/ -v --tb=short
 ```
 
+### 4.5 Articulate expected constraints (before looking for problems)
+
+Before checking for problems, write down what you EXPECT to be true based
+on your reading of the ROADMAP, DECISIONS, patterns, and vault:
+
+- What DSP parameters must this module use? (cite ADR numbers)
+- What data flow pattern should it follow? (cite patterns.md)
+- What invariants must hold? (cite vault notes if they establish baselines)
+- What are the most likely failure modes for this type of module?
+
+Write your expectations BEFORE reading the implementation. This prevents
+the failure mode where you read the code and nod along because it "looks
+reasonable" without checking it against the actual specification.
+
 ### 5. Check for problems in these categories (in order of importance):
 
 **DSP CORRECTNESS (most critical — subtle errors cause silent wrong results)**
