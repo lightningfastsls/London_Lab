@@ -27,6 +27,9 @@ How we find USVs in raw audio. The pipeline uses a two-stage architecture: a per
 - [[low-amplitude and short-duration USVs are the primary source of false negatives and training bias]] -- faint/short calls are the hardest to detect
 - [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- noise structural mimicry triggers false positives
 
+## Label Persistence
+- [[JSON label files provide human-readable version-controllable persistence for detection labels and metadata]] -- one JSON per WAV stores detections, user labels, probability curves; git-friendly and inspectable
+
 ## Alternative Detection Tools
 - [[DeepSqueak v3 switched from Faster R-CNN to YOLO v2 improving speed and accuracy for USV detection]] -- DeepSqueak's MATLAB-only detection architecture evolution
 - [[DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input]] -- highest reported detection metrics (Python, TensorFlow)

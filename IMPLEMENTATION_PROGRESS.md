@@ -1,4 +1,8 @@
-# USV Detection Pipeline - Implementation Progress
+# USV Detection Pipeline - Implementation Archive
+
+> **This file is an append-only session log.** Do not modify existing entries.
+> For current status see `ops/goals.md` (agent) or `docs/human/PROJECTS.md` (human).
+> New entries should be appended at the top with a dated header.
 
 **Started:** 2026-01-16
 **Plan Document:** USV_DETECTION_IMPLEMENTATION_PLAN.md
@@ -6,7 +10,7 @@
 
 ---
 
-## Current Status: Repertoire Statistical Analysis
+## Session Log
 
 **Latest Update (2026-02-25):**
 - **Syllable Repertoire Statistical Analysis (Phase 14.3)** -- Complete

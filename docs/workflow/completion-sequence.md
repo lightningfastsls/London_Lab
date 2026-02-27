@@ -119,8 +119,9 @@ Save to `docs/reviews/<module>-handoff.md`.
 
 Full template with field descriptions: `docs/reviews/REVIEW-TEMPLATE.md`
 
-**Where to write:** Update `IMPLEMENTATION_PROGRESS.md` with a summary and link to
-any detailed handoff documents.
+**Where to write:** Append a dated entry to `IMPLEMENTATION_PROGRESS.md` (never modify existing entries). Update `ops/goals.md` with current status.
+
+> **Do NOT update `docs/human/` files directly** — use `/refresh-human-docs` to regenerate them from KG + ops state.
 
 ### Step 7: Report
 Communicate completion to the user.
@@ -200,7 +201,7 @@ This completion sequence **extends** the existing CLAUDE.md workflow. It does no
 |------------------------|------------------------|
 | Approval Request before code | **Still required.** Step 2 assumes approval was already given. |
 | py_compile after every edit | **Still required.** Explicitly enforced in Step 2. |
-| Update IMPLEMENTATION_PROGRESS.md | **Still required.** Part of Step 7 reporting. |
+| Append to IMPLEMENTATION_PROGRESS.md | **Still required.** Part of Step 6 (append-only, never modify existing entries). Update ops/goals.md too. |
 | Run specialized agents (dsp-reviewer, detection-validator) | **Still required.** Run DURING implementation (Step 2) or between Steps 4 and 6. These complement the master review, not replace it. |
 | Don't modify test expectations | **Reinforced.** Explicitly stated in Steps 3, 4, and 5. |
 | State Machine transitions | **Still enforced.** The completion sequence operates within the EXECUTION → VALIDATION states. |

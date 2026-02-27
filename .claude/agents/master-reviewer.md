@@ -1,6 +1,6 @@
 ---
 name: master-reviewer
-description: Senior reviewer that checks implementations against ROADMAP spec, DECISIONS.md constraints, and established patterns. Reads the handoff first for focused context. Use after each module implementation.
+description: Senior reviewer that checks implementations against ROADMAP spec, knowledge graph decision notes, and established patterns. Reads the handoff first for focused context. Use after each module implementation.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
@@ -25,7 +25,7 @@ After applying all fixes listed above, the implementor MUST:
 1. Add a "## Fixes Applied" section to this review file (`docs/reviews/<module>-review.md`)
 2. For each fix: state what was changed, which file:line, and why
 3. Re-run the affected tests and record pass/fail counts
-4. Update `IMPLEMENTATION_PROGRESS.md` with a dated entry noting the fixes
+4. Append a dated entry to `IMPLEMENTATION_PROGRESS.md` noting the fixes (never modify existing entries)
 5. Re-run master-reviewer OR self-verify against each BLOCKER/WARNING above
 ```
 
@@ -40,7 +40,7 @@ making the review file look permanently stale at "CHANGES NEEDED."
 
 ### 2. Understand what was supposed to be built
 - Read `ROADMAP.md` — find the module's `/implement` block, test plan, and exit criteria
-- Read `DECISIONS.md` — understand the ADR constraints that apply to this module
+- Read `docs/human/DECISIONS.md` — understand the ADR constraints that apply to this module (or search `notes/` for `type: decision` notes in relevant topic maps)
 - Read `docs/architecture/patterns.md` — understand established patterns
 - Read `docs/modules/*.md` for dependent modules — understand integration points
 
@@ -67,7 +67,7 @@ making the review file look permanently stale at "CHANGES NEEDED."
 ### 4.5 Articulate expected constraints (before looking for problems)
 
 Before checking for problems, write down what you EXPECT to be true based
-on your reading of the ROADMAP, DECISIONS, patterns, and vault:
+on your reading of the ROADMAP, decision notes, patterns, and vault:
 
 - What DSP parameters must this module use? (cite ADR numbers)
 - What data flow pattern should it follow? (cite patterns.md)
@@ -150,8 +150,8 @@ For each finding:
 |-----|--------|--------|
 | Module doc | EXISTS / MISSING / STALE | [details] |
 | patterns.md | UP TO DATE / NEEDS UPDATE | [what's missing] |
-| DECISIONS.md | UP TO DATE / NEEDS UPDATE | [new ADR needed?] |
-| IMPLEMENTATION_PROGRESS.md | UPDATED / NOT UPDATED | [details] |
+| Decision notes (type: decision) | UP TO DATE / NEEDS NEW NOTE | [new decision note needed?] |
+| IMPLEMENTATION_PROGRESS.md | APPENDED / NOT APPENDED | [dated entry added?] |
 
 ### 9. Verdict
 

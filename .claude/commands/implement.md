@@ -14,7 +14,7 @@ Follow this sequence strictly:
 While in plan mode (read-only tools only — no code writing allowed):
 
 1. Read `ROADMAP.md` — find the module's `/implement` block and test plan
-2. Read `DECISIONS.md` — understand architectural constraints (STFT params, split-by-recording, etc.)
+2. Read `notes/index.md` + relevant topic maps — understand architectural constraints and prior decisions (search `type: decision` notes for STFT params, split-by-recording, etc.)
 3. Read `docs/architecture/patterns.md` — follow established patterns (frozen dataclasses, candidate flow, etc.)
 4. Read `docs/modules/*.md` for any module this one depends on or interacts with
 5. Read existing code to understand current state
@@ -59,8 +59,14 @@ After tests pass:
    - Key decisions and ADR references
    - Integration points (what this module calls, what calls this module)
 2. If you established a new reusable pattern -> update `docs/architecture/patterns.md`
-3. If you made a non-obvious decision -> add to `DECISIONS.md`
+3. If you made a non-obvious decision -> create a decision note in `notes/` (type: decision) and run `/reflect` to connect it
 4. Write the handoff: `docs/reviews/<module>-handoff.md` (the task should be sitting in your list as `pending` — write it and mark completed)
+
+## Phase 3.5: STALENESS AUDIT
+Before moving to review, check for stale references:
+- Grep for the module name in `ops/goals.md` — update if mentioned
+- Grep for the module name in `docs/modules/` — ensure module doc matches implementation
+- Append a dated entry to `IMPLEMENTATION_PROGRESS.md` (never modify existing entries)
 
 ## Phase 4: REVIEW
 

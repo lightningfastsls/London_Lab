@@ -8,6 +8,7 @@ type: moc
 The operational classification system. A small CNN (~101K params) classifies energy-detector candidates as USV or noise. The researcher uses this pipeline to process recordings, with every detection going through human validation. The labeled data this process produces feeds the future [[representation-learning]] research.
 
 ## CNN Architecture & Training
+- [[PyTorch pt format is the standard model artifact format giving native save-load with no extra dependencies]] -- all models saved as .pt via torch.save, no extra serialization deps
 - [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]] -- small CNN (~101K params) with variable-size input
 - [[3x class weight boost compensates for USV class imbalance in CNN training]] -- extreme recall bias (pos_weight ~35.4)
 - [[class weight boosting biases toward recall at the cost of precision]] -- the tradeoff from extreme pos_weight
@@ -15,6 +16,7 @@ The operational classification system. A small CNN (~101K params) classifies ene
 - [[CNN baseline of 89.7 percent precision and 93.8 percent recall at threshold 0.05 validates the two-stage detection approach]] -- F1 91.7% baseline
 
 ## Training Data & Labeling
+- [[JSON label files provide human-readable version-controllable persistence for detection labels and metadata]] -- one JSON per WAV stores detections, user labels, probability curves
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- random chunks, inter-USV gaps, low-energy regions
 - [[CNN trained only on energy-detector candidates classifies everything as USV because it never sees normal audio]] -- the selection bias that motivated multi-source negatives
 - [[multi-source negative sampling is necessary when the training pipeline pre-filters candidates]] -- general pattern for pre-filtered pipelines

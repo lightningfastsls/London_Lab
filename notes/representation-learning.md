@@ -17,6 +17,9 @@ Unsupervised discovery of structure in USV vocalizations. A transformer predicts
 - [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]] -- 4-stage protocol: 1->10->100->full bouts
 - [[HPC dependency for transformer training versus local-only development capability]] -- ~25-30M params needs A100; code testable locally
 
+## Model Artifacts
+- [[PyTorch pt format is the standard model artifact format giving native save-load with no extra dependencies]] -- .pt checkpoints with state_dict, optimizer state, training metadata
+
 ## VQ-VAE Codebook
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- K=64 vs traditional ~10-15 types
 - [[middle-layer hidden states capture mid-level concepts better than early or late layers for VQ-VAE input]] -- layer 4 of 8 as default extraction point
