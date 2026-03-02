@@ -39,5 +39,8 @@ usv_language/prepared_data/
 /USV_4/
 /USV_5/
 /USV_9252_2/
-/USV_Detections/
 tmp/
+
+# USV Detections data (un-ignored for tracking)
+!USV_Detections/**/*.png
+!USV_Detections/**/*.wav

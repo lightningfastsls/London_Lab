@@ -1,0 +1,2 @@
+wav_file,detection_index,start_time_s,end_time_s,duration_ms,max_prob,mean_prob,user_action,timestamp
+2024-09-30_21-25-43_0003150,13,2.625506,2.631479,5.97,0.000000,0.000000,deleted_by_user,2026-02-14T16:17:18.260060

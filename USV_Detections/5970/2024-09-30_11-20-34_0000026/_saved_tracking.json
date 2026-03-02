@@ -1,0 +1,145 @@
+[
+  {
+    "start_time_s": 0.11048892340884575,
+    "end_time_s": 0.1394975620280475,
+    "save_timestamp": "2026-02-15T23:57:21.858308",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_000_0.110s-0.139s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 0.3946029428263215,
+    "end_time_s": 0.43178666666666665,
+    "save_timestamp": "2026-02-15T23:57:22.265142",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_001_0.395s-0.432s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.4833352491909385,
+    "end_time_s": 0.5187428522114348,
+    "save_timestamp": "2026-02-15T23:57:22.667644",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_002_0.483s-0.519s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 0.5831590938511328,
+    "end_time_s": 0.6211262826321469,
+    "save_timestamp": "2026-02-15T23:57:23.077644",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_003_0.583s-0.621s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 0.6877866666666667,
+    "end_time_s": 0.7176533333333334,
+    "save_timestamp": "2026-02-15T23:57:23.454644",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_004_0.688s-0.718s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.8689795037756204,
+    "end_time_s": 0.9137722545846819,
+    "save_timestamp": "2026-02-15T23:57:23.852643",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_005_0.869s-0.914s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 0.9926928155339807,
+    "end_time_s": 1.0187152707659117,
+    "save_timestamp": "2026-02-15T23:57:24.235167",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_006_0.993s-1.019s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 1.0972092340884576,
+    "end_time_s": 1.131337044228695,
+    "save_timestamp": "2026-02-15T23:57:24.620642",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_007_1.097s-1.131s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 1.3429294670981664,
+    "end_time_s": 1.3740710938511327,
+    "save_timestamp": "2026-02-15T23:57:24.985142",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_008_1.343s-1.374s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 1.471335352750809,
+    "end_time_s": 1.51552,
+    "save_timestamp": "2026-02-15T23:57:25.369643",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_009_1.471s-1.516s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": null
+  },
+  {
+    "start_time_s": 1.5965866666666666,
+    "end_time_s": 1.642401001078749,
+    "save_timestamp": "2026-02-15T23:57:25.898141",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_010_1.597s-1.642s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": null
+  },
+  {
+    "start_time_s": 1.72032,
+    "end_time_s": 1.74606422437972,
+    "save_timestamp": "2026-02-15T23:57:26.283641",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_011_1.720s-1.746s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": null
+  },
+  {
+    "start_time_s": 2.163703300970874,
+    "end_time_s": 2.1952715253505932,
+    "save_timestamp": "2026-02-15T23:57:26.655932",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-20-34_0000026\\detection_012_2.164s-2.195s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "86ebe792-f857-454c-8aa9-23bba561d287",
+    "user_action": "added_manually"
+  }
+]

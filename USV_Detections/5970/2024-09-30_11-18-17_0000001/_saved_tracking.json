@@ -1,0 +1,140 @@
+[
+  {
+    "start_time_s": 1.0589866666666667,
+    "end_time_s": 1.1229866666666666,
+    "save_timestamp": "2026-02-06T12:58:07.360472",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_001_1.059s-1.123s.png"
+  },
+  {
+    "start_time_s": 1.19552,
+    "end_time_s": 1.2509866666666667,
+    "save_timestamp": "2026-02-06T12:58:07.704956",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_002_1.196s-1.251s.png"
+  },
+  {
+    "start_time_s": 1.32352,
+    "end_time_s": 1.3789866666666666,
+    "save_timestamp": "2026-02-06T12:58:08.037957",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_003_1.324s-1.379s.png"
+  },
+  {
+    "start_time_s": 1.45152,
+    "end_time_s": 1.5069866666666667,
+    "save_timestamp": "2026-02-06T12:58:08.380956",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_004_1.452s-1.507s.png"
+  },
+  {
+    "start_time_s": 0.77312,
+    "end_time_s": 0.8157866666666667,
+    "save_timestamp": "2026-02-06T12:58:10.632376",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_000_0.773s-0.816s.png"
+  },
+  {
+    "start_time_s": 1.57952,
+    "end_time_s": 1.6349866666666666,
+    "save_timestamp": "2026-02-06T12:58:10.995376",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_005_1.580s-1.635s.png"
+  },
+  {
+    "start_time_s": 1.70752,
+    "end_time_s": 1.7629866666666667,
+    "save_timestamp": "2026-02-06T12:58:11.420876",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_006_1.708s-1.763s.png"
+  },
+  {
+    "start_time_s": 1.83552,
+    "end_time_s": 1.8909866666666666,
+    "save_timestamp": "2026-02-06T12:58:11.778972",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_007_1.836s-1.891s.png"
+  },
+  {
+    "start_time_s": 2.05312,
+    "end_time_s": 2.0829866666666668,
+    "save_timestamp": "2026-02-06T12:58:12.128473",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_008_2.053s-2.083s.png"
+  },
+  {
+    "start_time_s": 2.75712,
+    "end_time_s": 2.7869866666666665,
+    "save_timestamp": "2026-02-06T12:58:12.477972",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_009_2.757s-2.787s.png"
+  },
+  {
+    "start_time_s": 2.9917866666666666,
+    "end_time_s": 3.0045866666666665,
+    "save_timestamp": "2026-02-06T12:58:12.812473",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_010_2.992s-3.005s.png"
+  },
+  {
+    "start_time_s": 3.7981866666666666,
+    "end_time_s": 3.815253333333333,
+    "save_timestamp": "2026-02-06T12:58:13.143473",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_011_3.798s-3.815s.png"
+  },
+  {
+    "start_time_s": 4.054186666666666,
+    "end_time_s": 4.071253333333333,
+    "save_timestamp": "2026-02-06T12:58:13.486473",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_012_4.054s-4.071s.png"
+  },
+  {
+    "start_time_s": 4.540586666666667,
+    "end_time_s": 4.578986666666666,
+    "save_timestamp": "2026-02-06T12:58:13.841473",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_013_4.541s-4.579s.png"
+  },
+  {
+    "start_time_s": 4.66432,
+    "end_time_s": 4.706986666666666,
+    "save_timestamp": "2026-02-06T12:58:14.192474",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_014_4.664s-4.707s.png"
+  },
+  {
+    "start_time_s": 4.7709866666666665,
+    "end_time_s": 4.81792,
+    "save_timestamp": "2026-02-06T12:58:14.547510",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_015_4.771s-4.818s.png"
+  },
+  {
+    "start_time_s": 4.99712,
+    "end_time_s": 5.014186666666666,
+    "save_timestamp": "2026-02-06T12:58:14.887473",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_016_4.997s-5.014s.png"
+  },
+  {
+    "start_time_s": 5.12512,
+    "end_time_s": 5.15072,
+    "save_timestamp": "2026-02-06T12:58:15.325798",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_017_5.125s-5.151s.png"
+  },
+  {
+    "start_time_s": 5.25312,
+    "end_time_s": 5.26592,
+    "save_timestamp": "2026-02-06T12:58:15.667798",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_018_5.253s-5.266s.png"
+  },
+  {
+    "start_time_s": 5.32992,
+    "end_time_s": 5.3597866666666665,
+    "save_timestamp": "2026-02-06T12:58:16.015298",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_019_5.330s-5.360s.png"
+  },
+  {
+    "start_time_s": 5.654186666666667,
+    "end_time_s": 5.692586666666666,
+    "save_timestamp": "2026-02-06T12:58:16.370424",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_020_5.654s-5.693s.png"
+  },
+  {
+    "start_time_s": 6.67392,
+    "end_time_s": 6.729386666666667,
+    "save_timestamp": "2026-02-06T12:58:16.708924",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_021_6.674s-6.729s.png"
+  },
+  {
+    "start_time_s": 6.861653333333333,
+    "end_time_s": 6.934186666666666,
+    "save_timestamp": "2026-02-06T12:58:17.053925",
+    "output_path": "C:\\Users\\light\\PycharmProjects\\mickey_london_lab\\USV_Detections\\2024-09-30_11-18-17_0000001\\detection_022_6.862s-6.934s.png"
+  }
+]

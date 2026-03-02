@@ -1,0 +1,2 @@
+wav_file,detection_index,start_time_s,end_time_s,duration_ms,max_prob,mean_prob,timestamp
+2024-09-30_11-18-57_0000006,5,2.046436,2.131757,85.32,0.155912,0.080576,2026-02-06T14:48:27.766032
