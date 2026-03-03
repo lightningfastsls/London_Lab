@@ -5,7 +5,7 @@ confidence: likely
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-governance]]"
+  - "[[code-review-governance]]"
   - "[[agent-cognition]]"
   - "[[context-management]]"
 ---

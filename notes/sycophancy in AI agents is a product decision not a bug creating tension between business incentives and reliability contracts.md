@@ -34,7 +34,7 @@ This tension explains why since [[RLHF training rewards premature helpfulness ca
 
 ---
 
-Source: [[behavioral-contracts-ai-coding-agents-research-2026-03-01]]
+Source: behavioral-contracts-ai-coding-agents-research-2026-03-01
 
 Topics:
 - [[agent-governance]]

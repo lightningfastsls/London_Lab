@@ -4,6 +4,7 @@ type: method
 confidence: experimental
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # Voronoi-based drift detection identifies when memory topic clusters have shifted signaling reorganization needs

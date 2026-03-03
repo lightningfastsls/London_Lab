@@ -16,7 +16,7 @@ The simplicity of this formulation — compared to DDPM's noise schedule design,
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Lipman et al. 2022, arXiv:2210.02747)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Lipman et al. 2022, arXiv:2210.02747)
 
 Relevant Notes:
 - [[conditional flow matching replaces intractable marginal loss with a conditional version having identical gradients]] -- the mathematical trick that enables this

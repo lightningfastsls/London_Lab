@@ -18,7 +18,7 @@ The implication for agent design is significant — since [[RLHF training reward
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[RLHF training rewards premature helpfulness causing LLMs to make early assumptions that anchor subsequent responses]] — the downstream consequence of reward-optimized training

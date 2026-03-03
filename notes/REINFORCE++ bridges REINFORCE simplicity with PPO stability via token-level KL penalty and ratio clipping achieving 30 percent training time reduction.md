@@ -22,7 +22,7 @@ The design philosophy is instructive: rather than choosing between "simple REINF
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[REINFORCE bandit formulation works for LLMs because strong pretrained priors make complex RL machinery unnecessary]] — the foundation

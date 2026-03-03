@@ -4,6 +4,7 @@ type: open-question
 confidence: speculative
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # whether MCP memory servers would improve this vault's session continuity beyond the current ops handoff approach

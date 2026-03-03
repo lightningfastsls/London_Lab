@@ -4,6 +4,9 @@ type: open-question
 confidence: speculative
 created: 2026-03-02
 meta_state: current
+topics:
+  - "[[agent-governance]]"
+  - "[[agent-memory]]"
 ---
 
 # how memory scoping interacts with behavioral contracts when agents share cross-project knowledge

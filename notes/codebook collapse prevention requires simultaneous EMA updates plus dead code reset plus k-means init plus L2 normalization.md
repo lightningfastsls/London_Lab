@@ -29,6 +29,7 @@ Relevant Notes:
 - [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- external validation: GVQ collapsed in Sarkar 2025, confirming collapse is a real risk requiring our multi-mechanism prevention
 - [[FSQ eliminates codebook collapse by construction achieving 100 percent utilization through fixed scalar quantization]] -- the alternative that eliminates collapse by design (Mentzer ICLR 2024)
 - [[discrete audio token taxonomy from 2025 survey covers quantization methods beyond simple VQ]] -- 2025 survey identifies codebook collapse as a critical challenge across quantization methods
+- [[LoRA acts as implicit regularizer preserving base model capabilities with strong inverse linear relationship between adaptation and forgetting]] -- parallel stability mechanism: LoRA prevents catastrophic weight drift through low-rank constraint, while these four mechanisms prevent codebook drift through EMA/reset/init/normalization; both address the same fundamental challenge of stable adaptation without degeneration
 
 Topics:
 - [[representation-learning]]

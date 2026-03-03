@@ -26,7 +26,7 @@ The practical implication: since [[changing the diffusion prediction target impl
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Salimans & Ho 2022, Dieleman 2024, arXiv:2602.18428)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Salimans & Ho 2022, Dieleman 2024, arXiv:2602.18428)
 
 Relevant Notes:
 - [[changing the diffusion prediction target implicitly changes how noise levels are weighted in the loss]] -- the loss weighting consequence

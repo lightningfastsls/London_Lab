@@ -33,6 +33,9 @@ Relevant Notes:
 - [[AVES self-supervised model pretrained on general audio outperformed supervised baselines for bioacoustic tasks]] -- corroborates transfer learning from non-bioacoustic domains
 - [[Tjandra et al 2020 applied transformer VQ-VAE for unsupervised unit discovery in human speech with K equals 128]] -- speech-domain architecture that transfers to our work
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- our architecture that could benefit from pretrained speech features
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- LoRA is the practical method for efficiently adapting these speech SSL models to bioacoustic tasks without full retraining
+- [[QLoRA 4-bit quantization enables 7B model fine-tuning on consumer GPUs with 33 percent memory savings at 39 percent runtime cost]] -- makes speech-to-bioacoustic adaptation feasible on consumer hardware
+- [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- the marginal benefit from bioacoustic pretraining aligns with LoRA's finding that small curated datasets suffice for adaptation
 
 Topics:
 - [[bioacoustic-ssl]]

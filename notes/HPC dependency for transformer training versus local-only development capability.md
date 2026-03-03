@@ -25,6 +25,8 @@ Relevant Notes:
 - [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]] -- primary mitigation for the HPC gap
 - [[pre-norm transformer architecture improves training stability for spectrogram prediction]] -- stability is critical for non-interactive HPC runs
 - [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the data format that determines training compute requirements
+- [[QLoRA 4-bit quantization enables 7B model fine-tuning on consumer GPUs with 33 percent memory savings at 39 percent runtime cost]] -- QLoRA specifically addresses the HPC gap for LoRA-based adaptation: 7B model fine-tuning becomes feasible on consumer RTX 3090/4090
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- LoRA's parameter efficiency reduces the compute requirements for model adaptation, partially mitigating the HPC dependency
 
 Topics:
 - [[classification]]

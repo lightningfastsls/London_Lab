@@ -24,6 +24,9 @@ Source:
 Relevant Notes:
 - [[prototypical probing with frozen MAE features enables bioacoustic classification with as few as 10 labeled examples]] -- the same approach with MAE specifically
 - [[BEATs self-distilled discrete tokenizer achieves the highest BEANS benchmark score among bioacoustic encoders]] -- BEATs as a top embedding source
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- LoRA bridges the gap between frozen-embedding linear probes and full fine-tuning: when linear probes are insufficient, LoRA fine-tuning adapts the embedding model with minimal labeled data
+- [[LoRA acts as implicit regularizer preserving base model capabilities with strong inverse linear relationship between adaptation and forgetting]] -- LoRA's regularization preserves the general embedding quality while adapting to the target task, complementing the frozen-embedding approach
+- [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- aligns with the few-shot paradigm: small curated datasets suffice for both linear probes and LoRA adaptation
 
 Topics:
 - [[bioacoustic-ssl]]

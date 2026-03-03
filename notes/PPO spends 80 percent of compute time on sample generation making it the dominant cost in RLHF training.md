@@ -20,7 +20,7 @@ Third, it suggests that any RL method that reduces the number of generated sampl
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[PPO for RLHF requires four models simultaneously creating a memory bottleneck that motivated critic-free alternatives]] — the memory side of the cost problem

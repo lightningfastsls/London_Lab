@@ -18,7 +18,7 @@ Consistency models also allow multi-step refinement: starting from the one-step 
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Song et al. 2023, arXiv:2303.01469)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Song et al. 2023, arXiv:2303.01469)
 
 Relevant Notes:
 - [[rectified flow reflow procedure iteratively straightens sampling paths enabling accurate generation in very few steps]] -- alternative few-step approach via path straightening

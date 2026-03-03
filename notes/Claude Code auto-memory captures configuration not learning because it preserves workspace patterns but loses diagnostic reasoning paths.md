@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # Claude Code auto-memory captures configuration not learning because it preserves workspace patterns but loses diagnostic reasoning paths

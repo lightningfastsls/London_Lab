@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # hybrid memory architectures combining keyword vector and graph search are converging as the dominant paradigm for agent memory

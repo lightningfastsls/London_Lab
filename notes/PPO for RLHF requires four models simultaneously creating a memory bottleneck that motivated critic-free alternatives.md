@@ -25,12 +25,14 @@ The field's trajectory from 4-model PPO → 3-model GRPO/REINFORCE → 2-model D
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[GRPO eliminates the critic network through group-relative advantage scoring achieving 50 percent memory reduction over PPO]] — the first simplification
 - [[REINFORCE Leave-One-Out uses 50-70 percent less memory than PPO while consistently outperforming it on alignment tasks]] — the most effective simplification
 - [[DPO eliminates the reward model by deriving a closed-form relationship between optimal policy and reward function enabling pure classification-based alignment]] — the offline simplification
+- [[QLoRA 4-bit quantization enables 7B model fine-tuning on consumer GPUs with 33 percent memory savings at 39 percent runtime cost]] -- orthogonal to model-count reduction: QLoRA quantizes each of the 4 models, compounding the memory savings from GRPO/REINFORCE model elimination
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- LoRA adapters on the actor reduce the trainable parameter footprint, addressing a different dimension of the memory bottleneck than critic elimination
 
 Topics:
 - [[model-adaptation]]

@@ -18,7 +18,7 @@ The approach is complementary to other schedule improvements: since [[the noise 
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Esser et al. 2024, arXiv:2403.03206)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Esser et al. 2024, arXiv:2403.03206)
 
 Relevant Notes:
 - [[changing the diffusion prediction target implicitly changes how noise levels are weighted in the loss]] -- the theoretical basis for this approach

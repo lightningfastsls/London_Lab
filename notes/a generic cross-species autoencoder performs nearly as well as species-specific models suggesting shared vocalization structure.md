@@ -24,6 +24,7 @@ Relevant Notes:
 - [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- extends with the cross-species transfer finding
 - [[Perch 2.0 trained on 14795 species achieves state of the art bioacoustic embeddings that transfer across taxa]] -- Perch's cross-taxa transfer validates this at much larger scale
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- consistent cross-domain transfer pattern
+- [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- USV-specific features may already exist as underemphasized directions in generic models, explaining near-parity
 
 Topics:
 - [[bioacoustic-ssl]]

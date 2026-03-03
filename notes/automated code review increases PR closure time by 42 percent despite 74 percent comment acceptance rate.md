@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-governance]]"
+  - "[[code-review-governance]]"
 ---
 
 # Automated code review increases PR closure time by 42 percent despite 74 percent comment acceptance rate

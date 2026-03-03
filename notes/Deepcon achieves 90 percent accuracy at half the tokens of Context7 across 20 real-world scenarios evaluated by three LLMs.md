@@ -4,6 +4,7 @@ type: baseline
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[context-management]]"
 ---
 
 # Deepcon achieves 90 percent accuracy at half the tokens of Context7 across 20 real-world scenarios evaluated by three LLMs

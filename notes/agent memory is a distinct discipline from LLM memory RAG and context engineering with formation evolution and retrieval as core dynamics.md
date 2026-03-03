@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # agent memory is a distinct discipline from LLM memory RAG and context engineering with formation evolution and retrieval as core dynamics

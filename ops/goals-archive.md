@@ -7,4 +7,6 @@
 - Bulk KG Round 2 /reduce+reflect Topics 3+6 (2026-03-02): Topic 3 (Agent Governance) → 28 outputs. Topic 6 (Agent Cognition) → agent-cognition and agent-governance topic maps enriched.
 - Weekly maintenance (2026-03-02): /health (1 FAIL link health, 1 WARN orphans, 1 PASS schema), fixed 29 dangling source links (13 VQ-VAE + 16 archived-inbox = 138 replacements across 94 files), /rethink (5 proposals, 4 obs + 4 tensions archived), /reflect on 3 LMT orphans (20 connections, all de-orphaned), /stats (439 notes, 14 topic maps, 3766 wiki links, avg 8.6/note). Next maintenance: 2026-03-09.
 - /rethink (2026-03-02): Triaged 9 observations + 9 tensions, 3 patterns identified (automation lifecycle gaps, self-review bias, topic map sprawl), 5 proposals generated, 4 observations + 4 tensions archived, CLAUDE.md doc freshness rule added, 5 topic map splits scheduled
+- Topic map splits (2026-03-03): agent-governance split (code-review-governance, 24 notes), detection split (detection-landscape, 28 notes), experimental-methods confirmed lean hub. 52 note frontmatter files updated. Vault: ~497 notes, 17 topic maps.
+- Bulk Knowledge Ingestion (2026-03-02): Rounds 1-4 DONE. All inbox sources processed. RL/alignment, diffusion/flow-matching, LoRA/Doc-to-LoRA all complete (/reduce + /reflect + /reweave). Vault: ~497 notes, 0 inbox items.
 

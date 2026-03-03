@@ -4,6 +4,7 @@ type: pattern
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # git worktrees have become the standard filesystem isolation primitive for multi-agent coding work

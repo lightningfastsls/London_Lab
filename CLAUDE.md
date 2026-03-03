@@ -269,7 +269,9 @@ Three-tier navigation: `index.md -> domain topic maps -> individual notes`
 Bad: `- [[STFT window size affects frequency resolution]]`
 Good: `- [[STFT window size affects frequency resolution]] -- determines temporal/spectral trade-off at 300kHz`
 
-Split when a topic map exceeds ~35 notes.
+Split when a topic map exceeds ~50 notes (warning at 40, critical at 60).
+
+**Before any topic map split, merge, or creation:** consult `arscontexta-expert` for methodology grounding FIRST. The expert validates split boundaries, prevents premature subordinate-level splits (< 15 notes), and ensures context phrase quality on parent-to-child links.
 
 ## Processing Pipeline
 

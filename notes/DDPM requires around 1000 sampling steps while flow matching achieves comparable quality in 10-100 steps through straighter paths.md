@@ -20,7 +20,7 @@ The reduction from 1000 to 10-100 steps is a 10-100× speedup in inference time,
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Ho et al. 2020, Song et al. 2020, Lipman et al. 2023)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Ho et al. 2020, Song et al. 2020, Lipman et al. 2023)
 
 Relevant Notes:
 - [[flow matching trains continuous normalizing flows by direct velocity field regression without ODE integration during training]] -- the efficient framework

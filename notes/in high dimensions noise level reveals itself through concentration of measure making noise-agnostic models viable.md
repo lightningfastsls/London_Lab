@@ -21,7 +21,7 @@ For images at D=3072 (32x32x3), the concentration is so extreme that the geometr
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (arXiv:2602.18428, Lemmas 5-6)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (arXiv:2602.18428, Lemmas 5-6)
 
 Relevant Notes:
 - [[noise prediction epsilon-parameterization contains a structural instability called the Jensen Gap that amplifies errors near clean data]] -- the instability that high dimensionality can rescue

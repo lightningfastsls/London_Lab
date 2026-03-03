@@ -4,6 +4,7 @@ type: pattern
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-governance]]"
 ---
 
 # three-level tool governance layers gateway enforcement hook enforcement and contract enforcement in decreasing reliability but increasing flexibility

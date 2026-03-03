@@ -18,7 +18,7 @@ This is a compelling example of theory catching up to practice — practitioners
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Salimans & Ho 2022, arXiv:2202.00512)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Salimans & Ho 2022, arXiv:2202.00512)
 
 Relevant Notes:
 - [[noise prediction epsilon-parameterization contains a structural instability called the Jensen Gap that amplifies errors near clean data]] -- the instability they encountered

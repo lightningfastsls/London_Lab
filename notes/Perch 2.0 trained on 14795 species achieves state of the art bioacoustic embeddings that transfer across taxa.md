@@ -23,6 +23,7 @@ Source: unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-
 Relevant Notes:
 - [[supervised bioacoustic foundation models vastly outperform self-supervised for species-level clustering]] -- Perch is the top-performing model in this comparison
 - [[UMAP plus HDBSCAN is now the dominant unsupervised clustering pipeline for bioacoustic vocalizations]] -- Perch embeddings feed into this pipeline
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- could efficiently adapt Perch's 12M-param EfficientNet-B3 to USV-specific classification when frozen embeddings are insufficient
 
 Topics:
 - [[bioacoustic-ssl]]

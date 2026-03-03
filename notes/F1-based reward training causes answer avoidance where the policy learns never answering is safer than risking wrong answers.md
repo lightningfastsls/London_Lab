@@ -23,7 +23,7 @@ This is a precise example of how since [[reward design including prompt template
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[reward design including prompt templates and action penalties has larger effect on alignment quality than the choice between PPO GRPO and REINFORCE]] — the meta-finding this exemplifies

@@ -4,6 +4,7 @@ type: method
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[context-management]]"
 ---
 
 # Docfork Cabinets project-specific context isolation locks agents to verified technology stacks preventing irrelevant search results

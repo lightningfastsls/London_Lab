@@ -18,7 +18,7 @@ This perspective was anticipated by [[EDM separates concrete diffusion design ch
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Dieleman 2024, sander.ai; Hang et al. 2023)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Dieleman 2024, sander.ai; Hang et al. 2023)
 
 Relevant Notes:
 - [[changing the diffusion prediction target implicitly changes how noise levels are weighted in the loss]] -- the mechanism underlying schedule equivalence

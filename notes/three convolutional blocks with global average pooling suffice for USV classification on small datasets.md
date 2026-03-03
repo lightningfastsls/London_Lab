@@ -22,6 +22,8 @@ Relevant Notes:
 - [[3x class weight boost compensates for USV class imbalance in CNN training]] -- training strategy for this architecture
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- data strategy
 - [[recording-level splits prevent data leakage in USV classification]] -- the small architecture is partly motivated by the limited effective training set from recording-level splits
+- [[model size should scale with labeled dataset size to balance underfitting and overfitting]] -- the three-tier scaling principle that places this 101K architecture at the small end for datasets under 5K labels
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- as an alternative to scaling this small CNN, LoRA adaptation of a pre-trained foundation model could achieve better classification with the same limited data
 
 Topics:
 - [[classification]]

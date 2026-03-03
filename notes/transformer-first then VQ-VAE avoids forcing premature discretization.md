@@ -28,6 +28,8 @@ Relevant Notes:
 - [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the input data format
 - [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- empirical validation: post-hoc VQ (35% UAR) vs continuous features (49% UAR) shows the cost of the post-hoc approach our architecture avoids
 - [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- this two-phase architecture fills an open gap in the field
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- if the 25-30M param transformer is pre-trained on general audio, LoRA could efficiently adapt it for USV spectrogram prediction without full retraining, reducing the HPC dependency for Phase 1
+- [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- validates the bootstrap strategy: a speech-pretrained transformer backbone adapted via LoRA could replace training from scratch
 
 Topics:
 - [[representation-learning]]

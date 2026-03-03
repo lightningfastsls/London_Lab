@@ -4,6 +4,8 @@ type: baseline
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics:
+  - "[[code-review-governance]]"
 ---
 
 # Greptile full codebase indexing with code graph achieves 82 percent bug catch rate through multi-hop investigation

@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
   - "[[signal-processing]]"
 ---
 

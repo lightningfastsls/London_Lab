@@ -17,7 +17,7 @@ The finding also connects to ICL theory. Since [[function vectors are compact si
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- the method this explains mechanistically
@@ -25,6 +25,7 @@ Relevant Notes:
 - [[LoRA acts as implicit regularizer preserving base model capabilities with strong inverse linear relationship between adaptation and forgetting]] -- consequence of amplification vs. overwriting
 - [[DoRA weight decomposition into magnitude and direction consistently outperforms standard LoRA by 1-4 points across model sizes]] -- refines the amplification by separating magnitude from direction
 - [[Doc-to-LoRA transfers visual information from VLM to text-only LLM achieving 75 percent accuracy on image classification without visual training data]] -- cross-modal evidence that latent directions exist even for unseen modalities
+- [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- parallels the amplification finding: VAE latent space already contains traditional acoustic features, just as pre-trained weights already contain task-relevant directions
 
 Topics:
 - [[model-adaptation]]

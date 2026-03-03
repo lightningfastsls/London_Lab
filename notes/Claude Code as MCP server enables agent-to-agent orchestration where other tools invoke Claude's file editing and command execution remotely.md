@@ -4,6 +4,7 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # Claude Code as MCP server enables agent-to-agent orchestration where other tools invoke Claude's file editing and command execution remotely

@@ -23,7 +23,7 @@ Interestingly, some recent high-quality datasets (e.g., UltraFeedback) are curat
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[reward model training uses Bradley-Terry pairwise comparison on approximately 50k labeled preference samples]] — the mathematical framework

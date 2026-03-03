@@ -24,6 +24,7 @@ Source: transformer-architecture-icl-fundamentals-research-2026-03-02 (archived 
 Relevant Notes:
 - [[induction heads emerge in a sharp phase transition during training that coincides with the onset of in-context learning ability supported by six causal lines of evidence]] -- the formation process
 - [[ICL is mathematically equivalent to query-dependent low-rank weight modifications of the MLP where each context token contributes a rank-1 update]] -- the weight-space interpretation of what induction heads enable
+- [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- fuzzy induction heads may reflect the same amplification mechanism: strengthening existing approximate-matching directions
 
 Topics:
 - [[transformer-architecture]]

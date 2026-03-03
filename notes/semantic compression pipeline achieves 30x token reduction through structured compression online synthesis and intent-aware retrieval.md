@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # semantic compression pipeline achieves 30x token reduction through structured compression online synthesis and intent-aware retrieval

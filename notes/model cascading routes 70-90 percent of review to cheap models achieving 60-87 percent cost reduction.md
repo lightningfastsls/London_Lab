@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-governance]]"
+  - "[[code-review-governance]]"
 ---
 
 # Model cascading routes 70-90 percent of review to cheap models achieving 60-87 percent cost reduction

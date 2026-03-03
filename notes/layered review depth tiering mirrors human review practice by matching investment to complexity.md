@@ -5,7 +5,7 @@ confidence: likely
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-governance]]"
+  - "[[code-review-governance]]"
 ---
 
 # Layered review depth tiering mirrors human review practice by matching investment to complexity

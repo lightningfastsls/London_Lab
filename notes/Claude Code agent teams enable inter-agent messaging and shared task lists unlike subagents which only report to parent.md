@@ -4,6 +4,7 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # Claude Code agent teams enable inter-agent messaging and shared task lists unlike subagents which only report to parent

@@ -24,7 +24,7 @@ Both are valid, but velocity prediction's bounded-gain stability is more robust 
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (arXiv:2602.18428)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (arXiv:2602.18428)
 
 Relevant Notes:
 - [[noise prediction epsilon-parameterization contains a structural instability called the Jensen Gap that amplifies errors near clean data]] -- the unstable case

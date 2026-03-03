@@ -4,6 +4,7 @@ type: baseline
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # 96 MCP memory servers exist as of March 2026 fragmented across unstructured markdown knowledge graph and hybrid vector-graph paradigms

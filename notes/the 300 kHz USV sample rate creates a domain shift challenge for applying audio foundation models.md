@@ -24,6 +24,8 @@ Source:
 Relevant Notes:
 - [[spectrogram-based SSL avoids the sample rate mismatch that limits waveform-based models for USV analysis]] -- the same challenge from the SSL perspective
 - [[DeepSqueak uses constant-duration FFT windows making it inherently sample-rate agnostic]] -- spectrogram approach abstracts away sample rate
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- a fourth workaround: adapt foundation model weights to handle 300 kHz input via parameter-efficient fine-tuning
+- [[QLoRA 4-bit quantization enables 7B model fine-tuning on consumer GPUs with 33 percent memory savings at 39 percent runtime cost]] -- makes the "train a custom embedding model" workaround feasible on consumer hardware
 
 Topics:
 - [[classification-methodology]]

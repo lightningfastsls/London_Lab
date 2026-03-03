@@ -24,6 +24,8 @@ Source:
 Relevant Notes:
 - [[no self-supervised foundation model has been applied to rodent USV data]] — the mismatch is a key reason for this gap
 - [[DeepSqueak uses constant-duration FFT windows making it inherently sample-rate agnostic]] — same principle applied to detection
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- a fourth option beyond retrain/downsample/spectrogram: LoRA could adapt the convolutional feature extractors of waveform-based SSL models to 300 kHz input without full retraining
+- [[the 300 kHz USV sample rate creates a domain shift challenge for applying audio foundation models]] -- the broader domain shift challenge this spectrogram workaround addresses
 
 Topics:
 - [[signal-processing]]

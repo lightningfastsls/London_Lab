@@ -5,7 +5,7 @@ confidence: speculative
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-governance]]"
+  - "[[code-review-governance]]"
 ---
 
 # Whether accepted or rejected AI review comments should feed back into agent learning through persistent memory

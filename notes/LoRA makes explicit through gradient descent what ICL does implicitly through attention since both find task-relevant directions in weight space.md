@@ -28,7 +28,7 @@ Von Oswald et al.'s finding that since [[Von Oswald et al showed a single linear
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[ICL is mathematically equivalent to query-dependent low-rank weight modifications of the MLP where each context token contributes a rank-1 update]] -- the implicit mechanism this parallels

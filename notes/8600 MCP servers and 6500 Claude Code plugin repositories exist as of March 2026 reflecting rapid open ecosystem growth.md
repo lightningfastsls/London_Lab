@@ -4,6 +4,7 @@ type: baseline
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # 8600 MCP servers and 6500 Claude Code plugin repositories exist as of March 2026 reflecting rapid open ecosystem growth

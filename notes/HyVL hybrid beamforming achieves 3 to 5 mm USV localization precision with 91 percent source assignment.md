@@ -4,7 +4,7 @@ type: finding
 confidence: proven
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
   - "[[experimental-methods]]"
 ---
 

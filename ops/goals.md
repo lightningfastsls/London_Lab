@@ -6,9 +6,7 @@ type: moc
 # goals
 
 ## Active Threads
-- **Bulk Knowledge Ingestion** -- Rounds 1-4 DONE. All inbox sources processed. RL/alignment (/reduce + /reflect, reweave pending) and diffusion/flow-matching (/reduce + /reflect + /reweave DONE). Vault: ~494 notes, 15 topic maps, 0 inbox items. Remaining: /reweave on RL alignment batch.
 - **DeepSqueak Classification Bridge** -- Phase 2 (Raven export) DONE, Phase 3 (MATLAB import+clustering) IN PROGRESS. Resume: open MATLAB -> `DeepSqueak` -> Import from Raven (5 files in `raven_tables/`). See `PROJECTS.md` Section 6 for full steps.
-- **Topic map splits needed** -- classification (87 notes, 2.2x threshold), experimental-methods (68, 1.7x), detection (54, 1.35x), agent-governance (54, 1.35x), representation-learning (49, 1.2x). classification is priority. Schedule for next maintenance session.
 - Phase 5.2 -- Two-week validation checkpoint (starts 2026-03-06, after 2 weeks of active use). Contract pruning audit (Proposal 5) pairs with this.
 
 ## Waiting

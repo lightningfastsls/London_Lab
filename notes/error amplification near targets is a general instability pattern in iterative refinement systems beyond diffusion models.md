@@ -25,7 +25,7 @@ For the USV pipeline, this connects to iterative refinement in detection and cla
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (arXiv:2602.18428, Section 11)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (arXiv:2602.18428, Section 11)
 
 Relevant Notes:
 - [[noise prediction epsilon-parameterization contains a structural instability called the Jensen Gap that amplifies errors near clean data]] -- the concrete diffusion case

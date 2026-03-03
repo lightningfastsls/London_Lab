@@ -5,7 +5,7 @@ confidence: likely
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-governance]]"
+  - "[[code-review-governance]]"
 ---
 
 # LLM-assisted review works best as complement in AI-led co-reviewer or interactive on-demand mode not as replacement

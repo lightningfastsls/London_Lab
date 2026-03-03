@@ -22,12 +22,13 @@ Variants have emerged to address GRPO's biases: **Dr. GRPO** removes length and 
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[PPO for RLHF requires four models simultaneously creating a memory bottleneck that motivated critic-free alternatives]] — the problem GRPO solves
 - [[GRPO requires large batch sizes for stability and suffers frequent training collapse in multi-step long-context reasoning]] — the cost of simplification
 - [[DeepSeek-R1-Zero trained purely with GRPO produced emergent reasoning behaviors including self-reflection and verification without explicit training]] — the most dramatic GRPO result
+- [[QLoRA 4-bit quantization enables 7B model fine-tuning on consumer GPUs with 33 percent memory savings at 39 percent runtime cost]] -- GRPO's 50% memory reduction stacks with QLoRA's quantization: 3 models (policy+reference+reward) with 4-bit quantization further reduces the GPU memory footprint for RL alignment training
 
 Topics:
 - [[model-adaptation]]

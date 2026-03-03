@@ -23,6 +23,7 @@ Source:
 
 Relevant Notes:
 - [[No single Python tool cleanly accepts pre-detected USV segments and classifies them into syllable types as of 2026]] — prototypical probing on embeddings could fill this gap
+- [[LoRA acts as implicit regularizer preserving base model capabilities with strong inverse linear relationship between adaptation and forgetting]] -- when prototypical probing is insufficient, LoRA adaptation preserves general embedding quality while specializing for USV classification
 
 Topics:
 - [[bioacoustic-ssl]]

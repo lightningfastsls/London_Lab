@@ -78,6 +78,6 @@ These notes extend agent-cognition findings into the code review domain -- see [
 
 ## Agent Notes
 - These findings directly inform the vault's session design: the orient-work-persist rhythm, /clear between phases, plan-file-first workflow, and subagent isolation all function as multi-turn mitigations.
-- The [[bulk-source-processing-strategy]] in ops/methodology/ applies the Fresh Context principle to knowledge processing.
+- The bulk-source-processing-strategy in ops/methodology/ applies the Fresh Context principle to knowledge processing.
 - Context window mechanisms, benchmarks, architectural patterns, and model-level techniques are now in [[context-management]].
 - For the RL training mechanisms that create premature helpfulness and sycophancy, see [[rl-alignment]].

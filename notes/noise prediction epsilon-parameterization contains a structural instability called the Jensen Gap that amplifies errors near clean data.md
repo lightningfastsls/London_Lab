@@ -18,7 +18,7 @@ This matters beyond diffusion models because [[error amplification near targets 
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (arXiv:2602.18428)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (arXiv:2602.18428)
 
 Relevant Notes:
 - [[velocity prediction satisfies a bounded-gain condition making diffusion sampling inherently stable]] -- the stable counterpart that avoids this instability

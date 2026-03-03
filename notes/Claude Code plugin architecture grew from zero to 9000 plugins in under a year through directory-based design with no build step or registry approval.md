@@ -4,6 +4,7 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # Claude Code plugin architecture grew from zero to 9000 plugins in under a year through directory-based design with no build step or registry approval

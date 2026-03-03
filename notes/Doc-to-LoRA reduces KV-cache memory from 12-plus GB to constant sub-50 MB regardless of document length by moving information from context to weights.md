@@ -25,7 +25,7 @@ The trade-off is different too: cache compression loses some information from th
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[KV cache compression techniques extend effective context by 3-32x with trade-offs between memory reduction and information preservation]] -- the alternative approach this contrasts with

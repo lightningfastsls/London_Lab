@@ -22,6 +22,7 @@ Relevant Notes:
 - [[recording-level splits reduce effective training set size but prevent data leakage]] -- the explicit tradeoff
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- another data preparation decision
 - [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]] -- the model trained on these splits
+- [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- LoRA's data efficiency makes recording-level splits more viable: the honest but smaller effective training set may still suffice for adaptation of pre-trained models
 
 Topics:
 - [[experimental-methods]]

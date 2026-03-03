@@ -6,7 +6,7 @@ created: 2026-03-01
 meta_state: current
 topics:
   - "[[unsupervised-usv-discovery]]"
-  - "[[detection]]"
+  - "[[detection-landscape]]"
   - "[[classification]]"
 ---
 

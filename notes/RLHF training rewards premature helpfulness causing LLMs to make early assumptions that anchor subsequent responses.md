@@ -28,7 +28,7 @@ Behavioral contracts research (2025-2026) reveals that runtime contracts provide
 
 Sources:
 - multi-turn-conversation-degradation-llms-research-2026-03-01 (archived to archive/inbox/)
-- [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]] (RLHF mechanism section)
+- rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02 (RLHF mechanism section)
 
 Relevant Notes:
 - [[LLMs prematurely commit to incorrect solutions in early turns and fail to revise them producing cascading errors]] -- the behavioral manifestation

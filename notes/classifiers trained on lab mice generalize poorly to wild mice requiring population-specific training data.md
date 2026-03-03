@@ -36,6 +36,8 @@ Relevant Notes:
 - [[Zala et al 2020 showed wild-derived mice modulate USVs with social context producing 9 types during interaction versus 6 during introduction]] -- wild mice have distinct behavioral modulation patterns
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the combined strategy addressing this limitation
 - [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- population-specific repertoire differences this finding predicts would need PERMANOVA to quantify
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- enables population-specific adaptation of a shared base classifier with minimal wild mouse labels
+- [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- small amount of available wild mouse labeled data may suffice for LoRA adaptation
 
 Topics:
 - [[classification-methodology]]

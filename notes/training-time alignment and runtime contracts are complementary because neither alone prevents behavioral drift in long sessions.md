@@ -25,7 +25,7 @@ Since [[RLHF follows a four-stage pipeline from pretraining through SFT to rewar
 
 Sources:
 - behavioral-contracts-ai-coding-agents-research-2026-03-01 (archived to archive/inbox/)
-- [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]] (RLHF mechanism details)
+- rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02 (RLHF mechanism details)
 
 Relevant Notes:
 - [[RLHF training rewards premature helpfulness causing LLMs to make early assumptions that anchor subsequent responses]] -- the training-time alignment that creates some failure modes

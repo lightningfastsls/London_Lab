@@ -4,6 +4,7 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # auto-memory 200-line hard-coded limit and lack of automatic consolidation creates growing redundancy without manual intervention

@@ -20,12 +20,14 @@ The reward model's imperfection is the source of all downstream reward hacking p
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[pairwise comparisons produce more reliable human preference data than absolute ratings because relative judgments avoid calibration problems]] — why pairwise, not absolute
 - [[reward hacking in RLHF follows Goodhart's law with four variants regressional extremal causal and adversarial]] — the downstream consequence of imperfect reward models
 - [[scaling laws for reward over-optimization show proxy rewards grow linearly while gold rewards follow a non-linear curve that eventually decreases]] — how reward model quality affects alignment
+- [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- the quality-over-quantity principle likely applies to reward model training data too: 50k curated pairwise comparisons may outperform 500k noisy ones
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- reward models can be trained with LoRA, reducing the 6B-52B reward model memory footprint and enabling reward model iteration on consumer hardware
 
 Topics:
 - [[model-adaptation]]

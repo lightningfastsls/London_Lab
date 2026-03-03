@@ -18,7 +18,7 @@ Straight paths are preferred because they: (1) are shortest between two points, 
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Liu et al. 2023, arXiv:2209.03003)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Liu et al. 2023, arXiv:2209.03003)
 
 Relevant Notes:
 - [[flow matching trains continuous normalizing flows by direct velocity field regression without ODE integration during training]] -- the foundation this builds on

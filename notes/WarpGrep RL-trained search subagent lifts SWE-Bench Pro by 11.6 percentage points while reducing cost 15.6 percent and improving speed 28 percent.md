@@ -4,6 +4,8 @@ type: baseline
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics:
+  - "[[code-review-governance]]"
 ---
 
 # WarpGrep RL-trained search subagent lifts SWE-Bench Pro by 11.6 percentage points while reducing cost 15.6 percent and improving speed 28 percent

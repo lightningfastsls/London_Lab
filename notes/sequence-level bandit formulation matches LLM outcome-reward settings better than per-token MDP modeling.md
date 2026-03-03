@@ -19,7 +19,7 @@ The implication extends beyond algorithm choice: it suggests that the credit ass
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[credit assignment over hundreds of tokens from a single scalar reward is the central bottleneck of RLHF]] — the problem this finding addresses

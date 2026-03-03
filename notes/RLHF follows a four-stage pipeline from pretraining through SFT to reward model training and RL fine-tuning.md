@@ -22,7 +22,7 @@ The standard RLHF pipeline consists of four stages:
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[pairwise comparisons produce more reliable human preference data than absolute ratings because relative judgments avoid calibration problems]] — Stage 3 methodology

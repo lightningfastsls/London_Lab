@@ -28,12 +28,13 @@ However, since [[PPO consistently outperforms DPO across dialogue code generatio
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[PPO consistently outperforms DPO across dialogue code generation and safety tasks but DPO adoption grew 45 percent by 2025 due to simplicity]] — the performance-simplicity trade-off
 - [[PPO for RLHF requires four models simultaneously creating a memory bottleneck that motivated critic-free alternatives]] — what DPO eliminates
 - [[RLHF follows a four-stage pipeline from pretraining through SFT to reward model training and RL fine-tuning]] — the pipeline DPO simplifies
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- DPO's 2-model simplicity combines well with LoRA: parameter-efficient fine-tuning on preference pairs requires only policy and reference LoRA adapters, making DPO alignment feasible on consumer hardware
 
 Topics:
 - [[model-adaptation]]

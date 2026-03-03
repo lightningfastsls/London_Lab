@@ -26,12 +26,14 @@ The broader lesson: adapting RL algorithms from robotics or games to LLMs withou
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[sequence-level bandit formulation matches LLM outcome-reward settings better than per-token MDP modeling]] — the theoretical foundation
 - [[Search-R1 found REINFORCE outperformed both PPO and GRPO for agentic deep research tasks with the highest accuracy and most efficient search strategies]] — the empirical validation
 - [[credit assignment over hundreds of tokens from a single scalar reward is the central bottleneck of RLHF]] — the problem REINFORCE sidesteps
+- [[pre-trained language models have low intrinsic dimension with larger models having even lower intrinsic dimension after pre-training]] -- the mathematical explanation for why "strong priors" make complex RL unnecessary: low intrinsic dimension means the model is already close to task solutions, requiring only small-magnitude updates that simple algorithms can provide
+- [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- the LoRA parallel: both REINFORCE and LoRA succeed because pre-trained models already have task-relevant structure that needs amplification rather than creation
 
 Topics:
 - [[model-adaptation]]

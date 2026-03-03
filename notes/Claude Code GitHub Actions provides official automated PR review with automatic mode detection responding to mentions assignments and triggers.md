@@ -4,6 +4,8 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics:
+  - "[[code-review-governance]]"
 ---
 
 # Claude Code GitHub Actions provides official automated PR review with automatic mode detection responding to mentions assignments and triggers

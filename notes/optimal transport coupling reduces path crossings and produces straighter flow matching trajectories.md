@@ -18,7 +18,7 @@ The OT coupling is complementary to the [[rectified flow reflow procedure iterat
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Lipman et al. 2022, Cambridge MLG blog)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Lipman et al. 2022, Cambridge MLG blog)
 
 Relevant Notes:
 - [[flow matching trains continuous normalizing flows by direct velocity field regression without ODE integration during training]] -- the framework this improves

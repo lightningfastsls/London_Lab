@@ -19,7 +19,7 @@ The tension is real: for tasks close to pre-training distribution (instruction f
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- the mechanism that produces this regularization
@@ -27,6 +27,7 @@ Relevant Notes:
 - [[multi-epoch LoRA training on static instruction data causes overfitting and capability degradation]] -- when even LoRA's regularization is overwhelmed
 - [[pre-trained language models have low intrinsic dimension with larger models having even lower intrinsic dimension after pre-training]] -- low intrinsic dimension means less room to deviate, reinforcing the regularization effect
 - [[LoRA makes explicit through gradient descent what ICL does implicitly through attention since both find task-relevant directions in weight space]] -- ICL's per-query nature inherently prevents catastrophic forgetting; LoRA's regularization is the explicit counterpart of this property
+- [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- LoRA's preservation of base model structure parallels the tension between imposing discrete categories and preserving continuous variation
 
 Topics:
 - [[model-adaptation]]

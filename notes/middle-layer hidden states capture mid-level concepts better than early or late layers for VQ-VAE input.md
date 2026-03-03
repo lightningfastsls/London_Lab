@@ -25,6 +25,8 @@ Relevant Notes:
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- the parent architecture
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- codebook dimension matches this projection
 - [[codebook collapse prevention requires simultaneous EMA updates plus dead code reset plus k-means init plus L2 normalization]] -- training stability for this extraction
+- [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- layer selection for VQ-VAE extraction parallels LoRA's finding that task-relevant directions already exist in pre-trained weights; mid-layer hidden states may already contain the concept-level directions LoRA would amplify
+- [[stacking transformer blocks creates hierarchical abstraction from syntax in lower layers through structure in middle layers to semantics in upper layers]] -- the probing evidence that motivates why layer 4 of 8 captures mid-level structure
 
 Topics:
 - [[representation-learning]]

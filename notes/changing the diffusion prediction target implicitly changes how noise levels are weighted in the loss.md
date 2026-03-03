@@ -22,7 +22,7 @@ This insight has practical consequences for [[the noise schedule is an arbitrary
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Dieleman 2024, sander.ai)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Dieleman 2024, sander.ai)
 
 Relevant Notes:
 - [[the three diffusion prediction targets epsilon x0 and velocity form a triangular relationship where any two determine the third]] -- the algebraic relationship underlying this

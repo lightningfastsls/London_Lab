@@ -4,7 +4,7 @@ type: method
 confidence: speculative
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
   - "[[signal-processing]]"
 ---
 

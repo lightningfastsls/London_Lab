@@ -23,6 +23,8 @@ Source:
 
 Relevant Notes:
 - [[spectrogram-based SSL avoids the sample rate mismatch that limits waveform-based models for USV analysis]] — the technical reason for the gap
+- [[QLoRA 4-bit quantization enables 7B model fine-tuning on consumer GPUs with 33 percent memory savings at 39 percent runtime cost]] -- addresses the HPC barrier for USV-specific model adaptation: consumer GPU fine-tuning could enable labs without datacenter access to adapt foundation models to the 300 kHz USV domain
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- LoRA offers a path to adapt existing speech SSL models to the USV domain with minimal parameters, potentially bridging this gap without training from scratch
 
 Topics:
 - [[bioacoustic-ssl]]

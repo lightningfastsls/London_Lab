@@ -18,7 +18,7 @@ This industry shift validates the theory: since [[velocity prediction satisfies 
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Esser et al. 2024, arXiv:2403.03206; Black Forest Labs 2024-2025)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Esser et al. 2024, arXiv:2403.03206; Black Forest Labs 2024-2025)
 
 Relevant Notes:
 - [[velocity prediction satisfies a bounded-gain condition making diffusion sampling inherently stable]] -- the theoretical basis for this shift

@@ -24,6 +24,7 @@ Source: unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-
 Relevant Notes:
 - [[AVES self-supervised model pretrained on general audio outperformed supervised baselines for bioacoustic tasks]] -- tension: AVES claimed supervised-beating performance, but this comprehensive comparison reverses that finding at scale
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- consistent: SSL works, but supervised works better for clustering
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- could adapt SSL models toward supervised-like clustering quality without requiring large labeled taxonomic datasets
 
 Topics:
 - [[bioacoustic-ssl]]

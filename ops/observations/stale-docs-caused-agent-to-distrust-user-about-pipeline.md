@@ -2,7 +2,10 @@
 description: "PROJECTS.md had outdated status for PyQt6 app and pipeline description, causing agent to question correct user claims"
 category: process-gap
 trigger: "Agent cited stale docs to contradict user about energy detector and PyQt6 app status"
-status: pending
+status: archived
+archived: 2026-03-03
+archived_by: rethink-2026-03-03
+resolution: "CLAUDE.md guardrail added (line 190): 'Don't cite documentation status to contradict user claims without verifying CODE first'. PROJECTS.md Section 4 updated to 'DONE and operational'."
 ---
 
 # Stale documentation caused agent to distrust user's correct description of the current pipeline

@@ -5,7 +5,7 @@ confidence: likely
 meta_state: current
 topics:
   - "[[classification]]"
-  - "[[detection]]"
+  - "[[detection-landscape]]"
 ---
 
 # OpenSoundscape provides a full ML training pipeline with native Raven format support for bioacoustic classification

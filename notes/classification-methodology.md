@@ -31,6 +31,7 @@ Methods for determining what USV types exist, comparing repertoires across popul
 
 - [[classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data]] -- key finding from BootSnap
 - [[Zala et al 2020 showed wild-derived mice modulate USVs with social context producing 9 types during interaction versus 6 during introduction]] -- wild mice adjust repertoire with social context
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- enables population-specific adaptation of a shared base classifier with minimal wild mouse labels; see [[model-adaptation]]
 
 ## Repertoire Comparison Methods
 

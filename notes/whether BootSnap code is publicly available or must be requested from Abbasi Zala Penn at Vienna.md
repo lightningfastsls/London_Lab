@@ -35,7 +35,7 @@ Relevant Notes:
 - [[gammatone spectrograms outperform standard STFTs for USV classification according to BootSnap]] -- the spectral representation choice
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the strategy that could use BootSnap
 - [[classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data]] -- BootSnap uniquely addressed this
-- [[no Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap]] -- BootSnap is the best candidate to fill this gap
+- [[No single Python tool cleanly accepts pre-detected USV segments and classifies them into syllable types as of 2026]] -- BootSnap is the best candidate to fill this gap
 
 Topics:
 - [[classification-tools]]

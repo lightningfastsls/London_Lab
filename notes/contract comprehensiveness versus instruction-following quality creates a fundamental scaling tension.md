@@ -33,7 +33,7 @@ This tension is live in our own CLAUDE.md. Every rule added to govern agent beha
 
 ---
 
-Source: [[behavioral-contracts-ai-coding-agents-research-2026-03-01]]
+Source: behavioral-contracts-ai-coding-agents-research-2026-03-01
 
 Topics:
 - [[agent-governance]]

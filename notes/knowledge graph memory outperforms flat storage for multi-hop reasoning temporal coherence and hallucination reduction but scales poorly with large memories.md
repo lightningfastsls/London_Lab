@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # knowledge graph memory outperforms flat storage for multi-hop reasoning temporal coherence and hallucination reduction but scales poorly with large memories

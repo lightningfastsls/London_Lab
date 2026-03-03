@@ -4,7 +4,7 @@ type: finding
 confidence: likely
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
 ---
 
 # Whombat is the first web-based platform for collaborative bioacoustic annotation with ML-assisted review

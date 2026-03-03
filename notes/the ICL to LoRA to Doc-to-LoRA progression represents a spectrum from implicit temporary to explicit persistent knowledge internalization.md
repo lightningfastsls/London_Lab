@@ -24,7 +24,7 @@ The implication for agent architecture: rather than choosing between context-bas
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[ICL is mathematically equivalent to query-dependent low-rank weight modifications of the MLP where each context token contributes a rank-1 update]] -- the implicit end of the spectrum

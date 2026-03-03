@@ -9,6 +9,7 @@ Welcome to your USV research knowledge system.
 
 ## Topic Maps
 - [[detection]] -- USV detection pipeline, energy detection, candidate generation
+  - [[detection-landscape]] -- architectural taxonomy, alternative tools, source separation, annotation ecosystem
 - [[classification]] -- CNN operational pipeline, labeling, training, performance baselines
   - [[classification-tools]] -- DeepSqueak, Python tools landscape, Raven interchange
   - [[classification-methodology]] -- clustering, repertoire comparison, few-shot learning, cross-population generalization
@@ -25,6 +26,7 @@ Welcome to your USV research knowledge system.
 - [[context-management]] -- within-session context window degradation, attention mechanisms, benchmarks, and architectural patterns
 - [[agent-memory]] -- cross-session memory architecture, forgetting strategies, MCP ecosystem, and multi-agent orchestration infrastructure
 - [[agent-governance]] -- behavioral contracts, formal compliance frameworks, enforcement layers, and implementation patterns for constraining agent behavior
+  - [[code-review-governance]] -- multi-agent review architectures, cost optimization, effectiveness research, and tooling
 - [[transformer-architecture]] -- self-attention mechanics, positional encoding, MLP function, residual streams, and in-context learning theory
 - [[rl-alignment]] -- RLHF pipeline, policy optimization algorithms (PPO, GRPO, REINFORCE, DPO), reward hacking dynamics, reward engineering meta-finding
 - [[generative-modeling]] -- diffusion models, flow matching, stability analysis (Jensen Gap vs bounded gain), prediction targets, acceleration, production adoption

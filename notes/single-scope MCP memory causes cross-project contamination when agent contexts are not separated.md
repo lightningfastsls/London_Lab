@@ -4,6 +4,7 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # single-scope MCP memory causes cross-project contamination when agent contexts are not separated

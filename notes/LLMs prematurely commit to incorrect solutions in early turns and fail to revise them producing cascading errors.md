@@ -25,6 +25,8 @@ Relevant Notes:
 - [[answer bloat compounds multi-turn errors as responses grow verbose without pruning incorrect assumptions]] -- the bloat mechanism
 - [[even two conversational turns trigger multi-turn degradation regardless of task complexity]] -- why even minimal iteration fails
 - [[concatenating all requirements into a single prompt restores approximately 95 percent of single-turn performance]] -- the specification-first alternative
+- [[Slow Thinking training templates are prone to self-reinforcing reasoning collapse where think tag frequency correlates with reward creating positive feedback loops]] -- a parallel premature-commitment failure in reasoning models: think tag frequency correlates with reward, creating positive feedback loops that amplify initial reasoning direction rather than enabling revision
+- [[struggle protocol over silent failure requires agents to surface uncertainty rather than fabricate confidence]] -- the vault's own mitigation: explicit permission for uncertainty counteracts the premature commitment incentive
 
 Topics:
 - [[agent-cognition]]

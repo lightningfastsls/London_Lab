@@ -17,7 +17,7 @@ The implication for our domain: LoRA fine-tuning of audio models for USV-specifi
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- why small datasets suffice mechanistically
@@ -26,6 +26,7 @@ Relevant Notes:
 - [[QLoRA 4-bit quantization enables 7B model fine-tuning on consumer GPUs with 33 percent memory savings at 39 percent runtime cost]] -- combines with small datasets for accessible fine-tuning
 - [[reward model training uses Bradley-Terry pairwise comparison on approximately 50k labeled preference samples]] -- contrasts with the RL alignment domain where ~50k preference samples is standard; the quality-over-quantity principle likely applies to reward model training data as well
 - [[scaling laws for reward over-optimization show proxy rewards grow linearly while gold rewards follow a non-linear curve that eventually decreases]] -- more reward model training data reduces Goodharting, paralleling how curated data quality reduces overfitting
+- [[model size should scale with labeled dataset size to balance underfitting and overfitting]] -- the complementary principle: data quality determines what to train on, model-data scaling determines how much capacity to use
 
 Topics:
 - [[model-adaptation]]

@@ -4,7 +4,7 @@ type: finding
 confidence: likely
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
   - "[[classification]]"
 ---
 

@@ -4,6 +4,7 @@ type: pattern
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[context-management]]"
 ---
 
 # context quality over quantity is the defining trend with tools optimizing for less context that matters more not more context that dilutes

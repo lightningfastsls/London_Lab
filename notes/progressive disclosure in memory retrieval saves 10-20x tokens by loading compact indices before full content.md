@@ -4,6 +4,7 @@ type: pattern
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # progressive disclosure in memory retrieval saves 10-20x tokens by loading compact indices before full content

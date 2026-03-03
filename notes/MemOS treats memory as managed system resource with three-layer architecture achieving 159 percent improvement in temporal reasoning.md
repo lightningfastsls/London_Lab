@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # MemOS treats memory as managed system resource with three-layer architecture achieving 159 percent improvement in temporal reasoning

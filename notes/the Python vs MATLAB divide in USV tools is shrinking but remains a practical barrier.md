@@ -4,7 +4,7 @@ type: finding
 confidence: likely
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
 ---
 
 # the Python vs MATLAB divide in USV tools is shrinking but remains a practical barrier

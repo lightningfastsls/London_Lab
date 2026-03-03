@@ -4,6 +4,7 @@ type: method
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # dream-inspired consolidation cycles compress old memories on daily weekly monthly schedules to manage long-term growth

@@ -21,6 +21,8 @@ Relevant Notes:
 - [[recording-level splits prevent data leakage in USV classification]] -- the decision creating this tradeoff
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- another data preparation concern
 - [[3x class weight boost compensates for USV class imbalance in CNN training]] -- smaller effective training sets from recording-level splits intensify class imbalance, increasing the need for weight boosting
+- [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- LoRA's data efficiency suggests the reduced effective training set from recording-level splits may be less of a limitation when adapting pre-trained models rather than training from scratch
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- parameter-efficient adaptation could make the most of the smaller honest training set by requiring fewer examples to signal task-relevant directions
 
 Topics:
 - [[experimental-methods]]

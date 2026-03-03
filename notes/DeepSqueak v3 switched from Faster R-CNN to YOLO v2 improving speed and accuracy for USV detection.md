@@ -5,7 +5,7 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
   - "[[classification]]"
 ---
 

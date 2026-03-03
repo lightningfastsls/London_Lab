@@ -4,6 +4,8 @@ type: open-question
 confidence: speculative
 created: 2026-03-02
 meta_state: current
+topics:
+  - "[[code-review-governance]]"
 ---
 
 # whether specialization across multiple AI tools via MCP orchestration outperforms monolithic agent approaches for complex coding tasks

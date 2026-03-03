@@ -4,6 +4,7 @@ type: baseline
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # Graphiti temporal knowledge graph achieved 94.8 percent accuracy on DMR with entropy-gated fuzzy matching for entity deduplication

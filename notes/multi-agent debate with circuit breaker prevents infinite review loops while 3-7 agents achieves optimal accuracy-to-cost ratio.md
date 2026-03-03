@@ -5,7 +5,7 @@ confidence: experimental
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-governance]]"
+  - "[[code-review-governance]]"
 ---
 
 # Multi-agent debate with circuit breaker prevents infinite review loops while 3-7 agents achieves optimal accuracy-to-cost ratio

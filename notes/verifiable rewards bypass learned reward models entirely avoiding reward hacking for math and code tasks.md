@@ -21,7 +21,7 @@ The success of RLVR also provides a natural experiment: it demonstrates what RL 
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[reward hacking in RLHF follows Goodhart's law with four variants regressional extremal causal and adversarial]] — what RLVR avoids

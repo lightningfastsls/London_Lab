@@ -5,7 +5,7 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
   - "[[classification]]"
 ---
 
@@ -28,7 +28,7 @@ Relevant Notes:
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- consistent cross-domain transfer finding
 - [[AVES self-supervised model pretrained on general audio outperformed supervised baselines for bioacoustic tasks]] -- another SSL model showing cross-domain transfer
 - [[causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams]] -- transformer-based USV analysis in our pipeline
-- [[no Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap]] -- WhisperSeg also cannot fill this gap
+- [[No single Python tool cleanly accepts pre-detected USV segments and classifies them into syllable types as of 2026]] -- WhisperSeg also cannot fill this gap
 
 Topics:
 - [[detection]]

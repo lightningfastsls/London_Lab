@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # AgeMem unified memory with tool-based operations outperforms separate LTM and STM components with heuristic controllers

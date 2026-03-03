@@ -110,11 +110,13 @@
     {
       "id": "seed-006",
       "type": "extract",
-      "phase": "reduce",
+      "current_phase": "done",
+      "completed_phases": ["reduce", "reflect", "reweave"],
       "source": "inbox/lora-doc-to-lora-hypernetworks-research-2026-03-02.md",
       "description": "Extract atomic notes from LoRA fundamentals, PEFT landscape, Doc-to-LoRA hypernetworks, and ICL-LoRA adaptation spectrum",
       "status": "done",
-      "completed": "2026-03-02",
+      "completed": "2026-03-03",
+      "reduce_completed": "2026-03-02",
       "created": "2026-03-02",
       "priority": "standard",
       "notes": [

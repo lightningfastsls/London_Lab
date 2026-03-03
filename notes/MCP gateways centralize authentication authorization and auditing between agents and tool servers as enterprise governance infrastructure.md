@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-governance]]"
 ---
 
 # MCP gateways centralize authentication authorization and auditing between agents and tool servers as enterprise governance infrastructure

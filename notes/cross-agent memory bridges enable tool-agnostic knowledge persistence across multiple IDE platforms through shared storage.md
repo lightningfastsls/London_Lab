@@ -4,6 +4,7 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # cross-agent memory bridges enable tool-agnostic knowledge persistence across multiple IDE platforms through shared storage

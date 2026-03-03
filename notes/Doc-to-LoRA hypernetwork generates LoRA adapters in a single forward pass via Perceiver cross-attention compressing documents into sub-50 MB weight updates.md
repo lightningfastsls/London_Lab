@@ -27,7 +27,7 @@ Since [[Doc-to-LoRA reduces KV-cache memory from 12-plus GB to constant sub-50 M
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[hypernetworks learn functions that generate weights for other networks amortizing per-task training cost into a single meta-training phase]] -- the foundational concept

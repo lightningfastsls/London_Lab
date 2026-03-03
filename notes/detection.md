@@ -30,41 +30,8 @@ How we find USVs in raw audio. The pipeline uses a two-stage architecture: a per
 ## Label Persistence
 - [[JSON label files provide human-readable version-controllable persistence for detection labels and metadata]] -- one JSON per WAV stores detections, user labels, probability curves; git-friendly and inspectable
 
-## Detection Landscape & Architecture Taxonomy
-- [[six USV detection architectural approaches span object detection to speech model transfer with distinct tradeoff profiles]] -- taxonomy: object detection, segmentation, temporal, classical, speech transfer, hybrid
-- [[entropy-based USV detection achieves 94.9 percent recall and 99.3 percent precision as a classical signal processing alternative]] -- entropy measures spectral complexity; outperforms our energy detector precision
-- [[U-Net semantic segmentation exceeded 95 percent precision recall for USV detection in systematic DL comparison]] -- Ivanenko 2023: AE, U-Net, RNN all >90%; U-Net best generalization
-- [[HybridMouse CNN plus BiLSTM first combined spatial and temporal features for USV detection outperforming DeepSqueak in low SNR]] -- spatial+temporal hybrid; low-SNR robustness
-
-## Alternative Detection Tools
-- [[DeepSqueak v3 switched from Faster R-CNN to YOLO v2 improving speed and accuracy for USV detection]] -- DeepSqueak's MATLAB-only detection architecture evolution
-- [[DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input]] -- highest reported detection metrics (Python, TensorFlow)
-- [[WhisperSeg adapts OpenAI Whisper transformer for animal vocalization segmentation with positive cross-species transfer]] -- outperforms DAS with cross-species transfer
-- [[SqueakOut autoencoder segmentation achieves Dice 90.2 designed to feed downstream unsupervised clustering pipelines]] -- pixel-level USV masks, MobileNetV2 backbone (4.6M params, 18MB)
-- [[including a noise-false-positive class in the USV classifier catches residual detection errors]] -- classification-stage noise class as second-pass detection filter
-- [[unsupervised clustering as post-detection filtering eliminates 88 percent false positives while retaining 95 percent true positives]] -- unsupervised clustering as third-stage precision filter
-
-## Source Separation & Overlap Handling
-- [[no published single-channel USV source separation method exists as of 2026]] -- BioCPPNet handles macaques/dolphins/bats but 25-120 kHz USVs untested; labs discard overlapping recordings
-- [[BioCPPNet U-Net architecture with permutation-invariant training enables single-channel bioacoustic source separation]] -- first neural bioacoustic source separation; STFT encoder + U-Net masks for 2-3 vocalizers
-- [[spectrogram segmentation tools like SqueakOut and VocalMat are binary detectors that cannot separate overlapping USVs]] -- pixel is USV/not-USV with no USV-1 vs USV-2 distinction
-- [[synthetic mixture training is the standard approach for training bioacoustic source separation networks]] -- mix isolated single-source recordings; viable for USVs from single-animal data
-- [[frequency separation provides a partial solution when overlapping USVs occupy different spectral bands]] -- spectral peak splitting when calls occupy different frequency ranges; no NN needed
-- [[hardware approaches solve USV attribution but not signal separation for overlapping calls]] -- mic arrays/wearables identify who vocalized but don't decompose the mixture waveform
-- [[HyVL hybrid beamforming achieves 3 to 5 mm USV localization precision with 91 percent source assignment]] -- 64-element acoustic camera + 4 ultrasonic mics; 3x better than prior systems
-- [[wearable miniature microphones achieve 90 percent USV attribution from amplitude alone]] -- 1.17g headgear-mounted mic; 10-20 dB proximity advantage; 97% with video
-- [[Conv-TasNet time-domain separation architecture could handle 300 kHz USV recordings directly but requires ultrasonic training data]] -- time-domain separation natively handles any sample rate but needs USV training data
-
-## Annotation Tools & Ecosystem
-- [[no single bioacoustic tool covers the full detection-annotation-review-export pipeline]] -- ecosystem fragmented across detection, annotation, review, export tools with format friction
-- [[Whombat is the first web-based platform for collaborative bioacoustic annotation with ML-assisted review]] -- Python/FastAPI + React; project management, multi-annotator, ML-assisted labeling
-- [[Crowsetta standardizes annotation format interoperability across bioacoustic tools via a unified Python API]] -- VocalPy ecosystem; reads/writes Raven, Audacity, Praat, custom formats
-- [[mouse USV annotation tools focus on detection and segmentation rather than human review and labeling workflows]] -- VocalMat/USVSEG/SqueakOut/DAS find calls but lack review interfaces
-- [[active learning annotation workflows are the frontier in bioacoustic tools]] -- Whombat/OpenSoundscape/DAS support annotate-train-predict-review cycles
-- [[the Python vs MATLAB divide in USV tools is shrinking but remains a practical barrier]] -- DeepSqueak/VocalMat MATLAB-only; DAS/SqueakOut/Whombat/Crowsetta form comprehensive Python ecosystem
-- [[OpenSoundscape provides a full ML training pipeline with native Raven format support for bioacoustic classification]] -- BoxedAnnotations, CNN transfer learning, active learning, batch prediction
-- [[A-MUD classical signal processing detector outperforms USVSEG and MUPET in true positive rate for USV detection]] -- 90.6%/80.0% precision/recall; best classical method but requires proprietary STx software
-- [[a comprehensive practical bioacoustics detection guide was published in Biological Reviews 2025]] -- best practices for training data, evaluation metrics, cross-dataset generalization
+## Sub-Maps
+- [[detection-landscape]] -- architectural taxonomy, alternative tools, source separation, annotation ecosystem (28 notes)
 
 ## Open Questions
 - [[optimal bout gap threshold may vary across behavioral contexts and recording conditions]]

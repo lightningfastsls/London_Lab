@@ -19,7 +19,7 @@ The deployment model this enables — one base model, many specialized behaviors
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[LoRA introduces no inference latency because adapter weights merge into base model weights unlike adapters and prefix tuning]] -- the property that enables millisecond switching

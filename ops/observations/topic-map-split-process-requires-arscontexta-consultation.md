@@ -2,6 +2,10 @@
 description: First topic map split revealed that arscontexta-expert consultation should precede structural KG changes, not follow them
 category: process-gap
 date: 2026-03-03
+status: archived
+archived: 2026-03-03
+archived_by: rethink-2026-03-03
+resolution: "Added arscontexta-expert consultation requirement to CLAUDE.md Topic Maps section (Proposal 6). Split threshold also raised from 35 to 50 (Proposal 7)."
 ---
 
 # topic map split process requires arscontexta consultation before execution

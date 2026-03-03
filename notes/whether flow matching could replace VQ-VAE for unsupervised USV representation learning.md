@@ -27,7 +27,7 @@ The hybrid approach would also need to address the research gap: [[end-to-end VQ
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (synthesized question)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (synthesized question)
 
 Relevant Notes:
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- the tension that flow matching might resolve

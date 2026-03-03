@@ -24,7 +24,7 @@ This result bridges the SDE and ODE formulations of diffusion models and is foun
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Song et al. 2021, arXiv:2011.13456; Anderson's theorem)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Song et al. 2021, arXiv:2011.13456; Anderson's theorem)
 
 Relevant Notes:
 - [[flow matching trains continuous normalizing flows by direct velocity field regression without ODE integration during training]] -- builds on the ODE formulation

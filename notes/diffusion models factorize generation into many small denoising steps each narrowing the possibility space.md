@@ -18,7 +18,7 @@ The tension is efficiency: more steps = better quality but slower generation. Th
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Ho et al. 2020, Lilian Weng 2021)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Ho et al. 2020, Lilian Weng 2021)
 
 Relevant Notes:
 - [[the probability flow ODE enables deterministic sampling and exact likelihood computation from any diffusion SDE]] -- the deterministic alternative to stochastic stepping

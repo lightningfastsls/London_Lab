@@ -69,6 +69,6 @@ Effective context is far smaller than claimed context. The root causes are well-
 - [[whether compacting context early rather than at near-capacity preserves meaningfully higher quality]] -- compaction timing optimization
 
 ## Agent Notes
-- These findings directly inform this vault's context management: the [[bulk-source-processing-strategy]] in ops/methodology/ applies Fresh Context to knowledge processing, and the orient-work-persist session rhythm keeps context lean.
+- These findings directly inform this vault's context management: the bulk-source-processing-strategy in ops/methodology/ applies Fresh Context to knowledge processing, and the orient-work-persist session rhythm keeps context lean.
 - The [[subagent architecture isolates context degradation by giving each task a focused window and compressing summaries upward]] pattern is implemented throughout the vault's /reduce, /reflect, /reweave pipeline.
 - Cross-session memory, MCP infrastructure, and orchestration patterns are in [[agent-memory]]. Key bridge notes: progressive disclosure, subagent architecture, MCP Tool Search appear in both maps.

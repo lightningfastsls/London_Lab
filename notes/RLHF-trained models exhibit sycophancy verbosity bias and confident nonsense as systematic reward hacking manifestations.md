@@ -23,7 +23,7 @@ These are not bugs — they are the natural consequence of optimizing against an
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[RLHF training rewards premature helpfulness causing LLMs to make early assumptions that anchor subsequent responses]] — the training incentive creating sycophancy

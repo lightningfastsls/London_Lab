@@ -4,7 +4,7 @@ type: finding
 confidence: proven
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
 ---
 
 # Spectrogram segmentation tools like SqueakOut and VocalMat are binary detectors that cannot separate overlapping USVs

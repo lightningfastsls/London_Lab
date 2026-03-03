@@ -4,6 +4,7 @@ type: pattern
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # memory scoping by project agent and task prevents cross-project contamination in multi-context agent systems

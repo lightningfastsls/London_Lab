@@ -23,7 +23,7 @@ The striking empirical finding is that the simplest approach — treating the wh
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[sequence-level bandit formulation matches LLM outcome-reward settings better than per-token MDP modeling]] — the simplification that works

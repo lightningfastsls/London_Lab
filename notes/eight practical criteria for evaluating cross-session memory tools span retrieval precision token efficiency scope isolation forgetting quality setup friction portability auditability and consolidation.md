@@ -4,6 +4,7 @@ type: method
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # eight practical criteria for evaluating cross-session memory tools span retrieval precision token efficiency scope isolation forgetting quality setup friction portability auditability and consolidation

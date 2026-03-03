@@ -17,12 +17,13 @@ This interacts with rank choice — higher-rank adapters have more capacity to m
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[LoRA acts as implicit regularizer preserving base model capabilities with strong inverse linear relationship between adaptation and forgetting]] -- the regularization that multi-epoch training overwhelms
 - [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- the complementary finding about data quality
 - [[adapting multiple LoRA weight matrices with lower rank outperforms single-matrix adaptation at higher rank for the same parameter budget]] -- higher-rank adapters are more susceptible to this overfitting
+- [[SFT suffers from exposure bias where teacher-forcing creates reliance on ground-truth context that degrades autoregressive generation]] -- multi-epoch LoRA compounds SFT's exposure bias: the model over-adapts to the teacher-forcing distribution with each additional epoch
 
 Topics:
 - [[model-adaptation]]

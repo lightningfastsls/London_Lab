@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # agent team token costs scale linearly with teammates making 3-5 the recommended size before coordination overhead dominates

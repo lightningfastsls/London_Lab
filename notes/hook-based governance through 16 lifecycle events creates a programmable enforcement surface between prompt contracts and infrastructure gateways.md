@@ -4,6 +4,7 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-governance]]"
 ---
 
 # hook-based governance through 16 lifecycle events creates a programmable enforcement surface between prompt contracts and infrastructure gateways

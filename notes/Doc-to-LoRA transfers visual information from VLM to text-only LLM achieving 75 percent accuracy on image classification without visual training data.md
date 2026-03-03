@@ -19,13 +19,14 @@ However, a limitation: the VLM context encoder negatively impacts text-based QA 
 
 ---
 
-Source: [[lora-doc-to-lora-hypernetworks-research-2026-03-02]]
+Source: lora-doc-to-lora-hypernetworks-research-2026-03-02
 
 Relevant Notes:
 - [[Doc-to-LoRA hypernetwork generates LoRA adapters in a single forward pass via Perceiver cross-attention compressing documents into sub-50 MB weight updates]] -- the base system this extends cross-modally
 - [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- suggests why cross-modal transfer is even possible
 - [[pre-trained language models have low intrinsic dimension with larger models having even lower intrinsic dimension after pre-training]] -- low intrinsic dimension may include cross-modal directions from text describing visual concepts
 - [[hypernetworks learn functions that generate weights for other networks amortizing per-task training cost into a single meta-training phase]] -- the VLM encoder is a hypernetwork mapping visual inputs to weight updates
+- [[a generic cross-species autoencoder performs nearly as well as species-specific models suggesting shared vocalization structure]] -- both demonstrate cross-domain representation transfer: VLM-to-text via adapter weights, and cross-species via shared autoencoder features
 
 Topics:
 - [[model-adaptation]]

@@ -31,6 +31,7 @@ Relevant Notes:
 - [[STSG spectrogram token skip-gram achieved only 0.559 AUC versus 0.810 for transfer learning on bioacoustic classification]] -- even worse performance from K-means tokens, forming a progression: K-means < post-hoc VQ < continuous baselines
 - [[separating representation learning from discretization enables richer feature discovery]] -- our architecture's principle
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- our two-phase approach that avoids the post-hoc trap
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- could close the post-hoc VQ gap by jointly adapting frozen encoder with quantization objective via lightweight LoRA
 
 Topics:
 - [[unsupervised-usv-discovery]]

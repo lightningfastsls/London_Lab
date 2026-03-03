@@ -27,11 +27,12 @@ The existence of a peak in the gold reward curve means there is an optimal amoun
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[reward hacking in RLHF follows Goodhart's law with four variants regressional extremal causal and adversarial]] — the qualitative framework these curves quantify
 - [[KL divergence penalty prevents reward model exploitation but paradoxically increases the proxy-gold reward gap]] — the counterintuitive interaction
+- [[LoRA acts as implicit regularizer preserving base model capabilities with strong inverse linear relationship between adaptation and forgetting]] -- LoRA may provide a natural mechanism for staying near the gold reward peak: its low-rank constraint limits how far the policy can deviate from the reference point, functioning as implicit early stopping
 
 Topics:
 - [[model-adaptation]]

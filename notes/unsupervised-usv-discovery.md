@@ -48,6 +48,7 @@ Methods and evidence for discovering USV type categories without human-defined l
 - [[classification]] -- supervised categorization that contrasts with unsupervised discovery
 - [[bioacoustic-ssl]] -- foundation model embeddings as input features for clustering
 - [[experimental-methods]] -- evaluation methods for unsupervised category quality
+- [[model-adaptation]] -- LoRA adaptation of frozen SSL encoders for USV-specific discrete representation learning
 
 ---
 

@@ -4,6 +4,7 @@ type: method
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # graph-based memory taxonomy classifies agent memory across temporal scope functional role structure and cognitive type

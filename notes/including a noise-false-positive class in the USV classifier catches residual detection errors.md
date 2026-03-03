@@ -7,7 +7,7 @@ conditions:
 meta_state: current
 topics:
   - "[[classification]]"
-  - "[[detection]]"
+  - "[[detection-landscape]]"
 ---
 
 # Including a noise-false-positive class in the USV classifier catches residual detection errors

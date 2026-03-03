@@ -4,6 +4,9 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics:
+  - "[[agent-memory]]"
+  - "[[context-management]]"
 ---
 
 # MCP Tool Search reduces context pollution by 85-95 percent through lazy loading of tool descriptions via lightweight search index

@@ -25,11 +25,12 @@ However, since [[sequence-level bandit formulation matches LLM outcome-reward se
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[PPO for RLHF requires four models simultaneously creating a memory bottleneck that motivated critic-free alternatives]] — the cost of this approach
 - [[REINFORCE++ bridges REINFORCE simplicity with PPO stability via token-level KL penalty and ratio clipping achieving 30 percent training time reduction]] — selective adoption of PPO innovations
+- [[LoRA acts as implicit regularizer preserving base model capabilities with strong inverse linear relationship between adaptation and forgetting]] — parallel anti-forgetting mechanism: PPO constrains update magnitude via clipping, LoRA constrains update rank via low-rank decomposition; both prevent catastrophic deviation from the pre-trained point
 
 Topics:
 - [[model-adaptation]]

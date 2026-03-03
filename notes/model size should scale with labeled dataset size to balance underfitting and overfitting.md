@@ -20,3 +20,7 @@ The confidence rating of "likely" reflects that these tier boundaries were set p
 ---
 
 Source: [ROADMAP](../ROADMAP.md), Phase 2
+
+Relevant Notes:
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- decouples model size from trainable parameter count, enabling large pretrained models on small datasets without overfitting
+- [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- LoRA's data efficiency suggests these scaling tiers may be conservative when adapting rather than training from scratch

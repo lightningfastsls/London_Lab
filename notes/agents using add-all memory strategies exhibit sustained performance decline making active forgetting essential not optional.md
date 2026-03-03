@@ -4,6 +4,7 @@ type: finding
 confidence: likely
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # agents using add-all memory strategies exhibit sustained performance decline making active forgetting essential not optional

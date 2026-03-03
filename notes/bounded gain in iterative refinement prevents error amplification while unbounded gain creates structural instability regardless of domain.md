@@ -24,7 +24,7 @@ This is the abstracted design pattern from the Geometry of Noise stability analy
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (arXiv:2602.18428, Section 11)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (arXiv:2602.18428, Section 11)
 
 Relevant Notes:
 - [[error amplification near targets is a general instability pattern in iterative refinement systems beyond diffusion models]] -- the concrete observation this generalizes

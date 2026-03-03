@@ -20,7 +20,7 @@ This equivalence has an important practical implication: existing diffusion mode
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Diffusion Meets Flow Matching analysis, diffusionflow.github.io)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Diffusion Meets Flow Matching analysis, diffusionflow.github.io)
 
 Relevant Notes:
 - [[the noise schedule is an arbitrary reparameterization while the effective loss weighting over signal-to-noise ratio is what matters]] -- why the equivalence holds

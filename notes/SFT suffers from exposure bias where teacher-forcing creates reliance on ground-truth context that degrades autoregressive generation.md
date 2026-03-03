@@ -19,11 +19,13 @@ This has a parallel to the LoRA/ICL distinction: since [[LoRA makes explicit thr
 
 ---
 
-Source: [[rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02]]
+Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 
 Relevant Notes:
 - [[RL is needed for LLM alignment because no differentiable loss function captures the multi-dimensional quality of human preference judgments]] — the broader motivation for RL
 - [[LoRA makes explicit through gradient descent what ICL does implicitly through attention since both find task-relevant directions in weight space]] — parallel between SFT and RL weight updates
+- [[multi-epoch LoRA training on static instruction data causes overfitting and capability degradation]] -- exposure bias compounds with LoRA overfitting: static SFT data with multiple LoRA epochs amplifies the teacher-forcing distribution mismatch
+- [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- curated data partially mitigates exposure bias by ensuring high-quality demonstrations that more closely match the distribution the model will encounter at inference
 
 Topics:
 - [[agent-cognition]]

@@ -28,6 +28,7 @@ Source: transformer-architecture-icl-fundamentals-research-2026-03-02 (archived 
 Relevant Notes:
 - [[ICL is mathematically equivalent to query-dependent low-rank weight modifications of the MLP where each context token contributes a rank-1 update]] -- the result these limitations apply to
 - [[Von Oswald et al showed a single linear self-attention layer can implement a gradient descent step with trained transformers on regression tasks matching this construction]] -- parallel result with similar scope constraints
+- [[LoRA makes explicit through gradient descent what ICL does implicitly through attention since both find task-relevant directions in weight space]] -- LoRA's explicit weight updates are not subject to these single-block/first-token limitations
 
 Topics:
 - [[transformer-architecture]]

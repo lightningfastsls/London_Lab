@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[detection]]"
+  - "[[detection-landscape]]"
 ---
 
 # Six USV detection architectural approaches span object detection to speech model transfer with distinct tradeoff profiles

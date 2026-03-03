@@ -18,7 +18,7 @@ EDM anticipated the "schedule-free" thinking later formalized by Dieleman: since
 
 ---
 
-Source: [[diffusion-flow-matching-stability-research-2026-03-02]] (Karras et al. 2022, arXiv:2206.00364)
+Source: diffusion-flow-matching-stability-research-2026-03-02 (Karras et al. 2022, arXiv:2206.00364)
 
 Relevant Notes:
 - [[the noise schedule is an arbitrary reparameterization while the effective loss weighting over signal-to-noise ratio is what matters]] -- the schedule-free direction EDM anticipated

@@ -4,6 +4,7 @@ type: finding
 confidence: proven
 created: 2026-03-02
 meta_state: current
+topics: "[[agent-memory]]"
 ---
 
 # Claude Squad and Claude Flow provide community multi-agent orchestration with broader tool support than official agent teams

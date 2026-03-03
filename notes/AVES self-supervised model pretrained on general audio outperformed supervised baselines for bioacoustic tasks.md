@@ -35,6 +35,7 @@ Relevant Notes:
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- our current approach; AVES could be an alternative backbone
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- Sarkar 2025 finding on SSL transfer
 - [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- AVES uses continuous representations, gap remains
+- [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- practical method to adapt AVES for USV-specific tasks between frozen features and full retraining
 
 Topics:
 - [[bioacoustic-ssl]]
