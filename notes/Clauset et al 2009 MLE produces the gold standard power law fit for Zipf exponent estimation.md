@@ -18,7 +18,7 @@ Additionally, a likelihood ratio test compares the power-law fit against alterna
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Zipf's law exponent reveals whether VQ-VAE code sequences have language-like frequency distribution]] -- this method provides the statistically rigorous implementation for measuring the Zipf exponent

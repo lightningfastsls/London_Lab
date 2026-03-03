@@ -11,7 +11,7 @@ topics:
 
 # Two-stage detection uses permissive energy detector followed by CNN precision filter
 
-The USV detection pipeline uses a two-stage architecture. The first stage is a permissive energy detector that scans the spectrogram for regions with elevated energy in the USV frequency band (25-110 kHz). This stage is tuned for high recall -- it catches most USVs but also generates many false positives. The second stage is a CNN classifier that examines each candidate and filters for precision. This separation of concerns means each stage can be optimized independently: the energy detector for sensitivity, the CNN for specificity. The pattern generalizes beyond USV detection -- since [[two-stage coarse-to-fine filtering is effective for imbalanced detection tasks]].
+The USV detection pipeline uses a two-stage architecture. The first stage is a permissive energy detector that scans the spectrogram for regions with elevated energy in the USV frequency band (25-110 kHz). This stage is tuned for high recall -- it catches most USVs but also generates many false positives. The second stage is a CNN classifier that examines each candidate and filters for precision. This separation of concerns means each stage can be optimized independently: the energy detector for sensitivity, the CNN for specificity. The pattern generalizes beyond USV detection -- since [[two-stage coarse-to-fine filtering is effective for imbalanced detection tasks]]. Beyond detection, this pipeline's output is the sole data source for the downstream representation learning system: detected USVs are assembled into bouts that feed the transformer, whose hidden states are then discretized by VQ-VAE (see [[transformer-first then VQ-VAE avoids forcing premature discretization]]). Any systematic bias in detection — missed call types, noise leakage — propagates directly into the learned codebook.
 
 ---
 
@@ -23,6 +23,7 @@ Relevant Notes:
 - [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]] -- the CNN architecture
 - [[recall versus precision tradeoff in two-stage USV detection]] -- the designed tradeoff
 - [[DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision]] -- competitive positioning vs the most widely used alternative
+- [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- detection output feeds the representation learning pipeline; detection bias propagates into VQ-VAE codebook quality
 
 Topics:
 - [[detection]]

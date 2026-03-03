@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 29-38: '## SUMMARY' section lists notes: 7, implementation ideas: 3, tensions: 2, enrichment tasks: 4, validations: 0, open questions: 2, skipped: 1, TOTAL OUTPUTS: 19"
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "7 claims + 3 implementation ideas + 2 tensions + 4 enrichments + 0 validations = 16 extractions (plus 2 open questions = 18 non-skipped outputs)"
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "Line 198: 'Skip rate: 1/20 candidates = 5%' — 5% is well below the 15% threshold"
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "Claims #1-7 each have 'Rationale' fields (e.g., claim #1 line 47: 'The paper's core problem statement...'). Implementation ideas #1-3 each have 'Why it matters' fields. Tensions #1-2 each have 'Why it matters' fields. Enrichments #1-4 each have 'Why' fields. Open questions #1-2 each have 'Rationale' fields."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Three representative titles: (1) 'temporal averaging of frame-level features discards sequential structure in bioacoustic analysis' — propositional claim with verb. (2) 'caller identity is encoded more strongly than call-type identity in animal vocalization acoustic signals' — comparative claim. (3) 'VQ token sequences captured hierarchical distance patterns despite failing at downstream classification' — contrastive finding. All are full propositions, not topic labels."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "Five distinct categories present: CLAIMS with 7 items, IMPLEMENTATION IDEAS with 3 items, TENSIONS with 2 items, ENRICHMENT TASKS with 4 items, OPEN QUESTIONS with 2 items. (VALIDATIONS section present but with 0 items.)"
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Lines 13-25: 'Orientation: Existing Vault Coverage' section provides a detailed table of 5 existing vault notes from prior processing, with a column explaining what each covers. Each claim includes a 'Duplicate check' field (e.g., claim #1 line 50: 'No match in vault. The vault discusses VQ-VAE architecture but does not articulate the specific problem of temporal averaging'; claim #4 line 74: 'The existing note on post-hoc VQ underperformance covers the classification gap but not the successful distance discrimination'). Lines 24-25: explicit extraction strategy noting 'enrichment for existing notes' as primary mode."
+    },
+    {
+      "text": "The codebook collapse finding (GVQ underperforms VQ due to collapse) is captured as an extraction",
+      "passed": true,
+      "evidence": "Claim #5 (lines 76-83): 'simpler discretization methods often outperform more sophisticated ones in representation learning' — explicitly discusses GVQ collapse: 'plain VQ (non-differentiable but robust) mirrors a broader pattern in representation learning' and connects to '[[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- the specific instance motivating this pattern'. Enrichment #2 (lines 143-146): enriches the GVQ collapse note with specific mechanism: 'codebook usage is highly imbalanced, with most input embeddings mapped to one or two centroids while the rest remain idle' and 'GVQ underperformed VQ despite theoretical advantages'."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

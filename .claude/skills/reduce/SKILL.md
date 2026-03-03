@@ -1,6 +1,6 @@
 ---
 name: reduce
-description: Extract structured knowledge from source material. Comprehensive extraction is the default — every insight that serves the domain gets extracted. For domain-relevant sources, skip rate must be below 10%. Zero extraction from a domain-relevant source is a BUG. Triggers on "/reduce", "/reduce [file]", "extract insights", "mine this", "process this".
+description: Extract and structure knowledge from source material into atomic notes. The primary extraction tool — invoke for any request to process inbox files, pull claims from papers, or break documents into individual notes. Triggers on "/reduce", "/reduce [file]", "extract insights", "mine this", "process this source", "break it down into notes", "pull out the key findings". IMPORTANT: Always invoke this skill for extraction requests — never extract manually. Does NOT handle: /seed (queuing), /reflect (connections), /pipeline (end-to-end), /learn (research), /reweave (updating).
 version: "1.0"
 generated_from: "arscontexta-v1.6"
 user-invocable: true

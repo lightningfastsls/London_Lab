@@ -1,5 +1,7 @@
 ---
-status: resolved
+status: archived
+archived: 2026-03-02
+archived_by: rethink-2026-03-02
 created: 2026-02-19
 resolved: 2026-02-19
 ---

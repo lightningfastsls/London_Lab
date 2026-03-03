@@ -19,16 +19,23 @@ Probing experiments (Session 4) depend on the information-theoretic framework be
 
 LMT integration (Session 5) sits at the top of the dependency chain because it is the application of the entire framework to biological data. When we ask "do USV code distributions differ between behavioral contexts?", we need: the codebook (already built), information-theoretic metrics to quantify distributional differences (Sessions 1-2), null models to test significance (Session 3), and validated probing results to interpret what the codes mean acoustically (Session 4). Attempting LMT analysis without this foundation would produce correlations between behavioral events and code sequences with no way to distinguish real effects from statistical artifacts.
 
-This ordering embodies a principle that recurs throughout the project: since [[null models are essential for interpreting information-theoretic metrics on USV code sequences]], and since [[analytically verifiable test cases validate information-theoretic metric implementations]], the analytical tools must exist and be validated before they are applied to novel data. Build the ruler before measuring.
+This ordering embodies a principle that recurs throughout the project: since [[null models are essential for interpreting information-theoretic metrics on USV code sequences]], and since [[analytically verifiable test cases validate information-theoretic metric implementations]], the analytical tools must exist and be validated before they are applied to novel data. Build the ruler before measuring. The [[null model comparison framework produces z-scores rank-based p-values and effect sizes as the publishable statistical output]] is the concrete deliverable of this foundation — the metrics-times-null-models matrix that makes every claim about USV structure statistically grounded.
+
+The probing dependency is specific: [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] requires the information-theoretic vocabulary to interpret what probing results mean. LMT integration sits at the top because [[LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage]] and the analyses it enables — including [[burstiness by behavioral context bridges information theory and LMT behavioral analysis]] — require both the temporal analysis tools and the behavioral annotations to produce interpretable results. This entire ordering serves [[the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations]], which can only be answered when all three workstreams deliver validated results.
 
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- the specific dependency that drives this ordering
 - [[analytically verifiable test cases validate information-theoretic metric implementations]] -- validation strategy for the metrics layer
+- [[null model comparison framework produces z-scores rank-based p-values and effect sizes as the publishable statistical output]] -- the concrete statistical output this foundation produces
+- [[the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations]] -- the overarching hypothesis this ordering ultimately serves
+- [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] -- the probing workstream that depends on this foundation
+- [[LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage]] -- the LMT code architecture that sits atop this dependency chain
+- [[burstiness by behavioral context bridges information theory and LMT behavioral analysis]] -- bridges the two domains this ordering separates
 
 Topics:
 - [[representation-learning]]

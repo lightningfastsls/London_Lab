@@ -1,0 +1,17 @@
+{
+  "eval_id": 2,
+  "eval_name": "deep-survey",
+  "prompt": "state of the art in unsupervised clustering methods for bioacoustic vocalizations 2025",
+  "assertions": [
+    {"text": "inbox-file-created", "description": "Output is a properly structured inbox source capture file"},
+    {"text": "frontmatter-valid", "description": "YAML frontmatter with all required fields"},
+    {"text": "source-log-present", "description": "Structured source log table"},
+    {"text": "provenance-traceable", "description": "Claims linked to source URLs"},
+    {"text": "pipeline-chaining", "description": "Suggests /reduce or /seed as next steps"},
+    {"text": "structured-sections", "description": "Organized into numbered/titled sections covering sub-topics"},
+    {"text": "no-verbatim-copy", "description": "Content synthesized in original framing"},
+    {"text": "vault-check-performed", "description": "Reports existing vault coverage"},
+    {"text": "survey-breadth", "description": "Covers 25+ sources and all major sub-areas (models, methods, tools, benchmarks, challenges)"},
+    {"text": "foundation-models-profiled", "description": "Profiles 5+ foundation models with architecture, training, and benchmark details"}
+  ]
+}

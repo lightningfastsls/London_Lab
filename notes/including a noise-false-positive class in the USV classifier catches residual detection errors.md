@@ -33,5 +33,5 @@ Relevant Notes:
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- the pipeline architecture that benefits from an additional noise filter
 
 Topics:
-- [[classification]]
+- [[classification-methodology]]
 - [[detection]]

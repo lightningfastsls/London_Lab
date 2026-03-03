@@ -21,4 +21,4 @@ This baseline establishes the starting point for the [[active learning cycle aut
 
 ---
 
-Source: [[ROADMAP.md]]
+Source: [ROADMAP](../ROADMAP.md)

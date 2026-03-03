@@ -1,0 +1,53 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 11-23: Summary table with Finding (7), Method (14), Implementation Idea (8), Decision (4), Tension (3), Open Question (4), Hypothesis (2), Total (42)"
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "42 total items extracted across 7 categories. Net new: 3 note candidates + 3 enrichment candidates = 6 genuinely new. But total extraction count is 42."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "5 items explicitly skipped out of 47 total = 10.6%. The 33 'already covered' items are documented as existing overlap, not rejections."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All items include rationale fields. E.g., M14: 'Tests whether vocal repertoire composition differs across behavioral contexts. Two statistical approaches depending on whether features are continuous (CNN) or categorical (VQ-VAE codes).'"
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": false,
+      "evidence": "Mixed quality. Some are method descriptions rather than claims: 'Zipf exponent estimation via Clauset et al. 2009 MLE' (label), 'Probing framework: linear (Ridge/LogReg) and MLP-1layer probes' (description). New candidates are better: 'Memory-mapped hidden state files enable probing experiments on datasets larger than available RAM' (claim)."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "7 categories: Finding, Method, Implementation Idea, Decision, Tension, Open Question, Hypothesis"
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Every item has 'Existing note' field with specific note filename checks. Overlap Summary section (lines 330-339) provides aggregate analysis."
+    },
+    {
+      "text": "Implementation ideas are explicitly categorized (not lumped with core claims)",
+      "passed": true,
+      "evidence": "Dedicated 'Implementation Ideas' section (lines 150-196) with 8 items, separate from Findings, Methods, etc."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "total": 8,
+    "pass_rate": 0.875
+  },
+  "timing": {
+    "total_duration_seconds": 350.3
+  }
+}

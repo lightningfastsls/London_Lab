@@ -1,0 +1,82 @@
+[
+  {
+    "query": "I just had a long conversation with Claude on the web about building a real-time audio streaming pipeline for our USV recordings. It came up with a solid 6-step plan covering the DAQ interface, ring buffer, STFT engine, detection layer, websocket server, and React viewer. Can you turn that into something I can actually build step by step? The conversation is saved at docs/plans/streaming-pipeline-plan.md",
+    "should_trigger": true
+  },
+  {
+    "query": "hey so I brainstormed with claude.ai about how to add UMAP dimensionality reduction to our feature extraction pipeline and it gave me 4 phases. can you make this implementable? I'll paste it below",
+    "should_trigger": true
+  },
+  {
+    "query": "I have a design doc at docs/plans/labeling-tool-redesign.md that outlines rebuilding the labeling UI with PyQt6 instead of Streamlit. It has 5 major steps but they're pretty high level. I need this converted into the /implement format we use so each module is self-contained and a fresh session can pick it up.",
+    "should_trigger": true
+  },
+  {
+    "query": "roadmap from PLAN_classifier_training.md",
+    "should_trigger": true
+  },
+  {
+    "query": "I wrote up some rough notes on adding Zarr v3 support and chunked storage for our spectrogram cache. It's not really a formal plan, more like a brainstorm with some pseudocode. But I'd like to structure these steps for building -- maybe 3-4 modules with test plans and dependencies mapped out.",
+    "should_trigger": true
+  },
+  {
+    "query": "convert this plan into a roadmap:\n\nPhase 1: Add bandpass filter (25-125 kHz) before STFT\nPhase 2: Replace current energy detector with adaptive threshold\nPhase 3: Add harmonic analysis for call classification\nPhase 4: Export results in DeepSqueak-compatible format",
+    "should_trigger": true
+  },
+  {
+    "query": "ok I've been going back and forth with web Claude about the best approach for building a training data pipeline and we settled on a 5-step plan. I saved the whole chat to a file. Can you take that plan and make each step into one of those implement blocks so I can hand them off to separate coding sessions?",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to take the vacation scheduling feature plan from our last planning session and break it down into implementable modules. The plan is in my clipboard, let me paste it...",
+    "should_trigger": true
+  },
+  {
+    "query": "here's an implementation plan I got from ChatGPT for adding a spectrogram comparison tool. Can you restructure it into our ROADMAP format? It has steps for loading, alignment, diff computation, and visualization.",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn the contents of bootsnap_integration_plan.md into structured implementation steps. I want each phase to have its own /implement block with test plans, dependencies, and review tiers.",
+    "should_trigger": true
+  },
+  {
+    "query": "implement phase 14.1 from ROADMAP.md -- the spectrogram cache invalidation module. All the specs are already in the roadmap, just build it.",
+    "should_trigger": false
+  },
+  {
+    "query": "what's the current status of the ROADMAP? which phases are done and which are still pending? I want to know what we've accomplished so far in the USV pipeline.",
+    "should_trigger": false
+  },
+  {
+    "query": "Can you update ROADMAP.md to mark Phase 8.3 as DONE and add a note about the VQ-VAE hidden state approach we chose? Also bump the next phase number.",
+    "should_trigger": false
+  },
+  {
+    "query": "I want to plan out how we should approach adding multi-channel audio support. I don't have a plan yet -- can you help me think through the architecture? What components would need to change?",
+    "should_trigger": false
+  },
+  {
+    "query": "review the ROADMAP_PARTS_FINDER.md file and tell me if the test plans are thorough enough. Are there any edge cases we're missing? I want a quality check before we start implementing.",
+    "should_trigger": false
+  },
+  {
+    "query": "We need a product roadmap for the next quarter. What features should we prioritize? Consider the detection accuracy improvements, the labeling tool, and the training pipeline.",
+    "should_trigger": false
+  },
+  {
+    "query": "Run /implement on Step 3 from ROADMAP_STREAMING_VIEWER.md. The STFT streaming engine module -- just build it according to the spec that's already there.",
+    "should_trigger": false
+  },
+  {
+    "query": "I have two roadmap files -- ROADMAP_INFRA_IMPROVEMENTS.md and ROADMAP_CLI_CONSOLIDATION.md -- and some of the modules overlap. Can you help me merge them and resolve the dependency conflicts?",
+    "should_trigger": false
+  },
+  {
+    "query": "Can you create a project timeline or gantt chart from our ROADMAP.md? I need to present our progress and upcoming work to the lab PI next week.",
+    "should_trigger": false
+  },
+  {
+    "query": "I need to write a plan for adding GPU-accelerated STFT processing. Help me think through the steps -- I want to use CuPy for the FFT and compare performance against our current NumPy implementation.",
+    "should_trigger": false
+  }
+]

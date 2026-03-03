@@ -21,7 +21,7 @@ This analysis directly guides VQ-VAE layer selection, because the layer with the
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[middle-layer hidden states capture mid-level concepts better than early or late layers for VQ-VAE input]] -- the hypothesis that probing experiments will empirically test

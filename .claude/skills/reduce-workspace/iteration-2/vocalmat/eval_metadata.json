@@ -1,0 +1,16 @@
+{
+  "eval_id": 2,
+  "eval_name": "vocalmat",
+  "prompt": "Extract structured knowledge from this source file about VocalMat, an automated USV detection and classification tool. The source is a 2021 eLife paper by Fonseca et al. describing a parameter-free pipeline for mouse USV analysis. Extract all findings, methods, tensions, implementation ideas, and open questions relevant to our USV analysis pipeline.",
+  "source_file": ".claude/skills/reduce-workspace/iteration-2/test-sources/fonseca-vocalmat-usv-analysis-2021.md",
+  "assertions": [
+    "Report contains a SUMMARY section with numerical counts by category",
+    "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+    "Skip rate is below 15% (skipped items / total candidates)",
+    "Every extracted item includes a rationale explaining why it was extracted",
+    "Extracted titles are phrased as claims/propositions, not topic labels",
+    "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+    "Report mentions checking existing notes for duplicates or overlap",
+    "The tension between discrete USV categories and continuous acoustic space is captured"
+  ]
+}

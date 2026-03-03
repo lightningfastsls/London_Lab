@@ -1,6 +1,10 @@
 ---
-status: pending
+status: archived
+archived: 2026-03-02
+archived_by: rethink-2026-03-02
 created: 2026-02-24
+resolved: 2026-03-01
+resolution: "Configuration-based: use 25-125 kHz for Raven exports (convention), keep 20-120 kHz internally (safety margin). raven_export.py already supports configurable frequency bounds."
 ---
 
 # Our 20-120 kHz detection range versus the 25-125 kHz bioacoustic standard frequency band

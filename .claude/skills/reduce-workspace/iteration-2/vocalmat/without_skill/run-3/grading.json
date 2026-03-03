@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": false,
+      "evidence": "The 'Summary' section (lines 10-12) contains only a narrative paragraph describing VocalMat. It does not include numerical counts by category. Counts appear much later in the 'Overlap Analysis Summary' table (lines 180-185) but organized by verdict (NEW: 10, ENRICH: 3, SKIP: 4), not by extraction category (findings, methods, tensions, etc.). No table or list in the Summary section breaks down items by category."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "20 total items listed: 6 findings (F1-F6) + 3 methods (M1-M3) + 4 tensions (T1-T4) + 4 implementation ideas (I1-I4) + 3 open questions (Q1-Q3) = 20. Even excluding the 4 items marked SKIP, 16 items remain. Both 20 and 16 are >= 8."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": false,
+      "evidence": "4 items marked SKIP: M3 ('SKIP — the category list has marginal value'), T2 ('SKIP — already well-represented in the vault'), T4 ('SKIP — low priority for our pipeline'), Q3 ('SKIP — already central to our research program'). 4 skipped out of 20 total candidates = 20%, which exceeds the 15% threshold."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 20 items include a 'Rationale' field with substantive explanations. For example, F1 explains relevance to the pipeline's ADR-003 threshold, T1 explains the methodological importance of distinguishing user-free from parameter-free, I2 explains how the local median filter could reduce CNN false positive load. Even skipped items include rationale for why they were evaluated."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": false,
+      "evidence": "Several titles are topic labels or descriptions rather than claims/propositions. M3: 'VocalMat 11-category classification scheme based on spectral shape and frequency modulation patterns' (topic label, not a proposition — cannot be tested as true/false). I1: 'Adaptive thresholding as an alternative to fixed energy threshold for our detection pipeline' (topic label — describes a concept, not a claim). M1: 'Contrast enhancement followed by adaptive thresholding and morphological operations for spectrogram binarization' (process description, not a proposition). While the majority of titles (F1-F6, T1-T3) are well-phrased claims, the presence of multiple topic-label titles constitutes a failure."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "5 distinct categories present: Findings (6 items), Methods (3 items), Tensions (4 items), Implementation Ideas (4 items), Open Questions (3 items)."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Every item includes an 'Existing overlap' field with specific note references (e.g., F1 references 'VocalMat represents supervised classification...' and notes detection method is not currently captured). An 'Overlap Analysis Summary' table (lines 180-185) and 'Existing notes with highest overlap' section (lines 187-191) provide systematic duplicate tracking."
+    },
+    {
+      "text": "The tension between discrete USV categories and continuous acoustic space is captured",
+      "passed": true,
+      "evidence": "Item T2: 'Discrete 11-category classification may lose information when the true acoustic space is continuous' — explicitly captures this tension, noting 'VocalMat's own UMAP visualizations show overlap zones between categories' and connecting to the VQ-VAE motivation. Also supported by F6 (UMAP overlap zones) and Q3 (continuous vs. discrete representation question)."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 3,
+    "total": 8,
+    "pass_rate": 0.63
+  }
+}

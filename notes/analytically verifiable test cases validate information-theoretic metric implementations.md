@@ -21,7 +21,7 @@ These test cases are computationally cheap and should be run as unit tests befor
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- entropy rate convergence test case directly validates the implementation used for this analysis

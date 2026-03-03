@@ -32,5 +32,5 @@ Relevant Notes:
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- another gammatone-based tool
 
 Topics:
-- [[classification]]
+- [[classification-tools]]
 - [[experimental-methods]]

@@ -20,12 +20,14 @@ Beyond the sanity check function, PETHs can reveal biologically meaningful timin
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[temporal alignment between USV detections and LMT behavioral events enables USV-behavior correlation analysis]] -- PETH analysis depends on accurate temporal alignment between the two data streams
 - [[burstiness by behavioral context bridges information theory and LMT behavioral analysis]] -- burstiness within PETH windows connects temporal statistics to behavioral meaning
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the system that produces the behavioral event annotations used as PETH triggers
+- [[whether LMT SQLite schema supports the required temporal resolution for USV-behavior synchronization]] -- 100ms PETH bins tolerate 33ms behavioral resolution, but finer temporal questions do not
+- [[LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage]] -- event_triggered.py module in the LMT subpackage implements this analysis
 
 Topics:
 - [[experimental-methods]]

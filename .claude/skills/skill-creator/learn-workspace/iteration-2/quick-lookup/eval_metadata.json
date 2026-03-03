@@ -1,0 +1,17 @@
+{
+  "eval_id": 0,
+  "eval_name": "quick-lookup",
+  "prompt": "what sample rate does MUPET use for USV analysis",
+  "assertions": [
+    {"text": "inbox-file-created", "description": "Output is a properly structured inbox source capture file"},
+    {"text": "frontmatter-valid", "description": "YAML frontmatter with description, source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"},
+    {"text": "source-log-present", "description": "Structured source log table with URL, status, relevance, key finding columns"},
+    {"text": "provenance-traceable", "description": "Key claims are linked to specific source URLs"},
+    {"text": "pipeline-chaining", "description": "Suggests /reduce or /seed as next steps"},
+    {"text": "depth-appropriate", "description": "Quick depth: concise but thorough, verified from multiple angles"},
+    {"text": "no-verbatim-copy", "description": "Content synthesized in original framing, not copied verbatim"},
+    {"text": "vault-check-performed", "description": "Reports whether existing vault notes cover this topic"},
+    {"text": "cross-verified", "description": "Key claim (250 kHz) verified from 2+ independent sources (paper, code, docs)"},
+    {"text": "source-code-detail", "description": "Includes specific parameter values, variable names, or configuration details from source code when available"}
+  ]
+}

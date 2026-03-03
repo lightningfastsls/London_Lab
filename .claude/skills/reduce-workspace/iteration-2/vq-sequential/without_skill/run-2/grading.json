@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 133-141: 'Summary Statistics' table with counts by category: Finding (4), Method (3), Tension (1), Implementation idea (1), Total (9). Also includes Novel/Partial Overlap/Full Duplicate breakdown columns."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "9 total extractions listed in Summary Statistics (line 141): 4 findings + 3 methods + 1 tension + 1 implementation idea = 9. All 9 items are fully described in the 'Extracted Items' section."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": false,
+      "evidence": "The 'Items NOT Extracted' section (lines 145-154) lists 5 items explicitly not extracted because they were already well-covered in the vault. Total candidates = 9 extracted + 5 not extracted = 14. Skip rate = 5/14 = 35.7%, which exceeds the 15% threshold."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 9 extracted items include a 'Rationale for extraction' bullet with substantive explanations. Examples: Item 1 explains implications for VQ-VAE probing and population comparison confounds; Item 5 explains the tension has 'direct design implications' for choosing classifier models; Item 7 explains it is 'the problem statement that motivates sequence-aware approaches.' No item is missing a rationale."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Checking 3 representative Claim/Title fields: (1) 'Caller identity is encoded more strongly than call-type identity in discrete acoustic token distances for animal vocalizations' — propositional claim. (2) 'Discrete token edit distances capture meaningful vocalization structure that k-NN classification fails to exploit' — propositional claim. (3) 'Standard bioacoustic feature pipelines that temporally average frame-level features discard potentially meaningful sub-unit sequential structure' — propositional claim. All pass the composability test."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "4 distinct categories represented: Finding (items 1,4,7 and partially item 3), Method (items 2,6,9), Tension (item 5), Implementation idea (item 8). Summary Statistics confirms 4 categories."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Lines 12-28: Detailed 'Duplicate Check Summary' section listing 5 existing vault notes and 4 additional cross-referenced notes with their coverage. Each extracted item includes a 'Duplicate status' field (e.g., Item 1: 'NO EXISTING NOTE. Novel extraction.'; Item 4: 'PARTIAL OVERLAP with...'). Lines 145-154: Explicit 'Items NOT Extracted (already well-covered in vault)' section naming 5 skipped items with the existing note that covers each."
+    },
+    {
+      "text": "The codebook collapse finding (GVQ underperforms VQ due to collapse) is captured as an extraction",
+      "passed": false,
+      "evidence": "The GVQ codebook collapse finding is explicitly listed as 'NOT Extracted' in the 'Items NOT Extracted' section (line 150): 'GVQ suffers codebook collapse — fully covered in Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments.md'. It is not among the 9 extracted items. The report correctly identified it as already in the vault and chose not to re-extract it."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 2,
+    "total": 8,
+    "pass_rate": 0.75
+  }
+}

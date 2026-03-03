@@ -1,0 +1,17 @@
+{
+  "eval_id": 1,
+  "eval_name": "moderate-comparison",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox-compatible format with frontmatter"},
+    {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter with all required fields"},
+    {"text": "source-log-present", "passed": true, "evidence": "Source Log table at line 155 with 20 entries"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to specific papers, GitHub repos, and preprints"},
+    {"text": "pipeline-chaining", "passed": true, "evidence": "Mentioned /reduce for extracting atomic claims about each tool"},
+    {"text": "multi-source-synthesis", "passed": true, "evidence": "9 tools compared with architecture, performance, and practical details"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing and project-relevant recommendations"},
+    {"text": "vault-check-performed", "passed": true, "evidence": "Reported no existing notes on DeepSqueak or USV classification tools"},
+    {"text": "landscape-coverage", "passed": true, "evidence": "9 tools covered: DAS, SqueakOut, AMVOC, BootSnap, MoUSE, USVSEG_Python, ContourUSV, VocalMat, USV_Python"},
+    {"text": "actionable-detail", "passed": true, "evidence": "pip install commands for DAS and USVSEG, GitHub URLs for all tools, commit counts, performance numbers (DAS 98/99%, SqueakOut Dice 90.22, VocalMat 98% detection), comparison matrix table"}
+  ]
+}

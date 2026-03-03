@@ -32,4 +32,4 @@ Relevant Notes:
 - [[classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data]] -- VocalMat's lab-mouse data has limited generalization
 
 Topics:
-- [[classification]]
+- [[classification-methodology]]

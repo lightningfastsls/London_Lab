@@ -25,4 +25,4 @@ Relevant Notes:
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- formalizes syllable syntax comparison between populations as transition probability matrices
 
 Topics:
-- [[classification]]
+- [[classification-methodology]]

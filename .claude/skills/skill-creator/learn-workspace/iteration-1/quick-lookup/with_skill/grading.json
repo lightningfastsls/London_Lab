@@ -1,0 +1,15 @@
+{
+  "eval_id": 0,
+  "eval_name": "quick-lookup",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": true, "evidence": "Produced mupet-sample-rate-usv-analysis-research-2026-02-27.md with proper inbox structure"},
+    {"text": "frontmatter-valid", "passed": true, "evidence": "YAML frontmatter with description, source_type (paper), url, author, date_accessed, status (unprocessed), plus research_tool, research_query, research_depth"},
+    {"text": "source-log-present", "passed": true, "evidence": "## Source Log table at line 49 with 3 entries including URL, status, relevance, and key finding columns"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "PMC URL https://pmc.ncbi.nlm.nih.gov/articles/PMC5939957/ linked to 250 kHz claim from Van Segbroeck et al."},
+    {"text": "pipeline-chaining", "passed": true, "evidence": "Agent report suggested '/reduce inbox/mupet-sample-rate-usv-analysis-research-2026-02-27.md' and '/seed' as next steps"},
+    {"text": "depth-appropriate", "passed": true, "evidence": "63 lines, focused on the factual question. Auto-detected as 'quick'. Concise with relevant context about 300 kHz comparison."},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Content synthesized in own framing with inline citations like 'According to Van Segbroeck et al. (2017)'"},
+    {"text": "vault-check-performed", "passed": true, "evidence": "Research Context section states 'No existing notes on MUPET found in the vault'"}
+  ]
+}

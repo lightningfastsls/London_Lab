@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "The 'Calibration Check' section (lines 216-229) provides numerical counts: notes extracted: 14, implementation ideas: 0, tensions: 2 (embedded in notes), enrichment tasks: 5, validations: 3, open questions: 2 (embedded in notes), truly skipped: 0, TOTAL: 24 outputs. While the section is titled 'Calibration Check' rather than 'SUMMARY', it serves the same function with clear numerical breakdowns by category."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "14 notes (including 2 embedded tensions and 2 embedded open questions) + 0 implementation ideas + 5 enrichments + 3 validations = 22 distinct extraction items (24 total outputs). Well above the threshold of 8."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "Calibration check states: 'truly skipped: 0' and 'Skip rate: 0% -- appropriate for a directly domain-relevant paper.' The Truly Skipped section (lines 205-210) lists one item (S1) but then says it was NOT skipped -- it was extracted as note #14. Zero items were truly skipped out of 24 candidates."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 14 notes have 'Rationale:' fields explaining extraction reasoning. All 5 enrichment tasks have 'Rationale:' fields. The 3 validations have 'Evidence:' fields (which serve as rationale for validation items). Each rationale explains both why the item is worth extracting AND how it relates to existing vault content."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Representative titles checked: (1) 'adaptive thresholding eliminates user-defined detection parameters as the primary source of USV research variability' -- causal proposition about what adaptive thresholding achieves. (2) 'morphological operations in image-based USV detection encode implicit threshold parameters despite claims of being parameter-free' -- tension framed as proposition. (3) 'VocalMat classification performs best on flat calls and worst distinguishing complex from multi-step categories' -- specific empirical claim. All are complete propositions, not topic labels."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "Four distinct categories with dedicated sections: Notes/New Claims (14 items, including findings, methods, baselines, tensions, open-questions, and hypotheses), Enrichment Tasks (5 items), Validations (3 items), and Truly Skipped (0 items). While implementation ideas are absent as a separate section, the notes themselves span 7 different type sub-categories (finding, method, baseline, tension, open-question, hypothesis, pattern). At least 3 distinct top-level categories (notes, enrichments, validations) are present with content."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "The Source Assessment section (lines 12-13) states: 'The existing vault already has two VocalMat notes... plus numerous related notes on detection, classification, and tool comparisons. This extraction focuses on new claims, enrichments, and tensions not yet articulated.' Additionally, each note includes a 'Semantic neighbors:' field that explicitly checks for overlap with existing vault notes and explains why the new extraction is distinct (e.g., note #3: 'different tool metrics. Distinct claim -- this is VocalMat detection baseline')."
+    },
+    {
+      "text": "The tension between discrete USV categories and continuous acoustic space is captured",
+      "passed": true,
+      "evidence": "Multiple notes capture this tension: Note #6 't-SNE and UMAP projections of USVs show clusters corresponding to classification categories but with significant overlap zones suggesting continuous acoustic variation'; Note #9 '11 predefined USV categories may not capture the full repertoire because some calls exhibit features of multiple types or fall between categories'; Note #11 'continuous USV representation through embeddings or latent codes may be more appropriate than discrete categories for preserving acoustic variation'. Enrichment E5 also updates the existing discrete-vs-continuous note with VocalMat's evidence."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

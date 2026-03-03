@@ -19,4 +19,4 @@ The five milestones (2K, 5K, 10K, 20K, 30K labels) define checkpoints at which m
 
 ---
 
-Source: [[ROADMAP.md]], Phase 2
+Source: [ROADMAP](../ROADMAP.md), Phase 2

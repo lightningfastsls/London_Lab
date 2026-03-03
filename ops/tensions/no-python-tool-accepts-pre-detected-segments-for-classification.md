@@ -19,5 +19,19 @@ The landscape:
 - [[CNN baseline of 89.7 percent precision and 93.8 percent recall at threshold 0.05 validates the two-stage detection approach]] -- we have good detection that needs a classification stage
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the planned strategy requires a classification tool that doesn't exist as-is
 
-## Possible Resolution
+## Possible Resolutions (updated 2026-03-01 after /reduce batch)
+
+### Path A: Custom PyTorch CNN (original)
 Build a custom PyTorch CNN classifier on spectrogram patches extracted from detected segments. Use [[VocalMat provides 12954 labeled USV spectrograms freely available as training data]] for initial training. This is more work than integrating an existing tool, but ensures full control over the classification stage and avoids format/interface mismatches. The custom classifier can implement both supervised (Scattoni categories) and unsupervised (embedding extraction) branches.
+
+### Path B: Few-shot via foundation model embeddings (NEW)
+Since [[foundation model embeddings enable few-shot classification via simple linear probes without end-to-end training]], extract embeddings from BEATs or AVES, then classify with k-NN or prototypical networks from ~10 labeled examples per type. Since [[prototypical networks are the dominant paradigm for few-shot bioacoustic event detection]], this is well-supported methodologically. The challenge is that [[the 300 kHz USV sample rate creates a domain shift challenge for applying audio foundation models]] — requires spectrogram-as-image or frequency shifting.
+
+### Path C: Frequency shifting to audible range (NEW)
+Since [[frequency shifting USVs into the audible range could enable classification with standard audio foundation models]], pitch-shift detected USV segments from 50-90 kHz to 2-10 kHz. This would unlock the entire ecosystem of speech/audio foundation models. Untested but theoretically sound.
+
+### Path D: Unsupervised clustering (NEW)
+Use [[UMAP plus HDBSCAN is now the dominant unsupervised clustering pipeline for bioacoustic vocalizations]] on spectrogram features from detected segments. Since [[unsupervised clustering as post-detection filtering eliminates 88 percent false positives while retaining 95 percent true positives]], this doubles as both classification and quality filtering. No labels needed.
+
+### Current Strategy
+DeepSqueak bridge (Phase 3, in progress) provides an immediate MATLAB-based classification pathway. Paths B-D are longer-term Python-native alternatives. The tension remains pending but has significantly more resolution options than when first identified.

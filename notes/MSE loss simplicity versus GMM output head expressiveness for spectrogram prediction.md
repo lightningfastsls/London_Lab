@@ -16,9 +16,11 @@ The roadmap resolves this tension pragmatically: start with MSE and upgrade only
 
 This connects to [[MSE loss for next-column prediction may produce blurry spectrograms requiring a mixture density output head]], which documents the failure mode, and [[transformer-first then VQ-VAE avoids forcing premature discretization]], which notes that the same pragmatic staging applies to the broader architecture choice. The blurriness check is built into the monitoring protocol of [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]], where predicted vs actual spectrogram visualizations every 10 epochs provide the diagnostic signal for upgrading to GMM.
 
+A broader perspective on loss design comes from diffusion model research: [[changing the diffusion prediction target implicitly changes how noise levels are weighted in the loss]] shows that in diffusion models, parameterization, explicit weighting w(t), and timestep distribution p(t) are mathematically interchangeable via importance sampling (Dieleman 2024). The implication for our MSE vs GMM choice: what matters is not the loss function in isolation, but the effective weighting it places over the prediction space. MSE implicitly assumes uniform weighting across frequency bins and time steps — if some regions are systematically harder (e.g., transition points), explicit reweighting may be more effective than switching to GMM.
+
 ---
 
-Source: [[ROADMAP.md]]
+Source: [ROADMAP](../ROADMAP.md)
 
 Relevant Notes:
 - [[MSE loss for next-column prediction may produce blurry spectrograms requiring a mixture density output head]] -- the specific failure mode this tension addresses

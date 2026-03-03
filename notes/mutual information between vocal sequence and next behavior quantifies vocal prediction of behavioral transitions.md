@@ -23,7 +23,7 @@ This analysis is speculative because it depends on multiple upstream components 
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- prior evidence that USV sequences are predictive, supporting the motivation for this analysis

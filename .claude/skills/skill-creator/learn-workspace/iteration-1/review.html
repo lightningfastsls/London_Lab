@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "learn", "runs": [{"id": "quick-lookup-with_skill", "prompt": "/learn what sample rate does MUPET use for USV analysis", "eval_id": 0, "outputs": [{"name": "mupet-sample-rate-usv-analysis-research-2026-02-27.md", "type": "text", "content": "---\ndescription: \"MUPET uses 250 kHz sampling rate for USV analysis, supports any rate above 90 kHz, with 512-point FFT and 64-channel Gammatone filterbank\"\nsource_type: paper\nurl: \"https://pmc.ncbi.nlm.nih.gov/articles/PMC5939957/\"\nauthor: \"Van Segbroeck, Knoll, Levitt, Narayanan\"\ndate_accessed: \"2026-02-27\"\nstatus: unprocessed\nresearch_tool: \"web-search\"\nresearch_query: \"MUPET sample rate USV analysis ultrasonic vocalization\"\nresearch_depth: \"quick\"\n---\n\n# MUPET Sample Rate and Signal Processing Parameters\n\nMUPET (Mouse Ultrasonic Profile ExTraction) uses a 250 kHz sampling rate for its USV analysis, though the tool can process audio files recorded at any sampling rate above 90 kHz. This 250 kHz rate provides a Nyquist frequency of 125 kHz, which fully covers the 25-125 kHz ultrasonic range where mouse vocalizations occur.\n\n---\n\n## Sample Rate and Frequency Range\n\nAccording to Van Segbroeck et al. (2017), audio files used with MUPET were collected at a sampling rate of 250 kHz. The tool's minimum requirement is a sampling rate above 90 kHz, which makes sense given that MUPET analyzes vocalizations in the 25-125 kHz range. An 8th-order Chebyshev filter with a 25 kHz corner frequency extracts the ultrasonic frequency range from the raw audio, effectively bandpassing the signal to isolate USV content from lower-frequency noise.\n\nThe 250 kHz rate is notably lower than the 300 kHz rate used in this project's pipeline. This has implications for frequency resolution and the usable bandwidth: at 250 kHz, the Nyquist limit is 125 kHz, while at 300 kHz it extends to 150 kHz.\n\n## STFT Parameters\n\nMUPET uses a 512-point STFT algorithm with the following parameters (at 250 kHz sampling rate):\n- **Frame size**: 500 samples (2 ms duration)\n- **Frame shift**: 400 samples (1.6 ms, giving 80% overlap)\n- **Window**: Hamming\n- **Frequency resolution**: approximately 0.5 kHz (250000 / 512)\n\nThese parameters prioritize temporal resolution (2 ms frames) over spectral resolution, which is appropriate for capturing the rapid frequency modulations typical of mouse USVs.\n\n## Gammatone Filterbank (GF-USV)\n\nRather than operating directly on spectrograms, MUPET converts them into compact \"GF-USV\" representations using a 64-channel Gammatone filterbank. The filter bandwidths vary from 0.5 to 4 kHz, with narrower filters concentrated in the frequency regions containing the most acoustic events. This biologically-inspired representation (mimicking the auditory periphery) enables more robust syllable comparison than raw spectrograms.\n\n## Comparison to This Project's Parameters\n\nThis project operates at 300 kHz sampling rate. Key differences from MUPET's approach:\n- Higher Nyquist frequency (150 kHz vs 125 kHz)\n- MUPET's frequency range (25-125 kHz) is fully representable at both rates\n- MUPET's filterbank approach differs from this project's direct energy detection on STFT output\n- MUPET uses unsupervised clustering (k-means with cosine distance) rather than energy-based detection\n\n---\n\n## Source Log\n\n| # | URL | Status | Relevance | Key Finding |\n|---|-----|--------|-----------|-------------|\n| 1 | https://pmc.ncbi.nlm.nih.gov/articles/PMC5939957/ | fetched | high | Primary paper: 250 kHz sample rate, >90 kHz minimum, 512-point FFT, 64-channel Gammatone filterbank |\n| 2 | https://sail.usc.edu/mupet/ | fetch failed (SSL cert) | medium | MUPET project homepage, could not retrieve due to certificate error |\n| 3 | https://www.sciencedirect.com/science/article/pii/S0896627317302982 | search result, not fetched | medium | Same paper on ScienceDirect (duplicate of PMC source) |\n\n## Research Context\n\n- **Query**: what sample rate does MUPET use for USV analysis\n- **Depth**: quick (auto-detected -- specific factual question about a single tool)\n- **Existing vault knowledge**: No existing notes on MUPET found in the vault\n- **Knowledge gap addressed**: MUPET's signal processing parameters, especially sample rate, which enables comparison with this project's 300 kHz pipeline\n"}], "grading": {"eval_id": 0, "eval_name": "quick-lookup", "configuration": "with_skill", "expectations": [{"text": "inbox-file-created", "passed": true, "evidence": "Produced mupet-sample-rate-usv-analysis-research-2026-02-27.md with proper inbox structure"}, {"text": "frontmatter-valid", "passed": true, "evidence": "YAML frontmatter with description, source_type (paper), url, author, date_accessed, status (unprocessed), plus research_tool, research_query, research_depth"}, {"text": "source-log-present", "passed": true, "evidence": "## Source Log table at line 49 with 3 entries including URL, status, relevance, and key finding columns"}, {"text": "provenance-traceable", "passed": true, "evidence": "PMC URL https://pmc.ncbi.nlm.nih.gov/articles/PMC5939957/ linked to 250 kHz claim from Van Segbroeck et al."}, {"text": "pipeline-chaining", "passed": true, "evidence": "Agent report suggested '/reduce inbox/mupet-sample-rate-usv-analysis-research-2026-02-27.md' and '/seed' as next steps"}, {"text": "depth-appropriate", "passed": true, "evidence": "63 lines, focused on the factual question. Auto-detected as 'quick'. Concise with relevant context about 300 kHz comparison."}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Content synthesized in own framing with inline citations like 'According to Van Segbroeck et al. (2017)'"}, {"text": "vault-check-performed", "passed": true, "evidence": "Research Context section states 'No existing notes on MUPET found in the vault'"}]}}, {"id": "quick-lookup-without_skill", "prompt": "/learn what sample rate does MUPET use for USV analysis", "eval_id": 0, "outputs": [{"name": "mupet-sample-rate-research.md", "type": "text", "content": "# MUPET Sample Rate for USV Analysis -- Research Findings\n\n**Research date:** 2026-02-27\n**Query:** What sample rate does MUPET use for USV analysis?\n\n---\n\n## Key Finding\n\n**MUPET uses a default sampling rate of 250 kHz (250,000 Hz) for processing mouse ultrasonic vocalizations.** This is a configurable parameter -- users can specify a different rate, but the tool will resample audio to the chosen frequency. The minimum accepted sampling rate is 90 kHz.\n\n---\n\n## Detailed Specifications\n\n### Sampling Rate\n\n| Parameter | Value | Source |\n|-----------|-------|--------|\n| Default sample frequency | 250,000 Hz (250 kHz) | GitHub source code (`mupet.m`, line: `handles.configdefault{7}=250000`) |\n| Minimum accepted sample rate | 90 kHz | PMC paper + MUPET wiki |\n| Resampling behavior | Automatic up/down-sampling to target frequency | MUPET wiki documentation |\n\n### Frequency Range\n\n| Parameter | Value | Notes |\n|-----------|-------|-------|\n| Ultrasonic analysis range | 25--125 kHz | High-pass filtered via 8th-order Chebyshev, 25 kHz corner |\n| Default minimum USV frequency | 35 kHz | `handles.configdefault{8}=35000` in source code |\n| Default maximum USV frequency | 110 kHz | `handles.configdefault{9}=110000` in source code |\n| Mouse vocalization mean frequencies | 65.5--95.1 kHz | Reported in the Neuron paper |\n\n### STFT / Spectrogram Parameters\n\n| Parameter | Value | Notes |\n|-----------|-------|-------|\n| Frame size | 500 samples (2 ms at 250 kHz) | `handles.frame_win_ms=0.002` |\n| Frame shift | 400 samples (1.6 ms) | `handles.frame_shift_ms=0.0004*4` |\n| FFT size | 512 points | 512-point STFT |\n| Frequency resolution | ~0.5 kHz | 250,000 / 512 = ~488 Hz per bin |\n| Window function | Hamming | Standard Hamming window |\n| Frame overlap | ~20% (100 samples) | 500 - 400 = 100 sample overlap |\n\n### Gammatone Filterbank\n\n| Parameter | Value | Notes |\n|-----------|-------|-------|\n| Number of filters | 64 | `handles.configdefault{10}=64` |\n| Frequency coverage | 25--125 kHz | Across vocalization spectrum |\n| Filter type | Non-linear (default) or linear | `handles.configdefault{11}=0` (0=non-linear, 1=linear) |\n| Narrow filter bandwidth | 0.5--1 kHz | In high-content frequency regions |\n| Wide filter bandwidth | 2--4 kHz | At frequency boundaries |\n\n### Temporal / Syllable Detection\n\n| Parameter | Value |\n|-----------|-------|\n| Maximum inter-syllable distance | 200 ms |\n| Maximum syllable duration | Up to 200 ms (configurable) |\n| Minimum syllable duration | Configurable (ms) |\n\n---\n\n## Why 250 kHz?\n\nThe 250 kHz sample rate is driven by the Nyquist theorem. Mouse USVs can reach frequencies up to 125 kHz (and the analysis range extends to 125 kHz). To faithfully represent a 125 kHz signal, you need a minimum sampling rate of 250 kHz (2 x 125 kHz). This is the theoretical minimum; in practice, many labs record at 250 kHz or higher.\n\n**Note for this project:** Our pipeline uses 300 kHz, which exceeds MUPET's 250 kHz. This means our recordings have higher frequency resolution and can capture content above 125 kHz (up to 150 kHz Nyquist). MUPET would downsample our 300 kHz files to 250 kHz if used directly.\n\n---\n\n## Provenance\n\n### Primary Source (Peer-Reviewed Paper)\n- **Citation:** Van Segbroeck M, Knoll AT, Levitt P, Narayanan S. \"MUPET -- Mouse Ultrasonic Profile ExTraction: A Signal Processing Tool for Rapid and Unsupervised Analysis of Ultrasonic Vocalizations.\" *Neuron* 94(3):465-485.e5 (May 3, 2017). DOI: 10.1016/j.neuron.2017.04.005\n- **PMC:** https://pmc.ncbi.nlm.nih.gov/articles/PMC5939957/\n- **PubMed:** https://pubmed.ncbi.nlm.nih.gov/28472651/\n- **Publisher (Neuron/Cell):** https://www.cell.com/neuron/fulltext/S0896-6273(17)30298-2\n\n### Source Code (GitHub)\n- **Repository:** https://github.com/mvansegbroeck/mupet\n- **Key file:** `mupet.m` -- contains all default parameter values\n- **Source code URL:** https://github.com/mvansegbroeck/mupet/blob/master/mupet.m\n- **Wiki documentation:** https://github.com/mvansegbroeck/mupet/wiki/MUPET-wiki\n\n### Official Project Page\n- **USC SAIL Lab page:** https://sail.usc.edu/mupet/\n\n### Supplementary PDF\n- **Supplementary figures:** https://europepmc.org/articles/pmc5939957/bin/nihms962805-supplement-figures.pdf\n\n---\n\n## Confidence Assessment\n\n**High confidence.** The 250 kHz default is confirmed by three independent sources:\n1. The peer-reviewed Neuron paper (2017) states recordings were at 250 kHz\n2. The MATLAB source code on GitHub explicitly sets `handles.configdefault{7}=250000`\n3. The MUPET wiki states the target is \"around 250 kHz to cover the ultrasonic frequency range\"\n\n---\n\n## Context: Comparison with Other USV Tools\n\n| Tool | Typical Sample Rate | Notes |\n|------|-------------------|-------|\n| **MUPET** | 250 kHz (default) | Configurable, min 90 kHz |\n| **DeepSqueak** | 250 kHz (common) | MATLAB-based, deep learning |\n| **VocalMat** | 250 kHz (common) | No user-defined detection params |\n| **Avisoft** | 250--500 kHz | Hardware + software suite |\n| **USVSEG** | 250 kHz (common) | Manual parameter setting |\n| **Our pipeline** | 300 kHz | Higher than MUPET default |\n\nMost USV analysis tools in the field converge on 250 kHz as the standard recording/processing rate, driven by the Nyquist requirement for the 125 kHz upper bound of mouse vocalizations.\n"}], "grading": {"eval_id": 0, "eval_name": "quick-lookup", "configuration": "without_skill", "expectations": [{"text": "inbox-file-created", "passed": false, "evidence": "Produced a markdown file but without inbox-compatible structure (no YAML frontmatter, no source-capture template format)"}, {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter. File starts with '# MUPET Sample Rate...' header, not --- delimiters"}, {"text": "source-log-present", "passed": false, "evidence": "Has a '## Provenance' section with URLs organized by type (paper, code, wiki) but not a structured table with fetch status"}, {"text": "provenance-traceable", "passed": true, "evidence": "Multiple URLs (PMC, PubMed, Cell, GitHub) linked to specific claims with inline source attribution"}, {"text": "pipeline-chaining", "passed": false, "evidence": "No mention of /reduce, /seed, or any pipeline next steps"}, {"text": "depth-appropriate", "passed": true, "evidence": "Concise and factual with detailed parameter tables. Well-calibrated depth."}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Content synthesized with original framing and comparison tables"}, {"text": "vault-check-performed", "passed": false, "evidence": "No vault check performed \u00e2\u20ac\u201d went straight to web research"}]}}, {"id": "moderate-comparison-with_skill", "prompt": "/learn Python alternatives to DeepSqueak for rodent USV classification", "eval_id": 1, "outputs": [{"name": "python-alternatives-deepsqueak-usv-classification-research-2026-02-27.md", "type": "text", "content": "---\ndescription: \"Comprehensive comparison of Python-based rodent USV classification tools as alternatives to MATLAB-only DeepSqueak, with performance benchmarks and architectural trade-offs\"\nsource_type: article\nurl: \"multiple -- see source log\"\nauthor: \"multiple sources\"\ndate_accessed: \"2026-02-27\"\nstatus: unprocessed\nresearch_tool: \"web-search\"\nresearch_query: \"Python alternatives to DeepSqueak rodent USV classification\"\nresearch_depth: \"moderate\"\n---\n\n# Python Alternatives to DeepSqueak for Rodent USV Classification: Landscape Update (February 2026)\n\nThe central finding is that no single Python tool replaces DeepSqueak's full detect-classify-cluster pipeline end-to-end, but the Python ecosystem now offers stronger individual components than DeepSqueak in each stage. For classification specifically, the best-performing open approaches are U-Net-based segmentation (91% precision, 92% recall vs DeepSqueak's 66%/64%) and SqueakOut autoencoder segmentation (Dice 90.2 vs VocalMat's 63.8), both dramatically outperforming DeepSqueak on standard benchmarks. The practical path for a Python-native workflow is to compose detection, segmentation, and classification from separate tools rather than seeking a monolithic replacement.\n\n---\n\n## Benchmark Comparison: Segmentation Performance\n\nThe most rigorous head-to-head comparison comes from Ivanenko et al. (2023) in Scientific Reports, testing seven methods on the same annotated dataset with IoU >= 0.6 threshold:\n\n| Method | Type | Precision | Recall | Parameters |\n|--------|------|-----------|--------|------------|\n| U-Net (proposed) | Deep learning | 91.1% | 92.1% | 187K |\n| Autoencoder (proposed) | Deep learning | 90.1% | 90.8% | -- |\n| USVSEG | Signal processing | 85.7% | 88.0% | -- |\n| A-MUD | Signal processing | 90.6% | 80.0% | -- |\n| HybridMouse | Hybrid CNN-RNN | 82.0% | 71.2% | -- |\n| DeepSqueak | Deep learning | 66.4% | 63.7% | 693K |\n| DeepSqueak + denoiser | Deep learning | 75.8% | 63.7% | 693K |\n\nThe U-Net architecture achieved top performance with only one quarter of DeepSqueak's parameter count (187K vs 693K). Its skip connections between encoder and decoder allow it to leverage both temporal and spatial correlations in spectrograms simultaneously. On an external validation dataset (diverse mouse strains), U-Net maintained its lead: 74.3% precision / 69.1% recall vs DeepSqueak's 61.2% / 56.7%.\n\n---\n\n## Tool-by-Tool Analysis\n\n### SqueakOut (2024)\n- **Architecture**: Fully convolutional autoencoder with MobileNetV2 backbone, skip connections, hybrid Focal+Dice loss\n- **Task**: Spectrogram segmentation (noise removal + boundary identification), not classification\n- **Performance**: Dice score 90.2 (vs VocalMat's 63.8), pixel accuracy 99.84%, processes 64 spectrograms in <0.035s on GPU\n- **Training data**: 12,954 annotated spectrograms from 5 mouse strains (postnatal day 5-15)\n- **Language**: Python, open-source with pretrained weights on GitHub\n- **Relevance**: Excellent upstream segmentation that could feed into a custom classifier; does not classify syllable types itself\n- **Source**: PMC11071348\n\n### MoUSE -- Mouse Ultrasonic Sound Explorer (2024)\n- **Architecture**: Two detection modes -- Morphological Geodesic Active Contour (manual tuning) and Faster R-CNN (automated)\n- **Task**: Detection, localization, and classification of rodent ultrasonic squeaks\n- **Language**: Python (requires 3.11+), MIT license, installable via pip/Poetry\n- **GUI**: Separate MoUSE-GUI desktop application\n- **Limitations**: Small community (6 GitHub stars), published in SoftwareX (2024). Performance benchmarks not publicly documented in the repository. The Faster R-CNN detection echoes DeepSqueak's original v2 architecture approach\n- **Source**: github.com/JosephTheMoUSE/MoUSE\n\n### USVSEG Python Port (2025)\n- **Architecture**: Python reimplementation of the MATLAB USVSEG tool using signal-processing-based segmentation\n- **Task**: Robust segmentation of rodent USVs with GUI\n- **Language**: Python (PyQt5), MIT license, v1.0.2 released April 2025\n- **Dependencies**: NumPy, SciPy, Matplotlib, OpenCV, soundfile\n- **Relevance**: Pure signal-processing approach (no deep learning) -- solid segmentation baseline but no classification. Achieved 85.7% precision / 88.0% recall in the Ivanenko comparison, outperforming DeepSqueak\n- **Source**: github.com/MatsumotoJ/usvseg_python\n\n### VocalMat (existing vault coverage, updated)\n- **Architecture**: Image processing + differential geometry for detection; supervised CNN for 11-type classification\n- **Performance**: Detected 91.7% of USVs vs DeepSqueak's 78.0% in head-to-head; 86% classification accuracy across 11 syllable types; 12,954 labeled spectrograms freely available as training data\n- **Language**: MATLAB primary, but the annotated dataset (12,954 images) is the most valuable Python-compatible asset\n- **Relevance**: Best freely available labeled USV dataset. Classification into 11 types provides a supervised baseline\n- **Source**: elifesciences.org/articles/59161, github.com/ahof1704/VocalMat\n\n### AMVOC (existing vault coverage)\n- **Architecture**: Convolutional autoencoder for unsupervised USV feature extraction and clustering\n- **Task**: Detection + unsupervised clustering (no predefined syllable types)\n- **Language**: Python, MIT license\n- **Relevance**: Best open-source Python tool for unsupervised exploration of USV variation; adaptable to external detections\n- **Source**: Bioacoustics journal (2022), tandfonline.com/doi/full/10.1080/09524622.2022.2099973\n\n### TrackUSF (2022)\n- **Architecture**: Automated open-source tool for USV analysis with less than 1% false-positive detections\n- **Task**: Detection and analysis (revealed modified calls in a rat autism model)\n- **Language**: Not confirmed Python-only; designed for rat USVs specifically\n- **Relevance**: Interesting for rat-focused work but less relevant for mouse USV classification pipelines\n- **Source**: BMC Biology (2022), link.springer.com/article/10.1186/s12915-022-01299-y\n\n### HybridMouse\n- **Architecture**: Combined CNN + RNN for automatic USV identification and annotation\n- **Performance**: 82.0% precision / 71.2% recall in Ivanenko comparison -- underperforms both U-Net and signal-processing methods\n- **Relevance**: The hybrid approach did not deliver on its architectural promise; simpler methods (U-Net, USVSEG) performed better\n\n---\n\n## Tools Already Well-Covered in Vault (no new findings)\n\n- **BootSnap**: Snapshot ensemble CNN on gammatone spectrograms, macro F1 67% on wild mice. Code availability still unresolved.\n- **DAS**: Temporal convolutional network, 98% precision / 99% recall but requires raw audio input only.\n- **WhisperSeg**: Whisper-adapted transformer, outperforms DAS but also raw-audio-only.\n\n---\n\n## Architectural Patterns and Recommendations\n\nThree viable Python-native strategies emerge for replacing DeepSqueak:\n\n1. **Segmentation-first pipeline**: SqueakOut or U-Net for spectrogram segmentation, then custom classifier (CNN or clustering) on cleaned segments. Highest benchmark performance. Requires assembling components.\n\n2. **Unsupervised discovery**: AMVOC convolutional autoencoder for feature extraction + clustering. No predefined taxonomy needed. Best for exploratory analysis when syllable categories are uncertain.\n\n3. **Supervised classification on existing detections**: Use VocalMat's 12,954 labeled spectrograms as training data for a custom Python classifier (the project's existing CNN pipeline). This is the most direct path to syllable-type classification.\n\nThe U-Net architecture's dominance in benchmarks (91%/92% at one-quarter DeepSqueak's parameters) suggests that for any new development, U-Net-based segmentation should be the starting point rather than the YOLO/Faster R-CNN object-detection paradigm that DeepSqueak uses.\n\n---\n\n## Gaps and Open Questions\n\n- No Python tool currently provides DeepSqueak's acoustic feature extraction (16 per-call metrics including principal frequency, bandwidth, slope, tonality). Building this from spectrogram segments is straightforward but requires implementation.\n- The VAE-based contour-invariant clustering that DeepSqueak v3.1 introduced has no Python equivalent. AMVOC's autoencoder clustering is closest but uses a different latent space approach.\n- Cross-population generalization remains poorly tested for all Python tools -- BootSnap showed lab-to-wild transfer fails, but other tools haven't been evaluated on this dimension.\n- SqueakOut's Dice score advantage over VocalMat (90.2 vs 63.8) needs validation on adult mouse recordings (training was on pups P5-P15).\n\n---\n\n## Source Log\n\n| # | URL | Status | Relevance | Key Finding |\n|---|-----|--------|-----------|-------------|\n| 1 | pmc.ncbi.nlm.nih.gov/articles/PMC10336146/ | fetched | high | U-Net beats DeepSqueak 91/92 vs 66/64 with 4x fewer parameters |\n| 2 | pmc.ncbi.nlm.nih.gov/articles/PMC11071348/ | fetched | high | SqueakOut Dice 90.2 vs VocalMat 63.8, open-source Python |\n| 3 | github.com/JosephTheMoUSE/MoUSE | fetched | medium | Python toolkit with Faster R-CNN and morphological detection, MIT license |\n| 4 | github.com/MatsumotoJ/usvseg_python | fetched | medium | Python port of USVSEG, v1.0.2 April 2025, MIT license |\n| 5 | elifesciences.org/articles/59161 | fetched | medium | VocalMat 91.7% TPR vs DeepSqueak 78.0%, 11-type classification at 86% |\n| 6 | github.com/sloria/usv | fetched | low | Archived 2017, Python 2.7, unmaintained -- not viable |\n| 7 | github.com/lina-usc/uscusv | fetched | low | USC lab tools, 1 star, minimal documentation |\n| 8 | link.springer.com/article/10.1186/s12915-022-01299-y | search only | medium | TrackUSF <1% FP for rat USVs |\n| 9 | tandfonline.com/doi/full/10.1080/09524622.2022.2099973 | search only | medium | AMVOC convolutional autoencoder (already in vault) |\n| 10 | arxiv.org/pdf/2303.03183 | search only | low | Synthetic training data for rat USV -- tangential |\n| 11 | onlinelibrary.wiley.com/doi/10.1111/brv.13155 | blocked (403) | medium | 2025 bioacoustic detection practical guide -- could not access |\n\n## Research Context\n\n- **Query**: Python alternatives to DeepSqueak for rodent USV classification\n- **Depth**: moderate (auto-detected -- comparing tools across multiple dimensions)\n- **Existing vault knowledge**: Extensive. The vault's classification topic map already covers BootSnap, AMVOC, DAS, WhisperSeg, VocalMat, and DeepSqueak in detail (30+ notes). Key existing claims: \"No single Python tool cleanly accepts pre-detected USV segments and classifies them into syllable types as of 2026\" and detailed DeepSqueak MATLAB limitations.\n- **Knowledge gap addressed**: Three tools not previously in the vault (SqueakOut, MoUSE, USVSEG Python port), plus the first quantitative head-to-head benchmark data (Ivanenko 2023) comparing seven methods on the same dataset. The U-Net benchmark result (91/92 at 187K params vs DeepSqueak 66/64 at 693K) is the most actionable new finding.\n"}], "grading": {"eval_id": 1, "eval_name": "moderate-comparison", "configuration": "with_skill", "expectations": [{"text": "inbox-file-created", "passed": true, "evidence": "Produced python-alternatives-deepsqueak-usv-classification-research-2026-02-27.md in inbox-compatible format"}, {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter: description, source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"}, {"text": "source-log-present", "passed": true, "evidence": "## Source Log table at line 123 with structured entries (URL, status, relevance, key finding)"}, {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to specific papers (Ivanenko et al. 2023, Scientific Reports) and GitHub repos"}, {"text": "pipeline-chaining", "passed": true, "evidence": "Agent report suggested '/reduce inbox/python-alternatives-deepsqueak-usv-classification-research-2026-02-27.md' with estimate of 6-8 extractable claims"}, {"text": "multi-source-synthesis", "passed": true, "evidence": "Compared SqueakOut, MoUSE, USVSEG Python port, VocalMat, AMVOC, TrackUSF with performance benchmarks (U-Net 91.1% vs DeepSqueak 66.4%)"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing, inline citations, and contextual comparison to project pipeline"}, {"text": "vault-check-performed", "passed": true, "evidence": "Found notes/classification.md with 30+ existing notes. Identified 3 tools NOT already in vault. Research focused on gaps."}]}}, {"id": "moderate-comparison-without_skill", "prompt": "/learn Python alternatives to DeepSqueak for rodent USV classification", "eval_id": 1, "outputs": [{"name": "python-alternatives-to-deepsqueak.md", "type": "text", "content": "# Python Alternatives to DeepSqueak for Rodent USV Classification\n\n**Date:** 2026-02-27\n**Context:** Research survey for the Mickey London Lab USV spectrogram pipeline (300 kHz sample rate)\n\n---\n\n## Executive Summary\n\nDeepSqueak (MATLAB-based) is the most widely cited tool for rodent ultrasonic vocalization (USV) detection and classification, but several Python-based alternatives now exist with competitive or superior performance. The most promising Python-native options are **DAS (Deep Audio Segmenter)**, **AMVOC**, **Joseph the MoUSE**, and **LMT-USV-Toolbox**. For labs already invested in Python pipelines (like ours), these tools avoid the MATLAB dependency entirely.\n\n---\n\n## Tool Comparison Matrix\n\n| Tool | Language | Detection | Classification | GUI | Active Dev | License | Best For |\n|------|----------|-----------|---------------|-----|------------|---------|----------|\n| DeepSqueak | MATLAB | Yes (CNN) | Yes (unsupervised) | Yes | Moderate | Academic | Baseline reference |\n| **DAS** | **Python** | Yes (TCN) | Yes (supervised) | Yes | Active | Open source | General-purpose audio segmentation |\n| **AMVOC** | **Python** | Yes (spectrogram) | Yes (unsupervised, autoencoder) | No (CLI) | Active | Open source | Noisy conditions, unsupervised discovery |\n| **Joseph the MoUSE** | **Python** | Yes (DL + classical) | Yes | Yes (separate GUI pkg) | Active | Open source | Full pipeline with GUI |\n| **LMT-USV-Toolbox** | **Python** | Yes | Yes (feature extraction) | Web demo | Active | Open source | Behavioral context integration (300 kHz native) |\n| **USVSEG (Python port)** | **Python** | Yes (signal processing) | No (segmentation only) | Yes | Moderate | Open source | Robust segmentation without DL |\n| VocalMat | MATLAB | Yes (image processing + CNN) | Yes (11 categories) | Yes | Moderate | Academic | High detection accuracy (98%+) |\n| BootSnap | Python (partial) | Yes (Gammatone + CNN) | Yes (12 types, supervised) | No | Low | Academic | Generalizability across strains |\n| SqueakOut | Python | Yes (autoencoder) | No (segmentation) | No | New (2024) | Open source | Pixel-level USV segmentation |\n| Vocalization-Segmentation | Python | Yes (threshold) | No | No (notebooks) | Low | Open source | Quick unsupervised segmentation |\n| AVGN | Python | No (needs pre-segmented) | Yes (generative, clustering) | No (notebooks) | Low | Open source | Latent space analysis, cross-species |\n\n---\n\n## Detailed Analysis\n\n### Tier 1: Full Python Pipelines (Detection + Classification)\n\n#### 1. DAS (Deep Audio Segmenter)\n- **Repository:** [github.com/janclemenslab/das](https://github.com/janclemenslab/das)\n- **Documentation:** [janclemenslab.org/das](https://janclemenslab.org/das/)\n- **Install:** `pip install das`\n- **Publication:** Steinfath et al. (2021), eLife-adjacent\n- **Architecture:** Temporal Convolutional Network (TCN) on raw audio / spectrograms\n- **Performance:** F1 = 0.84 (detection), 0.85 (squeak label), 0.78 (USV label)\n- **Pros:**\n  - Pure Python, pip-installable, well-documented\n  - GUI + CLI + Python API -- all three interfaces\n  - General-purpose (works for flies, birds, mice, rats)\n  - Active development with unsupervised variant ([das_unsupervised](https://github.com/janclemenslab/das_unsupervised))\n  - TensorFlow backend, GPU-accelerated\n  - Relatively small training data requirement\n- **Cons:**\n  - Performance below VocalMat on raw detection metrics\n  - TensorFlow dependency (heavier than PyTorch alternatives)\n  - Not USV-specific -- may need domain tuning\n- **Relevance to our pipeline:** High. Python-native, pip-installable, could integrate with our existing spectrogram generation. Would need training on our 300 kHz data.\n\n#### 2. AMVOC (Analysis of Mouse Vocal Communication)\n- **Repository:** [github.com/tyiannak/amvoc](https://github.com/tyiannak/amvoc)\n- **Publication:** Ivanenko et al. (2022), Bioacoustics\n- **Architecture:** Spectrogram-based detection + convolutional autoencoder for unsupervised clustering\n- **Performance:** Outperforms leading methods in noisy conditions. On VM1 dataset, ranked just behind VocalMat.\n- **Pros:**\n  - Pure Python, open source\n  - **Real-time / online mode** -- can detect USVs during recording (750 ms windows)\n  - Unsupervised deep learning approach -- no labeled training data needed for classification\n  - High accuracy in noisy conditions\n  - Developed at NCSR Demokritos (Greece) + Rockefeller University\n- **Cons:**\n  - No graphical user interface (CLI/script-based)\n  - Less community adoption than DeepSqueak\n  - Documentation could be more extensive\n- **Relevance to our pipeline:** High. The unsupervised clustering approach aligns with our VQ-VAE hidden state work. Online detection mode is a unique capability.\n\n#### 3. Joseph the MoUSE (Mouse Ultrasonic Sound Explorer)\n- **Repository:** [github.com/JosephTheMoUSE/MoUSE](https://github.com/JosephTheMoUSE/MoUSE)\n- **Install:** `pip install git+https://github.com/JosephTheMoUSE/MoUSE.git`\n- **Publication:** Kania et al. (2024), SoftwareX 25:101606\n- **Architecture:** Hybrid -- deep learning + classical pattern recognition + computer graphics\n- **Pros:**\n  - Pure Python, pip-installable\n  - Separate GUI package available (MoUSE-GUI)\n  - Combines DL with classical methods for robustness\n  - Recent publication (2024) -- incorporates latest methods\n  - Active development\n- **Cons:**\n  - Newer tool, smaller user community\n  - Less benchmark data available vs. established tools\n- **Relevance to our pipeline:** Medium-High. Modern Python toolkit, but would need evaluation against our specific data.\n\n#### 4. LMT-USV-Toolbox\n- **Repository:** [github.com/fdechaumont/LMT-USV-Toolbox](https://github.com/fdechaumont/LMT-USV-Toolbox)\n- **Web Demo:** [usv.pasteur.cloud](https://usv.pasteur.cloud)\n- **Publication:** de Chaumont et al. (2021), Frontiers in Behavioral Neuroscience\n- **Pros:**\n  - Pure Python\n  - **Native 300 kHz support** -- designed for 300 kHz files, includes conversion script\n  - Behavioral context integration (syncs USVs with Live Mouse Tracker behavioral data)\n  - Web-based demo for quick testing without install\n  - Developed at Institut Pasteur\n- **Cons:**\n  - Focused on behavioral context -- classification is secondary\n  - Requires specific file formats\n  - Tightly coupled to the Live Mouse Tracker ecosystem\n- **Relevance to our pipeline:** **Very High** due to native 300 kHz support matching our sample rate. Worth testing immediately.\n\n---\n\n### Tier 2: Segmentation-Focused Tools (Detection Without Classification)\n\n#### 5. USVSEG (Python Port)\n- **Repository:** [github.com/MatsumotoJ/usvseg_python](https://github.com/MatsumotoJ/usvseg_python)\n- **Original (MATLAB):** [github.com/rtachi-lab/usvseg](https://github.com/rtachi-lab/usvseg)\n- **Publication:** Tachibana et al. (2020), PLOS ONE 15(2):e0228907\n- **Architecture:** Signal processing (no deep learning) -- stable spectrogram + noise reduction\n- **Performance:** Missed vocalization rate of 6.53% (best among manually-configured tools in benchmarks)\n- **Pros:**\n  - Python port available\n  - GUI included\n  - No training data needed -- purely signal processing\n  - Best segmentation accuracy among non-DL tools\n  - Outputs: onset/offset times + acoustic features (max freq, max amp, mean freq, CV freq)\n- **Cons:**\n  - Segmentation only -- no call type classification\n  - Requires manual parameter tuning\n  - Python port may lag behind MATLAB original\n- **Relevance to our pipeline:** Medium. Our existing energy detector already does something similar. Could serve as a validation benchmark.\n\n#### 6. SqueakOut\n- **Publication:** PMC (2024), [PMC11071348](https://pmc.ncbi.nlm.nih.gov/articles/PMC11071348/)\n- **Preprint:** [bioRxiv 2024.04.19.590368](https://www.biorxiv.org/content/10.1101/2024.04.19.590368v1)\n- **Architecture:** Fully convolutional autoencoder (MobileNetV2 backbone, 4.6M params)\n- **Performance:** Dice score 90.22 (vs. VocalMat's 63.82 on same dataset)\n- **Dataset:** 12,954 annotated spectrograms publicly released\n- **Pros:**\n  - Lightweight model (4.6M parameters)\n  - State-of-the-art pixel-level segmentation accuracy\n  - Publicly available annotated dataset\n  - Significant improvement over VocalMat's segmentation\n- **Cons:**\n  - Segmentation only (no call type classification)\n  - Very new (2024) -- limited community validation\n  - GitHub repository not prominently linked\n- **Relevance to our pipeline:** Medium. The annotated dataset could be valuable for training our own models.\n\n#### 7. Vocalization-Segmentation\n- **Repository:** [github.com/timsainb/vocalization-segmentation](https://github.com/timsainb/vocalization-segmentation)\n- **Architecture:** Dynamic thresholding + continuity filtering (no DL)\n- **Pros:**\n  - Simple, lightweight Python\n  - Jupyter notebook examples for mouse USVs\n  - No training data needed\n  - Good for quick exploratory analysis\n- **Cons:**\n  - Many manual parameters\n  - No classification\n  - Not actively maintained\n- **Relevance to our pipeline:** Low. Our energy detector is more sophisticated.\n\n---\n\n### Tier 3: MATLAB-Based (Included for Comparison)\n\n#### 8. VocalMat\n- **Repository:** [github.com/ahof1704/VocalMat](https://github.com/ahof1704/VocalMat)\n- **Rat variant:** [github.com/scoki211/VocalMat4Rats](https://github.com/scoki211/VocalMat4Rats)\n- **Publication:** Fonseca et al. (2021), eLife 10:e59161\n- **Performance:** 98%+ detection rate, 86% classification accuracy across 11 USV categories\n- **Pros:**\n  - Best-in-class detection accuracy\n  - 11-category classification (complex, chevron, short, composite, downward, flat, multi-step, two-syllable, upward, u-shape, noise)\n  - Image processing + differential geometry approach -- innovative\n- **Cons:**\n  - **MATLAB only** -- no Python port\n  - Requires MATLAB 2017a-2019b\n  - Cannot directly integrate with Python pipelines\n- **Relevance to our pipeline:** Reference benchmark only. Cannot integrate without MATLAB bridge.\n\n#### 9. BootSnap\n- **Publication:** Abbasi et al. (2022), PLOS Computational Biology\n- **Architecture:** Gammatone spectrograms + CNN Snapshot Ensemble\n- **Pros:**\n  - 12-type classification including false positive class\n  - Better generalizability across mouse strains than DeepSqueak\n  - Gammatone filter computations available in Python\n- **Cons:**\n  - Code availability unclear -- no prominent GitHub repository found\n  - Partial Python implementation only\n- **Relevance to our pipeline:** Low (code access issues), but the Gammatone spectrogram approach is worth studying.\n\n---\n\n### Tier 4: Generative/Analysis Tools (Post-Detection)\n\n#### 10. AVGN (Animal Vocalization Generative Network)\n- **Repository:** [github.com/timsainb/AVGN](https://github.com/timsainb/AVGN)\n- **Paper repo:** [github.com/timsainb/avgn_paper](https://github.com/timsainb/avgn_paper)\n- **Pros:**\n  - Latent space models for vocalization analysis\n  - Cross-species (mice, birds, primates, cetaceans)\n  - Generative -- can synthesize novel vocalizations\n  - Unsupervised clustering in latent space\n- **Cons:**\n  - Requires pre-segmented input -- not a detector\n  - Research-oriented, not production-ready\n- **Relevance to our pipeline:** Medium. Could complement our VQ-VAE approach for downstream analysis after detection.\n\n---\n\n## Performance Benchmarks (from Published Comparisons)\n\n| Tool | Missed USV Rate | False Discovery Rate | F1 Score | Notes |\n|------|----------------|---------------------|----------|-------|\n| VocalMat | ~2% | Low | ~0.98 (detection) | Best detection, MATLAB only |\n| USVSEG | 6.53% | Low | -- | Best non-DL segmentation |\n| AMVOC | ~5% (estimated) | Low | -- | Best in noisy conditions |\n| DeepSqueak | 27.13% | 7.61% | -- | Baseline reference |\n| DAS | -- | -- | 0.84 (detection) | General audio, not USV-tuned |\n| MUPET | 33.74% | -- | -- | Cannot detect below 30 kHz |\n| SqueakOut | -- | -- | 0.90 (Dice) | Segmentation metric |\n\n*Sources: Fonseca et al. 2021 (eLife), Coffey et al. 2019 (Neuropsychopharmacology), Ivanenko et al. 2022 (Bioacoustics)*\n\n---\n\n## Recommendations for Mickey London Lab\n\n### Immediate Actions\n\n1. **Evaluate LMT-USV-Toolbox first** -- it natively supports 300 kHz recordings, which matches our pipeline exactly. Test via the web demo at [usv.pasteur.cloud](https://usv.pasteur.cloud) before installing locally.\n\n2. **Evaluate DAS second** -- the most mature Python-native option with pip install, GUI, and documented API. Install with `pip install das` and test on our WAV files.\n\n3. **Evaluate AMVOC for unsupervised discovery** -- its convolutional autoencoder clustering aligns conceptually with our VQ-VAE hidden state work and could validate or complement our approach.\n\n### Integration Strategy\n\nGiven our existing pipeline (`src/usv_spectrogram/detection/`), the most practical integration path is:\n\n- **Detection:** Keep our energy detector for initial candidate extraction, but validate against DAS/AMVOC/LMT-USV-Toolbox outputs to benchmark our performance\n- **Classification:** Use one of the Python tools above as a classification layer downstream of our detection, or train our own classifier using SqueakOut's published annotated dataset (12,954 spectrograms)\n- **Analysis:** Consider AVGN or AMVOC's autoencoder for latent space analysis of classified calls\n\n### What to Avoid\n\n- **VocalMat** -- despite best performance, MATLAB-only is a dealbreaker for our Python pipeline\n- **MUPET** -- cannot detect below 30 kHz, limiting for some USV types\n- **BootSnap** -- code availability is unclear, making reproducibility difficult\n\n---\n\n## Source URLs\n\n### GitHub Repositories\n- DAS: https://github.com/janclemenslab/das\n- DAS Unsupervised: https://github.com/janclemenslab/das_unsupervised\n- AMVOC: https://github.com/tyiannak/amvoc\n- Joseph the MoUSE: https://github.com/JosephTheMoUSE/MoUSE\n- LMT-USV-Toolbox: https://github.com/fdechaumont/LMT-USV-Toolbox\n- USVSEG Python: https://github.com/MatsumotoJ/usvseg_python\n- USVSEG MATLAB: https://github.com/rtachi-lab/usvseg\n- VocalMat: https://github.com/ahof1704/VocalMat\n- VocalMat4Rats: https://github.com/scoki211/VocalMat4Rats\n- Vocalization-Segmentation: https://github.com/timsainb/vocalization-segmentation\n- AVGN: https://github.com/timsainb/AVGN\n- USV_Python: https://github.com/grace3999/USV_Python\n\n### Publications\n- DeepSqueak: https://pmc.ncbi.nlm.nih.gov/articles/PMC6461910/\n- VocalMat: https://elifesciences.org/articles/59161\n- AMVOC: https://www.tandfonline.com/doi/full/10.1080/09524622.2022.2099973\n- BootSnap: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010049\n- USVSEG: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0228907\n- SqueakOut: https://pmc.ncbi.nlm.nih.gov/articles/PMC11071348/\n- LMT-USV-Toolbox: https://www.frontiersin.org/articles/735920\n- A-MUD: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0181200\n- Joseph the MoUSE: https://www.sciencedirect.com/science/article/pii/S2352711023003023\n- Extended DL comparison: https://www.nature.com/articles/s41598-023-38186-7\n- CNN classification (Gammatone): https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0244636\n\n### Documentation & Demos\n- DAS docs: https://janclemenslab.org/das/\n- LMT-USV web demo: https://usv.pasteur.cloud\n- DAS on PyPI: https://pypi.org/project/das/\n"}], "grading": {"eval_id": 1, "eval_name": "moderate-comparison", "configuration": "without_skill", "expectations": [{"text": "inbox-file-created", "passed": false, "evidence": "Produced markdown file but without inbox-compatible structure (no YAML frontmatter)"}, {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter. Starts with '# Python Alternatives to DeepSqueak'"}, {"text": "source-log-present", "passed": false, "evidence": "URLs embedded inline per tool but no structured source log table with fetch status"}, {"text": "provenance-traceable", "passed": true, "evidence": "GitHub URLs, publication links throughout (12 repos, 11 publications cited)"}, {"text": "pipeline-chaining", "passed": false, "evidence": "No mention of /reduce, /seed, or pipeline next steps"}, {"text": "multi-source-synthesis", "passed": true, "evidence": "Comprehensive comparison of 11 tools in a matrix table with pros/cons, tiers, and practical recommendations"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Original synthesis with structured tiers and relevance notes"}, {"text": "vault-check-performed", "passed": false, "evidence": "No vault check \u00e2\u20ac\u201d went straight to web research"}]}}, {"id": "deep-survey-with_skill", "prompt": "/learn state of the art in unsupervised clustering methods for bioacoustic vocalizations 2025", "eval_id": 2, "outputs": [{"name": "unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-27.md", "type": "text", "content": "---\ndescription: \"Survey of 2024-2025 unsupervised clustering methods for bioacoustic vocalizations -- foundation models, self-supervised embeddings, UMAP+HDBSCAN pipelines, and VQ-based tokenization\"\nsource_type: article\nurl: \"multiple -- see source log\"\nauthor: \"multiple sources\"\ndate_accessed: \"2026-02-27\"\nstatus: unprocessed\nresearch_tool: \"web-search\"\nresearch_query: \"unsupervised clustering bioacoustic vocalizations 2025 state of the art\"\nresearch_depth: \"deep\"\n---\n\n# Unsupervised Clustering of Bioacoustic Vocalizations: State of the Art in 2025\n\nThe field has converged on a dominant two-stage paradigm: extract learned embeddings from a pretrained or self-supervised model, then cluster in that embedding space using UMAP dimensionality reduction followed by HDBSCAN. The most important shift between 2023 and 2025 is that foundation models (Perch 2.0, BirdNET, AVES, NatureLM-audio) now provide off-the-shelf embeddings that outperform custom-trained autoencoders for most species-level clustering tasks, while custom autoencoders and VAEs retain their advantage for fine-grained within-species repertoire analysis (syllable types, individual identity). For mouse USVs specifically, the Goffinet VAE remains the reference unsupervised method, with SqueakOut (2024) adding a critical upstream improvement in segmentation quality that feeds better data to any downstream clustering pipeline.\n\n---\n\n## 1. The Embedding + HDBSCAN Pipeline Is Now Standard\n\nThe dominant unsupervised clustering workflow for bioacoustic vocalizations in 2025 follows three steps: (1) extract embeddings from a pretrained model, (2) reduce dimensionality with UMAP, (3) cluster with HDBSCAN. This pipeline was formalized by Best et al. (2023), who showed that learned audio embeddings match species-specific models for vocalization clustering across six species including Bengalese finches, humpback whales, and bottlenose dolphins.\n\nBest et al. trained convolutional autoencoders on spectrogram representations using perceptual loss (VGG-based rather than pixel-level MSE), producing 256-dimensional bottleneck representations. UMAP reduced these to 8 dimensions before HDBSCAN clustering. On eight datasets across six species, this pipeline achieved NMI scores of 0.5-0.88, with 46-97% of clusters meeting a 90% purity threshold. A critical finding: a generic autoencoder trained on all datasets simultaneously performed nearly as well as species-specific models, suggesting cross-species transfer of vocalization structure. The authors released an open-source Python package for this pipeline.\n\nHDBSCAN has become the default clustering algorithm because it automatically determines cluster count, handles variable cluster shapes and densities, explicitly models noise points (important for bioacoustic data), and scales to large datasets with O(n log n) complexity.\n\n---\n\n## 2. Foundation Models Dominate Species-Level Clustering\n\nA comprehensive evaluation by Muenster et al. (2025, arXiv 2504.06710) tested 15 bioacoustic deep learning models on clustering and novel class recognition. The models included purpose-built bioacoustic models (BirdNET, Perch, Animal2Vec, ProtoCLR, AVES, BirdAVES, BioLingual, SurfPerch, Google_Whale, Insect459NET, Insect66NET) and general audio baselines (AudioMAE, BEATs, EAT).\n\nKey quantitative results using K-Means clustering with Adjusted Mutual Information (AMI):\n- Supervised models achieved 0.418 AMI on bird data and 0.488 on frog data on average\n- Self-supervised models achieved only 0.256 AMI (birds) and 0.414 (frogs)\n- Perch and BirdNET \"vastly outperformed\" all other feature extractors -- the top six models were all supervised, bird-trained models\n\nThis is a striking finding: for species-level clustering, supervised models trained on large taxonomic datasets produce far better embedding spaces than self-supervised approaches. The embeddings from supervised models cluster novel species (not seen during training) more effectively than self-supervised models cluster anything.\n\nPerch 2.0 (Google, 2025) represents the current state of the art for general bioacoustic embeddings. It uses an EfficientNet-B3 backbone (12M parameters), trained on 1.5M+ labeled recordings covering 14,795 species across birds, amphibians, insects, and mammals. It achieves AUROC 0.908 on BirdSet and 0.840 classification accuracy on BEANS. Remarkably, it outperforms specialized marine models on marine transfer tasks despite having almost no marine training data, suggesting its embeddings capture fundamental acoustic structure that transfers across taxa.\n\n---\n\n## 3. Self-Supervised Models: Strong but Not Superior\n\nAVES (Animal Vocalization Encoder based on Self-Supervision) adapts HuBERT to bioacoustics by pretraining on 360 hours of AudioSet animal sounds. Sarkar and Magimai-Doss (ICASSP 2025) compared speech-pretrained SSL models (HuBERT, Wav2Vec2, WavLM) against AVES-Bio across three datasets (marmoset calls, marine mammals, dog barks). Their key finding: pretraining on bioacoustic data provides only marginal improvements over speech-pretrained models. HuBERT and AVES showed comparable performance (e.g., 94.18% vs 94.95% UAR on Watkins marine mammal dataset). Fine-tuning on ASR tasks yielded inconsistent results, suggesting general-purpose SSL representations already capture the features relevant to bioacoustic analysis.\n\nA separate 2025 study (arXiv 2509.04166) on cross-species transfer found that phylogenetic proximity to humans does not influence transfer learning effectiveness from speech models. This means HuBERT pretrained on English speech transfers equally well to primate calls and bird songs -- the acoustic features it learns (spectral envelopes, temporal modulations, harmonic structure) are fundamental across vocal production systems.\n\nBirdMAE, a masked autoencoder trained on large-scale bird song data, achieved the best performance on the BirdSet benchmark according to the Foundation Models comparative review (arXiv 2508.01277). The review also noted that transformer-based models require attentive probing (not just linear probing) to extract their full representational power.\n\n---\n\n## 4. TweetyBERT: Self-Supervised Birdsong Analysis\n\nTweetyBERT (Goffin et al., 2025, eLife) applies masked spectrogram prediction to birdsong, operating directly on spectrograms at 2.7ms temporal resolution -- 10x finer than speech models. The compact architecture (2.5M parameters: 4 convolutional layers + 4 transformer encoder blocks) learns to reconstruct 25% masked spectrogram segments without any labels.\n\nThe model autonomously discovered canary syllable units as elliptical trajectories in embedding space -- a pattern matching theoretical biophysical models of song production. HDBSCAN clustering of these embeddings achieved a V-measure of 0.88, close to human inter-annotator agreement. Linear probes on frozen embeddings achieved 2.5% total frame error rate (vs. 1.3% for fully supervised fine-tuning).\n\nA notable application: the model captured seasonal vocal plasticity, detecting embedding density shifts between breeding and non-breeding seasons without any temporal labels. This demonstrates unsupervised detection of biologically meaningful variation -- exactly what is needed for mouse USV analysis across behavioral conditions.\n\n---\n\n## 5. Vector Quantization for Discrete Vocalization Tokens\n\nSarkar and Magimai-Doss (arXiv 2511.10190, November 2025) directly tested whether VQ token sequences from HuBERT embeddings can capture temporal structure in animal vocalizations. Using a codebook of K=50 on four datasets (marmoset, dog), they found:\n\n- VQ token sequences do discriminate call types and callers (pairwise distance analysis shows expected separation patterns)\n- However, VQ underperformed linear baselines by 15-39% for call-type classification and 15-71% for caller identification\n- Gumbel-softmax VQ performed poorly, confirming codebook collapse issues\n- Call-type classification substantially outperformed caller identification, meaning individual identity is lost during discretization\n\nThis aligns with the vault's existing finding that post-hoc VQ underperforms continuous representations. The authors concluded a single codebook may lack sufficient expressiveness, particularly for fine-grained distinctions -- potentially motivating multi-codebook approaches (RVQ) or larger codebook sizes.\n\n---\n\n## 6. Audio-Language Foundation Models: NatureLM-audio\n\nNatureLM-audio (November 2024, arXiv 2411.07186) represents a new paradigm: an audio-language model combining BEATs audio encoder, Q-Former connector, and Llama 3.1-8B language model. Trained on 15,000+ hours spanning bioacoustic recordings (Xeno-canto, iNaturalist), speech, and music, it achieves zero-shot species identification (19.6% accuracy on held-out species by scientific name, vastly outperforming 0.4% from general audio baselines). It also performs novel tasks never seen during training, like counting individual callers (38.3% accuracy vs 24.3% random).\n\nWhile NatureLM-audio is primarily a classification/captioning model, its intermediate representations could serve as clustering features. The cross-modal training (audio + language) may capture semantic structure that purely acoustic models miss. However, its 8B-parameter language model makes it impractical for embedding extraction compared to smaller specialized models.\n\n---\n\n## 7. Mouse USV-Specific Methods\n\nFor rodent USV analysis specifically, the landscape in 2025 looks like this:\n\n**Goffinet VAE (eLife, 2021)** remains the reference method for unsupervised mouse USV analysis. The shotgun-VAE trains on randomly sampled audio segments, learning latent features sufficient to reconstruct continuous sequences. Gaussian mixture model clustering in the VAE latent space only supported k of 2 or fewer clusters, providing the key quantitative evidence that mouse USVs form a continuum rather than discrete categories.\n\n**SqueakOut (2024)** adds a critical upstream capability: autoencoder-based USV segmentation achieving 90.22 Dice score (vs 63.82 for VocalMat). The lightweight MobileNetV2-based architecture (4.6M parameters, 18MB) runs inference on 64 spectrograms in under 0.035 seconds. The authors explicitly designed SqueakOut to feed into downstream unsupervised pipelines: \"The resulting segmentation masks can be used for downstream analysis using unsupervised methods such as Variational Autoencoders and dimensionality reduction techniques such as UMAP.\" Better segmentation directly improves clustering quality by removing noise contamination.\n\n**AMVOC** provides an MIT-licensed Python convolutional autoencoder specifically designed for mouse USV feature extraction and clustering, operating on spectrograms with UMAP visualization.\n\n**DeepSqueak v3.1** added VAE-based contour-invariant clustering as an upgrade over k-means, responding to the evidence that USVs resist discrete categorization.\n\n**MUPET** uses gammatone filterbank features with unsupervised k-means to discover 100-140 data-driven syllable types -- a handcrafted-feature baseline that learned embeddings have since surpassed.\n\n---\n\n## 8. The CASE Benchmark\n\nSchneider et al. (2022) published CASE (Cluster and Analyze Sound Events), a systematic comparison of 48 clustering methods combined with various audio transformations for animal vocalizations. The methods tested include community detection, affinity propagation, HDBSCAN, and fuzzy clustering, paired with classifiers including k-nearest neighbor, dynamic time warping, and cross-correlation. CASE uses a windowed, multi-feature extraction approach and provides an open benchmark for evaluating unsupervised vocal classification methods. While published in 2022, it remains a relevant benchmark and has been cited in 2025 clustering evaluations.\n\n---\n\n## 9. Emerging Directions\n\n**Listening Without Labels (UCSD, 2025)**: An active research project using autoencoders to compress spectrograms into vectors, followed by UMAP and HDBSCAN/GMM clustering for unsupervised bioacoustic discovery without any labeled data. Combines this with knowledge graphs for organizing discovered sound types.\n\n**Automated Note Annotation (Ecological Informatics, 2025)**: A pipeline achieving 93% correct annotation of target species acoustic notes through unsupervised clustering of extracted features, while eliminating 88% of false positives and retaining 95% true positives. Demonstrates that unsupervised clustering can serve as a post-processing step after initial detection.\n\n**Hierarchical Contrastive Learning**: Upcoming work (ICASSP 2025) on acoustic identification of individual animals uses hierarchical contrastive learning to learn embeddings that cluster by both species and individual identity simultaneously.\n\n---\n\n## Source Log\n\n| # | URL | Status | Relevance | Key Finding |\n|---|-----|--------|-----------|-------------|\n| 1 | https://arxiv.org/abs/2504.06710 | fetched | high | 15 bioacoustic models benchmarked for clustering; supervised models vastly outperform self-supervised for species-level clustering |\n| 2 | https://arxiv.org/html/2508.01277v1 | fetched | high | Comparative review of 15 foundation models for bioacoustics; BirdMAE tops BirdSet, BEATs tops BEANS |\n| 3 | https://arxiv.org/html/2501.05987v1 | fetched | high | Speech SSL models match bioacoustic-pretrained models; domain-specific pretraining gives only marginal gains |\n| 4 | https://pmc.ncbi.nlm.nih.gov/articles/PMC10332598/ | fetched | high | Best et al. autoencoder+UMAP+HDBSCAN pipeline for vocalization clustering across 6 species |\n| 5 | https://arxiv.org/html/2508.04665v1 | fetched | high | Perch 2.0: 14,795 species, EfficientNet-B3, SOTA on BirdSet and BEANS |\n| 6 | https://arxiv.org/html/2511.10190v1 | fetched | high | VQ of HuBERT embeddings discriminates call types but underperforms continuous representations by 15-39% |\n| 7 | https://arxiv.org/html/2411.07186v1 | fetched | medium | NatureLM-audio: audio-language foundation model with zero-shot capabilities |\n| 8 | https://pmc.ncbi.nlm.nih.gov/articles/PMC12027336/ | fetched | high | TweetyBERT: self-supervised masked prediction achieves V-measure 0.88 for birdsong clustering |\n| 9 | https://pmc.ncbi.nlm.nih.gov/articles/PMC11071348/ | fetched | high | SqueakOut: autoencoder USV segmentation (Dice 90.22) feeding into downstream unsupervised analysis |\n| 10 | https://www.sciencedirect.com/science/article/pii/S1574954125002316 | blocked (403) | medium | Automated note annotation with unsupervised clustering achieving 93% accuracy |\n| 11 | https://www.mdpi.com/2076-2615/12/16/2020 | skipped | medium | CASE benchmark (2022) -- 48 clustering methods, referenced but not re-fetched |\n| 12 | https://elifesciences.org/articles/67855 | skipped | medium | Goffinet VAE (2021) -- already well-covered in vault, referenced for context |\n| 13 | https://arxiv.org/html/2509.04166v1 | skipped | medium | Cross-species transfer from speech -- search summary captured key finding |\n| 14 | https://github.com/earthspecies/aves | skipped | low | AVES GitHub repo -- model already known to vault |\n| 15 | https://e4e.ucsd.edu/news-and-updates/aid-knowledge-graphs-reu-2025 | skipped | low | UCSD REU project description, limited technical detail |\n\n## Research Context\n\n- **Query**: state of the art in unsupervised clustering methods for bioacoustic vocalizations 2025\n- **Depth**: deep (auto-detected -- broad survey, multi-faceted, theoretical + practical)\n- **Existing vault knowledge**: Strong coverage of VQ-VAE pipeline, Goffinet VAE, AMVOC, AVES, DeepSqueak, speech SSL transfer. Weak on: foundation model benchmarks (Perch 2.0, BirdMAE), TweetyBERT, SqueakOut, systematic comparison of embedding models for clustering, NatureLM-audio.\n- **Knowledge gap addressed**: (1) Systematic comparison showing supervised foundation models outperform self-supervised for clustering, (2) TweetyBERT masked prediction approach, (3) SqueakOut segmentation as upstream clustering enabler, (4) Perch 2.0 capabilities and benchmark results, (5) NatureLM-audio as new paradigm, (6) Quantitative VQ performance gap on bioacoustic data\n"}], "grading": {"eval_id": 2, "eval_name": "deep-survey", "configuration": "with_skill", "expectations": [{"text": "inbox-file-created", "passed": true, "evidence": "Produced unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-27.md in inbox-compatible format"}, {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter: description, source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"}, {"text": "source-log-present", "passed": true, "evidence": "## Source Log table at line 117 with structured entries"}, {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to Muenster et al. (2025), Best et al. (2023), specific GitHub repos and papers"}, {"text": "pipeline-chaining", "passed": true, "evidence": "Agent report suggested '/reduce' with estimate of 15-20 extractable atomic notes"}, {"text": "structured-sections", "passed": true, "evidence": "Organized into numbered sub-topic sections: HDBSCAN pipeline, foundation models, supervised vs self-supervised, USV-specific methods, open challenges"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing and contextual relevance to mouse USV project"}, {"text": "vault-check-performed", "passed": true, "evidence": "Reported existing vault coverage of VQ-VAE, Goffinet VAE, AMVOC, AVES, speech SSL transfer, DeepSqueak. Focused research on gaps."}]}}, {"id": "deep-survey-without_skill", "prompt": "/learn state of the art in unsupervised clustering methods for bioacoustic vocalizations 2025", "eval_id": 2, "outputs": [{"name": "unsupervised-clustering-bioacoustic-vocalizations-survey.md", "type": "text", "content": "# Unsupervised Clustering Methods for Bioacoustic Vocalizations: State of the Art (2025)\n\n**Survey Date:** 2026-02-27\n**Scope:** Comprehensive review of unsupervised and self-supervised clustering approaches for animal vocalization analysis, covering methods, tools, foundation models, evaluation practices, and open challenges as of 2025.\n\n---\n\n## Table of Contents\n\n1. [Executive Summary](#1-executive-summary)\n2. [Feature Representation Approaches](#2-feature-representation-approaches)\n   - 2.1 Traditional Acoustic Features\n   - 2.2 Deep Audio Embeddings (Autoencoders)\n   - 2.3 Self-Supervised Representation Learning\n   - 2.4 Foundation Model Embeddings\n3. [Clustering Algorithms](#3-clustering-algorithms)\n   - 3.1 HDBSCAN\n   - 3.2 K-Means and Gaussian Mixture Models\n   - 3.3 DBSCAN and Density-Based Methods\n   - 3.4 Community Detection and Graph-Based\n   - 3.5 Affinity Propagation\n   - 3.6 Fuzzy Clustering\n4. [Dimensionality Reduction for Visualization and Clustering](#4-dimensionality-reduction-for-visualization-and-clustering)\n   - 4.1 UMAP\n   - 4.2 t-SNE\n   - 4.3 Variational Autoencoders (VAEs)\n5. [Foundation Models and Transfer Learning](#5-foundation-models-and-transfer-learning)\n   - 5.1 Perch / Perch 2.0 (Google DeepMind)\n   - 5.2 BirdNET\n   - 5.3 AVES / BirdAVES\n   - 5.4 animal2vec\n   - 5.5 NatureLM-audio\n   - 5.6 BioLingual\n   - 5.7 TweetyBERT\n6. [Specialized USV Tools (Rodent Ultrasonic Vocalizations)](#6-specialized-usv-tools)\n   - 6.1 DeepSqueak\n   - 6.2 VocalMat\n   - 6.3 MUPET\n   - 6.4 AMVOC\n   - 6.5 TrackUSF\n   - 6.6 BootSnap\n   - 6.7 WhisperSeg\n7. [Software Frameworks](#7-software-frameworks)\n   - 7.1 CASE\n   - 7.2 OpenSoundscape\n   - 7.3 AVN (Analysis of Vocal Networks)\n8. [Evaluation Metrics and Benchmarks](#8-evaluation-metrics-and-benchmarks)\n   - 8.1 Standard Clustering Metrics\n   - 8.2 Benchmark Datasets\n   - 8.3 Supervised vs. Self-Supervised: Benchmark Results\n9. [Key Findings and Emerging Trends](#9-key-findings-and-emerging-trends)\n10. [Open Challenges](#10-open-challenges)\n11. [Source Bibliography](#11-source-bibliography)\n\n---\n\n## 1. Executive Summary\n\nUnsupervised clustering of bioacoustic vocalizations has undergone a significant transformation in 2023-2025, driven by three converging trends: (1) the maturation of bioacoustic foundation models that produce high-quality embeddings, (2) the application of self-supervised learning methods originally developed for human speech, and (3) systematic benchmarking efforts that enable rigorous comparison across methods.\n\n**The current state of the art can be summarized as:**\n\n- **Supervised foundation model embeddings** (Perch 2.0, BirdNET) produce the best clustering representations for in-domain taxa, but generalize less well to out-of-domain species.\n- **Self-supervised models** (AVES, animal2vec, TweetyBERT) show superior cross-domain generalization, performing comparably on out-of-distribution taxa despite weaker in-domain clustering.\n- **HDBSCAN after UMAP dimensionality reduction** has emerged as the dominant clustering pipeline, due to HDBSCAN's ability to automatically determine cluster count and handle noise.\n- **Semi-automated workflows** -- where automated clustering produces initial groupings that are then refined by experts -- match inter-expert agreement levels while requiring a fraction of the time.\n- **The gap between supervised and self-supervised feature extractors is narrowing**, with models like BirdAVES and Perch 2.0 demonstrating that large-scale training can produce embeddings useful far beyond the training domain (e.g., bird-trained models detecting whale songs).\n\n---\n\n## 2. Feature Representation Approaches\n\n### 2.1 Traditional Acoustic Features\n\nTraditional bioacoustic clustering relies on extracting hand-crafted spectral and temporal features from vocalization segments:\n\n- **Spectral features:** MFCCs, spectral centroid, bandwidth, rolloff, flatness\n- **Temporal features:** Duration, inter-onset interval, amplitude envelope\n- **Frequency modulation features:** Pitch contours, frequency slope, bandwidth over time\n\n**Limitations:** One-dimensional feature extraction from frequency-modulated vocalizations leads to insufficient characterization. Multidimensional feature extraction significantly improves clustering for complex vocalizations.\n\n**Source:** [CASE Software Comparison (Manzano-Rubio et al., 2022)](https://www.mdpi.com/2076-2615/12/16/2020)\n\n### 2.2 Deep Audio Embeddings (Autoencoders)\n\nBest et al. (2023) proposed using convolutional autoencoders to learn abstract vocalization representations. The approach:\n\n1. Trains a convolutional autoencoder on spectrogram patches of detected vocalizations\n2. Uses the bottleneck (latent) representation as a feature vector\n3. Clusters the latent vectors to discover vocal repertoire categories\n\n**Key results:** Tested on 8 datasets across 6 species (birds and marine mammals), autoencoder embeddings improved clustering agreement with expert-labeled vocalization types compared to hand-crafted features, with minimal parameter tuning required.\n\nA Python package was released for the community to train custom vocalization autoencoders or use pretrained encoders for repertoire browsing and annotation.\n\n**Source:** [Deep audio embeddings for vocalisation clustering (Best et al., 2023)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0283396)\n\n### 2.3 Self-Supervised Representation Learning\n\nSelf-supervised learning (SSL) has become a major paradigm for bioacoustic feature extraction, borrowing architectures from human speech processing:\n\n**Core approaches:**\n\n| Method | Mechanism | Key Property |\n|--------|-----------|--------------|\n| **Contrastive learning** (wav2vec 2.0) | Learn by contrasting masked speech segments against distractors | Rich temporal representations |\n| **Masked prediction** (HuBERT) | Predict cluster labels for masked audio frames | Captures acoustic unit structure |\n| **Masked autoencoding** (AudioMAE, BirdMAE) | Reconstruct masked spectrogram patches | Visual-style pretraining on spectrograms |\n\n**Critical finding (2025):** A comparative study found that SSL models pre-trained on human speech perform comparably to those pre-trained directly on animal vocalizations for most bioacoustic tasks, suggesting that the acoustic structure learned from speech transfers well to animal sounds.\n\n**Models compared:** AVES-Bio (animal-pretrained), HuBERT (speech), WavLM (speech), Wav2Vec2 (speech). Tested on marine mammals (Watkins, 32 species), marmoset calls (11 types), and dog vocalizations (14 types).\n\n**Sources:**\n- [Comparing SSL Models for Bioacoustics (Doukhan et al., 2025)](https://arxiv.org/abs/2501.05987)\n- [Exploring bat song syllable representations in self-supervised audio encoders (2024)](https://www.researchgate.net/publication/384155613_Exploring_bat_song_syllable_representations_in_self-supervised_audio_encoders)\n\n### 2.4 Foundation Model Embeddings\n\nThe most recent approach uses large pre-trained foundation models as feature extractors, then applies clustering to the resulting embeddings. This leverages the models' broad training to produce general-purpose bioacoustic representations. See Section 5 for detailed model descriptions.\n\n**Key insight (2025):** Attentive probing (learning weighted combinations of transformer layer outputs) significantly outperforms simple linear probing for extracting useful features from transformer-based models.\n\n**Source:** [Foundation Models for Bioacoustics - a Comparative Review (2025)](https://arxiv.org/html/2508.01277v1)\n\n---\n\n## 3. Clustering Algorithms\n\n### 3.1 HDBSCAN (Hierarchical Density-Based Spatial Clustering of Applications with Noise)\n\n**Status:** The dominant clustering algorithm in current bioacoustic pipelines.\n\n**Advantages for bioacoustics:**\n- Automatically determines the number of clusters (no need to specify K)\n- Adapts to variable cluster shapes and densities\n- Handles noise by classifying outliers as \"noise\" rather than forcing assignment\n- Computational complexity of O(n log n), suitable for large datasets\n- Robust to the variable quality of field recordings\n\n**Recent applications:**\n- Pilot whale vocal repertoire: 40 distinct call types identified from 640 recordings in the Mediterranean Sea (2024)\n- Manatee population estimation via vocalization clustering (2024)\n- General-purpose vocalization clustering after UMAP projection of deep embeddings\n\n**Sources:**\n- [Pilot whale vocal repertoire (Casoli et al., 2024)](https://pmc.ncbi.nlm.nih.gov/articles/PMC11538958/)\n- [Manatee population estimation (2024)](https://www.frontiersin.org/journals/conservation-science/articles/10.3389/fcosc.2024.1405243/full)\n- [Improved analysis of deep bioacoustic embeddings (2024)](https://www.researchgate.net/publication/379841114_Improved_analysis_of_deep_bioacoustic_embeddings_through_dimensionality_reduction_and_interactive_visualisation)\n\n### 3.2 K-Means and Gaussian Mixture Models (GMM)\n\n**K-Means** remains a baseline clustering method, used primarily in benchmarking contexts where the number of clusters is known a priori.\n\n**GMM** offers soft (probabilistic) cluster assignments, making it suitable for:\n- Vocalizations that exist on a continuum rather than discrete types\n- Blue whale call detection and classification using multiscale sample entropy features\n- Species where call types grade into one another\n\n**Limitation:** Both require specifying the number of clusters, which is often unknown for unstudied species.\n\n**Source:** [Blue whale GMM classification (2025)](https://pmc.ncbi.nlm.nih.gov/articles/PMC12025404/)\n\n### 3.3 DBSCAN and Density-Based Methods\n\nDBSCAN is used in several USV analysis tools (e.g., TrackUSF) as a simpler alternative to HDBSCAN. It requires two parameters (epsilon and minimum samples) but does not require specifying the number of clusters.\n\n**Source:** [TrackUSF (Bhatt et al., 2022)](https://link.springer.com/article/10.1186/s12915-022-01299-y)\n\n### 3.4 Community Detection and Graph-Based Methods\n\nBorrowed from network science, community detection algorithms treat vocalizations as nodes in a graph where edges represent acoustic similarity. This approach naturally handles:\n- Multi-scale structure in vocal repertoires\n- Graded vocalization categories\n- Hierarchical organization of call types\n\n**Source:** [CASE Software (Manzano-Rubio et al., 2022)](https://www.mdpi.com/2076-2615/12/16/2020)\n\n### 3.5 Affinity Propagation\n\nIdentifies \"exemplars\" (representative vocalizations) and assigns other calls to exemplar-defined clusters. Advantage: no need to specify cluster count. Disadvantage: computationally expensive for large datasets.\n\n**Source:** [CASE Software (Manzano-Rubio et al., 2022)](https://www.mdpi.com/2076-2615/12/16/2020)\n\n### 3.6 Fuzzy Clustering\n\nAllows vocalizations to belong to multiple clusters with varying degrees of membership. Particularly relevant for species with continuous vocal variation or where call type boundaries are not clearly defined.\n\n**Source:** [CASE Software (Manzano-Rubio et al., 2022)](https://www.mdpi.com/2076-2615/12/16/2020)\n\n---\n\n## 4. Dimensionality Reduction for Visualization and Clustering\n\n### 4.1 UMAP (Uniform Manifold Approximation and Projection)\n\n**Status:** The standard dimensionality reduction method for bioacoustic embedding visualization and pre-clustering.\n\nUMAP captures local similarity structure far better than classical linear methods (PCA, MDS), tightly packing together calls from the same individuals or call types. In the standard pipeline:\n\n1. Extract embeddings from a foundation model or autoencoder\n2. Apply UMAP to reduce to 2-3 dimensions (or ~300 for clustering without visualization)\n3. Apply HDBSCAN to the UMAP-reduced space\n\n**Source:** [Finding, visualizing, and quantifying latent structure across diverse animal vocal repertoires (Sainburg et al., 2020)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1008228)\n\n### 4.2 t-SNE (t-distributed Stochastic Neighbor Embedding)\n\nWidely used in earlier work and still common in USV analysis tools (e.g., TrackUSF). t-SNE produces visually appealing clusters but has limitations:\n- Non-parametric (cannot project new data without re-running)\n- Sensitive to perplexity parameter\n- Distances between clusters are not meaningful\n\nBeing gradually replaced by UMAP in newer pipelines.\n\n### 4.3 Variational Autoencoders (VAEs)\n\nVAEs learn a probabilistic latent space where similar vocalizations cluster naturally. The latent space is continuous and smooth, enabling:\n- Interpolation between vocalization types\n- Generative sampling of synthetic vocalizations\n- Nearest-neighbor analysis in latent space\n\nStudies on mouse USV syllables showed VAE latent spaces consistently group syllables of the same type, comparable to other feature spaces.\n\n**Recent advance (2025):** GamMM-VAE uses a Gamma mixture model instead of Gaussian for the latent space, producing higher-quality embeddings for clustering.\n\n**Sources:**\n- [Low-dimensional learned feature spaces (Goffinet et al., 2021)](https://elifesciences.org/articles/67855)\n- [GamMM-VAE (2025)](https://www.sciencedirect.com/science/article/pii/S0893608024009080)\n\n---\n\n## 5. Foundation Models and Transfer Learning\n\n### 5.1 Perch / Perch 2.0 (Google DeepMind)\n\n| Property | Details |\n|----------|---------|\n| **Architecture** | EfficientNet-B1 (Perch 1), EfficientNet-B3 (Perch 2.0) |\n| **Parameters** | 12M (deployable on consumer hardware) |\n| **Training data** | 1.5M+ recordings, 14,500+ species |\n| **Training method** | Supervised classification |\n| **Key strength** | State-of-the-art embeddings for clustering and few-shot learning |\n| **Cross-domain** | Bird-trained model outperforms marine-specialized models on whale classification |\n| **Few-shot** | ROC-AUC up to 0.977 with just 16 labeled marine examples |\n| **Release** | August 2025 |\n\n**Sources:**\n- [Perch 2.0 (Denton et al., 2025)](https://arxiv.org/html/2508.04665v1)\n- [Google DeepMind blog post](https://deepmind.google/blog/how-ai-is-helping-advance-the-science-of-bioacoustics-to-save-endangered-species/)\n- [Google Research blog](https://research.google/blog/how-ai-trained-on-birds-is-surfacing-underwater-mysteries/)\n\n### 5.2 BirdNET\n\n| Property | Details |\n|----------|---------|\n| **Architecture** | EfficientNet-B0 |\n| **Training method** | Supervised classification |\n| **Key strength** | Widely deployed, extensive species coverage |\n| **Embedding use** | BirdNET embeddings used as features for downstream clustering and transfer learning |\n| **Novel use (2024)** | Embeddings used to discover novel sound classes in audio recordings |\n\n**Sources:**\n- [BirdNET embeddings for novel sound classes (2024)](https://www.frontiersin.org/journals/ecology-and-evolution/articles/10.3389/fevo.2024.1409407/full)\n- [Global birdsong embeddings enable superior transfer learning (2023)](https://www.nature.com/articles/s41598-023-49989-z)\n\n### 5.3 AVES / BirdAVES\n\n| Property | Details |\n|----------|---------|\n| **Architecture** | HuBERT-style (7 conv layers + 12 transformer blocks) |\n| **Training method** | Self-supervised (masked prediction on raw audio) |\n| **AVES** | Pre-trained on animal vocalizations |\n| **BirdAVES** | Scaled-up version with extensive bird recordings from Xeno-canto and iNaturalist |\n| **Key strength** | Better generalization to out-of-domain species than supervised models |\n| **Clustering** | Lower in-domain AMI than supervised models, but better cross-domain performance |\n\n**Sources:**\n- [AVES (Hagiwara, 2023)](https://www.researchgate.net/publication/364771573_AVES_Animal_Vocalization_Encoder_based_on_Self-Supervision)\n- [BirdAVES (Earth Species Project)](https://www.earthspecies.org/blog/introducing-birdaves-self-supervised-audio-foundation-model-for-birds)\n\n### 5.4 animal2vec\n\n| Property | Details |\n|----------|---------|\n| **Architecture** | SincNet filterbanks + Transformer encoder |\n| **Training method** | Self-supervised, tailored for sparse/unbalanced bioacoustic data |\n| **Dataset** | MeerKAT (meerkat vocalizations, largest labeled terrestrial mammal dataset) |\n| **Key strength** | Works directly on raw audio waveforms; interpretable; few-shot capable |\n| **Performance** | Outperforms existing methods on MeerKAT and NIPS4Bplus birdsong datasets |\n\n**Source:** [animal2vec and MeerKAT (Sarkar et al., 2024)](https://arxiv.org/abs/2406.01253)\n\n### 5.5 NatureLM-audio\n\n| Property | Details |\n|----------|---------|\n| **Architecture** | BEATs encoder + LLaMA decoder |\n| **Training method** | Audio-language multimodal learning |\n| **Key strength** | First model to demonstrate positive transfer from speech and music to bioacoustics |\n| **Performance** | BEATsNLM encoder achieves best performance on BEANS benchmark (diverse taxa) |\n\n**Source:** [NatureLM-audio (Moummad et al., 2024)](https://arxiv.org/html/2411.07186v2)\n\n### 5.6 BioLingual\n\n| Property | Details |\n|----------|---------|\n| **Architecture** | HTS-AT encoder + RoBERTa text encoder |\n| **Training method** | Contrastive language-audio pretraining (CLAP-style) |\n| **Key strength** | Can recognize vocalizations from 1000+ species across taxonomic groups |\n| **Limitation** | Training paradigm constrains range of applicable tasks |\n\n**Source:** [BioLingual (Robinson et al., 2024)](https://www.researchgate.net/publication/379818624_Transferable_Models_for_Bioacoustics_with_Human_Language_Supervision)\n\n### 5.7 TweetyBERT\n\n| Property | Details |\n|----------|---------|\n| **Architecture** | Self-supervised transformer for birdsong |\n| **Training method** | Self-supervised masked prediction |\n| **Key strength** | V-measure of 0.88 +/- 0.02 for canary song syllable clustering on held-out data |\n| **Limitation** | Primarily validated on canary song |\n\n**Source:** [TweetyBERT (2024)](https://pmc.ncbi.nlm.nih.gov/articles/PMC12027336/)\n\n---\n\n## 6. Specialized USV Tools (Rodent Ultrasonic Vocalizations)\n\n### 6.1 DeepSqueak\n\n- **Approach:** Deep learning object detection on spectrograms (SSD/YOLO-style)\n- **Clustering:** Unsupervised clustering with many categories\n- **Strengths:** Mature MATLAB-based tool, supports multiple species\n- **Weaknesses:** Higher miss rate than VocalMat; requires user-defined detection parameters\n\n**Source:** [DeepSqueak (Coffey et al., 2019)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6461910/)\n\n### 6.2 VocalMat\n\n- **Approach:** Image processing and differential geometry for USV detection; CNN for classification\n- **Detection:** >98% of manually labeled USVs detected; ~86% classification accuracy across 11 categories\n- **Strengths:** No user-defined parameters needed for detection; outperforms DeepSqueak and MUPET on detection\n- **Weaknesses:** Classification relies on predefined categories\n\n**Source:** [VocalMat (Fonseca et al., 2021)](https://elifesciences.org/articles/59161)\n\n### 6.3 MUPET (Mouse Ultrasonic Profile ExTraction)\n\n- **Approach:** Signal processing with user-defined parameters; unsupervised clustering\n- **Performance:** Higher miss rate (33.74%) and false discovery rate (38.78%) compared to VocalMat\n- **Status:** Largely superseded by VocalMat and DeepSqueak\n\n### 6.4 AMVOC (Analysis of Mouse Vocal Communication)\n\n- **Approach:** Convolutional autoencoder for unsupervised feature learning; clustering on latent features\n- **Strengths:** Fully unsupervised; high detection accuracy; robust in noisy conditions\n- **Key innovation:** Deep, unsupervised method that facilitates discovery without predefined categories\n\n**Source:** [AMVOC (Kallipolitis et al., 2022)](https://www.tandfonline.com/doi/full/10.1080/09524622.2022.2099973)\n\n### 6.5 TrackUSF\n\n- **Approach:** Automated, high-throughput; only one user parameter (signal strength threshold)\n- **Dimensionality reduction:** t-SNE for visualization\n- **Clustering:** DBSCAN (automatic) or manual cluster definition\n- **Strengths:** Open-source; minimal parameter tuning\n\n**Source:** [TrackUSF (Bhatt et al., 2022)](https://link.springer.com/article/10.1186/s12915-022-01299-y)\n\n### 6.6 BootSnap\n\n- **Approach:** Combines Boosted-MFCC detection with SnapCall classification\n- **Strengths:** Improved detection and classification compared to earlier methods\n\n**Source:** [BootSnap (Noguera et al., 2022)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010049)\n\n### 6.7 WhisperSeg\n\n- **Approach:** Transfer learning from OpenAI's Whisper ASR model to animal voice activity detection\n- **Performance:** Mean F1 of 0.882; validated on 5 species\n- **Key innovation:** Demonstrates that speech transformers transfer effectively to animal vocalization segmentation\n- **Venue:** ICASSP 2024\n\n**Source:** [WhisperSeg (Gu et al., 2024)](https://github.com/nianlonggu/WhisperSeg)\n\n---\n\n## 7. Software Frameworks\n\n### 7.1 CASE (Cluster and Analyze Sound Events)\n\nA dedicated software for comparing multiple clustering methods and audio transformation techniques on animal vocalizations. Incorporates HDBSCAN, community detection, affinity propagation, fuzzy clustering, and others. Enables systematic comparison of feature extraction + clustering combinations.\n\n**Source:** [CASE (Manzano-Rubio et al., 2022)](https://www.mdpi.com/2076-2615/12/16/2020)\n\n### 7.2 OpenSoundscape\n\nOpen-source Python library supporting transfer learning workflows: extract embeddings from pre-trained models, then train shallow classifiers or perform clustering.\n\n**Source:** [OpenSoundscape documentation](https://opensoundscape.org/en/latest/tutorials/transfer_learning.html)\n\n### 7.3 AVN (Analysis of Vocal Networks)\n\nDeep learning approach for birdsong analysis that combines segmentation, dimensionality reduction, and clustering for characterizing vocal repertoires.\n\n**Source:** [AVN (2024)](https://elifesciences.org/reviewed-preprints/101111)\n\n---\n\n## 8. Evaluation Metrics and Benchmarks\n\n### 8.1 Standard Clustering Metrics\n\n| Metric | Description | Properties |\n|--------|-------------|------------|\n| **Adjusted Rand Index (ARI)** | Measures pairwise agreement between predicted and ground truth clusters, adjusted for chance | Random assignment yields ARI ~ 0.0; perfect agreement = 1.0 |\n| **Normalized Mutual Information (NMI)** | Information-theoretic measure of cluster-label correspondence | Range [0, 1]; chance-corrected variants exist |\n| **Adjusted Mutual Information (AMI)** | Chance-adjusted version of NMI | Used in the 15-model benchmark study |\n| **V-measure** | Harmonic mean of homogeneity and completeness | Used by TweetyBERT; V = 0.88 for canary syllables |\n| **F1 score** | Harmonic mean of precision and recall for detection-then-clustering pipelines | WhisperSeg: F1 = 0.882 |\n\n### 8.2 Benchmark Datasets\n\n| Benchmark | Taxa | Tasks | Notes |\n|-----------|------|-------|-------|\n| **BEANS** | Diverse (multi-taxa) | Species classification, detection | Standard multi-taxa evaluation |\n| **BirdSet** | Birds | Species classification | Large-scale bird benchmark |\n| **BIRB** | Birds | Out-of-domain detection | Generalization benchmark |\n| **Watkins** | Marine mammals | 32-species classification | Standard marine mammal benchmark |\n| **MeerKAT** | Meerkats | Call type classification, individual ID | Largest labeled terrestrial mammal dataset |\n| **NIPS4Bplus** | Birds | Birdsong classification | Standard birdsong benchmark |\n| **Zebra finch dataset (2026)** | Zebra finches | 1454 vocalizations, expert-clustered | New benchmark for clustering evaluation |\n\n**Source:** [Benchmarking vocal clustering methods (2026)](https://www.mdpi.com/2076-3417/16/2/810)\n\n### 8.3 Supervised vs. Self-Supervised: Benchmark Results (2025)\n\nA systematic comparison of 15 pretrained bioacoustic feature extractors revealed:\n\n**In-domain (bird data):**\n- The 6 best-performing feature extractors for clustering were all trained with supervised learning\n- All self-supervised extractors achieved clustering AMI below 0.31\n- Perch and BirdNET vastly outperformed other extractors\n\n**Out-of-domain (frog data):**\n- Self-supervised models (especially all 3 AVES variants) dramatically improved\n- AVES models outperformed all other extractors in kNN classification on frogs\n- Supervised bird-trained models declined on frog tasks\n\n**Conclusion:** \"Supervised learning remains a strong method to pretrain a feature extractor for general use, despite advances in self-supervised learning.\" However, self-supervised models show superior generalization to unseen taxa.\n\n**Source:** [Clustering and novel class recognition (Lauha et al., 2025)](https://arxiv.org/html/2504.06710v1)\n\n---\n\n## 9. Key Findings and Emerging Trends\n\n### 9.1 The Embedding + Cluster Pipeline is Now Standard\n\nThe dominant approach in 2025 is:\n1. **Detect/segment** vocalizations (energy-based, neural, or WhisperSeg)\n2. **Embed** using a foundation model (Perch 2.0, BirdNET, AVES, etc.)\n3. **Reduce dimensions** with UMAP\n4. **Cluster** with HDBSCAN\n\nThis pipeline is largely species-agnostic and requires minimal parameter tuning.\n\n### 9.2 Semi-Automated Workflows Match Expert Agreement\n\nA 2026 benchmark on 1454 zebra finch vocalizations showed that a semi-automated workflow (automated clustering + expert refinement) achieves ARI ~ 0.73, matching inter-expert agreement levels while requiring a fraction of manual annotation time.\n\n**Source:** [Benchmarking vocal clustering (2026)](https://www.mdpi.com/2076-3417/16/2/810)\n\n### 9.3 Cross-Domain Transfer is Surprisingly Effective\n\nPerch 2.0, trained exclusively on terrestrial animal sounds (primarily birds), produces embeddings that outperform marine-specialized models on whale song classification. With as few as 16 labeled marine examples, linear probes on Perch 2.0 embeddings achieve ROC-AUC up to 0.977.\n\n### 9.4 Attentive Probing Unlocks Transformer Potential\n\nSimple linear probing on transformer model outputs underestimates their capabilities. Attentive probing (learning weighted combinations of outputs from different transformer layers) significantly improves downstream clustering and classification performance.\n\n**Source:** [Foundation Models for Bioacoustics (2025)](https://arxiv.org/html/2508.01277v1)\n\n### 9.5 Speech Models Transfer to Bioacoustics\n\nPre-training on human speech produces representations nearly as good as pre-training on animal vocalizations for most bioacoustic tasks. This is a practically important finding: it means researchers can leverage the massive ecosystem of speech SSL models without needing domain-specific pretraining.\n\n**Source:** [Comparing SSL Models (Doukhan et al., 2025)](https://arxiv.org/abs/2501.05987)\n\n### 9.6 The Rise of Audio-Language Models\n\nModels like NatureLM-audio and BioLingual represent a new paradigm: jointly learning from audio and natural language descriptions. NatureLM-audio is the first to demonstrate positive transfer from speech and music to bioacoustics tasks. BioLingual can recognize vocalizations from 1000+ species using contrastive language-audio pretraining.\n\n### 9.7 Unsupervised Clustering Improves Detection Pipelines\n\nBeyond repertoire characterization, unsupervised clustering is being used to improve species detection. A 2025 study showed that clustering extracted acoustic features after initial classification achieved 93% correct annotation of target species notes while eliminating 88% of false positives and retaining 95% true positives (F1 = 0.94).\n\n**Source:** [Unsupervised clustering for owl detection (2025)](https://www.sciencedirect.com/science/article/pii/S1574954125002316)\n\n---\n\n## 10. Open Challenges\n\n### 10.1 Generalization Across Taxa\n\nReal-world applications require encoders that generalize to previously unobserved species, individual animals from limited vocal data, or unstudied vocal repertoires without annotations. Current supervised models excel in-domain but struggle out-of-domain; self-supervised models generalize better but with lower absolute performance.\n\n### 10.2 Polyphonic and Noisy Recordings\n\nBioacoustic feature extractors still struggle with polyphonic passive acoustic monitoring datasets, especially outside the training domain. Overlapping vocalizations from multiple individuals or species remain a fundamental challenge.\n\n### 10.3 Parameter Sensitivity\n\nMost clustering algorithms require parameters (minimum cluster size, distance thresholds, etc.) that cannot be determined a priori. Optimal values vary across species, recording conditions, and vocal repertoire characteristics.\n\n### 10.4 Evaluation Without Ground Truth\n\nIn many real-world scenarios, expert-labeled ground truth is unavailable. Internal clustering validation metrics (silhouette score, etc.) do not always correlate with biological meaningfulness of discovered clusters.\n\n### 10.5 Continuous vs. Discrete Vocalization Categories\n\nMany species produce vocalizations on a continuum rather than in discrete categories. Current clustering methods impose hard or soft boundaries that may not reflect biological reality. Understanding graded vocal repertoires remains an open problem.\n\n### 10.6 Temporal and Sequential Structure\n\nMost current methods cluster individual vocalization segments independently, ignoring sequential context (which calls precede or follow). Incorporating temporal structure could improve clustering by capturing combinatorial or syntactic patterns.\n\n### 10.7 Scale\n\nLarge-scale passive acoustic monitoring can generate terabytes of data. Efficient embedding computation, dimensionality reduction, and clustering at scale remain engineering challenges, though models like Perch 2.0 (12M parameters) are designed for consumer hardware deployment.\n\n### 10.8 Standardized Benchmarks\n\nWhile benchmarks like BEANS, BirdSet, and BIRB exist, there is no universally accepted benchmark suite for evaluating unsupervised clustering specifically. The 2026 zebra finch clustering benchmark is a step forward, but more species-diverse benchmarks are needed.\n\n**Sources:**\n- [What Matters for Bioacoustic Encoding (2025)](https://arxiv.org/html/2508.11845v1)\n- [Clustering and novel class recognition (Lauha et al., 2025)](https://arxiv.org/html/2504.06710v1)\n- [Listening Without Labels (UCSD, 2025)](https://e4e.ucsd.edu/news-and-updates/aid-knowledge-graphs-reu-2025)\n\n---\n\n## 11. Source Bibliography\n\n### Benchmark and Survey Papers\n\n1. **Benchmarking Automated and Semi-Automated Vocal Clustering Methods** (2026). Applied Sciences, 16(2), 810.\n   URL: https://www.mdpi.com/2076-3417/16/2/810\n\n2. **Clustering and novel class recognition: evaluating bioacoustic deep learning feature extractors** (Lauha et al., 2025). arXiv:2504.06710.\n   URL: https://arxiv.org/html/2504.06710v1\n\n3. **Foundation Models for Bioacoustics - a Comparative Review** (2025). arXiv:2508.01277.\n   URL: https://arxiv.org/html/2508.01277v1\n\n4. **What Matters for Bioacoustic Encoding** (2025). arXiv:2508.11845.\n   URL: https://arxiv.org/html/2508.11845v1\n\n5. **Computational bioacoustics with deep learning: a review and roadmap** (Stowell, 2022). PeerJ.\n   URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC8944344/\n\n### Foundation Models\n\n6. **Perch 2.0: The Bittern Lesson for Bioacoustics** (Denton et al., 2025). arXiv:2508.04665.\n   URL: https://arxiv.org/html/2508.04665v1\n\n7. **Feature Embeddings from Large-Scale Acoustic Bird Classifiers Enable Few-Shot Transfer Learning** (Global birdsong embeddings, 2023). Scientific Reports.\n   URL: https://www.nature.com/articles/s41598-023-49989-z\n\n8. **The use of BirdNET embeddings as a fast solution to find novel sound classes** (2024). Frontiers in Ecology and Evolution.\n   URL: https://www.frontiersin.org/journals/ecology-and-evolution/articles/10.3389/fevo.2024.1409407/full\n\n9. **AVES: Animal Vocalization Encoder based on Self-Supervision** (Hagiwara, 2023).\n   URL: https://www.researchgate.net/publication/364771573_AVES_Animal_Vocalization_Encoder_based_on_Self-Supervision\n\n10. **BirdAVES: Self-Supervised Audio Foundation Model for Birds** (Earth Species Project).\n    URL: https://www.earthspecies.org/blog/introducing-birdaves-self-supervised-audio-foundation-model-for-birds\n\n11. **animal2vec and MeerKAT** (Sarkar et al., 2024). arXiv:2406.01253.\n    URL: https://arxiv.org/abs/2406.01253\n\n12. **NatureLM-audio: an Audio-Language Foundation Model for Bioacoustics** (Moummad et al., 2024). arXiv:2411.07186.\n    URL: https://arxiv.org/html/2411.07186v2\n\n13. **Transferable Models for Bioacoustics with Human Language Supervision** (BioLingual, Robinson et al., 2024).\n    URL: https://www.researchgate.net/publication/379818624_Transferable_Models_for_Bioacoustics_with_Human_Language_Supervision\n\n14. **TweetyBERT: Automated parsing of birdsong through self-supervised machine learning** (2024).\n    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC12027336/\n\n### Self-Supervised Learning Comparisons\n\n15. **Comparing Self-Supervised Learning Models Pre-Trained on Human Speech and Animal Vocalizations for Bioacoustics Processing** (Doukhan et al., 2025). arXiv:2501.05987.\n    URL: https://arxiv.org/abs/2501.05987\n\n16. **Crossing the Species Divide: Transfer Learning from Speech to Animal Sounds** (2025).\n    URL: https://arxiv.org/html/2509.04166v1\n\n17. **Can Masked Autoencoders Also Listen to Birds?** (2025).\n    URL: https://arxiv.org/html/2504.12880v4\n\n### Clustering Methods and Embeddings\n\n18. **Deep audio embeddings for vocalisation clustering** (Best et al., 2023). PLOS ONE.\n    URL: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0283396\n\n19. **Improved analysis of deep bioacoustic embeddings through dimensionality reduction and interactive visualisation** (2024).\n    URL: https://www.researchgate.net/publication/379841114_Improved_analysis_of_deep_bioacoustic_embeddings_through_dimensionality_reduction_and_interactive_visualisation\n\n20. **Finding, visualizing, and quantifying latent structure across diverse animal vocal repertoires** (Sainburg et al., 2020). PLOS Computational Biology.\n    URL: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1008228\n\n21. **Acoustic animal identification using unsupervised learning** (Guerrero et al., 2023). Methods in Ecology and Evolution.\n    URL: https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.14103\n\n22. **CASE Software** (Manzano-Rubio et al., 2022). Animals, 12(16), 2020.\n    URL: https://www.mdpi.com/2076-2615/12/16/2020\n\n23. **Unsupervised clustering improves detection of a cryptic owl** (2025). Ecological Informatics.\n    URL: https://www.sciencedirect.com/science/article/pii/S1574954125002316\n\n### USV-Specific Tools\n\n24. **DeepSqueak: a deep learning-based system for detection and analysis of ultrasonic vocalizations** (Coffey et al., 2019).\n    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC6461910/\n\n25. **Analysis of ultrasonic vocalizations from mice using computer vision and machine learning** (VocalMat, Fonseca et al., 2021). eLife.\n    URL: https://elifesciences.org/articles/59161\n\n26. **AMVOC: a deep, unsupervised method for rapid detection, analysis and classification of ultrasonic vocalisations** (Kallipolitis et al., 2022). Bioacoustics.\n    URL: https://www.tandfonline.com/doi/full/10.1080/09524622.2022.2099973\n\n27. **TrackUSF: a novel tool for automated ultrasonic vocalization analysis** (Bhatt et al., 2022). BMC Biology.\n    URL: https://link.springer.com/article/10.1186/s12915-022-01299-y\n\n28. **BootSnap: Capturing the songs of mice with an improved detection and classification method** (Noguera et al., 2022). PLOS Computational Biology.\n    URL: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010049\n\n29. **WhisperSeg: Positive Transfer of the Whisper Speech Transformer to Human and Animal Voice Activity Detection** (Gu et al., 2024). ICASSP 2024.\n    URL: https://github.com/nianlonggu/WhisperSeg\n\n30. **Extended performance analysis of deep-learning algorithms for mice vocalization segmentation** (2023). Scientific Reports.\n    URL: https://www.nature.com/articles/s41598-023-38186-7\n\n### Additional Domain-Specific Studies\n\n31. **A first vocal repertoire characterization of long-finned pilot whales in the Mediterranean Sea** (Casoli et al., 2024).\n    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC11538958/\n\n32. **Multiscale Sample Entropy-Based Feature Extraction with GMM for Blue Whale Vocalization** (2025).\n    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC12025404/\n\n33. **Acoustic estimation of the manatee population and classification of call categories using AI** (2024). Frontiers in Conservation Science.\n    URL: https://www.frontiersin.org/journals/conservation-science/articles/10.3389/fcosc.2024.1405243/full\n\n34. **Low-dimensional learned feature spaces quantify individual and group differences in vocal repertoires** (Goffinet et al., 2021). eLife.\n    URL: https://elifesciences.org/articles/67855\n\n35. **Mouse and rat ultrasonic vocalizations in neuroscience and neuropharmacology: State of the art** (Premoli et al., 2023). European Journal of Neuroscience.\n    URL: https://onlinelibrary.wiley.com/doi/10.1111/ejn.15957\n\n36. **Listening Without Labels: Unsupervised Exploratory Data Analysis for Bioacoustics** (UCSD, 2025).\n    URL: https://e4e.ucsd.edu/news-and-updates/aid-knowledge-graphs-reu-2025\n\n37. **Bioacoustic classification of a small dataset of mammalian vocalisations using deep learning** (2024). Bioacoustics.\n    URL: https://www.tandfonline.com/doi/full/10.1080/09524622.2024.2354468\n\n38. **Bioacoustics datasets** (community resource).\n    URL: https://bioacoustic-ai.github.io/bioacoustics-datasets/\n\n39. **OpenSoundscape: Transfer learning tutorial**.\n    URL: https://opensoundscape.org/en/latest/tutorials/transfer_learning.html\n\n40. **Deep clustering analysis via variational autoencoder with Gamma mixture latent embeddings** (GamMM-VAE, 2025). Neural Networks.\n    URL: https://www.sciencedirect.com/science/article/pii/S0893608024009080\n\n---\n\n*This survey was compiled on 2026-02-27. The field is rapidly evolving; readers should check for newer publications, particularly from the groups behind Perch, AVES, and NatureLM-audio.*\n"}], "grading": {"eval_id": 2, "eval_name": "deep-survey", "configuration": "without_skill", "expectations": [{"text": "inbox-file-created", "passed": false, "evidence": "Produced markdown file but without inbox-compatible structure (no YAML frontmatter)"}, {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter. Starts with '# Unsupervised Clustering Methods...'"}, {"text": "source-log-present", "passed": false, "evidence": "Has a 'Source Bibliography' section with 40 URLs organized by topic, but no structured table with fetch status/relevance"}, {"text": "provenance-traceable", "passed": true, "evidence": "40 cited sources with full URLs organized by topic area"}, {"text": "pipeline-chaining", "passed": false, "evidence": "No mention of /reduce, /seed, or pipeline next steps"}, {"text": "structured-sections", "passed": true, "evidence": "11 major sections with detailed TOC, covering feature representations, clustering algorithms, foundation models, tools, evaluation, and open challenges"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Comprehensive original synthesis across 682 lines"}, {"text": "vault-check-performed", "passed": false, "evidence": "No vault check \u00e2\u20ac\u201d went straight to web research"}]}}], "previous_feedback": {}, "previous_outputs": {}, "benchmark": {"metadata": {"skill_name": "learn", "skill_path": ".claude/skills/skill-creator/learn-workspace/draft-v1", "executor_model": "claude-opus-4-6", "analyzer_model": "claude-opus-4-6", "timestamp": "2026-02-27T17:20:00Z", "evals_run": ["quick-lookup", "moderate-comparison", "deep-survey"], "runs_per_configuration": 3}, "runs": [{"eval_id": 0, "eval_name": "quick-lookup", "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8, "time_seconds": 378.2, "tokens": 38186, "tool_calls": 14, "errors": 0}, "expectations": [{"text": "inbox-file-created", "passed": true, "evidence": "Produced mupet-sample-rate-usv-analysis-research-2026-02-27.md with proper inbox structure"}, {"text": "frontmatter-valid", "passed": true, "evidence": "YAML frontmatter with description, source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"}, {"text": "source-log-present", "passed": true, "evidence": "Source Log table at line 49 with 3 entries"}, {"text": "provenance-traceable", "passed": true, "evidence": "PMC URL linked to 250 kHz claim"}, {"text": "pipeline-chaining", "passed": true, "evidence": "Suggested /reduce and /seed as next steps"}, {"text": "depth-appropriate", "passed": true, "evidence": "63 lines, concise, auto-detected as quick"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with inline citations"}, {"text": "vault-check-performed", "passed": true, "evidence": "Reported no existing MUPET notes in vault"}]}, {"eval_id": 0, "eval_name": "quick-lookup", "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 0.375, "passed": 3, "failed": 5, "total": 8, "time_seconds": 180.0, "tokens": 32337, "tool_calls": 20, "errors": 0}, "expectations": [{"text": "inbox-file-created", "passed": false, "evidence": "Markdown file without inbox-compatible structure"}, {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"}, {"text": "source-log-present", "passed": false, "evidence": "Provenance section but not structured source log table"}, {"text": "provenance-traceable", "passed": true, "evidence": "Multiple URLs linked to claims"}, {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline next steps mentioned"}, {"text": "depth-appropriate", "passed": true, "evidence": "Concise and factual"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing"}, {"text": "vault-check-performed", "passed": false, "evidence": "No vault check performed"}]}, {"eval_id": 1, "eval_name": "moderate-comparison", "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8, "time_seconds": 359.2, "tokens": 52894, "tool_calls": 40, "errors": 0}, "expectations": [{"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox-compatible format"}, {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter with all required and extra fields"}, {"text": "source-log-present", "passed": true, "evidence": "Source Log table at line 123"}, {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to Ivanenko et al. 2023 and GitHub repos"}, {"text": "pipeline-chaining", "passed": true, "evidence": "Suggested /reduce with 6-8 extractable claims estimate"}, {"text": "multi-source-synthesis", "passed": true, "evidence": "Compared SqueakOut, MoUSE, USVSEG, VocalMat, AMVOC with benchmarks"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with contextual comparison to project pipeline"}, {"text": "vault-check-performed", "passed": true, "evidence": "Found 30+ existing notes, identified 3 new tools not in vault"}]}, {"eval_id": 1, "eval_name": "moderate-comparison", "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 0.375, "passed": 3, "failed": 5, "total": 8, "time_seconds": 239.9, "tokens": 43205, "tool_calls": 23, "errors": 0}, "expectations": [{"text": "inbox-file-created", "passed": false, "evidence": "Markdown without inbox structure"}, {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"}, {"text": "source-log-present", "passed": false, "evidence": "URLs inline but no structured source log"}, {"text": "provenance-traceable", "passed": true, "evidence": "12 GitHub repos, 11 publication links"}, {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline suggestions"}, {"text": "multi-source-synthesis", "passed": true, "evidence": "11 tools compared in matrix with tiers"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Original synthesis"}, {"text": "vault-check-performed", "passed": false, "evidence": "No vault check"}]}, {"eval_id": 2, "eval_name": "deep-survey", "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8, "time_seconds": 427.1, "tokens": 66637, "tool_calls": 42, "errors": 0}, "expectations": [{"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox-compatible format with date-stamped filename"}, {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter with all fields"}, {"text": "source-log-present", "passed": true, "evidence": "Source Log table at line 117"}, {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to Muenster et al. 2025, Best et al. 2023"}, {"text": "pipeline-chaining", "passed": true, "evidence": "Suggested /reduce with 15-20 extractable notes estimate"}, {"text": "structured-sections", "passed": true, "evidence": "Numbered sections: HDBSCAN pipeline, foundation models, USV methods, open challenges"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with project-relevant context"}, {"text": "vault-check-performed", "passed": true, "evidence": "Identified existing coverage of VQ-VAE, Goffinet VAE, AMVOC, AVES. Focused on gaps."}]}, {"eval_id": 2, "eval_name": "deep-survey", "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 0.375, "passed": 3, "failed": 5, "total": 8, "time_seconds": 353.0, "tokens": 49014, "tool_calls": 26, "errors": 0}, "expectations": [{"text": "inbox-file-created", "passed": false, "evidence": "Markdown without inbox structure"}, {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"}, {"text": "source-log-present", "passed": false, "evidence": "Source Bibliography with 40 URLs but not structured table with fetch status"}, {"text": "provenance-traceable", "passed": true, "evidence": "40 cited sources with URLs"}, {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline suggestions"}, {"text": "structured-sections", "passed": true, "evidence": "11 sections with TOC, very well organized (682 lines)"}, {"text": "no-verbatim-copy", "passed": true, "evidence": "Comprehensive 682-line synthesis"}, {"text": "vault-check-performed", "passed": false, "evidence": "No vault check"}]}], "run_summary": {"with_skill": {"pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0}, "time_seconds": {"mean": 388.2, "stddev": 34.2, "min": 359.2, "max": 427.1}, "tokens": {"mean": 52572, "stddev": 14247, "min": 38186, "max": 66637}}, "without_skill": {"pass_rate": {"mean": 0.375, "stddev": 0.0, "min": 0.375, "max": 0.375}, "time_seconds": {"mean": 257.6, "stddev": 88.0, "min": 180.0, "max": 353.0}, "tokens": {"mean": 41519, "stddev": 8440, "min": 32337, "max": 49014}}, "delta": {"pass_rate": "+0.625", "time_seconds": "+130.6", "tokens": "+11053"}}, "notes": ["provenance-traceable and no-verbatim-copy pass 100% in both configurations -- these are non-discriminating assertions (baseline is already good at research quality)", "The 5 discriminating assertions (inbox-file, frontmatter, source-log, pipeline-chaining, vault-check) pass 100% with skill and 0% without -- the skill provides clear pipeline integration value", "depth-appropriate, multi-source-synthesis, and structured-sections pass in both -- baseline produces equally good research structure", "With-skill runs take 50-110% longer (worst for quick lookups). The overhead is: reading config files + checking vault + formatting source capture. Consider lighter config reading for quick depth.", "The vault-check in the moderate test case was high-value: it found 30+ existing notes and focused research on gaps, identifying 3 genuinely new tools", "Baseline deep-survey (682 lines, 40 sources) was arguably more comprehensive than with-skill (137 lines, 15 sources) -- skill's pipeline formatting may come at the cost of raw research breadth"]}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          content.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback_" + (EMBEDDED_DATA.skill_name || "eval") + ".json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

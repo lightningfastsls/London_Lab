@@ -9,11 +9,15 @@ This folder records what the system knows about its own operation -- why it was 
 ## Derivation Rationale
 - [[derivation-rationale]] -- Why each configuration dimension was set the way it was
 
+## Processing Strategy
+- [[bulk-source-processing-strategy]] -- Phase-batched cluster-grouped processing for ingesting multiple research topics
+- [[reflect-timing-within-cluster-processing]] -- Defer /reflect until all cluster reductions complete; cross-source reflection beats single-source
+
 ## Configuration State
 (Populated by /rethink, /arscontexta:architect)
 
 ## Evolution History
-(Populated by /rethink, /arscontexta:architect, /arscontexta:reseed)
+- [[rethink-2026-03-02]] -- Triaged 9 observations + 9 tensions, identified 3 patterns (automation lifecycle gaps, self-review bias, topic map sprawl), generated 5 proposals. Archived 4 observations + 4 tensions. Key actions: doc freshness rule in CLAUDE.md, /reduce description self-check, inbox archival after /reduce, topic map splits scheduled.
 
 ## How to Use This Folder
 

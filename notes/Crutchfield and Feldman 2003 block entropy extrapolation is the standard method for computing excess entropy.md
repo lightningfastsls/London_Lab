@@ -18,7 +18,7 @@ In practice, one fits a line to H(L) in the regime where it appears linear and e
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[excess entropy measures long-range structure complexity in discrete code sequences]] -- the analysis framework that this computational method serves

@@ -1,0 +1,15 @@
+{
+  "eval_id": 1,
+  "eval_name": "ml-feature-extraction",
+  "prompt": "Convert this plan into a ROADMAP: .claude/skills/roadmap-from-plan-workspace/test-plans/ml-feature-extraction.md",
+  "assertions": [
+    {"id": "A1", "text": "Output contains exactly 4 /implement blocks (one per plan step)"},
+    {"id": "A2", "text": "Every module has a Review Tier assignment (1, 2, or 3)"},
+    {"id": "A3", "text": "At least one module is assigned Tier 3 (DSP/ML content)"},
+    {"id": "A4", "text": "References ADR-001 or specifies sr=300000"},
+    {"id": "A5", "text": "Every module has a Test plan section with specific test cases"},
+    {"id": "A6", "text": "Contains a Phase Gate section"},
+    {"id": "A7", "text": "Mentions theoretical content / KG extraction"},
+    {"id": "A8", "text": "Contains at least one Python dataclass/config code snippet"}
+  ]
+}

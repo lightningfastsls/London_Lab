@@ -18,4 +18,4 @@ Jittering applies only to positive examples. Negatives are sampled fresh from un
 
 ---
 
-Source: [[ROADMAP.md]], Phase 2
+Source: [ROADMAP](../ROADMAP.md), Phase 2

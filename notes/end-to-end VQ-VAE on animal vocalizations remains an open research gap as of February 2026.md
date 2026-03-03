@@ -6,7 +6,7 @@ conditions:
   - "literature review as of February 2026"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
 ---
 
@@ -31,14 +31,15 @@ The field is converging on discrete representations from multiple directions -- 
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- the original gap claim, now updated
 - [[Sarkar and Magimai-Doss 2025 applied post-hoc VQ to frozen HuBERT embeddings for marmoset and dog vocalizations]] -- closest approach
 - [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- continuous embedding approach
+- [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- continuous alternative to discrete VQ-VAE that avoids the codebook design problem entirely
 - [[FSQ eliminates codebook collapse by construction achieving 100 percent utilization through fixed scalar quantization]] -- end-to-end but not applied to animals
 
 Topics:
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]
 - [[classification]]

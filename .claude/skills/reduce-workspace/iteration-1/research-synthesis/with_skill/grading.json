@@ -1,0 +1,53 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 53-62: Clear SUMMARY section with counts for notes (2), implementation ideas (3), tensions (2), enrichment tasks (7), validations (0), open questions (2), skipped (19), TOTAL OUTPUTS (16)"
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "16 total outputs: 2 notes + 3 implementation ideas + 2 tensions + 7 enrichments + 2 open questions"
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": false,
+      "evidence": "Skip rate is 54% (19/35). However, the report provides a thorough justification: this is a RE-EXTRACTION of an already-processed source (status: processed, task: seed-002). The skill correctly detected the prior processing and adjusted expectations. Every skip was verified against a specific existing note."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 16 items have detailed Rationale fields, e.g., item #1: 'This is a dangling link -- referenced by 4 existing notes but never materialized as its own note.'"
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "All titles pass the claim test: 'No Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap', 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations', 'Fine-tune MobileNetV2 or ResNet-18 on VocalMat spectrogram patches for USV syllable classification'"
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "5 categories: notes (2), implementation ideas (3), tensions (2), enrichment tasks (7), open questions (2)"
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Every item includes a 'Duplicate check' field with specific Grep commands and results. Orientation section (lines 14-50) lists 25+ existing notes from this source and identifies 2 dangling links."
+    },
+    {
+      "text": "The continuous-vs-discrete USV manifold tension is captured as an extraction",
+      "passed": true,
+      "evidence": "Item #2: 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations' -- identified as a dangling link referenced by 3 existing notes."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "total": 8,
+    "pass_rate": 0.875
+  },
+  "timing": {
+    "total_duration_seconds": 707.8
+  }
+}

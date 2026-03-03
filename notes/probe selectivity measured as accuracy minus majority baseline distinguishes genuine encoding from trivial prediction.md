@@ -21,7 +21,7 @@ For regression targets (peak_frequency, spectral_centroid, energy), this correct
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] -- selectivity is the primary correction applied to probe accuracy results in that analysis

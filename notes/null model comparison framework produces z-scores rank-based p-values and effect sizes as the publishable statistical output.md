@@ -21,12 +21,13 @@ The framework also enables direct comparison between wild and lab mouse populati
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- the comparison framework operationalizes the null model hierarchy into concrete statistical output
 - [[analytically verifiable test cases validate information-theoretic metric implementations]] -- ground-truth test cases ensure the metrics feeding this framework are correctly implemented
 - [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- shares the permutation-based statistical philosophy; PERMANOVA also generates p-values via label shuffling
+- [[information theory and null model foundation must precede probing and LMT integration]] -- this framework is the concrete deliverable of the foundation that must precede downstream workstreams
 
 Topics:
 - [[representation-learning]]

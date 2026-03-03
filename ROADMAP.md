@@ -18,7 +18,7 @@
    - **Exit criteria**: what "done" looks like
 3. After each module: commit, run `/review-all`, fix issues, commit again
 4. Phase gates must pass before starting the next phase
-5. **Phases 1–7** are all DONE. Current work starts at **Phase 8**.
+5. **Phases 1–9, 11.1, 13, 14.1** are all DONE. Current work: **Phase 14** (DeepSqueak Classification Bridge — 14.2 BLOCKED on manual MATLAB step).
 
 ## Status Key
 
@@ -438,9 +438,11 @@ Output format per layer L:
 ### 8.3 VQ-VAE on Hidden States
 
 **What:** VQ-VAE that operates on transformer hidden state vectors to discover discrete "concepts." Each codebook entry becomes an interpretable recurring pattern the transformer has learned to recognize. Uses EMA codebook updates, dead code reinitialization, L2 normalization, and k-means initialization to prevent codebook collapse.
-**Status:** DONE
+**Status:** DONE (2026-02-20)
 **Review Tier:** 3
 **Depends on:** Phase 8.2
+
+**Decision note:** Hidden states were chosen over raw spectrograms because the transformer has already learned to compress temporal context and abstract away spectrogram noise. Quantizing hidden states discovers the *concepts the model found useful*, not just acoustic patterns. K=64 codebook gives headroom beyond the ~10-15 traditional syllable types. EMA updates + dead code reinitialization + L2 normalization + k-means init work together to prevent codebook collapse — the #1 failure mode in VQ-VAE training.
 
 **Key files:**
 - `usv_language/models/vqvae.py` — VQVAEConfig, VectorQuantizerV2, HiddenStateVQVAE (~820K params)
@@ -2061,13 +2063,13 @@ For upcoming work, prioritize based on research impact:
 | **~~3~~** | ~~Phase 10 (Active Learning)~~ | DONE (2026-02-21) |
 | **1** | Phase 14.2 (DeepSqueak Import) | **NEXT:** After DeepSqueak classification is done in MATLAB |
 | **2** | Phase 14.3 (Repertoire Stats) | Scientific payoff from the DeepSqueak bridge |
-| **3** | Phase 8.1 (Data Pipeline) | Code can be written locally, no GPU needed |
-| **4** | Phase 13 (Batch Detection) | Needed for bulk analysis + bout extraction input |
-| **5** | Phase 8.2-8.3 (Transformer + VQ-VAE code) | Code can be written/tested locally with dummy data |
-| **~~6~~** | ~~Phase 11.1 (Preprocessing)~~ | DONE (2026-02-22) |
-| **6** | Phase 11.2-11.4 (Training + Analysis) | Requires HPC access |
-| **~~7~~** | ~~Phase 8.4 (Analysis tools)~~ | DONE (2026-02-24) |
-| **7** | Phase 12 (Population Comparison) | Requires sufficient data from Phases 10 + 11 + 14 |
+| **~~3~~** | ~~Phase 8.1 (Data Pipeline)~~ | DONE |
+| **3** | Phase 13 (Batch Detection) | Needed for bulk analysis + bout extraction input |
+| **~~4~~** | ~~Phase 8.2-8.3 (Transformer + VQ-VAE code)~~ | DONE (2026-02-20) |
+| **~~5~~** | ~~Phase 11.1 (Preprocessing)~~ | DONE (2026-02-22) |
+| **~~6~~** | ~~Phase 8.4 (Analysis tools)~~ | DONE (2026-02-24) |
+| **4** | Phase 11.2-11.4 (Training + Analysis) | Requires HPC access |
+| **5** | Phase 12 (Population Comparison) | Requires sufficient data from Phases 10 + 11 + 14 |
 
 ---
 

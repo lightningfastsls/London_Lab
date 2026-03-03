@@ -1,0 +1,82 @@
+[
+  {
+    "query": "i just downloaded this paper on ultrasonic vocalization classification from arxiv (its in inbox/usv-classification-2026.md) - can you go through it and pull out all the key findings and methods into notes?",
+    "should_trigger": true
+  },
+  {
+    "query": "/reduce inbox/spectral-analysis-review.md",
+    "should_trigger": true
+  },
+  {
+    "query": "hey so i copied some notes from a lecture on STFT windowing into inbox/stft-lecture-notes.md, could you extract the important insights from it? i think there are some claims about frequency resolution tradeoffs that would be useful to have as individual notes",
+    "should_trigger": true
+  },
+  {
+    "query": "mine this source — its a blog post i saved about rodent communication patterns, already in the inbox as rodent-comm-patterns.md",
+    "should_trigger": true
+  },
+  {
+    "query": "i have this PDF summary of DeepSqueak results that i manually transcribed into inbox/deepsqueak-summary.md. can you process it and create notes from the key findings?",
+    "should_trigger": true
+  },
+  {
+    "query": "there's a new source in the inbox about VQ-VAE applications in bioacoustics. it has maybe 15-20 claims worth extracting. can you break it down into atomic notes following our schema?",
+    "should_trigger": true
+  },
+  {
+    "query": "extract insights from inbox/energy-detection-comparison.md — its a comparison of three different USV detection approaches and i want each finding as a separate note",
+    "should_trigger": true
+  },
+  {
+    "query": "ok so i just finished reading this paper and took some rough notes in inbox/mouse-prosody-2026.md. the formatting is a mess but there are solid claims in there about syllable structure. can you clean it up and turn it into proper knowledge graph entries?",
+    "should_trigger": true
+  },
+  {
+    "query": "process the source material in inbox/spectrogram-tiling-approaches.md into notes please",
+    "should_trigger": true
+  },
+  {
+    "query": "i pasted a conference talk transcript into inbox/icassp-talk.md — lots of good stuff about mel spectrograms vs linear spectrograms for USV analysis. extract whatever's useful",
+    "should_trigger": true
+  },
+  {
+    "query": "i want to learn about how other labs are doing USV detection — can you research what methods are being used in 2026 and find me some good papers?",
+    "should_trigger": false
+  },
+  {
+    "query": "i just added a new PDF to the inbox folder (inbox/new-bioacoustics-review.pdf). can you queue it up for processing? dont process it yet, just make sure its in the pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "process inbox/usv-detection-review.md end to end — seed it, extract notes, find connections, update old notes, verify everything. the full pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "i created a bunch of notes yesterday from that bioacoustics paper. can you look at them and find connections to existing notes? especially the ones about STFT parameters",
+    "should_trigger": false
+  },
+  {
+    "query": "some of my older notes about energy detection thresholds are probably missing links to the newer VQ-VAE findings. can you go back through them and add connections where it makes sense?",
+    "should_trigger": false
+  },
+  {
+    "query": "i keep running into this issue where the reduce step creates notes with weak descriptions. i want to capture this as a methodology observation so we can fix the pattern",
+    "should_trigger": false
+  },
+  {
+    "query": "can you summarize whats in inbox/new-paper.md? i just want a quick overview before deciding if its worth processing",
+    "should_trigger": false
+  },
+  {
+    "query": "check if the notes i created last session have proper schema — descriptions, topics, confidence levels. run validation on them",
+    "should_trigger": false
+  },
+  {
+    "query": "can you refactor the detection module — extract the threshold calculation into its own function in energy_detector.py?",
+    "should_trigger": false
+  },
+  {
+    "query": "whats the current state of my vault? how many notes, orphans, pending items in the queue?",
+    "should_trigger": false
+  }
+]

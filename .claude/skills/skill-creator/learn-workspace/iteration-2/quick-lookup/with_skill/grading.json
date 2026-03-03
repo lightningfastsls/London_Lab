@@ -1,0 +1,17 @@
+{
+  "eval_id": 0,
+  "eval_name": "quick-lookup",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": true, "evidence": "Produced mupet-sample-rate-research-2026-02-27.md with proper inbox structure"},
+    {"text": "frontmatter-valid", "passed": true, "evidence": "YAML frontmatter with description, source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"},
+    {"text": "source-log-present", "passed": true, "evidence": "Source Log table at line 58 with 7 entries including status and relevance columns"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "250 kHz claim traced to PMC5939957, GitHub source code, and wiki"},
+    {"text": "pipeline-chaining", "passed": true, "evidence": "Mentioned /reduce with estimate of 3-4 extractable claims"},
+    {"text": "depth-appropriate", "passed": true, "evidence": "74 lines, concise but thorough with parameter tables and cross-verification"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with inline citations and original framing"},
+    {"text": "vault-check-performed", "passed": true, "evidence": "Reported no existing MUPET notes in vault"},
+    {"text": "cross-verified", "passed": true, "evidence": "250 kHz verified from 3 independent sources: paper (PMC5939957), source code (configdefault{7}=250000), and GitHub wiki"},
+    {"text": "source-code-detail", "passed": true, "evidence": "Includes handles.configdefault{7}=250000, handles.frame_win_ms=0.002, handles.frame_shift_ms=0.0016, and full STFT parameter table with MATLAB variable names"}
+  ]
+}

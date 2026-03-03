@@ -187,6 +187,7 @@ See `DECISIONS.md` ADR-001 (sample rate) and ADR-002 (STFT parameters) for full 
 - Always verify FFT parameters match expected frequency resolution
 - Don't claim completion without running py_compile and tests
 - Don't modify test expectations to pass without discussion
+- Don't cite documentation status to contradict user claims without verifying CODE first -- when docs contradict user, grep the codebase (code is truth, docs may be stale)
 
 ### Git Data Safety
 - **NEVER use `git add -A` or `git add .` without reviewing `git status` first** — bulk staging can record accidental deletions of data directories (this happened to `USV_Detections/` in commit 78d1c70, deleting 656 files)

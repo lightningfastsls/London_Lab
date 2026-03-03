@@ -18,4 +18,4 @@ In practice, the training-set normalization statistics are saved to an npz file 
 
 ---
 
-Source: [[ROADMAP.md]], Phase 2
+Source: [ROADMAP](../ROADMAP.md), Phase 2

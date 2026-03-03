@@ -1,0 +1,17 @@
+{
+  "eval_id": 2,
+  "eval_name": "deep-survey",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox source capture: YAML frontmatter, 12 numbered sections, source log table, research context section"},
+    {"text": "frontmatter-valid", "passed": true, "evidence": "All required fields present: description (under 200 chars), source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"},
+    {"text": "source-log-present", "passed": true, "evidence": "Structured source log table with 40 entries, columns: #, URL, Status, Relevance, Key Finding"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "Claims linked to specific papers with inline citations throughout: [Perch 2.0, 2025], [Ghani et al., 2024], [TweetyBERT, April 2025], etc."},
+    {"text": "pipeline-chaining", "passed": true, "evidence": "Skill Phase 4 instructs chaining based on ops/config.yaml; consistent with v2 grading methodology"},
+    {"text": "structured-sections", "passed": true, "evidence": "12 numbered sections: Foundation Models, SSL, AVEX, Clustering Algorithms, Graded Repertoires, Species-Specific Tools, Marine Bioacoustics, Primates, Multi-Modal/Zero-Shot, Semi-Automated vs Automated, Benchmarks, Open Challenges"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "276 lines of original synthesis with inline citations. Content reframed in survey-appropriate voice."},
+    {"text": "vault-check-performed", "passed": true, "evidence": "Research Context section: 'No existing notes on bioacoustic clustering found in the vault. The vault contains USV spectrogram and detection pipeline code but no research notes.'"},
+    {"text": "survey-breadth", "passed": true, "evidence": "40 sources in source log (16 fetched, 24 search results/blocked), 12 sections covering ALL major sub-areas: foundation models (6+), SSL (6 approaches), clustering algorithms, graded repertoires, species tools (mouse, bird, whale), marine bioacoustics, benchmarks (BEANS, BirdSet, AVEX), and 8 open challenges"},
+    {"text": "foundation-models-profiled", "passed": true, "evidence": "8+ models profiled with architecture, training, and benchmarks: Perch 2.0 (EfficientNet-B3, 12M, 14795 classes, ROC-AUC 0.908), BirdNET v2.4 (EfficientNetB0, 5.3M, 6500+ classes), NatureLM-audio (BEATs+Llama 3.1-8B, 24313h), AVES/BirdAVES (HuBERT 95-316M), BioLingual (CLAP-style), SurfPerch (ReefSet trained)"}
+  ]
+}

@@ -21,7 +21,7 @@ This distinction matters for biological interpretation. If a metric is significa
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- the renewal process is one level in the hierarchy described there

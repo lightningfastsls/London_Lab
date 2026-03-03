@@ -18,7 +18,7 @@ This connects to [[codebook size of 64 gives interpretable discrete vocabulary w
 
 ---
 
-Source: [[ROADMAP.md]], Phase 8; [[vacation-master-plan-v2]]
+Source: [ROADMAP](../ROADMAP.md), Phase 8; vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- transition probabilities (which bigrams probe) are part of the sequence statistics Hertz showed are informative

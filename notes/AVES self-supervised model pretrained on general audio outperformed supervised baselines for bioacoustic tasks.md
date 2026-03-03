@@ -7,7 +7,7 @@ conditions:
   - "HuBERT architecture"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[bioacoustic-ssl]]"
   - "[[classification]]"
 ---
 
@@ -23,10 +23,12 @@ This is significant for our VQ-VAE pipeline in two ways:
 
 Notably, AVES uses continuous representations with no discrete codebook. Combining AVES with VQ-VAE remains untested, and [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] suggests the specific pretraining domain may matter less than the architecture.
 
+**Tension (March 2026):** Muenster et al. (2025, arXiv 2504.06710) tested 15 bioacoustic models and found that [[supervised bioacoustic foundation models vastly outperform self-supervised for species-level clustering]]. The top 6 models were all supervised. This may not contradict AVES's original claim (which was about classification/detection tasks), but it suggests the advantage of self-supervised models is task-dependent — SSL may work well for classification but poorly for unsupervised clustering, where taxonomic structure from supervised training provides stronger inductive bias.
+
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - Hagiwara (2023), ICASSP. https://arxiv.org/abs/2210.14493
 
 Relevant Notes:
@@ -35,5 +37,5 @@ Relevant Notes:
 - [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- AVES uses continuous representations, gap remains
 
 Topics:
-- [[representation-learning]]
+- [[bioacoustic-ssl]]
 - [[classification]]

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Set Review - roadmap-from-plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Lora', Georgia, serif; background: #faf9f5; padding: 2rem; color: #141413; }
+    h1 { font-family: 'Poppins', sans-serif; margin-bottom: 0.5rem; font-size: 1.5rem; }
+    .description { color: #b0aea5; margin-bottom: 1.5rem; font-style: italic; max-width: 900px; }
+    .controls { margin-bottom: 1rem; display: flex; gap: 0.5rem; }
+    .btn { font-family: 'Poppins', sans-serif; padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem; font-weight: 500; }
+    .btn-add { background: #6a9bcc; color: white; }
+    .btn-add:hover { background: #5889b8; }
+    .btn-export { background: #d97757; color: white; }
+    .btn-export:hover { background: #c4613f; }
+    table { width: 100%; max-width: 1100px; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    th { font-family: 'Poppins', sans-serif; background: #141413; color: #faf9f5; padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; }
+    td { padding: 0.75rem 1rem; border-bottom: 1px solid #e8e6dc; vertical-align: top; }
+    tr:nth-child(even) td { background: #faf9f5; }
+    tr:hover td { background: #f3f1ea; }
+    .section-header td { background: #e8e6dc; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 0.8rem; color: #141413; text-transform: uppercase; letter-spacing: 0.05em; }
+    .query-input { width: 100%; padding: 0.4rem; border: 1px solid #e8e6dc; border-radius: 4px; font-size: 0.875rem; font-family: 'Lora', Georgia, serif; resize: vertical; min-height: 60px; }
+    .query-input:focus { outline: none; border-color: #d97757; box-shadow: 0 0 0 2px rgba(217,119,87,0.15); }
+    .toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle .slider { position: absolute; inset: 0; background: #b0aea5; border-radius: 24px; cursor: pointer; transition: 0.2s; }
+    .toggle .slider::before { content: ""; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.2s; }
+    .toggle input:checked + .slider { background: #d97757; }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
+    .btn-delete { background: #c44; color: white; padding: 0.3rem 0.6rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-family: 'Poppins', sans-serif; }
+    .btn-delete:hover { background: #a33; }
+    .summary { margin-top: 1rem; color: #b0aea5; font-size: 0.875rem; }
+  </style>
+</head>
+<body>
+  <h1>Eval Set Review: <span id="skill-name">roadmap-from-plan</span></h1>
+  <p class="description">Current description: <span id="skill-desc">Convert implementation plans into structured ROADMAP files with self-contained /implement blocks. Use this skill whenever the user has a plan, design doc, brainstorm notes, or conversation output from web Claude (or any source) that needs to become an actionable implementation roadmap. Triggers on: 'turn this into a roadmap', 'make this implementable', 'convert this plan', 'structure these steps for building', 'roadmap from [file]', any mention of converting plans to /implement format. Also use when the user pastes or references a multi-step plan and asks to organize it for Claude Code implementation.</span></p>
+
+  <div class="controls">
+    <button class="btn btn-add" onclick="addRow()">+ Add Query</button>
+    <button class="btn btn-export" onclick="exportEvalSet()">Export Eval Set</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:65%">Query</th>
+        <th style="width:18%">Should Trigger</th>
+        <th style="width:10%">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="eval-body"></tbody>
+  </table>
+
+  <p class="summary" id="summary"></p>
+
+  <script>
+    const EVAL_DATA = [{"query":"I just had a long conversation with Claude on the web about building a real-time audio streaming pipeline for our USV recordings. It came up with a solid 6-step plan covering the DAQ interface, ring buffer, STFT engine, detection layer, websocket server, and React viewer. Can you turn that into something I can actually build step by step? The conversation is saved at docs/plans/streaming-pipeline-plan.md","should_trigger":true},{"query":"hey so I brainstormed with claude.ai about how to add UMAP dimensionality reduction to our feature extraction pipeline and it gave me 4 phases. can you make this implementable? I'll paste it below","should_trigger":true},{"query":"I have a design doc at docs/plans/labeling-tool-redesign.md that outlines rebuilding the labeling UI with PyQt6 instead of Streamlit. It has 5 major steps but they're pretty high level. I need this converted into the /implement format we use so each module is self-contained and a fresh session can pick it up.","should_trigger":true},{"query":"roadmap from PLAN_classifier_training.md","should_trigger":true},{"query":"I wrote up some rough notes on adding Zarr v3 support and chunked storage for our spectrogram cache. It's not really a formal plan, more like a brainstorm with some pseudocode. But I'd like to structure these steps for building -- maybe 3-4 modules with test plans and dependencies mapped out.","should_trigger":true},{"query":"convert this plan into a roadmap:\n\nPhase 1: Add bandpass filter (25-125 kHz) before STFT\nPhase 2: Replace current energy detector with adaptive threshold\nPhase 3: Add harmonic analysis for call classification\nPhase 4: Export results in DeepSqueak-compatible format","should_trigger":true},{"query":"ok I've been going back and forth with web Claude about the best approach for building a training data pipeline and we settled on a 5-step plan. I saved the whole chat to a file. Can you take that plan and make each step into one of those implement blocks so I can hand them off to separate coding sessions?","should_trigger":true},{"query":"I need to take the vacation scheduling feature plan from our last planning session and break it down into implementable modules. The plan is in my clipboard, let me paste it...","should_trigger":true},{"query":"here's an implementation plan I got from ChatGPT for adding a spectrogram comparison tool. Can you restructure it into our ROADMAP format? It has steps for loading, alignment, diff computation, and visualization.","should_trigger":true},{"query":"Turn the contents of bootsnap_integration_plan.md into structured implementation steps. I want each phase to have its own /implement block with test plans, dependencies, and review tiers.","should_trigger":true},{"query":"implement phase 14.1 from ROADMAP.md -- the spectrogram cache invalidation module. All the specs are already in the roadmap, just build it.","should_trigger":false},{"query":"what's the current status of the ROADMAP? which phases are done and which are still pending? I want to know what we've accomplished so far in the USV pipeline.","should_trigger":false},{"query":"Can you update ROADMAP.md to mark Phase 8.3 as DONE and add a note about the VQ-VAE hidden state approach we chose? Also bump the next phase number.","should_trigger":false},{"query":"I want to plan out how we should approach adding multi-channel audio support. I don't have a plan yet -- can you help me think through the architecture? What components would need to change?","should_trigger":false},{"query":"review the ROADMAP_PARTS_FINDER.md file and tell me if the test plans are thorough enough. Are there any edge cases we're missing? I want a quality check before we start implementing.","should_trigger":false},{"query":"We need a product roadmap for the next quarter. What features should we prioritize? Consider the detection accuracy improvements, the labeling tool, and the training pipeline.","should_trigger":false},{"query":"Run /implement on Step 3 from ROADMAP_STREAMING_VIEWER.md. The STFT streaming engine module -- just build it according to the spec that's already there.","should_trigger":false},{"query":"I have two roadmap files -- ROADMAP_INFRA_IMPROVEMENTS.md and ROADMAP_CLI_CONSOLIDATION.md -- and some of the modules overlap. Can you help me merge them and resolve the dependency conflicts?","should_trigger":false},{"query":"Can you create a project timeline or gantt chart from our ROADMAP.md? I need to present our progress and upcoming work to the lab PI next week.","should_trigger":false},{"query":"I need to write a plan for adding GPU-accelerated STFT processing. Help me think through the steps -- I want to use CuPy for the FFT and compare performance against our current NumPy implementation.","should_trigger":false}];
+
+    let evalItems = [...EVAL_DATA];
+
+    function render() {
+      const tbody = document.getElementById('eval-body');
+      tbody.innerHTML = '';
+
+      // Sort: should-trigger first, then should-not-trigger
+      const sorted = evalItems
+        .map((item, origIdx) => ({ ...item, origIdx }))
+        .sort((a, b) => (b.should_trigger ? 1 : 0) - (a.should_trigger ? 1 : 0));
+
+      let lastGroup = null;
+      sorted.forEach(item => {
+        const group = item.should_trigger ? 'trigger' : 'no-trigger';
+        if (group !== lastGroup) {
+          const headerRow = document.createElement('tr');
+          headerRow.className = 'section-header';
+          headerRow.innerHTML = `<td colspan="3">${item.should_trigger ? 'Should Trigger' : 'Should NOT Trigger'}</td>`;
+          tbody.appendChild(headerRow);
+          lastGroup = group;
+        }
+
+        const idx = item.origIdx;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><textarea class="query-input" onchange="updateQuery(${idx}, this.value)">${escapeHtml(item.query)}</textarea></td>
+          <td>
+            <label class="toggle">
+              <input type="checkbox" ${item.should_trigger ? 'checked' : ''} onchange="updateTrigger(${idx}, this.checked)">
+              <span class="slider"></span>
+            </label>
+            <span style="margin-left:8px;font-size:0.8rem;color:#b0aea5">${item.should_trigger ? 'Yes' : 'No'}</span>
+          </td>
+          <td><button class="btn-delete" onclick="deleteRow(${idx})">Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      updateSummary();
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function updateQuery(idx, value) { evalItems[idx].query = value; updateSummary(); }
+    function updateTrigger(idx, value) { evalItems[idx].should_trigger = value; render(); }
+    function deleteRow(idx) { evalItems.splice(idx, 1); render(); }
+
+    function addRow() {
+      evalItems.push({ query: '', should_trigger: true });
+      render();
+      const inputs = document.querySelectorAll('.query-input');
+      inputs[inputs.length - 1].focus();
+    }
+
+    function updateSummary() {
+      const trigger = evalItems.filter(i => i.should_trigger).length;
+      const noTrigger = evalItems.filter(i => !i.should_trigger).length;
+      document.getElementById('summary').textContent =
+        `${evalItems.length} queries total: ${trigger} should trigger, ${noTrigger} should not trigger`;
+    }
+
+    function exportEvalSet() {
+      const valid = evalItems.filter(i => i.query.trim() !== '');
+      const data = valid.map(i => ({ query: i.query.trim(), should_trigger: i.should_trigger }));
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'eval_set.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    render();
+  </script>
+</body>
+</html>

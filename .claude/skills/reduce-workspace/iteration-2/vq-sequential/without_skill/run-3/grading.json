@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 11-20: 'Extraction Summary' section with numerical counts: Total items extracted (14), Findings (6), Methods (3), Tensions (2), Implementation ideas (2), Open questions (1). Also tracks overlap count (7) and genuinely new items (7). Additionally, lines 158-175 provide a detailed 'Overlap Summary' table with per-item status."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "14 total items extracted (line 13): 6 findings + 3 methods + 2 tensions + 2 implementation ideas + 1 open question = 14. Even counting only 'genuinely new items' (7), the total enumerated extractions are 14, well above the threshold of 8."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": false,
+      "evidence": "Of 14 total items enumerated, 7 were marked as OVERLAP with existing vault notes and explicitly noted as 'No new note needed' (items 4,5,6,7,8,10,12). Additionally, item 11 was merged into item 3. The Overlap Summary (lines 158-175) shows 6 items as OVERLAP, 1 as MERGED, and 1 as SUBSUMED. Counting items where 'No new note needed' was the conclusion: 7 skipped / 14 total = 50% skip rate, far exceeding 15%. Even counting them as 'extracted but not recommended for notes,' the effective skip rate is 50%."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 14 items include a 'Rationale for extraction' bullet. This applies even to items marked as OVERLAP. Examples: Item 1 explains implications for VQ-VAE probing experiments; Item 5 discusses 'GVQ is theoretically superior yet empirically inferior' and mirrors a broader pattern; Item 12 explains domain-specific codebook fitting matters; Item 14 explains how the research question is relevant to their transformer architecture."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Checking 4 representative proposed note titles: (1) 'caller identity is encoded more strongly than call-type identity in VQ token distance patterns' — propositional claim. (2) 'Levenshtein distance on VQ token sequences provides a model-free measure of acoustic similarity complementing information-theoretic metrics' — propositional claim. (3) 'deduplicating consecutive identical VQ tokens separates acoustic state identity from duration enabling transition-focused analysis' — propositional claim. (4) 'whether learned sequence models on VQ tokens close the gap between successful distance discrimination and failed k-NN classification' — framed as open question (appropriate for its category). All pass the composability test. Note: items marked OVERLAP (4,5,6,7,8,10,12) use descriptive headings rather than proposed note titles, but those are not being proposed as new notes."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "5 distinct categories represented per the Extraction Summary (lines 17-19): Finding (6 items), Method (3 items), Tension (2 items), Implementation idea (2 items), Open question (1 item). The 'Recommended New Notes' section (lines 179-216) also adds 'pattern' as a type for item 7."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Every single item includes an 'Overlap check' field that explicitly names existing vault notes and assesses duplication status (e.g., Item 1: 'Partially related to Ivanenko et al...NOT A DUPLICATE'; Item 4: 'OVERLAP — Already captured in post-hoc vector quantization...No new note needed'). The Overlap Summary table (lines 158-175) provides a comprehensive status for all 14 items. Lines 19-20 give aggregate overlap counts (7 overlapping, 7 genuinely new)."
+    },
+    {
+      "text": "The codebook collapse finding (GVQ underperforms VQ due to collapse) is captured as an extraction",
+      "passed": true,
+      "evidence": "Item 5 (lines 65-71): 'GVQ (Gumbel-softmax Vector Quantization) underperformed standard VQ despite theoretical advantages of differentiability' — captures the core finding with rationale. Item 6 (lines 74-79): 'Codebook collapse in VQ approaches caused most embeddings to map to one or two centroids' — captures the collapse mechanism specifically. Both are enumerated as extractions in the report, though both are marked OVERLAP with existing vault notes. The finding IS captured as an extraction even though it is flagged as a duplicate."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "total": 8,
+    "pass_rate": 0.88
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "metadata": {
+    "skill_name": "learn",
+    "skill_path": ".claude/skills/skill-creator/learn-workspace/draft-v3",
+    "executor_model": "claude-opus-4-6",
+    "analyzer_model": "claude-opus-4-6",
+    "timestamp": "2026-02-28T06:00:00Z",
+    "evals_run": ["quick-lookup", "moderate-comparison", "deep-survey"],
+    "runs_per_configuration": 3,
+    "iteration": 3
+  },
+
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "quick-lookup",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 10,
+        "failed": 0,
+        "total": 10,
+        "time_seconds": 148.3,
+        "tokens": 30114,
+        "tool_calls": 15,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox structure with frontmatter"},
+        {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter"},
+        {"text": "source-log-present", "passed": true, "evidence": "Source Log table with 7 entries"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "250 kHz traced to PMC, GitHub, wiki"},
+        {"text": "pipeline-chaining", "passed": true, "evidence": "/reduce suggested with 3-4 extractable claims estimate"},
+        {"text": "depth-appropriate", "passed": true, "evidence": "74 lines, thorough with parameter tables"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with inline citations"},
+        {"text": "vault-check-performed", "passed": true, "evidence": "No existing MUPET notes found"},
+        {"text": "cross-verified", "passed": true, "evidence": "3 independent sources: paper, source code, wiki"},
+        {"text": "source-code-detail", "passed": true, "evidence": "configdefault{7}=250000, frame_win_ms, frame_shift_ms, full STFT table"}
+      ]
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "quick-lookup",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 5,
+        "failed": 5,
+        "total": 10,
+        "time_seconds": 180.0,
+        "tokens": 32337,
+        "tool_calls": 20,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": false, "evidence": "No inbox structure"},
+        {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+        {"text": "source-log-present", "passed": false, "evidence": "Provenance section, not structured table"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "Multiple URLs linked to claims"},
+        {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline next steps"},
+        {"text": "depth-appropriate", "passed": true, "evidence": "Concise and factual"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Original framing"},
+        {"text": "vault-check-performed", "passed": false, "evidence": "No vault check"},
+        {"text": "cross-verified", "passed": true, "evidence": "3 independent sources: paper, code, wiki"},
+        {"text": "source-code-detail", "passed": true, "evidence": "MATLAB variable names included"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "moderate-comparison",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 10,
+        "failed": 0,
+        "total": 10,
+        "time_seconds": 354.2,
+        "tokens": 47160,
+        "tool_calls": 38,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox format"},
+        {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter"},
+        {"text": "source-log-present", "passed": true, "evidence": "Source Log with 20 entries"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to papers and repos"},
+        {"text": "pipeline-chaining", "passed": true, "evidence": "/reduce mentioned for extracting atomic claims"},
+        {"text": "multi-source-synthesis", "passed": true, "evidence": "9 tools compared with architecture and benchmarks"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing"},
+        {"text": "vault-check-performed", "passed": true, "evidence": "No existing notes found"},
+        {"text": "landscape-coverage", "passed": true, "evidence": "9 tools covered: DAS, SqueakOut, AMVOC, BootSnap, MoUSE, USVSEG_Python, ContourUSV, VocalMat, USV_Python"},
+        {"text": "actionable-detail", "passed": true, "evidence": "pip install, GitHub URLs, commit counts, perf numbers, comparison matrix"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "moderate-comparison",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 5,
+        "failed": 5,
+        "total": 10,
+        "time_seconds": 239.9,
+        "tokens": 43205,
+        "tool_calls": 23,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": false, "evidence": "No inbox structure"},
+        {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+        {"text": "source-log-present", "passed": false, "evidence": "No structured source log"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "12 repos, 11 publications"},
+        {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline suggestions"},
+        {"text": "multi-source-synthesis", "passed": true, "evidence": "11 tools in matrix with tiers"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Original synthesis"},
+        {"text": "vault-check-performed", "passed": false, "evidence": "No vault check"},
+        {"text": "landscape-coverage", "passed": true, "evidence": "11 tools across 4 tiers"},
+        {"text": "actionable-detail", "passed": true, "evidence": "pip install, URLs, benchmarks, web demo"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "deep-survey",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 10,
+        "failed": 0,
+        "total": 10,
+        "time_seconds": 720.8,
+        "tokens": 100391,
+        "tool_calls": 72,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox source capture: YAML frontmatter, 12 numbered sections, source log table, research context section"},
+        {"text": "frontmatter-valid", "passed": true, "evidence": "All required fields: description, source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"},
+        {"text": "source-log-present", "passed": true, "evidence": "Structured source log table with 40 entries, columns: #, URL, Status, Relevance, Key Finding"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "Claims linked to specific papers with inline citations: [Perch 2.0, 2025], [Ghani et al., 2024], [TweetyBERT, April 2025]"},
+        {"text": "pipeline-chaining", "passed": true, "evidence": "Skill Phase 4 instructs chaining based on ops/config.yaml"},
+        {"text": "structured-sections", "passed": true, "evidence": "12 numbered sections: Foundation Models, SSL, AVEX, Clustering, Graded Repertoires, Species Tools, Marine, Primates, Multi-Modal, Semi-Automated, Benchmarks, Challenges"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "276 lines of original synthesis with inline citations"},
+        {"text": "vault-check-performed", "passed": true, "evidence": "Research Context: 'No existing notes on bioacoustic clustering found in the vault'"},
+        {"text": "survey-breadth", "passed": true, "evidence": "40 sources in source log, 12 sections covering all major sub-areas including foundation models, SSL, clustering algorithms, species tools, benchmarks (BEANS, BirdSet, AVEX), and 8 open challenges"},
+        {"text": "foundation-models-profiled", "passed": true, "evidence": "8+ models profiled: Perch 2.0 (12M, EfficientNet-B3), BirdNET v2.4 (5.3M), NatureLM-audio (BEATs+Llama 3.1-8B), AVES/BirdAVES (95-316M HuBERT), BioLingual (CLAP), SurfPerch"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "deep-survey",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 5,
+        "failed": 5,
+        "total": 10,
+        "time_seconds": 353.0,
+        "tokens": 49014,
+        "tool_calls": 26,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": false, "evidence": "Markdown without inbox structure"},
+        {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+        {"text": "source-log-present", "passed": false, "evidence": "Source Bibliography with 40 URLs but not structured table with fetch status/relevance"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "40 cited sources with URLs organized by topic area"},
+        {"text": "pipeline-chaining", "passed": false, "evidence": "No mention of /reduce, /seed, or pipeline next steps"},
+        {"text": "structured-sections", "passed": true, "evidence": "11 major sections with TOC covering features, clustering, dim reduction, foundation models, USV tools, frameworks, evaluation, trends, challenges"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Comprehensive 682-line original synthesis"},
+        {"text": "vault-check-performed", "passed": false, "evidence": "No vault check -- went straight to web research"},
+        {"text": "survey-breadth", "passed": true, "evidence": "40 sources, 11 sections, covers all major areas including evaluation metrics, benchmark datasets, and 8 open challenges"},
+        {"text": "foundation-models-profiled", "passed": true, "evidence": "7 models profiled with structured tables: Perch 2.0, BirdNET, AVES/BirdAVES, animal2vec, NatureLM-audio, BioLingual, TweetyBERT"}
+      ]
+    }
+  ],
+
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 407.8, "stddev": 291.0, "min": 148.3, "max": 720.8},
+      "tokens": {"mean": 59222, "stddev": 36056, "min": 30114, "max": 100391}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.5, "stddev": 0.0, "min": 0.5, "max": 0.5},
+      "time_seconds": {"mean": 257.6, "stddev": 88.0, "min": 180.0, "max": 353.0},
+      "tokens": {"mean": 41519, "stddev": 8440, "min": 32337, "max": 49014}
+    },
+    "delta": {
+      "pass_rate": "+0.5",
+      "time_seconds": "+150.2",
+      "tokens": "+17703"
+    }
+  },
+
+  "iteration_comparison": {
+    "v2_vs_v3": {
+      "deep_survey_only": true,
+      "pass_rate": "v2: 10/10 -> v3: 10/10 -- maintained 100%",
+      "deep_survey_sources": "v2: 20 sources -> v3: 40 sources -- 100% increase, now matches baseline",
+      "deep_survey_lines": "v2: 205 lines -> v3: 276 lines -- 35% more content",
+      "deep_survey_sections": "v2: 6 sections -> v3: 12 sections -- doubled",
+      "deep_survey_time": "v2: 435.1s -> v3: 720.8s -- 65% longer (expected: skill traded time for thoroughness)",
+      "deep_survey_tokens": "v2: 60207 -> v3: 100391 -- 67% more tokens (more web searches + fetches)",
+      "deep_survey_tool_calls": "v2: 42 -> v3: 72 -- 71% more tool calls (more searches and fetches)",
+      "new_content_in_v3": "SongMAE (NeurIPS 2025), AVEX benchmark (ICLR 2026), model merging, Bacpipe, fuzzy clustering for pilot whales, coral reef ecosystem clustering, ArcticSoundsNET, WhaleNet, CLAP for bioacoustics, primate bioacoustics review, vector quantization"
+    },
+    "v1_vs_v2_carryover": {
+      "quick_time": "v1: 378.2s -> v2: 148.3s -- 60.8% faster (unchanged in v3)",
+      "moderate_sources": "v1: 7 tools -> v2: 9 tools including ContourUSV (unchanged in v3)"
+    }
+  },
+
+  "notes": [
+    "v3 change was surgical: only deep survey minimums bumped from '8-15 sources' to '15-30+ sources' with a 'Keep Going' self-check loop",
+    "Quick-lookup and moderate-comparison unchanged from v2 (user had empty/satisfied feedback)",
+    "Deep survey v3 achieves 40 sources (matching baseline) while maintaining 100% on all 10 assertions including all 5 pipeline integration assertions",
+    "The 5 pipeline assertions (inbox, frontmatter, source-log, chaining, vault-check) remain 100% discriminating across all 3 iterations",
+    "Time cost for deep survey v3 (720.8s = ~12 min) is 2x the baseline (353s = ~6 min) but the user explicitly said 'I don't mind if it takes a little bit more time if it means he will capture more'",
+    "v3 deep survey found content NOT in baseline: SongMAE (NeurIPS 2025), AVEX benchmark (ICLR 2026), model merging (200% zero-shot improvement), coral reef ecosystem clustering (55 calls), ArcticSoundsNET, knowledge graphs for reef bioacoustics",
+    "Token usage increased proportionally with source count: 100K tokens for 40 sources (v3) vs 60K for 20 sources (v2) -- roughly linear scaling",
+    "Analyst note: the overall time delta (+150.2s) is larger than v2 (+54.9s) because the deep survey now takes 720.8s vs 435.1s; quick and moderate offsets are the same"
+  ]
+}

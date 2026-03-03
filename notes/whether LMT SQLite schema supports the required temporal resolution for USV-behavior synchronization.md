@@ -22,17 +22,23 @@ Several questions need empirical investigation against the actual SQLite data:
 2. Are behavioral event annotations (approach, contact, mount) recorded as point events (single frame) or intervals (start frame, end frame)? Interval representation partially mitigates the resolution issue for sustained behaviors.
 3. Does the SQLite schema include any higher-resolution timing metadata, such as hardware trigger timestamps from the AviSoft integration?
 
-Until these questions are answered by examining real SQLite files, the synchronization module should be designed conservatively — assuming frame-locked 33 ms resolution and warning users when analyses require finer temporal precision. Since [[pre-code questions for LMT integration must be resolved before implementation]], this temporal resolution question is one more reason to inspect the actual data before writing integration code.
+Until these questions are answered by examining real SQLite files, the synchronization module should be designed conservatively — assuming frame-locked 33 ms resolution and warning users when analyses require finer temporal precision. Since [[pre-code questions for LMT integration must be resolved before implementation]], this temporal resolution question is one more reason to inspect the actual data before writing integration code. The [[LMT USV Toolbox provides Python-based offline USV processing as a reference implementation]] and may document the actual schema fields and their temporal granularity, providing answers before manual SQLite inspection.
+
+The resolution constraint has asymmetric impact across analysis tiers. For [[event-triggered USV rate via PETH in plus-minus 2 second windows per event type serves as LMT integration sanity check]] with 100 ms bins, 33 ms behavioral resolution is adequate. But finer-grained temporal analyses would be limited by the video frame rate. Whether [[AviSoft Recorder captures synchronized USV recordings within the LMT behavioral tracking system]] embeds higher-resolution hardware timestamps in the SQLite database could partially resolve this mismatch. The synchronizer.py module within the [[LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage]] must encode this resolution constraint so downstream analyses know their temporal precision limits.
 
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the system whose temporal resolution is in question
 - [[temporal alignment between USV detections and LMT behavioral events enables USV-behavior correlation analysis]] -- the analysis this resolution constraint affects
 - [[pre-code questions for LMT integration must be resolved before implementation]] -- the prerequisite questions that include schema inspection
+- [[AviSoft Recorder captures synchronized USV recordings within the LMT behavioral tracking system]] -- may embed higher-resolution hardware timestamps in SQLite
+- [[event-triggered USV rate via PETH in plus-minus 2 second windows per event type serves as LMT integration sanity check]] -- PETH 100ms bins tolerate 33ms resolution; finer analyses do not
+- [[LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage]] -- synchronizer.py must encode this resolution constraint
+- [[LMT USV Toolbox provides Python-based offline USV processing as a reference implementation]] -- may document actual schema fields and temporal granularity
 
 Topics:
 - [[experimental-methods]]

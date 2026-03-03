@@ -19,7 +19,7 @@ This analysis directly bridges Workstream 1 (information theory and sequential s
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[temporal alignment between USV detections and LMT behavioral events enables USV-behavior correlation analysis]] -- provides the temporal correspondence infrastructure that makes per-context burstiness computation possible

@@ -43,6 +43,11 @@ Relevant Notes:
 - [[DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method]] -- the unsupervised classification that feeds repertoire comparison
 - [[Raven selection table format is the standard interchange format between bioacoustic analysis tools]] -- the interchange format used for the bridge
 - [[timestamp proximity matching with configurable tolerance bridges detection systems that use different internal time representations]] -- how classified results are matched back to original detections
+- [[DeepSqueak Excel export provides 16 per-call metrics including principal frequency bandwidth slope and tonality]] -- atomic detail on the 16-feature Excel export referenced above
+- [[Reading DeepSqueak mat outputs in Python uses scipy loadmat for v5 format or h5py for v7.3 HDF5 format]] -- atomic detail on Python interop for reading .mat results
+- [[DeepSqueak is fundamentally GUI-centric with no officially supported headless or scriptable operation]] -- the GUI constraint that forces the Raven bridge approach
+- [[DeepSqueak requires MATLAB 2020a plus seven toolboxes and has no Python port]] -- the MATLAB dependency that necessitates Python interop
+- [[No single Python tool cleanly accepts pre-detected USV segments and classifies them into syllable types as of 2026]] -- the landscape gap this decision navigates around
 
 Topics:
 - [[classification]]

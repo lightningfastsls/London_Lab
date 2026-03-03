@@ -1,11 +1,11 @@
 ---
-description: VQ-VAE and transformer architecture for unsupervised discovery of discrete USV vocabulary and sequential structure
+description: VQ-VAE pipeline for unsupervised discovery of discrete USV vocabulary -- transformer architecture, codebook design, information-theoretic analysis, null models, and probing
 type: moc
 ---
 
 # representation-learning
 
-Unsupervised discovery of structure in USV vocalizations. A transformer predicts next spectrogram columns autoregressively, then VQ-VAE discretizes internal representations into a learned codebook. Information-theoretic measures test whether the resulting code sequences have language-like properties.
+The core pipeline for unsupervised discovery of structure in USV vocalizations. A transformer predicts next spectrogram columns autoregressively, then VQ-VAE discretizes internal representations into a learned codebook. Information-theoretic measures test whether the resulting code sequences have language-like properties. For the broader clustering landscape see [[unsupervised-usv-discovery]], for SSL/foundation models see [[bioacoustic-ssl]], for LoRA/PEFT see [[model-adaptation]].
 
 ## Core Architecture
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- two-phase training: learn representations first, quantize second
@@ -36,34 +36,8 @@ Unsupervised discovery of structure in USV vocalizations. A transformer predicts
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- n-gram conditional entropy from 1 to 8
 - [[excess entropy measures long-range structure complexity in discrete code sequences]] -- mutual information between past and future halves
 - [[bigram productivity ratio measures compositionality of USV code sequences]] -- unique bigrams / K^2 measures combinatorial freedom
-
-## Unsupervised Clustering Evidence
-- [[Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs]] -- quantitative evidence that USVs resist discrete clustering (GMM k<=2)
-- [[DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method]] -- k-means finds k=20 but GMM finds k<=2 on learned representations
-- [[AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering]] -- MIT-licensed Python autoencoder alternative
-- [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- SIS evaluates whether any discretization captures meaningful sequential structure
-- [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- continuous comparison alternative to categorical methods
-
-## Literature Context
-- [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the key finding that motivated the VQ-VAE approach
-- [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- quantitative baseline for information retention in learned representations
-- [[Tjandra et al 2020 applied transformer VQ-VAE for unsupervised unit discovery in human speech with K equals 128]] -- closest architectural analog from speech domain
-- [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- original novelty claim (2026-02-19)
-- [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- updated gap analysis with 2024-2025 evidence confirming novelty
-- [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- unsupervised predecessor using handcrafted features
-
-## Adjacent Approaches (Not End-to-End VQ-VAE)
-- [[Sarkar and Magimai-Doss 2025 applied post-hoc VQ to frozen HuBERT embeddings for marmoset and dog vocalizations]] -- first discrete tokens in bioacoustics, post-hoc not end-to-end
-- [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- 35% vs 49% UAR gap validates end-to-end design
-- [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- GVQ negative result validates standard VQ-VAE choice
-- [[single codebook with V=50 was insufficient for complex vocalization structure in discrete token experiments]] -- may need RVQ or larger K
-- [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- continuous AE for repertoire discovery across species
-- [[STSG spectrogram token skip-gram achieved only 0.559 AUC versus 0.810 for transfer learning on bioacoustic classification]] -- K-means tokens dramatically underperform
-- [[Garrobe Fonollosa 2024 showed VAE plus temporal convolutional network achieved AUC over 0.9 for sperm whale click classification]] -- VAE for cetacean feature extraction
-
-## Self-Supervised Transfer Learning
-- [[AVES self-supervised model pretrained on general audio outperformed supervised baselines for bioacoustic tasks]] -- potential alternative backbone for VQ-VAE
-- [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- speech SSL models as bootstrap strategy
+- [[mutual information rate at varying lags measures temporal dependency strength within USV code sequences]] -- I(X_t; X_{t+lag}) at varying lags complements entropy rate and conditional entropy
+- [[burstiness coefficient via coefficient of variation of inter-event intervals distinguishes Poisson from bursty temporal patterns]] -- CV=1 Poisson, >1 bursty, <1 regular; plus Kleinberg burst detection
 
 ## Quantization Methods
 - [[whether FSQ provides more stable discretization than VQ-VAE for USV codebook learning]] -- FSQ achieves 100% utilization by design
@@ -79,6 +53,9 @@ Unsupervised discovery of structure in USV vocalizations. A transformer predicts
 - [[analytically verifiable test cases validate information-theoretic metric implementations]] -- ground-truth sanity checks with known analytical solutions
 - [[null model comparison framework produces z-scores rank-based p-values and effect sizes as the publishable statistical output]] -- the statistical machinery that turns surrogates into publishable z-scores, p-values, and effect sizes
 
+## Workstream Ordering
+- [[information theory and null model foundation must precede probing and LMT integration]] -- metrics and null models validated before probing experiments or behavioral analysis
+
 ## Probing & Interpretability
 - [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] -- standard NLP interpretability technique adapted for USV transformer
 - [[probe selectivity measured as accuracy minus majority baseline distinguishes genuine encoding from trivial prediction]] -- corrects for class imbalance in probe accuracy
@@ -86,17 +63,26 @@ Unsupervised discovery of structure in USV vocalizations. A transformer predicts
 - [[acoustic property extraction from spectrogram data produces ground truth targets for probing experiments]] -- seven properties (peak freq, centroid, energy, is_voiced, freq direction, bout position, time since last USV) as probe labels
 - [[pooling strategy choice over the time dimension determines what information probing experiments can access from hidden states]] -- mean/max/first/last pooling each emphasize different temporal information, a necessary control variable
 
+## Methodological Tensions
+- [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- motivates treating VQ-VAE codebook entries as "reference points along a continuum" rather than natural categories
+
 ## Converging Hypothesis
 - [[the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations]] -- integration point where information theory, probing, and LMT workstreams converge
 
 ## Open Questions
 - [[whether attention patterns in the trained transformer attend beyond the immediately preceding frame]] -- purely local attention would mean no long-range learning
 - [[whether 50 percent overlap in chunk windowing loses critical bout-boundary information]] -- same event gets different positional encodings
+- [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- continuous paths vs discrete tokens; flow matching avoids codebook collapse but loses information-theoretic analysis framework
 
 ## Related Areas
+- [[unsupervised-usv-discovery]] -- clustering landscape and literature context motivating the VQ-VAE approach
+- [[bioacoustic-ssl]] -- SSL and foundation models that could provide input features or alternative backbones
+- [[model-adaptation]] -- LoRA/PEFT for efficient adaptation; ICL-LoRA theoretical bridge
+- [[transformer-architecture]] -- the attention and MLP mechanics underlying the spectrogram prediction model
 - [[classification]] -- CNN operational pipeline that produces labeled data feeding this research
 - [[detection]] -- upstream detection pipeline
 - [[signal-processing]] -- STFT parameters that produce the spectrogram input
+- [[generative-modeling]] -- diffusion/flow matching as potential alternative generative framework; bounded gain stability principle transfers
 
 ---
 

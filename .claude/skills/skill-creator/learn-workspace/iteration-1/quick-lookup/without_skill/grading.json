@@ -1,0 +1,15 @@
+{
+  "eval_id": 0,
+  "eval_name": "quick-lookup",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": false, "evidence": "Produced a markdown file but without inbox-compatible structure (no YAML frontmatter, no source-capture template format)"},
+    {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter. File starts with '# MUPET Sample Rate...' header, not --- delimiters"},
+    {"text": "source-log-present", "passed": false, "evidence": "Has a '## Provenance' section with URLs organized by type (paper, code, wiki) but not a structured table with fetch status"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "Multiple URLs (PMC, PubMed, Cell, GitHub) linked to specific claims with inline source attribution"},
+    {"text": "pipeline-chaining", "passed": false, "evidence": "No mention of /reduce, /seed, or any pipeline next steps"},
+    {"text": "depth-appropriate", "passed": true, "evidence": "Concise and factual with detailed parameter tables. Well-calibrated depth."},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Content synthesized with original framing and comparison tables"},
+    {"text": "vault-check-performed", "passed": false, "evidence": "No vault check performed — went straight to web research"}
+  ]
+}

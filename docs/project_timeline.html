@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USV Detection &amp; Analysis Pipeline — Project Timeline</title>
+<style>
+  :root {
+    --done: #2e7d32;
+    --done-bg: #c8e6c9;
+    --progress: #1565c0;
+    --progress-bg: #bbdefb;
+    --ready: #e65100;
+    --ready-bg: #ffe0b2;
+    --blocked: #c62828;
+    --blocked-bg: #ffcdd2;
+    --future: #616161;
+    --future-bg: #e0e0e0;
+    --manual: #6a1b9a;
+    --manual-bg: #e1bee7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #fafafa;
+    color: #212121;
+    padding: 24px 32px;
+    line-height: 1.5;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a237e;
+    margin-bottom: 4px;
+  }
+
+  .header .subtitle {
+    font-size: 16px;
+    color: #546e7a;
+  }
+
+  .header .date {
+    font-size: 13px;
+    color: #90a4ae;
+    margin-top: 4px;
+  }
+
+  /* Summary cards */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .summary-card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border-left: 4px solid;
+  }
+
+  .summary-card .number {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .summary-card .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #757575;
+    margin-top: 4px;
+  }
+
+  .sc-done { border-color: var(--done); }
+  .sc-done .number { color: var(--done); }
+  .sc-progress { border-color: var(--progress); }
+  .sc-progress .number { color: var(--progress); }
+  .sc-ready { border-color: var(--ready); }
+  .sc-ready .number { color: var(--ready); }
+  .sc-blocked { border-color: var(--blocked); }
+  .sc-blocked .number { color: var(--blocked); }
+  .sc-tests { border-color: #0277bd; }
+  .sc-tests .number { color: #0277bd; }
+  .sc-days { border-color: #4527a0; }
+  .sc-days .number { color: #4527a0; }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+  }
+
+  /* Gantt chart */
+  .gantt-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow-x: auto;
+    margin-bottom: 28px;
+  }
+
+  .gantt-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 12px 16px 4px;
+    color: #37474f;
+    background: #eceff1;
+    border-top: 1px solid #cfd8dc;
+  }
+
+  .gantt-section-title:first-child {
+    border-top: none;
+    border-radius: 10px 10px 0 0;
+  }
+
+  table.gantt {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+  }
+
+  table.gantt th {
+    background: #263238;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 8px 4px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  table.gantt th.label-col {
+    text-align: left;
+    padding-left: 16px;
+    width: 260px;
+    min-width: 260px;
+  }
+
+  table.gantt th.week-col {
+    border-left: 1px solid #455a64;
+    min-width: 80px;
+  }
+
+  table.gantt td {
+    padding: 0;
+    height: 32px;
+    border-bottom: 1px solid #f5f5f5;
+    position: relative;
+  }
+
+  table.gantt td.label-cell {
+    padding: 6px 12px 6px 16px;
+    font-size: 13px;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  table.gantt td.week-cell {
+    border-left: 1px solid #f0f0f0;
+  }
+
+  /* Gantt bars */
+  .bar {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    z-index: 1;
+    cursor: default;
+    transition: filter 0.15s;
+  }
+
+  .bar:hover {
+    filter: brightness(1.1);
+    z-index: 2;
+  }
+
+  .bar.done { background: var(--done); }
+  .bar.progress { background: var(--progress); background-image: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.1) 6px, rgba(255,255,255,0.1) 12px); }
+  .bar.ready { background: var(--ready); opacity: 0.85; }
+  .bar.blocked { background: var(--blocked); opacity: 0.7; }
+  .bar.future { background: var(--future); opacity: 0.5; }
+  .bar.manual { background: var(--manual); background-image: repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(255,255,255,0.1) 6px, rgba(255,255,255,0.1) 12px); }
+
+  .status-chip {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .chip-done { background: var(--done-bg); color: var(--done); }
+  .chip-progress { background: var(--progress-bg); color: var(--progress); }
+  .chip-ready { background: var(--ready-bg); color: var(--ready); }
+  .chip-blocked { background: var(--blocked-bg); color: var(--blocked); }
+  .chip-future { background: var(--future-bg); color: var(--future); }
+  .chip-manual { background: var(--manual-bg); color: var(--manual); }
+
+  /* Today marker */
+  .today-marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #d32f2f;
+    z-index: 3;
+  }
+
+  .today-label {
+    position: absolute;
+    top: -18px;
+    left: -12px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #d32f2f;
+    white-space: nowrap;
+  }
+
+  /* Blocker section */
+  .blockers {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+
+  .blockers h2 {
+    font-size: 16px;
+    color: var(--blocked);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .blocker-list {
+    list-style: none;
+  }
+
+  .blocker-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .blocker-list li:last-child { border-bottom: none; }
+
+  .blocker-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: #ffcdd2;
+    color: #c62828;
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+
+  /* Key metrics section */
+  .metrics {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+
+  .metrics h2 {
+    font-size: 16px;
+    color: #1a237e;
+    margin-bottom: 12px;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .metric-item {
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 6px;
+  }
+
+  .metric-item h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #37474f;
+    margin-bottom: 4px;
+  }
+
+  .metric-item p {
+    font-size: 13px;
+    color: #546e7a;
+  }
+
+  .metric-item .highlight {
+    font-weight: 700;
+    color: #1a237e;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: #90a4ae;
+    font-size: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  @media print {
+    body { padding: 12px; }
+    .gantt-container { box-shadow: none; border: 1px solid #ccc; }
+    .bar:hover { filter: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>USV Detection &amp; Analysis Pipeline</h1>
+  <div class="subtitle">Mickey London Lab &mdash; Project Timeline &amp; Progress Report</div>
+  <div class="date">Generated 2026-02-28 &nbsp;|&nbsp; Project start: 2026-01-08 &nbsp;|&nbsp; 51 days active</div>
+</div>
+
+<!-- Summary cards -->
+<div class="summary">
+  <div class="summary-card sc-done">
+    <div class="number">21</div>
+    <div class="label">Phases Done</div>
+  </div>
+  <div class="summary-card sc-progress">
+    <div class="number">1</div>
+    <div class="label">In Progress</div>
+  </div>
+  <div class="summary-card sc-ready">
+    <div class="number">5</div>
+    <div class="label">Ready to Start</div>
+  </div>
+  <div class="summary-card sc-blocked">
+    <div class="number">7</div>
+    <div class="label">Blocked</div>
+  </div>
+  <div class="summary-card sc-tests">
+    <div class="number">600+</div>
+    <div class="label">Tests Passing</div>
+  </div>
+  <div class="summary-card sc-days">
+    <div class="number">51</div>
+    <div class="label">Days Active</div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--done)"></div> Done</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--progress)"></div> In Progress</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--manual)"></div> Manual Step (MATLAB)</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--ready)"></div> Ready</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--blocked)"></div> Blocked</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--future)"></div> Future</div>
+</div>
+
+<!-- GANTT CHART -->
+<div class="gantt-container">
+
+<!-- Section: Foundation Pipeline -->
+<div class="gantt-section-title">Foundation Pipeline (Phases 1-7)</div>
+<table class="gantt">
+<thead>
+  <tr>
+    <th class="label-col">Phase</th>
+    <th class="week-col">Jan 8</th>
+    <th class="week-col">Jan 15</th>
+    <th class="week-col">Jan 22</th>
+    <th class="week-col">Jan 29</th>
+    <th class="week-col">Feb 5</th>
+    <th class="week-col">Feb 12</th>
+    <th class="week-col">Feb 19</th>
+    <th class="week-col">Feb 26</th>
+    <th class="week-col">Mar 5</th>
+    <th class="week-col">Mar 12</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="label-cell">1. Energy Detector <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:10%;right:30%">42 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">2. Spectrogram Extraction <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:30%;right:10%"></div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">3. Labeling Tool <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td>
+    <td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:60%">840 labels</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">4. Dataset Preparation <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td>
+    <td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:30%">71 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">5. CNN Classifier <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td>
+    <td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:20%;right:0%"></div></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:60%">F1=91.7%</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">6. Desktop App (PyQt6) <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:0%"></div></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:30%">In use</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">7. Clustering Exploration <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:30%;right:0%"></div></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:60%"></div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+</tbody>
+</table>
+
+<!-- Section: Language Discovery -->
+<div class="gantt-section-title">Language Discovery Pipeline (Phase 8)</div>
+<table class="gantt">
+<thead>
+  <tr>
+    <th class="label-col">Phase</th>
+    <th class="week-col">Jan 8</th>
+    <th class="week-col">Jan 15</th>
+    <th class="week-col">Jan 22</th>
+    <th class="week-col">Jan 29</th>
+    <th class="week-col">Feb 5</th>
+    <th class="week-col">Feb 12</th>
+    <th class="week-col">Feb 19</th>
+    <th class="week-col">Feb 26</th>
+    <th class="week-col">Mar 5</th>
+    <th class="week-col">Mar 12</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="label-cell">8.1 Bout Preprocessing <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:10%;right:0%"></div></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:70%"></div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">8.2 Transformer (25.6M params) <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:40%;right:0%"></div></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:50%">11 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">8.3 VQ-VAE (820K params) <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:5%;right:50%">21 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">8.4 Analysis &amp; Interpretation <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:20%;right:20%">17 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+</tbody>
+</table>
+
+<!-- Section: Infrastructure & Execution -->
+<div class="gantt-section-title">Training Infrastructure &amp; Real Data Execution (Phases 9-11)</div>
+<table class="gantt">
+<thead>
+  <tr>
+    <th class="label-col">Phase</th>
+    <th class="week-col">Jan 8</th>
+    <th class="week-col">Jan 15</th>
+    <th class="week-col">Jan 22</th>
+    <th class="week-col">Jan 29</th>
+    <th class="week-col">Feb 5</th>
+    <th class="week-col">Feb 12</th>
+    <th class="week-col">Feb 19</th>
+    <th class="week-col">Feb 26</th>
+    <th class="week-col">Mar 5</th>
+    <th class="week-col">Mar 12</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="label-cell">9.1 Dataset Assembler <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:30%;right:20%">10 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">10.1 Active Learning Runner <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:35%;right:15%"></div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">11.1 Bout Extraction (Real Data) <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:45%;right:0%"></div></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">11.2 Train Transformer <span class="status-chip chip-blocked">GPU BLOCKED</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar blocked" style="left:0%;right:0%">Needs HPC</div></td>
+    <td class="week-cell" style="position:relative"><div class="bar blocked" style="left:0%;right:0%"></div></td>
+    <td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">11.3 Train VQ-VAE <span class="status-chip chip-blocked">BLOCKED</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar blocked" style="left:0%;right:0%"></div></td>
+    <td class="week-cell" style="position:relative"><div class="bar blocked" style="left:0%;right:60%"></div></td>
+  </tr>
+  <tr>
+    <td class="label-cell">11.4 Analysis on Real Codes <span class="status-chip chip-blocked">BLOCKED</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar blocked" style="left:0%;right:20%"></div></td>
+  </tr>
+</tbody>
+</table>
+
+<!-- Section: DeepSqueak Bridge -->
+<div class="gantt-section-title">DeepSqueak Classification Bridge (Phase 14)</div>
+<table class="gantt">
+<thead>
+  <tr>
+    <th class="label-col">Phase</th>
+    <th class="week-col">Jan 8</th>
+    <th class="week-col">Jan 15</th>
+    <th class="week-col">Jan 22</th>
+    <th class="week-col">Jan 29</th>
+    <th class="week-col">Feb 5</th>
+    <th class="week-col">Feb 12</th>
+    <th class="week-col">Feb 19</th>
+    <th class="week-col">Feb 26</th>
+    <th class="week-col">Mar 5</th>
+    <th class="week-col">Mar 12</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="label-cell">14.1 Raven Export <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:45%;right:0%">33 tests</div></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:70%">93 det.</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">14.2 MATLAB Classification <span class="status-chip chip-manual">MANUAL</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar manual" style="left:20%;right:0%">DeepSqueak</div></td>
+    <td class="week-cell" style="position:relative"><div class="bar manual" style="left:0%;right:50%"></div></td>
+    <td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">14.3 Results Ingestion <span class="status-chip chip-blocked">BLOCKED</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar blocked" style="left:20%;right:0%"></div></td>
+    <td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">14.4 Repertoire Statistics <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:30%">33 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+</tbody>
+</table>
+
+<!-- Section: Advanced Analysis (Vacation Workstreams) -->
+<div class="gantt-section-title">Advanced Statistical Analysis (Vacation Workstreams)</div>
+<table class="gantt">
+<thead>
+  <tr>
+    <th class="label-col">Phase</th>
+    <th class="week-col">Jan 8</th>
+    <th class="week-col">Jan 15</th>
+    <th class="week-col">Jan 22</th>
+    <th class="week-col">Jan 29</th>
+    <th class="week-col">Feb 5</th>
+    <th class="week-col">Feb 12</th>
+    <th class="week-col">Feb 19</th>
+    <th class="week-col">Feb 26</th>
+    <th class="week-col">Mar 5</th>
+    <th class="week-col">Mar 12</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="label-cell">Info Theory Metrics <span class="status-chip chip-ready">READY</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar ready" style="left:0%;right:0%">Zipf, entropy</div></td>
+    <td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">Null Model Generators <span class="status-chip chip-ready">READY</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar ready" style="left:20%;right:0%"></div></td>
+    <td class="week-cell" style="position:relative"><div class="bar ready" style="left:0%;right:60%"></div></td>
+  </tr>
+  <tr>
+    <td class="label-cell">Statistical Comparison <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:30%"></div></td>
+    <td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">Acoustic Property Extractors <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:40%">22 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">Probing Framework <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:40%">16 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">LMT Data Access <span class="status-chip chip-done">DONE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar done" style="left:0%;right:40%">23 tests</div></td>
+    <td class="week-cell"></td><td class="week-cell"></td>
+  </tr>
+  <tr>
+    <td class="label-cell">Event-Triggered Analysis <span class="status-chip chip-blocked">BLOCKED</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar blocked" style="left:0%;right:0%">Needs LMT data</div></td>
+    <td class="week-cell"></td>
+  </tr>
+</tbody>
+</table>
+
+<!-- Section: Future -->
+<div class="gantt-section-title">Future Phases</div>
+<table class="gantt">
+<thead>
+  <tr>
+    <th class="label-col">Phase</th>
+    <th class="week-col">Jan 8</th>
+    <th class="week-col">Jan 15</th>
+    <th class="week-col">Jan 22</th>
+    <th class="week-col">Jan 29</th>
+    <th class="week-col">Feb 5</th>
+    <th class="week-col">Feb 12</th>
+    <th class="week-col">Feb 19</th>
+    <th class="week-col">Feb 26</th>
+    <th class="week-col">Mar 5</th>
+    <th class="week-col">Mar 12</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="label-cell">12. Cross-Population Comparison <span class="status-chip chip-future">FUTURE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar future" style="left:0%;right:0%"></div></td>
+    <td class="week-cell" style="position:relative"><div class="bar future" style="left:0%;right:0%"></div></td>
+  </tr>
+  <tr>
+    <td class="label-cell">13. Batch Detection Pipeline <span class="status-chip chip-future">FUTURE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar future" style="left:0%;right:0%"></div></td>
+  </tr>
+  <tr>
+    <td class="label-cell">Syllable Classification <span class="status-chip chip-future">FUTURE</span></td>
+    <td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td><td class="week-cell"></td>
+    <td class="week-cell"></td>
+    <td class="week-cell" style="position:relative"><div class="bar future" style="left:0%;right:0%">Plan exists</div></td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+<!-- Blockers -->
+<div class="blockers">
+  <h2>&#x26A0; Active Blockers</h2>
+  <ul class="blocker-list">
+    <li>
+      <span class="blocker-tag">GPU/HPC</span>
+      <span><strong>Phase 11.2-11.4:</strong> AMD RX 5700 insufficient for ~25-30M param transformer. Need HPC cluster or cloud GPU (Colab Pro, Lambda). <em>This blocks the central scientific question.</em></span>
+    </li>
+    <li>
+      <span class="blocker-tag">MATLAB</span>
+      <span><strong>Phase 14.2-14.3:</strong> DeepSqueak classification step requires manual MATLAB interaction. Raven tables are exported and ready.</span>
+    </li>
+    <li>
+      <span class="blocker-tag">LMT Data</span>
+      <span><strong>Event-Triggered Analysis:</strong> Needs LMT SQLite files from Prof. London for behavioral event correlation.</span>
+    </li>
+    <li>
+      <span class="blocker-tag">WAV Files</span>
+      <span><strong>31 detection directories:</strong> WAV files on another machine; limits DeepSqueak export to 5 of 36 recordings.</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Key achievements -->
+<div class="metrics">
+  <h2>Key Technical Achievements</h2>
+  <div class="metrics-grid">
+    <div class="metric-item">
+      <h3>CNN Classifier Performance</h3>
+      <p><span class="highlight">F1 = 91.7%</span> (89.7% precision, 93.8% recall) on USV detection. Binary classifier with ~101K params, 3 conv blocks.</p>
+    </div>
+    <div class="metric-item">
+      <h3>Transformer Architecture</h3>
+      <p><span class="highlight">25.6M parameter</span> GPT-style autoregressive model for next-spectrogram-column prediction. Pre-norm, 8 layers, 8 heads, d_model=512.</p>
+    </div>
+    <div class="metric-item">
+      <h3>VQ-VAE Codebook</h3>
+      <p><span class="highlight">K=64 codebook</span> with EMA updates, dead code reinitialization, L2 normalization. ~820K params. Discovers discrete "concepts" in transformer hidden states.</p>
+    </div>
+    <div class="metric-item">
+      <h3>Detection Pipeline</h3>
+      <p><span class="highlight">93 USV detections</span> exported across 5 recordings as Raven selection tables. Two-stage detection: energy threshold + CNN classification.</p>
+    </div>
+    <div class="metric-item">
+      <h3>Desktop Application</h3>
+      <p>Fully functional <span class="highlight">PyQt6 desktop app</span> for interactive USV detection, spectrogram visualization, threshold adjustment, and progressive labeling.</p>
+    </div>
+    <div class="metric-item">
+      <h3>Test Coverage</h3>
+      <p><span class="highlight">600+ tests</span> across the entire pipeline. Recording-based train/val/test splits (ADR-004) prevent data leakage.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Pipeline architecture diagram -->
+<div class="metrics">
+  <h2>Pipeline Architecture</h2>
+  <div style="text-align: center; padding: 20px 0; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.8;">
+    <div style="display: inline-block; text-align: left; background: #f8f9fa; padding: 20px 32px; border-radius: 8px; border: 1px solid #e0e0e0;">
+      <span style="color: var(--done); font-weight:700;">WAV (300 kHz)</span><br>
+      &nbsp;&nbsp;&darr;<br>
+      <span style="color: var(--done); font-weight:700;">[Phase 1] Energy Detector</span> &rarr; Candidates<br>
+      &nbsp;&nbsp;&darr;<br>
+      <span style="color: var(--done); font-weight:700;">[Phase 5] CNN Classifier</span> &rarr; USV Detections (F1=91.7%)<br>
+      &nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+      <span style="color: var(--done); font-weight:700;">[Phase 8.1] Bout Extraction</span>&nbsp;&nbsp;&nbsp;<span style="color: var(--done); font-weight:700;">[Phase 14] DeepSqueak Bridge</span><br>
+      &nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+      <span style="color: var(--done); font-weight:700;">[Phase 8.2] Transformer</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: var(--manual); font-weight:700;">Syllable Classification</span><br>
+      &nbsp;&nbsp;&darr;<br>
+      <span style="color: var(--done); font-weight:700;">[Phase 8.3] VQ-VAE</span> &rarr; Discrete Codes<br>
+      &nbsp;&nbsp;&darr;<br>
+      <span style="color: var(--done); font-weight:700;">[Phase 8.4] Analysis</span> &rarr; Language-like structure?<br>
+      &nbsp;&nbsp;&darr;<br>
+      <span style="color: var(--blocked); font-weight:700;">[Phase 11] Real Data Execution</span> &larr; <span style="color: var(--blocked);">GPU BLOCKED</span><br>
+      &nbsp;&nbsp;&darr;<br>
+      <span style="color: var(--future);">[Phase 12] Cross-Population Comparison</span>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  USV Detection &amp; Analysis Pipeline &mdash; Mickey London Lab &mdash; Generated 2026-02-28
+</div>
+
+</body>
+</html>

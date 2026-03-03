@@ -27,7 +27,7 @@ The tradeoff remains: FSQ vocabulary size is the product of per-dimension levels
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - Mentzer et al. (2024), ICLR. https://proceedings.iclr.cc/paper_files/paper/2024/file/e2dd53601de57c773343a7cdf09fae1c-Paper-Conference.pdf
 
 Relevant Notes:
@@ -35,6 +35,7 @@ Relevant Notes:
 - [[codebook collapse prevention requires simultaneous EMA updates plus dead code reset plus k-means init plus L2 normalization]] -- the complexity FSQ eliminates
 - [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- another quantization approach that failed
 - [[discrete audio token taxonomy from 2025 survey covers quantization methods beyond simple VQ]] -- FSQ is one entry in a comprehensive taxonomy that catalogs 8+ quantization methods
+- [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- FSQ could serve as a post-hoc quantizer for flow matching's continuous trajectories, combining flow matching's training stability with discrete interpretability
 
 Topics:
 - [[representation-learning]]

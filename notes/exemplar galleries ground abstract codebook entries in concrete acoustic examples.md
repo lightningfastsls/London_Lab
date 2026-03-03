@@ -18,4 +18,4 @@ Exemplar galleries complement [[VQ-VAE codebook visualization decodes entries th
 
 ---
 
-Source: [[ROADMAP.md]]
+Source: [ROADMAP](../ROADMAP.md)

@@ -38,5 +38,5 @@ Relevant Notes:
 - [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- population-specific repertoire differences this finding predicts would need PERMANOVA to quantify
 
 Topics:
-- [[classification]]
+- [[classification-methodology]]
 - [[experimental-methods]]

@@ -1,7 +1,9 @@
 ---
 category: methodology
 date: 2026-02-27
-status: resolved
+status: archived
+archived: 2026-03-02
+archived_by: rethink-2026-03-02
 ---
 
 # ADR-derived notes stay distributed across domain topic maps

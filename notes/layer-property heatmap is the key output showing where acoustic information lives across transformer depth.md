@@ -22,7 +22,7 @@ The column-wise average (mean score across all properties for each layer) provid
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook]] -- the heatmap provides the empirical basis for choosing which layers to compare

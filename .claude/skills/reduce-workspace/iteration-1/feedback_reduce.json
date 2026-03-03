@@ -1,0 +1,25 @@
+{
+  "reviews": [
+    {
+      "run_id": "research-synthesis-with_skill",
+      "feedback": "I think there may be a problem with doing the test on something that was already done, hence the 1 fail from skip rate being too high and was justified by this was already extracted so we don't really know the amount it will actually skip. But over all this does look good, I am not sure I see a difference though. Actually I have an idea, in the analysis notes it is mentioned that this was checked against the prior run ,the actual first run, wouldn't it be more scientific to run just the normal version again? because that creates the same story but this time the only difference is the change in the skill",
+      "timestamp": "2026-02-27T17:02:24.970Z"
+    },
+    {
+      "run_id": "research-synthesis-without_skill",
+      "feedback": "",
+      "timestamp": "2026-02-27T17:02:24.970Z"
+    },
+    {
+      "run_id": "planning-doc-with_skill",
+      "feedback": "Again same problems",
+      "timestamp": "2026-02-27T17:02:24.970Z"
+    },
+    {
+      "run_id": "planning-doc-without_skill",
+      "feedback": "",
+      "timestamp": "2026-02-27T17:02:24.970Z"
+    }
+  ],
+  "status": "complete"
+}

@@ -18,7 +18,7 @@ This analysis is one of four sequential structure tests forming a language-liken
 
 ---
 
-Source: [[ROADMAP.md]], Phase 8; [[vacation-master-plan-v2]]
+Source: [ROADMAP](../ROADMAP.md), Phase 8; vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- empirical evidence that sequence-level statistics are meaningful

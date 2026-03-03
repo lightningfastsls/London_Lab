@@ -5,7 +5,7 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
 ---
 
@@ -20,7 +20,7 @@ This work narrows but does not close [[no published work has applied VQ-VAE to a
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - Sarkar & Magimai-Doss, "Towards Leveraging Sequential Structure in Animal Vocalizations", NeurIPS 2025 Workshop. https://arxiv.org/abs/2511.10190
 
 Relevant Notes:
@@ -31,5 +31,5 @@ Relevant Notes:
 - [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- their negative result with GVQ
 
 Topics:
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]
 - [[classification]]

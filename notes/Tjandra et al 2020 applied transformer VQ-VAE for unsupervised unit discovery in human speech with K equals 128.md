@@ -5,8 +5,8 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
-  - "[[representation-learning]]"
 ---
 
 # Tjandra et al 2020 applied transformer VQ-VAE for unsupervised unit discovery in human speech with K equals 128
@@ -25,4 +25,5 @@ Relevant Notes:
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- shared architectural philosophy
 
 Topics:
+- [[unsupervised-usv-discovery]]
 - [[classification]]

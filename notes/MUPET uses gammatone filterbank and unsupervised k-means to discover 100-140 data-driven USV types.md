@@ -5,8 +5,8 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
-  - "[[representation-learning]]"
 ---
 
 # MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types
@@ -32,4 +32,5 @@ Relevant Notes:
 - [[BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice]] -- the tool providing the gammatone validation
 
 Topics:
+- [[unsupervised-usv-discovery]]
 - [[classification]]

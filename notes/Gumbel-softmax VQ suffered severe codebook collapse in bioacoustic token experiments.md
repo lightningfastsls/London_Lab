@@ -8,7 +8,7 @@ conditions:
   - "frozen HuBERT features"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
 ---
 
 # Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments
@@ -22,7 +22,7 @@ This result provides external validation for our pipeline's choice of standard V
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - Sarkar & Magimai-Doss (2025), NeurIPS Workshop. https://arxiv.org/abs/2511.10190
 
 Relevant Notes:
@@ -31,4 +31,4 @@ Relevant Notes:
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- our codebook at similar scale (K=64 vs V=50)
 
 Topics:
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]

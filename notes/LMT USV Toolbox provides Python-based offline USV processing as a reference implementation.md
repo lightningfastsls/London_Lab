@@ -19,7 +19,7 @@ Critical implementation guidance: the toolbox's `LMT.USV.importer` already handl
 Source:
 - Researcher brain-dump on lab conventions (2026-02-19)
 - https://micecraft.org/lmt/
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the parent system

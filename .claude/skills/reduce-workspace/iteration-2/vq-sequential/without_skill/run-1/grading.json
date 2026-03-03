@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 173-186: 'Summary Statistics' table with counts by category: Finding (4), Tension (2), Method (2), Open question (2), Implementation idea (1), Total (11). Also includes 'New (no vault duplicate)' column."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "11 total extractions listed in Summary Statistics (line 182): 4 findings + 2 tensions + 2 methods + 2 open questions + 1 implementation idea = 11."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "The report lists 10 extracted items and no explicitly skipped items. All considered items appear as extractions with no 'NOT Extracted' section. Implicit skip rate is 0/10 = 0%. However, the report does not explicitly track total candidates considered, so this is based on what is visible in the report."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 10 items include a 'Rationale for extraction' field with substantive explanations. Examples: Item 1 explains implications for VQ-VAE probing experiments; Item 3 explains how it nuances existing understanding of the performance gap; Item 8 explains how Levenshtein adds a pairwise comparison dimension to the existing analysis toolkit."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Checking 3 representative proposed titles: (1) 'caller identity is encoded more strongly than call-type in discrete acoustic tokens from animal vocalizations' — propositional claim. (2) 'Levenshtein plus k-NN classification loses information that VQ token sequences demonstrably contain' — propositional claim. (3) 'simpler discretization methods tend to outperform theoretically superior ones in bioacoustic representation learning' — propositional claim. All pass the composability test ('This note argues that [title]')."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "5 distinct categories represented: Finding (items 1,2,7), Tension (items 3,9), Method (items 4,5), Open question (items 6,10), Implementation idea (item 8). Summary Statistics table confirms all 5 categories."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Lines 10-23: Detailed 'Duplicate/Overlap Assessment' section listing 6 existing vault notes with coverage descriptions. Each extracted item also includes a 'Duplicate check' field (e.g., Item 1: 'No existing note covers this. The vault has no notes about caller vs. call-type identity encoding.'). Line 23 concludes: 'The vault already has substantial coverage of this source from a previous /reduce pass.'"
+    },
+    {
+      "text": "The codebook collapse finding (GVQ underperforms VQ due to collapse) is captured as an extraction",
+      "passed": false,
+      "evidence": "The GVQ codebook collapse finding is NOT extracted as a standalone item. It is mentioned in the Duplicate/Overlap Assessment (line 18) as already covered by existing note 'Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments'. Item 9 discusses the broader pattern that 'simpler discretization methods tend to outperform theoretically superior ones' which references GVQ collapse, but this is a generalization/pattern rather than a direct capture of the collapse finding itself. The report explicitly skipped this as already in the vault."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "total": 8,
+    "pass_rate": 0.88
+  }
+}

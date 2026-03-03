@@ -19,7 +19,7 @@ The confidence is rated "experimental" because SpecAugment benefits have been va
 
 ---
 
-Source: [[ROADMAP.md]], Phase 4
+Source: [ROADMAP](../ROADMAP.md), Phase 4
 
 Relevant Notes:
 - [[constrained jittering generates diverse positive training examples by shifting detection boundaries within overlap constraints]] -- CNN augmentation strategy; SpecAugment is the transformer counterpart

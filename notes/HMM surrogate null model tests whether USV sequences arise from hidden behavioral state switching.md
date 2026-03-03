@@ -21,7 +21,7 @@ The choice of n_states requires model selection. BIC or cross-validated log-like
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Chabout et al 2015 established that male mice change syllable syntax with social context]] -- the biological motivation for testing hidden state switching as a sufficient explanation

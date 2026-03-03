@@ -18,7 +18,7 @@ This open question is resolvable only after staged training on real bout data, m
 
 ---
 
-Source: [[ROADMAP.md]]
+Source: [ROADMAP](../ROADMAP.md)
 
 Relevant Notes:
 - [[causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams]] -- the architecture whose attention this question evaluates

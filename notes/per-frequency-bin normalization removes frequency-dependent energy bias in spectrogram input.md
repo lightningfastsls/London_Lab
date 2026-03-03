@@ -17,6 +17,8 @@ Statistics are computed exclusively from the training split and saved to an npz 
 
 The 170-bin resolution follows from [[512-point FFT at 300 kHz gives 1.7 ms temporal resolution with 586 Hz frequency bins]] and the decision to crop to the 20-120 kHz USV-relevant band (see [[20-120 kHz detection range pads the mouse USV band to avoid clipping edge-case calls]]). At 586 Hz per bin, the 100 kHz band contains approximately 170 bins. This resolution is sufficient because [[frequency resolution of 586 Hz per bin suffices to distinguish USV subtypes in the 20-120 kHz range]].
 
+This normalization applies to both CNN classification input and to the autoregressive transformer's input projection (see [[transformer-first then VQ-VAE avoids forcing premature discretization]]). The transformer receives the same 170-dimensional spectrogram columns, so frequency-dependent energy bias would equally distort the learned representations that feed VQ-VAE codebook learning. Consistent normalization across both pipelines ensures the transformer's learned features reflect genuine acoustic variation rather than systematic energy artifacts.
+
 ---
 
-Source: [[ROADMAP.md]], Phase 2
+Source: [ROADMAP](../ROADMAP.md), Phase 2

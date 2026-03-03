@@ -7,7 +7,7 @@ conditions:
   - "marmoset and dog vocalizations"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[bioacoustic-ssl]]"
   - "[[classification]]"
 ---
 
@@ -26,7 +26,7 @@ This has several implications for our pipeline:
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - Sarkar & Magimai-Doss (2025), ICASSP. https://arxiv.org/abs/2501.05987
 
 Relevant Notes:
@@ -35,5 +35,5 @@ Relevant Notes:
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- our architecture that could benefit from pretrained speech features
 
 Topics:
-- [[representation-learning]]
+- [[bioacoustic-ssl]]
 - [[classification]]

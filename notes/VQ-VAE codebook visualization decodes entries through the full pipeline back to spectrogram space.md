@@ -18,4 +18,4 @@ t-SNE or UMAP projection of all K codebook vectors colored by the mean frequency
 
 ---
 
-Source: [[ROADMAP.md]]
+Source: [ROADMAP](../ROADMAP.md)

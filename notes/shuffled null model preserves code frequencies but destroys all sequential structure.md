@@ -21,7 +21,7 @@ This is the first rung in the null model ladder, because it tests the weakest fo
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- this note describes one specific level in the null model hierarchy outlined there

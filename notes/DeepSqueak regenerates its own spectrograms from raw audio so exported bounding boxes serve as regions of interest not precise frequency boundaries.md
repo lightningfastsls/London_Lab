@@ -27,5 +27,5 @@ Relevant Notes:
 - [[timestamp proximity matching with configurable tolerance bridges detection systems that use different internal time representations]] -- the re-association strategy needed because DeepSqueak's regenerated timestamps will not match exactly
 
 Topics:
-- [[classification]]
+- [[classification-tools]]
 - [[experimental-methods]]

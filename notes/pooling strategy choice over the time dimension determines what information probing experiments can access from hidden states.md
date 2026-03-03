@@ -27,7 +27,7 @@ The practical implication: a probe might fail not because the transformer lacks 
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] -- the probing method whose results depend on this pooling choice

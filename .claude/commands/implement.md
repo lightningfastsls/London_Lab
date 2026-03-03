@@ -82,7 +82,9 @@ After writing the handoff, spawn the `master-reviewer` agent (subagent_type: `ma
 
 2. **Write the review file** to `docs/reviews/<module>-review.md` based on the master-reviewer's findings. The agent returns text — you write the file.
 
-3. **If CHANGES NEEDED:** Fix all blockers, add a "Fixes Applied" section to the review file, re-run tests. Only re-review if blockers were found.
+3. **If CHANGES NEEDED:** Fix all blockers, add a "Fixes Applied" section to the review file, re-run tests.
+   - **BLOCKERs require re-review** — the implementor cannot self-report that blockers are resolved. Spawn master-reviewer again as a spot-check (can be Tier 1 scope focused on the specific fixes).
+   - **Tier 3 recommendation:** For Tier 3 (critical) modules, recommend that re-review happens in a **separate session** for fresh context. The implementor and reviewer sharing the same conversation risks anchoring bias.
 
 ## Phase 5: REPORT
 Summarize to the user:

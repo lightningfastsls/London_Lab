@@ -20,7 +20,7 @@ The dual-approach strategy — MLE for the direct estimate, entropy-based for cr
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Clauset et al 2009 MLE produces the gold standard power law fit for Zipf exponent estimation]] -- the primary estimation method that this entropy-based approach cross-validates

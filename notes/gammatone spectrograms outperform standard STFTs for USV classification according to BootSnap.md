@@ -33,4 +33,4 @@ Relevant Notes:
 
 Topics:
 - [[signal-processing]]
-- [[classification]]
+- [[classification-methodology]]

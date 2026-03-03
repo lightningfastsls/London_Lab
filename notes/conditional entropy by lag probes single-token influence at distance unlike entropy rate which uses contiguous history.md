@@ -18,7 +18,7 @@ For USV code sequences, the decay profile of conditional entropy by lag provides
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- the aggregate entropy rate curve that this lag-specific analysis decomposes into individual contributions

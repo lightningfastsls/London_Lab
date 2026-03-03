@@ -26,7 +26,7 @@ The absence of bioacoustics from this comprehensive survey (despite covering spe
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - "Discrete Audio Tokens: More Than a Survey!" (2025). https://arxiv.org/abs/2506.10274
 
 Relevant Notes:

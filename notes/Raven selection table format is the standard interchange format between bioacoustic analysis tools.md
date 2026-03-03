@@ -38,5 +38,5 @@ Relevant Notes:
 - [[25000-125000 Hz is the standard mouse USV frequency band used across bioacoustic tools for defining regions of interest]] -- the standard frequency band to use in the Low Freq / High Freq columns
 
 Topics:
-- [[classification]]
+- [[classification-tools]]
 - [[experimental-methods]]

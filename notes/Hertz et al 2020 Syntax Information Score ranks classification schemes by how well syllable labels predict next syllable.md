@@ -5,8 +5,8 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
-  - "[[representation-learning]]"
 ---
 
 # Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable
@@ -33,5 +33,5 @@ Relevant Notes:
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- SIS evaluates whether labels capture sequential structure; transition matrices operationalize that structure as testable population-level differences
 
 Topics:
-- [[classification]]
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]
+- [[classification-methodology]]

@@ -5,8 +5,8 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
-  - "[[representation-learning]]"
 ---
 
 # Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization
@@ -32,7 +32,8 @@ Relevant Notes:
 - [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- novelty of applying VQ-VAE to this domain
 - [[Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs]] -- quantitative GMM clustering result
 - [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- methodological consequence of the continuum finding
+- [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- the continuum finding motivates considering continuous generative models (flow matching) rather than discrete (VQ-VAE)
 
 Topics:
+- [[unsupervised-usv-discovery]]
 - [[classification]]
-- [[representation-learning]]

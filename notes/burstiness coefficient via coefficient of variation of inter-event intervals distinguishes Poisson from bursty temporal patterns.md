@@ -18,7 +18,7 @@ For USV emissions, burstiness connects temporal patterns to behavioral states. A
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- temporal emission statistics are part of the sequence-level information that carries behavioral predictive value

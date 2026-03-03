@@ -1,0 +1,17 @@
+{
+  "eval_id": 1,
+  "eval_name": "moderate-comparison",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": false, "evidence": "Markdown without inbox structure"},
+    {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+    {"text": "source-log-present", "passed": false, "evidence": "URLs inline but no structured source log table with fetch status"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "12 GitHub repos, 11 publication links"},
+    {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline suggestions"},
+    {"text": "multi-source-synthesis", "passed": true, "evidence": "11 tools compared in matrix table with tiers"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Original synthesis"},
+    {"text": "vault-check-performed", "passed": false, "evidence": "No vault check"},
+    {"text": "landscape-coverage", "passed": true, "evidence": "11 tools across 4 tiers: DAS, AMVOC, MoUSE, LMT-USV-Toolbox, USVSEG, SqueakOut, Vocalization-Segmentation, VocalMat, BootSnap, AVGN, USV_Python"},
+    {"text": "actionable-detail", "passed": true, "evidence": "pip install das, GitHub URLs for 12 repos, F1/miss-rate benchmarks, tiered recommendations, web demo URL for LMT-USV"}
+  ]
+}

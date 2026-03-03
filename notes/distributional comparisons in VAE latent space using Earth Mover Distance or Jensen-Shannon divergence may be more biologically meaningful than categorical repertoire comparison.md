@@ -7,7 +7,7 @@ conditions:
   - "sufficient samples per population"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
   - "[[experimental-methods]]"
 ---
 
@@ -37,7 +37,8 @@ Relevant Notes:
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- VQ-VAE provides discrete codes that could also be compared distributionally
 - [[Jensen-Shannon divergence on categorical syllable proportions provides a symmetric bounded measure for comparing repertoire distributions between populations]] -- the categorical JSD counterpart to latent-space JSD; comparing both approaches on the same data tests whether categories lose information
 - [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- the standard categorical test this latent-space approach aims to complement or surpass
+- [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- flow matching produces continuous trajectories that are naturally suited to distributional comparison, bypassing the discretization tension entirely
 
 Topics:
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]
 - [[experimental-methods]]

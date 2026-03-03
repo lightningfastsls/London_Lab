@@ -16,7 +16,7 @@ This method connects directly to [[codebook size of 64 gives interpretable discr
 
 ---
 
-Source: [[ROADMAP.md]], Phase 8
+Source: [ROADMAP](../ROADMAP.md), Phase 8
 
 Relevant Notes:
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- whether 64 codes produce distinct acoustic predictions or redundant ones

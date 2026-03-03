@@ -21,16 +21,25 @@ The subpackage structure follows the data flow from raw behavioral data to integ
 3. **event_triggered.py** — computes peri-event time histograms (PETH) and event-triggered averages. Given a set of behavioral events and a set of USV detections, this module answers questions like "what is the USV rate in the 2 seconds surrounding a mount attempt?"
 4. **context_analysis.py** — the highest-level module, combining behavioral context with vocal repertoire analysis. This is where questions like "do USV code distributions differ between approach vs. contact contexts?" get answered.
 
-This separation means the rest of the codebase — detection, spectrogram generation, transformer training, VQ-VAE — can be developed, tested, and deployed without any LMT dependency. Conversely, LMT code can be developed against mock data before real SQLite files are available, since [[pre-code questions for LMT integration must be resolved before implementation]].
+This separation means the rest of the codebase — detection, spectrogram generation, transformer training, VQ-VAE — can be developed, tested, and deployed without any LMT dependency. Conversely, LMT code can be developed against mock data before real SQLite files are available, since [[pre-code questions for LMT integration must be resolved before implementation]]. The existing [[LMT USV Toolbox provides Python-based offline USV processing as a reference implementation]] and its `LMT.USV.importer` module can serve as a reference for the synchronizer.py design rather than building from scratch.
+
+The synchronizer module's complexity depends on whether [[AviSoft Recorder captures synchronized USV recordings within the LMT behavioral tracking system]] embeds alignment metadata directly in the SQLite database, and [[whether LMT SQLite schema supports the required temporal resolution for USV-behavior synchronization]] constrains which analyses the synchronizer can support at what temporal granularity. The event_triggered.py module implements the analysis described in [[event-triggered USV rate via PETH in plus-minus 2 second windows per event type serves as LMT integration sanity check]], which is the first analytical consumer of this subpackage's output.
+
+Critically, since [[information theory and null model foundation must precede probing and LMT integration]], this subpackage's real-data analyses should not run until the information-theoretic framework is validated — the subpackage can be built and tested against mock data, but biological interpretation requires the analytical tools to exist first.
 
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[temporal alignment between USV detections and LMT behavioral events enables USV-behavior correlation analysis]] -- the analytical goal this subpackage serves
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the system whose data this subpackage consumes
+- [[LMT USV Toolbox provides Python-based offline USV processing as a reference implementation]] -- reference implementation for synchronizer.py design
+- [[whether LMT SQLite schema supports the required temporal resolution for USV-behavior synchronization]] -- temporal resolution constrains synchronizer design
+- [[AviSoft Recorder captures synchronized USV recordings within the LMT behavioral tracking system]] -- whether AviSoft metadata exists in SQLite affects synchronizer complexity
+- [[event-triggered USV rate via PETH in plus-minus 2 second windows per event type serves as LMT integration sanity check]] -- first analytical consumer of this subpackage
+- [[information theory and null model foundation must precede probing and LMT integration]] -- ordering: analytical foundation before real-data LMT analysis
 
 Topics:
 - [[experimental-methods]]

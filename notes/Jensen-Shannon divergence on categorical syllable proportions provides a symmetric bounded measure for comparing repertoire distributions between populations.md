@@ -31,4 +31,4 @@ Relevant Notes:
 
 Topics:
 - [[experimental-methods]]
-- [[classification]]
+- [[classification-methodology]]

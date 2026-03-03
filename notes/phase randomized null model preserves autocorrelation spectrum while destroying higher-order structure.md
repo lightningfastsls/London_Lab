@@ -21,7 +21,7 @@ The phase randomization approach complements the Markov null models because it o
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- phase randomization is one level in the hierarchical null model framework

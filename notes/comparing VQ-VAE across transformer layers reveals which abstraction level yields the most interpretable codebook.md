@@ -16,4 +16,4 @@ The default extraction point is layer 4 (middle of the 8-block model) per [[midd
 
 ---
 
-Source: [[ROADMAP.md]], Phase 8
+Source: [ROADMAP](../ROADMAP.md), Phase 8

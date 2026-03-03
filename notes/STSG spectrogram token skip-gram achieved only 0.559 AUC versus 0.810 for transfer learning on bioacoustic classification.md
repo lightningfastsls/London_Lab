@@ -8,7 +8,7 @@ conditions:
   - "bird, insect, amphibian, mammal sounds"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
 ---
 
@@ -29,7 +29,7 @@ The skip-gram embedding step is interesting independently as a way to discover s
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - STSG (2025), BirdCLEF+. https://arxiv.org/abs/2507.08236
 
 Relevant Notes:
@@ -38,5 +38,5 @@ Relevant Notes:
 - [[bigram productivity ratio measures compositionality of USV code sequences]] -- skip-gram embeddings relate to sequential structure analysis
 
 Topics:
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]
 - [[classification]]

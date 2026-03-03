@@ -41,10 +41,10 @@ The specific causal hypothesis is directional: [[inbreeding and absence of court
 ---
 
 Source:
-- [[ROADMAP.md]], Phase 5
+- [ROADMAP](../ROADMAP.md), Phase 5
 - inbox/deepsqueak-usv-syllable-classification-practical-guide.md (Compass artifact, 2026-02-23) -- statistical framework, Zala et al. evidence
 - inbox/raven-deepsqueak-classification-bridge-plan.md (2026-02-23) -- Shannon entropy prediction, chi-squared alternative
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- immediate science strategy using existing tools

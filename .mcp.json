@@ -4,7 +4,7 @@
       "command": "node",
       "args": ["C:/Users/shach/AppData/Roaming/npm/node_modules/@tobilu/qmd/dist/qmd.js", "mcp"],
       "env": {
-        "XDG_CACHE_HOME": "C:\\Users\\shach\\.qmd-cache"
+        "INDEX_PATH": "C:\\Users\\shach\\.cache\\qmd\\index.sqlite"
       },
       "autoapprove": [
         "mcp__qmd__search",

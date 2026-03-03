@@ -33,5 +33,5 @@ Relevant Notes:
 - [[Raven selection table format is the standard interchange format between bioacoustic analysis tools]] -- the bridge format enabling supervised classification via DeepSqueak while unsupervised methods are developed in parallel
 
 Topics:
-- [[classification]]
+- [[classification-methodology]]
 - [[experimental-methods]]

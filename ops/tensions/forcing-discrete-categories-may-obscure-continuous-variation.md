@@ -1,6 +1,8 @@
 ---
-status: pending
+status: archived
 created: 2026-02-23
+archived: 2026-03-02
+archived_by: rethink-2026-03-02
 ---
 
 # Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations

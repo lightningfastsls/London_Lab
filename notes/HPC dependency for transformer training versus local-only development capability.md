@@ -18,7 +18,7 @@ This dependency connects to [[transformer-first then VQ-VAE avoids forcing prema
 
 ---
 
-Source: [[ROADMAP.md]]
+Source: [ROADMAP](../ROADMAP.md)
 
 Relevant Notes:
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- why the transformer investment is justified despite compute cost

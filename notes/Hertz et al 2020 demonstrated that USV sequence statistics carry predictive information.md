@@ -35,5 +35,5 @@ Relevant Notes:
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- operationalizes the "sequence statistics carry predictive information" finding as testable transition probability comparisons between populations
 
 Topics:
-- [[classification]]
+- [[classification-methodology]]
 - [[representation-learning]]

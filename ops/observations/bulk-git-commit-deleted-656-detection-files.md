@@ -2,7 +2,9 @@
 description: "A cleanup commit (78d1c70) staged and committed the deletion of 656 USV_Detections files — data was recoverable from git history but appeared lost"
 category: friction
 trigger: "Raven export dry-run showed only 2/36 detection directories; git log revealed mass deletion in 'clean git status' commit"
-status: resolved
+status: archived
+archived: 2026-03-02
+archived_by: rethink-2026-03-02
 resolution: "Restored via git checkout 046c035 -- USV_Detections/; added Git Data Safety guardrails to CLAUDE.md"
 ---
 

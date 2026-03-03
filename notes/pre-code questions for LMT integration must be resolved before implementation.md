@@ -25,11 +25,13 @@ The resolution path is simple: ask these questions and wait for answers. Writing
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[Live Mouse Tracker from Institut Pasteur synchronizes vocalization recordings with social behavior events]] -- the system these questions are about
 - [[LMT USV Toolbox provides Python-based offline USV processing as a reference implementation]] -- may provide schema documentation
+- [[whether LMT SQLite schema supports the required temporal resolution for USV-behavior synchronization]] -- temporal resolution is one of the pre-code questions requiring real SQLite inspection
+- [[LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage]] -- the subpackage architecture these questions must inform
 
 Topics:
 - [[experimental-methods]]

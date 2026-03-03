@@ -5,8 +5,8 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
-  - "[[representation-learning]]"
 ---
 
 # DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method
@@ -34,5 +34,5 @@ Relevant Notes:
 - [[Jensen-Shannon divergence on categorical syllable proportions provides a symmetric bounded measure for comparing repertoire distributions between populations]] -- these syllable type proportions become the P and Q distributions for JSD computation
 
 Topics:
-- [[classification]]
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]
+- [[classification-tools]]

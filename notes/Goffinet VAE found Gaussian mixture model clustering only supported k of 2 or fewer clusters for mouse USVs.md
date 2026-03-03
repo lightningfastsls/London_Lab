@@ -5,7 +5,7 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
 ---
 
@@ -31,5 +31,5 @@ Relevant Notes:
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- the tension this finding fuels
 
 Topics:
-- [[representation-learning]]
-- [[classification]]
+- [[unsupervised-usv-discovery]]
+- [[classification-methodology]]

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Set Review - reduce</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Lora', Georgia, serif; background: #faf9f5; padding: 2rem; color: #141413; }
+    h1 { font-family: 'Poppins', sans-serif; margin-bottom: 0.5rem; font-size: 1.5rem; }
+    .description { color: #b0aea5; margin-bottom: 1.5rem; font-style: italic; max-width: 900px; }
+    .controls { margin-bottom: 1rem; display: flex; gap: 0.5rem; }
+    .btn { font-family: 'Poppins', sans-serif; padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem; font-weight: 500; }
+    .btn-add { background: #6a9bcc; color: white; }
+    .btn-add:hover { background: #5889b8; }
+    .btn-export { background: #d97757; color: white; }
+    .btn-export:hover { background: #c4613f; }
+    table { width: 100%; max-width: 1100px; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    th { font-family: 'Poppins', sans-serif; background: #141413; color: #faf9f5; padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; }
+    td { padding: 0.75rem 1rem; border-bottom: 1px solid #e8e6dc; vertical-align: top; }
+    tr:nth-child(even) td { background: #faf9f5; }
+    tr:hover td { background: #f3f1ea; }
+    .section-header td { background: #e8e6dc; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 0.8rem; color: #141413; text-transform: uppercase; letter-spacing: 0.05em; }
+    .query-input { width: 100%; padding: 0.4rem; border: 1px solid #e8e6dc; border-radius: 4px; font-size: 0.875rem; font-family: 'Lora', Georgia, serif; resize: vertical; min-height: 60px; }
+    .query-input:focus { outline: none; border-color: #d97757; box-shadow: 0 0 0 2px rgba(217,119,87,0.15); }
+    .toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle .slider { position: absolute; inset: 0; background: #b0aea5; border-radius: 24px; cursor: pointer; transition: 0.2s; }
+    .toggle .slider::before { content: ""; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.2s; }
+    .toggle input:checked + .slider { background: #d97757; }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
+    .btn-delete { background: #c44; color: white; padding: 0.3rem 0.6rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-family: 'Poppins', sans-serif; }
+    .btn-delete:hover { background: #a33; }
+    .summary { margin-top: 1rem; color: #b0aea5; font-size: 0.875rem; }
+  </style>
+</head>
+<body>
+  <h1>Eval Set Review: <span id="skill-name">reduce</span></h1>
+  <p class="description">Current description: <span id="skill-desc">Extract structured knowledge from source material. Comprehensive extraction is the default — every insight that serves the domain gets extracted. For domain-relevant sources, skip rate must be below 10%. Zero extraction from a domain-relevant source is a BUG. Triggers on "/reduce", "/reduce [file]", "extract insights", "mine this", "process this".</span></p>
+
+  <div class="controls">
+    <button class="btn btn-add" onclick="addRow()">+ Add Query</button>
+    <button class="btn btn-export" onclick="exportEvalSet()">Export Eval Set</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:65%">Query</th>
+        <th style="width:18%">Should Trigger</th>
+        <th style="width:10%">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="eval-body"></tbody>
+  </table>
+
+  <p class="summary" id="summary"></p>
+
+  <script>
+    const EVAL_DATA = [
+  {
+    "query": "i just downloaded this paper on ultrasonic vocalization classification from arxiv (its in inbox/usv-classification-2026.md) - can you go through it and pull out all the key findings and methods into notes?",
+    "should_trigger": true
+  },
+  {
+    "query": "/reduce inbox/spectral-analysis-review.md",
+    "should_trigger": true
+  },
+  {
+    "query": "hey so i copied some notes from a lecture on STFT windowing into inbox/stft-lecture-notes.md, could you extract the important insights from it? i think there are some claims about frequency resolution tradeoffs that would be useful to have as individual notes",
+    "should_trigger": true
+  },
+  {
+    "query": "mine this source \u2014 its a blog post i saved about rodent communication patterns, already in the inbox as rodent-comm-patterns.md",
+    "should_trigger": true
+  },
+  {
+    "query": "i have this PDF summary of DeepSqueak results that i manually transcribed into inbox/deepsqueak-summary.md. can you process it and create notes from the key findings?",
+    "should_trigger": true
+  },
+  {
+    "query": "there's a new source in the inbox about VQ-VAE applications in bioacoustics. it has maybe 15-20 claims worth extracting. can you break it down into atomic notes following our schema?",
+    "should_trigger": true
+  },
+  {
+    "query": "extract insights from inbox/energy-detection-comparison.md \u2014 its a comparison of three different USV detection approaches and i want each finding as a separate note",
+    "should_trigger": true
+  },
+  {
+    "query": "ok so i just finished reading this paper and took some rough notes in inbox/mouse-prosody-2026.md. the formatting is a mess but there are solid claims in there about syllable structure. can you clean it up and turn it into proper knowledge graph entries?",
+    "should_trigger": true
+  },
+  {
+    "query": "process the source material in inbox/spectrogram-tiling-approaches.md into notes please",
+    "should_trigger": true
+  },
+  {
+    "query": "i pasted a conference talk transcript into inbox/icassp-talk.md \u2014 lots of good stuff about mel spectrograms vs linear spectrograms for USV analysis. extract whatever's useful",
+    "should_trigger": true
+  },
+  {
+    "query": "i want to learn about how other labs are doing USV detection \u2014 can you research what methods are being used in 2026 and find me some good papers?",
+    "should_trigger": false
+  },
+  {
+    "query": "i just added a new PDF to the inbox folder (inbox/new-bioacoustics-review.pdf). can you queue it up for processing? dont process it yet, just make sure its in the pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "process inbox/usv-detection-review.md end to end \u2014 seed it, extract notes, find connections, update old notes, verify everything. the full pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "i created a bunch of notes yesterday from that bioacoustics paper. can you look at them and find connections to existing notes? especially the ones about STFT parameters",
+    "should_trigger": false
+  },
+  {
+    "query": "some of my older notes about energy detection thresholds are probably missing links to the newer VQ-VAE findings. can you go back through them and add connections where it makes sense?",
+    "should_trigger": false
+  },
+  {
+    "query": "i keep running into this issue where the reduce step creates notes with weak descriptions. i want to capture this as a methodology observation so we can fix the pattern",
+    "should_trigger": false
+  },
+  {
+    "query": "can you summarize whats in inbox/new-paper.md? i just want a quick overview before deciding if its worth processing",
+    "should_trigger": false
+  },
+  {
+    "query": "check if the notes i created last session have proper schema \u2014 descriptions, topics, confidence levels. run validation on them",
+    "should_trigger": false
+  },
+  {
+    "query": "can you refactor the detection module \u2014 extract the threshold calculation into its own function in energy_detector.py?",
+    "should_trigger": false
+  },
+  {
+    "query": "whats the current state of my vault? how many notes, orphans, pending items in the queue?",
+    "should_trigger": false
+  }
+];
+
+    let evalItems = [...EVAL_DATA];
+
+    function render() {
+      const tbody = document.getElementById('eval-body');
+      tbody.innerHTML = '';
+
+      // Sort: should-trigger first, then should-not-trigger
+      const sorted = evalItems
+        .map((item, origIdx) => ({ ...item, origIdx }))
+        .sort((a, b) => (b.should_trigger ? 1 : 0) - (a.should_trigger ? 1 : 0));
+
+      let lastGroup = null;
+      sorted.forEach(item => {
+        const group = item.should_trigger ? 'trigger' : 'no-trigger';
+        if (group !== lastGroup) {
+          const headerRow = document.createElement('tr');
+          headerRow.className = 'section-header';
+          headerRow.innerHTML = `<td colspan="3">${item.should_trigger ? 'Should Trigger' : 'Should NOT Trigger'}</td>`;
+          tbody.appendChild(headerRow);
+          lastGroup = group;
+        }
+
+        const idx = item.origIdx;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><textarea class="query-input" onchange="updateQuery(${idx}, this.value)">${escapeHtml(item.query)}</textarea></td>
+          <td>
+            <label class="toggle">
+              <input type="checkbox" ${item.should_trigger ? 'checked' : ''} onchange="updateTrigger(${idx}, this.checked)">
+              <span class="slider"></span>
+            </label>
+            <span style="margin-left:8px;font-size:0.8rem;color:#b0aea5">${item.should_trigger ? 'Yes' : 'No'}</span>
+          </td>
+          <td><button class="btn-delete" onclick="deleteRow(${idx})">Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      updateSummary();
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function updateQuery(idx, value) { evalItems[idx].query = value; updateSummary(); }
+    function updateTrigger(idx, value) { evalItems[idx].should_trigger = value; render(); }
+    function deleteRow(idx) { evalItems.splice(idx, 1); render(); }
+
+    function addRow() {
+      evalItems.push({ query: '', should_trigger: true });
+      render();
+      const inputs = document.querySelectorAll('.query-input');
+      inputs[inputs.length - 1].focus();
+    }
+
+    function updateSummary() {
+      const trigger = evalItems.filter(i => i.should_trigger).length;
+      const noTrigger = evalItems.filter(i => !i.should_trigger).length;
+      document.getElementById('summary').textContent =
+        `${evalItems.length} queries total: ${trigger} should trigger, ${noTrigger} should not trigger`;
+    }
+
+    function exportEvalSet() {
+      const valid = evalItems.filter(i => i.query.trim() !== '');
+      const data = valid.map(i => ({ query: i.query.trim(), should_trigger: i.should_trigger }));
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'eval_set.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    render();
+  </script>
+</body>
+</html>

@@ -5,8 +5,8 @@ confidence: proven
 conditions: []
 meta_state: current
 topics:
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
-  - "[[representation-learning]]"
 ---
 
 # AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering
@@ -33,9 +33,9 @@ Relevant Notes:
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the continuum finding AMVOC's approach respects
 - [[BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice]] -- supervised complement to AMVOC's unsupervised approach
 - [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- similar unsupervised embedding approach across species
-- [[no Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap]] -- AMVOC partially addresses but doesn't fully solve this gap
+- [[No single Python tool cleanly accepts pre-detected USV segments and classifies them into syllable types as of 2026]] -- AMVOC partially addresses but doesn't fully solve this gap
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the strategy that combines tools like AMVOC and BootSnap
 
 Topics:
-- [[classification]]
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]
+- [[classification-tools]]

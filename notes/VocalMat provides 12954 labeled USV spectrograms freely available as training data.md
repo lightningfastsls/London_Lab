@@ -32,5 +32,5 @@ Relevant Notes:
 - [[model size should scale with labeled dataset size to balance underfitting and overfitting]] -- 12,954 samples supports a medium-sized model
 
 Topics:
-- [[classification]]
+- [[classification-tools]]
 - [[experimental-methods]]

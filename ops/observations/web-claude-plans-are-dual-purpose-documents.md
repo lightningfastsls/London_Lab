@@ -2,7 +2,9 @@
 description: "Web Claude implementation plans contain both task specs and domain knowledge — the /roadmap-from-plan skill originally only captured the task specs, losing theoretical content"
 category: process-gap
 trigger: "user pointed out that vacation master plan contained ~28 extractable domain claims that would have been lost without manual /reduce"
-status: implemented
+status: archived
+archived: 2026-03-02
+archived_by: rethink-2026-03-02
 ---
 
 # Web Claude plans are dual-purpose documents requiring both ROADMAP conversion and KG extraction

@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Line 14 states: 'Items extracted: 14 total (5 findings, 3 methods, 3 tensions, 2 implementation ideas, 1 open question)' and line 15: 'Duplicates/overlaps found: 5 items substantially overlap with existing notes'. Clear numerical counts by category in the Summary section."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "14 total items extracted: 5 findings + 3 methods + 3 tensions + 2 implementation ideas + 1 open question = 14, which is >= 8."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "Only item #10 was marked 'Do NOT create a new note' (skipped as a duplicate). 1 skipped out of 14 candidates = 7.1%, which is below 15%."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 14 items include a 'Rationale for extraction' field with substantive explanations. For example, item #1 explains relevance to the pipeline's fixed energy threshold, item #9 explains the methodological importance of distinguishing user-facing from hidden parameters."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Checked representative titles: #1 'VocalMat adaptive thresholding plus local median filter achieves parameter-free USV detection with over 99.7 percent sensitivity' (proposition), #9 'VocalMat claims parameter-free detection but morphological operation parameters are fixed design choices that implicitly set sensitivity' (proposition), #4 'UMAP and t-SNE projections of VocalMat-detected USVs show clusters corresponding to 11 categories but with significant overlap zones' (proposition). All are claims, not topic labels."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "5 distinct categories present: Findings (5 items), Methods (3 items), Tensions (3 items), Implementation Ideas (2 items), Open Questions (1 item)."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Every item includes a 'Duplicate check' field (e.g., item #1: 'No existing note covers VocalMat's detection method... This is a NEW finding'). Additionally, a 'Duplicate/Overlap Summary' table (lines 155-161) and 'New Items (No Significant Overlap)' section (lines 163-175) systematically track overlap with existing notes."
+    },
+    {
+      "text": "The tension between discrete USV categories and continuous acoustic space is captured",
+      "passed": true,
+      "evidence": "Item #10: 'VocalMat's 11 discrete categories may not capture the full continuous variation in USV acoustics' — explicitly captures this tension, noting VocalMat's own UMAP projections show overlap zones and that this tension is 'central to our pipeline's design philosophy of using VQ-VAE instead of predefined categories.' Also corroborated by item #4 on UMAP/t-SNE overlap zones."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

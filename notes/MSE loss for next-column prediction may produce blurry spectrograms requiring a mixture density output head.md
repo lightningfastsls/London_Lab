@@ -14,6 +14,8 @@ The practical consequence for spectrogram prediction: if a transition point in a
 
 The planned response is staged: start with MSE (simpler implementation, well-understood loss landscape, faster iteration) and monitor prediction sharpness qualitatively by visualizing predicted vs actual spectrograms every 10 epochs. If predictions are blurry, upgrade to a Gaussian Mixture Model output head with K=5-10 components, where the model predicts mixture weights, means, and variances rather than a single point estimate. This connects to [[transformer-first then VQ-VAE avoids forcing premature discretization]] — the discretization quality depends on representation quality, which depends on prediction sharpness. It also connects to [[causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams]], since multimodal prediction is intrinsic to the sequential structure of USV streams.
 
+A radically different approach to the multimodality problem comes from generative modeling: [[diffusion models factorize generation into many small denoising steps each narrowing the possibility space]], where instead of predicting the full output in one step (which forces mode-averaging under MSE), the model commits to one mode early and refines within it across many small steps. This is why [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] considers flow matching as a potential alternative for spectrogram generation.
+
 ---
 
-Source: [[ROADMAP.md]], Phase 8
+Source: [ROADMAP](../ROADMAP.md), Phase 8

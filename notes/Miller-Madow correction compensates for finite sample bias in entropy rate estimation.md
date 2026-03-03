@@ -18,7 +18,7 @@ This correction is critical for entropy rate estimation on USV code sequences, b
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- the primary analysis that requires bias-corrected entropy estimation to avoid artificial structure detection

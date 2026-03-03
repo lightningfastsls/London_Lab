@@ -23,11 +23,12 @@ The converging evidence is stronger than any single workstream because each addr
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the population-level comparison that the converging hypothesis ultimately serves
 - [[inbreeding and absence of courtship selection pressure in captivity caused lab mice to degrade courtship vocal competence]] -- the biological mechanism that would explain observed differences between populations
+- [[information theory and null model foundation must precede probing and LMT integration]] -- the ordering constraint ensuring each workstream delivers validated results before convergence
 
 Topics:
 - [[representation-learning]]

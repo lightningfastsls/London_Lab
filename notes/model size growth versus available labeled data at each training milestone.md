@@ -19,7 +19,7 @@ The connection to [[model size should scale with labeled dataset size to balance
 
 ---
 
-Source: [[ROADMAP.md]]
+Source: [ROADMAP](../ROADMAP.md)
 
 Relevant Notes:
 - [[active learning cycle automates the label-train-evaluate-mine loop for iterative CNN improvement]] -- defines the milestones where size decisions are evaluated

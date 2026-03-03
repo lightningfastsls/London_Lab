@@ -7,7 +7,7 @@ conditions:
   - "post-hoc VQ on HuBERT"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
 ---
 
@@ -27,7 +27,7 @@ The comprehensive [[discrete audio token taxonomy from 2025 survey covers quanti
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - Sarkar & Magimai-Doss (2025), NeurIPS Workshop
 
 Relevant Notes:
@@ -36,4 +36,4 @@ Relevant Notes:
 - [[comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook]] -- codebook adequacy may vary by layer
 
 Topics:
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]

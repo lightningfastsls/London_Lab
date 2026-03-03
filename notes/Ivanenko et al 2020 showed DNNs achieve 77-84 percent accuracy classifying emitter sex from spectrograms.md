@@ -25,4 +25,4 @@ Relevant Notes:
 - [[comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook]] -- VQ-VAE codebook entries might capture emitter-level features at different abstraction levels
 
 Topics:
-- [[classification]]
+- [[classification-methodology]]

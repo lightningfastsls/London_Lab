@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "skill_name": "reduce",
+    "skill_path": ".claude/skills/reduce/SKILL.md",
+    "executor_model": "claude-opus-4-6",
+    "timestamp": "2026-02-27T12:00:00Z",
+    "evals_run": ["research-synthesis", "planning-doc"],
+    "runs_per_configuration": 1
+  },
+
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "research-synthesis",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.875,
+        "passed": 7,
+        "failed": 1,
+        "total": 8,
+        "time_seconds": 707.8,
+        "tokens": 90131,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 53-62: Clear SUMMARY section with counts for notes (2), implementation ideas (3), tensions (2), enrichment tasks (7), validations (0), open questions (2), skipped (19), TOTAL OUTPUTS (16)"},
+        {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "16 total outputs: 2 notes + 3 implementation ideas + 2 tensions + 7 enrichments + 2 open questions"},
+        {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": false, "evidence": "Skip rate is 54% (19/35). However, the report provides a thorough justification: this is a RE-EXTRACTION of an already-processed source. Every skip was verified against a specific existing note."},
+        {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All 16 items have detailed Rationale fields, e.g., item #1: 'This is a dangling link -- referenced by 4 existing notes but never materialized as its own note.'"},
+        {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": true, "evidence": "All titles pass the claim test: 'No Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap'"},
+        {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "5 categories: notes (2), implementation ideas (3), tensions (2), enrichment tasks (7), open questions (2)"},
+        {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Every item includes a 'Duplicate check' field with specific Grep commands and results. Orientation section lists 25+ existing notes from this source."},
+        {"text": "The continuous-vs-discrete USV manifold tension is captured as an extraction", "passed": true, "evidence": "Item #2: 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations' -- identified as a dangling link."}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "research-synthesis",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.875,
+        "passed": 7,
+        "failed": 1,
+        "total": 8,
+        "time_seconds": 344.3,
+        "tokens": 69923,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 13-24: Summary table with Finding (18), Method (8), Implementation idea (6), Tension (4), Open question (4), Total extractable items (40)"},
+        {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "40 total extractable items identified, 8 genuinely new, 5 enrichment candidates. Net new: 13 outputs."},
+        {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": true, "evidence": "2 items explicitly skipped out of 40 = 5% skip rate."},
+        {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All items include rationale. E.g., item 31: 'This is referenced as a dangling wiki-link... represents a genuine gap.'"},
+        {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": false, "evidence": "Mixed quality. New items use claim-like titles, but existing items use descriptive/topic titles like 'DeepSqueak v3 architecture evolution (FRCNN to YOLO v2)'."},
+        {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "5 categories: Finding (18), Method (8), Implementation idea (6), Tension (4), Open question (4)"},
+        {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Extensive duplicate analysis: 'Extracted Items: Already in notes/ (25 notes)' section with per-item existing-note mapping"},
+        {"text": "The continuous-vs-discrete USV manifold tension is captured as an extraction", "passed": true, "evidence": "Item 32: 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations'"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "planning-doc",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.75,
+        "passed": 6,
+        "failed": 2,
+        "total": 8,
+        "time_seconds": 528.4,
+        "tokens": 87920,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 117-126: SUMMARY section with notes (5), implementation ideas (1), tensions (0), enrichment tasks (1), validations (0), open questions (0), skipped (33), TOTAL OUTPUTS (7)"},
+        {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": false, "evidence": "7 total outputs (5 notes + 1 implementation idea + 1 enrichment task). Just below the threshold of 8."},
+        {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": false, "evidence": "Skip rate is 82.5% (33/40). Justified: source was previously processed, 34 existing notes cite this source."},
+        {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All 7 items have detailed rationale. E.g., item #1 about mutual information rate."},
+        {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": true, "evidence": "'mutual information rate at varying lags measures temporal dependency decay between non-adjacent VQ-VAE codes' — passes claim test."},
+        {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "3 categories: notes (5), implementation ideas (1), enrichment tasks (1)"},
+        {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Systematic table with 40 candidates each checked against specific existing notes."},
+        {"text": "Implementation ideas are explicitly categorized (not lumped with core claims)", "passed": true, "evidence": "Dedicated 'IMPLEMENTATION IDEAS' section, separate from CLAIMS section."}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "planning-doc",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.875,
+        "passed": 7,
+        "failed": 1,
+        "total": 8,
+        "time_seconds": 350.3,
+        "tokens": 64896,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 11-23: Summary table with Finding (7), Method (14), Implementation Idea (8), Decision (4), Tension (3), Open Question (4), Hypothesis (2), Total (42)"},
+        {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "42 total items extracted across 7 categories. Net new: 6 genuinely new."},
+        {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": true, "evidence": "5 items explicitly skipped out of 47 total = 10.6%."},
+        {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All items include rationale fields."},
+        {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": false, "evidence": "Mixed quality. Some are method descriptions rather than claims: 'Zipf exponent estimation via Clauset et al. 2009 MLE' (label), 'Probing framework: linear (Ridge/LogReg) and MLP-1layer probes' (description)."},
+        {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "7 categories: Finding, Method, Implementation Idea, Decision, Tension, Open Question, Hypothesis"},
+        {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Every item has 'Existing note' field with specific note filename checks. Overlap Summary section provides aggregate analysis."},
+        {"text": "Implementation ideas are explicitly categorized (not lumped with core claims)", "passed": true, "evidence": "Dedicated 'Implementation Ideas' section (lines 150-196) with 8 items, separate from Findings, Methods, etc."}
+      ]
+    }
+  ],
+
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 0.8125, "stddev": 0.0625, "min": 0.75, "max": 0.875},
+      "time_seconds": {"mean": 618.1, "stddev": 89.7, "min": 528.4, "max": 707.8},
+      "tokens": {"mean": 89026, "stddev": 1106, "min": 87920, "max": 90131}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.875, "stddev": 0.0, "min": 0.875, "max": 0.875},
+      "time_seconds": {"mean": 347.3, "stddev": 3.0, "min": 344.3, "max": 350.3},
+      "tokens": {"mean": 67410, "stddev": 2514, "min": 64896, "max": 69923}
+    },
+    "delta": {
+      "pass_rate": "-0.0625",
+      "time_seconds": "+270.8",
+      "tokens": "+21616"
+    }
+  },
+
+  "notes": [
+    "CRITICAL CONTEXT: Both test sources were already processed through /reduce in prior sessions, meaning most content was already in the vault. The with-skill runs correctly detected this prior processing (checking 25-34 existing notes) and adjusted their extraction strategy accordingly. This makes the skip-rate and total-count assertions misleading for with-skill runs.",
+    "The 'skip rate below 15%' assertion is non-discriminating in the wrong direction — it penalizes the skill for CORRECTLY detecting prior processing, while baselines that ignore prior state trivially pass by re-extracting everything.",
+    "Title-quality assertion ('claims not topics') consistently fails for WITHOUT-skill runs and consistently passes for WITH-skill runs — this is a genuinely discriminating assertion that captures a real quality difference.",
+    "The skill adds ~270s average execution time (+78%) and ~21,600 tokens (+32%), largely spent on orientation (reading existing notes, running semantic searches, verifying duplicates). This is expected overhead for vault-aware extraction vs. naive first-pass extraction.",
+    "Qualitative differences are more significant than pass rates suggest: with-skill runs produced dangling-link discovery, calibration checks, enrichment tasks, and observations — none of which baseline runs attempted."
+  ]
+}

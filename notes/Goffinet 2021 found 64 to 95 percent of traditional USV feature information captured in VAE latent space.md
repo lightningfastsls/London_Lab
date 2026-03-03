@@ -7,7 +7,7 @@ conditions:
   - "VAE architecture"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
 ---
 
@@ -22,7 +22,7 @@ The result also strengthens the argument from [[Goffinet et al 2021 showed USVs 
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - Goffinet et al. (2021), eLife -- AVA tool
 
 Relevant Notes:
@@ -33,5 +33,5 @@ Relevant Notes:
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the 64-95% retention quantifies how well learned features capture what the traditional taxonomy describes
 
 Topics:
-- [[representation-learning]]
-- [[classification]]
+- [[unsupervised-usv-discovery]]
+- [[classification-methodology]]

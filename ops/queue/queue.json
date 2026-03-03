@@ -88,6 +88,41 @@
         "1 open question: whether BootSnap code is publicly available"
       ]
     }
+    ,
+    {
+      "id": "seed-005",
+      "type": "extract",
+      "phase": "reduce",
+      "source": "inbox/ai-code-review-optimization-multi-agent-architectures-research-2026-03-01.md",
+      "description": "Extract atomic notes from AI code review optimization and multi-agent review architectures deep survey",
+      "status": "done",
+      "completed": "2026-03-01",
+      "created": "2026-03-01",
+      "priority": "standard",
+      "notes": [
+        "19 new notes: confirmation bias (8x duplication), fresh context swap, adversarial builder-critic, debate+circuit breaker, actor-critic cost ($0.50-1.50), memory wipe/g3, no-fail-to-commit (metaswarm), QA-Checker drift prevention, model cascading (60-87% cost reduction), pre-bundling diffs, review depth tiering, PR time +42%, false positive 60-80%, code cloning 4x, vendor self-eval bias, CRDM orientation model, knowledge transfer > defect detection, LLM complement not replace, agent-use-as-review-skill",
+        "4 enrichments: Liza (role separation governance), subagent architecture (9-agent Claude Code review + Write limitation), deterministic tools (CodeRabbit 30+ analyzers at scale), JIT context (CodeRabbit curate-over-maximize)",
+        "1 open question: review comment feedback loop into agent learning",
+        "2 new sections added to agent-governance topic map: Code Review as Governance Application, Automated Review Effectiveness"
+      ]
+    }
+    ,
+    {
+      "id": "seed-006",
+      "type": "extract",
+      "phase": "reduce",
+      "source": "inbox/lora-doc-to-lora-hypernetworks-research-2026-03-02.md",
+      "description": "Extract atomic notes from LoRA fundamentals, PEFT landscape, Doc-to-LoRA hypernetworks, and ICL-LoRA adaptation spectrum",
+      "status": "done",
+      "completed": "2026-03-02",
+      "created": "2026-03-02",
+      "priority": "standard",
+      "notes": [
+        "21 new notes: LoRA intrinsic rank (10000x fewer params), low intrinsic dimension, direction amplification (21.5x), multi-matrix > single-matrix, no inference latency, multi-epoch overfitting, dataset quality > quantity, DoRA magnitude+direction (+1-4pt), QLoRA consumer GPU, rsLoRA sqrt scaling, implicit regularizer forgetting, multi-LoRA production serving, hypernetworks meta-learning, Doc-to-LoRA Perceiver 309M, chunk rank concatenation (256→32K), KV-cache 12GB→50MB constant, Text-to-LoRA task description→adapter, VLM→text cross-modal (75%), ICL→LoRA→D2L progression, LoRA-as-explicit-ICL bridge, context distillation bridges",
+        "2 enrichments: ICL implicit weight note (added LoRA as explicit counterpart), KV cache compression note (added Doc-to-LoRA as orthogonal approach)",
+        "Topic map note: /reflect should create new model-adaptation topic map for this cluster"
+      ]
+    }
   ],
   "maintenance_conditions": {
     "orphan_threshold": 5,

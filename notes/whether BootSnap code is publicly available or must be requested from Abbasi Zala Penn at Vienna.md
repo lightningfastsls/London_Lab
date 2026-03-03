@@ -38,4 +38,4 @@ Relevant Notes:
 - [[no Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap]] -- BootSnap is the best candidate to fill this gap
 
 Topics:
-- [[classification]]
+- [[classification-tools]]

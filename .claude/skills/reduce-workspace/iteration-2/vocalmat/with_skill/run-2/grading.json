@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 12-22 contain a '## SUMMARY' section with counts: notes: 10, implementation ideas: 4, tensions: 4, enrichment tasks: 5, validations: 2, open questions: 2, skipped: 2, TOTAL OUTPUTS: 27. Also includes skip rate: 7%."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "10 claims + 4 implementation ideas + 4 tensions + 5 enrichments + 2 validations = 25 extraction items (27 total outputs including open questions and skipped). Well above the threshold of 8."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "Explicitly stated: 'Skip rate: 7% (2 skipped / 29 candidates evaluated)'. Two items skipped: S1 (classification features already captured in existing note + enrichment task #19) and S2 (STFT parameters not specified in the source). Both skip reasons are justified."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 10 claims have 'Rationale:' fields. All 4 implementation ideas have 'Why it matters:' fields. All 4 tensions have 'Why it matters:' fields. All 5 enrichment tasks have 'Why:' fields. All 2 validations have 'Rationale:' fields. All 2 open questions have 'Rationale:' fields. Even skipped items have 'Why skipped:' fields."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Representative titles checked: (1) 'VocalMat adaptive thresholding eliminates user-defined parameters as the primary source of USV detection variability' -- causal proposition. (2) 'VocalMat detected 4428 of 4441 manually labeled USVs achieving over 99.7 percent sensitivity' -- quantitative claim. (3) 'MUPET DeepSqueak and VocalMat represent three distinct architectural approaches to USV detection -- user-defined thresholds versus deep learning versus image processing' -- taxonomic claim. All are propositions, not topic labels."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "Six distinct categories with dedicated sections: CLAIMS (10 items), IMPLEMENTATION IDEAS (4 items), TENSIONS (4 items), ENRICHMENT TASKS (5 items), VALIDATIONS (2 items), OPEN QUESTIONS (2 items)."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Dedicated 'Duplicate Detection Method' section (lines 243-249): 'Vector search (mcp__qmd__vector_search) was unavailable (vector index not built). Fell back to: 1. Keyword search via mcp__qmd__search (returned no results), 2. Glob listing of all notes/*.md files, 3. Targeted Grep searches for key terms: VocalMat, adaptive threshold, parameter-free, morphological, differential geometry, curvature, contour, batch effect, local median, contrast enhance, 4. Full reads of 8 existing notes with potential overlap.' This is the most detailed duplicate-checking documentation of all three runs."
+    },
+    {
+      "text": "The tension between discrete USV categories and continuous acoustic space is captured",
+      "passed": true,
+      "evidence": "Tension #16: 'Discrete USV categories versus continuous acoustic space -- 11 categories lose information but enable statistical analysis' -- explicitly states 't-SNE/UMAP projections show significant overlap between categories. The true acoustic space is more continuous than discrete. Forcing discrete categories may discard information about within-category variation that is biologically meaningful.' Connects to Holy & Guo 2005, Goffinet 2021, and VQ-VAE codebook."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

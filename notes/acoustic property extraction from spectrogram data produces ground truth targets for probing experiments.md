@@ -23,7 +23,7 @@ These seven properties are chosen because they span the space from purely spectr
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] -- these seven properties are the targets that probes attempt to predict

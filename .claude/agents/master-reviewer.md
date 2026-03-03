@@ -26,7 +26,7 @@ After applying all fixes listed above, the implementor MUST:
 2. For each fix: state what was changed, which file:line, and why
 3. Re-run the affected tests and record pass/fail counts
 4. Append a dated entry to `IMPLEMENTATION_PROGRESS.md` noting the fixes (never modify existing entries)
-5. Re-run master-reviewer OR self-verify against each BLOCKER/WARNING above
+5. For BLOCKERs: request master-reviewer re-review (self-verification is NOT sufficient for blockers)
 ```
 
 This prevents the common failure mode where review fixes are applied but never documented,
@@ -37,6 +37,10 @@ making the review file look permanently stale at "CHANGES NEEDED."
 ### 1. Read the handoff FIRST (this is your primary input)
 - Read `docs/reviews/<module>-handoff.md` — this tells you what was built, what changed, and
   what the implementer is unsure about. Start here.
+- **Verify the review tier.** Don't accept the handoff's claimed tier uncritically. Modules
+  containing math/algorithms, detection logic, training pipelines, STFT/DSP, or information-theoretic
+  computation should be Tier 3. If the handoff says Tier 2 but the code involves these, escalate
+  to Tier 3 depth in your review and note the tier mismatch as a WARNING.
 
 ### 2. Understand what was supposed to be built
 - Read `ROADMAP.md` — find the module's `/implement` block, test plan, and exit criteria
@@ -58,11 +62,23 @@ making the review file look permanently stale at "CHANGES NEEDED."
 - Read the source files listed in the handoff
 - Read the test file(s) listed in the handoff
 - Read the module doc if one was created
+- **Cross-reference handoff claims against code.** While reading source files, actively verify
+  every numerical parameter, algorithm step, and key decision from the handoff against the actual
+  code. Note any discrepancy — even small ones (e.g., handoff says "~80ms+" but code uses 40ms,
+  or handoff says "Hamming window" but code uses Hann). Handoff-code mismatches are automatic WARNINGs.
 
-### 4. Run the tests
+### 4. Run and verify the tests
+- Run the handoff's exact test command first (if one is given), then run the full suite:
 ```powershell
 .\.venv\Scripts\python.exe -m pytest tests/ -v --tb=short
 ```
+- **Check test infrastructure.** Read `conftest.py` files for problematic fixtures — look for
+  monkeypatches, import-time mocks (e.g., h5py, torch), or fixtures that silently skip tests.
+  A conftest that mocks a dependency can mask real failures.
+- **Verify claimed test count.** If the handoff claims "N tests pass," confirm the actual count
+  from pytest output matches. Mismatches suggest tests were added/removed post-handoff.
+- **Flag false completion.** If the handoff says "all tests pass" but you see failures or skips,
+  that is a BLOCKER (false completion claim).
 
 ### 4.5 Articulate expected constraints (before looking for problems)
 
@@ -122,9 +138,40 @@ reasonable" without checking it against the actual specification.
 - Does it document key decisions and ADR references?
 - If a new pattern was established, is `docs/architecture/patterns.md` updated?
 
+### 5.5 Second Pass: Math/Logic Trace (Tier 2-3 only)
+
+After completing the category checks above, do a focused math-trace pass. This catches
+bugs that look correct in isolation but break when you trace actual values through.
+
+- **Pick concrete input values** — e.g., a 50ms audio chunk at sr=300000 (15000 samples), a
+  frequency of 60kHz, a spectrogram column of known values.
+- **Trace through every formula** in the module — substitute the values, compute by hand, verify
+  the code would produce the same result.
+- **Check units and scaling** — is the result in Hz, kHz, samples, seconds, dB? Are conversions
+  correct? Is `N` vs `N-1` used consistently (population vs sample normalization)?
+- **Verify docstrings match code** — if a docstring says "returns frequency in Hz" but the code
+  returns bin indices, that's a BLOCKER.
+
+This pass often catches: off-by-one errors, floor-vs-round frequency conversions, wrong
+normalization denominators, and docstring-code contradictions.
+
 ### 6. Pay special attention to "What I'm Unsure About"
 The handoff has a section where the implementer flags areas they want extra scrutiny.
 Give these areas deeper review — the implementer is telling you where bugs might hide.
+
+### 6.5 Mandatory Pre-Findings Checklist (hard gate)
+
+Before writing your findings in step 7, verify these documentation items. Missing items
+become **automatic WARNINGs** — you may not skip them even if you found interesting code bugs.
+
+- [ ] `IMPLEMENTATION_PROGRESS.md` — has a dated entry been appended for this module?
+- [ ] `docs/modules/<module_name>.md` — does the module doc exist?
+- [ ] `__init__.py` exports — are the module's public classes/functions exported from their
+  package `__init__.py`?
+- [ ] `docs/architecture/patterns.md` — if a new pattern was established, is it documented?
+
+If any item is missing, add it as a WARNING in your findings below. These are easy to miss
+but critical for project maintainability.
 
 ### 7. Report findings
 
@@ -158,6 +205,15 @@ For each finding:
 End with one of:
 - **APPROVED** — No blockers, safe to move to next module
 - **CHANGES NEEDED** — Has blockers, list exactly what to fix before proceeding
+
+**Independence rule:** Your verdict is FINAL. Do not soften findings because the implementation
+"mostly works" or the implementor seems thorough. A BLOCKER is a BLOCKER regardless of how
+much effort went into the module. Do not hedge with phrases like "this might be intentional"
+for clear specification violations.
+
+**Re-review rule:** If your verdict is CHANGES NEEDED with any BLOCKERs, the fixes MUST be
+re-reviewed — the implementor cannot self-report that blockers are resolved. For Tier 3 reviews,
+recommend that re-review happens in a separate session for fresh context.
 
 **IMPORTANT:** Your output format must follow this structure exactly:
 

@@ -1,0 +1,53 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 13-24: Summary table with Finding (18), Method (8), Implementation idea (6), Tension (4), Open question (4), Total extractable items (40), Already extracted (25), Not yet extracted (8), Skipped (2)"
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "40 total extractable items identified, 8 genuinely new, 5 enrichment candidates. Even counting only net new: 8 + 5 = 13 outputs."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "2 items explicitly skipped out of 40 = 5% skip rate. The 25 'already extracted' items are documented as existing coverage, not skips."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All items include rationale. E.g., item 31: 'This is referenced as a dangling wiki-link... represents a genuine gap in the tool landscape that directly impacts pipeline architecture decisions.'"
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": false,
+      "evidence": "Mixed quality. New items (31-38) use claim-like titles: 'No Python USV tool cleanly accepts pre-detected segments for classification, creating an integration gap'. But existing items (1-25) use descriptive/topic titles: 'DeepSqueak v3 architecture evolution (FRCNN to YOLO v2)', 'BootSnap outperforms DeepSqueak classification'. These are descriptions, not propositions."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "5 categories: Finding (18), Method (8), Implementation idea (6), Tension (4), Open question (4)"
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Extensive duplicate analysis: 'Extracted Items: Already in notes/ (25 notes)' section with per-item existing-note mapping, plus 'Duplicate / Enrichment Analysis' table (lines 275-283)"
+    },
+    {
+      "text": "The continuous-vs-discrete USV manifold tension is captured as an extraction",
+      "passed": true,
+      "evidence": "Item 32: 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations' — identified as a dangling wiki-link in 4 existing notes."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "total": 8,
+    "pass_rate": 0.875
+  },
+  "timing": {
+    "total_duration_seconds": 344.3
+  }
+}

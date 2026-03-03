@@ -8,7 +8,7 @@ conditions:
   - "weakly labeled dataset"
 meta_state: current
 topics:
-  - "[[representation-learning]]"
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
 ---
 
@@ -28,7 +28,7 @@ The weak labeling setup is relevant -- our pipeline also deals with recording-le
 ---
 
 Source:
-- [[learn-vqvae-bioacoustics-state-of-art-2026-02]] (inbox)
+- learn-vqvae-bioacoustics-state-of-art-2026-02 (archived to archive/inbox/)
 - Garrobe Fonollosa et al. (2024), arXiv. https://arxiv.org/abs/2410.17006
 
 Relevant Notes:
@@ -39,5 +39,5 @@ Relevant Notes:
 - [[causal attention in autoregressive transformer matches the scientific question of predicting what comes next in USV streams]] -- our temporal modeling approach
 
 Topics:
-- [[representation-learning]]
+- [[unsupervised-usv-discovery]]
 - [[classification]]

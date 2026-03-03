@@ -21,7 +21,7 @@ There is a practical limitation: as k increases, the number of possible k-grams 
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- Markov-k is one level in the hierarchical null model framework described there

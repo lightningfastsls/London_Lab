@@ -18,7 +18,7 @@ N-grams surviving this filter — with z-score greater than 3 or FDR-corrected p
 ---
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived to archive/inbox/)
 
 Relevant Notes:
 - [[bigram productivity ratio measures compositionality of USV code sequences]] -- measures breadth of combination (unique pair count) while this method measures depth (over-represented specific pairs)

@@ -25,5 +25,5 @@ Relevant Notes:
 - [[Raven selection table format is the standard interchange format between bioacoustic analysis tools]] -- the format where this band is specified
 
 Topics:
-- [[classification]]
+- [[classification-tools]]
 - [[signal-processing]]

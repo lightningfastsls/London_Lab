@@ -5,8 +5,8 @@ confidence: likely
 conditions: []
 meta_state: current
 topics:
+  - "[[unsupervised-usv-discovery]]"
   - "[[classification]]"
-  - "[[representation-learning]]"
 ---
 
 # No published work has applied VQ-VAE to animal vocalizations making this a genuine research gap
@@ -24,6 +24,8 @@ Relevant Notes:
 - [[separating representation learning from discretization enables richer feature discovery]] -- the principle behind our approach
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the research question that makes this gap significant
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the finding that makes VQ-VAE a natural tool
+- [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- an emerging continuous alternative that avoids the codebook design problem entirely, though at the cost of losing the discrete token framework
 
 Topics:
+- [[unsupervised-usv-discovery]]
 - [[classification]]
