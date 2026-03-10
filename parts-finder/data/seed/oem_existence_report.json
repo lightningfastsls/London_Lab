@@ -1,0 +1,4036 @@
+{
+  "summary": {
+    "total": 283,
+    "exists": 177,
+    "not_found": 106,
+    "errors": 0
+  },
+  "not_found": [
+    {
+      "oem": "0000942004",
+      "vehicles": [
+        {
+          "make": "Chrysler",
+          "model": "Crossfire",
+          "engine": "M112",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "1016012681",
+      "vehicles": [
+        {
+          "make": "Geely",
+          "model": "Coolray",
+          "engine": "JLH-3G15TD",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Geely",
+          "model": "Atlas",
+          "engine": "JLD-4G20",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Geely",
+          "model": "Emgrand",
+          "engine": "JLC-4G15",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "1016050811",
+      "vehicles": [
+        {
+          "make": "Geely",
+          "model": "Coolray",
+          "engine": "JLH-3G15TD",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Geely",
+          "model": "Atlas",
+          "engine": "JLD-4G20",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Geely",
+          "model": "Emgrand",
+          "engine": "JLC-4G15",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "10242940",
+      "vehicles": [
+        {
+          "make": "MG",
+          "model": "ZS",
+          "engine": "15S4G",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "MG",
+          "model": "HS",
+          "engine": "15E4E",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "MG",
+          "model": "5",
+          "engine": "15S4G",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "10405642",
+      "vehicles": [
+        {
+          "make": "MG",
+          "model": "ZS",
+          "engine": "15S4G",
+          "type": "oil_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "MG",
+          "model": "HS",
+          "engine": "15E4E",
+          "type": "oil_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "MG",
+          "model": "5",
+          "engine": "15S4G",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "10405878",
+      "vehicles": [
+        {
+          "make": "MG",
+          "model": "ZS",
+          "engine": "15S4G",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "MG",
+          "model": "HS",
+          "engine": "15E4E",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "MG",
+          "model": "5",
+          "engine": "15S4G",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "1109120XKZ16A",
+      "vehicles": [
+        {
+          "make": "GWM",
+          "model": "Jolion",
+          "engine": "GW4B15A",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "1109120XKZ36A",
+      "vehicles": [
+        {
+          "make": "GWM",
+          "model": "Haval H6",
+          "engine": "GW4C20B",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "13 71 8 519 129",
+      "vehicles": [
+        {
+          "make": "BMW",
+          "model": "1 Series",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "3 Series",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "3 Series",
+          "engine": "B47D20",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X1",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X3",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X5",
+          "engine": "B58B30",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "MINI",
+          "model": "Cooper",
+          "engine": "B38A15",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "MINI",
+          "model": "Cooper",
+          "engine": "B48A20",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "MINI",
+          "model": "Countryman",
+          "engine": "B48A20",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "2 Series",
+          "engine": "B47D20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "2 Series Gran Coupe",
+          "engine": "B38B15",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "2 Series Gran Coupe",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "4 Series",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "4 Series",
+          "engine": "B47D20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "5 Series",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "5 Series",
+          "engine": "B47D20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "5 Series",
+          "engine": "B58B30",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "6 Series GT",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "7 Series",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "7 Series",
+          "engine": "B58B30",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "7 Series",
+          "engine": "B57D30",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "8 Series",
+          "engine": "B58B30",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X2",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X2",
+          "engine": "B47D20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X4",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X4",
+          "engine": "B47D20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X6",
+          "engine": "B58B30",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "X7",
+          "engine": "B58B30",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "Z4",
+          "engine": "B48B20",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "M3",
+          "engine": "S58B30",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "BMW",
+          "model": "M4",
+          "engine": "S58B30",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "13372460",
+      "vehicles": [
+        {
+          "make": "Opel",
+          "model": "Astra",
+          "engine": "B14XFL",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "13780-74P10",
+      "vehicles": [
+        {
+          "make": "Suzuki",
+          "model": "Jimny",
+          "engine": "K15B",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "16546-5FA1B",
+      "vehicles": [
+        {
+          "make": "Nissan",
+          "model": "Micra",
+          "engine": "HR10DET",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "16546-6FR0A",
+      "vehicles": [
+        {
+          "make": "Nissan",
+          "model": "Qashqai",
+          "engine": "KR15DDT",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Nissan",
+          "model": "Juke",
+          "engine": "HR13DDT",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "165468187R",
+      "vehicles": [
+        {
+          "make": "Renault",
+          "model": "Clio",
+          "engine": "H5H",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Renault",
+          "model": "Captur",
+          "engine": "H5H",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Renault",
+          "model": "Megane",
+          "engine": "H5H",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Renault",
+          "model": "Kadjar",
+          "engine": "H5H",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Dacia",
+          "model": "Duster",
+          "engine": "H5H",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "167 094 00 04",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE",
+          "engine": "M264",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE",
+          "engine": "OM654",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE Coupe",
+          "engine": "M264",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLS",
+          "engine": "M256",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "167 835 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE",
+          "engine": "M264",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE",
+          "engine": "OM654",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE Coupe",
+          "engine": "M264",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLS",
+          "engine": "M256",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "177 094 02 05",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "A-Class",
+          "engine": "M282",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLA",
+          "engine": "M282",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "CLA",
+          "engine": "M282",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLB",
+          "engine": "M282",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "B-Class",
+          "engine": "M282",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "177 830 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "A-Class",
+          "engine": "M282",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLA",
+          "engine": "M282",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "CLA",
+          "engine": "M282",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "B-Class",
+          "engine": "M282",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "17801-0L090",
+      "vehicles": [
+        {
+          "make": "Toyota",
+          "model": "Hilux",
+          "engine": "2GD-FTV",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Toyota",
+          "model": "Hilux",
+          "engine": "1GD-FTV",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Toyota",
+          "model": "Fortuner",
+          "engine": "2GD-FTV",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "1EA 819 641",
+      "vehicles": [
+        {
+          "make": "Cupra",
+          "model": "Born",
+          "engine": "",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "1K0 819 653 A",
+      "vehicles": [
+        {
+          "make": "Seat",
+          "model": "Altea",
+          "engine": "CZCA",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "205 835 03 47",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "C-Class",
+          "engine": "M274",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "C-Class",
+          "engine": "M264",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "213 094 01 04",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "CLS",
+          "engine": "M256",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "213 835 00 47",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "E-Class",
+          "engine": "M274",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "CLS",
+          "engine": "M256",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "222 830 00 18",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "S-Class",
+          "engine": "M274",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "223 094 00 04",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "S-Class",
+          "engine": "M256",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "223 830 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "S-Class",
+          "engine": "M256",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "2319109000",
+      "vehicles": [
+        {
+          "make": "SsangYong",
+          "model": "Korando",
+          "engine": "D20DTF",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "SsangYong",
+          "model": "Rexton",
+          "engine": "D22DTR",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "2319109100",
+      "vehicles": [
+        {
+          "make": "SsangYong",
+          "model": "Tivoli",
+          "engine": "G16DF",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "SsangYong",
+          "model": "Tivoli",
+          "engine": "D16DTF",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "SsangYong",
+          "model": "Korando",
+          "engine": "G15DTF",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "232 094 00 04",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "SL",
+          "engine": "M256",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "232 830 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "SL",
+          "engine": "M256",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "243 830 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "EQA",
+          "engine": "",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "246 830 03 18",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "A-Class",
+          "engine": "M270",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "CLA",
+          "engine": "M270",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "247 830 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLB",
+          "engine": "M282",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "EQB",
+          "engine": "",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "253 835 02 47",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLC",
+          "engine": "M274",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "256 180 00 09",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLS",
+          "engine": "M256",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "S-Class",
+          "engine": "M256",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "CLS",
+          "engine": "M256",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "G-Class",
+          "engine": "M256",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "SL",
+          "engine": "M256",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "264 094 01 04",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "C-Class",
+          "engine": "M264",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "264 180 00 09",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "C-Class",
+          "engine": "M264",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE",
+          "engine": "M264",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE Coupe",
+          "engine": "M264",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "270 094 02 04",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "A-Class",
+          "engine": "M270",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "CLA",
+          "engine": "M270",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "27275-EN000",
+      "vehicles": [
+        {
+          "make": "Nissan",
+          "model": "Navara",
+          "engine": "YD25DDTi",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "27277-6MA0A",
+      "vehicles": [
+        {
+          "make": "Nissan",
+          "model": "Qashqai",
+          "engine": "KR15DDT",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Nissan",
+          "model": "Juke",
+          "engine": "HR13DDT",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "274 180 00 09",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "C-Class",
+          "engine": "M274",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "E-Class",
+          "engine": "M274",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLC",
+          "engine": "M274",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "S-Class",
+          "engine": "M274",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "28113-G2200",
+      "vehicles": [
+        {
+          "make": "Hyundai",
+          "model": "Ioniq",
+          "engine": "G4LE",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Niro",
+          "engine": "G4LE",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "28113-J9000",
+      "vehicles": [
+        {
+          "make": "Kia",
+          "model": "Picanto",
+          "engine": "G3LC",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Rio",
+          "engine": "G4LC",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "28113-J9100",
+      "vehicles": [
+        {
+          "make": "Hyundai",
+          "model": "i30",
+          "engine": "G4FJ",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Hyundai",
+          "model": "i30",
+          "engine": "G4LD",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Hyundai",
+          "model": "i30",
+          "engine": "G4FP",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Hyundai",
+          "model": "Kona",
+          "engine": "G4LD",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Ceed",
+          "engine": "G4LD",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Stonic",
+          "engine": "G4LC",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "28113-L1500",
+      "vehicles": [
+        {
+          "make": "Hyundai",
+          "model": "Tucson",
+          "engine": "G4FP",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Hyundai",
+          "model": "Tucson",
+          "engine": "G4NL",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "28113-S1100",
+      "vehicles": [
+        {
+          "make": "Hyundai",
+          "model": "Santa Fe",
+          "engine": "G4KL",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Sportage",
+          "engine": "G4FP",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "282 180 00 09",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "A-Class",
+          "engine": "M282",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLA",
+          "engine": "M282",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "CLA",
+          "engine": "M282",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLB",
+          "engine": "M282",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "B-Class",
+          "engine": "M282",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "295 830 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "EQE",
+          "engine": "",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "297 830 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "EQS",
+          "engine": "",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "32296694",
+      "vehicles": [
+        {
+          "make": "Volvo",
+          "model": "EX30",
+          "engine": "",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "32346498",
+      "vehicles": [
+        {
+          "make": "Volvo",
+          "model": "EX90",
+          "engine": "",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "3Q0 129 620 B",
+      "vehicles": [
+        {
+          "make": "Volkswagen",
+          "model": "Passat",
+          "engine": "CZDA",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Volkswagen",
+          "model": "Passat",
+          "engine": "DFGA",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "3Q0 819 653",
+      "vehicles": [
+        {
+          "make": "Skoda",
+          "model": "Superb",
+          "engine": "CZDA",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Skoda",
+          "model": "Superb",
+          "engine": "DFGA",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Volkswagen",
+          "model": "Passat",
+          "engine": "CZDA",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Volkswagen",
+          "model": "Passat",
+          "engine": "DFGA",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "463 094 01 04",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "G-Class",
+          "engine": "M256",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "463 830 01 18",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "G-Class",
+          "engine": "M256",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "4885955AB",
+      "vehicles": [
+        {
+          "make": "Chrysler",
+          "model": "Grand Voyager",
+          "engine": "EGA",
+          "type": "cabin_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Chrysler",
+          "model": "Grand Voyager",
+          "engine": "ENJ",
+          "type": "cabin_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "4G0 133 843 A",
+      "vehicles": [
+        {
+          "make": "Audi",
+          "model": "A6",
+          "engine": "CZDA",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Audi",
+          "model": "A6",
+          "engine": "DFGA",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Audi",
+          "model": "A7",
+          "engine": "CZDA",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Audi",
+          "model": "A7",
+          "engine": "DFGA",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "4M0 133 843 B",
+      "vehicles": [
+        {
+          "make": "Audi",
+          "model": "A8",
+          "engine": "CZDA",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Audi",
+          "model": "Q7",
+          "engine": "CZPA",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Audi",
+          "model": "Q7",
+          "engine": "DFGA",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Audi",
+          "model": "Q8",
+          "engine": "CZPA",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "5189959AA",
+      "vehicles": [
+        {
+          "make": "Chrysler",
+          "model": "PT Cruiser",
+          "engine": "OM646",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "52081805",
+      "vehicles": [
+        {
+          "make": "Fiat",
+          "model": "Tipo",
+          "engine": "55263624",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Fiat",
+          "model": "500X",
+          "engine": "55263624",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Jeep",
+          "model": "Renegade",
+          "engine": "55263624",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Jeep",
+          "model": "Compass",
+          "engine": "55263624",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Alfa Romeo",
+          "model": "Giulia",
+          "engine": "55263624",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Alfa Romeo",
+          "model": "Stelvio",
+          "engine": "55263624",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "654 180 01 09",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "GLE",
+          "engine": "OM654",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        },
+        {
+          "make": "Mercedes-Benz",
+          "model": "Sprinter",
+          "engine": "OM654",
+          "type": "oil_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "68001735AB",
+      "vehicles": [
+        {
+          "make": "Chrysler",
+          "model": "Grand Voyager",
+          "engine": "ENS",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "6812108000",
+      "vehicles": [
+        {
+          "make": "SsangYong",
+          "model": "Rexton",
+          "engine": "D22DTR",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "6812108100",
+      "vehicles": [
+        {
+          "make": "SsangYong",
+          "model": "Tivoli",
+          "engine": "G16DF",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "SsangYong",
+          "model": "Tivoli",
+          "engine": "D16DTF",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "SsangYong",
+          "model": "Korando",
+          "engine": "D20DTF",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "SsangYong",
+          "model": "Korando",
+          "engine": "G15DTF",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "68143102AA",
+      "vehicles": [
+        {
+          "make": "Chrysler",
+          "model": "300C",
+          "engine": "EGF",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "68197800AA",
+      "vehicles": [
+        {
+          "make": "Chrysler",
+          "model": "300C",
+          "engine": "ERB",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "68245491AA",
+      "vehicles": [
+        {
+          "make": "Chrysler",
+          "model": "200",
+          "engine": "ERB",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "77367456",
+      "vehicles": [
+        {
+          "make": "Fiat",
+          "model": "Tipo",
+          "engine": "55263624",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Fiat",
+          "model": "500X",
+          "engine": "55263624",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Jeep",
+          "model": "Renegade",
+          "engine": "55263624",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Jeep",
+          "model": "Compass",
+          "engine": "55263624",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Alfa Romeo",
+          "model": "Giulia",
+          "engine": "55263624",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Alfa Romeo",
+          "model": "Stelvio",
+          "engine": "55263624",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "8022003200",
+      "vehicles": [
+        {
+          "make": "Geely",
+          "model": "Coolray",
+          "engine": "JLH-3G15TD",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Geely",
+          "model": "Atlas",
+          "engine": "JLD-4G20",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Geely",
+          "model": "Emgrand",
+          "engine": "JLC-4G15",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "80292-T0G-G01",
+      "vehicles": [
+        {
+          "make": "Honda",
+          "model": "CR-V",
+          "engine": "R20A",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "80292-T5A-J01",
+      "vehicles": [
+        {
+          "make": "Honda",
+          "model": "HR-V",
+          "engine": "L15B",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "80292-TLA-A01",
+      "vehicles": [
+        {
+          "make": "Honda",
+          "model": "Jazz",
+          "engine": "LEB",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "8104300XKZ36A",
+      "vehicles": [
+        {
+          "make": "GWM",
+          "model": "Jolion",
+          "engine": "GW4B15A",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "GWM",
+          "model": "Haval H6",
+          "engine": "GW4C20B",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "87139-60040",
+      "vehicles": [
+        {
+          "make": "Toyota",
+          "model": "Land Cruiser",
+          "engine": "1GR-FE",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "907 094 00 04",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "Sprinter",
+          "engine": "OM654",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "907 835 00 00",
+      "vehicles": [
+        {
+          "make": "Mercedes-Benz",
+          "model": "Sprinter",
+          "engine": "OM654",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "95860-77R00",
+      "vehicles": [
+        {
+          "make": "Suzuki",
+          "model": "Jimny",
+          "engine": "K15B",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "95861-62R00",
+      "vehicles": [
+        {
+          "make": "Suzuki",
+          "model": "Swift",
+          "engine": "K12B",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "95B 819 631",
+      "vehicles": [
+        {
+          "make": "Porsche",
+          "model": "Macan",
+          "engine": "CZPA",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Porsche",
+          "model": "Cayenne",
+          "engine": "DCBA",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "97133-B5000",
+      "vehicles": [
+        {
+          "make": "Kia",
+          "model": "Picanto",
+          "engine": "G4LA",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Picanto",
+          "engine": "G3LC",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Rio",
+          "engine": "G4FC",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Rio",
+          "engine": "G4LC",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "97133-J9100",
+      "vehicles": [
+        {
+          "make": "Hyundai",
+          "model": "i30",
+          "engine": "G4FJ",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Hyundai",
+          "model": "i30",
+          "engine": "G4LD",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Hyundai",
+          "model": "i30",
+          "engine": "G4FP",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Hyundai",
+          "model": "Kona",
+          "engine": "G4LD",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Ceed",
+          "engine": "G4LD",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Stonic",
+          "engine": "G4LC",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Seltos",
+          "engine": "G4FG",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "97133-S1000",
+      "vehicles": [
+        {
+          "make": "Hyundai",
+          "model": "Santa Fe",
+          "engine": "G4KL",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Kia",
+          "model": "Sportage",
+          "engine": "G4FP",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "9809647380",
+      "vehicles": [
+        {
+          "make": "Peugeot",
+          "model": "208",
+          "engine": "EB2",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Peugeot",
+          "model": "208",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Peugeot",
+          "model": "2008",
+          "engine": "EB2DT",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Peugeot",
+          "model": "3008",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Peugeot",
+          "model": "3008",
+          "engine": "DV5",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Peugeot",
+          "model": "5008",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "C3",
+          "engine": "EB2",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "C3",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "C4",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "C5 Aircross",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "Berlingo",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Opel",
+          "model": "Corsa",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Opel",
+          "model": "Astra",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Opel",
+          "model": "Crossland",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Opel",
+          "model": "Mokka",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "DS",
+          "model": "DS3",
+          "engine": "EB2DT",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "DS",
+          "model": "DS7 Crossback",
+          "engine": "EB2ADTS",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "DS",
+          "model": "DS7 Crossback",
+          "engine": "DV5",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "9818479180",
+      "vehicles": [
+        {
+          "make": "Peugeot",
+          "model": "208",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Peugeot",
+          "model": "3008",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Peugeot",
+          "model": "3008",
+          "engine": "DV5",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Peugeot",
+          "model": "5008",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "C3",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "C4",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "C5 Aircross",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Citroen",
+          "model": "Berlingo",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Opel",
+          "model": "Corsa",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Opel",
+          "model": "Astra",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Opel",
+          "model": "Crossland",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Opel",
+          "model": "Mokka",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "DS",
+          "model": "DS7 Crossback",
+          "engine": "EB2ADTS",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "DS",
+          "model": "DS7 Crossback",
+          "engine": "DV5",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "A1320900001",
+      "vehicles": [
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "3B21",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "A4518350047",
+      "vehicles": [
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "3B21",
+          "type": "cabin_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "OM660",
+          "type": "cabin_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "A4530940000",
+      "vehicles": [
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "M281",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "H4B",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForFour",
+          "engine": "M281",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForFour",
+          "engine": "H4B",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "A4538350100",
+      "vehicles": [
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "M281",
+          "type": "cabin_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "H4B",
+          "type": "cabin_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForFour",
+          "engine": "M281",
+          "type": "cabin_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForFour",
+          "engine": "H4B",
+          "type": "cabin_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "A6600940004",
+      "vehicles": [
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "OM660",
+          "type": "air_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "A6601800009",
+      "vehicles": [
+        {
+          "make": "Smart",
+          "model": "ForTwo",
+          "engine": "OM660",
+          "type": "oil_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "C1B1-9601-AB",
+      "vehicles": [
+        {
+          "make": "Ford",
+          "model": "Fiesta",
+          "engine": "M1JE",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Ford",
+          "model": "EcoSport",
+          "engine": "M1JE",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "D09W-13-Z40",
+      "vehicles": [
+        {
+          "make": "Mazda",
+          "model": "2",
+          "engine": "P3-VPS",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "E4T15-1012010",
+      "vehicles": [
+        {
+          "make": "Chery",
+          "model": "Tiggo 4 Pro",
+          "engine": "SQRE4T15C",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Omoda",
+          "model": "C5",
+          "engine": "SQRE4T15C",
+          "type": "oil_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "E4T15-1109111",
+      "vehicles": [
+        {
+          "make": "Chery",
+          "model": "Tiggo 4 Pro",
+          "engine": "SQRE4T15C",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Omoda",
+          "model": "C5",
+          "engine": "SQRE4T15C",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "F1F1-9601-BC",
+      "vehicles": [
+        {
+          "make": "Ford",
+          "model": "Focus",
+          "engine": "M8DA",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Ford",
+          "model": "Focus",
+          "engine": "XTDA",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Ford",
+          "model": "Kuga",
+          "engine": "M8MA",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "F1FZ-19N619-AB",
+      "vehicles": [
+        {
+          "make": "Ford",
+          "model": "Focus",
+          "engine": "M8DA",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Ford",
+          "model": "Focus",
+          "engine": "XTDA",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "F4J16-1012010",
+      "vehicles": [
+        {
+          "make": "Chery",
+          "model": "Tiggo 7 Pro",
+          "engine": "SQRF4J16",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Chery",
+          "model": "Tiggo 8 Pro",
+          "engine": "SQRF4J16",
+          "type": "oil_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Jaecoo",
+          "model": "J7",
+          "engine": "SQRF4J16",
+          "type": "oil_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "F4J16-1109111",
+      "vehicles": [
+        {
+          "make": "Chery",
+          "model": "Tiggo 7 Pro",
+          "engine": "SQRF4J16",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Chery",
+          "model": "Tiggo 8 Pro",
+          "engine": "SQRF4J16",
+          "type": "air_filter",
+          "source": "filter_specs.csv"
+        },
+        {
+          "make": "Jaecoo",
+          "model": "J7",
+          "engine": "SQRF4J16",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "LR108435",
+      "vehicles": [
+        {
+          "make": "Jaguar",
+          "model": "E-Pace",
+          "engine": "PT204",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Jaguar",
+          "model": "F-Pace",
+          "engine": "PT204",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Jaguar",
+          "model": "XE",
+          "engine": "PT204",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Jaguar",
+          "model": "XF",
+          "engine": "PT204",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "LR117485",
+      "vehicles": [
+        {
+          "make": "Land Rover",
+          "model": "Range Rover Evoque",
+          "engine": "PT204",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Land Rover",
+          "model": "Range Rover Velar",
+          "engine": "PT204",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Land Rover",
+          "model": "Range Rover Velar",
+          "engine": "204DTA",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Land Rover",
+          "model": "Range Rover Sport",
+          "engine": "PT204",
+          "type": "cabin_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "LR122592",
+      "vehicles": [
+        {
+          "make": "Land Rover",
+          "model": "Range Rover Evoque",
+          "engine": "PT204",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Land Rover",
+          "model": "Range Rover Velar",
+          "engine": "PT204",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Land Rover",
+          "model": "Range Rover Velar",
+          "engine": "204DTA",
+          "type": "air_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Land Rover",
+          "model": "Range Rover Sport",
+          "engine": "PT204",
+          "type": "air_filter",
+          "source": "expansion_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "LX6Z-19N619-B",
+      "vehicles": [
+        {
+          "make": "Ford",
+          "model": "Puma",
+          "engine": "B7JA",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "MN195396",
+      "vehicles": [
+        {
+          "make": "Smart",
+          "model": "ForFour",
+          "engine": "4A90",
+          "type": "oil_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForFour",
+          "engine": "4A91",
+          "type": "oil_filter",
+          "source": "stage2_filter_specs.csv"
+        },
+        {
+          "make": "Smart",
+          "model": "ForFour",
+          "engine": "4A92",
+          "type": "oil_filter",
+          "source": "stage2_filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "N246-61-J6X",
+      "vehicles": [
+        {
+          "make": "Mazda",
+          "model": "MX-5",
+          "engine": "PE-VPS",
+          "type": "cabin_filter",
+          "source": "filter_specs.csv"
+        }
+      ]
+    },
+    {
+      "oem": "T4N6810",
+      "vehicles": [
+        {
+          "make": "Jaguar",
+          "model": "E-Pace",
+          "engine": "PT204",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Jaguar",
+          "model": "F-Pace",
+          "engine": "PT204",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Jaguar",
+          "model": "XE",
+          "engine": "PT204",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        },
+        {
+          "make": "Jaguar",
+          "model": "XF",
+          "engine": "PT204",
+          "type": "cabin_filter",
+          "source": "stage1_filter_specs.csv"
+        }
+      ]
+    }
+  ],
+  "all_results": {
+    "0000942004": {
+      "exists": false,
+      "url": "https://spareto.com/oe/0000942004",
+      "products": 0
+    },
+    "0001803109": {
+      "exists": true,
+      "url": "https://spareto.com/oe/0001803109",
+      "products": 403
+    },
+    "03N 115 562": {
+      "exists": true,
+      "url": "https://spareto.com/oe/03n115562",
+      "products": 430
+    },
+    "04152-31090": {
+      "exists": true,
+      "url": "https://spareto.com/oe/0415231090",
+      "products": 305
+    },
+    "04152-38020": {
+      "exists": true,
+      "url": "https://spareto.com/oe/0415238020",
+      "products": 185
+    },
+    "04152-B1010": {
+      "exists": true,
+      "url": "https://spareto.com/oe/04152b1010",
+      "products": 368
+    },
+    "04152-YZZA1": {
+      "exists": true,
+      "url": "https://spareto.com/oe/04152yzza1",
+      "products": 320
+    },
+    "04152-YZZA6": {
+      "exists": true,
+      "url": "https://spareto.com/oe/04152yzza6",
+      "products": 368
+    },
+    "04C 129 620 C": {
+      "exists": true,
+      "url": "https://spareto.com/oe/04c129620c",
+      "products": 324
+    },
+    "04E 115 561 H": {
+      "exists": true,
+      "url": "https://spareto.com/oe/04e115561h",
+      "products": 405
+    },
+    "06L 115 562": {
+      "exists": true,
+      "url": "https://spareto.com/oe/06l115562",
+      "products": 432
+    },
+    "1016012681": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1016012681",
+      "products": 0
+    },
+    "1016050811": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1016050811",
+      "products": 0
+    },
+    "1017100GG010": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1017100gg010",
+      "products": 1
+    },
+    "10242940": {
+      "exists": false,
+      "url": "https://spareto.com/oe/10242940",
+      "products": 0
+    },
+    "1035125-00-A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/103512500a",
+      "products": 189
+    },
+    "10405642": {
+      "exists": false,
+      "url": "https://spareto.com/oe/10405642",
+      "products": 0
+    },
+    "10405878": {
+      "exists": false,
+      "url": "https://spareto.com/oe/10405878",
+      "products": 0
+    },
+    "11 42 7 953 129": {
+      "exists": true,
+      "url": "https://spareto.com/oe/11427953129",
+      "products": 313
+    },
+    "11 42 8 575 211": {
+      "exists": true,
+      "url": "https://spareto.com/oe/11428575211",
+      "products": 390
+    },
+    "1109.CK": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1109.ck",
+      "products": 35
+    },
+    "1109120XKZ16A": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1109120xkz16a",
+      "products": 0
+    },
+    "1109120XKZ36A": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1109120xkz36a",
+      "products": 0
+    },
+    "1230A114": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1230a114",
+      "products": 269
+    },
+    "1230A186": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1230a186",
+      "products": 167
+    },
+    "13 71 7 602 643": {
+      "exists": true,
+      "url": "https://spareto.com/oe/13717602643",
+      "products": 177
+    },
+    "13 71 8 519 129": {
+      "exists": false,
+      "url": "https://spareto.com/oe/13718519129",
+      "products": 0
+    },
+    "13271190": {
+      "exists": true,
+      "url": "https://spareto.com/oe/13271190",
+      "products": 617
+    },
+    "13272717": {
+      "exists": true,
+      "url": "https://spareto.com/oe/13272717",
+      "products": 324
+    },
+    "13356914": {
+      "exists": true,
+      "url": "https://spareto.com/oe/13356914",
+      "products": 445
+    },
+    "13372460": {
+      "exists": false,
+      "url": "https://spareto.com/oe/13372460",
+      "products": 0
+    },
+    "13780-61M00": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1378061m00",
+      "products": 207
+    },
+    "13780-73J00": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1378073j00",
+      "products": 417
+    },
+    "13780-74P00": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1378074p00",
+      "products": 13
+    },
+    "13780-74P10": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1378074p10",
+      "products": 0
+    },
+    "1444.TT": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1444.tt",
+      "products": 42
+    },
+    "1444.VZ": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1444.vz",
+      "products": 42
+    },
+    "1500A023": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1500a023",
+      "products": 334
+    },
+    "1500A617": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1500a617",
+      "products": 244
+    },
+    "15208-65F0E": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1520865f0e",
+      "products": 438
+    },
+    "15208-AA160": {
+      "exists": true,
+      "url": "https://spareto.com/oe/15208aa160",
+      "products": 247
+    },
+    "15208-BN30A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/15208bn30a",
+      "products": 429
+    },
+    "152095084R": {
+      "exists": true,
+      "url": "https://spareto.com/oe/152095084r",
+      "products": 338
+    },
+    "15400-RTA-003": {
+      "exists": true,
+      "url": "https://spareto.com/oe/15400rta003",
+      "products": 415
+    },
+    "15601-87107": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1560187107",
+      "products": 364
+    },
+    "15601-87703": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1560187703",
+      "products": 400
+    },
+    "15601-B2030": {
+      "exists": true,
+      "url": "https://spareto.com/oe/15601b2030",
+      "products": 112
+    },
+    "16510-61A31": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1651061a31",
+      "products": 441
+    },
+    "16546-00QAU": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1654600qau",
+      "products": 357
+    },
+    "16546-4BA1B": {
+      "exists": true,
+      "url": "https://spareto.com/oe/165464ba1b",
+      "products": 338
+    },
+    "16546-5FA1B": {
+      "exists": false,
+      "url": "https://spareto.com/oe/165465fa1b",
+      "products": 0
+    },
+    "16546-6FR0A": {
+      "exists": false,
+      "url": "https://spareto.com/oe/165466fr0a",
+      "products": 0
+    },
+    "16546-AA12A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/16546aa12a",
+      "products": 284
+    },
+    "16546-EB300": {
+      "exists": true,
+      "url": "https://spareto.com/oe/16546eb300",
+      "products": 338
+    },
+    "16546-JD20A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/16546jd20a",
+      "products": 345
+    },
+    "165461599R": {
+      "exists": true,
+      "url": "https://spareto.com/oe/165461599r",
+      "products": 343
+    },
+    "165468187R": {
+      "exists": false,
+      "url": "https://spareto.com/oe/165468187r",
+      "products": 0
+    },
+    "167 094 00 04": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1670940004",
+      "products": 0
+    },
+    "167 835 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1678350000",
+      "products": 0
+    },
+    "17220-55A-Z01": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1722055az01",
+      "products": 24
+    },
+    "17220-5AA-A00": {
+      "exists": true,
+      "url": "https://spareto.com/oe/172205aaa00",
+      "products": 134
+    },
+    "17220-5R0-008": {
+      "exists": true,
+      "url": "https://spareto.com/oe/172205r0008",
+      "products": 207
+    },
+    "17220-R1A-A01": {
+      "exists": true,
+      "url": "https://spareto.com/oe/17220r1aa01",
+      "products": 247
+    },
+    "17220-R5A-A00": {
+      "exists": true,
+      "url": "https://spareto.com/oe/17220r5aa00",
+      "products": 90
+    },
+    "1743587": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1743587",
+      "products": 13
+    },
+    "177 094 02 05": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1770940205",
+      "products": 0
+    },
+    "177 830 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1778300000",
+      "products": 0
+    },
+    "1776360": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1776360",
+      "products": 580
+    },
+    "17801-0L090": {
+      "exists": false,
+      "url": "https://spareto.com/oe/178010l090",
+      "products": 0
+    },
+    "17801-0Y040": {
+      "exists": true,
+      "url": "https://spareto.com/oe/178010y040",
+      "products": 123
+    },
+    "17801-21060": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1780121060",
+      "products": 354
+    },
+    "17801-38011": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1780138011",
+      "products": 145
+    },
+    "17801-38051": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1780138051",
+      "products": 163
+    },
+    "17801-77050": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1780177050",
+      "products": 222
+    },
+    "17801-87402": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1780187402",
+      "products": 142
+    },
+    "17801-97201": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1780197201",
+      "products": 166
+    },
+    "17801-B1010": {
+      "exists": true,
+      "url": "https://spareto.com/oe/17801b1010",
+      "products": 217
+    },
+    "17801-F0050": {
+      "exists": true,
+      "url": "https://spareto.com/oe/17801f0050",
+      "products": 112
+    },
+    "17801-YZZ05": {
+      "exists": true,
+      "url": "https://spareto.com/oe/17801yzz05",
+      "products": 24
+    },
+    "1883037": {
+      "exists": true,
+      "url": "https://spareto.com/oe/1883037",
+      "products": 372
+    },
+    "1EA 819 641": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1ea819641",
+      "products": 0
+    },
+    "1K0 819 653 A": {
+      "exists": false,
+      "url": "https://spareto.com/oe/1k0819653a",
+      "products": 0
+    },
+    "205 835 03 47": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2058350347",
+      "products": 0
+    },
+    "213 094 01 04": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2130940104",
+      "products": 0
+    },
+    "213 835 00 47": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2138350047",
+      "products": 0
+    },
+    "222 830 00 18": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2228300018",
+      "products": 0
+    },
+    "223 094 00 04": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2230940004",
+      "products": 0
+    },
+    "223 830 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2238300000",
+      "products": 0
+    },
+    "2319109000": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2319109000",
+      "products": 0
+    },
+    "2319109100": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2319109100",
+      "products": 0
+    },
+    "232 094 00 04": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2320940004",
+      "products": 0
+    },
+    "232 830 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2328300000",
+      "products": 0
+    },
+    "243 830 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2438300000",
+      "products": 0
+    },
+    "246 830 03 18": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2468300318",
+      "products": 0
+    },
+    "247 830 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2478300000",
+      "products": 0
+    },
+    "253 835 02 47": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2538350247",
+      "products": 0
+    },
+    "256 180 00 09": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2561800009",
+      "products": 0
+    },
+    "26300-35505": {
+      "exists": true,
+      "url": "https://spareto.com/oe/2630035505",
+      "products": 426
+    },
+    "264 094 01 04": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2640940104",
+      "products": 0
+    },
+    "264 180 00 09": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2641800009",
+      "products": 0
+    },
+    "270 094 02 04": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2700940204",
+      "products": 0
+    },
+    "270 180 01 09": {
+      "exists": true,
+      "url": "https://spareto.com/oe/2701800109",
+      "products": 386
+    },
+    "27275-EN000": {
+      "exists": false,
+      "url": "https://spareto.com/oe/27275en000",
+      "products": 0
+    },
+    "27277-00Q0A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/2727700q0a",
+      "products": 24
+    },
+    "27277-1KA4A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/272771ka4a",
+      "products": 473
+    },
+    "27277-4BU0A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/272774bu0a",
+      "products": 485
+    },
+    "27277-5FA0A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/272775fa0a",
+      "products": 580
+    },
+    "27277-6MA0A": {
+      "exists": false,
+      "url": "https://spareto.com/oe/272776ma0a",
+      "products": 0
+    },
+    "272772835R": {
+      "exists": true,
+      "url": "https://spareto.com/oe/272772835r",
+      "products": 398
+    },
+    "272773016R": {
+      "exists": true,
+      "url": "https://spareto.com/oe/272773016r",
+      "products": 572
+    },
+    "272775374R": {
+      "exists": true,
+      "url": "https://spareto.com/oe/272775374r",
+      "products": 543
+    },
+    "274 094 01 04": {
+      "exists": true,
+      "url": "https://spareto.com/oe/2740940104",
+      "products": 302
+    },
+    "274 180 00 09": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2741800009",
+      "products": 0
+    },
+    "28113-07100": {
+      "exists": true,
+      "url": "https://spareto.com/oe/2811307100",
+      "products": 298
+    },
+    "28113-1J000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/281131j000",
+      "products": 327
+    },
+    "28113-1R100": {
+      "exists": true,
+      "url": "https://spareto.com/oe/281131r100",
+      "products": 298
+    },
+    "28113-2P300": {
+      "exists": true,
+      "url": "https://spareto.com/oe/281132p300",
+      "products": 291
+    },
+    "28113-2S000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/281132s000",
+      "products": 368
+    },
+    "28113-A5800": {
+      "exists": true,
+      "url": "https://spareto.com/oe/28113a5800",
+      "products": 306
+    },
+    "28113-D3300": {
+      "exists": true,
+      "url": "https://spareto.com/oe/28113d3300",
+      "products": 240
+    },
+    "28113-G2200": {
+      "exists": false,
+      "url": "https://spareto.com/oe/28113g2200",
+      "products": 0
+    },
+    "28113-H8100": {
+      "exists": true,
+      "url": "https://spareto.com/oe/28113h8100",
+      "products": 218
+    },
+    "28113-J9000": {
+      "exists": false,
+      "url": "https://spareto.com/oe/28113j9000",
+      "products": 0
+    },
+    "28113-J9100": {
+      "exists": false,
+      "url": "https://spareto.com/oe/28113j9100",
+      "products": 0
+    },
+    "28113-L1000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/28113l1000",
+      "products": 123
+    },
+    "28113-L1500": {
+      "exists": false,
+      "url": "https://spareto.com/oe/28113l1500",
+      "products": 0
+    },
+    "28113-S1100": {
+      "exists": false,
+      "url": "https://spareto.com/oe/28113s1100",
+      "products": 0
+    },
+    "282 180 00 09": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2821800009",
+      "products": 0
+    },
+    "295 830 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2958300000",
+      "products": 0
+    },
+    "297 830 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/2978300000",
+      "products": 0
+    },
+    "2Q0 819 653": {
+      "exists": true,
+      "url": "https://spareto.com/oe/2q0819653",
+      "products": 401
+    },
+    "31370089": {
+      "exists": true,
+      "url": "https://spareto.com/oe/31370089",
+      "products": 247
+    },
+    "31372212": {
+      "exists": true,
+      "url": "https://spareto.com/oe/31372212",
+      "products": 251
+    },
+    "31390880": {
+      "exists": true,
+      "url": "https://spareto.com/oe/31390880",
+      "products": 477
+    },
+    "31407748": {
+      "exists": true,
+      "url": "https://spareto.com/oe/31407748",
+      "products": 342
+    },
+    "32296694": {
+      "exists": false,
+      "url": "https://spareto.com/oe/32296694",
+      "products": 0
+    },
+    "32346498": {
+      "exists": false,
+      "url": "https://spareto.com/oe/32346498",
+      "products": 0
+    },
+    "3C0 129 620": {
+      "exists": true,
+      "url": "https://spareto.com/oe/3c0129620",
+      "products": 392
+    },
+    "3Q0 129 620 B": {
+      "exists": false,
+      "url": "https://spareto.com/oe/3q0129620b",
+      "products": 0
+    },
+    "3Q0 819 653": {
+      "exists": false,
+      "url": "https://spareto.com/oe/3q0819653",
+      "products": 0
+    },
+    "4105409AB": {
+      "exists": true,
+      "url": "https://spareto.com/oe/4105409ab",
+      "products": 343
+    },
+    "447 830 00 00": {
+      "exists": true,
+      "url": "https://spareto.com/oe/4478300000",
+      "products": 284
+    },
+    "463 094 01 04": {
+      "exists": false,
+      "url": "https://spareto.com/oe/4630940104",
+      "products": 0
+    },
+    "463 830 01 18": {
+      "exists": false,
+      "url": "https://spareto.com/oe/4638300118",
+      "products": 0
+    },
+    "4861480AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/4861480aa",
+      "products": 265
+    },
+    "4861756AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/4861756aa",
+      "products": 86
+    },
+    "4884899AC": {
+      "exists": true,
+      "url": "https://spareto.com/oe/4884899ac",
+      "products": 145
+    },
+    "4885955AB": {
+      "exists": false,
+      "url": "https://spareto.com/oe/4885955ab",
+      "products": 0
+    },
+    "4891694AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/4891694aa",
+      "products": 163
+    },
+    "4892339AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/4892339aa",
+      "products": 306
+    },
+    "4G0 133 843 A": {
+      "exists": false,
+      "url": "https://spareto.com/oe/4g0133843a",
+      "products": 0
+    },
+    "4M0 133 843 B": {
+      "exists": false,
+      "url": "https://spareto.com/oe/4m0133843b",
+      "products": 0
+    },
+    "4M0 819 439 A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/4m0819439a",
+      "products": 368
+    },
+    "5013595AB": {
+      "exists": true,
+      "url": "https://spareto.com/oe/5013595ab",
+      "products": 156
+    },
+    "5019741AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/5019741aa",
+      "products": 163
+    },
+    "5058693AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/5058693aa",
+      "products": 152
+    },
+    "5175571AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/5175571aa",
+      "products": 189
+    },
+    "5189959AA": {
+      "exists": false,
+      "url": "https://spareto.com/oe/5189959aa",
+      "products": 0
+    },
+    "52081805": {
+      "exists": false,
+      "url": "https://spareto.com/oe/52081805",
+      "products": 0
+    },
+    "5281090AB": {
+      "exists": true,
+      "url": "https://spareto.com/oe/5281090ab",
+      "products": 306
+    },
+    "55192012": {
+      "exists": true,
+      "url": "https://spareto.com/oe/55192012",
+      "products": 514
+    },
+    "55223416": {
+      "exists": true,
+      "url": "https://spareto.com/oe/55223416",
+      "products": 478
+    },
+    "55560894": {
+      "exists": true,
+      "url": "https://spareto.com/oe/55560894",
+      "products": 280
+    },
+    "55594651": {
+      "exists": true,
+      "url": "https://spareto.com/oe/55594651",
+      "products": 405
+    },
+    "5Q0 129 620 B": {
+      "exists": true,
+      "url": "https://spareto.com/oe/5q0129620b",
+      "products": 419
+    },
+    "5Q0 819 653": {
+      "exists": true,
+      "url": "https://spareto.com/oe/5q0819653",
+      "products": 783
+    },
+    "64 11 9 163 329": {
+      "exists": true,
+      "url": "https://spareto.com/oe/64119163329",
+      "products": 481
+    },
+    "64 11 9 237 555": {
+      "exists": true,
+      "url": "https://spareto.com/oe/64119237555",
+      "products": 613
+    },
+    "64 11 9 321 875": {
+      "exists": true,
+      "url": "https://spareto.com/oe/64119321875",
+      "products": 434
+    },
+    "64 31 9 194 098": {
+      "exists": true,
+      "url": "https://spareto.com/oe/64319194098",
+      "products": 265
+    },
+    "6479.C2": {
+      "exists": true,
+      "url": "https://spareto.com/oe/6479.c2",
+      "products": 13
+    },
+    "651 094 02 04": {
+      "exists": true,
+      "url": "https://spareto.com/oe/6510940204",
+      "products": 317
+    },
+    "651 180 01 09": {
+      "exists": true,
+      "url": "https://spareto.com/oe/6511800109",
+      "products": 448
+    },
+    "654 180 01 09": {
+      "exists": false,
+      "url": "https://spareto.com/oe/6541800109",
+      "products": 0
+    },
+    "6731803009": {
+      "exists": true,
+      "url": "https://spareto.com/oe/6731803009",
+      "products": 123
+    },
+    "6731840025": {
+      "exists": true,
+      "url": "https://spareto.com/oe/6731840025",
+      "products": 79
+    },
+    "68001735AB": {
+      "exists": false,
+      "url": "https://spareto.com/oe/68001735ab",
+      "products": 0
+    },
+    "68032204AB": {
+      "exists": true,
+      "url": "https://spareto.com/oe/68032204ab",
+      "products": 200
+    },
+    "68042866AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/68042866aa",
+      "products": 291
+    },
+    "68071668AA": {
+      "exists": true,
+      "url": "https://spareto.com/oe/68071668aa",
+      "products": 90
+    },
+    "6812108000": {
+      "exists": false,
+      "url": "https://spareto.com/oe/6812108000",
+      "products": 0
+    },
+    "6812108100": {
+      "exists": false,
+      "url": "https://spareto.com/oe/6812108100",
+      "products": 0
+    },
+    "68143102AA": {
+      "exists": false,
+      "url": "https://spareto.com/oe/68143102aa",
+      "products": 0
+    },
+    "68191349AC": {
+      "exists": true,
+      "url": "https://spareto.com/oe/68191349ac",
+      "products": 134
+    },
+    "68197800AA": {
+      "exists": false,
+      "url": "https://spareto.com/oe/68197800aa",
+      "products": 0
+    },
+    "68245491AA": {
+      "exists": false,
+      "url": "https://spareto.com/oe/68245491aa",
+      "products": 0
+    },
+    "6C0 129 620": {
+      "exists": true,
+      "url": "https://spareto.com/oe/6c0129620",
+      "products": 247
+    },
+    "6R0 819 653": {
+      "exists": true,
+      "url": "https://spareto.com/oe/6r0819653",
+      "products": 752
+    },
+    "72880-FL000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/72880fl000",
+      "products": 130
+    },
+    "77366065": {
+      "exists": true,
+      "url": "https://spareto.com/oe/77366065",
+      "products": 617
+    },
+    "77367456": {
+      "exists": false,
+      "url": "https://spareto.com/oe/77367456",
+      "products": 0
+    },
+    "7803A028": {
+      "exists": true,
+      "url": "https://spareto.com/oe/7803a028",
+      "products": 389
+    },
+    "7H0 819 631": {
+      "exists": true,
+      "url": "https://spareto.com/oe/7h0819631",
+      "products": 538
+    },
+    "8022003200": {
+      "exists": false,
+      "url": "https://spareto.com/oe/8022003200",
+      "products": 0
+    },
+    "80292-T0G-G01": {
+      "exists": false,
+      "url": "https://spareto.com/oe/80292t0gg01",
+      "products": 0
+    },
+    "80292-T5A-J01": {
+      "exists": false,
+      "url": "https://spareto.com/oe/80292t5aj01",
+      "products": 0
+    },
+    "80292-TBA-A11": {
+      "exists": true,
+      "url": "https://spareto.com/oe/80292tbaa11",
+      "products": 343
+    },
+    "80292-TF0-G01": {
+      "exists": true,
+      "url": "https://spareto.com/oe/80292tf0g01",
+      "products": 441
+    },
+    "80292-TLA-A01": {
+      "exists": false,
+      "url": "https://spareto.com/oe/80292tlaa01",
+      "products": 0
+    },
+    "8104300XKZ36A": {
+      "exists": false,
+      "url": "https://spareto.com/oe/8104300xkz36a",
+      "products": 0
+    },
+    "82205905": {
+      "exists": true,
+      "url": "https://spareto.com/oe/82205905",
+      "products": 360
+    },
+    "87139-06080": {
+      "exists": true,
+      "url": "https://spareto.com/oe/8713906080",
+      "products": 579
+    },
+    "87139-0K070": {
+      "exists": true,
+      "url": "https://spareto.com/oe/871390k070",
+      "products": 335
+    },
+    "87139-0R030": {
+      "exists": true,
+      "url": "https://spareto.com/oe/871390r030",
+      "products": 24
+    },
+    "87139-12010": {
+      "exists": true,
+      "url": "https://spareto.com/oe/8713912010",
+      "products": 324
+    },
+    "87139-30070": {
+      "exists": true,
+      "url": "https://spareto.com/oe/8713930070",
+      "products": 531
+    },
+    "87139-48050": {
+      "exists": true,
+      "url": "https://spareto.com/oe/8713948050",
+      "products": 277
+    },
+    "87139-52040": {
+      "exists": true,
+      "url": "https://spareto.com/oe/8713952040",
+      "products": 536
+    },
+    "87139-60040": {
+      "exists": false,
+      "url": "https://spareto.com/oe/8713960040",
+      "products": 0
+    },
+    "87139-F4010": {
+      "exists": true,
+      "url": "https://spareto.com/oe/87139f4010",
+      "products": 306
+    },
+    "87139-YZZ20": {
+      "exists": true,
+      "url": "https://spareto.com/oe/87139yzz20",
+      "products": 9
+    },
+    "88568-B1010": {
+      "exists": true,
+      "url": "https://spareto.com/oe/88568b1010",
+      "products": 123
+    },
+    "88568-B4010": {
+      "exists": true,
+      "url": "https://spareto.com/oe/88568b4010",
+      "products": 31
+    },
+    "8W0 133 843": {
+      "exists": true,
+      "url": "https://spareto.com/oe/8w0133843",
+      "products": 156
+    },
+    "907 094 00 04": {
+      "exists": false,
+      "url": "https://spareto.com/oe/9070940004",
+      "products": 0
+    },
+    "907 835 00 00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/9078350000",
+      "products": 0
+    },
+    "90915-30002": {
+      "exists": true,
+      "url": "https://spareto.com/oe/9091530002",
+      "products": 380
+    },
+    "95860-61M00": {
+      "exists": true,
+      "url": "https://spareto.com/oe/9586061m00",
+      "products": 79
+    },
+    "95860-74P00": {
+      "exists": true,
+      "url": "https://spareto.com/oe/9586074p00",
+      "products": 251
+    },
+    "95860-77R00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/9586077r00",
+      "products": 0
+    },
+    "95861-62R00": {
+      "exists": false,
+      "url": "https://spareto.com/oe/9586162r00",
+      "products": 0
+    },
+    "95B 129 620 A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/95b129620a",
+      "products": 68
+    },
+    "95B 819 631": {
+      "exists": false,
+      "url": "https://spareto.com/oe/95b819631",
+      "products": 0
+    },
+    "96449577": {
+      "exists": true,
+      "url": "https://spareto.com/oe/96449577",
+      "products": 364
+    },
+    "96536696": {
+      "exists": true,
+      "url": "https://spareto.com/oe/96536696",
+      "products": 334
+    },
+    "96554421": {
+      "exists": true,
+      "url": "https://spareto.com/oe/96554421",
+      "products": 368
+    },
+    "96565412": {
+      "exists": true,
+      "url": "https://spareto.com/oe/96565412",
+      "products": 378
+    },
+    "96570765": {
+      "exists": true,
+      "url": "https://spareto.com/oe/96570765",
+      "products": 371
+    },
+    "96628890": {
+      "exists": true,
+      "url": "https://spareto.com/oe/96628890",
+      "products": 335
+    },
+    "97133-2E210": {
+      "exists": true,
+      "url": "https://spareto.com/oe/971332e210",
+      "products": 609
+    },
+    "97133-2E250": {
+      "exists": true,
+      "url": "https://spareto.com/oe/971332e250",
+      "products": 506
+    },
+    "97133-B2000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/97133b2000",
+      "products": 273
+    },
+    "97133-B5000": {
+      "exists": false,
+      "url": "https://spareto.com/oe/97133b5000",
+      "products": 0
+    },
+    "97133-D1000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/97133d1000",
+      "products": 364
+    },
+    "97133-D3000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/97133d3000",
+      "products": 342
+    },
+    "97133-F2000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/97133f2000",
+      "products": 350
+    },
+    "97133-G2000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/97133g2000",
+      "products": 562
+    },
+    "97133-J9100": {
+      "exists": false,
+      "url": "https://spareto.com/oe/97133j9100",
+      "products": 0
+    },
+    "97133-L1000": {
+      "exists": true,
+      "url": "https://spareto.com/oe/97133l1000",
+      "products": 288
+    },
+    "97133-S1000": {
+      "exists": false,
+      "url": "https://spareto.com/oe/97133s1000",
+      "products": 0
+    },
+    "9802348680": {
+      "exists": true,
+      "url": "https://spareto.com/oe/9802348680",
+      "products": 310
+    },
+    "9809647380": {
+      "exists": false,
+      "url": "https://spareto.com/oe/9809647380",
+      "products": 0
+    },
+    "9818479180": {
+      "exists": false,
+      "url": "https://spareto.com/oe/9818479180",
+      "products": 0
+    },
+    "9818914980": {
+      "exists": true,
+      "url": "https://spareto.com/oe/9818914980",
+      "products": 497
+    },
+    "A1320900001": {
+      "exists": false,
+      "url": "https://spareto.com/oe/a1320900001",
+      "products": 0
+    },
+    "A1321800110": {
+      "exists": true,
+      "url": "https://spareto.com/oe/a1321800110",
+      "products": 284
+    },
+    "A2108301018": {
+      "exists": true,
+      "url": "https://spareto.com/oe/a2108301018",
+      "products": 419
+    },
+    "A2811800210": {
+      "exists": true,
+      "url": "https://spareto.com/oe/a2811800210",
+      "products": 306
+    },
+    "A4518350047": {
+      "exists": false,
+      "url": "https://spareto.com/oe/a4518350047",
+      "products": 0
+    },
+    "A4530940000": {
+      "exists": false,
+      "url": "https://spareto.com/oe/a4530940000",
+      "products": 0
+    },
+    "A4538350100": {
+      "exists": false,
+      "url": "https://spareto.com/oe/a4538350100",
+      "products": 0
+    },
+    "A6600940004": {
+      "exists": false,
+      "url": "https://spareto.com/oe/a6600940004",
+      "products": 0
+    },
+    "A6601800009": {
+      "exists": false,
+      "url": "https://spareto.com/oe/a6601800009",
+      "products": 0
+    },
+    "C1B1-9601-AB": {
+      "exists": false,
+      "url": "https://spareto.com/oe/c1b19601ab",
+      "products": 0
+    },
+    "D09W-13-Z40": {
+      "exists": false,
+      "url": "https://spareto.com/oe/d09w13z40",
+      "products": 0
+    },
+    "D09W-61-J6X": {
+      "exists": true,
+      "url": "https://spareto.com/oe/d09w61j6x",
+      "products": 405
+    },
+    "E4T15-1012010": {
+      "exists": false,
+      "url": "https://spareto.com/oe/e4t151012010",
+      "products": 0
+    },
+    "E4T15-1109111": {
+      "exists": false,
+      "url": "https://spareto.com/oe/e4t151109111",
+      "products": 0
+    },
+    "F1F1-9601-BC": {
+      "exists": false,
+      "url": "https://spareto.com/oe/f1f19601bc",
+      "products": 0
+    },
+    "F1FZ-19N619-AB": {
+      "exists": false,
+      "url": "https://spareto.com/oe/f1fz19n619ab",
+      "products": 0
+    },
+    "F4J16-1012010": {
+      "exists": false,
+      "url": "https://spareto.com/oe/f4j161012010",
+      "products": 0
+    },
+    "F4J16-1109111": {
+      "exists": false,
+      "url": "https://spareto.com/oe/f4j161109111",
+      "products": 0
+    },
+    "KD45-61-J6X": {
+      "exists": true,
+      "url": "https://spareto.com/oe/kd4561j6x",
+      "products": 467
+    },
+    "LR029773": {
+      "exists": true,
+      "url": "https://spareto.com/oe/lr029773",
+      "products": 306
+    },
+    "LR036369": {
+      "exists": true,
+      "url": "https://spareto.com/oe/lr036369",
+      "products": 492
+    },
+    "LR073669": {
+      "exists": true,
+      "url": "https://spareto.com/oe/lr073669",
+      "products": 244
+    },
+    "LR108435": {
+      "exists": false,
+      "url": "https://spareto.com/oe/lr108435",
+      "products": 0
+    },
+    "LR117485": {
+      "exists": false,
+      "url": "https://spareto.com/oe/lr117485",
+      "products": 0
+    },
+    "LR122592": {
+      "exists": false,
+      "url": "https://spareto.com/oe/lr122592",
+      "products": 0
+    },
+    "LX6Z-19N619-B": {
+      "exists": false,
+      "url": "https://spareto.com/oe/lx6z19n619b",
+      "products": 0
+    },
+    "LX6Z-9601-A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/lx6z9601a",
+      "products": 24
+    },
+    "MN195396": {
+      "exists": false,
+      "url": "https://spareto.com/oe/mn195396",
+      "products": 0
+    },
+    "MR958016": {
+      "exists": true,
+      "url": "https://spareto.com/oe/mr958016",
+      "products": 254
+    },
+    "MR968274": {
+      "exists": true,
+      "url": "https://spareto.com/oe/mr968274",
+      "products": 276
+    },
+    "N246-61-J6X": {
+      "exists": false,
+      "url": "https://spareto.com/oe/n24661j6x",
+      "products": 0
+    },
+    "PE01-14-302B": {
+      "exists": true,
+      "url": "https://spareto.com/oe/pe0114302b",
+      "products": 163
+    },
+    "PE07-13-3A0A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/pe07133a0a",
+      "products": 280
+    },
+    "PY8W-13-3A0": {
+      "exists": true,
+      "url": "https://spareto.com/oe/py8w133a0",
+      "products": 207
+    },
+    "SH01-13-3A0A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/sh01133a0a",
+      "products": 313
+    },
+    "SH01-14-302A": {
+      "exists": true,
+      "url": "https://spareto.com/oe/sh0114302a",
+      "products": 321
+    },
+    "T11-8107910": {
+      "exists": true,
+      "url": "https://spareto.com/oe/t118107910",
+      "products": 79
+    },
+    "T4N6810": {
+      "exists": false,
+      "url": "https://spareto.com/oe/t4n6810",
+      "products": 0
+    },
+    "TK48-61-J6X": {
+      "exists": true,
+      "url": "https://spareto.com/oe/tk4861j6x",
+      "products": 343
+    }
+  }
+}

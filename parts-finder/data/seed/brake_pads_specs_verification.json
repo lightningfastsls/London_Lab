@@ -1,0 +1,4110 @@
+[
+  {
+    "row": 2,
+    "make": "Toyota",
+    "model": "Corolla",
+    "oem_pn": "04465-02410",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83155",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3591",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2536101",
+        "online": [
+          "2433601"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB4612",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495348",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3416",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 3,
+    "make": "Toyota",
+    "model": "Corolla",
+    "oem_pn": "04466-02180",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83134",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3458",
+        "online": [
+          "GDB3480"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2468501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4384",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494483",
+        "online": [
+          "0 986 494 651 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3289",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 4,
+    "make": "Toyota",
+    "model": "Corolla",
+    "oem_pn": "04465-02460",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83167",
+        "online": [
+          "P 83 175"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3669",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537801",
+        "online": [
+          "2621701"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB5146",
+        "online": [
+          "FDB5520"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495368",
+        "online": [
+          "0 986 460 152 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3562",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 5,
+    "make": "Toyota",
+    "model": "Corolla",
+    "oem_pn": "04466-02340",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83135",
+        "online": [
+          "P 83 098",
+          "P 83 098X"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3594",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531401",
+        "online": [
+          "2465301"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB4706",
+        "online": [
+          "FDB4230"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 494 380 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3458",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 6,
+    "make": "Toyota",
+    "model": "Yaris",
+    "oem_pn": "04465-52200",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83108",
+        "online": [
+          "P 83 141"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3476",
+        "online": [
+          "GDB3459"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2447601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4270",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495094",
+        "online": [
+          "0 986 494 198 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB2954",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 7,
+    "make": "Toyota",
+    "model": "Yaris",
+    "oem_pn": "04465-K0050",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83167",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3669",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5146",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495368",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3562",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 8,
+    "make": "Toyota",
+    "model": "C-HR",
+    "oem_pn": "04465-10040",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83167",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3669",
+        "online": [
+          "GDB323"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2537801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5146",
+        "online": [
+          "FDB308"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495368",
+        "online": [
+          "0 986 468 701 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3562",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 9,
+    "make": "Toyota",
+    "model": "C-HR",
+    "oem_pn": "04466-47050",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83135",
+        "online": [
+          "P 83 153",
+          "h in\n28"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3594",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4706",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 494 907 Brake P",
+          "0 986 495 174 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3458",
+        "online": [
+          "MDB3720"
+        ],
+        "status": "MISMATCH"
+      }
+    }
+  },
+  {
+    "row": 10,
+    "make": "Toyota",
+    "model": "RAV4",
+    "oem_pn": "04465-42210",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83149",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3625",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5038",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495353",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3526",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 11,
+    "make": "Toyota",
+    "model": "RAV4",
+    "oem_pn": "04466-42060",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83135",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3594",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4706",
+        "online": [
+          "FDB1892"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3458",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 12,
+    "make": "Toyota",
+    "model": "Camry",
+    "oem_pn": "04465-06200",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83149",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3625",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5038",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495353",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3526",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 13,
+    "make": "Toyota",
+    "model": "Camry",
+    "oem_pn": "04466-06200",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P83135",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3594",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4706",
+        "online": [
+          "FDB1892"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 494 154 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3458",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 14,
+    "make": "Hyundai",
+    "model": "i30",
+    "oem_pn": "58101-G4A10",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30073",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3597",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4663",
+        "online": [
+          "FDB5317"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 424 862 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3496",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 15,
+    "make": "Hyundai",
+    "model": "i30",
+    "oem_pn": "58302-G4A10",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30074",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3598",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4664",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495365",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3497",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 16,
+    "make": "Hyundai",
+    "model": "i20",
+    "oem_pn": "58101-C8A00",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30058",
+        "online": [
+          "P 30 122"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3506",
+        "online": [
+          "GDB3630"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2468201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4389",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494710",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3314",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 17,
+    "make": "Hyundai",
+    "model": "i20",
+    "oem_pn": "58101-K0A10",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30073",
+        "online": [
+          "P 30 121"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3597",
+        "online": [
+          "GDB2459"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2531501",
+        "online": [
+          "2622401"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB4663",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 460 155 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3496",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 18,
+    "make": "Hyundai",
+    "model": "Tucson",
+    "oem_pn": "58101-D3A00",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30071",
+        "online": [
+          "P 30 096"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3570",
+        "online": [
+          "GDB2197"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2523201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4594",
+        "online": [
+          "FDB5274"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495337",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3477",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 19,
+    "make": "Hyundai",
+    "model": "Tucson",
+    "oem_pn": "58302-D3A00",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30072",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3571",
+        "online": [
+          "GDB3537"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2523301",
+        "online": [
+          "2265501"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB4595",
+        "online": [
+          "FDB4387"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495338",
+        "online": [
+          "0 986 494 908 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3478",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 20,
+    "make": "Hyundai",
+    "model": "Tucson",
+    "oem_pn": "58101-N9A10",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30085",
+        "online": [
+          "P 30 140"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3705",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2555601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5221",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495438",
+        "online": [
+          "0 986 460 164 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 21,
+    "make": "Hyundai",
+    "model": "Tucson",
+    "oem_pn": "58302-N9A10",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30086",
+        "online": [
+          "P 30 139"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3706",
+        "online": [
+          "PFK1410 Accessory Kit"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2555701",
+        "online": [
+          "2648701"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB5222",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495439",
+        "online": [
+          "0 986 460 161 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3602",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 22,
+    "make": "Hyundai",
+    "model": "Creta",
+    "oem_pn": "58101-G4A10",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30073",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3597",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4663",
+        "online": [
+          "FDB5317"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 424 862 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3496",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 23,
+    "make": "Kia",
+    "model": "Sportage",
+    "oem_pn": "58101-D3A00",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30071",
+        "online": [
+          "P 30 096"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3570",
+        "online": [
+          "GDB2197"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2523201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4594",
+        "online": [
+          "FDB5274"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495337",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3477",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 24,
+    "make": "Kia",
+    "model": "Sportage",
+    "oem_pn": "58302-D3A00",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30072",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3571",
+        "online": [
+          "GDB3537"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2523301",
+        "online": [
+          "2265501"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB4595",
+        "online": [
+          "FDB4387"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495338",
+        "online": [
+          "0 986 494 908 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3478",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 25,
+    "make": "Kia",
+    "model": "Sportage",
+    "oem_pn": "58101-P4A10",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30085",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3705",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2555601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5221",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495438",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 26,
+    "make": "Kia",
+    "model": "Sportage",
+    "oem_pn": "58302-P4A10",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30086",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3706",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2555701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5222",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495439",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3602",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 27,
+    "make": "Kia",
+    "model": "Picanto",
+    "oem_pn": "58101-G6A10",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30060",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3517",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2473201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4399",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494715",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3319",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 28,
+    "make": "Kia",
+    "model": "Niro",
+    "oem_pn": "58101-G4A10",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30073",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3597",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4663",
+        "online": [
+          "FDB5317"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 424 862 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3496",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 29,
+    "make": "Kia",
+    "model": "Niro",
+    "oem_pn": "58302-G4A10",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P30074",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3598",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2531601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4664",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495365",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3497",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 30,
+    "make": "Volkswagen",
+    "model": "Golf",
+    "oem_pn": "5Q0 698 151 C",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85137",
+        "online": [
+          "P 85 137E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB1941",
+        "online": [
+          "GDB2080"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2503701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4425",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494553",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3183",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 31,
+    "make": "Volkswagen",
+    "model": "Golf",
+    "oem_pn": "5Q0 698 451 Q",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85113",
+        "online": [
+          "P 85 125E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2004",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2444401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4380",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494488",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3151",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 32,
+    "make": "Volkswagen",
+    "model": "Golf",
+    "oem_pn": "5Q0 698 151 C",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85137",
+        "online": [
+          "P 85 137E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB1941",
+        "online": [
+          "GDB2080"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2503701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4425",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494553",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3183",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 33,
+    "make": "Volkswagen",
+    "model": "Golf",
+    "oem_pn": "5Q0 698 451 Q",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85113",
+        "online": [
+          "P 85 125E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2004",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2444401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4380",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494488",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3151",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 34,
+    "make": "Volkswagen",
+    "model": "Polo",
+    "oem_pn": "2Q0 698 151",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85152",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2120",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2540501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4707",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 494 925 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3458",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 35,
+    "make": "Volkswagen",
+    "model": "Polo",
+    "oem_pn": "2Q0 698 451",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85099",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB1983",
+        "online": [
+          "GDB1813"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2430401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4351",
+        "online": [
+          "FDB1788"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986494403",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3125",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 36,
+    "make": "Volkswagen",
+    "model": "Tiguan",
+    "oem_pn": "5Q0 698 151 AA",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85144",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2114",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2473803",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5096",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494704",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3814",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 37,
+    "make": "Volkswagen",
+    "model": "Tiguan",
+    "oem_pn": "5Q0 698 451 N",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85113",
+        "online": [
+          "P 85 125E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2004",
+        "online": [
+          "GDB2179"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2444401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4380",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494488",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3151",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 38,
+    "make": "Skoda",
+    "model": "Octavia",
+    "oem_pn": "5Q0 698 151 C",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85137",
+        "online": [
+          "P 85 137E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB1941",
+        "online": [
+          "GDB2080"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2503701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4425",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494553",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3183",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 39,
+    "make": "Skoda",
+    "model": "Octavia",
+    "oem_pn": "5Q0 698 451 Q",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85113",
+        "online": [
+          "P 85 125E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2004",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2444401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4380",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494488",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3151",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 40,
+    "make": "Skoda",
+    "model": "Octavia",
+    "oem_pn": "5Q0 698 151 C",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85137",
+        "online": [
+          "P 85 137E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB1941",
+        "online": [
+          "GDB2080"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2503701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4425",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494553",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3183",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 41,
+    "make": "Skoda",
+    "model": "Octavia",
+    "oem_pn": "5Q0 698 451 Q",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85113",
+        "online": [
+          "P 85 125E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2004",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2444401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4380",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494488",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3151",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 42,
+    "make": "Skoda",
+    "model": "Fabia",
+    "oem_pn": "2Q0 698 151",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85152",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2120",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2540501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4707",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 494 925 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3458",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 43,
+    "make": "Skoda",
+    "model": "Fabia",
+    "oem_pn": "2Q0 698 451",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85099",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB1983",
+        "online": [
+          "GDB1813"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2430401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4351",
+        "online": [
+          "FDB1788"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986494403",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3125",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 44,
+    "make": "Mazda",
+    "model": "Mazda 3",
+    "oem_pn": "BCKF-33-28ZA",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P49054",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3652",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2536501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4928",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495356",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3521",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 45,
+    "make": "Mazda",
+    "model": "Mazda 3",
+    "oem_pn": "K0Y1-26-48ZA",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P49055",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3653",
+        "online": [
+          "GDB3539"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2536601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4929",
+        "online": [
+          "FDB4892"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495357",
+        "online": [
+          "0 986 495 368 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3522",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 46,
+    "make": "Mazda",
+    "model": "CX-5",
+    "oem_pn": "K0Y1-33-28ZA",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P49050",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3587",
+        "online": [
+          "GDB3562"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2527201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4667",
+        "online": [
+          "FDB4357"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495340",
+        "online": [
+          "0 986 494 675 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3483",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 47,
+    "make": "Mazda",
+    "model": "CX-5",
+    "oem_pn": "K0Y1-26-48ZB",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P49051",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3588",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2527301",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4668",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495341",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3484",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 48,
+    "make": "Mazda",
+    "model": "Mazda 2",
+    "oem_pn": "DA6V-33-28Z",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P49048",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3506",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2468201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4389",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494710",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3314",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 49,
+    "make": "Peugeot",
+    "model": "208",
+    "oem_pn": "1612 049 580",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61118",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2106",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4647",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495352",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3507",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 50,
+    "make": "Peugeot",
+    "model": "208",
+    "oem_pn": "1612 547 680",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61119",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2107",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530901",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4648",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495353",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3508",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 51,
+    "make": "Peugeot",
+    "model": "2008",
+    "oem_pn": "1612 049 580",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61118",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2106",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4647",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495352",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3507",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 52,
+    "make": "Peugeot",
+    "model": "2008",
+    "oem_pn": "1612 547 680",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61119",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2107",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530901",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4648",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495353",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3508",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 53,
+    "make": "Peugeot",
+    "model": "308",
+    "oem_pn": "1612 049 480",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61116",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2048",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2505501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4572",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495315",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3414",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 54,
+    "make": "Peugeot",
+    "model": "308",
+    "oem_pn": "1612 547 580",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61117",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2049",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2505601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4573",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495316",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3415",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 55,
+    "make": "Citroen",
+    "model": "C3",
+    "oem_pn": "1612 049 580",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61118",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2106",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4647",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495352",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3507",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 56,
+    "make": "Citroen",
+    "model": "C3",
+    "oem_pn": "1612 547 680",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61119",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2107",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530901",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4648",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495353",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3508",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 57,
+    "make": "Citroen",
+    "model": "C4",
+    "oem_pn": "1612 049 480",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61116",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2048",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2505501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4572",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495315",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3414",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 58,
+    "make": "Citroen",
+    "model": "C4",
+    "oem_pn": "1612 547 580",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61117",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2049",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2505601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4573",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495316",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3415",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 59,
+    "make": "Renault",
+    "model": "Clio",
+    "oem_pn": "41 06 070 58R",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P68077",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2106",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4647",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495352",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3507",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 60,
+    "make": "Renault",
+    "model": "Clio",
+    "oem_pn": "44 06 089 67R",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P68078",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2107",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530901",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4648",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495353",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3508",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 61,
+    "make": "Renault",
+    "model": "Captur",
+    "oem_pn": "41 06 112 18R",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P68079",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2130",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2540801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4709",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495371",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3460",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 62,
+    "make": "Renault",
+    "model": "Megane",
+    "oem_pn": "41 06 112 18R",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P68079",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2130",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2540801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4709",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495371",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3460",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 63,
+    "make": "Nissan",
+    "model": "Qashqai",
+    "oem_pn": "D1060-4EA0A",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P56092",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3570",
+        "online": [
+          "GDB3622"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2523201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4594",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495337",
+        "online": [
+          "0 986 494 720 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3477",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 64,
+    "make": "Nissan",
+    "model": "Qashqai",
+    "oem_pn": "D4060-4EA0A",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P56093",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3571",
+        "online": [
+          "GDB3617"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2523301",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4595",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495338",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3478",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 65,
+    "make": "Honda",
+    "model": "Civic",
+    "oem_pn": "45022-TEA-T01",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P28096",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3624",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537101",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4830",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495406",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3544",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 66,
+    "make": "Honda",
+    "model": "Civic",
+    "oem_pn": "43022-TBA-A02",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P28097",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3573",
+        "online": [
+          "GDB2223"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2523701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4596",
+        "online": [
+          "FDB5240"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495339",
+        "online": [
+          "0 986 460 019 Brake P",
+          "0 986 424 807 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3479",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 67,
+    "make": "Subaru",
+    "model": "Impreza",
+    "oem_pn": "26296FL000",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P78020",
+        "online": [
+          "P 78 028"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3669",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5146",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495368",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3562",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 68,
+    "make": "Subaru",
+    "model": "XV/Crosstrek",
+    "oem_pn": "26296FL000",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P78020",
+        "online": [
+          "P 78 028"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB3669",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5146",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495368",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3562",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 69,
+    "make": "Subaru",
+    "model": "Forester",
+    "oem_pn": "26296SJ000",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P78018",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3625",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5038",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495353",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3526",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 70,
+    "make": "BMW",
+    "model": "3 Series",
+    "oem_pn": "34 11 6 860 242",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P06075",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB1843",
+        "online": [
+          "GDB1882"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2469501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4410",
+        "online": [
+          "FDB4380"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986494704",
+        "online": [
+          "0 986 424 620 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3131",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 71,
+    "make": "BMW",
+    "model": "3 Series",
+    "oem_pn": "34 21 6 873 093",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P06076",
+        "online": [
+          "P 06 071E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB1844",
+        "online": [
+          "GDB1919DTE",
+          "GDB1919"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2469601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4411",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494705",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3132",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 72,
+    "make": "BMW",
+    "model": "3 Series",
+    "oem_pn": "34 10 6 888 459",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P06098",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2113",
+        "online": [
+          "GDB2147"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2537601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5087",
+        "online": [
+          "FDB5173"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495400",
+        "online": [
+          "0 986 424 431 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3556",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 73,
+    "make": "BMW",
+    "model": "3 Series",
+    "oem_pn": "34 20 6 885 553",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P06099",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2114",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2537701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5088",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3557",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 74,
+    "make": "BMW",
+    "model": "X1",
+    "oem_pn": "34 11 6 860 242",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P06075",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB1843",
+        "online": [
+          "GDB1882"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2469501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4410",
+        "online": [
+          "FDB4380"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986494704",
+        "online": [
+          "0 986 424 620 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3131",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 75,
+    "make": "BMW",
+    "model": "X1",
+    "oem_pn": "34 21 6 873 093",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P06076",
+        "online": [
+          "P 06 071E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB1844",
+        "online": [
+          "GDB1919DTE",
+          "GDB1919"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2469601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4411",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494705",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3132",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 76,
+    "make": "Mercedes-Benz",
+    "model": "C-Class",
+    "oem_pn": "A 004 420 69 00",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P50110",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB1972",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2468101",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4451",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494698",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3216",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 77,
+    "make": "Mercedes-Benz",
+    "model": "C-Class",
+    "oem_pn": "A 006 420 08 20",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P50111",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB1973",
+        "online": [
+          "GDB1906"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2468201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4452",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494699",
+        "online": [
+          "0 986 494 989 Brake P",
+          "h in\n28"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3217",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 78,
+    "make": "Mercedes-Benz",
+    "model": "C-Class",
+    "oem_pn": "A 000 420 44 00",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P50135",
+        "online": [
+          "P 50 164"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2180",
+        "online": [
+          "GDB1977"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2555101",
+        "online": [
+          "2445503"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB5190",
+        "online": [
+          "FDB4373"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495440",
+        "online": [
+          "0 986 494 972 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3598",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 79,
+    "make": "Mercedes-Benz",
+    "model": "C-Class",
+    "oem_pn": "A 000 420 95 00",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P50136",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2181",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2555201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5191",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495441",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3599",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 80,
+    "make": "Mercedes-Benz",
+    "model": "GLC",
+    "oem_pn": "A 000 420 90 00",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P50120",
+        "online": [
+          "P 50 139"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2011",
+        "online": [
+          "PFK1412 Accessory Kit"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2500301",
+        "online": [
+          "2258601"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB4538",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495310",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3394",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 81,
+    "make": "Mercedes-Benz",
+    "model": "GLC",
+    "oem_pn": "A 006 420 08 20",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P50111",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB1973",
+        "online": [
+          "GDB1906"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2468201",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4452",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494699",
+        "online": [
+          "0 986 494 989 Brake P",
+          "h in\n28"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3217",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 82,
+    "make": "Mercedes-Benz",
+    "model": "A-Class",
+    "oem_pn": "A 000 420 44 00",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P50130",
+        "online": [
+          "P 50 164"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2130",
+        "online": [
+          "GDB1977"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2540801",
+        "online": [
+          "2445503"
+        ],
+        "status": "MISMATCH"
+      },
+      "ferodo": {
+        "csv": "FDB4709",
+        "online": [
+          "FDB4373"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495371",
+        "online": [
+          "0 986 494 972 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3460",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 83,
+    "make": "Mercedes-Benz",
+    "model": "A-Class",
+    "oem_pn": "A 000 420 83 00",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P50131",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2131",
+        "online": [
+          "GDB2154"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2540901",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4710",
+        "online": [
+          "FDB5017"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495372",
+        "online": [
+          "0 986 424 334 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3461",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 84,
+    "make": "Seat",
+    "model": "Leon",
+    "oem_pn": "5Q0 698 151 C",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85137",
+        "online": [
+          "P 85 137E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB1941",
+        "online": [
+          "GDB2080"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2503701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4425",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494553",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3183",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 85,
+    "make": "Seat",
+    "model": "Leon",
+    "oem_pn": "5Q0 698 451 Q",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85113",
+        "online": [
+          "P 85 125E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2004",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2444401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4380",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494488",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3151",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 86,
+    "make": "Seat",
+    "model": "Ibiza",
+    "oem_pn": "2Q0 698 151",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85152",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2120",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2540501",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4707",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495364",
+        "online": [
+          "0 986 494 925 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3458",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 87,
+    "make": "Seat",
+    "model": "Ibiza",
+    "oem_pn": "2Q0 698 451",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85099",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB1983",
+        "online": [
+          "GDB1813"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2430401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4351",
+        "online": [
+          "FDB1788"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986494403",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3125",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 88,
+    "make": "Audi",
+    "model": "A3",
+    "oem_pn": "5Q0 698 151 C",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85137",
+        "online": [
+          "P 85 137E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB1941",
+        "online": [
+          "GDB2080"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2503701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4425",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494553",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3183",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 89,
+    "make": "Audi",
+    "model": "A3",
+    "oem_pn": "5Q0 698 451 Q",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85113",
+        "online": [
+          "P 85 125E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2004",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2444401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4380",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494488",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3151",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 90,
+    "make": "Audi",
+    "model": "Q3",
+    "oem_pn": "5Q0 698 151 AA",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85144",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2114",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2473803",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB5096",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494704",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3814",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 91,
+    "make": "Audi",
+    "model": "Q3",
+    "oem_pn": "5Q0 698 451 N",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P85113",
+        "online": [
+          "P 85 125E"
+        ],
+        "status": "MISMATCH"
+      },
+      "trw": {
+        "csv": "GDB2004",
+        "online": [
+          "GDB2179"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2444401",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4380",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986494488",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3151",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 92,
+    "make": "Fiat",
+    "model": "500X",
+    "oem_pn": "77367628",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P23163",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2019",
+        "online": [
+          "GDB2151"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2500901",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4557",
+        "online": [
+          "FDB4799"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495312",
+        "online": [
+          "0 986 495 392 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3408",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 93,
+    "make": "Fiat",
+    "model": "Tipo",
+    "oem_pn": "77367628",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P23163",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2019",
+        "online": [
+          "GDB2151"
+        ],
+        "status": "MISMATCH"
+      },
+      "textar": {
+        "csv": "2500901",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4557",
+        "online": [
+          "FDB4799"
+        ],
+        "status": "MISMATCH"
+      },
+      "bosch": {
+        "csv": "0986495312",
+        "online": [
+          "0 986 495 392 Brake P"
+        ],
+        "status": "MISMATCH"
+      },
+      "mintex": {
+        "csv": "MDB3408",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 94,
+    "make": "Ford",
+    "model": "Focus",
+    "oem_pn": "2 274 790",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P24218",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2080",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2519801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4620",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495322",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3421",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 95,
+    "make": "Ford",
+    "model": "Focus",
+    "oem_pn": "2 205 076",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P24204",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2021",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2501701",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4551",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495311",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3400",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 96,
+    "make": "Opel",
+    "model": "Corsa",
+    "oem_pn": "1612 049 580",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61118",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2106",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530801",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4647",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495352",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3507",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 97,
+    "make": "Opel",
+    "model": "Corsa",
+    "oem_pn": "1612 547 680",
+    "category": "rear_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P61119",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB2107",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2530901",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4648",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495353",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3508",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 98,
+    "make": "Suzuki",
+    "model": "Vitara",
+    "oem_pn": "55200-54PA0",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P79028",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3588",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2527301",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4653",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495340",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB3481",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  },
+  {
+    "row": 99,
+    "make": "Suzuki",
+    "model": "Swift",
+    "oem_pn": "55200-52R10",
+    "category": "front_brake_pad",
+    "checks": {
+      "brembo": {
+        "csv": "P79024",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "trw": {
+        "csv": "GDB3476",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "textar": {
+        "csv": "2447601",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "ferodo": {
+        "csv": "FDB4270",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "bosch": {
+        "csv": "0986495094",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      },
+      "mintex": {
+        "csv": "MDB2954",
+        "online": [],
+        "status": "NOT_FOUND_ONLINE"
+      }
+    }
+  }
+]

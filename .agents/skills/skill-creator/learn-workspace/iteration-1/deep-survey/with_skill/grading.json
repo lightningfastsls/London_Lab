@@ -1,0 +1,15 @@
+{
+  "eval_id": 2,
+  "eval_name": "deep-survey",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": true, "evidence": "Produced unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-27.md in inbox-compatible format"},
+    {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter: description, source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"},
+    {"text": "source-log-present", "passed": true, "evidence": "## Source Log table at line 117 with structured entries"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to Muenster et al. (2025), Best et al. (2023), specific GitHub repos and papers"},
+    {"text": "pipeline-chaining", "passed": true, "evidence": "Agent report suggested '/reduce' with estimate of 15-20 extractable atomic notes"},
+    {"text": "structured-sections", "passed": true, "evidence": "Organized into numbered sub-topic sections: HDBSCAN pipeline, foundation models, supervised vs self-supervised, USV-specific methods, open challenges"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing and contextual relevance to mouse USV project"},
+    {"text": "vault-check-performed", "passed": true, "evidence": "Reported existing vault coverage of VQ-VAE, Goffinet VAE, AMVOC, AVES, speech SSL transfer, DeepSqueak. Focused research on gaps."}
+  ]
+}

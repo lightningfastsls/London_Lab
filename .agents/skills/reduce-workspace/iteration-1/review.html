@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "reduce", "runs": [{"id": "research-synthesis-with_skill", "prompt": "Extract structured knowledge from this source file about DeepSqueak and USV classification. The file is at inbox/deepsqueak-usv-syllable-classification-practical-guide.md. This is a domain-relevant research synthesis about USV analysis tools and methods. Read the source fully, check for duplicates against existing notes in notes/, and produce an extraction report listing all claims, implementation ideas, tensions, enrichments, and skipped items with rationale. Do NOT create any files \u00e2\u20ac\u201d just produce the extraction report. Save the full extraction report to the outputs directory specified.", "eval_id": 1, "outputs": [{"name": "extraction_report.md", "type": "text", "content": "# Extraction Report: deepsqueak-usv-syllable-classification-practical-guide.md\n\n**Source:** `inbox/deepsqueak-usv-syllable-classification-practical-guide.md`\n**Source type:** compass_artifact (research synthesis)\n**Date accessed:** 2026-02-23\n**Source status:** `processed` (processed_date: 2026-02-23, processed_task: seed-002)\n**Source size:** ~123 lines (well under 2500-line chunking threshold)\n**Domain relevance:** HIGH -- directly about USV detection, classification, signal processing, and statistical methods for comparing wild vs lab mouse repertoires. This is core domain content.\n**Selectivity mode:** moderate (from ops/config.yaml)\n**Expected yield:** 15-30 outputs for a ~123-line domain-relevant source\n\n---\n\n## Orientation: Existing Vault State\n\nThe vault contains **173 notes** across topic maps including `detection`, `classification`, `signal-processing`, `representation-learning`, and `experimental-methods`. This source has already been processed once (status: processed, task: seed-002), and a prior extraction created approximately 25-30 notes from it. A second pass is being conducted to evaluate the skill's extraction methodology.\n\n**Key existing notes from this source (confirmed by reading):**\n- `DeepSqueak v3 switched from Faster R-CNN to YOLO v2 improving speed and accuracy for USV detection`\n- `DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision`\n- `DeepSqueak 3.2 ms FFT window with 2.8 ms overlap translates to 960-sample FFTs at 300 kHz`\n- `DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method`\n- `DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations`\n- `DeepSqueak regenerates its own spectrograms from raw audio so exported bounding boxes serve as regions of interest not precise frequency boundaries`\n- `BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice`\n- `AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering`\n- `DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input`\n- `WhisperSeg adapts OpenAI Whisper transformer for animal vocalization segmentation with positive cross-species transfer`\n- `fine frequency resolution matters more than time resolution for CNN classification of USV spectrogram patches`\n- `gammatone spectrograms outperform standard STFTs for USV classification according to BootSnap`\n- `VocalMat provides 12954 labeled USV spectrograms freely available as training data`\n- `classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data`\n- `dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions`\n- `distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison`\n- `Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization`\n- `Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs`\n- `traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum`\n- `Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable`\n- `including a noise-false-positive class in the USV classifier catches residual detection errors`\n- `Zala et al 2020 showed wild-derived mice modulate USVs with social context producing 9 types during interaction versus 6 during introduction`\n- `Raven selection table format is the standard interchange format between bioacoustic analysis tools`\n- `PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations`\n- `Jensen-Shannon divergence on categorical syllable proportions provides a symmetric bounded measure for comparing repertoire distributions between populations`\n- `Shannon entropy quantifies USV repertoire diversity with higher values indicating more evenly distributed syllable usage`\n- `whether BootSnap code is publicly available or must be requested from Abbasi Zala Penn at Vienna`\n\n**Dangling links identified** (referenced from existing notes but no file exists):\n1. `no Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap`\n2. `forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations`\n\n---\n\n## SUMMARY\n\n- notes: 2\n- implementation ideas: 3\n- tensions: 2\n- enrichment tasks: 7\n- validations: 0\n- open questions: 2\n- skipped: 19\n- TOTAL OUTPUTS: 16\n\n**Skip rate:** 19 skipped out of 35 candidates scanned = 54%\n\n**Justification for high skip rate:** This source has ALREADY BEEN PROCESSED (status: processed, task: seed-002). The prior extraction created ~25-30 notes from this source. The high skip rate reflects the fact that most core claims have already been extracted. What remains are: (a) dangling links that should be materialized as notes, (b) enrichment opportunities where the source adds detail the existing notes lack, (c) implementation ideas and open questions not captured in the first pass, and (d) a few genuinely new claims the first pass missed. A 54% skip rate on a PREVIOUSLY PROCESSED source is expected and valid -- the valid skip reason is \"literally identical text already exists\" for most candidates.\n\n---\n\n## CLAIMS (notes)\n\n### 1. No Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap\n- **Category:** Core domain note\n- **Classification:** CLOSED\n- **Rationale:** This is a dangling link -- referenced by 4 existing notes (DAS, WhisperSeg, AMVOC, BootSnap availability) but never materialized as its own note. The source directly states: \"No single tool cleanly accepts pre-detected USV segments and classifies them into syllable types.\" This is a genuine integration gap that shapes our entire pipeline strategy. The claim is standalone, composable (already linked from 4 notes!), novel as an articulated note, and deeply connected.\n- **Source lines:** 49-51 (\"The landscape of Python-based USV tools is fragmented. No single tool cleanly accepts pre-detected USV segments and classifies them into syllable types.\")\n- **Connects to:** [[DAS temporal convolutional network achieves 98 percent precision...]], [[WhisperSeg adapts OpenAI Whisper...]], [[AMVOC convolutional autoencoder provides...]], [[BootSnap snapshot ensemble CNN...]]\n- **Duplicate check:** Grep for \"integration gap\" and \"pre-detected segments\" in notes/ -- referenced in 4 notes as wiki-link text but NO standalone note file exists. This is a DANGLING LINK that should be materialized.\n\n### 2. Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations\n- **Category:** Core domain note (tension framing)\n- **Classification:** CLOSED\n- **Rationale:** Another dangling link -- referenced by 3 existing notes (Zala 2020, Goffinet VAE, dual classification) but never materialized. The source states this clearly in the conclusion: \"forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations.\" This is a critical methodological tension that underpins the entire dual-classification strategy.\n- **Source lines:** 86-90 (section on continuous manifold), 122 (conclusion)\n- **Connects to:** [[Goffinet et al 2021 showed USVs form a continuum...]], [[dual supervised plus unsupervised classification...]], [[Zala et al 2020 showed wild-derived mice modulate USVs...]]\n- **Duplicate check:** Grep for \"forcing USVs into discrete\" in notes/ -- referenced as wiki-link in 3 notes but NO standalone note file exists. This is a DANGLING LINK that should be materialized.\n\n---\n\n## IMPLEMENTATION IDEAS (methodology notes)\n\n### 3. Fine-tune MobileNetV2 or ResNet-18 on VocalMat spectrogram patches for USV syllable classification\n- **Category:** Implementation idea\n- **Classification:** CLOSED\n- **Rationale:** The source provides a concrete architecture recommendation: \"Fine-tune a pretrained MobileNetV2 or ResNet-18 backbone from ImageNet on your spectrogram patches.\" This is an actionable implementation path not captured in existing notes. The existing note on VocalMat (12,954 labeled spectrograms) covers the DATA but not the specific MODEL ARCHITECTURE recommendation. The existing note on \"fine frequency resolution matters more...\" covers STFT parameters but not the transfer learning backbone choice.\n- **Source lines:** 76-78 (\"Fine-tune a pretrained MobileNetV2 or ResNet-18 backbone from ImageNet on your spectrogram patches. VocalMat achieved ~86% accuracy on 11 syllable categories using fine-tuned AlexNet.\")\n- **Connects to:** [[VocalMat provides 12954 labeled USV spectrograms...]], [[fine frequency resolution matters more than time resolution...]], [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]]\n- **Duplicate check:** Grep for \"MobileNetV2\" and \"ResNet-18\" in notes/ -- no results. Grep for \"transfer learning\" in notes/ -- mentioned in passing but no dedicated implementation note.\n\n### 4. Extract spectrogram patches with 15 ms padding and resize to 128x128 or 224x224 for CNN classification\n- **Category:** Implementation idea\n- **Classification:** CLOSED\n- **Rationale:** Specific preprocessing recipe for classification: \"extract the audio segment with ~15 ms padding on each side... Resize all spectrogram patches to a fixed size (128x128 or 224x224 for transfer learning).\" The existing note on \"fine frequency resolution\" mentions 512-1024 FFT points but does NOT specify the padding, frequency restriction (25-125 kHz), or resize dimensions. This is actionable implementation detail.\n- **Source lines:** 76 (\"For each detected USV, extract the audio segment with ~15 ms padding on each side. Compute an STFT with 512-1024 point FFT... restricted to 25-125 kHz... Resize all spectrogram patches to a fixed size (128x128 or 224x224 for transfer learning).\")\n- **Connects to:** [[fine frequency resolution matters more than time resolution...]], [[25000-125000 Hz is the standard mouse USV frequency band...]]\n- **Duplicate check:** Grep for \"15 ms padding\" and \"128x128\" and \"224x224\" in notes/ -- no results. This implementation detail is not captured.\n\n### 5. Use UMAP plus HDBSCAN clustering on spectrogram embeddings for data-driven USV type discovery\n- **Category:** Implementation idea\n- **Classification:** OPEN (depends on embedding space quality)\n- **Rationale:** The source specifically names the unsupervised component of the dual strategy: \"unsupervised UMAP + HDBSCAN clustering on spectrogram embeddings (for data-driven discovery).\" The existing note on \"dual supervised plus unsupervised classification\" mentions \"UMAP + HDBSCAN\" in the description but does NOT articulate the specific implementation path (what embeddings? CNN penultimate layer? How to configure HDBSCAN?). This is a distinct implementation method note.\n- **Source lines:** 82 (\"unsupervised UMAP + HDBSCAN clustering on spectrogram embeddings\")\n- **Connects to:** [[dual supervised plus unsupervised classification...]], [[AMVOC convolutional autoencoder provides...]]\n- **Duplicate check:** Grep for \"UMAP\" and \"HDBSCAN\" in notes/ -- found in the description of \"dual supervised plus unsupervised classification\" but not as a standalone implementation note. The existing note frames this as strategy; this candidate would frame it as concrete method.\n\n---\n\n## TENSIONS (tension notes)\n\n### 6. DeepSqueak's data-driven agnosticism versus the field's continued reliance on predefined syllable taxonomies\n- **Category:** Tension\n- **Classification:** CLOSED\n- **Rationale:** The source highlights a methodological tension: \"DeepSqueak deliberately avoids hardcoding the Holy & Guo (2005) or Scattoni et al. (2008) syllable categories\" and \"there is 'no consensus yet on exactly how to categorize USVs'.\" Yet VocalMat, supervised classifiers, and the statistical comparison framework all depend on predefined categories. The existing note \"traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum\" captures the discrete-vs-continuum tension, but NOT the tension between tool design philosophies (agnostic tools like DeepSqueak vs taxonomy-dependent tools like VocalMat).\n- **Source lines:** 29-36 (\"DeepSqueak deliberately avoids hardcoding...\")\n- **Connects to:** [[traditional Holy and Guo 2005...]], [[DeepSqueak k-means clustering...]], [[VocalMat represents supervised classification...]]\n- **Duplicate check:** The existing \"traditional Holy and Guo\" note covers the EMPIRICAL finding (continuum vs discrete). This tension is about TOOL DESIGN PHILOSOPHY (agnostic vs predefined). Different angle -- not a duplicate.\n\n### 7. Supervised classification comparability with published literature versus unsupervised biological fidelity\n- **Category:** Tension\n- **Classification:** CLOSED\n- **Rationale:** The source articulates a practical tension in the conclusion: the need for \"supervised Scattoni-style categorization\" for comparability with published literature versus \"unsupervised exploration of the continuous USV space\" for biological accuracy. The existing \"dual supervised plus unsupervised\" note describes the SOLUTION (run both) but does not fully articulate the TENSION driving that solution -- why you cannot simply choose one approach. This tension note would make the reasoning behind the dual strategy explicit and retrievable.\n- **Source lines:** 82, 120-122\n- **Connects to:** [[dual supervised plus unsupervised classification...]], [[forcing USVs into discrete categories...]]\n- **Duplicate check:** The \"dual supervised plus unsupervised\" note describes what to do, not why the tension exists. This tension note would articulate the why.\n\n---\n\n## ENRICHMENT TASKS (update existing notes)\n\n### 8. Enrich: `DeepSqueak v3 switched from Faster R-CNN to YOLO v2...`\n- **Target:** `DeepSqueak v3 switched from Faster R-CNN to YOLO v2 improving speed and accuracy for USV detection`\n- **What to add:** The source specifies the exact MATLAB toolbox requirements (seven specific toolboxes named: Deep Learning, Computer Vision, Image Processing, Curve Fitting, Parallel Computing, Statistics and Machine Learning, Signal Processing) and the GPU recommendation (>=2 GB VRAM). The existing note mentions \"seven toolboxes\" but does not list all seven. Also: v3.2 added \"automatic horizontal noise band removal\" -- this specific feature is relevant to our noise handling challenges.\n- **Why:** The horizontal noise band removal feature of v3.2 is directly relevant to [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] and could inform our own noise removal approach. The existing note mentions v3.2 only briefly.\n- **Source lines:** 18-23\n\n### 9. Enrich: `DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method`\n- **Target:** `DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method`\n- **What to add:** The source provides more detail on the supervised classification path: \"Users can train custom classifiers by first producing clean clusters via unsupervised methods, then using those labeled exemplars to train a supervised network for faster future classification.\" This unsupervised-to-supervised bootstrapping workflow is an important practical pattern. Also: \"To use the Holy & Guo taxonomy, you would manually label exemplars into the 10 Scattoni categories (flat, chevron, short, up-FM, down-FM, complex, step-up, step-down, two-syllable, composite), then train a supervised classifier on those labels\" -- this enumerates the specific Scattoni category names, which are not listed in the existing note.\n- **Why:** The bootstrapping workflow (unsupervised -> label clusters -> train supervised) is a concrete implementation pattern. The existing note mentions it briefly but the specific Scattoni category names are not listed anywhere in the vault.\n- **Source lines:** 33-35\n\n### 10. Enrich: `DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations`\n- **Target:** `DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations`\n- **What to add:** The source details the DeepSqueak output format more comprehensively: \"Output is primarily MATLAB .mat files... Excel export produces .xlsx files with 16 metrics per call: ID, label, begin/end time, call length, principal frequency, low/high frequency, bandwidth, frequency standard deviation, slope, sinuosity, mean power, tonality, and peak frequency.\" The existing note already has this information from a later enrichment (from raven-deepsqueak-classification-bridge-plan.md). However, the source also mentions: \"Additional exports include Raven selection tables and spectrogram images. No native CSV or SQLite output.\" The \"no native CSV or SQLite\" detail and the \"spectrogram images\" export are not in the existing note.\n- **Why:** The \"no native CSV or SQLite\" limitation and \"spectrogram images\" export capability add practical integration detail.\n- **Source lines:** 43-45\n\n### 11. Enrich: `AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering`\n- **Target:** `AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering`\n- **What to add:** The source specifies AMVOC's detection module produces \"CSVs with onset/offset\" -- this CSV format detail for its detection output is not in the existing note. Also: \"real-time analysis via a Dash web GUI\" is mentioned in the existing note but the source adds that the clustering module \"processes detected USVs -- making it potentially adaptable to accept externally detected segments if formatted correctly.\" The existing note captures this adaptability but could add the specific detail that AMVOC's detection CSV format (onset/offset) provides a template for how to format external detections for input.\n- **Why:** The CSV onset/offset format detail is actionable for integration -- if we know AMVOC's expected CSV format, we can write an adapter.\n- **Source lines:** 55\n\n### 12. Enrich: `BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice`\n- **Target:** `BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice`\n- **What to add:** The source specifies that BootSnap's labeled data is \"available through their PLOS Computational Biology supplementary materials\" -- this is a concrete data access path not captured in the existing note. The existing note mentions the F1 performance and generalization findings but not where to get the training data itself.\n- **Why:** Knowing the data is in PLOS Comp Bio supplementary materials is directly actionable for training our own classifier.\n- **Source lines:** 53, 80\n\n### 13. Enrich: `PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations`\n- **Target:** `PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations`\n- **What to add:** The source provides a broader statistical framework context: \"Bhattacherjee et al. used KL divergence at 95% CIs\" and \"Markov chain transition analysis comparing syllable-to-syllable transition probability matrices between groups, testing with chi-square or permutation tests.\" The Bhattacherjee KL divergence citation is not in the existing note. The Markov chain transition analysis is covered in a separate note (row-stochastic transition matrices), but the cross-reference to Bhattacherjee et al. is new evidence.\n- **Why:** The Bhattacherjee et al. citation adds a specific literature reference for KL divergence usage in USV repertoire comparison, grounding the method in published practice.\n- **Source lines:** 110-114\n\n### 14. Enrich: `classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data`\n- **Target:** `classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data`\n- **What to add:** The source provides specific detail on which classes generalize versus not: \"t-SNE distributions differ substantially between wild and lab mice for certain classes (inverted-U, complex), while simpler categories (up, down, flat, short) show large overlap.\" The existing note already has this information from the prior extraction. However, the conclusion adds the practical recommendation: \"plan to label at least a subset of your own wild mouse USVs -- no existing labeled dataset adequately represents wild mouse vocal variation.\" This stronger framing (\"no existing dataset adequately represents\") sharpens the existing note's hedged language.\n- **Why:** The stronger conclusion framing provides a crisper articulation of the labeling requirement.\n- **Source lines:** 116, 122\n\n---\n\n## OPEN QUESTIONS (notes)\n\n### 15. Whether DeepSqueak's VAE-based contour-invariant clustering captures continuous variation better than k-means for USV classification\n- **Category:** Open question\n- **Classification:** OPEN\n- **Rationale:** The source mentions that \"Version 3.1 added Variational Autoencoder (VAE)-based contour-invariant clustering, a significant upgrade for capturing continuous variation.\" This is a distinct technical development from Goffinet's AVA tool. The existing notes cover Goffinet's VAE finding about the continuum and DeepSqueak's k-means clustering, but do NOT capture the fact that DeepSqueak ITSELF added a VAE option in v3.1. Whether DeepSqueak's built-in VAE clustering gives different results than its k-means (k=20) is an open question relevant to our classification strategy.\n- **Source lines:** 33 (\"Version 3.1 added Variational Autoencoder (VAE)-based contour-invariant clustering\")\n- **Connects to:** [[DeepSqueak k-means clustering...]], [[Goffinet et al 2021 showed USVs form a continuum...]], [[DeepSqueak built-in classification enables...]]\n- **Duplicate check:** Grep for \"contour-invariant\" in notes/ -- found only in the k-means clustering note as a passing mention (\"Version 3.1 added VAE-based contour-invariant clustering\"). The open question about comparative performance of k-means vs VAE within DeepSqueak is not articulated.\n\n### 16. Whether USVSEG's Python port or VocalMat's MATLAB codebase could be adapted for our pipeline\n- **Category:** Open question\n- **Classification:** OPEN\n- **Rationale:** The source's comparison table mentions two tools not fully explored in existing notes: \"USVSEG: MATLAB + Python port, Detection only, Published 2020\" and \"VocalMat: MATLAB, Partially accepts pre-detected USVs, Supervised CNN (11 classes), Inactive since ~2021.\" VocalMat has an existing note about its training data, and VocalMat's classification accuracy (86%) is documented, but neither USVSEG's Python port existence nor VocalMat's potential to accept pre-detected USVs has been explored as integration options.\n- **Source lines:** 61-68 (comparison table)\n- **Connects to:** [[no Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap]] (dangling link), [[VocalMat represents supervised classification...]]\n- **Duplicate check:** Grep for \"USVSEG\" in notes/ -- no results. The Python port of USVSEG is not captured anywhere.\n\n---\n\n## SKIPPED (truly nothing to add)\n\n1. **DeepSqueak is MATLAB-only, no Python port exists** -- Already fully captured in `DeepSqueak uses monolithic Faster R-CNN detection...` and `DeepSqueak v3 switched from Faster R-CNN to YOLO v2...`. Both notes explicitly state \"No Python port exists.\"\n\n2. **DeepSqueak system requirements (MATLAB 2020a+, 7 toolboxes, GPU recommended)** -- Already captured in `DeepSqueak uses monolithic Faster R-CNN detection...` with all details. Minor enrichment candidate (listing all 7 toolbox names) moved to enrichment #8 above.\n\n3. **DeepSqueak accepts WAV, FLAC, Ultravox files, first channel only** -- Already captured in `DeepSqueak 3.2 ms FFT window with 2.8 ms overlap...` and `DeepSqueak uses monolithic Faster R-CNN detection...`\n\n4. **DeepSqueak detection evolved: v1-2 Faster-RCNN, v3.1 YOLO v2, v3.2 high-precision nets** -- Already captured in `DeepSqueak v3 switched from Faster R-CNN to YOLO v2...`\n\n5. **Detection and classification are deliberately separated in DeepSqueak** -- Implicit in `DeepSqueak built-in classification enables...` which describes the classification pathway separately from detection. Not a standalone claim worth its own note.\n\n6. **k-means features: contour shape (1st derivative at 10 segments), frequency, duration, z-score normalized** -- Already captured in `DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types...` with this exact detail.\n\n7. **t-SNE visualization built into DeepSqueak** -- Implementation detail of the tool, not a domain claim. Low composability.\n\n8. **CNN supervised classification uses spectrogram images in DeepSqueak** -- Already captured in `DeepSqueak k-means clustering...` which describes the unsupervised-to-supervised bootstrapping. Minor detail.\n\n9. **Pre-trained networks ship with DeepSqueak (Wright et al. rat USV categories)** -- Tool-specific detail, low composability. Not actionable for our Python pipeline.\n\n10. **DeepSqueak 30-120 kHz default frequency cutoffs** -- Already captured indirectly through `25000-125000 Hz is the standard mouse USV frequency band...` (which covers the broader standard). DeepSqueak's specific defaults are not sufficiently novel.\n\n11. **DeepSqueak output: MATLAB .mat files, Excel .xlsx, Raven tables, spectrogram images** -- Already captured in `DeepSqueak built-in classification enables...` (16 features listed, .mat reading via scipy.io.loadmat, Raven export). Minor enrichment for \"no CSV/SQLite\" moved to enrichment #10 above.\n\n12. **Reading DeepSqueak outputs via scipy.io.loadmat or h5py** -- Already captured in `DeepSqueak built-in classification enables...`\n\n13. **Raven selection table import as most flexible DeepSqueak import pathway** -- Already captured in `Raven selection table format is the standard interchange format...` and `DeepSqueak built-in classification enables...`\n\n14. **DeepSqueak needs original audio files for classification (no classification-only mode)** -- Already captured in `DeepSqueak regenerates its own spectrograms from raw audio...`\n\n15. **BootSnap F1 67% on wild mice vs DeepSqueak's 41%** -- Already captured in `BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice`\n\n16. **DAS 98% precision / 99% recall on mouse USVs, raw audio only** -- Already captured in `DAS temporal convolutional network achieves 98 percent precision and 99 percent recall...`\n\n17. **WhisperSeg outperforms DAS, positive cross-species transfer** -- Already captured in `WhisperSeg adapts OpenAI Whisper transformer for animal vocalization segmentation...`\n\n18. **Goffinet AVA tool, 32-dim latent space, smooth interpolations** -- Already captured in `Goffinet et al 2021 showed USVs form a continuum...` and `Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters...`\n\n19. **Hertz et al. no one-to-one mapping between classification schemes** -- Already captured in `Hertz et al 2020 Syntax Information Score ranks classification schemes...`\n\n---\n\n## Calibration Check\n\n| Category | Count |\n|----------|-------|\n| notes (new) | 2 |\n| implementation ideas | 3 |\n| tensions | 2 |\n| enrichment tasks | 7 |\n| open questions | 2 |\n| validations | 0 |\n| skipped | 19 |\n| **TOTAL OUTPUTS** | **16** |\n| **TOTAL CANDIDATES** | **35** |\n| **Skip rate** | **54%** |\n\n**Skip rate justification:** The 54% skip rate exceeds the <10% threshold for domain-relevant sources. However, this is a RE-EXTRACTION of an already-processed source (status: processed). The prior extraction created ~25-30 notes from this same source. The skip reasons are uniformly \"already captured with identical or near-identical content in existing notes\" -- the valid skip category of \"literally identical text already exists.\" If this were the FIRST extraction pass, the expected output would be ~30 notes. On this second pass, the 16 outputs (2 dangling link materializations + 3 implementation ideas + 2 tensions + 7 enrichments + 2 open questions) represent genuinely missed content from the first pass, which is a reasonable yield.\n\n---\n\n## Pipeline Chaining (suggested mode)\n\nNext: `/reflect` on the 2 new notes and 2 tension notes once created, to establish connections into the graph. The 7 enrichment tasks should be executed to update existing notes with new detail. The 3 implementation ideas should become methodology notes linked to the classification and signal-processing topic maps.\n\n---\n\n## Observations\n\n### Friction: Re-extracting a processed source yields mostly enrichments\nWhen a source has already been processed, the dominant output type shifts from \"new notes\" to \"enrichments\" and \"implementation details.\" The skill's expected yield tables assume first-pass extraction. A processed-source heuristic (check `status: processed` in frontmatter) could adjust yield expectations and skip-rate thresholds. The 10% skip-rate threshold is calibrated for first-pass extraction of domain-relevant sources, not re-extraction.\n\n### Surprise: Dangling links as extraction signals\nTwo of the most valuable extraction candidates (claims #1 and #2) were identified not from reading the source, but from discovering that existing notes reference wiki-links that have no corresponding note files. Dangling links are demand signals -- they represent claims the vault USES but has not ARTICULATED. The reduce skill could benefit from a \"dangling link scan\" step during orientation that identifies these as priority extraction targets.\n\n### Methodology: Source provenance metadata enables extraction archaeology\nThe source's `processed_task: seed-002` field made it possible to understand why so many candidates were duplicates -- a prior extraction task had already processed this source. Without this metadata, the high skip rate would have appeared anomalous and triggered the mandatory low-yield review protocol unnecessarily.\n"}], "grading": {"expectations": [{"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 53-62: Clear SUMMARY section with counts for notes (2), implementation ideas (3), tensions (2), enrichment tasks (7), validations (0), open questions (2), skipped (19), TOTAL OUTPUTS (16)"}, {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "16 total outputs: 2 notes + 3 implementation ideas + 2 tensions + 7 enrichments + 2 open questions"}, {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": false, "evidence": "Skip rate is 54% (19/35). However, the report provides a thorough justification: this is a RE-EXTRACTION of an already-processed source (status: processed, task: seed-002). The skill correctly detected the prior processing and adjusted expectations. Every skip was verified against a specific existing note."}, {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All 16 items have detailed Rationale fields, e.g., item #1: 'This is a dangling link -- referenced by 4 existing notes but never materialized as its own note.'"}, {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": true, "evidence": "All titles pass the claim test: 'No Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap', 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations', 'Fine-tune MobileNetV2 or ResNet-18 on VocalMat spectrogram patches for USV syllable classification'"}, {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "5 categories: notes (2), implementation ideas (3), tensions (2), enrichment tasks (7), open questions (2)"}, {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Every item includes a 'Duplicate check' field with specific Grep commands and results. Orientation section (lines 14-50) lists 25+ existing notes from this source and identifies 2 dangling links."}, {"text": "The continuous-vs-discrete USV manifold tension is captured as an extraction", "passed": true, "evidence": "Item #2: 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations' -- identified as a dangling link referenced by 3 existing notes."}], "summary": {"passed": 7, "failed": 1, "total": 8, "pass_rate": 0.875}, "timing": {"total_duration_seconds": 707.8}}}, {"id": "research-synthesis-without_skill", "prompt": "Extract structured knowledge from this source file about DeepSqueak and USV classification. The file is at inbox/deepsqueak-usv-syllable-classification-practical-guide.md. This is a domain-relevant research synthesis about USV analysis tools and methods. Read the source fully, check for duplicates against existing notes in notes/, and produce an extraction report listing all claims, implementation ideas, tensions, enrichments, and skipped items with rationale. Do NOT create any files \u00e2\u20ac\u201d just produce the extraction report. Save the full extraction report to the outputs directory specified.", "eval_id": 1, "outputs": [{"name": "extraction_report.md", "type": "text", "content": "# Extraction Report: DeepSqueak and USV Syllable Classification Practical Guide\n\n**Source:** `inbox/deepsqueak-usv-syllable-classification-practical-guide.md`\n**Source type:** Compass artifact (research synthesis)\n**Date accessed:** 2026-02-23\n**Source status:** Already marked `processed` (processed_date: 2026-02-23, processed_task: seed-002)\n**Extraction date:** 2026-02-27\n\n---\n\n## Summary\n\n| Category | Count |\n|----------|-------|\n| Finding (empirical/factual) | 18 |\n| Method (technique/approach) | 8 |\n| Implementation idea | 6 |\n| Tension (contradiction/unresolved) | 4 |\n| Open question | 4 |\n| **Total extractable items** | **40** |\n| Already extracted to notes/ | 25 |\n| Partially covered (enrichment possible) | 5 |\n| Not yet extracted (new) | 8 |\n| Skipped (low value or derivative) | 2 |\n\n**Key observation:** This source has already been extensively processed. 25 notes directly cite it as a source. The remaining unextracted material is mostly supporting detail, integration-pathway specifics, and secondary statistical methods. Several items exist as dangling wiki-links (referenced but never created as standalone notes).\n\n---\n\n## Extracted Items: Already in notes/ (25 notes)\n\nThese items have already been extracted and exist as well-formed atomic notes. Listed for completeness with their note filenames.\n\n### 1. DeepSqueak v3 architecture evolution (FRCNN to YOLO v2)\n- **Category:** Finding\n- **Existing note:** `DeepSqueak v3 switched from Faster R-CNN to YOLO v2 improving speed and accuracy for USV detection.md`\n- **Status:** Fully extracted, richly linked\n\n### 2. DeepSqueak remains MATLAB-only with no Python port\n- **Category:** Finding\n- **Existing note:** `DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision.md` (covers this as part of a larger note)\n- **Status:** Fully extracted\n\n### 3. DeepSqueak k-means clustering yields 20 optimal syllable types\n- **Category:** Finding\n- **Existing note:** `DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method.md`\n- **Status:** Fully extracted, includes feature description (contour shape, frequency, duration)\n\n### 4. DeepSqueak 3.2 ms FFT window translates to 960 samples at 300 kHz\n- **Category:** Finding\n- **Existing note:** `DeepSqueak 3.2 ms FFT window with 2.8 ms overlap translates to 960-sample FFTs at 300 kHz.md`\n- **Status:** Fully extracted with parameter conversion math\n\n### 5. BootSnap outperforms DeepSqueak classification (F1 67% vs 41% on wild mice)\n- **Category:** Finding\n- **Existing note:** `BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice.md`\n- **Status:** Fully extracted\n\n### 6. AMVOC is the best open-source Python tool for unsupervised USV analysis\n- **Category:** Finding\n- **Existing note:** `AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering.md`\n- **Status:** Fully extracted\n\n### 7. DAS achieves 98% precision / 99% recall but requires raw audio\n- **Category:** Finding\n- **Existing note:** `DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input.md`\n- **Status:** Fully extracted\n\n### 8. WhisperSeg adapts Whisper for animal vocalizations with cross-species transfer\n- **Category:** Finding\n- **Existing note:** `WhisperSeg adapts OpenAI Whisper transformer for animal vocalization segmentation with positive cross-species transfer.md`\n- **Status:** Fully extracted\n\n### 9. Goffinet et al. 2021: mouse USVs form a continuous spectrum, not discrete clusters\n- **Category:** Finding\n- **Existing note:** `Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization.md`\n- **Status:** Fully extracted, deeply linked\n\n### 10. Goffinet VAE GMM clustering only supported k<=2 for mice\n- **Category:** Finding\n- **Existing note:** `Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs.md`\n- **Status:** Fully extracted\n\n### 11. Hertz et al. 2020 Syntax Information Score (SIS)\n- **Category:** Method\n- **Existing note:** `Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable.md`\n- **Status:** Fully extracted\n\n### 12. Hertz et al. 2020: no one-to-one mapping between classification schemes\n- **Category:** Finding\n- **Existing note:** `Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information.md` (covers the no-mapping finding as part of broader note)\n- **Status:** Fully extracted\n\n### 13. Fine frequency resolution matters more than time resolution for CNN classification\n- **Category:** Finding\n- **Existing note:** `fine frequency resolution matters more than time resolution for CNN classification of USV spectrogram patches.md`\n- **Status:** Fully extracted with specific FFT size recommendations\n\n### 14. Gammatone spectrograms outperform standard STFTs for classification\n- **Category:** Finding\n- **Existing note:** `gammatone spectrograms outperform standard STFTs for USV classification according to BootSnap.md`\n- **Status:** Fully extracted\n\n### 15. VocalMat provides 12,954 labeled spectrograms as training data\n- **Category:** Finding\n- **Existing note:** `VocalMat provides 12954 labeled USV spectrograms freely available as training data.md`\n- **Status:** Fully extracted\n\n### 16. Classifiers trained on lab mice generalize poorly to wild mice\n- **Category:** Finding\n- **Existing note:** `classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data.md`\n- **Status:** Fully extracted\n\n### 17. Dual supervised + unsupervised classification strategy\n- **Category:** Method\n- **Existing note:** `dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions.md`\n- **Status:** Fully extracted\n\n### 18. Distributional comparisons in VAE latent space (EMD, JSD) may be more meaningful than categorical comparison\n- **Category:** Method\n- **Existing note:** `distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison.md`\n- **Status:** Fully extracted\n\n### 19. Zala et al. 2020: wild-derived mice modulate USVs by social context (9 vs 6 types)\n- **Category:** Finding\n- **Existing note:** `Zala et al 2020 showed wild-derived mice modulate USVs with social context producing 9 types during interaction versus 6 during introduction.md`\n- **Status:** Fully extracted\n\n### 20. DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison\n- **Category:** Method (strategic decision)\n- **Existing note:** `DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations.md`\n- **Status:** Fully extracted, includes Raven import pathway and scipy.io.loadmat details\n\n### 21. BootSnap code availability is uncertain\n- **Category:** Open question\n- **Existing note:** `whether BootSnap code is publicly available or must be requested from Abbasi Zala Penn at Vienna.md`\n- **Status:** Fully extracted with action items\n\n### 22. Including a noise/false-positive class catches residual detection errors\n- **Category:** Method\n- **Existing note:** `including a noise-false-positive class in the USV classifier catches residual detection errors.md`\n- **Status:** Fully extracted\n\n### 23. Traditional Holy & Guo taxonomy vs Goffinet continuum paradigm shift\n- **Category:** Tension\n- **Existing note:** `traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum.md`\n- **Status:** Fully extracted\n\n### 24. VocalMat: supervised classification with predefined categories (86% accuracy, 11 types)\n- **Category:** Finding\n- **Existing note:** `VocalMat represents supervised classification with predefined categories achieving 86 percent accuracy on 11 USV types.md`\n- **Status:** Fully extracted\n\n### 25. MUPET uses gammatone filterbank and k-means for 100-140 data-driven types\n- **Category:** Finding\n- **Existing note:** `MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types.md`\n- **Status:** Fully extracted\n\n---\n\n## Extracted Items: Partially Covered (enrichment candidates)\n\nThese claims are present in existing notes but could be enriched with specific details from the source.\n\n### 26. DeepSqueak's 7-toolbox MATLAB dependency creates a high barrier to entry\n- **Category:** Finding\n- **Rationale:** The specific list of 7 MATLAB toolboxes (Deep Learning, Computer Vision, Image Processing, Curve Fitting, Parallel Computing, Statistics and ML, Signal Processing) is documented in the \"DeepSqueak uses monolithic...\" note but could be a standalone note about tool accessibility barriers in the USV field.\n- **Existing coverage:** Mentioned in the body of \"DeepSqueak uses monolithic Faster R-CNN detection...\" but not as an independent claim.\n- **Enrichment value:** Low -- the detail is already captured.\n\n### 27. DeepSqueak accepts WAV, FLAC, and UVD files; processes only first channel\n- **Category:** Finding\n- **Rationale:** File format compatibility is documented across multiple notes but scattered.\n- **Existing coverage:** Mentioned in \"DeepSqueak uses monolithic...\" and \"DeepSqueak 3.2 ms FFT window...\" notes.\n- **Enrichment value:** Low -- adequately captured across existing notes.\n\n### 28. DeepSqueak Multi-Detect supports batch detection but is fundamentally GUI-centric\n- **Category:** Finding\n- **Rationale:** The batch processing capability and its GUI limitation are relevant to integration strategy.\n- **Existing coverage:** The \"DeepSqueak built-in classification...\" note covers the Raven import workaround but does not specifically describe the batch detection or GUI-centricity.\n- **Enrichment value:** Medium -- could enrich the DeepSqueak integration note.\n\n### 29. Statistical framework for wild vs lab comparison (PERMANOVA, chi-square, KL divergence, Markov chains, Shannon entropy)\n- **Category:** Method\n- **Rationale:** The source lists five standard statistical methods in priority order for repertoire comparison.\n- **Existing coverage:** Each method has its own dedicated note (PERMANOVA, JSD, Shannon entropy, transition matrices). The \"wild versus lab mouse USV comparison...\" note also contains a full statistical framework section.\n- **Enrichment value:** Low -- comprehensively covered across multiple notes.\n\n### 30. Raven selection table import is the most flexible pathway for feeding pre-detected USVs into DeepSqueak\n- **Category:** Implementation idea\n- **Rationale:** Practical integration pathway.\n- **Existing coverage:** Documented in \"DeepSqueak built-in classification...\" note. Also a standalone note `Raven selection table format is the standard interchange format between bioacoustic analysis tools.md` exists.\n- **Enrichment value:** Low -- well covered.\n\n---\n\n## Extracted Items: Not Yet Extracted (new material, 8 items)\n\n### 31. No Python USV tool cleanly accepts pre-detected segments for classification, creating an integration gap\n- **Category:** Tension\n- **Claim:** The Python USV tool ecosystem is fragmented -- no single tool cleanly accepts pre-detected USV segments and classifies them into syllable types. BootSnap comes closest but may not be publicly available; AMVOC is partially adaptable; DAS and WhisperSeg require raw audio.\n- **Rationale:** This is referenced as a dangling wiki-link `[[no Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap]]` in 4 existing notes but the note itself does not exist. It represents a genuine gap in the tool landscape that directly impacts pipeline architecture decisions.\n- **Existing coverage:** Referenced but NEVER created as a standalone note. This is a dangling link that should be resolved.\n\n### 32. Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations\n- **Category:** Tension\n- **Claim:** If mouse USVs form a continuum (per Goffinet 2021) rather than discrete types, then the standard practice of computing proportions of discrete syllable types per animal and testing for differences may be fundamentally flawed -- it imposes artificial boundaries that could obscure the very variation that distinguishes wild from lab populations.\n- **Rationale:** Referenced as a dangling wiki-link `[[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]]` in 4 existing notes but the note itself does not exist. This is a methodologically critical tension between established practice and newer evidence.\n- **Existing coverage:** Referenced but NEVER created as a standalone note. The distributional comparisons note partially addresses this, but this claim stands on its own as a tension.\n\n### 33. DeepSqueak v3.2 added automatic horizontal noise band removal\n- **Category:** Finding\n- **Claim:** DeepSqueak version 3.2 added high-precision neural networks and automatic horizontal noise band removal, addressing a common artifact in USV recordings (e.g., electrical interference at harmonic frequencies).\n- **Rationale:** The noise band removal feature is a specific technical capability not captured in existing notes. It connects to our pipeline's own noise handling (electrical interference at 60 kHz harmonics) and could inform whether DeepSqueak's approach is worth replicating.\n- **Existing coverage:** Mentioned in passing in the \"DeepSqueak v3 switched...\" note but the noise band removal is not highlighted as its own claim.\n\n### 34. Spectrogram patch extraction recipe: 15 ms padding, 512-1024 FFT, Hamming window, 75% overlap, 25-125 kHz, resize to 128x128 or 224x224\n- **Category:** Implementation idea\n- **Claim:** For CNN classification of detected USVs, the recommended spectrogram extraction recipe is: extract audio with ~15 ms padding on each side, compute STFT with 512-1024 point FFT (1024 preferred at 300 kHz), Hamming window, 75% overlap, restrict to 25-125 kHz, resize all patches to fixed size (128x128 for custom CNN, 224x224 for transfer learning).\n- **Rationale:** This is a concrete, actionable implementation recipe that consolidates several STFT parameter decisions into a single extraction pipeline specification. The \"fine frequency resolution...\" note captures the principle but not this specific recipe.\n- **Existing coverage:** Partially in \"fine frequency resolution matters...\" note (mentions the recipe in passing) but not as a standalone implementation specification.\n\n### 35. Fine-tune pretrained MobileNetV2 or ResNet-18 on spectrogram patches for USV classification\n- **Category:** Implementation idea\n- **Claim:** The recommended model architecture for USV syllable classification is fine-tuning a pretrained MobileNetV2 or ResNet-18 backbone from ImageNet on spectrogram patches, rather than training from scratch. VocalMat achieved ~86% accuracy with fine-tuned AlexNet; BootSnap used snapshot ensemble learning.\n- **Rationale:** Specific architecture recommendation with precedent from VocalMat and BootSnap. The existing notes mention VocalMat's AlexNet and BootSnap's CNN but do not consolidate the transfer learning recommendation as a standalone implementation claim.\n- **Existing coverage:** Distributed across VocalMat and BootSnap notes but not consolidated as an implementation recommendation.\n\n### 36. DeepSqueak's unsupervised-to-supervised training pipeline: cluster first, then train CNN on cluster labels\n- **Category:** Method\n- **Claim:** DeepSqueak supports a two-phase classification workflow: first produce clean clusters via unsupervised methods (k-means or VAE), then use those automatically labeled exemplars to train a supervised CNN for faster future classification. This bootstrapping approach addresses the labeled data scarcity problem.\n- **Rationale:** This bootstrapping method (unsupervised labels -> supervised training) is a useful pattern that could inform our own labeling strategy. It connects to the active learning cycle note but represents a different approach (unsupervised bootstrap vs. active learning).\n- **Existing coverage:** Mentioned briefly in the DeepSqueak k-means note but the two-phase workflow pattern is not extracted as its own claim.\n\n### 37. DeepSqueak output Excel export provides 16 metrics per call\n- **Category:** Finding\n- **Claim:** DeepSqueak's Excel export produces .xlsx files with 16 metrics per call: ID, label, begin/end time, call length, principal frequency, low/high frequency, bandwidth, frequency standard deviation, slope, sinuosity, mean power, tonality, and peak frequency. No native CSV or SQLite.\n- **Rationale:** The 16-metric feature set defines the acoustic characterization available from DeepSqueak classification, which is relevant to downstream statistical analysis planning.\n- **Existing coverage:** Documented in the \"DeepSqueak built-in classification...\" note body. Could stand alone as a reference specification but has low independent value.\n\n### 38. Bhattacherjee et al. used KL divergence at 95% CIs for USV repertoire comparison\n- **Category:** Finding\n- **Claim:** Bhattacherjee et al. used KL divergence with 95% confidence intervals for quantifying distributional distance between USV populations -- providing a specific statistical precedent with uncertainty quantification.\n- **Rationale:** Adds a citation to the statistical framework for repertoire comparison. The existing JSD note does not mention this specific study.\n- **Existing coverage:** Not specifically captured. The JSD note and wild-vs-lab comparison note mention KL divergence but not the Bhattacherjee study specifically.\n\n---\n\n## Skipped Items (2 items)\n\n### S1. DeepSqueak GitHub has ~417 stars and BSD-3-Clause license\n- **Category:** Factual detail\n- **Rationale for skipping:** Star count is ephemeral and not a knowledge claim. License is already noted in the DeepSqueak notes. No atomic claim here.\n\n### S2. USVSEG (MATLAB + Python port, detection only, published 2020)\n- **Category:** Finding\n- **Rationale for skipping:** Mentioned in the tool comparison table but provides detection only (not classification), is inactive, and is not relevant to the pipeline's classification needs. Too thin for a standalone note; no claim beyond \"this tool exists.\"\n\n---\n\n## Dangling Links Identified\n\nThe following wiki-links are referenced in multiple existing notes but the target notes do not exist:\n\n1. **`[[no Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap]]`** -- Referenced in 4 notes (AMVOC, DAS, WhisperSeg, BootSnap availability). Should be created.\n\n2. **`[[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]]`** -- Referenced in 4 notes (dual classification, distributional comparisons, Zala et al., Goffinet GMM). Should be created.\n\nThese represent demand signals from the existing graph for notes that were anticipated during the initial extraction but never actually written.\n\n---\n\n## Duplicate / Enrichment Analysis\n\n| Source claim | Existing note | Relationship |\n|-------------|---------------|-------------|\n| USVs form continuous manifold | Goffinet 2021 continuum note + Holy & Guo paradigm shift note | Fully covered by 2 complementary notes |\n| DeepSqueak MATLAB-only | DeepSqueak monolithic note | Covered as supporting detail |\n| BootSnap F1 67% | BootSnap note | Fully covered |\n| Tool comparison table (6 tools) | 5 individual tool notes | Each tool has its own note; VocalMat (inactive since 2021) and USVSEG are the only ones without dedicated notes. VocalMat has one. USVSEG skipped. |\n| Statistical framework (5 methods) | 4 dedicated method notes + wild-vs-lab comparison note | Comprehensively covered |\n| Spectrogram CNN architecture recommendation | Distributed across 3+ notes | Not consolidated; item 34-35 above address this |\n\n---\n\n## Assessment\n\nThis source has been **thoroughly processed**. Of 40 extractable items, 25 already exist as well-formed atomic notes with rich cross-linking. The remaining 8 new items are a mix of:\n\n- **2 dangling links that should be created** (items 31, 32) -- these are referenced by 4 notes each and represent genuine knowledge gaps in the graph\n- **3 implementation-level details** (items 34, 35, 36) -- useful for when classification is actually implemented but somewhat premature\n- **3 secondary findings** (items 33, 37, 38) -- lower-priority additions to the knowledge base\n\n**Recommended priority for remaining extraction:**\n1. Create the 2 dangling-link notes (items 31, 32) -- graph health improvement\n2. Consider item 36 (unsupervised-to-supervised bootstrap) as a method note -- useful pattern\n3. Defer items 33, 34, 35, 37, 38 until the classification pipeline is actively being built\n\n**Agents:** None\n"}], "grading": {"expectations": [{"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 13-24: Summary table with Finding (18), Method (8), Implementation idea (6), Tension (4), Open question (4), Total extractable items (40), Already extracted (25), Not yet extracted (8), Skipped (2)"}, {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "40 total extractable items identified, 8 genuinely new, 5 enrichment candidates. Even counting only net new: 8 + 5 = 13 outputs."}, {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": true, "evidence": "2 items explicitly skipped out of 40 = 5% skip rate. The 25 'already extracted' items are documented as existing coverage, not skips."}, {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All items include rationale. E.g., item 31: 'This is referenced as a dangling wiki-link... represents a genuine gap in the tool landscape that directly impacts pipeline architecture decisions.'"}, {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": false, "evidence": "Mixed quality. New items (31-38) use claim-like titles: 'No Python USV tool cleanly accepts pre-detected segments for classification, creating an integration gap'. But existing items (1-25) use descriptive/topic titles: 'DeepSqueak v3 architecture evolution (FRCNN to YOLO v2)', 'BootSnap outperforms DeepSqueak classification'. These are descriptions, not propositions."}, {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "5 categories: Finding (18), Method (8), Implementation idea (6), Tension (4), Open question (4)"}, {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Extensive duplicate analysis: 'Extracted Items: Already in notes/ (25 notes)' section with per-item existing-note mapping, plus 'Duplicate / Enrichment Analysis' table (lines 275-283)"}, {"text": "The continuous-vs-discrete USV manifold tension is captured as an extraction", "passed": true, "evidence": "Item 32: 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations' \u00e2\u20ac\u201d identified as a dangling wiki-link in 4 existing notes."}], "summary": {"passed": 7, "failed": 1, "total": 8, "pass_rate": 0.875}, "timing": {"total_duration_seconds": 344.3}}}, {"id": "planning-doc-with_skill", "prompt": "Extract structured knowledge from this vacation planning source file. The file is at inbox/vacation-master-plan-v2.md. This captures implementation plans for information theory analysis, probing experiments, and LMT integration for USV research. Read the source fully, check for duplicates against existing notes in notes/, and produce an extraction report listing all claims, implementation ideas, tensions, enrichments, and skipped items with rationale. Do NOT create any files \u00e2\u20ac\u201d just produce the extraction report. Save the full extraction report to the outputs directory specified.", "eval_id": 2, "outputs": [{"name": "extraction_report.md", "type": "text", "content": "# Extraction Report: vacation-master-plan-v2.md\n\n**Source:** `inbox/vacation-master-plan-v2.md`\n**Source type:** conversation\n**Date accessed:** 2026-02-23\n**Source size:** ~101 lines (below 2500-line chunking threshold)\n**Domain relevance:** HIGHLY RELEVANT -- directly about the USV research domain (information theory, probing, LMT integration for USV analysis)\n**Processing depth:** standard (per ops/config.yaml)\n**Selectivity:** moderate (per ops/config.yaml)\n\n---\n\n## ORIENTATION (Step 1)\n\nScanned `notes/` directory. Found 90+ existing notes, 5 topic maps (detection, classification, representation-learning, signal-processing, experimental-methods). The `representation-learning` topic map already has dedicated sections for:\n- Information-Theoretic Analysis (4 notes)\n- Null Model Hierarchy (7 notes)\n- Probing & Interpretability (5 notes)\n- Converging Hypothesis (1 note)\n\n**Critical finding:** Grep for `vacation-master-plan-v2` in the Source footer of existing notes returned **34 files**. This source has been previously processed through /reduce. Essentially every major claim from the original document already exists as a well-developed note in the vault.\n\n---\n\n## SOURCE READING (Step 2)\n\nThe source is a planning document capturing a vacation autonomous work plan with three workstreams:\n1. **Information theory + null models** -- 11 functions across `information_theory.py`, 5 null models in `null_models.py`, 2 comparison methods in `statistical_tests.py`, plus 4 analytically verifiable test cases\n2. **Probing experiments** -- `AcousticPropertyExtractor` (7 properties) and `ProbingExperiment`/`ProbingAnalysisPipeline` (pooling, probe types, 5-fold CV, heatmap output)\n3. **LMT integration** -- pre-code questions, 3 analysis tiers, 4-module subpackage in `src/usv_spectrogram/lmt/`\n4. **Convergence thesis** -- how three workstreams combine to answer the central research question\n5. **Session schedule** -- 5-session breakdown with specific deliverables per session\n6. **Remote workflow** -- morning spawn, phone check-in, optional evening commit pattern\n\n**Extraction plan:** Given that 34 notes already cite this source, the primary task is identifying what was MISSED in prior extraction, not re-extracting what exists.\n\n**Expected categories:** findings, methods, decisions, hypotheses, implementation ideas, patterns, open questions, tensions\n\n---\n\n## CANDIDATE CATEGORIZATION AND DUPLICATE CHECK (Steps 3-4)\n\n### Systematic scan: every extractable claim in the source, checked against the vault\n\n#### Workstream 1: Information Theory + Null Models (lines 22-55)\n\n| # | Candidate Claim | Category | Vault Check | Verdict |\n|---|----------------|----------|-------------|---------|\n| 1 | Clauset et al. 2009 MLE power law fit produces Zipf exponent with alpha, xmin, KS p-value | method | EXISTS: `Clauset et al 2009 MLE produces the gold standard power law fit for Zipf exponent estimation.md` | SKIP (identical) |\n| 2 | Entropy-based Zipf estimate cross-validates MLE on small datasets | method | EXISTS: `entropy-based Zipf estimation cross-validates MLE on small datasets where power law fitting is unreliable.md` | SKIP (identical) |\n| 3 | Entropy rate with Miller-Madow correction for k=0..max_order | method | EXISTS: `entropy rate decreasing with context length indicates sequential predictability in USV code streams.md` + `Miller-Madow correction compensates for finite sample bias in entropy rate estimation.md` | SKIP (identical) |\n| 4 | Excess entropy via Crutchfield & Feldman 2003 block entropy extrapolation | method | EXISTS: `Crutchfield and Feldman 2003 block entropy extrapolation is the standard method for computing excess entropy.md` | SKIP (identical) |\n| 5 | Mutual information rate I(X_t; X_{t+lag}) at varying lags | method | NOT FOUND as standalone note | **EXTRACT** |\n| 6 | Transition matrix K x K bigram transition probability | method | EXISTS (partially): `row-stochastic transition matrices capture sequential structure in syllable sequences...` covers the concept for DeepSqueak syllables but not specifically for VQ-VAE codes; also `bigram productivity ratio measures compositionality of USV code sequences.md` references transition structure | ENRICHMENT |\n| 7 | Conditional entropy by lag H(X_t|X_{t-lag}) | method | EXISTS: `conditional entropy by lag probes single-token influence at distance unlike entropy rate which uses contiguous history.md` | SKIP (identical) |\n| 8 | Bigram productivity with bootstrap CI | method | EXISTS: `bigram productivity ratio measures compositionality of USV code sequences.md` | SKIP (identical -- bootstrap CI is implementation detail) |\n| 9 | N-gram idiom detection via z-score>3 or FDR p<0.01 | method | EXISTS: `n-gram idiom detection identifies compositional phrases exceeding chance frequency in USV code sequences.md` | SKIP (identical) |\n| 10 | Burstiness coefficient via CV of IEI + Kleinberg burst detection | method | EXISTS: `burstiness coefficient via coefficient of variation of inter-event intervals distinguishes Poisson from bursty temporal patterns.md` | SKIP (identical) |\n| 11 | Burstiness by behavioral context | finding | EXISTS: `burstiness by behavioral context bridges information theory and LMT behavioral analysis.md` | SKIP (identical) |\n| 12 | Shuffled null model | method | EXISTS: `shuffled null model preserves code frequencies but destroys all sequential structure.md` | SKIP (identical) |\n| 13 | Markov order-k null model | method | EXISTS: `Markov order-k null model generates surrogates preserving k-step transition dependencies.md` | SKIP (identical) |\n| 14 | Renewal process null model | method | EXISTS: `renewal process null model fits inter-event interval distribution for temporal structure testing.md` | SKIP (identical) |\n| 15 | HMM surrogate null model | method | EXISTS: `HMM surrogate null model tests whether USV sequences arise from hidden behavioral state switching.md` | SKIP (identical) |\n| 16 | Phase randomized null model | method | EXISTS: `phase randomized null model preserves autocorrelation spectrum while destroying higher-order structure.md` | SKIP (identical) |\n| 17 | NullModelComparison: compare + full_analysis (z-scores, p-values, effect sizes) | method | EXISTS: `null model comparison framework produces z-scores rank-based p-values and effect sizes as the publishable statistical output.md` | SKIP (identical) |\n| 18 | Analytically verifiable test cases (shuffled uniform K=64, Markov-1, Poisson CV, planted idiom) | finding | EXISTS: `analytically verifiable test cases validate information-theoretic metric implementations.md` | SKIP (identical) |\n| 19 | Null models are the most important part -- without them, metrics are uninterpretable | finding | EXISTS: `null models are essential for interpreting information-theoretic metrics on USV code sequences.md` | SKIP (identical) |\n| 20 | Gemini suggestions merged into original plan: adds burstiness, ngram_idioms, zipf_via_shannon_entropy | decision | NOT FOUND as standalone note | **EXTRACT** |\n\n#### Workstream 2: Probing Experiments (lines 56-69)\n\n| # | Candidate Claim | Category | Vault Check | Verdict |\n|---|----------------|----------|-------------|---------|\n| 21 | AcousticPropertyExtractor: 7 properties (peak_freq, centroid, energy, is_voiced, freq_direction, bout_position, time_since_last_usv) | method | EXISTS: `acoustic property extraction from spectrogram data produces ground truth targets for probing experiments.md` | SKIP (identical) |\n| 22 | Memory-mapped hidden state loading from extract_hidden_states.py | implementation | NOT FOUND as standalone note | **EXTRACT** |\n| 23 | Pooling strategies: mean/max/first/last | method | EXISTS: `pooling strategy choice over the time dimension determines what information probing experiments can access from hidden states.md` | SKIP (identical) |\n| 24 | Probes: linear (LogisticRegression/Ridge) + mlp_1layer | method | EXISTS: `linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property.md` | SKIP (identical) |\n| 25 | 5-fold CV with accuracy/R-squared + selectivity | method | EXISTS: `probe selectivity measured as accuracy minus majority baseline distinguishes genuine encoding from trivial prediction.md` | SKIP (identical) |\n| 26 | Layer x property heatmap as key output | finding | EXISTS: `layer-property heatmap is the key output showing where acoustic information lives across transformer depth.md` | SKIP (identical) |\n\n#### Workstream 3: LMT Integration (lines 71-81)\n\n| # | Candidate Claim | Category | Vault Check | Verdict |\n|---|----------------|----------|-------------|---------|\n| 27 | LMT-USV-Toolbox already handles WAV-behavioral synchronization -- don't build from scratch | finding | EXISTS: `LMT USV Toolbox provides Python-based offline USV processing as a reference implementation.md` | SKIP (identical) |\n| 28 | Pre-code questions: SQLite location, AviSoft integration, wild vs lab labels, LMT version | open-question | EXISTS: `pre-code questions for LMT integration must be resolved before implementation.md` | SKIP (identical) |\n| 29 | Tier 1: Event-triggered USV rate via PETH +/-2s | method | EXISTS: `event-triggered USV rate via PETH in plus-minus 2 second windows per event type serves as LMT integration sanity check.md` | SKIP (identical) |\n| 30 | Tier 2: Behavioral context x vocal repertoire -- MANOVA on CNN features or chi-squared on VQ-VAE codes | method | NOT FOUND as standalone note | **EXTRACT** |\n| 31 | Tier 3: Vocal sequence -> behavioral prediction via I(vocal_sequence; next_behavior) | method | EXISTS: `mutual information between vocal sequence and next behavior quantifies vocal prediction of behavioral transitions.md` | SKIP (identical) |\n| 32 | LMT code in dedicated subpackage: db_loader, synchronizer, event_triggered, context_analysis | decision | EXISTS: `LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage.md` | SKIP (identical) |\n\n#### Convergence Thesis (lines 83-89)\n\n| # | Candidate Claim | Category | Vault Check | Verdict |\n|---|----------------|----------|-------------|---------|\n| 33 | Null models prove structure is real (not artifact) | finding | EXISTS: `null models are essential for interpreting information-theoretic metrics on USV code sequences.md` | SKIP (identical) |\n| 34 | Probing shows what transformer learned + guides VQ-VAE layer selection | finding | EXISTS: `layer-property heatmap is the key output showing where acoustic information lives across transformer depth.md` | SKIP (identical) |\n| 35 | Burstiness_by_context bridges information theory and behavioral analysis | finding | EXISTS: `burstiness by behavioral context bridges information theory and LMT behavioral analysis.md` | SKIP (identical) |\n| 36 | LMT integration grounds everything in biology | finding | EXISTS: `the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations.md` | SKIP (identical) |\n| 37 | Combined answer: \"Does transformer encode behaviorally meaningful vocal categories that differ between wild and lab populations?\" | hypothesis | EXISTS: `the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations.md` | SKIP (identical) |\n\n#### Session Schedule + Workflow (lines 91-97, lines 17-18)\n\n| # | Candidate Claim | Category | Vault Check | Verdict |\n|---|----------------|----------|-------------|---------|\n| 38 | Session ordering: info theory first, null models second, probing third, LMT last | decision | EXISTS: `information theory and null model foundation must precede probing and LMT integration.md` | SKIP (identical) |\n| 39 | Remote workflow: morning 15 min spawn, phone check-in 25 min, optional evening commit + /seed | implementation | NOT FOUND | **EXTRACT** |\n\n#### Key Points / Meta-level (lines 12-18)\n\n| # | Candidate Claim | Category | Vault Check | Verdict |\n|---|----------------|----------|-------------|---------|\n| 40 | Three-workstream architecture (info theory + null models, probing, LMT integration) as an organizing principle | pattern | NOT FOUND as standalone note -- the three-workstream structure is embedded in the converging question note but not articulated as a methodology pattern | **EXTRACT** |\n\n---\n\n## SUMMARY\n\n- notes: 5\n- implementation ideas: 1\n- tensions: 0\n- enrichment tasks: 1\n- validations: 0\n- open questions: 0\n- skipped: 33\n- TOTAL OUTPUTS: 7\n\n**Skip rate: 33/40 = 82.5%**\n\n**Skip rate justification:** This source has already been through a prior /reduce pass -- 34 existing notes cite `vacation-master-plan-v2` as their source. The 82.5% skip rate is NOT because of over-filtering but because the vault already contains comprehensive extraction from this document. Every skipped item was verified against a specific existing note with matching content. The 7 remaining outputs represent genuine gaps in the prior extraction.\n\n---\n\n## CLAIMS (notes)\n\n### 1. mutual information rate at varying lags measures temporal dependency decay between non-adjacent VQ-VAE codes\n- **Type:** method\n- **Classification:** CLOSED\n- **Source lines:** 31\n- **Rationale:** The source lists `mutual_information_rate -- I(X_t; X_{t+lag}) at varying lags` as a distinct function. Unlike `conditional_entropy_by_lag` (which has its own note), mutual information rate is a symmetric measure: I(X_t; X_{t+lag}) quantifies total shared information between two tokens separated by lag, while H(X_t|X_{t-lag}) quantifies one-directional predictability. The existing note on conditional entropy by lag explicitly contrasts itself with entropy rate but does not discuss mutual information rate as a complementary measure. This gap matters because mutual information rate captures non-linear dependencies that conditional entropy can miss.\n- **Connects to:** [[conditional entropy by lag probes single-token influence at distance unlike entropy rate which uses contiguous history]], [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]]\n- **Topic map:** [[representation-learning]]\n\n### 2. Gemini plan comparison validated original null model framework while adding three new metrics as cross-validation\n- **Type:** decision\n- **Classification:** CLOSED\n- **Source lines:** 13\n- **Rationale:** The source explicitly states that Gemini suggestions were merged into the original plan, adding `burstiness_coefficient`, `ngram_idioms`, and `zipf_via_shannon_entropy` as cross-validation tools, while noting that Gemini \"had no equivalent\" for the null model framework. This is a methodological validation: an independent AI planner converged on overlapping metrics but lacked the statistical rigor layer. The decision to merge rather than replace, and the observation that null models were missing from an alternative plan, are both extractable findings.\n- **Connects to:** [[null models are essential for interpreting information-theoretic metrics on USV code sequences]], [[entropy-based Zipf estimation cross-validates MLE on small datasets where power law fitting is unreliable]]\n- **Topic map:** [[experimental-methods]]\n\n### 3. three-workstream architecture organizes vacation research into foundation-first dependency layers\n- **Type:** pattern\n- **Classification:** CLOSED\n- **Source lines:** 12, 83-89, 91-97\n- **Rationale:** The three-workstream architecture is more than a scheduling convenience -- it encodes a methodological principle of building validation layers before interpretation layers before application layers. The existing note `information theory and null model foundation must precede probing and LMT integration` captures the dependency chain but not the broader pattern of three-workstream organization as a reusable research design. The three workstreams converge via specific bridge points (burstiness_by_context, probing-guided VQ-VAE selection, behavioral grounding) that form a triangulation argument. Worth extracting as a standalone pattern because it articulates a research organization principle.\n- **Connects to:** [[information theory and null model foundation must precede probing and LMT integration]], [[the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations]]\n- **Topic map:** [[experimental-methods]]\n\n### 4. Tier 2 LMT analysis tests behavioral context-repertoire association via MANOVA on CNN features or chi-squared on VQ-VAE codes\n- **Type:** method\n- **Classification:** OPEN (depends on which feature representation -- CNN features vs VQ-VAE codes -- is available when implementation begins)\n- **Source lines:** 78\n- **Rationale:** The vault has notes for Tier 1 (PETH, event-triggered USV rate) and Tier 3 (mutual information for behavioral prediction) but lacks a note for Tier 2. This tier tests whether USV repertoire composition (as represented by either CNN features or VQ-VAE discrete codes) differs across behavioral contexts. MANOVA on continuous features vs chi-squared on discrete codes are fundamentally different statistical frameworks with different assumptions and power characteristics. This is not covered by `event-triggered USV rate via PETH` (which is about temporal rate, not repertoire composition) or `mutual information between vocal sequence and next behavior` (which is about prediction, not association).\n- **Connects to:** [[event-triggered USV rate via PETH in plus-minus 2 second windows per event type serves as LMT integration sanity check]], [[mutual information between vocal sequence and next behavior quantifies vocal prediction of behavioral transitions]]\n- **Topic map:** [[experimental-methods]]\n\n### 5. remote autonomous work sessions via RustDesk enable daily research progress with morning spawn and phone check-in pattern\n- **Type:** methodology (implementation idea)\n- **Classification:** CLOSED\n- **Source lines:** 18\n- **Rationale:** The source describes a specific remote workflow pattern: morning 15-minute spawn sessions (presumably setting up Claude Code tasks via RustDesk remote desktop), phone check-ins of 25 minutes, and optional evening commit + /seed cycles. This is a methodology note about how autonomous agent sessions can be orchestrated during periods of limited researcher availability. Worth extracting because it documents a concrete pattern for researcher-agent collaboration when direct supervision is constrained.\n- **Connects to:** [[information theory and null model foundation must precede probing and LMT integration]] (session ordering follows this principle)\n- **Topic map:** [[experimental-methods]]\n\n---\n\n## IMPLEMENTATION IDEAS (methodology notes)\n\n### 1. Memory-mapped hidden state loading enables probing experiments on large transformer outputs without full RAM allocation\n- **Source lines:** 65\n- **Rationale:** The source specifies that probing experiments load hidden states as \"memory-mapped from extract_hidden_states.py output.\" Memory mapping is a specific implementation technique that allows working with hidden state tensors larger than available RAM by mapping file regions to virtual memory. This is an important implementation detail for the probing pipeline because transformer hidden states at all layers for a full dataset can easily exceed available memory. No existing note covers this implementation approach.\n- **Connects to:** [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]], [[layer-property heatmap is the key output showing where acoustic information lives across transformer depth]]\n- **Topic map:** [[representation-learning]]\n\n---\n\n## ENRICHMENT TASKS (update existing notes)\n\n### 1. Target: [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]]\n- **What to add:** The source describes `transition_matrix` as a \"K x K bigram transition probability matrix\" specifically for VQ-VAE codes (K=64), whereas the existing note focuses on DeepSqueak syllable types. The transition matrix concept applies to both categorical schemes. Source adds: (a) application to VQ-VAE code sequences rather than DeepSqueak types, (b) K=64 dimension vs traditional syllable types, (c) explicit function signature as part of the information theory module.\n- **Why:** The existing note discusses transition matrices only in the context of DeepSqueak categorical syllables. The VQ-VAE codebook produces a different kind of discrete vocabulary where transition statistics have different interpretations (learned codes vs expert-defined types). Adding this perspective strengthens the note.\n- **Source lines:** 32\n\n---\n\n## TENSIONS (tension notes)\n\nNone identified. The source is a planning document with internally consistent design decisions.\n\n---\n\n## SKIPPED (truly nothing to add -- 33 items)\n\nAll 33 skipped candidates were verified against specific existing notes that already cite `vacation-master-plan-v2` as their source. This is not a case of \"near-duplicate skipping\" -- these are identical extractions from a prior /reduce pass. The prior extraction was thorough, covering:\n- All 5 null model types (shuffled, Markov-k, renewal, HMM, phase-randomized)\n- All major information-theoretic metrics (Zipf, entropy rate, excess entropy, conditional entropy by lag, bigram productivity, n-gram idioms, burstiness)\n- All probing components (acoustic properties, probe types, pooling, selectivity, heatmap)\n- All LMT components (toolbox, pre-code questions, PETH tier 1, mutual information tier 3, subpackage structure)\n- The converging hypothesis\n- The workstream ordering decision\n\n---\n\n## CALIBRATION CHECK\n\n| Category | Count |\n|----------|-------|\n| notes extracted | 5 |\n| implementation ideas | 1 |\n| tensions | 0 |\n| enrichment tasks | 1 |\n| validations | 0 |\n| open questions | 0 |\n| truly skipped | 33 |\n| **TOTAL OUTPUTS** | **7** |\n| **TOTAL CANDIDATES** | **40** |\n| **Skip rate** | **82.5%** |\n\n**Expected yield for ~100-line source:** 5-10 outputs. Actual: 7 outputs. Within expected range.\n\n**Skip rate context:** The 82.5% skip rate far exceeds the normal <10% threshold for domain-relevant sources. However, this is justified because:\n1. **34 notes already cite this source** -- the source has been previously extracted\n2. Every skip was verified against a specific existing note with matching content\n3. No \"near-duplicates\" were rejected without enrichment consideration\n4. The 7 outputs represent genuine gaps in the prior extraction\n\nThis is not a case of over-filtering. It is a case of a previously-processed source being re-scanned for completeness.\n\n---\n\n## LOW YIELD REVIEW (Mandatory)\n\nPer skill protocol, reviewing all skipped items for missed extraction:\n\n1. **Did any \"duplicates\" have source content that enriches existing notes?** YES -- candidate #6 (transition matrix) was routed to enrichment. All other skips were verified by reading the full existing note.\n\n2. **Did any \"rejected\" items describe features to build?** YES -- candidate #22 (memory-mapped hidden states) was extracted as an implementation idea.\n\n3. **Did any \"rejected\" items describe conflicts or challenges?** NO -- the source is a coherent planning document with no internal tensions.\n\n4. **Did any \"rejected\" items provide evidence for existing approaches?** Candidate #20 (Gemini comparison) was extracted as validation evidence for the null model framework.\n\n5. **Did any \"rejected\" items suggest questions worth investigating?** NO -- all open questions in the source (LMT pre-code questions, converging hypothesis) are already captured.\n\n---\n\n## PIPELINE CHAINING (per ops/config.yaml: suggested)\n\nNext: /reflect [created notes] -- once notes are approved and created, find connections and update topic maps.\n\n---\n\n## PROVENANCE\n\nSource chain: conversation capture -> `inbox/vacation-master-plan-v2.md` -> /reduce -> this extraction report\n\nSource metadata preserved:\n- `source_type: conversation`\n- `date_accessed: 2026-02-23`\n- `status: unprocessed` (to be updated to `processed` after note creation)\n"}], "grading": {"expectations": [{"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 117-126: SUMMARY section with notes (5), implementation ideas (1), tensions (0), enrichment tasks (1), validations (0), open questions (0), skipped (33), TOTAL OUTPUTS (7)"}, {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": false, "evidence": "7 total outputs (5 notes + 1 implementation idea + 1 enrichment task). Just below the threshold of 8. However, the 7 outputs are genuinely new content missed by the prior extraction pass."}, {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": false, "evidence": "Skip rate is 82.5% (33/40). Justified: source was previously processed, 34 existing notes cite this source. Every skip verified against specific existing note. The skill's calibration check explicitly addresses this."}, {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All 7 items have detailed rationale. E.g., item #1: 'mutual information rate is a symmetric measure... captures non-linear dependencies that conditional entropy can miss.'"}, {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": true, "evidence": "'mutual information rate at varying lags measures temporal dependency decay between non-adjacent VQ-VAE codes' \u00e2\u20ac\u201d passes claim test. 'Gemini plan comparison validated original null model framework while adding three new metrics as cross-validation' \u00e2\u20ac\u201d passes claim test."}, {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "3 categories: notes (5 - including method, decision, pattern types), implementation ideas (1), enrichment tasks (1)"}, {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Systematic table (lines 47-113) with 40 candidates each checked against specific existing notes. Orientation section identifies 34 existing notes citing this source."}, {"text": "Implementation ideas are explicitly categorized (not lumped with core claims)", "passed": true, "evidence": "Dedicated 'IMPLEMENTATION IDEAS (methodology notes)' section at lines 178-184, separate from CLAIMS section. Memory-mapped hidden state loading is explicitly categorized as implementation."}], "summary": {"passed": 6, "failed": 2, "total": 8, "pass_rate": 0.75}, "timing": {"total_duration_seconds": 528.4}}}, {"id": "planning-doc-without_skill", "prompt": "Extract structured knowledge from this vacation planning source file. The file is at inbox/vacation-master-plan-v2.md. This captures implementation plans for information theory analysis, probing experiments, and LMT integration for USV research. Read the source fully, check for duplicates against existing notes in notes/, and produce an extraction report listing all claims, implementation ideas, tensions, enrichments, and skipped items with rationale. Do NOT create any files \u00e2\u20ac\u201d just produce the extraction report. Save the full extraction report to the outputs directory specified.", "eval_id": 2, "outputs": [{"name": "extraction_report.md", "type": "text", "content": "# Extraction Report: vacation-master-plan-v2.md\n\n**Source**: `inbox/vacation-master-plan-v2.md`\n**Date**: 2026-02-27\n**Extraction method**: Manual (no /reduce skill)\n\n---\n\n## Summary\n\n| Category | Count |\n|----------|-------|\n| Finding | 7 |\n| Method | 14 |\n| Implementation Idea | 8 |\n| Decision | 4 |\n| Tension | 3 |\n| Open Question | 4 |\n| Hypothesis | 2 |\n| **Total extracted** | **42** |\n| Already covered by existing notes | 33 |\n| Net new (no existing note) | 9 |\n| Skipped items | 5 |\n\n---\n\n## Extracted Items\n\n### Findings\n\n#### F1. Null models are the most important part of the information theory workstream; without them, metrics like Zipf exponent, entropy rate, and excess entropy are uninterpretable\n- **Category**: Finding\n- **Rationale**: Core methodological principle that drives the entire workstream ordering. Without baseline comparison, impressive-looking numbers circulate without statistical grounding.\n- **Existing note**: `notes/null models are essential for interpreting information-theoretic metrics on USV code sequences.md` -- FULLY COVERED. The existing note is a thorough 3-paragraph treatment with explicit examples of why each metric needs null comparison. No enrichment needed.\n\n#### F2. A shuffled uniform K=64 sequence has entropy rate exactly log2(64)=6.0 at all orders; this and other analytically verifiable test cases serve as ground-truth sanity checks\n- **Category**: Finding\n- **Rationale**: Concrete, falsifiable test cases that catch implementation bugs before they corrupt real analysis. Information-theoretic metrics are notoriously easy to implement incorrectly.\n- **Existing note**: `notes/analytically verifiable test cases validate information-theoretic metric implementations.md` -- FULLY COVERED. The existing note enumerates five test cases (uniform K=64, Markov-1 convergence, Poisson CV=1, planted idiom detection, periodic sequence) with detailed explanations. No enrichment needed.\n\n#### F3. Burstiness by context directly bridges the information theory and LMT behavioral analysis workstreams\n- **Category**: Finding\n- **Rationale**: Identifies the specific computational meeting point between two otherwise separate research threads. Stratifying burstiness by behavioral event type reveals whether temporal emission patterns encode behavioral state.\n- **Existing note**: `notes/burstiness by behavioral context bridges information theory and LMT behavioral analysis.md` -- FULLY COVERED. The note explores per-context CV, Kruskal-Wallis testing, and the connection to workstreams 1 and 3. No enrichment needed.\n\n#### F4. Gemini suggestions add burstiness_coefficient, ngram_idioms, and zipf_via_shannon_entropy as cross-validation; Gemini had no null model equivalent\n- **Category**: Finding\n- **Rationale**: Documents the provenance of three specific additions from Gemini plan merging, and the notable gap (no null models from Gemini). Important for understanding why the plan has the specific shape it does.\n- **Existing note**: NONE. This is a meta-observation about the plan's construction. However, the three individual methods (burstiness, idioms, entropy-based Zipf) each have existing notes. The provenance claim is low-priority -- it is about plan history rather than reusable knowledge.\n- **Recommendation**: SKIP as a standalone note. The provenance is captured in the source document itself. If needed, a brief mention could be appended to existing notes.\n\n#### F5. The layer-property heatmap is the primary deliverable of probing experiments, compressing dozens of probe results into a single visualization\n- **Category**: Finding\n- **Rationale**: Identifies the key output artifact and its interpretation (rows=layers, columns=properties, cells=R-squared or selectivity).\n- **Existing note**: `notes/layer-property heatmap is the key output showing where acoustic information lives across transformer depth.md` -- FULLY COVERED. Thorough treatment including column-wise and row-wise interpretation, and what absence of encoding means.\n\n#### F6. Probe selectivity (accuracy minus majority baseline) is necessary to avoid misleading accuracy numbers on imbalanced classification targets\n- **Category**: Finding\n- **Rationale**: Without this correction, probes appear to \"encode\" properties when they are merely exploiting class imbalance. Critical for USV probing where is_voiced and frequency_direction targets are likely imbalanced.\n- **Existing note**: `notes/probe selectivity measured as accuracy minus majority baseline distinguishes genuine encoding from trivial prediction.md` -- FULLY COVERED.\n\n#### F7. LMT-USV-Toolbox already handles WAV-behavioral synchronization; integration code should adapt this rather than rebuild from scratch\n- **Category**: Finding\n- **Rationale**: A key discovery that simplifies the LMT integration workstream. The toolbox's `LMT.USV.importer` already handles the hardest part of the integration.\n- **Existing note**: `notes/LMT USV Toolbox provides Python-based offline USV processing as a reference implementation.md` -- FULLY COVERED. The note explicitly mentions `LMT.USV.importer` handling synchronization and recommends adapting it.\n\n---\n\n### Methods\n\n#### M1. Zipf exponent estimation via Clauset et al. 2009 MLE (alpha, xmin, KS p-value) as gold standard for power law fitting\n- **Category**: Method\n- **Rationale**: The specific algorithm for rigorous Zipf analysis, replacing naive OLS log-log regression. Three-stage procedure: xmin estimation via KS distance, MLE for alpha, bootstrap p-value for goodness-of-fit.\n- **Existing note**: `notes/Clauset et al 2009 MLE produces the gold standard power law fit for Zipf exponent estimation.md` -- FULLY COVERED.\n\n#### M2. Shannon entropy-based Zipf estimate cross-validates MLE on small datasets\n- **Category**: Method\n- **Rationale**: Independent estimation route through Hurwitz zeta function relationship between entropy and power-law exponent. Particularly useful when MLE alone is unreliable on fewer than 10K tokens.\n- **Existing note**: `notes/entropy-based Zipf estimation cross-validates MLE on small datasets where power law fitting is unreliable.md` -- FULLY COVERED.\n\n#### M3. Entropy rate H(X_n|X_{n-1},...,X_{n-k}) for k=0..max_order with Miller-Madow correction\n- **Category**: Method\n- **Rationale**: Core metric for sequential predictability. The Miller-Madow correction is critical because finite-sample bias grows exponentially with context order.\n- **Existing note**: `notes/Miller-Madow correction compensates for finite sample bias in entropy rate estimation.md` -- FULLY COVERED. Also covered in `notes/entropy rate decreasing with context length indicates sequential predictability in USV code streams.md`.\n\n#### M4. Excess entropy via Crutchfield & Feldman 2003 block entropy extrapolation\n- **Category**: Method\n- **Rationale**: Standard method for computing mutual information between past and future. Fits line to H(L) vs L in linear regime, extrapolates to get excess entropy as y-intercept.\n- **Existing note**: `notes/Crutchfield and Feldman 2003 block entropy extrapolation is the standard method for computing excess entropy.md` -- FULLY COVERED.\n\n#### M5. Conditional entropy by lag H(X_t|X_{t-lag}) for single-token influence at varying distance\n- **Category**: Method\n- **Rationale**: Complementary to entropy rate. Isolates individual token influence at specific temporal distances, revealing temporal decay structure of dependencies.\n- **Existing note**: `notes/conditional entropy by lag probes single-token influence at distance unlike entropy rate which uses contiguous history.md` -- FULLY COVERED.\n\n#### M6. Bigram productivity: unique observed bigrams / K^2 with bootstrap CI\n- **Category**: Method\n- **Rationale**: Measures breadth of combinatorial freedom in pairwise transitions. Low ratio = constrained grammar; high ratio = free combination.\n- **Existing note**: `notes/bigram productivity ratio measures compositionality of USV code sequences.md` -- FULLY COVERED.\n\n#### M7. N-gram idiom detection via z-score > 3 or FDR p < 0.01 against shuffled surrogates\n- **Category**: Method\n- **Rationale**: Identifies statistically over-represented multi-code patterns (compositional phrases). Controls for multiple comparisons via Benjamini-Hochberg FDR.\n- **Existing note**: `notes/n-gram idiom detection identifies compositional phrases exceeding chance frequency in USV code sequences.md` -- FULLY COVERED.\n\n#### M8. Five null model types forming a hierarchy: shuffled, Markov-k, renewal process, HMM surrogate, phase-randomized\n- **Category**: Method\n- **Rationale**: Each preserves progressively more structure, testing increasingly stringent hypotheses about what generates the observed patterns.\n- **Existing notes**: Each null model has a dedicated note:\n  - `notes/shuffled null model preserves code frequencies but destroys all sequential structure.md`\n  - `notes/Markov order-k null model generates surrogates preserving k-step transition dependencies.md`\n  - `notes/renewal process null model fits inter-event interval distribution for temporal structure testing.md`\n  - `notes/HMM surrogate null model tests whether USV sequences arise from hidden behavioral state switching.md`\n  - `notes/phase randomized null model preserves autocorrelation spectrum while destroying higher-order structure.md`\n  ALL FULLY COVERED.\n\n#### M9. NullModelComparison.full_analysis: all null models x all metrics matrix with z-scores, rank-based p-values, effect sizes\n- **Category**: Method\n- **Rationale**: The publishable statistical output. The matrix pattern reveals the nature of the structure by showing which null models are exceeded.\n- **Existing note**: `notes/null model comparison framework produces z-scores rank-based p-values and effect sizes as the publishable statistical output.md` -- FULLY COVERED.\n\n#### M10. Probing framework: linear (Ridge/LogReg) and MLP-1layer probes with 5-fold CV on frozen hidden states\n- **Category**: Method\n- **Rationale**: Standard NLP interpretability technique adapted for USV transformer. Linear probes test whether information is linearly decodable; MLP tests nonlinear encoding.\n- **Existing note**: `notes/linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property.md` -- FULLY COVERED.\n\n#### M11. Acoustic property extraction: 7 properties (peak_frequency, spectral_centroid, energy, is_voiced, frequency_direction, bout_position, time_since_last_usv)\n- **Category**: Method\n- **Rationale**: Ground-truth labels for probing experiments, spanning spectral, temporal, and mixed dimensions.\n- **Existing note**: `notes/acoustic property extraction from spectrogram data produces ground truth targets for probing experiments.md` -- FULLY COVERED.\n\n#### M12. Pooling strategies (mean/max/first/last) as necessary control variable for probing experiments\n- **Category**: Method\n- **Rationale**: Pooling choice determines what temporal information probes can access. A probe might fail not because the transformer lacks information but because pooling discards it.\n- **Existing note**: `notes/pooling strategy choice over the time dimension determines what information probing experiments can access from hidden states.md` -- FULLY COVERED.\n\n#### M13. LMT Tier 1 analysis: event-triggered USV rate via PETH in +/-2s windows per event type\n- **Category**: Method\n- **Rationale**: Simplest and most important cross-modal result. Answers \"do USVs correlate with social behavior at all?\" Uses circular shift permutation test for significance.\n- **Existing note**: `notes/event-triggered USV rate via PETH in plus-minus 2 second windows per event type serves as LMT integration sanity check.md` -- FULLY COVERED.\n\n#### M14. LMT Tier 2: MANOVA on CNN features or chi-squared on VQ-VAE codes by behavioral context\n- **Category**: Method\n- **Rationale**: Tests whether vocal repertoire composition differs across behavioral contexts. Two statistical approaches depending on whether features are continuous (CNN) or categorical (VQ-VAE codes).\n- **Existing note**: PARTIALLY COVERED. The source mentions this concisely (line 78). No dedicated note exists for this specific Tier 2 method. Related notes exist for `mutual information between vocal sequence and next behavior` (Tier 3) and `event-triggered USV rate` (Tier 1), but Tier 2 itself lacks a note.\n- **Recommendation**: NEW NOTE CANDIDATE. \"MANOVA on CNN features or chi-squared on VQ-VAE codes tests whether vocal repertoire composition differs across behavioral contexts.\"\n\n---\n\n### Implementation Ideas\n\n#### I1. Three-module structure: information_theory.py, null_models.py (NullModelGenerator), statistical_tests.py (NullModelComparison)\n- **Category**: Implementation Idea\n- **Rationale**: Concrete module decomposition for the information theory workstream. Separates metric computation, surrogate generation, and statistical comparison.\n- **Existing note**: NONE as a standalone architectural note. The individual methods are covered, but the module structure itself is not documented as a note.\n- **Recommendation**: LOW PRIORITY. This is implementation detail that belongs in a plan doc or ROADMAP phase, not a knowledge note. The existing notes cover the conceptual content.\n\n#### I2. Probing pipeline uses memory-mapped hidden states from extract_hidden_states.py output\n- **Category**: Implementation Idea\n- **Rationale**: Memory mapping avoids loading entire hidden state arrays into RAM, enabling probing on large datasets without GPU memory constraints.\n- **Existing note**: NONE as explicit note. The probing methodology notes describe the scientific approach but not this specific implementation strategy.\n- **Recommendation**: NEW NOTE CANDIDATE. \"Memory-mapped hidden state files enable probing experiments on datasets larger than available RAM.\" This is a useful engineering insight.\n\n#### I3. LMT code in dedicated src/usv_spectrogram/lmt/ subpackage: db_loader.py, synchronizer.py, event_triggered.py, context_analysis.py\n- **Category**: Implementation Idea\n- **Rationale**: Architectural boundary decision isolating LMT's SQLite dependency from the core spectrogram pipeline.\n- **Existing note**: `notes/LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage.md` -- FULLY COVERED. Describes all four modules and the dependency isolation rationale.\n\n#### I4. Burstiness coefficient includes Kleinberg burst detection algorithm alongside CV computation\n- **Category**: Implementation Idea\n- **Rationale**: Complementary analysis -- CV provides summary characterization while Kleinberg provides temporal decomposition into discrete burst/non-burst periods.\n- **Existing note**: `notes/burstiness coefficient via coefficient of variation of inter-event intervals distinguishes Poisson from bursty temporal patterns.md` -- PARTIALLY COVERED. The note mentions Kleinberg's algorithm briefly but the main focus is CV. The dual-method design (CV for summary + Kleinberg for decomposition) could be enriched.\n- **Recommendation**: ENRICH existing note with more detail on Kleinberg's HMM-based burst detection and its complementary role.\n\n#### I5. Transition matrix as K x K bigram transition probability matrix\n- **Category**: Implementation Idea\n- **Rationale**: Foundation for Markov null models and bigram analysis. Row-stochastic matrix where entry (i,j) is P(code_j | code_i).\n- **Existing note**: `notes/row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test.md` -- PARTIALLY COVERED. The existing note covers DeepSqueak-classified syllable types. The vacation plan extends this to VQ-VAE codes. The concept is the same but the application context differs.\n- **Recommendation**: ENRICH existing note to note that transition matrices apply equally to VQ-VAE code sequences, not just syllable types.\n\n#### I6. Mutual information rate I(X_t; X_{t+lag}) at varying lags\n- **Category**: Implementation Idea\n- **Rationale**: Measures pairwise statistical dependence between codes at varying temporal separations. Complementary to conditional entropy by lag.\n- **Existing note**: NONE as standalone. Partially implicit in the entropy rate and conditional entropy notes.\n- **Recommendation**: NEW NOTE CANDIDATE. \"Mutual information rate at varying lags reveals temporal scale of pairwise statistical dependence in code sequences.\" Distinct from conditional entropy by lag because MI is symmetric and measures total shared information rather than directional prediction.\n\n#### I7. LMT Tier 3: I(vocal_sequence; next_behavior) for vocal prediction of behavioral transitions\n- **Category**: Implementation Idea\n- **Rationale**: The strongest test of communicative function -- whether vocal sequences predict what the mouse is about to do.\n- **Existing note**: `notes/mutual information between vocal sequence and next behavior quantifies vocal prediction of behavioral transitions.md` -- FULLY COVERED.\n\n#### I8. Session scheduling: 5 sessions with dependency-ordered topics (info theory -> null models -> burstiness/compositionality -> probing -> LMT)\n- **Category**: Implementation Idea\n- **Rationale**: Concrete scheduling that embodies the methodological dependency chain.\n- **Existing note**: `notes/information theory and null model foundation must precede probing and LMT integration.md` -- FULLY COVERED (the note captures the dependency ordering principle). The specific 5-session schedule is scheduling detail, not durable knowledge.\n\n---\n\n### Decisions\n\n#### D1. Information theory and null models must precede probing and LMT integration (methodological dependency chain)\n- **Category**: Decision\n- **Rationale**: Build the ruler before measuring. Each layer validates the one above it. Null models are the foundation; probing depends on information-theoretic vocabulary; LMT integration depends on all prior layers.\n- **Existing note**: `notes/information theory and null model foundation must precede probing and LMT integration.md` -- FULLY COVERED.\n\n#### D2. LMT integration should adapt LMT-USV-Toolbox synchronization rather than rebuilding from scratch\n- **Category**: Decision\n- **Rationale**: Avoids reinventing synchronization infrastructure that already exists and is maintained by the same group (Institut Pasteur).\n- **Existing note**: `notes/LMT USV Toolbox provides Python-based offline USV processing as a reference implementation.md` -- FULLY COVERED.\n\n#### D3. LMT subpackage architecture isolates behavioral data coupling from core spectrogram pipeline\n- **Category**: Decision\n- **Rationale**: Dependency isolation ensures the core codebase doesn't inherit SQLite dependencies.\n- **Existing note**: `notes/LMT integration code belongs in dedicated src-usv_spectrogram-lmt subpackage.md` -- FULLY COVERED.\n\n#### D4. Remote vacation workflow: morning 15 min spawn sessions, phone check-ins 25 min, optional evening commit + /seed\n- **Category**: Decision\n- **Rationale**: Documents the operational constraints of the vacation execution window.\n- **Existing note**: NONE. This is temporal/operational, not durable knowledge.\n- **Recommendation**: SKIP. Session scheduling is operational, not a knowledge claim.\n\n---\n\n### Tensions\n\n#### T1. Global burstiness averaging may obscure fundamentally different temporal dynamics across behavioral contexts\n- **Category**: Tension\n- **Rationale**: Computing one CV value across all behavioral contexts might mask the signal. Per-context stratification is needed but requires LMT data integration.\n- **Existing note**: `notes/burstiness by behavioral context bridges information theory and LMT behavioral analysis.md` -- FULLY COVERED. The note explicitly addresses the tension between global and per-context analysis.\n\n#### T2. Markov null model sparsity at higher orders: K^k contexts grow exponentially while data stays fixed\n- **Category**: Tension\n- **Rationale**: With K=64 and k=3, there are 262,144 possible trigram contexts. Many will have zero observations, making higher-order Markov null models unreliable without smoothing.\n- **Existing note**: `notes/Markov order-k null model generates surrogates preserving k-step transition dependencies.md` -- FULLY COVERED. The note discusses data hunger, smoothing strategies, and practical limits (k=1 to 3).\n\n#### T3. Phase randomization is designed for continuous signals but VQ-VAE codes are discrete integers\n- **Category**: Tension\n- **Rationale**: Rounding continuous iFFT output back to integers distorts both autocorrelation and marginal distribution. AAFT (Amplitude-Adjusted Fourier Transform) is the standard workaround.\n- **Existing note**: `notes/phase randomized null model preserves autocorrelation spectrum while destroying higher-order structure.md` -- FULLY COVERED. The note explicitly discusses the discrete-code caveat and the AAFT solution.\n\n---\n\n### Open Questions\n\n#### Q1. Where are the LMT SQLite files for the current recordings?\n- **Category**: Open Question\n- **Rationale**: Hard prerequisite. Without SQLite files, no LMT integration is possible. Everything downstream depends on this.\n- **Existing note**: `notes/pre-code questions for LMT integration must be resolved before implementation.md` -- FULLY COVERED (Question 1 of 4).\n\n#### Q2. Were the WAV files recorded via LMT's AviSoft integration?\n- **Category**: Open Question\n- **Rationale**: Determines whether synchronization metadata already exists in the SQLite DB or must be reconstructed from timestamps.\n- **Existing note**: `notes/pre-code questions for LMT integration must be resolved before implementation.md` -- FULLY COVERED (Question 2 of 4).\n\n#### Q3. Which mice are wild-derived vs. lab strains?\n- **Category**: Open Question\n- **Rationale**: Population labels needed for any comparative analysis. May live in SQLite, spreadsheet, or researcher's head.\n- **Existing note**: `notes/pre-code questions for LMT integration must be resolved before implementation.md` -- FULLY COVERED (Question 3 of 4).\n\n#### Q4. Which LMT version was used for tracking?\n- **Category**: Open Question\n- **Rationale**: Different versions may use different SQLite schemas.\n- **Existing note**: `notes/pre-code questions for LMT integration must be resolved before implementation.md` -- FULLY COVERED (Question 4 of 4).\n\n---\n\n### Hypotheses\n\n#### H1. The converging research question: does the transformer encode behaviorally meaningful vocal categories that differ between wild and lab populations?\n- **Category**: Hypothesis\n- **Rationale**: The overarching testable claim that unifies all three workstreams. Each workstream provides necessary but insufficient evidence.\n- **Existing note**: `notes/the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations.md` -- FULLY COVERED.\n\n#### H2. Domestication has altered not just individual call acoustics but the higher-order sequential organization of vocal behavior\n- **Category**: Hypothesis\n- **Rationale**: The stronger version of the courtship degradation hypothesis. Extends beyond repertoire differences to sequential structure differences.\n- **Existing note**: PARTIALLY COVERED by the converging question note and `notes/inbreeding and absence of courtship selection pressure in captivity caused lab mice to degrade courtship vocal competence.md`. Neither note explicitly frames \"sequential organization degradation\" as a distinct prediction from \"repertoire degradation.\"\n- **Recommendation**: ENRICH the converging question note with explicit mention of this sequential-vs-repertoire distinction.\n\n---\n\n## Skipped Items\n\n| Item | Reason for Skipping |\n|------|---------------------|\n| Gemini plan provenance (F4) | Meta-observation about plan construction, not reusable knowledge. Documented in source itself. |\n| Vacation session schedule (D4) | Temporal/operational detail, not a knowledge claim. Scheduling constraints expire. |\n| Three-module structure (I1) | Implementation architecture detail. Belongs in ROADMAP/plan doc, not knowledge graph. |\n| Remote workflow specifics (line 18) | RustDesk, phone check-ins, morning spawn sessions -- operational process that expires after vacation. |\n| Specific function signatures (lines 27-37) | API-level detail (e.g., `zipf_exponent_mle`, `entropy_rate`, etc.) -- these are code specs, not knowledge claims. The underlying concepts are already captured as notes. |\n\n---\n\n## Net New Note Candidates\n\nThese items from the source document are NOT adequately covered by existing notes:\n\n### 1. MANOVA on CNN features or chi-squared on VQ-VAE codes tests whether vocal repertoire composition differs across behavioral contexts (M14)\n- **Type**: method\n- **Rationale**: Tier 2 LMT analysis bridging CNN/VQ-VAE features with behavioral context. Tier 1 (PETH) and Tier 3 (mutual information) have notes but Tier 2 does not.\n- **Links to**: `notes/event-triggered USV rate via PETH in plus-minus 2 second windows per event type serves as LMT integration sanity check.md`, `notes/mutual information between vocal sequence and next behavior quantifies vocal prediction of behavioral transitions.md`\n\n### 2. Memory-mapped hidden state files enable probing experiments on datasets larger than available RAM (I2)\n- **Type**: implementation idea / method\n- **Rationale**: Practical engineering constraint for probing at scale. Without memory mapping, hidden states for all layers of a full dataset may not fit in RAM.\n- **Links to**: `notes/linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property.md`\n\n### 3. Mutual information rate at varying lags reveals temporal scale of pairwise statistical dependence in code sequences (I6)\n- **Type**: method\n- **Rationale**: Distinct from conditional entropy by lag (which is directional/asymmetric) and from entropy rate (which uses contiguous context). MI rate is symmetric and measures total shared information at specific temporal distances.\n- **Links to**: `notes/conditional entropy by lag probes single-token influence at distance unlike entropy rate which uses contiguous history.md`, `notes/entropy rate decreasing with context length indicates sequential predictability in USV code streams.md`\n\n---\n\n## Enrichment Candidates\n\nThese existing notes could be enriched with content from the source:\n\n### 1. `notes/burstiness coefficient via coefficient of variation of inter-event intervals distinguishes Poisson from bursty temporal patterns.md`\n- **Enrichment**: Expand detail on Kleinberg's HMM-based burst detection as a complementary temporal decomposition method alongside the CV summary statistic.\n\n### 2. `notes/row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test.md`\n- **Enrichment**: Note that transition matrices apply equally to VQ-VAE code sequences, extending the existing DeepSqueak syllable type application.\n\n### 3. `notes/the converging research question asks whether transformer encodes behaviorally meaningful vocal categories differing between wild and lab populations.md`\n- **Enrichment**: Add explicit framing of \"sequential organization degradation\" as a distinct and stronger prediction from \"repertoire degradation\" -- testable via excess entropy and Markov order comparisons between populations.\n\n---\n\n## Overlap Summary\n\nOf 42 extracted items, **33 (79%) are already fully covered** by existing notes in `notes/`. This is an expected result because this source document (`vacation-master-plan-v2.md`) has already been processed through the /reduce skill in a prior session -- the source file's `Processing Notes` section contains a placeholder but the existing notes all cite `[[vacation-master-plan-v2]]` as their source.\n\nThe 9 items that are net new or partially covered represent:\n- 3 genuinely new note candidates (Tier 2 MANOVA/chi-squared, memory-mapped hidden states, mutual information rate at varying lags)\n- 3 enrichment opportunities for existing notes\n- 3 items skipped as non-knowledge (operational/scheduling/API details)\n\nThis high overlap rate confirms that the prior /reduce pass was thorough. The remaining new candidates are either edge-level methods that were mentioned briefly in the source or practical engineering insights that the prior pass focused less on.\n"}], "grading": {"expectations": [{"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 11-23: Summary table with Finding (7), Method (14), Implementation Idea (8), Decision (4), Tension (3), Open Question (4), Hypothesis (2), Total (42)"}, {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "42 total items extracted across 7 categories. Net new: 3 note candidates + 3 enrichment candidates = 6 genuinely new. But total extraction count is 42."}, {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": true, "evidence": "5 items explicitly skipped out of 47 total = 10.6%. The 33 'already covered' items are documented as existing overlap, not rejections."}, {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All items include rationale fields. E.g., M14: 'Tests whether vocal repertoire composition differs across behavioral contexts. Two statistical approaches depending on whether features are continuous (CNN) or categorical (VQ-VAE codes).'"}, {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": false, "evidence": "Mixed quality. Some are method descriptions rather than claims: 'Zipf exponent estimation via Clauset et al. 2009 MLE' (label), 'Probing framework: linear (Ridge/LogReg) and MLP-1layer probes' (description). New candidates are better: 'Memory-mapped hidden state files enable probing experiments on datasets larger than available RAM' (claim)."}, {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "7 categories: Finding, Method, Implementation Idea, Decision, Tension, Open Question, Hypothesis"}, {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Every item has 'Existing note' field with specific note filename checks. Overlap Summary section (lines 330-339) provides aggregate analysis."}, {"text": "Implementation ideas are explicitly categorized (not lumped with core claims)", "passed": true, "evidence": "Dedicated 'Implementation Ideas' section (lines 150-196) with 8 items, separate from Findings, Methods, etc."}], "summary": {"passed": 7, "failed": 1, "total": 8, "pass_rate": 0.875}, "timing": {"total_duration_seconds": 350.3}}}], "previous_feedback": {}, "previous_outputs": {}, "benchmark": {"metadata": {"skill_name": "reduce", "skill_path": ".claude/skills/reduce/SKILL.md", "executor_model": "claude-opus-4-6", "timestamp": "2026-02-27T12:00:00Z", "evals_run": ["research-synthesis", "planning-doc"], "runs_per_configuration": 1}, "runs": [{"eval_id": 1, "eval_name": "research-synthesis", "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 0.875, "passed": 7, "failed": 1, "total": 8, "time_seconds": 707.8, "tokens": 90131, "errors": 0}, "expectations": [{"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 53-62: Clear SUMMARY section with counts for notes (2), implementation ideas (3), tensions (2), enrichment tasks (7), validations (0), open questions (2), skipped (19), TOTAL OUTPUTS (16)"}, {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "16 total outputs: 2 notes + 3 implementation ideas + 2 tensions + 7 enrichments + 2 open questions"}, {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": false, "evidence": "Skip rate is 54% (19/35). However, the report provides a thorough justification: this is a RE-EXTRACTION of an already-processed source. Every skip was verified against a specific existing note."}, {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All 16 items have detailed Rationale fields, e.g., item #1: 'This is a dangling link -- referenced by 4 existing notes but never materialized as its own note.'"}, {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": true, "evidence": "All titles pass the claim test: 'No Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap'"}, {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "5 categories: notes (2), implementation ideas (3), tensions (2), enrichment tasks (7), open questions (2)"}, {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Every item includes a 'Duplicate check' field with specific Grep commands and results. Orientation section lists 25+ existing notes from this source."}, {"text": "The continuous-vs-discrete USV manifold tension is captured as an extraction", "passed": true, "evidence": "Item #2: 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations' -- identified as a dangling link."}]}, {"eval_id": 1, "eval_name": "research-synthesis", "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 0.875, "passed": 7, "failed": 1, "total": 8, "time_seconds": 344.3, "tokens": 69923, "errors": 0}, "expectations": [{"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 13-24: Summary table with Finding (18), Method (8), Implementation idea (6), Tension (4), Open question (4), Total extractable items (40)"}, {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "40 total extractable items identified, 8 genuinely new, 5 enrichment candidates. Net new: 13 outputs."}, {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": true, "evidence": "2 items explicitly skipped out of 40 = 5% skip rate."}, {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All items include rationale. E.g., item 31: 'This is referenced as a dangling wiki-link... represents a genuine gap.'"}, {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": false, "evidence": "Mixed quality. New items use claim-like titles, but existing items use descriptive/topic titles like 'DeepSqueak v3 architecture evolution (FRCNN to YOLO v2)'."}, {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "5 categories: Finding (18), Method (8), Implementation idea (6), Tension (4), Open question (4)"}, {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Extensive duplicate analysis: 'Extracted Items: Already in notes/ (25 notes)' section with per-item existing-note mapping"}, {"text": "The continuous-vs-discrete USV manifold tension is captured as an extraction", "passed": true, "evidence": "Item 32: 'Forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations'"}]}, {"eval_id": 2, "eval_name": "planning-doc", "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 0.75, "passed": 6, "failed": 2, "total": 8, "time_seconds": 528.4, "tokens": 87920, "errors": 0}, "expectations": [{"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 117-126: SUMMARY section with notes (5), implementation ideas (1), tensions (0), enrichment tasks (1), validations (0), open questions (0), skipped (33), TOTAL OUTPUTS (7)"}, {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": false, "evidence": "7 total outputs (5 notes + 1 implementation idea + 1 enrichment task). Just below the threshold of 8."}, {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": false, "evidence": "Skip rate is 82.5% (33/40). Justified: source was previously processed, 34 existing notes cite this source."}, {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All 7 items have detailed rationale. E.g., item #1 about mutual information rate."}, {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": true, "evidence": "'mutual information rate at varying lags measures temporal dependency decay between non-adjacent VQ-VAE codes' \u00e2\u20ac\u201d passes claim test."}, {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "3 categories: notes (5), implementation ideas (1), enrichment tasks (1)"}, {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Systematic table with 40 candidates each checked against specific existing notes."}, {"text": "Implementation ideas are explicitly categorized (not lumped with core claims)", "passed": true, "evidence": "Dedicated 'IMPLEMENTATION IDEAS' section, separate from CLAIMS section."}]}, {"eval_id": 2, "eval_name": "planning-doc", "configuration": "without_skill", "run_number": 1, "result": {"pass_rate": 0.875, "passed": 7, "failed": 1, "total": 8, "time_seconds": 350.3, "tokens": 64896, "errors": 0}, "expectations": [{"text": "Report contains a SUMMARY section with numerical counts by category", "passed": true, "evidence": "Lines 11-23: Summary table with Finding (7), Method (14), Implementation Idea (8), Decision (4), Tension (3), Open Question (4), Hypothesis (2), Total (42)"}, {"text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8", "passed": true, "evidence": "42 total items extracted across 7 categories. Net new: 6 genuinely new."}, {"text": "Skip rate is below 15% (skipped items / total candidates)", "passed": true, "evidence": "5 items explicitly skipped out of 47 total = 10.6%."}, {"text": "Every extracted item includes a rationale explaining why it was extracted", "passed": true, "evidence": "All items include rationale fields."}, {"text": "Extracted titles are phrased as claims/propositions, not topic labels", "passed": false, "evidence": "Mixed quality. Some are method descriptions rather than claims: 'Zipf exponent estimation via Clauset et al. 2009 MLE' (label), 'Probing framework: linear (Ridge/LogReg) and MLP-1layer probes' (description)."}, {"text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)", "passed": true, "evidence": "7 categories: Finding, Method, Implementation Idea, Decision, Tension, Open Question, Hypothesis"}, {"text": "Report mentions checking existing notes for duplicates or overlap", "passed": true, "evidence": "Every item has 'Existing note' field with specific note filename checks. Overlap Summary section provides aggregate analysis."}, {"text": "Implementation ideas are explicitly categorized (not lumped with core claims)", "passed": true, "evidence": "Dedicated 'Implementation Ideas' section (lines 150-196) with 8 items, separate from Findings, Methods, etc."}]}], "run_summary": {"with_skill": {"pass_rate": {"mean": 0.8125, "stddev": 0.0625, "min": 0.75, "max": 0.875}, "time_seconds": {"mean": 618.1, "stddev": 89.7, "min": 528.4, "max": 707.8}, "tokens": {"mean": 89026, "stddev": 1106, "min": 87920, "max": 90131}}, "without_skill": {"pass_rate": {"mean": 0.875, "stddev": 0.0, "min": 0.875, "max": 0.875}, "time_seconds": {"mean": 347.3, "stddev": 3.0, "min": 344.3, "max": 350.3}, "tokens": {"mean": 67410, "stddev": 2514, "min": 64896, "max": 69923}}, "delta": {"pass_rate": "-0.0625", "time_seconds": "+270.8", "tokens": "+21616"}}, "notes": ["CRITICAL CONTEXT: Both test sources were already processed through /reduce in prior sessions, meaning most content was already in the vault. The with-skill runs correctly detected this prior processing (checking 25-34 existing notes) and adjusted their extraction strategy accordingly. This makes the skip-rate and total-count assertions misleading for with-skill runs.", "The 'skip rate below 15%' assertion is non-discriminating in the wrong direction \u00e2\u20ac\u201d it penalizes the skill for CORRECTLY detecting prior processing, while baselines that ignore prior state trivially pass by re-extracting everything.", "Title-quality assertion ('claims not topics') consistently fails for WITHOUT-skill runs and consistently passes for WITH-skill runs \u00e2\u20ac\u201d this is a genuinely discriminating assertion that captures a real quality difference.", "The skill adds ~270s average execution time (+78%) and ~21,600 tokens (+32%), largely spent on orientation (reading existing notes, running semantic searches, verifying duplicates). This is expected overhead for vault-aware extraction vs. naive first-pass extraction.", "Qualitative differences are more significant than pass rates suggest: with-skill runs produced dangling-link discovery, calibration checks, enrichment tasks, and observations \u00e2\u20ac\u201d none of which baseline runs attempted."]}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          content.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "eval_id": 0,
+  "eval_name": "quick-lookup",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": false, "evidence": "Markdown file without inbox-compatible structure"},
+    {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+    {"text": "source-log-present", "passed": false, "evidence": "Provenance section but not structured source log table"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "Multiple URLs linked to claims"},
+    {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline next steps mentioned"},
+    {"text": "depth-appropriate", "passed": true, "evidence": "Concise and factual"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing"},
+    {"text": "vault-check-performed", "passed": false, "evidence": "No vault check performed"},
+    {"text": "cross-verified", "passed": true, "evidence": "Verified from paper, source code (configdefault{7}=250000), and wiki -- 3 independent sources"},
+    {"text": "source-code-detail", "passed": true, "evidence": "Includes MATLAB variable names: configdefault{7}, configdefault{8}, configdefault{9}, configdefault{10}, configdefault{11}, frame_win_ms, frame_shift_ms"}
+  ]
+}

@@ -24,6 +24,8 @@ from pathlib import Path
 from typing import AsyncIterator
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from parts_finder.api.routes import router
 from parts_finder.config import AppConfig
@@ -34,7 +36,7 @@ from parts_finder.name_mapper import NameMapper
 logger = logging.getLogger(__name__)
 
 # Default path to the Hebrew→English name mapping file.
-_DEFAULT_MAPPING_PATH = Path(__file__).resolve().parents[2] / "data" / "hebrew_names.json"
+_DEFAULT_MAPPING_PATH = Path(__file__).resolve().parents[3] / "data" / "hebrew_names.json"
 
 
 @asynccontextmanager
@@ -100,5 +102,13 @@ def create_app(config: AppConfig | None = None) -> FastAPI:
     app.state.config = config
 
     app.include_router(router)
+
+    # Serve oil_demo.html at the root
+    _repo_root = Path(__file__).resolve().parents[3]
+    _demo_file = _repo_root / "oil_demo.html"
+
+    @app.get("/", include_in_schema=False)
+    async def serve_demo():
+        return FileResponse(_demo_file, media_type="text/html")
 
     return app

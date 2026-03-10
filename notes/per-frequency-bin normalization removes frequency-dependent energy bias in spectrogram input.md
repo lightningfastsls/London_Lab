@@ -19,6 +19,8 @@ The 170-bin resolution follows from [[512-point FFT at 300 kHz gives 1.7 ms temp
 
 This normalization applies to both CNN classification input and to the autoregressive transformer's input projection (see [[transformer-first then VQ-VAE avoids forcing premature discretization]]). The transformer receives the same 170-dimensional spectrogram columns, so frequency-dependent energy bias would equally distort the learned representations that feed VQ-VAE codebook learning. Consistent normalization across both pipelines ensures the transformer's learned features reflect genuine acoustic variation rather than systematic energy artifacts.
 
+An alternative normalization approach is [[PCEN normalization is more robust than log-mel spectrograms for few-shot bioacoustic scenarios]], which applies adaptive per-channel energy normalization with a learnable or fixed smoothing coefficient. PCEN operates at the input level rather than as a post-STFT step, and was key to first-place DCASE 2022 few-shot bioacoustic detection. While our per-bin z-score normalization is simpler and well-tested, PCEN's automatic gain control could better handle the dynamic range variation across noisy recordings.
+
 ---
 
 Source: [ROADMAP](../ROADMAP.md), Phase 2

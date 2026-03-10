@@ -1,0 +1,53 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 117-126: SUMMARY section with notes (5), implementation ideas (1), tensions (0), enrichment tasks (1), validations (0), open questions (0), skipped (33), TOTAL OUTPUTS (7)"
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": false,
+      "evidence": "7 total outputs (5 notes + 1 implementation idea + 1 enrichment task). Just below the threshold of 8. However, the 7 outputs are genuinely new content missed by the prior extraction pass."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": false,
+      "evidence": "Skip rate is 82.5% (33/40). Justified: source was previously processed, 34 existing notes cite this source. Every skip verified against specific existing note. The skill's calibration check explicitly addresses this."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 7 items have detailed rationale. E.g., item #1: 'mutual information rate is a symmetric measure... captures non-linear dependencies that conditional entropy can miss.'"
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "'mutual information rate at varying lags measures temporal dependency decay between non-adjacent VQ-VAE codes' — passes claim test. 'Gemini plan comparison validated original null model framework while adding three new metrics as cross-validation' — passes claim test."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "3 categories: notes (5 - including method, decision, pattern types), implementation ideas (1), enrichment tasks (1)"
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Systematic table (lines 47-113) with 40 candidates each checked against specific existing notes. Orientation section identifies 34 existing notes citing this source."
+    },
+    {
+      "text": "Implementation ideas are explicitly categorized (not lumped with core claims)",
+      "passed": true,
+      "evidence": "Dedicated 'IMPLEMENTATION IDEAS (methodology notes)' section at lines 178-184, separate from CLAIMS section. Memory-mapped hidden state loading is explicitly categorized as implementation."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 2,
+    "total": 8,
+    "pass_rate": 0.75
+  },
+  "timing": {
+    "total_duration_seconds": 528.4
+  }
+}

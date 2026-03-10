@@ -24,6 +24,8 @@ Relevant Notes:
 - [[multi-source negative sampling is necessary when the training pipeline pre-filters candidates]] -- the general pattern this quality criterion applies to
 - [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] -- one unambiguous negative category: constant-frequency electrical artifacts
 - [[transient cage noises produce broadband vertical smears rejected by the minimum duration filter]] -- another unambiguous negative category: broadband transient cage impacts
+- [[negative prototype construction is critical for few-shot detection without explicit negative annotations]] -- in few-shot settings, the negative class must be constructed implicitly since only positive examples are provided, making our explicit negative curation even more valuable
+- [[including a noise-false-positive class in the USV classifier catches residual detection errors]] -- BootSnap uses an explicit noise class with high-quality negatives as a second-pass filter
 
 Topics:
 - [[classification]]

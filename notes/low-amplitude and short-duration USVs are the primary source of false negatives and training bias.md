@@ -25,6 +25,9 @@ Relevant Notes:
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- faint USVs at the quiet end of the continuum are underrepresented in VQ-VAE training if detection misses them
 - [[codebook collapse prevention requires simultaneous EMA updates plus dead code reset plus k-means init plus L2 normalization]] -- underrepresented call types from detection bias may contribute to codebook collapse, since entries for rare/faint calls receive fewer training updates
 - [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- an end-to-end approach trained directly on raw audio could sidestep detection-stage bias, but no published system exists yet
+- [[PCEN normalization is more robust than log-mel spectrograms for few-shot bioacoustic scenarios]] -- PCEN's adaptive gain control could improve detection of low-amplitude USVs by normalizing per-channel energy, reducing the amplitude-dependent bias that causes these false negatives
+- [[entropy-based USV detection achieves 94.9 percent recall and 99.3 percent precision as a classical signal processing alternative]] -- entropy-based detection may be less sensitive to absolute amplitude since it measures spectral concentration rather than energy magnitude
+- [[DCASE few-shot bioacoustic detection improved from F1 40 percent to 70 percent across 2021-2024 challenge editions]] -- few-shot detection from minimal examples could address the training bias by not requiring large labeled datasets that reflect the full amplitude distribution
 
 Topics:
 - [[detection]]

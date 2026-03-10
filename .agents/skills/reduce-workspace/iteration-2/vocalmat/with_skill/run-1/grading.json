@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 13-22 contain a '## SUMMARY' section with counts: notes: 12, implementation ideas: 4, tensions: 5, enrichment tasks: 6, validations: 2, open questions: 3, skipped: 2, TOTAL OUTPUTS: 32."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "12 claims + 4 implementation ideas + 5 tensions + 6 enrichments + 2 validations = 29 extraction items (32 total outputs including open questions and skipped). Well above the threshold of 8."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "Explicitly stated in calibration check: 'Skip rate: 2/34 candidates = 5.9% (well below 10% threshold for domain-relevant sources)'. Two items skipped: VocalMat tool description (already captured elsewhere) and bibliographic metadata."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 12 claims have a 'Rationale:' field explaining extraction reasoning. All 4 implementation ideas have 'Why it matters:' fields. All 5 tensions have 'Why it matters:' fields. All 6 enrichment tasks have 'Why:' fields. All 2 validations have 'Why this matters:' fields. All 3 open questions have 'Rationale:' fields. Even the 2 skipped items have 'Reason:' fields."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Representative titles checked: (1) 'VocalMat adaptive thresholding eliminates fixed detection thresholds by adapting to local noise floor' -- proposition about what adaptive thresholding does. (2) 'VocalMat achieves over 99.7 percent detection sensitivity with 4428 of 4441 USVs detected' -- quantitative claim. (3) 'differential geometry features extract USV shape information independent of absolute frequency or duration' -- proposition about feature properties. All are complete claims, not topic labels."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "Six distinct categories: CLAIMS (12 items), IMPLEMENTATION IDEAS (4 items), TENSIONS (5 items), ENRICHMENT TASKS (6 items), VALIDATIONS (2 items), OPEN QUESTIONS (3 items). All are represented with dedicated sections."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "PROCESS NOTES section (lines 288-290): 'Vector search unavailable (qmd embeddings not built). Duplicate detection fell back to keyword grep against notes/ directory. This is a Tier 3 fallback per the skill specification.' Also: 'Existing VocalMat coverage: The vault already has 2 VocalMat-specific notes and 11 additional notes referencing VocalMat.' Multiple claim rationales reference existing vault notes to demonstrate non-duplication."
+    },
+    {
+      "text": "The tension between discrete USV categories and continuous acoustic space is captured",
+      "passed": true,
+      "evidence": "Tension #2: 'Discrete 11-category classification versus continuous acoustic space for USVs' -- explicitly states 'VocalMat classifies into 11 discrete categories, but their own t-SNE/UMAP projections show significant overlap zones between categories. The classification system imposes boundaries on what appears to be a continuum.' Connects to Holy & Guo 2005, Goffinet 2021, and VQ-VAE approach."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

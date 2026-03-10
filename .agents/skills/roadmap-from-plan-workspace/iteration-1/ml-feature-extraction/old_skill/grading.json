@@ -1,0 +1,53 @@
+{
+  "eval_name": "ml-feature-extraction",
+  "run_type": "old_skill",
+  "source_file": "ROADMAP_FEATURE_EXTRACTION.md",
+  "expectations": [
+    {
+      "text": "A1: Output contains exactly 4 /implement blocks",
+      "passed": true,
+      "evidence": "Found 4 /implement blocks"
+    },
+    {
+      "text": "A2: Every module has a Review Tier assignment",
+      "passed": true,
+      "evidence": "Found 4 Review Tier assignments (expected 4)"
+    },
+    {
+      "text": "A3: At least one module is Tier 3 (DSP/ML content)",
+      "passed": true,
+      "evidence": "Tier 3 found"
+    },
+    {
+      "text": "A4: References ADR-001 or sr=300000",
+      "passed": true,
+      "evidence": "ADR/sample rate reference found"
+    },
+    {
+      "text": "A5: Every module has a Test plan section",
+      "passed": true,
+      "evidence": "Found 4 Test plan sections (expected 4)"
+    },
+    {
+      "text": "A6: Contains a Phase Gate section",
+      "passed": true,
+      "evidence": "Phase Gate found"
+    },
+    {
+      "text": "A7: Mentions theoretical content / KG extraction",
+      "passed": true,
+      "evidence": "KG/theoretical mention found"
+    },
+    {
+      "text": "A8: Contains Python dataclass/config code snippet",
+      "passed": true,
+      "evidence": "Dataclass definition found"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

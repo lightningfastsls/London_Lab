@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Set Review - learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Lora', Georgia, serif; background: #faf9f5; padding: 2rem; color: #141413; }
+    h1 { font-family: 'Poppins', sans-serif; margin-bottom: 0.5rem; font-size: 1.5rem; }
+    .description { color: #b0aea5; margin-bottom: 1.5rem; font-style: italic; max-width: 900px; }
+    .controls { margin-bottom: 1rem; display: flex; gap: 0.5rem; }
+    .btn { font-family: 'Poppins', sans-serif; padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem; font-weight: 500; }
+    .btn-add { background: #6a9bcc; color: white; }
+    .btn-add:hover { background: #5889b8; }
+    .btn-export { background: #d97757; color: white; }
+    .btn-export:hover { background: #c4613f; }
+    table { width: 100%; max-width: 1100px; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    th { font-family: 'Poppins', sans-serif; background: #141413; color: #faf9f5; padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; }
+    td { padding: 0.75rem 1rem; border-bottom: 1px solid #e8e6dc; vertical-align: top; }
+    tr:nth-child(even) td { background: #faf9f5; }
+    tr:hover td { background: #f3f1ea; }
+    .section-header td { background: #e8e6dc; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 0.8rem; color: #141413; text-transform: uppercase; letter-spacing: 0.05em; }
+    .query-input { width: 100%; padding: 0.4rem; border: 1px solid #e8e6dc; border-radius: 4px; font-size: 0.875rem; font-family: 'Lora', Georgia, serif; resize: vertical; min-height: 60px; }
+    .query-input:focus { outline: none; border-color: #d97757; box-shadow: 0 0 0 2px rgba(217,119,87,0.15); }
+    .toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle .slider { position: absolute; inset: 0; background: #b0aea5; border-radius: 24px; cursor: pointer; transition: 0.2s; }
+    .toggle .slider::before { content: ""; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.2s; }
+    .toggle input:checked + .slider { background: #d97757; }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
+    .btn-delete { background: #c44; color: white; padding: 0.3rem 0.6rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-family: 'Poppins', sans-serif; }
+    .btn-delete:hover { background: #a33; }
+    .summary { margin-top: 1rem; color: #b0aea5; font-size: 0.875rem; }
+  </style>
+</head>
+<body>
+  <h1>Eval Set Review: <span id="skill-name">learn</span></h1>
+  <p class="description">Current description: <span id="skill-desc">Research a topic and grow your knowledge graph. Investigates topics using web search, checks existing vault knowledge to avoid redundancy, captures findings as structured inbox source files with full provenance, and chains to the processing pipeline. Use this skill whenever the user wants to research something, investigate a topic, look something up, or add external knowledge to the vault. Triggers on "/learn", "/learn [topic]", "research this", "find out about", "look up", "what do we know about".</span></p>
+
+  <div class="controls">
+    <button class="btn btn-add" onclick="addRow()">+ Add Query</button>
+    <button class="btn btn-export" onclick="exportEvalSet()">Export Eval Set</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:65%">Query</th>
+        <th style="width:18%">Should Trigger</th>
+        <th style="width:10%">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="eval-body"></tbody>
+  </table>
+
+  <p class="summary" id="summary"></p>
+
+  <script>
+    const EVAL_DATA = [
+  {
+    "query": "I just came across this concept of 'contrastive predictive coding' for audio representations and I'm not sure how it compares to the masked autoencoders we've been reading about. Can you do a deep dive on CPC vs MAE for bioacoustic feature learning? I want to know which approach is winning on recent benchmarks and whether anyone has applied CPC specifically to USV data",
+    "should_trigger": true
+  },
+  {
+    "query": "/learn VAE-based approaches to mouse USV syllable classification --deep",
+    "should_trigger": true
+  },
+  {
+    "query": "hey so I was reading about this tool called WhisperSeg for segmenting birdsong and it sounds pretty cool. Can you research whether it would work for our mouse USV recordings? Like what sample rates does it support, what's the architecture, has anyone used it for rodent vocalizations",
+    "should_trigger": true
+  },
+  {
+    "query": "what do we know about UMAP parameter sensitivity for high-dimensional bioacoustic embeddings? I'm worried we might be choosing n_neighbors and min_dist arbitrarily -- is there any systematic study on this?",
+    "should_trigger": true
+  },
+  {
+    "query": "look up what sample rate DeepSqueak actually uses internally. I remember we had conflicting info last time -- some docs say 250kHz, the paper says something different. Just get me the definitive answer from the source code if you can",
+    "should_trigger": true
+  },
+  {
+    "query": "https://arxiv.org/abs/2406.01253",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to understand the current landscape of open-source bioacoustic annotation tools. Not just detection -- I mean the full pipeline: segmentation, labeling, review, export. What's out there in 2025 and how do they compare?",
+    "should_trigger": true
+  },
+  {
+    "query": "find out about recent advances in few-shot learning for animal sound classification. Specifically interested in approaches that work with less than 10 labeled examples per class, since that's our situation with the rare USV call types",
+    "should_trigger": true
+  },
+  {
+    "query": "so my advisor mentioned that there's a new benchmark dataset for marine bioacoustics that just came out this year. Something about standardizing evaluation across species? can you track it down and tell me what it covers, how big it is, and whether we could use the same evaluation framework for our USV work",
+    "should_trigger": true
+  },
+  {
+    "query": "research what the state of the art is for handling overlapping vocalizations in dense acoustic environments. Our field recordings sometimes have 2-3 mice vocalizing simultaneously and the current energy detector can't separate them",
+    "should_trigger": true
+  },
+  {
+    "query": "I just dropped a new paper PDF into the inbox folder at inbox/bermant-2023-deep-audio-embeddings.md. Can you extract the key claims and turn them into atomic notes? It covers convolutional autoencoders for vocalization clustering",
+    "should_trigger": false
+  },
+  {
+    "query": "we've got like 5 new notes about clustering methods sitting in notes/ that aren't connected to anything. Can you find what they relate to and update the topic maps?",
+    "should_trigger": false
+  },
+  {
+    "query": "why does our vault use atomic notes instead of longer documents? Like what's the reasoning behind the single-claim-per-note rule? I feel like sometimes it makes things harder to follow",
+    "should_trigger": false
+  },
+  {
+    "query": "check the vault health -- I haven't run maintenance in a while and I'm worried there might be orphan notes or broken links piling up",
+    "should_trigger": false
+  },
+  {
+    "query": "I've been meaning to update the old notes about STFT parameter choices. The ones from last month reference 250kHz but we've since confirmed it should be 300kHz. Can you go back through those notes and fix the outdated references?",
+    "should_trigger": false
+  },
+  {
+    "query": "can you read the detection config at src/usv_spectrogram/detection/config.py and explain what each parameter does? I want to understand the threshold settings before I change anything",
+    "should_trigger": false
+  },
+  {
+    "query": "what's next? I just finished implementing the dataset assembler and I'm not sure what to work on -- should I do the training pipeline or the detection app first?",
+    "should_trigger": false
+  },
+  {
+    "query": "I have this paper already in the vault -- the Animal2Vec one from 2024. I want to verify whether our note about its accuracy numbers is still correct or if there's been an update to the paper since we captured it",
+    "should_trigger": false
+  },
+  {
+    "query": "process the 3 items sitting in the inbox queue -- there's the NatureLM-audio capture, the Perch 2.0 summary, and the AVEX benchmark notes. Run them through the full pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "show me the vault stats -- how many notes do we have, what's the link density, how many topic maps, what's the processing backlog look like",
+    "should_trigger": false
+  }
+];
+
+    let evalItems = [...EVAL_DATA];
+
+    function render() {
+      const tbody = document.getElementById('eval-body');
+      tbody.innerHTML = '';
+
+      // Sort: should-trigger first, then should-not-trigger
+      const sorted = evalItems
+        .map((item, origIdx) => ({ ...item, origIdx }))
+        .sort((a, b) => (b.should_trigger ? 1 : 0) - (a.should_trigger ? 1 : 0));
+
+      let lastGroup = null;
+      sorted.forEach(item => {
+        const group = item.should_trigger ? 'trigger' : 'no-trigger';
+        if (group !== lastGroup) {
+          const headerRow = document.createElement('tr');
+          headerRow.className = 'section-header';
+          headerRow.innerHTML = `<td colspan="3">${item.should_trigger ? 'Should Trigger' : 'Should NOT Trigger'}</td>`;
+          tbody.appendChild(headerRow);
+          lastGroup = group;
+        }
+
+        const idx = item.origIdx;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><textarea class="query-input" onchange="updateQuery(${idx}, this.value)">${escapeHtml(item.query)}</textarea></td>
+          <td>
+            <label class="toggle">
+              <input type="checkbox" ${item.should_trigger ? 'checked' : ''} onchange="updateTrigger(${idx}, this.checked)">
+              <span class="slider"></span>
+            </label>
+            <span style="margin-left:8px;font-size:0.8rem;color:#b0aea5">${item.should_trigger ? 'Yes' : 'No'}</span>
+          </td>
+          <td><button class="btn-delete" onclick="deleteRow(${idx})">Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      updateSummary();
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function updateQuery(idx, value) { evalItems[idx].query = value; updateSummary(); }
+    function updateTrigger(idx, value) { evalItems[idx].should_trigger = value; render(); }
+    function deleteRow(idx) { evalItems.splice(idx, 1); render(); }
+
+    function addRow() {
+      evalItems.push({ query: '', should_trigger: true });
+      render();
+      const inputs = document.querySelectorAll('.query-input');
+      inputs[inputs.length - 1].focus();
+    }
+
+    function updateSummary() {
+      const trigger = evalItems.filter(i => i.should_trigger).length;
+      const noTrigger = evalItems.filter(i => !i.should_trigger).length;
+      document.getElementById('summary').textContent =
+        `${evalItems.length} queries total: ${trigger} should trigger, ${noTrigger} should not trigger`;
+    }
+
+    function exportEvalSet() {
+      const valid = evalItems.filter(i => i.query.trim() !== '');
+      const data = valid.map(i => ({ query: i.query.trim(), should_trigger: i.should_trigger }));
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'eval_set.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    render();
+  </script>
+</body>
+</html>

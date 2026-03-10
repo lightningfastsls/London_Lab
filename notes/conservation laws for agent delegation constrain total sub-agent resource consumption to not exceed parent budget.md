@@ -28,7 +28,8 @@ Relevant Notes:
 - [[Liza blackboard architecture coordinates multi-agent work through shared state files without inter-agent conversation]] -- practical multi-agent system using bounded delegation
 - [[ABC framework defines probabilistic compliance where hard constraints hold with high probability and soft violations recover within bounded steps]] -- the complementary compliance framework
 - [[agent team token costs scale linearly with teammates making 3-5 the recommended size before coordination overhead dominates]] -- concrete instance: linear token scaling constrains practical team size to 3-5 before conservation limits bite
-- [[three parallelization strategies in Claude Code serve different isolation needs: subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] -- the three strategies all operate under conservation constraints but with different cost profiles
+- [[three parallelization strategies in Claude Code serve different isolation needs subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] -- the three strategies all operate under conservation constraints but with different cost profiles
+- [[cross-agent knowledge transfer requires flattening graph-traversable constraints into self-contained plain text]] — constraint flattening at delegation boundaries is a form of information compression under conservation constraints: the handoff author's activation budget must cover what the receiver cannot activate independently
 
 Topics:
 - [[agent-governance]]

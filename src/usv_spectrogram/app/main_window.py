@@ -31,6 +31,8 @@ from .core.preset_config import PresetManager
 from .core.sliding_inference import SlidingInference, InferenceResult
 from .core.detection_logic import HysteresisDetector, DetectionResult, DetectedUSV
 from .core.label_storage import LabelStorage
+from .core.selection_mapping import resolve_current_detection_selection
+from .core.saved_detection_ghosts import build_saved_previous_detections
 from .core.saved_detection_tracker import SavedDetectionTracker
 from .core.detection_exporter import DetectionExporter
 from .widgets.spectrogram_view import SpectrogramView
@@ -540,6 +542,17 @@ class MainWindow(QMainWindow):
             self.saved_tracker = None
             self.detection_exporter = None
 
+            # Clear prior review visuals/actions until this file is detected or labels are loaded
+            self.probability_view.clear()
+            self.spectrogram_view.canvas.clear_selection()
+            self.spectrogram_view.set_detections([])
+            self.apply_btn.setEnabled(False)
+            self.save_current_btn.setEnabled(False)
+            self.save_all_btn.setEnabled(False)
+            self.remove_detection_btn.setEnabled(False)
+            self._enable_threshold_controls(False)
+            self.detection_info_label.setText("No detections")
+
             # Move old file to _reviewed folder (after successful load)
             if old_wav_path is not None and old_wav_path != wav_path:
                 self._move_reviewed_file(old_wav_path)
@@ -772,42 +785,13 @@ class MainWindow(QMainWindow):
         """
         if self.saved_tracker is None or self.audio_data is None:
             return []
-
-        ghosts = []
-        times = self.audio_data.times
-
-        for record in self.saved_tracker.saved_detections:
-            # Check if this record overlaps with any current detection
-            # (those are already marked "saved_current", skip to avoid duplicates)
-            is_current = False
-            if self.detection_result is not None:
-                for det in self.detection_result.usvs:
-                    if det.save_state == "saved_current":
-                        # Check overlap
-                        if not (det.end_time_s <= record.start_time_s or
-                                record.end_time_s <= det.start_time_s):
-                            is_current = True
-                            break
-
-            if is_current:
-                continue
-
-            # Estimate column indices via searchsorted
-            start_col = int(np.searchsorted(times, record.start_time_s))
-            end_col = int(np.searchsorted(times, record.end_time_s))
-
-            ghost = DetectedUSV(
-                start_time_s=record.start_time_s,
-                end_time_s=record.end_time_s,
-                start_col=start_col,
-                end_col=end_col,
-                max_probability=0.0,
-                mean_probability=0.0,
-                save_state="saved_previous"
-            )
-            ghosts.append(ghost)
-
-        return ghosts
+        current_detections = [] if self.detection_result is None else self.detection_result.usvs
+        return build_saved_previous_detections(
+            self.saved_tracker.saved_detections,
+            current_detections=current_detections,
+            times=self.audio_data.times,
+            matches_record=self.saved_tracker.matches_record,
+        )
 
     def _on_boundary_adjusted(self, original_detection, new_start: float, new_end: float):
         """Handle boundary adjustment from SpectrogramCanvas.
@@ -893,19 +877,19 @@ class MainWindow(QMainWindow):
         # Get selected detection index from spectrogram canvas
         selected_idx = self.spectrogram_view.canvas._selected_detection_idx
 
-        if selected_idx is None:
+        current_idx, selected_detection = resolve_current_detection_selection(
+            selected_idx,
+            self.spectrogram_view.canvas.detections,
+            self.detection_result.usvs,
+        )
+
+        if selected_detection is None:
             QMessageBox.information(
                 self,
                 "No Selection",
                 "Please select a detection first by clicking on a boundary line."
             )
             return
-
-        # Bounds check
-        if not (0 <= selected_idx < len(self.detection_result.usvs)):
-            return
-
-        selected_detection = self.detection_result.usvs[selected_idx]
 
         # Don't allow removing ghost detections (read-only)
         if selected_detection.save_state == "saved_previous":
@@ -929,6 +913,8 @@ class MainWindow(QMainWindow):
 
         if reply != QMessageBox.StandardButton.Yes:
             return
+
+        self._remove_existing_saved_exports(selected_detection)
 
         # Export to rejected_detections/ before deleting (for training data)
         if self.detection_exporter is not None and self.audio_data is not None:
@@ -957,7 +943,7 @@ class MainWindow(QMainWindow):
                     detection=deleted_detection,
                     audio_data=self.audio_data,
                     wav_filename=self.current_wav_path.stem,
-                    detection_index=selected_idx,
+                    detection_index=current_idx if current_idx is not None else 0,
                     session_id=self.session_id,
                     threshold_preset=self.current_preset,
                     threshold_high=self.high_threshold,
@@ -980,7 +966,9 @@ class MainWindow(QMainWindow):
                 # Continue with deletion even if export fails
 
         # Remove from detection list
-        del self.detection_result.usvs[selected_idx]
+        if current_idx is None:
+            return
+        del self.detection_result.usvs[current_idx]
 
         # Clear selection in canvas
         self.spectrogram_view.canvas._selected_detection = None
@@ -1005,12 +993,14 @@ class MainWindow(QMainWindow):
             # Clear noise label
             from .core.detection_logic import clear_noise_label
             self.detection_result = clear_noise_label(self.detection_result)
+            self._remove_noise_label_file()
 
             # Update UI
             self.label_noise_btn.setText("Label File as Noise")
             self.label_noise_btn.setStyleSheet("")
             self._enable_threshold_controls(True)
             self.statusBar.showMessage("Noise label cleared", 2000)
+            self._refresh_detection_views()
             self._update_detection_info()
 
         else:
@@ -1033,7 +1023,7 @@ class MainWindow(QMainWindow):
 
             # Clear saved tracker
             if self.saved_tracker is not None:
-                self.saved_tracker.saved_detections.clear()
+                self.saved_tracker.clear_records()
 
             # Auto-save noise label to dedicated folder
             self._auto_save_noise_label()
@@ -1083,6 +1073,22 @@ class MainWindow(QMainWindow):
                 "You can manually save with Ctrl+S if needed."
             )
             self.statusBar.showMessage("File labeled as NOISE (save failed)", 3000)
+
+    def _remove_noise_label_file(self) -> None:
+        """Remove any persisted noise-label JSON for the current WAV."""
+        if self.current_wav_path is None:
+            return
+
+        noise_path = self.output_dir / "noise_labeled_files" / f"{self.current_wav_path.stem}.json"
+        try:
+            if noise_path.exists():
+                noise_path.unlink()
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Cleanup Warning",
+                f"Cleared the noise label but could not remove stale noise JSON:\n{str(e)}"
+            )
 
     def _enable_threshold_controls(self, enabled: bool):
         """Enable or disable threshold adjustment controls."""
@@ -1286,8 +1292,40 @@ class MainWindow(QMainWindow):
             from .core.label_storage import LabelStorage
             data = LabelStorage.load(file_path)
 
+            metadata = data.get("metadata", {})
+            source_wav = metadata.get("wav_file")
+            if source_wav is not None:
+                source_name = Path(source_wav).name
+                current_name = self.current_wav_path.name
+                if source_name != current_name:
+                    QMessageBox.warning(
+                        self,
+                        "Label File Mismatch",
+                        "The selected labels were saved for a different WAV file:\n\n"
+                        f"Labels: {source_name}\n"
+                        f"Current: {current_name}\n\n"
+                        "Load the matching WAV or choose the correct labels file."
+                    )
+                    return
+
             # Reconstruct detection result
             self.detection_result = LabelStorage.reconstruct_detection_result(data)
+            self.spectrogram_view.canvas.clear_selection()
+
+            detection_params = data.get("detection_params", {})
+            loaded_high = detection_params.get("high_threshold")
+            loaded_low = detection_params.get("low_threshold")
+            if loaded_high is not None and loaded_low is not None:
+                self.high_threshold = float(loaded_high)
+                self.low_threshold = float(loaded_low)
+                self.high_threshold_slider.blockSignals(True)
+                self.low_threshold_slider.blockSignals(True)
+                self.high_threshold_slider.setValue(int(round(self.high_threshold * 100)))
+                self.low_threshold_slider.setValue(int(round(self.low_threshold * 100)))
+                self.high_threshold_slider.blockSignals(False)
+                self.low_threshold_slider.blockSignals(False)
+                self.high_threshold_label.setText(f"{self.high_threshold:.2f}")
+                self.low_threshold_label.setText(f"{self.low_threshold:.2f}")
 
             # Initialize components if needed
             if self.saved_tracker is None:
@@ -1425,6 +1463,58 @@ class MainWindow(QMainWindow):
         self._save_settings()
         event.accept()
 
+    def _remove_existing_saved_exports(self, detection: DetectedUSV) -> None:
+        """Remove stale accepted exports for a detection before re-exporting."""
+        if self.saved_tracker is None or self.detection_exporter is None:
+            return
+
+        boundary_pairs: list[tuple[float, float]] = [
+            (detection.start_time_s, detection.end_time_s),
+        ]
+        if detection.user_adjusted:
+            boundary_pairs.insert(
+                0,
+                (detection.original_start_time_s, detection.original_end_time_s),
+            )
+
+        seen: set[tuple[float, float]] = set()
+        for start_time_s, end_time_s in boundary_pairs:
+            if end_time_s <= start_time_s:
+                continue
+            key = (start_time_s, end_time_s)
+            if key in seen:
+                continue
+            seen.add(key)
+
+            removed_records = self.saved_tracker.remove_records_matching(
+                start_time_s,
+                end_time_s,
+            )
+            for record in removed_records:
+                self.detection_exporter.remove_exported_detection(record.output_path)
+
+    def _export_detection_and_mark_saved(self, detection: DetectedUSV, detection_index: int) -> None:
+        """Export a detection and persist its saved state."""
+        png, json_file, csv = self.detection_exporter.export_detection(
+            detection=detection,
+            audio_data=self.audio_data,
+            wav_filename=self.current_wav_path.stem,
+            detection_index=detection_index,
+            session_id=self.session_id,
+            threshold_preset=self.current_preset,
+            threshold_high=self.high_threshold,
+            threshold_low=self.low_threshold
+        )
+        self.saved_tracker.mark_saved(
+            detection, str(png),
+            threshold_preset=self.current_preset,
+            threshold_high=self.high_threshold,
+            threshold_low=self.low_threshold,
+            session_id=self.session_id,
+            user_action=detection.user_action
+        )
+        detection.save_state = "saved_current"
+
     def _save_current_view(self):
         """Save detections visible in current viewport."""
         if self.detection_result is None:
@@ -1472,25 +1562,8 @@ class MainWindow(QMainWindow):
 
             idx = self.detection_result.usvs.index(detection)
             try:
-                png, json_file, csv = self.detection_exporter.export_detection(
-                    detection=detection,
-                    audio_data=self.audio_data,
-                    wav_filename=self.current_wav_path.stem,
-                    detection_index=idx,
-                    session_id=self.session_id,
-                    threshold_preset=self.current_preset,
-                    threshold_high=self.high_threshold,
-                    threshold_low=self.low_threshold
-                )
-                self.saved_tracker.mark_saved(
-                    detection, str(png),
-                    threshold_preset=self.current_preset,
-                    threshold_high=self.high_threshold,
-                    threshold_low=self.low_threshold,
-                    session_id=self.session_id,
-                    user_action=detection.user_action
-                )
-                detection.save_state = "saved_current"
+                self._remove_existing_saved_exports(detection)
+                self._export_detection_and_mark_saved(detection, idx)
                 saved_count += 1
             except Exception as e:
                 print(f"Error saving detection {idx}: {e}")
@@ -1508,7 +1581,7 @@ class MainWindow(QMainWindow):
         self.statusBar.showMessage(f"Saved {saved_count} detection(s)", 3000)
 
     def _save_all_detections(self):
-        """Save all detections in current file."""
+        """Save all detections in current file and resync accepted exports."""
         if self.detection_result is None:
             return
 
@@ -1518,17 +1591,9 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "No Detections", "No detections to save.")
             return
 
-        # Filter out already-saved
-        unsaved = self.saved_tracker.get_unsaved_detections(all_detections)
-
-        if not unsaved:
-            QMessageBox.information(self, "Already Saved", "All detections already saved.")
-            return
-
-        # Confirm batch save
         reply = QMessageBox.question(
             self, "Confirm Save All",
-            f"Save {len(unsaved)} unsaved detection(s)?",
+            f"Export all {len(all_detections)} detection(s) and refresh saved outputs?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
 
@@ -1536,39 +1601,23 @@ class MainWindow(QMainWindow):
             return
 
         # Progress dialog
-        progress = QProgressDialog("Saving detections...", "Cancel", 0, len(unsaved), self)
+        progress = QProgressDialog("Saving detections...", "Cancel", 0, len(all_detections), self)
         progress.setWindowTitle("Save All Detections")
         progress.setWindowModality(Qt.WindowModality.WindowModal)
 
+        self.detection_exporter.clear_wav_exports(self.current_wav_path.stem)
+        self.saved_tracker.clear_non_deleted_records()
+
         saved_count = 0
-        for i, detection in enumerate(unsaved):
+        for i, detection in enumerate(all_detections):
             if progress.wasCanceled():
                 break
 
-            idx = self.detection_result.usvs.index(detection)
             try:
-                png, json_file, csv = self.detection_exporter.export_detection(
-                    detection=detection,
-                    audio_data=self.audio_data,
-                    wav_filename=self.current_wav_path.stem,
-                    detection_index=idx,
-                    session_id=self.session_id,
-                    threshold_preset=self.current_preset,
-                    threshold_high=self.high_threshold,
-                    threshold_low=self.low_threshold
-                )
-                self.saved_tracker.mark_saved(
-                    detection, str(png),
-                    threshold_preset=self.current_preset,
-                    threshold_high=self.high_threshold,
-                    threshold_low=self.low_threshold,
-                    session_id=self.session_id,
-                    user_action=detection.user_action
-                )
-                detection.save_state = "saved_current"
+                self._export_detection_and_mark_saved(detection, i)
                 saved_count += 1
             except Exception as e:
-                print(f"Error saving detection {idx}: {e}")
+                print(f"Error saving detection {i}: {e}")
 
             progress.setValue(i + 1)
 

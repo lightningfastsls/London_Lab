@@ -37,6 +37,7 @@ Relevant Notes:
 - [[vivid memories need verification]] — cognitive science grounding: flashbulb memories demonstrate the purest form of confidence-capability divergence at the individual level — subjective vividness decouples from objective accuracy, and only external verification closes the gap; the same pattern scales to system-level structural confidence
 - [[implicit knowledge emerges from traversal]] — traversal-specific divergence risk: repeated path exposure builds navigation confidence that feels like understanding, but the open question is whether this is genuine cognition or illusion of familiarity; implicit knowledge is the precise mechanism by which structural confidence forms without retrieval verification
 - [[provenance tracks where beliefs come from]] — grounding mechanism for closing the confidence-capability gap: if the agent knows a belief is inherited rather than observed, it has structural grounds for reducing confidence rather than relying on subjective certainty
+- [[whether tracking which surfaced notes agents actually load can identify poorly-described vault entries]] — concrete diagnostic: load-rate tracking converts the abstract confidence-capability divergence into a measurable signal; notes surfaced but never loaded are empirical evidence that the filtering layer appears to work while actually failing
 
 Topics:
 - [[agent-cognition]]

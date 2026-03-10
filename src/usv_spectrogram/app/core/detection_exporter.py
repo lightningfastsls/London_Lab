@@ -96,14 +96,37 @@ class DetectionExporter:
             threshold_low=threshold_low
         )
 
-        # 7. Append to CSV summary
-        csv_path = output_subdir / "detections_summary.csv"
-        self._append_to_csv(
-            detection, detection_index, wav_filename,
-            csv_path
-        )
+        # 7. Rebuild CSV summary from the current JSON files
+        csv_path = self._rewrite_csv_summary(wav_filename)
 
         return png_path, json_path, csv_path
+
+    def remove_exported_detection(self, output_path: str | Path) -> None:
+        """Remove an exported detection's assets and refresh the CSV summary."""
+        png_path = Path(output_path)
+        json_path = png_path.with_suffix(".json")
+
+        if png_path.exists():
+            png_path.unlink()
+        if json_path.exists():
+            json_path.unlink()
+
+        wav_filename = png_path.parent.name
+        self._rewrite_csv_summary(wav_filename)
+
+    def clear_wav_exports(self, wav_filename: str) -> None:
+        """Remove all accepted detection exports for a WAV and reset its summary."""
+        output_subdir = self.output_dir / wav_filename
+        if output_subdir.exists():
+            for path in output_subdir.glob("detection_*.png"):
+                path.unlink()
+            for path in output_subdir.glob("detection_*.json"):
+                path.unlink()
+            summary_path = output_subdir / "detections_summary.csv"
+            if summary_path.exists():
+                summary_path.unlink()
+        else:
+            output_subdir.mkdir(parents=True, exist_ok=True)
 
     def _render_annotated_png(
         self,
@@ -231,7 +254,7 @@ class DetectionExporter:
         }
 
         # Add adjustment metadata if present
-        if hasattr(detection, 'user_adjusted') and detection.user_adjusted:
+        if detection.user_adjusted:
             metadata["user_adjusted"] = True
             metadata["original_boundaries"] = {
                 "start_s": detection.original_start_time_s,
@@ -241,51 +264,51 @@ class DetectionExporter:
         with open(output_path, 'w') as f:
             json.dump(metadata, f, indent=2)
 
-    def _append_to_csv(
-        self,
-        detection: DetectedUSV,
-        index: int,
-        wav_filename: str,
-        csv_path: Path
-    ):
-        """Append detection info to CSV summary.
+    def _rewrite_csv_summary(self, wav_filename: str) -> Path:
+        """Rewrite the summary CSV from the JSON metadata currently on disk."""
+        output_subdir = self.output_dir / wav_filename
+        output_subdir.mkdir(parents=True, exist_ok=True)
+        csv_path = output_subdir / "detections_summary.csv"
 
-        Args:
-            detection: Detection object
-            index: Detection index
-            wav_filename: Name of WAV file
-            csv_path: Path to CSV file
-        """
-        # Check if CSV exists to determine if we need header
-        file_exists = csv_path.exists()
+        rows = []
+        for json_path in sorted(output_subdir.glob("detection_*.json")):
+            with open(json_path, 'r') as f:
+                metadata = json.load(f)
 
-        with open(csv_path, 'a', newline='') as f:
-            writer = csv.writer(f)
-
-            # Write header if new file
-            if not file_exists:
-                writer.writerow([
-                    'wav_file',
-                    'detection_index',
-                    'start_time_s',
-                    'end_time_s',
-                    'duration_ms',
-                    'max_prob',
-                    'mean_prob',
-                    'user_action',
-                    'timestamp'
-                ])
-
-            # Write detection row
-            duration_ms = (detection.end_time_s - detection.start_time_s) * 1000
-            writer.writerow([
+            core_time = metadata["core_time"]
+            probabilities = metadata["probabilities"]
+            rows.append([
                 wav_filename,
-                index,
-                f'{detection.start_time_s:.6f}',
-                f'{detection.end_time_s:.6f}',
-                f'{duration_ms:.2f}',
-                f'{detection.max_probability:.6f}',
-                f'{detection.mean_probability:.6f}',
-                detection.user_action or '',  # Empty string if None
-                datetime.now().isoformat()
+                metadata["detection_index"],
+                f'{core_time["start_s"]:.6f}',
+                f'{core_time["end_s"]:.6f}',
+                f'{core_time["duration_ms"]:.2f}',
+                f'{probabilities["max"]:.6f}',
+                f'{probabilities["mean"]:.6f}',
+                metadata.get("user_action") or '',
+                metadata["timestamp"],
             ])
+
+        if not rows:
+            if csv_path.exists():
+                csv_path.unlink()
+            return csv_path
+
+        rows.sort(key=lambda row: (int(row[1]), row[2], row[3], row[7], row[8]))
+
+        with open(csv_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                'wav_file',
+                'detection_index',
+                'start_time_s',
+                'end_time_s',
+                'duration_ms',
+                'max_prob',
+                'mean_prob',
+                'user_action',
+                'timestamp'
+            ])
+            writer.writerows(rows)
+
+        return csv_path

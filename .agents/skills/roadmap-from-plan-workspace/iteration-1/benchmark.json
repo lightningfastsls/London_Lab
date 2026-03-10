@@ -1,0 +1,186 @@
+{
+  "metadata": {
+    "skill_name": "roadmap-from-plan",
+    "skill_path": ".claude/skills/roadmap-from-plan",
+    "executor_model": "claude-opus-4-6",
+    "analyzer_model": "claude-opus-4-6",
+    "timestamp": "2026-02-27T12:00:00Z",
+    "evals_run": [1, 2, 3],
+    "runs_per_configuration": 1
+  },
+
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "ML Feature Extraction (rich plan)",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 207.9,
+        "tokens": 42108,
+        "tool_calls": 14,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "A1: Output contains exactly 4 /implement blocks", "passed": true, "evidence": "Found 4 /implement blocks"},
+        {"text": "A2: Every module has a Review Tier assignment", "passed": true, "evidence": "Found 4 Review Tier assignments"},
+        {"text": "A3: At least one module is Tier 3 (DSP/ML content)", "passed": true, "evidence": "Tier 3 found"},
+        {"text": "A4: References ADR-001 or sr=300000", "passed": true, "evidence": "ADR/sample rate reference found"},
+        {"text": "A5: Every module has a Test plan section", "passed": true, "evidence": "Found 4 Test plan sections"},
+        {"text": "A6: Contains a Phase Gate section", "passed": true, "evidence": "Phase Gate found"},
+        {"text": "A7: Mentions theoretical content / KG extraction", "passed": true, "evidence": "KG/theoretical mention found"},
+        {"text": "A8: Contains Python dataclass/config code snippet", "passed": true, "evidence": "Dataclass definition found"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "ML Feature Extraction (rich plan)",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 203.8,
+        "tokens": 41553,
+        "tool_calls": 13,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "A1: Output contains exactly 4 /implement blocks", "passed": true, "evidence": "Found 4 /implement blocks"},
+        {"text": "A2: Every module has a Review Tier assignment", "passed": true, "evidence": "Found 4 Review Tier assignments"},
+        {"text": "A3: At least one module is Tier 3 (DSP/ML content)", "passed": true, "evidence": "Tier 3 found"},
+        {"text": "A4: References ADR-001 or sr=300000", "passed": true, "evidence": "ADR/sample rate reference found"},
+        {"text": "A5: Every module has a Test plan section", "passed": true, "evidence": "Found 4 Test plan sections"},
+        {"text": "A6: Contains a Phase Gate section", "passed": true, "evidence": "Phase Gate found"},
+        {"text": "A7: Mentions theoretical content / KG extraction", "passed": true, "evidence": "KG/theoretical mention found"},
+        {"text": "A8: Contains Python dataclass/config code snippet", "passed": true, "evidence": "Dataclass definition found"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "CLI Consolidation (simple plan)",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 192.8,
+        "tokens": 46655,
+        "tool_calls": 23,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "B1: Output contains exactly 3 /implement blocks", "passed": true, "evidence": "Found 3 /implement blocks"},
+        {"text": "B2: Step 2 explicitly depends on Step 1", "passed": true, "evidence": "Dependency reference found"},
+        {"text": "B3: No modules assigned Tier 3", "passed": true, "evidence": "No Tier 3 (correct)"},
+        {"text": "B4: Mentions backwards compatibility", "passed": true, "evidence": "Backwards compat mentioned"},
+        {"text": "B5: Contains a Phase Gate section", "passed": true, "evidence": "Phase Gate found"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "CLI Consolidation (simple plan)",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 175.9,
+        "tokens": 48009,
+        "tool_calls": 23,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "B1: Output contains exactly 3 /implement blocks", "passed": true, "evidence": "Found 3 /implement blocks"},
+        {"text": "B2: Step 2 explicitly depends on Step 1", "passed": true, "evidence": "Dependency reference found"},
+        {"text": "B3: No modules assigned Tier 3", "passed": true, "evidence": "No Tier 3 (correct)"},
+        {"text": "B4: Mentions backwards compatibility", "passed": true, "evidence": "Backwards compat mentioned"},
+        {"text": "B5: Contains a Phase Gate section", "passed": true, "evidence": "Phase Gate found"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "Streaming Viewer (vague plan)",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 271.7,
+        "tokens": 48214,
+        "tool_calls": 17,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "C1: Output contains 4 /implement blocks", "passed": true, "evidence": "Found 4 /implement blocks"},
+        {"text": "C2: Contains [ASSUMED] markers OR gap flagging", "passed": true, "evidence": "Gap detection found — 15 [ASSUMED] markers with risk ratings"},
+        {"text": "C3: References ADR-001 or sr=300000", "passed": true, "evidence": "ADR/sample rate reference found"},
+        {"text": "C4: At least one module is Tier 3", "passed": true, "evidence": "Tier 3 found"},
+        {"text": "C5: Test plans >= 3 items per module", "passed": true, "evidence": "Test counts: 10, 12, 12, 10"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "Streaming Viewer (vague plan)",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 236.3,
+        "tokens": 50643,
+        "tool_calls": 18,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "C1: Output contains 4 /implement blocks", "passed": false, "evidence": "Found 5 /implement blocks — old skill invented a 5th 'Orchestrator' module not in the plan"},
+        {"text": "C2: Contains [ASSUMED] markers OR gap flagging", "passed": true, "evidence": "Gap detection found — flagged 3 assumptions"},
+        {"text": "C3: References ADR-001 or sr=300000", "passed": true, "evidence": "ADR/sample rate reference found"},
+        {"text": "C4: At least one module is Tier 3", "passed": true, "evidence": "Tier 3 found"},
+        {"text": "C5: Test plans >= 3 items per module", "passed": true, "evidence": "Test counts per module: [12, 9, 12, 14, 10]"}
+      ]
+    }
+  ],
+
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 224.1, "stddev": 41.0, "min": 192.8, "max": 271.7},
+      "tokens": {"mean": 45659, "stddev": 3156, "min": 42108, "max": 48214}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.93, "stddev": 0.12, "min": 0.80, "max": 1.0},
+      "time_seconds": {"mean": 205.3, "stddev": 30.4, "min": 175.9, "max": 236.3},
+      "tokens": {"mean": 46735, "stddev": 4689, "min": 41553, "max": 50643}
+    },
+    "delta": {
+      "pass_rate": "+0.07",
+      "time_seconds": "+18.8",
+      "tokens": "-1076"
+    }
+  },
+
+  "notes": [
+    "NEW skill achieves 100% pass rate across all 3 evals (18/18 assertions) vs OLD skill's 94% (17/18)",
+    "The single OLD skill failure (C1) is debatable: it added a 5th orchestrator module not in the plan — arguably smart, but unpredictable",
+    "NEW skill is 18.8s slower on average — the added reference example and gap-detection instructions cause slightly more deliberate processing",
+    "NEW skill uses fewer tokens on average (-1076) — possibly because the structured instructions reduce wandering",
+    "Key qualitative difference: NEW skill produces explicit [ASSUMED] markers with risk ratings (15 in streaming-viewer), OLD skill flags only 3 general assumptions",
+    "Both skills correctly found non-existent script names in CLI test and corrected them — strong project awareness regardless of skill version",
+    "Assertions A1-A8, B1-B5 pass for both versions — these are non-discriminating for the ML and CLI test cases, suggesting the biggest skill differences emerge with vague/underspecified input"
+  ]
+}

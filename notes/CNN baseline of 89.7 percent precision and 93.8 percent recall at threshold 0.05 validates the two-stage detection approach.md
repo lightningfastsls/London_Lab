@@ -19,6 +19,8 @@ The CNN architecture producing these results is described in [[three convolution
 
 This baseline establishes the starting point for the [[active learning cycle automates the label-train-evaluate-mine loop for iterative CNN improvement]], where each subsequent milestone (5K, 10K, 20K, 30K labels) should improve upon these numbers. The precision and recall values also inform the [[split ratio inconsistency between DECISIONS.md 80-10-10 and ROADMAP Phase 9 70-15-15 needs resolution]], since the ~840-label test set that produced these metrics may be too small for reliable confidence intervals under 80/10/10 splits.
 
+For context, [[entropy-based USV detection achieves 94.9 percent recall and 99.3 percent precision as a classical signal processing alternative]] — an alternative two-stage architecture using entropy rather than energy thresholding exceeds these CNN baseline metrics, suggesting room for improvement in the detection stage. Additionally, [[HybridMouse CNN plus BiLSTM first combined spatial and temporal features for USV detection outperforming DeepSqueak in low SNR]] demonstrates that adding temporal context to CNN features improves detection under noisy conditions, which is relevant given our lab's noise challenges. A noise/false-positive class in the classifier stage could further improve precision, since [[including a noise-false-positive class in the USV classifier catches residual detection errors]].
+
 ---
 
 Source: [ROADMAP](../ROADMAP.md)

@@ -30,7 +30,7 @@ class LabelStorage:
         audio_data: AudioData,
         detection_result: DetectionResult,
         wav_path: str | Path,
-        model_path: str | Path,
+        model_path: str | Path | None,
         high_threshold: float,
         low_threshold: float
     ) -> None:
@@ -41,17 +41,18 @@ class LabelStorage:
             audio_data: Audio and spectrogram data
             detection_result: Detection results
             wav_path: Path to source WAV file
-            model_path: Path to CNN model checkpoint
+            model_path: Path to CNN model checkpoint, if available
             high_threshold: High threshold used for detection
             low_threshold: Low threshold used for detection
         """
         output_path = Path(output_path)
+        model_file = None if model_path is None else str(Path(model_path).absolute())
 
         # Build JSON structure
         data = {
             "metadata": {
                 "wav_file": str(Path(wav_path).absolute()),
-                "model_file": str(Path(model_path).absolute()),
+                "model_file": model_file,
                 "created_at": datetime.now().isoformat(),
                 "duration_s": audio_data.duration_s,
                 "sample_rate": audio_data.sample_rate,
@@ -78,17 +79,21 @@ class LabelStorage:
             }
 
             # Add adjustment metadata if present
-            if hasattr(usv, 'user_adjusted') and usv.user_adjusted:
+            if usv.user_adjusted:
                 detection_dict["user_adjusted"] = True
                 detection_dict["original_start_time_s"] = usv.original_start_time_s
                 detection_dict["original_end_time_s"] = usv.original_end_time_s
 
             # Preserve user action (e.g., "added_manually")
-            if hasattr(usv, 'user_action') and usv.user_action is not None:
+            if usv.user_action is not None:
                 detection_dict["user_action"] = usv.user_action
 
+            # Preserve save state so reload keeps reviewed/manual state intact
+            if usv.save_state is not None:
+                detection_dict["save_state"] = usv.save_state
+
             # Preserve original CNN probability (for deletions/manual edits)
-            if hasattr(usv, 'original_cnn_probability') and usv.original_cnn_probability is not None:
+            if usv.original_cnn_probability is not None:
                 detection_dict["original_cnn_probability"] = usv.original_cnn_probability
 
             data["detections"].append(detection_dict)
@@ -149,6 +154,7 @@ class LabelStorage:
             user_adjusted=detection_dict.get("user_adjusted", False),
             original_start_time_s=detection_dict.get("original_start_time_s", 0.0),
             original_end_time_s=detection_dict.get("original_end_time_s", 0.0),
+            save_state=detection_dict.get("save_state", "unsaved"),
             user_action=detection_dict.get("user_action", None),
             original_cnn_probability=detection_dict.get("original_cnn_probability", None),
         )

@@ -18,6 +18,8 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -36,6 +38,48 @@ from usv_language.models.vqvae import HiddenStateVQVAE, VQVAEConfig
 from usv_language.training.train_transformer import CosineWarmupScheduler
 
 logger = logging.getLogger(__name__)
+
+_LAYER_FILENAME_RE = re.compile(r"hidden_states_layer(\d+)\.npy$")
+
+
+def coerce_vqvae_config(raw_config: VQVAEConfig | dict | None) -> VQVAEConfig:
+    """Normalize checkpoint config payloads across older/newer formats."""
+    if raw_config is None:
+        return VQVAEConfig()
+    if isinstance(raw_config, VQVAEConfig):
+        return raw_config
+    if isinstance(raw_config, dict):
+        return VQVAEConfig(**raw_config)
+    raise TypeError(f"Unsupported VQ-VAE config payload: {type(raw_config)!r}")
+
+
+def infer_hidden_state_layer(hidden_states_path: Path) -> int | None:
+    """Infer transformer layer number from a hidden-state filename."""
+    match = _LAYER_FILENAME_RE.search(hidden_states_path.name)
+    if match is None:
+        return None
+    return int(match.group(1))
+
+
+def build_hidden_state_provenance(hidden_states_path: Path) -> dict:
+    """Capture provenance for the hidden-state artifact used in training."""
+    hidden_states_path = hidden_states_path.resolve()
+    provenance = {
+        "hidden_states_path": str(hidden_states_path),
+        "hidden_states_filename": hidden_states_path.name,
+        "source_layer": infer_hidden_state_layer(hidden_states_path),
+    }
+
+    metadata_path = hidden_states_path.with_name("metadata.json")
+    if metadata_path.exists():
+        with open(metadata_path, encoding="utf-8") as f:
+            metadata = json.load(f)
+        provenance["metadata_path"] = str(metadata_path.resolve())
+        provenance["metadata_d_model"] = metadata.get("d_model")
+        provenance["metadata_total_frames"] = metadata.get("total_frames")
+        provenance["layers_extracted"] = metadata.get("layers_extracted")
+
+    return provenance
 
 
 # ---------------------------------------------------------------------------
@@ -65,13 +109,25 @@ class HiddenStateDataset(Dataset):
         window_size: int = 128,
         stride: int = 64,
     ) -> None:
+        if window_size <= 0:
+            raise ValueError(f"window_size must be positive, got {window_size}")
+        if stride <= 0:
+            raise ValueError(f"stride must be positive, got {stride}")
         self.path = path
         self.window_size = window_size
         self.stride = stride
 
         # Memory-map the file (read-only)
         self._mmap = np.load(path, mmap_mode="r")
+        if self._mmap.ndim != 2:
+            raise ValueError(
+                f"Hidden states array must have shape (frames, d_model), got {self._mmap.shape}"
+            )
         self.total_frames, self.d_model = self._mmap.shape
+        if self.total_frames == 0:
+            raise ValueError("Hidden states array is empty")
+        if self.d_model == 0:
+            raise ValueError("Hidden states array must have non-zero feature width")
 
         # Compute window start indices
         if self.total_frames < window_size:
@@ -79,6 +135,12 @@ class HiddenStateDataset(Dataset):
             self.starts = [0]
         else:
             self.starts = list(range(0, self.total_frames - window_size + 1, stride))
+
+            # Ensure tail coverage: append a final window anchored to the end
+            # when the stride grid would otherwise drop the remainder.
+            final_start = self.total_frames - window_size
+            if self.starts[-1] != final_start:
+                self.starts.append(final_start)
 
     def close(self) -> None:
         """Release the memory-mapped file handle (important on Windows)."""
@@ -122,17 +184,49 @@ def build_dataloaders(
 ) -> tuple[DataLoader, DataLoader]:
     """Split dataset sequentially and build DataLoaders.
 
-    First (1 - val_fraction) for training, last val_fraction for validation.
-    Sequential split avoids temporal leakage.
+    Uses the last ``val_fraction`` windows for validation and drops a gap of
+    overlapping windows at the train/val boundary so that no validation window
+    shares frames with any training window.
 
     Returns (train_loader, val_loader).
     """
-    n = len(dataset)
-    n_val = max(1, int(n * val_fraction))
-    n_train = n - n_val
+    if batch_size <= 0:
+        raise ValueError(f"batch_size must be positive, got {batch_size}")
+    if not (0.0 < val_fraction < 1.0):
+        raise ValueError(f"val_fraction must be in (0, 1), got {val_fraction}")
 
-    train_dataset = torch.utils.data.Subset(dataset, list(range(n_train)))
-    val_dataset = torch.utils.data.Subset(dataset, list(range(n_train, n)))
+    n = len(dataset)
+    if n < 2:
+        raise ValueError(
+            "HiddenStateDataset needs at least 2 windows for train/val split; "
+            f"got {n}"
+        )
+
+    n_val = max(1, int(n * val_fraction))
+    first_val_idx = max(1, n - n_val)
+
+    # Consecutive windows overlap whenever stride < window_size. Walk the
+    # boundary back until the last train window ends before the first val
+    # window starts. This handles the final end-anchored window as well as
+    # regular stride-aligned windows.
+    first_val_start = dataset.starts[first_val_idx]
+    train_end_exclusive = first_val_idx
+    while (
+        train_end_exclusive > 0
+        and dataset.starts[train_end_exclusive - 1] + dataset.window_size > first_val_start
+    ):
+        train_end_exclusive -= 1
+
+    gap_windows = first_val_idx - train_end_exclusive
+
+    if train_end_exclusive == 0:
+        raise ValueError(
+            "Not enough windows to create independent train/val splits after "
+            f"dropping {gap_windows} overlapping boundary windows; got {n} windows"
+        )
+
+    train_dataset = torch.utils.data.Subset(dataset, list(range(train_end_exclusive)))
+    val_dataset = torch.utils.data.Subset(dataset, list(range(first_val_idx, n)))
 
     train_loader = DataLoader(
         train_dataset,
@@ -152,8 +246,8 @@ def build_dataloaders(
     )
 
     logger.info(
-        "Data: %d train windows, %d val windows (total %d)",
-        n_train, n_val, n,
+        "Data: %d train windows, %d val windows, %d gap windows dropped (total %d)",
+        len(train_dataset), len(val_dataset), first_val_idx - train_end_exclusive, n,
     )
 
     return train_loader, val_loader
@@ -304,6 +398,7 @@ def save_checkpoint(
     config: VQVAEConfig,
     best_val_loss: float,
     history: list[dict],
+    provenance: dict | None = None,
     patience_counter: int = 0,
 ) -> None:
     """Save a training checkpoint."""
@@ -322,6 +417,8 @@ def save_checkpoint(
         "patience_counter": patience_counter,
         "history": history,
     }
+    if provenance is not None:
+        checkpoint["provenance"] = provenance
     torch.save(checkpoint, str(path))
 
 
@@ -333,6 +430,7 @@ def load_checkpoint(
 ) -> dict:
     """Load a training checkpoint. Returns the checkpoint dict."""
     checkpoint = torch.load(str(path), map_location="cpu", weights_only=False)
+    checkpoint["config"] = coerce_vqvae_config(checkpoint.get("config"))
     target = model.module if hasattr(model, "module") else model
     target.load_state_dict(checkpoint["model_state_dict"])
     if optimizer is not None and "optimizer_state_dict" in checkpoint:
@@ -367,6 +465,11 @@ def train(args: argparse.Namespace) -> dict:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    hidden_states_path = Path(args.hidden_states)
+    if not hidden_states_path.exists():
+        raise FileNotFoundError(f"Hidden states file not found: {hidden_states_path}")
+    provenance = build_hidden_state_provenance(hidden_states_path)
+
     # Device
     if torch.cuda.is_available():
         device = torch.device("cuda")
@@ -389,10 +492,15 @@ def train(args: argparse.Namespace) -> dict:
 
     # Dataset
     dataset = HiddenStateDataset(
-        args.hidden_states,
+        str(hidden_states_path),
         window_size=args.window_size,
         stride=args.stride,
     )
+    if dataset.d_model != model_config.d_model:
+        raise ValueError(
+            "Hidden-state width does not match requested d_model: "
+            f"{dataset.d_model} vs {model_config.d_model}"
+        )
     train_loader, val_loader = build_dataloaders(
         dataset,
         batch_size=args.batch_size,
@@ -437,15 +545,51 @@ def train(args: argparse.Namespace) -> dict:
             )
         else:
             ckpt = load_checkpoint(resume_path, model, optimizer, scheduler)
+            checkpoint_config = ckpt["config"]
+            if checkpoint_config != model_config:
+                raise ValueError(
+                    "Resume checkpoint model config does not match requested "
+                    "training config. Resume with the original architecture or "
+                    "start a new run."
+                )
             start_epoch = ckpt["epoch"] + 1
             best_val_loss = ckpt.get("best_val_loss", float("inf"))
             patience_counter = ckpt.get("patience_counter", 0)
             history = ckpt.get("history", [])
             logger.info("Resumed from epoch %d", ckpt["epoch"])
+            if start_epoch >= args.epochs:
+                raise ValueError(
+                    f"Checkpoint already reached epoch {ckpt['epoch']}. "
+                    f"Increase --epochs above {ckpt['epoch'] + 1} to resume."
+                )
+            checkpoint_provenance = ckpt.get("provenance")
+            if checkpoint_provenance is not None:
+                ckpt_hs_path = checkpoint_provenance.get("hidden_states_path")
+                cur_hs_path = provenance.get("hidden_states_path")
+                if ckpt_hs_path and cur_hs_path:
+                    try:
+                        paths_match = os.path.samefile(ckpt_hs_path, cur_hs_path)
+                    except (FileNotFoundError, OSError):
+                        paths_match = Path(ckpt_hs_path).name == Path(cur_hs_path).name
+                    if not paths_match:
+                        raise ValueError(
+                            "Resume checkpoint hidden-state provenance does not match "
+                            "the requested hidden-state artifact. "
+                            f"Checkpoint: {ckpt_hs_path}, current: {cur_hs_path}. "
+                            "Resume with the original hidden_states file or start a new run."
+                        )
+                ckpt_layer = checkpoint_provenance.get("source_layer")
+                cur_layer = provenance.get("source_layer")
+                if ckpt_layer is not None and cur_layer is not None and ckpt_layer != cur_layer:
+                    raise ValueError(
+                        "Resume checkpoint source_layer does not match the current "
+                        f"hidden-state artifact: checkpoint={ckpt_layer}, current={cur_layer}. "
+                        "Resume with the original hidden_states file or start a new run."
+                    )
 
     # Save config
     config_path = output_dir / "config.json"
-    with open(config_path, "w") as f:
+    with open(config_path, "w", encoding="utf-8") as f:
         json.dump({
             "model": {k: getattr(model_config, k)
                       for k in model_config.__dataclass_fields__},
@@ -460,6 +604,7 @@ def train(args: argparse.Namespace) -> dict:
                 "window_size": args.window_size,
                 "stride": args.stride,
             },
+            "provenance": provenance,
         }, f, indent=2)
 
     # Training loop
@@ -506,7 +651,7 @@ def train(args: argparse.Namespace) -> dict:
             patience_counter = 0
             save_checkpoint(
                 output_dir / "best.pt", model, optimizer, scheduler,
-                epoch, model_config, best_val_loss, history, patience_counter,
+                epoch, model_config, best_val_loss, history, provenance, patience_counter,
             )
         else:
             patience_counter += 1
@@ -515,6 +660,7 @@ def train(args: argparse.Namespace) -> dict:
             save_checkpoint(
                 output_dir / f"epoch_{epoch:04d}.pt", model, optimizer,
                 scheduler, epoch, model_config, best_val_loss, history,
+                provenance,
                 patience_counter,
             )
 
@@ -531,7 +677,7 @@ def train(args: argparse.Namespace) -> dict:
     # Save final
     save_checkpoint(
         output_dir / "final.pt", model, optimizer, scheduler,
-        epoch, model_config, best_val_loss, history, patience_counter,
+        epoch, model_config, best_val_loss, history, provenance, patience_counter,
     )
 
     with open(output_dir / "history.json", "w") as f:
@@ -604,3 +750,4 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 if __name__ == "__main__":
     train(parse_args())
+

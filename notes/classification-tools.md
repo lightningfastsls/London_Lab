@@ -39,6 +39,7 @@ Tools and interoperability for USV classification. DeepSqueak remains the domina
 - [[DeepSqueak regenerates its own spectrograms from raw audio so exported bounding boxes serve as regions of interest not precise frequency boundaries]] -- frequency bounds need only be approximate
 - [[25000-125000 Hz is the standard mouse USV frequency band used across bioacoustic tools for defining regions of interest]] -- cross-tool frequency convention (vs our 20-120 kHz)
 - [[timestamp proximity matching with configurable tolerance bridges detection systems that use different internal time representations]] -- re-associating DeepSqueak results with our detections
+- [[DeepSqueak import previously required exact subdirectory name matches while Raven export already supported prefix matches creating a silent asymmetric round-trip]] -- the 2026-03-07 bug: export supported prefix match, import required exact name, breaking round-trips for suffixed dirs
 
 ## Open Questions
 

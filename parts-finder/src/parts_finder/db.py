@@ -175,6 +175,51 @@ class PartsDatabase:
             return None
         return VehicleSpecs(**{f: row[f] for f in _SPECS_FIELDS})
 
+    def find_specs_by_model_year_for_oil(
+        self,
+        make: str,
+        model: str,
+        year: int,
+        fuel_type: str | None = None,
+    ) -> Optional[VehicleSpecs]:
+        """Find specs matching make + model + year, preferring oil data.
+
+        Like :meth:`find_specs_by_model_year` but ORDER BY prefers records
+        with ``oil_viscosity != ''``.  When *fuel_type* is provided and
+        multiple records match (different engine variants for the same
+        model-year), the record matching the fuel type is preferred.
+
+        This tier bridges the gap when the government API returns engine
+        codes (e.g. ``"G4FD"``) that don't match the DB's descriptive
+        engine labels (e.g. ``"1.6T Petrol"``).
+        """
+        if fuel_type:
+            # Try fuel-type-specific match first
+            row = self._conn.execute(
+                "SELECT * FROM vehicle_specs"
+                " WHERE make = ? AND model = ? AND fuel_type = ?"
+                " AND year_from <= ? AND year_to >= ?"
+                " AND oil_viscosity != ''"
+                " ORDER BY (CASE WHEN oil_viscosity != '' THEN 0 ELSE 1 END)"
+                " LIMIT 1",
+                (make, model, fuel_type, year, year),
+            ).fetchone()
+            if row is not None:
+                return VehicleSpecs(**{f: row[f] for f in _SPECS_FIELDS})
+
+        # Fall back to any engine variant with oil data
+        row = self._conn.execute(
+            "SELECT * FROM vehicle_specs"
+            " WHERE make = ? AND model = ?"
+            " AND year_from <= ? AND year_to >= ?"
+            " ORDER BY (CASE WHEN oil_viscosity != '' THEN 0 ELSE 1 END)"
+            " LIMIT 1",
+            (make, model, year, year),
+        ).fetchone()
+        if row is None:
+            return None
+        return VehicleSpecs(**{f: row[f] for f in _SPECS_FIELDS})
+
     def find_specs_by_engine_family(
         self,
         make: str,

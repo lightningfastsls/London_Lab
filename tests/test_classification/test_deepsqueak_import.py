@@ -345,6 +345,28 @@ class TestUnmatchedReporting:
         assert summary.unmatched_ds == 1  # DS call at 0.900s
         assert summary.unmatched_det == 1  # Detection at 0.500s
 
+    def test_prefix_matched_detection_dir_round_trips(
+        self, tmp_path: Path, detection_json_factory
+    ) -> None:
+        """Import side mirrors Raven export prefix matching for detection dirs."""
+        detection_json_factory("rec_001_retry", 0.100, 0.150, index=0)
+
+        ds_df = pd.DataFrame([_make_ds_excel_row(begin_time=0.100)])
+        ds_df = _normalize_columns(ds_df)
+        ds_df["wav_stem"] = "rec_001"
+        ds_df["source_file"] = "rec_001.xlsx"
+
+        det_dir = tmp_path / "detections"
+        dets = load_detections_for_merge(det_dir)
+
+        merged_df, summary = merge_with_detections(ds_df, dets, tolerance_ms=5.0)
+
+        assert summary.matched == 1
+        assert summary.unmatched_ds == 0
+        assert summary.unmatched_det == 0
+        assert merged_df["match_quality"].iloc[0] == "exact"
+        assert merged_df["det_json_path"].iloc[0].endswith("rec_001_retry\\detection_000_0.100s-0.150s.json")
+
 
 # ===================================================================
 # 6. Multiple Excel files concatenated

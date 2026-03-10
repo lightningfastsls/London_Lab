@@ -74,6 +74,9 @@ Relevant Notes:
 - [[betweenness centrality identifies bridge notes connecting disparate knowledge domains]] — quantifies which nodes activation preferentially flows through: high-betweenness nodes sit on the most shortest paths, making them natural waypoints that agents encounter repeatedly during diverse traversals
 - [[controlled disorder engineers serendipity through semantic rather than topical linking]] — explains what low-decay exploratory traversal encounters: semantic cross-links create unexpected neighbors that topical filing would segregate, and these surprising adjacencies are the discovery mechanism that makes exploratory mode productive
 - [[agent notes externalize navigation intuition that search cannot discover and traversal cannot reconstruct]] — the strategic layer above activation: spreading activation determines which nodes to visit next, but agent notes capture which starting points and activation patterns proved productive in prior sessions, providing meta-guidance that the mechanism itself cannot generate
+- [[activation timing matters as much as retrieval quality in agent knowledge systems]] — fills the gap this note leaves open: spreading activation describes HOW to traverse but not WHEN traversal is triggered; activation timing addresses the trigger problem that determines whether traversal begins at all
+- [[FLARE uses the agent's intended action as a retrieval query enabling pre-modification knowledge checks]] — provides a specific answer to the initial activation query: the agent's stated intent drives the first search, which spreading activation then traverses
+- [[cross-agent knowledge transfer requires flattening graph-traversable constraints into self-contained plain text]] — addresses the case where spreading activation is impossible: agents without vault access cannot traverse, so constraints must be serialized at handoff time
 
 Topics:
 - [[agent-cognition]]

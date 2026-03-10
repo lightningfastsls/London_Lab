@@ -54,6 +54,8 @@ Relevant Notes:
 - [[AI shifts knowledge systems from externalizing memory to externalizing attention]] — bookend hooks externalize two attention allocation decisions: what to attend to first (Start determines orientation focus) and what to reflect on at the end (Stop determines reflection scope)
 - [[reconciliation loops that compare desired state to actual state enable drift correction without continuous monitoring]] — the session-start health display is a lightweight reconciliation loop: it compares actual vault state against desired state and surfaces the delta, making bookend orientation the vault's primary reconciliation checkpoint
 - [[prospective memory requires externalization]] — names the cognitive failure that bookend hooks address: orientation and reflection are prospective memory demands that agents cannot habituate and that degrade under load for humans; hooks convert these remember-to-act patterns into infrastructure
+- [[static inline references and intent-based search activate knowledge at different points in the modification lifecycle]] — session-start is the broadest activation timing point: orient hooks surface goal-relevant notes before any specific modification is planned, forming the first layer in a three-layer activation architecture (session → planning → file)
+- [[activation timing matters as much as retrieval quality in agent knowledge systems]] — session boundary hooks are a concrete instance of the activation timing thesis: the orient hook is the earliest possible activation trigger, ensuring the agent has domain context before making any retrieval decisions
 
 Topics:
 - [[agent-cognition]]

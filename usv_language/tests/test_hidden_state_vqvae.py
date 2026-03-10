@@ -7,6 +7,7 @@ and HiddenStateDataset windowing.
 
 from __future__ import annotations
 
+import json
 import tempfile
 from pathlib import Path
 
@@ -19,6 +20,15 @@ from usv_language.models.vqvae import (
     VQVAEConfig,
     VectorQuantizerV2,
 )
+from usv_language.training.train_vqvae import (
+    HiddenStateDataset,
+    build_hidden_state_provenance,
+    build_dataloaders,
+    coerce_vqvae_config,
+    load_checkpoint,
+    save_checkpoint,
+)
+from usv_language.training.compare_layers import validate_hidden_state_artifact
 
 
 class TestVQVAEConfig:
@@ -216,6 +226,7 @@ class TestOverfit:
         # Use codebook_dim = d_model so the only bottleneck is discretization
         # (no dimensionality reduction). With K=64 codes and only 32 frames,
         # the model has enough capacity to memorize.
+        torch.manual_seed(42)
         config = VQVAEConfig(
             d_model=64, codebook_size=64, codebook_dim=64,
             commitment_weight=0.1, use_conv_encoder=False,
@@ -224,7 +235,6 @@ class TestOverfit:
         model.train()
 
         # Fixed batch for overfitting — small and deterministic
-        torch.manual_seed(42)
         x = torch.randn(2, 16, 64)
 
         # Initialize codebook from data for faster convergence
@@ -347,8 +357,6 @@ class TestHiddenStateDataset:
     """Test 11: HiddenStateDataset windowing correctness."""
 
     def test_windowing(self):
-        from usv_language.training.train_vqvae import HiddenStateDataset
-
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a test .npy file
             total_frames = 300
@@ -360,10 +368,9 @@ class TestHiddenStateDataset:
             ds = HiddenStateDataset(str(path), window_size=128, stride=64)
 
             try:
-                # Check number of windows
-                # stride-based: floor((300-128)/64) + 1 = 3
-                expected_windows = (total_frames - 128) // 64 + 1
-                assert len(ds) == expected_windows
+                # Tail coverage should add a final window anchored to the end.
+                assert ds.starts == [0, 64, 128, 172]
+                assert len(ds) == 4
 
                 # Check shape of each item
                 item = ds[0]
@@ -375,14 +382,16 @@ class TestHiddenStateDataset:
                 # Second window starts at stride offset
                 item2 = ds[1]
                 assert np.allclose(item2.numpy(), data[64:192])
+
+                # Final window is anchored to the end instead of dropping tail frames
+                tail_item = ds[-1]
+                assert np.allclose(tail_item.numpy(), data[172:300])
             finally:
                 # Release mmap file handle before temp dir cleanup (Windows)
                 ds.close()
 
     def test_short_file(self):
         """File shorter than window_size should produce one padded window."""
-        from usv_language.training.train_vqvae import HiddenStateDataset
-
         with tempfile.TemporaryDirectory() as tmpdir:
             total_frames = 50
             d_model = 64
@@ -402,6 +411,169 @@ class TestHiddenStateDataset:
             finally:
                 # Release mmap file handle before temp dir cleanup (Windows)
                 ds.close()
+
+    def test_build_dataloaders_drops_overlap_gap(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            total_frames = 300
+            d_model = 64
+            data = np.random.randn(total_frames, d_model).astype(np.float32)
+            path = Path(tmpdir) / "hidden_states.npy"
+            np.save(str(path), data)
+
+            ds = HiddenStateDataset(str(path), window_size=128, stride=64)
+
+            try:
+                train_loader, val_loader = build_dataloaders(
+                    ds,
+                    batch_size=2,
+                    val_fraction=0.25,
+                    num_workers=0,
+                )
+
+                train_indices = train_loader.dataset.indices
+                val_indices = val_loader.dataset.indices
+
+                assert train_indices == [0]
+                assert val_indices == [3]
+
+                train_last_end = ds.starts[train_indices[-1]] + ds.window_size
+                val_first_start = ds.starts[val_indices[0]]
+                assert train_last_end <= val_first_start
+            finally:
+                ds.close()
+
+    def test_empty_hidden_states_raises(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "empty.npy"
+            np.save(str(path), np.empty((0, 64), dtype=np.float32))
+
+            with pytest.raises(ValueError, match="empty"):
+                HiddenStateDataset(str(path), window_size=128, stride=64)
+
+    def test_non_2d_hidden_states_raises(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "bad.npy"
+            np.save(str(path), np.zeros((10, 4, 3), dtype=np.float32))
+
+            with pytest.raises(ValueError, match="shape"):
+                HiddenStateDataset(str(path), window_size=128, stride=64)
+
+    def test_invalid_window_or_stride_raises(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "hidden_states.npy"
+            np.save(str(path), np.zeros((10, 64), dtype=np.float32))
+
+            with pytest.raises(ValueError, match="window_size"):
+                HiddenStateDataset(str(path), window_size=0, stride=64)
+            with pytest.raises(ValueError, match="stride"):
+                HiddenStateDataset(str(path), window_size=128, stride=0)
+
+
+class TestTrainVQVAEHelpers:
+    def test_build_dataloaders_rejects_invalid_val_fraction(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "hidden_states.npy"
+            np.save(str(path), np.random.randn(300, 64).astype(np.float32))
+            ds = HiddenStateDataset(str(path), window_size=128, stride=64)
+
+            try:
+                with pytest.raises(ValueError, match="val_fraction"):
+                    build_dataloaders(ds, batch_size=2, val_fraction=0.0, num_workers=0)
+            finally:
+                ds.close()
+
+    def test_coerce_vqvae_config_accepts_dict(self):
+        config = coerce_vqvae_config({
+            "d_model": 64,
+            "codebook_size": 16,
+            "codebook_dim": 16,
+            "use_conv_encoder": False,
+        })
+
+        assert isinstance(config, VQVAEConfig)
+        assert config.d_model == 64
+
+    def test_load_checkpoint_coerces_dict_config(self):
+        config_dict = {
+            "d_model": 64,
+            "codebook_size": 16,
+            "codebook_dim": 16,
+            "use_conv_encoder": False,
+        }
+        model = HiddenStateVQVAE(VQVAEConfig(**config_dict))
+        optimizer = torch.optim.AdamW(
+            [p for p in model.parameters() if p.requires_grad], lr=1e-3,
+        )
+        from usv_language.training.train_transformer import CosineWarmupScheduler
+        scheduler = CosineWarmupScheduler(optimizer, warmup_steps=2, max_steps=10)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "checkpoint.pt"
+            torch.save({
+                "epoch": 1,
+                "model_state_dict": model.state_dict(),
+                "optimizer_state_dict": optimizer.state_dict(),
+                "scheduler_state": scheduler.state_dict(),
+                "config": config_dict,
+            }, str(path))
+
+            model2 = HiddenStateVQVAE(VQVAEConfig(**config_dict))
+            optimizer2 = torch.optim.AdamW(
+                [p for p in model2.parameters() if p.requires_grad], lr=1e-3,
+            )
+            scheduler2 = CosineWarmupScheduler(optimizer2, warmup_steps=2, max_steps=10)
+            ckpt = load_checkpoint(path, model2, optimizer2, scheduler2)
+
+            assert isinstance(ckpt["config"], VQVAEConfig)
+
+    def test_build_hidden_state_provenance_reads_neighbor_metadata(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            hs_path = Path(tmpdir) / "hidden_states_layer4.npy"
+            np.save(str(hs_path), np.zeros((8, 64), dtype=np.float32))
+            metadata_path = Path(tmpdir) / "metadata.json"
+            metadata_path.write_text(
+                json.dumps({"d_model": 64, "total_frames": 8, "layers_extracted": [2, 4]}),
+                encoding="utf-8",
+            )
+
+            provenance = build_hidden_state_provenance(hs_path)
+
+            assert provenance["hidden_states_filename"] == "hidden_states_layer4.npy"
+            assert provenance["source_layer"] == 4
+            assert provenance["metadata_d_model"] == 64
+            assert provenance["metadata_total_frames"] == 8
+            assert provenance["layers_extracted"] == [2, 4]
+
+    def test_save_checkpoint_persists_provenance(self):
+        config = VQVAEConfig(d_model=64, codebook_size=16, codebook_dim=16)
+        model = HiddenStateVQVAE(config)
+        optimizer = torch.optim.AdamW(
+            [p for p in model.parameters() if p.requires_grad], lr=1e-3,
+        )
+        from usv_language.training.train_transformer import CosineWarmupScheduler
+        scheduler = CosineWarmupScheduler(optimizer, warmup_steps=2, max_steps=10)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            ckpt_path = Path(tmpdir) / "checkpoint.pt"
+            provenance = {
+                "hidden_states_path": str((Path(tmpdir) / "hidden_states_layer4.npy").resolve()),
+                "hidden_states_filename": "hidden_states_layer4.npy",
+                "source_layer": 4,
+            }
+            save_checkpoint(
+                ckpt_path,
+                model,
+                optimizer,
+                scheduler,
+                epoch=1,
+                config=config,
+                best_val_loss=0.1,
+                history=[],
+                provenance=provenance,
+            )
+
+            loaded = torch.load(str(ckpt_path), map_location="cpu", weights_only=False)
+            assert loaded["provenance"] == provenance
 
 
 class TestConfigValidationExtended:
@@ -495,3 +667,162 @@ class TestCompareLayers:
             assert "## Recommendation" in content
             # Layer 4 should be recommended (best metrics)
             assert "Layer 4" in content
+
+    def test_generate_report_includes_failures(self):
+        from usv_language.training.compare_layers import generate_report
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            report_path = Path(tmpdir) / "report.md"
+            generate_report(
+                {},
+                report_path,
+                codebook_size=64,
+                failures={2: "missing hidden state file", 4: "shape mismatch"},
+            )
+
+            content = report_path.read_text(encoding="utf-8")
+            assert "No layer completed successfully" in content
+            assert "Layer 2: missing hidden state file" in content
+            assert "Layer 4: shape mismatch" in content
+
+    def test_generate_report_includes_provenance_sections(self):
+        from usv_language.training.compare_layers import generate_report
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            report_path = Path(tmpdir) / "report.md"
+            generate_report(
+                {
+                    4: {
+                        "recon_loss": 0.05,
+                        "commit_loss": 0.03,
+                        "perplexity": 55.0,
+                        "codebook_usage": 0.9,
+                    },
+                },
+                report_path,
+                codebook_size=64,
+                extraction_metadata={
+                    "checkpoint": "transformer_best.pt",
+                    "checkpoint_epoch": 12,
+                    "layers_extracted": [2, 4, 6],
+                    "primary_layer": 4,
+                    "total_frames": 512,
+                    "d_model": 64,
+                },
+                layer_run_configs={
+                    4: {
+                        "dataset": {
+                            "hidden_states": "hidden_states_layer4.npy",
+                            "window_size": 128,
+                            "stride": 64,
+                        },
+                        "training": {"epochs": 20, "patience": 5},
+                        "provenance": {
+                            "hidden_states_path": "C:/tmp/hidden_states_layer4.npy",
+                            "metadata_path": "C:/tmp/metadata.json",
+                            "source_layer": 4,
+                        },
+                    },
+                },
+            )
+
+            content = report_path.read_text(encoding="utf-8")
+            assert "## Extraction Provenance" in content
+            assert "transformer_best.pt" in content
+            assert "## Layer Artifact Provenance" in content
+            assert "C:/tmp/hidden_states_layer4.npy" in content
+            assert "C:/tmp/metadata.json" in content
+
+    def test_validate_hidden_state_artifact_rejects_layer_missing_from_metadata(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "hidden_states_layer4.npy"
+            np.save(str(path), np.zeros((8, 64), dtype=np.float32))
+
+            with pytest.raises(ValueError, match="layers_extracted"):
+                validate_hidden_state_artifact(
+                    path,
+                    layer=4,
+                    metadata={"layers_extracted": [2], "total_frames": 8, "d_model": 64},
+                )
+
+    def test_validate_hidden_state_artifact_rejects_metadata_shape_mismatch(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "hidden_states_layer4.npy"
+            np.save(str(path), np.zeros((8, 64), dtype=np.float32))
+
+            with pytest.raises(ValueError, match="does not match metadata d_model"):
+                validate_hidden_state_artifact(
+                    path,
+                    layer=4,
+                    metadata={"layers_extracted": [4], "total_frames": 8, "d_model": 32},
+                )
+
+
+def test_compare_layers_report_surfaces_layer_run_provenance(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from usv_language.training import compare_layers as compare_layers_module
+
+    hidden_states_dir = tmp_path / "hidden_states"
+    hidden_states_dir.mkdir()
+    output_dir = tmp_path / "comparison_output"
+
+    hidden_states_path = hidden_states_dir / "hidden_states_layer4.npy"
+    np.save(str(hidden_states_path), np.random.randn(32, 64).astype(np.float32))
+    (hidden_states_dir / "metadata.json").write_text(
+        json.dumps({
+            "checkpoint": "transformer_best.pt",
+            "checkpoint_epoch": 7,
+            "layers_extracted": [4],
+            "primary_layer": 4,
+            "total_frames": 32,
+            "d_model": 64,
+        }),
+        encoding="utf-8",
+    )
+
+    def _fake_train(args):
+        output_path = Path(args.output_dir)
+        output_path.mkdir(parents=True, exist_ok=True)
+        (output_path / "config.json").write_text(
+            json.dumps({
+                "dataset": {
+                    "hidden_states": args.hidden_states,
+                    "window_size": 128,
+                    "stride": 64,
+                },
+                "training": {"epochs": args.epochs, "patience": args.patience},
+                "provenance": {
+                    "hidden_states_path": str(Path(args.hidden_states).resolve()),
+                    "metadata_path": str((Path(args.hidden_states).parent / "metadata.json").resolve()),
+                    "source_layer": 4,
+                },
+            }),
+            encoding="utf-8",
+        )
+        return {
+            "recon_loss": 0.05,
+            "commit_loss": 0.02,
+            "perplexity": 12.0,
+            "codebook_usage": 0.5,
+        }
+
+    monkeypatch.setattr(compare_layers_module, "train_vqvae", _fake_train)
+
+    args = compare_layers_module.parse_args([
+        "--hidden-states-dir", str(hidden_states_dir),
+        "--output-dir", str(output_dir),
+        "--layers", "4",
+        "--d-model", "64",
+        "--epochs", "3",
+        "--patience", "2",
+    ])
+    compare_layers_module.compare_layers(args)
+
+    report = (output_dir / "comparison_report.md").read_text(encoding="utf-8")
+    assert "## Extraction Provenance" in report
+    assert "transformer_best.pt" in report
+    assert "## Layer Artifact Provenance" in report
+    assert str(hidden_states_path.resolve()) in report
+

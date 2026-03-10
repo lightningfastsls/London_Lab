@@ -50,6 +50,7 @@ Relevant Notes:
 - [[observation and tension logs function as dead-letter queues for failed automation]] — dead-letter entries accumulate evidence that informs retirement decisions: a check that generates only false-positive dead-letter entries is producing the very evidence that retirement criteria evaluate
 - [[automated detection is always safe because it only reads state while automated remediation risks content corruption]] — the read/write asymmetry changes retirement urgency: a redundant detection check wastes attention but causes no harm, while a redundant remediation check that occasionally misfires actively corrupts content, making remediation automation the higher-priority retirement candidate
 - [[module deactivation must account for structural artifacts that survive the toggle]] — extends the retirement principle to modular architecture: just as retired hooks should be removed to prevent noise accumulation, deactivated modules leave ghost YAML fields and validation rules that persist as structural debt; retirement hygiene applies at both the automation and module levels
+- [[fewer well-placed activation triggers outperform many ignored ones because noise teaches agents to skip gates]] — retirement criteria formalize the opposite extreme from alarm fatigue: a trigger that catches nothing is waste (retirement signal), while too many triggers that fire indiscriminately is noise (fatigue signal); together they bound the activation density from both sides
 
 Topics:
 - [[maintenance-patterns]]

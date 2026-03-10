@@ -21,6 +21,8 @@ Relevant Notes:
 - [[300 kHz sample rate provides comfortable Nyquist headroom for mouse USVs up to 120 kHz]] -- the sample rate that determines these derived values
 - [[75 percent overlap with hop length 128 provides smooth temporal coverage for USV detection]] -- companion hop parameter
 - [[frequency resolution of 586 Hz per bin suffices to distinguish USV subtypes in the 20-120 kHz range]] -- adequacy assessment
+- [[MUPET 2 ms frame duration with 80 percent overlap prioritizes temporal resolution for capturing rapid USV frequency modulations]] -- independent convergence on nearly identical parameters (512-point FFT, ~2 ms frames, ~500-600 Hz bins) validates this parameterization
+- [[MUPET operates at 250 kHz sample rate with minimum 90 kHz requirement covering the 25-125 kHz USV band]] -- cross-tool context: our 300 kHz vs MUPET's 250 kHz yields slightly different frequency resolution from the same FFT size
 
 Topics:
 - [[signal-processing]]

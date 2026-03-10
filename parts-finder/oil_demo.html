@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oil Finder — Parts Finder Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(145deg, #0a0f1a 0%, #111927 50%, #0d1520 100%);
+    color: #e2e8f0;
+    min-height: 100vh;
+  }
+
+  .dot-bg {
+    position: fixed; inset: 0; opacity: .03;
+    background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0);
+    background-size: 40px 40px;
+  }
+  .glow {
+    position: fixed; top: -200px; right: -200px; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(234,179,8,.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .container { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* ── Header ──────────────────────────────────── */
+  .header { text-align: center; margin-bottom: 40px; animation: fadeUp .5s ease; }
+  .header .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(234,179,8,.08); border: 1px solid rgba(234,179,8,.15);
+    border-radius: 40px; padding: 6px 16px 6px 10px; margin-bottom: 16px;
+    font-size: 12px; font-weight: 500; color: #eab308;
+    letter-spacing: .5px; text-transform: uppercase; font-family: 'Space Mono', monospace;
+  }
+  .header h1 {
+    font-size: clamp(28px, 5vw, 40px); font-weight: 700; letter-spacing: -.5px;
+    background: linear-gradient(135deg, #f8fafc, #94a3b8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .header p { font-size: 15px; color: #64748b; line-height: 1.5; max-width: 480px; margin: 0 auto; }
+
+  /* ── Form ────────────────────────────────────── */
+  .form-card {
+    background: rgba(255,255,255,.03); border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.07); padding: 28px;
+    animation: fadeUp .5s ease .15s both;
+  }
+  .field-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1px; color: #64748b; margin-bottom: 10px; display: block;
+    font-family: 'Space Mono', monospace;
+  }
+  .input-row { display: flex; gap: 12px; }
+  .plate-input {
+    flex: 1; padding: 14px 18px; border-radius: 10px;
+    border: 2px solid rgba(234,179,8,.25);
+    background: rgba(254,249,195,.08);
+    color: #fef9c3; font-size: 22px; font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 3px; text-align: center; outline: none;
+    transition: border-color .2s;
+  }
+  .plate-input:focus { border-color: rgba(234,179,8,.5); }
+  .plate-input::placeholder { color: rgba(254,249,195,.3); letter-spacing: 3px; }
+
+  .search-btn {
+    padding: 14px 28px; border-radius: 10px; border: none;
+    font-size: 14px; font-weight: 700; font-family: inherit;
+    display: flex; align-items: center; gap: 10px;
+    transition: all .3s; white-space: nowrap; cursor: pointer;
+  }
+  .search-btn.active { background: linear-gradient(135deg, #eab308, #ca8a04); color: #0a0f1a; }
+  .search-btn.disabled { background: rgba(255,255,255,.06); color: #475569; cursor: not-allowed; }
+
+  .spinner-icon { animation: spin 1s linear infinite; }
+
+  /* ── Error Banner ────────────────────────────── */
+  .error-banner {
+    margin-top: 16px; padding: 18px 24px; border-radius: 14px;
+    background: rgba(239,68,68,.06); border: 1px solid rgba(239,68,68,.15);
+    animation: fadeUp .3s ease;
+  }
+  .error-banner .title { font-size: 15px; font-weight: 700; margin: 0 0 4px; color: #fca5a5; }
+  .error-banner .detail { font-size: 13px; margin: 0; color: #f87171; line-height: 1.5; }
+
+  /* ── Result Cards ────────────────────────────── */
+  .results { margin-top: 24px; animation: fadeUp .4s ease; }
+
+  .card {
+    background: rgba(255,255,255,.03); border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.07); padding: 20px 24px;
+  }
+
+  .card-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1px; font-family: 'Space Mono', monospace;
+  }
+
+  .oil-spec-card {
+    margin-top: 12px; border-radius: 14px; padding: 24px;
+    background: linear-gradient(135deg, rgba(234,179,8,.06), rgba(234,179,8,.02));
+    border: 1px solid rgba(234,179,8,.15);
+  }
+  .visc {
+    font-size: 28px; font-weight: 700; font-family: 'Space Mono', monospace;
+    color: #fef9c3; letter-spacing: -.5px; margin: 6px 0;
+  }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px;
+    font-family: 'Space Mono', monospace; margin: 2px;
+  }
+  .tag-gold { background: rgba(234,179,8,.08); border: 1px solid rgba(234,179,8,.15); color: #eab308; }
+  .tag-blue { background: rgba(99,102,241,.1); border: 1px solid rgba(99,102,241,.2); color: #a5b4fc; }
+  .tag-green { background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.2); color: #86efac; }
+  .tag-muted { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: #94a3b8; }
+
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .detail-val { font-size: 20px; font-weight: 700; color: #f1f5f9; margin: 6px 0 2px; }
+  .detail-sub { font-size: 11px; color: #475569; }
+
+  /* ── EV Card ─────────────────────────────────── */
+  .ev-card {
+    margin-top: 12px; padding: 20px 24px; border-radius: 14px;
+    background: rgba(34,197,94,.06); border: 1px solid rgba(34,197,94,.15);
+    color: #86efac; font-size: 14px;
+  }
+
+  /* ── Matching Products ───────────────────────── */
+  .match-section { margin-top: 20px; }
+  .match-section h3 {
+    font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #f1f5f9;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .match-count {
+    font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    background: rgba(234,179,8,.12); color: #eab308;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .product-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .product-card {
+    background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+    border-radius: 12px; padding: 16px; transition: all .25s;
+  }
+  .product-card:hover {
+    border-color: rgba(234,179,8,.25); transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  }
+  .product-card .title { font-size: 13px; font-weight: 600; color: #f1f5f9; line-height: 1.4; margin-bottom: 8px; }
+  .product-card .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .product-card .meta-item { font-size: 11px; color: #64748b; }
+  .product-card .meta-item span { color: #94a3b8; font-family: 'Space Mono', monospace; }
+
+  .viscosity-hl {
+    display: inline-block; font-family: 'Space Mono', monospace;
+    font-size: 12px; font-weight: 700; color: #f59e0b;
+    background: rgba(245,158,11,.08); padding: 2px 8px;
+    border-radius: 6px; border: 1px solid rgba(245,158,11,.15);
+  }
+
+  .stock-indicator { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
+  .stock-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .stock-high { color: #22c55e; }
+  .stock-high .stock-dot { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,.4); }
+  .stock-medium { color: #eab308; }
+  .stock-medium .stock-dot { background: #eab308; box-shadow: 0 0 6px rgba(234,179,8,.4); }
+  .stock-low { color: #ef4444; }
+  .stock-low .stock-dot { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,.4); }
+
+  .oem-tag {
+    display: inline-block; font-size: 10px; font-family: 'Space Mono', monospace;
+    padding: 2px 8px; border-radius: 4px;
+    background: rgba(255,255,255,.04); color: #64748b; margin-top: 6px;
+  }
+  .oem-match {
+    background: rgba(99,102,241,.08); color: #a5b4fc;
+    border: 1px solid rgba(99,102,241,.15);
+  }
+
+  .no-match {
+    text-align: center; padding: 40px 20px; color: #475569; font-size: 14px;
+  }
+
+  .footer {
+    text-align: center; margin-top: 48px; font-size: 11px; color: #334155;
+    font-family: 'Space Mono', monospace;
+  }
+
+  @media (max-width: 640px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .input-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="dot-bg"></div>
+<div class="glow"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0L12 2.69z" fill="#eab308" opacity=".15"/>
+        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0L12 2.69z" stroke="#eab308" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+      Oil Finder
+    </div>
+    <h1>Find Your Oil</h1>
+    <p>Enter a license plate — get the oil spec and matching products from our inventory</p>
+  </div>
+
+  <!-- Plate Input -->
+  <div class="form-card">
+    <label class="field-label">License Plate</label>
+    <div class="input-row">
+      <input type="text" id="plateInput" class="plate-input" inputmode="numeric"
+             placeholder="1234567" maxlength="10">
+      <button id="btnSearch" class="search-btn disabled" disabled>
+        <svg id="searchIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <svg id="spinnerIcon" class="spinner-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:none">
+          <path d="M12 2a10 10 0 0 1 10 10"/>
+        </svg>
+        <span id="btnLabel">Search</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Banner -->
+  <div id="errorBanner" style="display:none"></div>
+
+  <!-- Results -->
+  <div id="resultsArea"></div>
+
+  <div class="footer">Parts Finder · Oil Demo · Specifications are advisory — always verify with manufacturer documentation</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// INVENTORY (engine oils only, prices omitted)
+// ══════════════════════════════════════════════════════════════════
+const INVENTORY = [
+  // ── RASCH ──
+  { pn: "RASCH 0W20-5A", desc: "RASCH LONGLIFE 0W20 VW 508/509 ACEA C5 5L", qty: 364, oem: "MN7722-5A", brand: "RASCH" },
+  { pn: "RASCH 0W16-5A", desc: "RASCH HYBRID API SN 0W16 5L", qty: 207, oem: "MN7920-5A", brand: "RASCH" },
+  { pn: "RASCH 5W30-4L", desc: "RASCH PREMIUM 5W30 SN/CF A5/B5 4L", qty: 1007, oem: "MN ENERGY*4", brand: "RASCH" },
+  { pn: "RASCH 5W30-5L", desc: "RASCH PREMIUM 5W30 SN/CF A5/B5 5L", qty: 898, oem: "MN ENERGY*5", brand: "RASCH" },
+  { pn: "RASCH 5W40-4A", desc: "RASCH 5W40 SN/CF 4L C3", qty: 240, oem: "MN EXTREME*4", brand: "RASCH" },
+  { pn: "RASCH 5W40-5L", desc: "RASCH PREMIUM 5W40 SN/CF 5L", qty: 200, oem: "MN EXTREME*5", brand: "RASCH" },
+  { pn: "RASCH 10W40-4L", desc: "RASCH PROFESSIONAL 10W40 SM/CF 4L", qty: 430, oem: "MN DEFENDER*4", brand: "RASCH" },
+  { pn: "RASCH15W40 SL/CF-4L", desc: "RASCH PROFESSIONAL 15W40 SL/CF 4L", qty: 288, oem: "PO1", brand: "RASCH" },
+  { pn: "RASCH 20W50", desc: "RASCH SAFARI 20W50 SL/CF 4L", qty: 12, oem: "MN7404-4A", brand: "RASCH" },
+  // ── MANNOL ──
+  { pn: "MN7722-5A", desc: "MANNOL LONGLIFE 0W20 VW 508/509 ACEA C5 5L", qty: 24, oem: "MN7722-5A", brand: "MANNOL" },
+  { pn: "MN7918-5A", desc: "MANNOL LEGEND ULTRA 0W20 5L SN+RC DEX1 GEN2", qty: 8, oem: "MN7918-5ME", brand: "MANNOL" },
+  { pn: "MN7730-5A", desc: "MANNOL OEM VW 0W30 SN/CF C3 VW504/507 LL04 5L", qty: 89, oem: "MN7730-5A", brand: "MANNOL" },
+  { pn: "MN7919-5A", desc: "MANNOL 0W30 C2/C3 MB 229.31/229.51 5L", qty: 37, oem: "MN7717-4ME", brand: "MANNOL" },
+  { pn: "MN7901-4A", desc: "MANNOL LEGEND 0W40 SN/CH-4 4L", qty: 119, oem: "MN7901-4A", brand: "MANNOL" },
+  { pn: "MN7906-5A", desc: "MANNOL ENERGY ULTRA JP 5W20 SN DEXOS1 5L", qty: 50, oem: "MN7906-5A", brand: "MANNOL" },
+  { pn: "MN7709-4A", desc: "MANNOL OEM TOYOTA LEXUS A5 B5 5W30 SN 4L", qty: 270, oem: "MN7709-4A", brand: "MANNOL" },
+  { pn: "MN7713-4A", desc: "MANNOL OEM HYUNDAI 5W30 SN ACEA A5/B5 4L", qty: 37, oem: "MN OEMHYUNDAI*4", brand: "MANNOL" },
+  { pn: "MN7908-5A", desc: "MANNOL ENERGY PREMIUM 5W30 GF6A SN/CF DEX2 502/505 5L", qty: 110, oem: "MN E.PREMIUM", brand: "MANNOL" },
+  { pn: "MN7715-4A", desc: "MANNOL OEM VW 5W30 SN/CF C3 VW504/507 LL04 4L", qty: 83, oem: "MN OEMVW*5", brand: "MANNOL" },
+  { pn: "MN7907-5A", desc: "MANNOL OEM VW 5W30 SN/CF C3 VW504/507 COMBI LL 5L", qty: 11, oem: "MN OEMVW*5", brand: "MANNOL" },
+  { pn: "MN7720-5A", desc: "MANNOL CERAMIC 5W30 C2/C3 RN17 5L", qty: 33, oem: "MN7720-5A", brand: "MANNOL" },
+  { pn: "MN7909-5A", desc: "MANNOL DIESEL TDI 5W30 SN/CF C2/C3 DEX2 502/505 5L", qty: 3, oem: "MN7701-5A", brand: "MANNOL" },
+  { pn: "MN7917-5A", desc: "MANNOL OEM RENAULT 5W30 C4 RN720 5L", qty: 56, oem: "CHOEM5W30-C4", brand: "MANNOL" },
+  { pn: "MN7501-4A", desc: "MANNOL CLASSIC 10W40 SN/CF 4L", qty: 300, oem: "MN7501-5A", brand: "MANNOL" },
+  { pn: "MN7512-5A", desc: "MANNOL SPECIAL PLUS 10W30 SN 5L", qty: 92, oem: "MN7512-5A", brand: "MANNOL" },
+  { pn: "MN7405-4A", desc: "MANNOL STANDARD 15W40 SN/CH4 4L", qty: 232, oem: "MN7405-4A", brand: "MANNOL" },
+  { pn: "MN7405-5A", desc: "MANNOL UNIVERSAL 15W40 SN/CH4 5L", qty: 150, oem: "MN7405-5A", brand: "MANNOL" },
+  // ── CASTROL ──
+  { pn: "GTX-0W20-5-C5", desc: "CASTROL GTX 0W20 VW 508/509 ACEA C5 5L", qty: 40, oem: "MN7722-5A", brand: "CASTROL" },
+  { pn: "GTX-5W30-5", desc: "CASTROL LL 504 507 5W30 5L", qty: 165, oem: "MN ENERGY*5", brand: "CASTROL" },
+  { pn: "GTX-5W30-5-A5", desc: "CASTROL MAGNETEC 5W30 SN A5/B5 5L", qty: 63, oem: "MN7707-5A", brand: "CASTROL" },
+  { pn: "GTX-5W40-5", desc: "CASTROL EDGE 5W40 5L", qty: 19, oem: "MN EXTREME*5", brand: "CASTROL" },
+];
+
+// Enrich with extracted viscosity
+INVENTORY.forEach(item => {
+  const m = item.desc.match(/(\d+W[\-]?\d+)/i);
+  item.viscosity = m ? m[1].toUpperCase() : null;
+});
+
+// ── Matching Logic ────────────────────────────────────────────────
+function normalizeVisc(v) {
+  return v ? v.replace(/[\-\s]/g, '').toUpperCase() : '';
+}
+
+// OEM keyword groups for scoring
+const OEM_KEYWORDS = {
+  vw: ['504', '507', 'VW504', 'VW507', 'LL04', 'OEMVW'],
+  hyundai: ['HYUNDAI', 'OEMHYUNDAI'],
+  kia: ['HYUNDAI', 'OEMHYUNDAI'],  // same group
+  toyota: ['TOYOTA', 'LEXUS'],
+  lexus: ['TOYOTA', 'LEXUS'],
+  bmw: ['LL04', 'LL-04', 'BMW'],
+  mercedes: ['229', 'MB229', 'MB 229'],
+  skoda: ['504', '507', 'VW504', 'VW507', 'LL04', 'OEMVW'],
+  volkswagen: ['504', '507', 'VW504', 'VW507', 'LL04', 'OEMVW'],
+  mazda: [],
+  suzuki: [],
+};
+
+function matchProducts(viscosity, oemApproval, makeName) {
+  if (!viscosity || viscosity === 'N/A') return [];
+
+  const targetVisc = normalizeVisc(viscosity);
+
+  let matches = INVENTORY.filter(item => {
+    if (!item.viscosity) return false;
+    return normalizeVisc(item.viscosity) === targetVisc;
+  });
+
+  // Determine OEM keywords from make name
+  const makeKey = (makeName || '').toLowerCase().replace(/[^a-z]/g, '');
+  const oemKeys = OEM_KEYWORDS[makeKey] || [];
+
+  // Also extract keywords from the OEM approval string itself (e.g. "VW 504.00/507.00")
+  const approvalKeys = [];
+  if (oemApproval && oemApproval !== 'None') {
+    const nums = oemApproval.match(/\d{3}/g) || [];
+    approvalKeys.push(...nums);
+  }
+
+  matches = matches.map(item => {
+    let score = 0;
+    const upper = (item.desc + ' ' + item.oem + ' ' + item.pn).toUpperCase();
+
+    // OEM-specific match
+    if ([...oemKeys, ...approvalKeys].some(k => upper.includes(k))) score += 10;
+
+    // Container size preference
+    if (upper.includes('5L')) score += 2;
+    else if (upper.includes('4L')) score += 1;
+
+    // Stock preference
+    score += Math.min(item.qty, 100) / 100;
+
+    return { ...item, score };
+  });
+
+  matches.sort((a, b) => b.score - a.score);
+  return matches;
+}
+
+function stockClass(qty) {
+  if (qty >= 50) return 'stock-high';
+  if (qty >= 10) return 'stock-medium';
+  return 'stock-low';
+}
+
+// ── API Call ──────────────────────────────────────────────────────
+const API_BASE = window.location.origin;
+
+async function lookupPlate(plate) {
+  const res = await fetch(`${API_BASE}/api/plate-lookup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plate }),
+  });
+
+  if (res.ok) return res.json();
+
+  let detail;
+  try { detail = (await res.json()).detail; } catch { detail = undefined; }
+
+  const err = new Error(detail || `Error (${res.status})`);
+  err.status = res.status;
+  throw err;
+}
+
+// ── DOM ──────────────────────────────────────────────────────────
+const plateInput = document.getElementById('plateInput');
+const btnSearch = document.getElementById('btnSearch');
+const btnLabel = document.getElementById('btnLabel');
+const searchIcon = document.getElementById('searchIcon');
+const spinnerIcon = document.getElementById('spinnerIcon');
+const errorBanner = document.getElementById('errorBanner');
+const resultsArea = document.getElementById('resultsArea');
+
+let loading = false;
+
+function updateBtn() {
+  const clean = plateInput.value.replace(/[-\s]/g, '');
+  const ready = clean.length >= 5 && !loading;
+  btnSearch.disabled = !ready;
+  btnSearch.className = 'search-btn ' + (ready ? 'active' : 'disabled');
+}
+
+plateInput.addEventListener('input', updateBtn);
+
+plateInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') doSearch();
+});
+
+btnSearch.addEventListener('click', doSearch);
+
+async function doSearch() {
+  const plate = plateInput.value.replace(/[-\s]/g, '');
+  if (plate.length < 5 || loading) return;
+
+  loading = true;
+  updateBtn();
+  searchIcon.style.display = 'none';
+  spinnerIcon.style.display = '';
+  btnLabel.textContent = 'Searching...';
+  errorBanner.style.display = 'none';
+  resultsArea.innerHTML = '';
+
+  try {
+    const data = await lookupPlate(plate);
+    renderResults(data);
+  } catch (err) {
+    const status = err.status;
+    let title = 'Error', detail = err.message;
+    if (status === 400) title = 'Invalid Plate';
+    else if (status === 404) title = 'Not Found';
+    else if (status === 503) title = 'Service Unavailable';
+    errorBanner.innerHTML = `<div class="error-banner"><p class="title">${title}</p><p class="detail">${detail}</p></div>`;
+    errorBanner.style.display = '';
+  } finally {
+    loading = false;
+    searchIcon.style.display = '';
+    spinnerIcon.style.display = 'none';
+    btnLabel.textContent = 'Search';
+    updateBtn();
+  }
+}
+
+// ── Render ────────────────────────────────────────────────────────
+function hasHebrew(str) { return /[\u0590-\u05FF]/.test(str); }
+function bidi(str) { return hasHebrew(str) ? `<span dir="rtl">${str}</span>` : str; }
+
+function renderResults(data) {
+  const v = data.vehicle || {};
+  const oil = data.categories?.oil;
+
+  // Vehicle card
+  let html = `
+    <div class="results">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 17h14M5 17a2 2 0 01-2-2v-4l2.4-4.8A2 2 0 017.19 5h9.62a2 2 0 011.79 1.2L21 11v4a2 2 0 01-2 2M5 17a2 2 0 002 2h1a2 2 0 002-2M14 17a2 2 0 002 2h1a2 2 0 002-2"/>
+            </svg>
+            <span class="card-label" style="color:#64748b">Vehicle Identified</span>
+          </div>
+          <span style="font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;font-family:'Space Mono',monospace;letter-spacing:1px">
+            ${v.plate || ''}
+          </span>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#f1f5f9;margin:10px 0 0">${bidi(v.make || '')} ${bidi(v.model || '')}</p>
+        <p style="font-size:13px;color:#64748b;margin:4px 0 0">${[v.year, v.engine_code, v.fuel_type].filter(Boolean).join(' · ')}</p>
+      </div>`;
+
+  // Data source badge
+  if (data.data_source) {
+    const srcStyles = {
+      database: { cls: 'tag-green', label: 'Database' },
+      hybrid: { cls: 'tag-blue', label: 'Hybrid' },
+      ai_fallback: { cls: 'tag-blue', label: 'AI Estimated' },
+    };
+    const src = srcStyles[data.data_source] || { cls: 'tag-muted', label: data.data_source };
+    html += `<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">`;
+    if (data.coverage) html += `<span class="tag tag-muted">${data.coverage}</span>`;
+    html += `<span class="tag ${src.cls}">${src.label}</span>`;
+    html += `</div>`;
+  }
+
+  if (!oil) {
+    // Electric or no oil data
+    html += `<div class="ev-card" style="margin-top:12px">
+      <strong>No Oil Data</strong> — This vehicle may be electric or oil specification is not available.
+    </div></div>`;
+    resultsArea.innerHTML = html;
+    return;
+  }
+
+  // Oil spec card
+  const specTags = [];
+  if (oil.spec) specTags.push(`<span class="tag tag-gold">${oil.spec}</span>`);
+  if (oil.oem_approval && oil.oem_approval !== 'None') specTags.push(`<span class="tag tag-blue">${oil.oem_approval}</span>`);
+  if (oil.confidence) {
+    const confCls = (oil.confidence === 'exact' || oil.confidence === 'model_year') ? 'tag-green' : 'tag-gold';
+    specTags.push(`<span class="tag ${confCls}">${oil.confidence} confidence</span>`);
+  }
+
+  html += `
+    <div class="oil-spec-card">
+      <div style="display:flex;align-items:flex-start;gap:16px">
+        <div style="width:52px;height:52px;border-radius:12px;background:rgba(234,179,8,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0L12 2.69z" fill="#eab308" opacity=".15"/>
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0L12 2.69z" stroke="#eab308" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div style="flex:1">
+          <span class="card-label" style="color:#eab308">Recommended Oil</span>
+          <div class="visc">${oil.viscosity}</div>
+          <div>${specTags.join(' ')}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="card">
+        <span class="card-label" style="color:#64748b">Oil Capacity</span>
+        <div class="detail-val">~${oil.capacity_l || '?'}L</div>
+        <span class="detail-sub">with filter</span>
+      </div>
+      <div class="card">
+        <span class="card-label" style="color:#64748b">Change Interval</span>
+        <div class="detail-val">${oil.change_interval_km ? Number(oil.change_interval_km).toLocaleString() : '—'} km</div>
+        <span class="detail-sub">or 12 months</span>
+      </div>
+    </div>`;
+
+  // Matching products from inventory
+  const matches = matchProducts(oil.viscosity, oil.oem_approval, v.make);
+
+  if (matches.length > 0) {
+    html += `
+      <div class="match-section">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg>
+          Matching Products
+          <span class="match-count">${matches.length}</span>
+        </h3>
+        <div class="product-grid">`;
+
+    matches.forEach(item => {
+      const sc = stockClass(item.qty);
+      const isOemMatch = item.score >= 10;
+      html += `
+        <div class="product-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div class="title" style="margin-bottom:0">${item.desc}</div>
+            <span class="tag tag-muted" style="font-size:10px;white-space:nowrap">${item.brand || ''}</span>
+          </div>
+          <div class="meta">
+            <span class="viscosity-hl">${item.viscosity}</span>
+            <span class="meta-item">P/N: <span>${item.pn}</span></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="stock-indicator ${sc}">
+              <span class="stock-dot"></span>
+              ${item.qty} in stock
+            </div>
+          </div>
+          ${isOemMatch ? `<div class="oem-tag oem-match">OEM Match</div>` : ''}
+        </div>`;
+    });
+
+    html += `</div></div>`;
+  } else {
+    html += `<div class="no-match" style="margin-top:20px">No matching products in inventory for ${oil.viscosity}</div>`;
+  }
+
+  html += `</div>`;
+  resultsArea.innerHTML = html;
+}
+</script>
+
+</body>
+</html>

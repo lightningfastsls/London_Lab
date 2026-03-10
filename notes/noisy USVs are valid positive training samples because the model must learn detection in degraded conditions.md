@@ -26,6 +26,7 @@ Relevant Notes:
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- defines the negative side of the same labeling policy
 - [[good negative training samples must be unambiguously not USV to prevent label noise]] -- the quality criterion for the other class
 - [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- the failure mode this labeling policy is designed to address
+- [[PCEN normalization is more robust than log-mel spectrograms for few-shot bioacoustic scenarios]] -- PCEN's adaptive gain control could help the model better distinguish USVs from noise in these degraded samples by normalizing per-channel energy before classification
 
 Topics:
 - [[classification]]

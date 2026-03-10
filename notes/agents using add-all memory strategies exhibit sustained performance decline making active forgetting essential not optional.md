@@ -13,7 +13,7 @@ Research on agent memory systems shows that agents using "add-all" memory strate
 
 This finding inverts the naive assumption that "more memory is better." Three mechanisms drive the decline: accumulated noise reduces signal-to-noise ratio in retrieval results, stale facts contradict current state without being updated, and successful but context-dependent solutions get applied to wrong contexts.
 
-The implication is that forgetting is a feature, not a failure. Since [[three forgetting strategies dominate agent memory: temporal decay importance-based pruning and contradiction-based shadowing]], the design space for managed forgetting is well-understood. The question is not whether to forget but which forgetting strategy matches the use case.
+The implication is that forgetting is a feature, not a failure. Since [[three forgetting strategies dominate agent memory temporal decay importance-based pruning and contradiction-based shadowing]], the design space for managed forgetting is well-understood. The question is not whether to forget but which forgetting strategy matches the use case.
 
 This connects to knowledge management more broadly. The vault's processing pipeline (/reduce -> /reflect -> /reweave -> /verify) serves a similar function: raw captures are processed, connected, verified, and occasionally superseded. The pipeline IS the forgetting mechanism — it prevents raw accumulation by forcing curation.
 
@@ -22,8 +22,10 @@ This connects to knowledge management more broadly. The vault's processing pipel
 Source: mcp-memory-servers-cross-session-knowledge-research-2026-03-02 (archived to archive/inbox/)
 
 Relevant Notes:
-- [[three forgetting strategies dominate agent memory: temporal decay importance-based pruning and contradiction-based shadowing]] -- the solution design space
+- [[three forgetting strategies dominate agent memory temporal decay importance-based pruning and contradiction-based shadowing]] -- the solution design space
 - [[context compaction quality degrades cumulatively with multiple compressions regardless of implementation]] -- related degradation pattern in context management
+- [[fewer well-placed activation triggers outperform many ignored ones because noise teaches agents to skip gates]] — the activation-side analogue: unmanaged trigger proliferation degrades gate effectiveness through the same information-overload-to-disengagement mechanism as unmanaged memory accumulation
+- [[CRAG's retrieval evaluator prevents noise-induced gate fatigue through relevance thresholds]] — filtered activation as the activation-side counterpart to managed forgetting: just as unfiltered storage degrades retrieval, unfiltered activation degrades gate credibility
 
 Topics:
 - [[agent-memory]]

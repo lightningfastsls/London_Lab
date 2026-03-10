@@ -1,11 +1,13 @@
-"""Oil specification lookup with three-tier cascade matching.
+"""Oil specification lookup with four-tier cascade matching.
 
 Given a VehicleRecord (from the government API), resolves oil
 specifications from the database using a cascade:
 
 1. **Exact match** — make + model + year + engine_code
-2. **Engine family fallback** — make + engine prefix + year
-3. **Brand default** — most common spec for make
+2. **Model-year match** — make + model + year (ignoring engine_code,
+   preferring fuel_type match when multiple variants exist)
+3. **Engine family fallback** — make + engine prefix + year
+4. **Brand default** — most common spec for make
 
 Usage::
 
@@ -88,19 +90,27 @@ class OilLookup:
 
         engine_code = vehicle.engine_code
 
-        # Tier 1: exact match (requires model; Tiers 2 & 3 use make only)
+        # Tier 1: exact match (requires model; Tiers 2-4 relax progressively)
         if model and engine_code:
             result = self._try_exact(make, model, vehicle.year, engine_code)
             if result is not None:
                 return result
 
-        # Tier 2: engine family fallback
+        # Tier 2: model-year match (ignores engine_code, uses fuel_type)
+        if model:
+            result = self._try_model_year(
+                make, model, vehicle.year, vehicle.fuel_type,
+            )
+            if result is not None:
+                return result
+
+        # Tier 3: engine family fallback
         if engine_code:
             result = self._try_engine_family(make, engine_code, vehicle.year)
             if result is not None:
                 return result
 
-        # Tier 3: brand default
+        # Tier 4: brand default
         return self._try_brand_default(make)
 
     def _resolve_names(
@@ -121,6 +131,28 @@ class OilLookup:
         if specs is None or not specs.oil_viscosity:
             return None
         return OilResult.from_vehicle_specs(specs, confidence="exact")
+
+    def _try_model_year(
+        self,
+        make: str,
+        model: str,
+        year: int,
+        fuel_type: str,
+    ) -> Optional[OilResult]:
+        """Tier 2: match on make + model + year, ignoring engine_code.
+
+        This tier bridges the gap between the government API's real
+        engine codes (e.g. "G4FD") and the DB's descriptive engine
+        labels (e.g. "1.6T Petrol") seeded from JSX data.  When
+        multiple engine variants exist for the same model-year, the
+        fuel_type is used to pick the most relevant one.
+        """
+        specs = self._db.find_specs_by_model_year_for_oil(
+            make, model, year, fuel_type=fuel_type,
+        )
+        if specs is None or not specs.oil_viscosity:
+            return None
+        return OilResult.from_vehicle_specs(specs, confidence="model_year")
 
     def _try_engine_family(
         self,

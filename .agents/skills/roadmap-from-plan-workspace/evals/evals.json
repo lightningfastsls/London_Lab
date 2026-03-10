@@ -1,0 +1,140 @@
+{
+  "skill_name": "roadmap-from-plan",
+  "evals": [
+    {
+      "id": 1,
+      "name": "ml-feature-extraction",
+      "prompt": "Convert this plan into a ROADMAP: .claude/skills/roadmap-from-plan-workspace/test-plans/ml-feature-extraction.md",
+      "expected_output": "A well-structured ROADMAP file with 4 module entries (config, engine, cache, CLI), self-contained /implement blocks with dataclass definitions and algorithm descriptions, correct review tier assignments (Tier 2 for most, possibly Tier 3 for engine), DSP parameter references (ADR-001, ADR-002), and identification of theoretical content for KG extraction.",
+      "files": [".claude/skills/roadmap-from-plan-workspace/test-plans/ml-feature-extraction.md"],
+      "assertions": [
+        {
+          "id": "A1",
+          "text": "Output contains exactly 4 /implement blocks (one per plan step)",
+          "type": "structural",
+          "check": "count occurrences of '/implement' in output — should be 4"
+        },
+        {
+          "id": "A2",
+          "text": "Every module has a Review Tier assignment (1, 2, or 3)",
+          "type": "structural",
+          "check": "each module section contains '**Review Tier:**' followed by a number"
+        },
+        {
+          "id": "A3",
+          "text": "At least one module is assigned Tier 3 (the feature extraction engine has DSP/ML content)",
+          "type": "correctness",
+          "check": "at least one '**Review Tier:** 3' appears in output"
+        },
+        {
+          "id": "A4",
+          "text": "References ADR-001 or specifies sr=300000 (DSP parameter awareness)",
+          "type": "correctness",
+          "check": "output contains 'ADR-001' or '300000' or 'sr=300000'"
+        },
+        {
+          "id": "A5",
+          "text": "Every module has a Test plan section with specific test cases (not just 'tests pass')",
+          "type": "structural",
+          "check": "each module contains '**Test plan:**' with numbered items"
+        },
+        {
+          "id": "A6",
+          "text": "Contains a Phase Gate section (multi-module plan requires one)",
+          "type": "structural",
+          "check": "output contains 'Phase' and 'Gate' in a heading"
+        },
+        {
+          "id": "A7",
+          "text": "Mentions theoretical content / KG extraction (plan has rich scientific background)",
+          "type": "completeness",
+          "check": "output mentions 'knowledge graph' or '/reduce' or 'theoretical' or 'KG extraction'"
+        },
+        {
+          "id": "A8",
+          "text": "Contains at least one Python dataclass/config code snippet in an /implement block",
+          "type": "self-containment",
+          "check": "output contains '@dataclass' or 'class.*Config' inside a code block"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "cli-consolidation",
+      "prompt": "Convert this plan into a ROADMAP: .claude/skills/roadmap-from-plan-workspace/test-plans/cli-consolidation.md",
+      "expected_output": "A clean ROADMAP file with 3 module entries (framework, migration, pipeline subcommand), appropriate Tier 1-2 assignments, correct dependency chain (step 2 depends on step 1, step 3 depends on step 2), and recognition that this plan has minimal theoretical content for KG extraction.",
+      "files": [".claude/skills/roadmap-from-plan-workspace/test-plans/cli-consolidation.md"],
+      "assertions": [
+        {
+          "id": "B1",
+          "text": "Output contains exactly 3 /implement blocks (one per plan step)",
+          "type": "structural",
+          "check": "count occurrences of '/implement' — should be 3"
+        },
+        {
+          "id": "B2",
+          "text": "Step 2 (migration) explicitly depends on Step 1 (framework)",
+          "type": "correctness",
+          "check": "the migration module's '**Depends on:**' references the framework module"
+        },
+        {
+          "id": "B3",
+          "text": "No modules assigned Tier 3 (this is infrastructure, not DSP/ML)",
+          "type": "correctness",
+          "check": "no '**Review Tier:** 3' appears in output"
+        },
+        {
+          "id": "B4",
+          "text": "Mentions backwards compatibility (thin wrappers for original scripts)",
+          "type": "completeness",
+          "check": "output mentions 'backwards compat' or 'wrapper' or 'thin wrapper' or 'backward'"
+        },
+        {
+          "id": "B5",
+          "text": "Contains a Phase Gate section",
+          "type": "structural",
+          "check": "output contains 'Phase' and 'Gate' in a heading"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "streaming-viewer",
+      "prompt": "Convert this plan into a ROADMAP: .claude/skills/roadmap-from-plan-workspace/test-plans/streaming-viewer.md",
+      "expected_output": "The skill should detect that this plan is vague/underspecified (each step has only 1-2 sentences) and flag the gaps before generating. Should still produce a ROADMAP but with [ASSUMED] markers or explicit questions about: audio interface library, buffer sizes, display framework (PyQt6 vs Streamlit), detection latency requirements, WAV format details.",
+      "files": [".claude/skills/roadmap-from-plan-workspace/test-plans/streaming-viewer.md"],
+      "assertions": [
+        {
+          "id": "C1",
+          "text": "Output contains 4 /implement blocks (one per plan step)",
+          "type": "structural",
+          "check": "count occurrences of '/implement' — should be 4"
+        },
+        {
+          "id": "C2",
+          "text": "Contains [ASSUMED] markers OR explicit gap flagging for underspecified steps",
+          "type": "gap-detection",
+          "check": "output contains '[ASSUMED]' or 'gap' or 'under-specified' or 'underspecified' or 'vague' or 'clarif' or 'assumption'"
+        },
+        {
+          "id": "C3",
+          "text": "References ADR-001 or sr=300000 (audio-related plan must reference DSP params)",
+          "type": "correctness",
+          "check": "output contains 'ADR-001' or '300000' or 'sr=300000'"
+        },
+        {
+          "id": "C4",
+          "text": "At least one module is assigned Tier 3 (real-time DSP is complex)",
+          "type": "correctness",
+          "check": "at least one '**Review Tier:** 3' appears"
+        },
+        {
+          "id": "C5",
+          "text": "Test plans have >= 3 specific test cases per module (even for vague plans)",
+          "type": "quality",
+          "check": "each **Test plan:** section has at least 3 numbered items"
+        }
+      ]
+    }
+  ]
+}

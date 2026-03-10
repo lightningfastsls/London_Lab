@@ -30,6 +30,7 @@ Relevant Notes:
 - [[descriptions are retrieval filters not summaries]] — enables efficient reassessment at each checkpoint: scan descriptions to evaluate pivot candidates
 - [[trails transform ephemeral navigation into persistent artifacts]] — proposes persisting successful checkpoint sequences as reusable navigation paths
 - [[retrieval utility should drive design over capture completeness]] — checkpointing is retrieval-first design: optimizing for what do I actually need now? over what did I originally ask for?
+- [[FLARE uses the agent's intended action as a retrieval query enabling pre-modification knowledge checks]] — FLARE provides a specific initial query for the berrypicking process: the agent's stated intent is the first query, which then evolves as the agent discovers constraints during traversal
 
 Topics:
 - [[agent-cognition]]

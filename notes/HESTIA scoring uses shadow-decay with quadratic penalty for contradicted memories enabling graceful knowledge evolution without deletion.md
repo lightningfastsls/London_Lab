@@ -28,9 +28,10 @@ This approach has an analogue in knowledge management: the vault's `meta_state` 
 Source: mcp-memory-servers-cross-session-knowledge-research-2026-03-02 (archived to archive/inbox/)
 
 Relevant Notes:
-- [[three forgetting strategies dominate agent memory: temporal decay importance-based pruning and contradiction-based shadowing]] -- the taxonomy this method belongs to
+- [[three forgetting strategies dominate agent memory temporal decay importance-based pruning and contradiction-based shadowing]] -- the taxonomy this method belongs to
 - [[Voronoi-based drift detection identifies when memory topic clusters have shifted signaling reorganization needs]] -- the complementary structural detection mechanism
 - [[agents using add-all memory strategies exhibit sustained performance decline making active forgetting essential not optional]] -- the problem this solves
+- [[each between-session processing cycle is a training step that does not touch the weights]] — shadow-decay scoring is a structural parameter that adjusts between sessions: as contradicting memories arrive, shadow_load increases and retrieval weights shift, analogous to weight updates through vault structure changes
 
 Topics:
 - [[agent-memory]]

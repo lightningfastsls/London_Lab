@@ -1,0 +1,35 @@
+api_prefix,api_pattern,model,generation,years_approx,notes
+6K,starts_with,Ibiza/Cordoba,6K (Gen 2),1993-2002,
+6L,starts_with,Ibiza,6L (Gen 3),2002-2008,
+6J,starts_with,Ibiza,6J (Gen 4),2008-2017,Also 6P SportCoupe
+KJ,starts_with,Ibiza,KJ (Gen 5),2017-2024,Current Ibiza
+KL,starts_with,Arona,,2018-2024,Arona
+KF,starts_with,Arona,,2018-2024,Some Arona codes
+5F,starts_with,Leon,5F (Gen 3),2012-2020,
+KM,starts_with,Leon/Cupra Leon,KL (Gen 4),2020-2024,Also Cupra Leon
+KH,starts_with,Leon/Cupra Leon,KL (Gen 4),2020-2024,
+71,starts_with,Leon/Cupra Leon,KL (Gen 4),2020-2024,71xx codes
+1M,starts_with,Leon,1M (Gen 1),1999-2005,
+1P,starts_with,Leon,1P (Gen 2),2005-2012,
+5P,starts_with,Altea,,2004-2015,Altea/Altea XL
+1L,starts_with,Toledo,1L (Gen 2),1999-2004,
+NH,starts_with,Ateca/Cupra Ateca,,2016-2024,
+KN,starts_with,Ateca/Cupra Ateca,,2016-2024,Some Ateca variants
+AA,starts_with,Arona/Ibiza,,2017-2024,AA-KF prefix for Arona
+7N,starts_with,Alhambra,7N,2010-2020,
+9K,starts_with,Cordoba/Ibiza,9K,1999-2002,Older codes
+H9,starts_with,Ibiza,6K,1993-2002,H9CZ variant code
+K1,starts_with,Leon,1M/1P,1999-2012,K11 codes
+KU,starts_with,Tarraco,,2019-2024,
+KG,starts_with,Tarraco,,2019-2024,Some Tarraco codes
+BO,starts_with,Born (Cupra),,2022-2024,Electric Cupra Born
+BE,starts_with,Born (Cupra),,2022-2024,
+CB,starts_with,Born (Cupra),,2022-2024,
+IBIZA,contains,Ibiza,,1993-2024,Catches readable "IBIZA 6K..."
+IAIZA,contains,Ibiza,,1993-2024,Misspelled readable
+CORDO,contains,Cordoba,,1993-2009,Catches readable "CORDOBA..."
+TOLED,contains,Toledo,,1991-2018,
+LATIN,contains,Ibiza,,2002-2008,Ibiza Latino edition
+איביזה,contains,Ibiza,,1993-2024,Hebrew readable name
+קורדובה,contains,Cordoba,,1993-2009,Hebrew
+טולדו,contains,Toledo,,1991-2018,Hebrew

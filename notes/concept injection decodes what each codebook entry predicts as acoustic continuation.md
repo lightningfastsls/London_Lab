@@ -24,6 +24,8 @@ Relevant Notes:
 - [[exemplar galleries ground abstract codebook entries in concrete acoustic examples]] -- observed input complement to concept injection's generative approach
 - [[VQ-VAE codebook visualization decodes entries through the full pipeline back to spectrogram space]] -- predicted output complement forming the interpretability toolkit
 - [[comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook]] -- concept injection results differ by extraction layer
+- [[discrete audio token taxonomy from 2025 survey covers quantization methods beyond simple VQ]] -- broader landscape of discrete tokenization; concept injection applies to any quantized representation, not just VQ-VAE
+- [[Gumbel-softmax VQ suffered severe codebook collapse in bioacoustic token experiments]] -- codebook collapse would produce degenerate concept injection results where most codes predict the same acoustic continuation
 
 Topics:
-- [[classification]]
+- [[representation-learning]]

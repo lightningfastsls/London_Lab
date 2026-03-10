@@ -21,6 +21,7 @@ Relevant Notes:
 - [[segment continuity bridges brief amplitude dips that fragment single USVs]] -- energy-detector-level bridging (pre-CNN), does not cover CNN-level splitting
 - [[bout gap threshold of 500 ms groups temporally clustered USVs while separating distinct episodes]] -- bout-level grouping is a higher level of temporal structure
 - [[recall versus precision tradeoff in two-stage USV detection]] -- splitting inflates recall counts without affecting precision per-fragment
+- [[saved-previous ghost detections current editable and saved-current form three aligned detection state tiers in the app]] -- ghost detections help the user see previously saved segments that the current CNN pass may have split differently, providing visual context for split boundaries
 
 Topics:
 - [[detection]]

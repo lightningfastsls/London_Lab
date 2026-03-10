@@ -9,4 +9,6 @@
 - /rethink (2026-03-02): Triaged 9 observations + 9 tensions, 3 patterns identified (automation lifecycle gaps, self-review bias, topic map sprawl), 5 proposals generated, 4 observations + 4 tensions archived, CLAUDE.md doc freshness rule added, 5 topic map splits scheduled
 - Topic map splits (2026-03-03): agent-governance split (code-review-governance, 24 notes), detection split (detection-landscape, 28 notes), experimental-methods confirmed lean hub. 52 note frontmatter files updated. Vault: ~497 notes, 17 topic maps.
 - Bulk Knowledge Ingestion (2026-03-02): Rounds 1-4 DONE. All inbox sources processed. RL/alignment, diffusion/flow-matching, LoRA/Doc-to-LoRA all complete (/reduce + /reflect + /reweave). Vault: ~497 notes, 0 inbox items.
+- Phase 11.1 -- Bout Extraction & Preprocessing on Real Data (2026-02-22): Fixed deleted_by_user filtering, added recursive WAV resolution, validation script, 9 new tests (184 total), pipeline run on 5970 USV data (27 spectrograms), Tier 1 review APPROVED
+- Knowledge Activation Phase 1 -- Architecture research completed (2026-03-07): 9 atomic notes extracted from RAG/activation literature (Adaptive RAG, CRAG, FLARE, Self-RAG, activation timing, cross-agent transfer, gate fatigue, static vs intent-based search, load tracking). Connections added via /reflect. Source archived.
 

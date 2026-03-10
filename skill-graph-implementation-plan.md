@@ -657,7 +657,7 @@ Define the weekly maintenance routine and run it once for each project to valida
 ### 5.2 Two-Week Validation Checkpoint
 
 **What:** After two weeks of active use, evaluate whether the skill graph is delivering value — surfacing relevant knowledge, reducing re-explanation, maintaining sustainable overhead.
-**Status:** READY (starts 2026-03-06, after 2 weeks of active use)
+**Status:** DONE (2026-03-07). Report at ops/health/phase-5.2-validation-2026-03-07.md. Decision: DOUBLE DOWN with adjustments. Next review: Phase 5.3 on 2026-03-21.
 **Review Tier:** 1
 **Depends on:** Phase 5.1 (DONE) + 2 weeks elapsed
 

@@ -14,6 +14,8 @@ This design choice matters beyond implementation convenience. Mouse vocalization
 
 The alignment between model structure and scientific question also benefits interpretability. When we later apply VQ-VAE to discretize hidden states, the resulting codes will represent "what this context predicts will come next" — a temporally grounded notion of acoustic concept. This connects directly to [[transformer-first then VQ-VAE avoids forcing premature discretization]], where the transformer's learned representations provide richer substrate for discretization than hand-crafted features. The temporal grounding is also why [[bout-level spectrograms preserve inter-USV timing context for transformer training]] — without bout-level continuity, the causal context would be severed at arbitrary boundaries.
 
+The choice of positional encoding within the causal mask also matters: [[ALiBi adds linear distance penalties to attention scores enabling train-short-test-long extrapolation with equivalent perplexity at 2x and reasonable degradation at longer ranges]] would naturally complement causal attention by encoding recency bias — more distant past frames contribute less to prediction, which aligns with the intuition that nearby acoustic context is most predictive. More broadly, [[positional encoding diversified from additive sinusoidal and learned embeddings to multiplicative RoPE and score-bias ALiBi with RoPE becoming dominant in practice]] provides the landscape of positional encoding options for this architecture.
+
 ---
 
 Source: [ROADMAP](../ROADMAP.md), Phase 8

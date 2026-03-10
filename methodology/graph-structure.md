@@ -50,6 +50,11 @@ How knowledge vaults function as queryable graph databases. Nodes are markdown f
 - [[wiki links create navigation paths that shape retrieval]] -- wiki links are curated graph edges that implement GraphRAG-style retrieval without infrastructure — each link is a retri
 - [[wiki links implement GraphRAG without the infrastructure]] -- Explicit wiki links create a human-curated knowledge graph that enables multi-hop reasoning without entity extraction pi
 
+### USV Vault Notes
+- [[knowledge lives in paths between notes not in any single note]] -- ontological claim: the vault is a generator of inter-note knowledge visible only during traversal, not a warehouse of stored facts
+- [[different traversal starting points produce different emergent knowledge from the same graph]] -- path-dependence: entry point determines which patterns become visible, making topic maps knowledge-production starting points
+- [[traversal simultaneously improves the traverser and the graph creating a co-evolutionary loop]] -- bidirectional improvement: each traversal is both navigation and micro-editing, accelerating co-improvement
+
 ## Tensions
 
 (Capture conflicts as they emerge)

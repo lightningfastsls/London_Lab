@@ -54,6 +54,7 @@ Relevant Notes:
 - [[AI shifts knowledge systems from externalizing memory to externalizing attention]] — extends: the bottleneck-is-retrieval claim marks the inflection point where the paradigm shifts from externalizing what you know to externalizing what you attend to
 - [[flat files break at retrieval scale]] — example: demonstrates the failure mode when memory architecture is absent — retrieval degrades and for agents that means identity degradation
 - [[session outputs are packets for future selves]] — construction mechanism: session packets are the incremental units through which memory architecture gets built; each session's composable output adds nodes and edges to the retrieval landscape
+- [[activation timing matters as much as retrieval quality in agent knowledge systems]] — refines the retrieval bottleneck claim: the bottleneck is not just retrieval quality (what gets found) but activation timing (whether retrieval is triggered at all); memory architecture shapes cognition only if the agent actually searches it
 
 Topics:
 - [[agent-cognition]]

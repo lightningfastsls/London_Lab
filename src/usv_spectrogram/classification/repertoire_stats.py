@@ -893,7 +893,9 @@ def plot_repertoire_comparison(
                 ha="center", va="center", transform=ax.transAxes)
 
     ax.set_title("Animal-Level Syllable Proportions (PCA)")
-    ax.legend(title="Population")
+    handles, labels = ax.get_legend_handles_labels()
+    if handles:
+        ax.legend(title="Population")
     path = figures_dir / "animal_scatter.png"
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)

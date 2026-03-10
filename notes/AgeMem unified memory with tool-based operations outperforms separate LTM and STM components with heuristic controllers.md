@@ -25,7 +25,7 @@ Source: mcp-memory-servers-cross-session-knowledge-research-2026-03-02 (archived
 
 Relevant Notes:
 - [[deterministic tools embedded inside agentic loops enforce constraints more reliably than prompt-based style guidance]] -- the broader pattern of tool-based agent capabilities
-- [[three forgetting strategies dominate agent memory: temporal decay importance-based pruning and contradiction-based shadowing]] -- the rule-based alternative AgeMem replaces
+- [[three forgetting strategies dominate agent memory temporal decay importance-based pruning and contradiction-based shadowing]] -- the rule-based alternative AgeMem replaces
 
 Topics:
 - [[agent-memory]]

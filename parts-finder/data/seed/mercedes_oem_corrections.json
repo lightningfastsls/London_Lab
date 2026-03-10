@@ -1,0 +1,224 @@
+{
+  "_description": "Mercedes-Benz OEM part number corrections. CSV values vs real OEM numbers verified against mbparts.mbusa.com, classicparts.mbusa.com, eBay OEM listings, and Spareto OE database.",
+  "_date": "2026-03-08",
+  "_methodology": "Each 'real' number was verified to exist on at least one of: MB USA Parts portal, MB Classic Parts Store, Spareto OE lookup, or reputable OEM seller (eBay/Amazon with genuine OEM label). Numbers marked UNVERIFIED could not be confirmed from available sources.",
+
+  "oil_filters": {
+    "274 180 00 09": {
+      "csv_models": ["C-Class M274", "E-Class M274", "GLC M274", "S-Class M274"],
+      "real_oem": "270 180 01 09",
+      "source": "mbparts.mbusa.com (2014-2025 vehicles), classicparts.mbusa.com, Spareto confirmed",
+      "error_type": "wrong_prefix_and_suffix",
+      "notes": "M274 uses the same oil filter housing as M270. The LLM fabricated '274' prefix matching the engine code instead of the actual '270' prefix. Also wrong variant: '00 09' should be '01 09'."
+    },
+    "264 180 00 09": {
+      "csv_models": ["C-Class M264", "GLE M264", "GLE Coupe M264"],
+      "real_oem": "270 180 01 09",
+      "source": "mbparts.mbusa.com, Spareto confirmed with 30+ products",
+      "error_type": "wrong_prefix_and_suffix",
+      "notes": "M264 shares the oil filter with M270/M274 family. LLM fabricated '264' prefix. Real: A 270 180 01 09."
+    },
+    "282 180 00 09": {
+      "csv_models": ["A-Class M282", "B-Class M282", "CLA M282", "GLA M282", "GLB M282"],
+      "real_oem": "270 180 01 09",
+      "source": "mbparts.mbusa.com lists 270-180-01-09 for 2014-2025 including W177 A-Class",
+      "error_type": "wrong_prefix_and_suffix",
+      "notes": "M282 (1.3L turbo) shares oil filter with M270/M274 family. LLM fabricated '282' prefix matching engine code."
+    },
+    "256 180 00 09": {
+      "csv_models": ["CLS M256", "G-Class M256", "GLS M256", "S-Class M256", "SL M256"],
+      "real_oem": "256 184 00 00",
+      "source": "hndautomotiveparts.com (A2561840000), ecstuning.com (service kit 2561840000KT4), mbpartscenter.com (256-180-32-00 alt)",
+      "error_type": "wrong_part_group_digits",
+      "notes": "M256 has its OWN oil filter (not shared with M270 family). Real is A 256 184 00 00. CSV had '180 00 09' (the old filter group code pattern) but M256 uses '184 00 00'."
+    },
+    "654 180 01 09": {
+      "csv_models": ["GLE OM654", "Sprinter OM654"],
+      "real_oem": "654 180 11 00",
+      "source": "mbparts.mbusa.com (654-180-11-00), idparts.com, mercedesgenuineparts.co.uk (A6541801100), eBay OEM listings",
+      "error_type": "wrong_suffix",
+      "notes": "OM654 diesel has its own dedicated filter. Real is A 654 180 11 00. CSV had '01 09' suffix but real is '11 00'. Note: A6541840025 is an alternative/superseded number."
+    }
+  },
+
+  "air_filters": {
+    "177 094 02 05": {
+      "csv_models": ["A-Class M282", "B-Class M282", "CLA M282", "GLA M282", "GLB M282"],
+      "real_oem": "282 094 00 04",
+      "source": "eBay.co.uk genuine OEM listing (A2820940004), fmic.eu, classicparts.mbusa.com (177-094-01-00 is for M270 in W177)",
+      "error_type": "wrong_prefix_and_suffix",
+      "notes": "M282 air filter is A 282 094 00 04. LLM used '177' (chassis code for A-Class) instead of '282' (engine code). Note: 177 094 01 00 EXISTS but that's for the M270 engine in W177, not M282."
+    },
+    "270 094 02 04": {
+      "csv_models": ["A-Class M270", "CLA M270"],
+      "real_oem": "274 094 01 04",
+      "source": "Spareto confirmed (A2740940104 with 23 products, MANN C 28 004, Filtron AP 035/7)",
+      "error_type": "wrong_prefix_and_suffix",
+      "notes": "M270 air filter is actually A 274 094 01 04 (same as M274). The LLM used '270' prefix but the real number uses '274'. Variant is '01 04' not '02 04'. Confirmed on Spareto with both A prefix and without."
+    },
+    "264 094 01 04": {
+      "csv_models": ["C-Class M264"],
+      "real_oem": "264 094 01 00",
+      "source": "classicparts.mbusa.com (264-094-01-00, 2019-2023 vehicles), Spareto confirmed",
+      "error_type": "wrong_last_digit",
+      "notes": "Very close! Only the last digit is wrong: '04' should be '00'. A 264 094 01 00 exists on both MB Classic Parts and Spareto."
+    },
+    "213 094 01 04": {
+      "csv_models": ["CLS M256"],
+      "real_oem": "UNVERIFIED",
+      "source": "Could not find specific CLS M256 air filter number",
+      "error_type": "likely_fabricated",
+      "notes": "CLS with M256 engine likely shares air filter with E-Class or uses engine-specific number. Could be 260 094 03 00 (universal M256 air filter found on MB parts) but not confirmed for CLS specifically."
+    },
+    "167 094 00 04": {
+      "csv_models": ["GLE M264", "GLE OM654", "GLE Coupe M264", "GLS M256"],
+      "real_oem": "UNVERIFIED - likely model-specific",
+      "source": "No exact match found. eBay shows A6540902801 as air filter housing for GLE W167 M256",
+      "error_type": "likely_fabricated",
+      "notes": "GLE W167 uses different air filter systems per engine. The number pattern (167 + 094) follows the LLM's chassis-code prefix pattern which is often wrong. Real numbers likely differ per engine variant."
+    },
+    "223 094 00 04": {
+      "csv_models": ["S-Class M256"],
+      "real_oem": "UNVERIFIED",
+      "source": "No exact match found in search results",
+      "error_type": "likely_fabricated",
+      "notes": "W223 S-Class M256 air filter not found. May share with other M256 vehicles but specific number unconfirmed."
+    },
+    "232 094 00 04": {
+      "csv_models": ["SL M256"],
+      "real_oem": "UNVERIFIED",
+      "source": "No exact match found in search results",
+      "error_type": "likely_fabricated",
+      "notes": "R232 SL M256 air filter not found. Likely shares with M256 family but specific number unconfirmed."
+    },
+    "463 094 01 04": {
+      "csv_models": ["G-Class M256"],
+      "real_oem": "UNVERIFIED",
+      "source": "No exact match found. 260 094 03 00 is a generic M256 air filter on MB USA parts",
+      "error_type": "likely_fabricated",
+      "notes": "W463 G-Class M256 air filter not confirmed. The '463' prefix matches chassis code pattern."
+    },
+    "907 094 00 04": {
+      "csv_models": ["Sprinter OM654"],
+      "real_oem": "907 528 35 00",
+      "source": "mbparts.mbusa.com (9075283500, 2023-2025), idparts.com, europarts-sd.com",
+      "error_type": "wrong_part_group",
+      "notes": "Sprinter OM654 air filter is A 907 528 35 00. The CSV used '094' (standard air filter group code) but Sprinter uses '528' group code. Confirmed on MB USA Parts and multiple OEM retailers."
+    }
+  },
+
+  "cabin_filters": {
+    "177 830 00 00": {
+      "csv_models": ["A-Class M282", "B-Class M282", "CLA M282", "GLA M282"],
+      "real_oem": "UNVERIFIED - likely A 247 830 08 00 or shares platform number",
+      "source": "Amazon lists A2820940004 for W177/W247/C118/X243 but that's the AIR filter. Cabin filter for W177 platform not clearly confirmed.",
+      "error_type": "fabricated_variant",
+      "notes": "LLM generated plausible '177 830 00 00' but this doesn't exist. The W177/W247 platform cabin filter real number needs dealer verification. Web sources suggest various numbers but no clear consensus."
+    },
+    "246 830 03 18": {
+      "csv_models": ["A-Class M270", "CLA M270"],
+      "real_oem": "246 830 00 18",
+      "source": "Spareto confirmed (A2468300018 with MANN CUK 26 007, Filtron K 1346A)",
+      "error_type": "wrong_variant_digit",
+      "notes": "Very close! Only middle variant digit wrong: '03' should be '00'. A 246 830 00 18 confirmed on Spareto with multiple cross-references."
+    },
+    "205 835 03 47": {
+      "csv_models": ["C-Class M274", "C-Class M264"],
+      "real_oem": "205 835 01 47",
+      "source": "Spareto confirmed (A2058350147), classicparts.mbusa.com (205-835-27-00 superseded), eBay OEM listings",
+      "error_type": "wrong_variant_digit",
+      "notes": "Close! Variant '03' should be '01'. A 205 835 01 47 confirmed. Also used for E-Class W213."
+    },
+    "213 835 00 47": {
+      "csv_models": ["E-Class M274", "CLS M256"],
+      "real_oem": "205 835 01 47",
+      "source": "eBay OEM listing (A2058350147 for W205/W213), Spareto confirmed",
+      "error_type": "wrong_prefix_and_variant",
+      "notes": "E-Class W213 shares cabin filter with C-Class W205. Real is A 205 835 01 47, not '213 835 00 47'. LLM used chassis code '213' as prefix instead of shared part prefix '205'."
+    },
+    "253 835 02 47": {
+      "csv_models": ["GLC M274"],
+      "real_oem": "166 830 02 18",
+      "source": "eBay genuine OEM listing (A1668300218 for W253 GLC/W205 C-Class), mbparts.mbusa.com, mbdirectparts.com",
+      "error_type": "wrong_number_entirely",
+      "notes": "GLC W253 uses A 166 830 02 18 for cabin filter (shared with GLE/GLS platform). The CSV number '253 835 02 47' is completely fabricated - wrong prefix, group, and variant."
+    },
+    "167 835 00 00": {
+      "csv_models": ["GLE M264", "GLE OM654", "GLE Coupe M264", "GLS M256"],
+      "real_oem": "167 835 02 00",
+      "source": "classicparts.mbusa.com (167-835-02-00, 2020-2025), eBay (A1678350200 NEW GENUINE)",
+      "error_type": "wrong_variant_digit",
+      "notes": "Close! Variant '00 00' should be '02 00'. A 167 835 02 00 is the dust filter. A 167 835 04 00 is the fine particle (charcoal) variant."
+    },
+    "222 830 00 18": {
+      "csv_models": ["S-Class M274"],
+      "real_oem": "222 830 03 18",
+      "source": "eBay OEM listings (2228300318 and 2228300418)",
+      "error_type": "wrong_variant_digit",
+      "notes": "Close! Middle variant '00' should be '03'. A 222 830 03 18 is the dust filter, A 222 830 04 18 is the charcoal variant."
+    },
+    "223 830 00 00": {
+      "csv_models": ["S-Class M256"],
+      "real_oem": "223 830 14 00",
+      "source": "classicparts.mbusa.com (223-830-14-00, 2021-2025 vehicles)",
+      "error_type": "wrong_variant_digits",
+      "notes": "Variant '00 00' should be '14 00'. A 223 830 14 00 confirmed on MB Classic Parts Store."
+    },
+    "247 830 00 00": {
+      "csv_models": ["EQB", "GLB M282"],
+      "real_oem": "UNVERIFIED",
+      "source": "No clear confirmation found",
+      "error_type": "likely_fabricated_variant",
+      "notes": "EQB/GLB cabin filter with 247 prefix is plausible (247 is GLB chassis code) but '00 00' variant is likely wrong. Needs dealer verification."
+    },
+    "243 830 00 00": {
+      "csv_models": ["EQA"],
+      "real_oem": "UNVERIFIED",
+      "source": "No clear confirmation found",
+      "error_type": "likely_fabricated",
+      "notes": "EQA (H243) cabin filter. The '243' prefix is plausible but '830 00 00' variant is the LLM's default fabrication pattern. Needs dealer verification."
+    },
+    "295 830 00 00": {
+      "csv_models": ["EQE"],
+      "real_oem": "UNVERIFIED",
+      "source": "No confirmation found",
+      "error_type": "likely_fabricated",
+      "notes": "EQE cabin filter. Pattern matches LLM fabrication (chassis_code + 830 00 00)."
+    },
+    "297 830 00 00": {
+      "csv_models": ["EQS"],
+      "real_oem": "UNVERIFIED",
+      "source": "No confirmation found",
+      "error_type": "likely_fabricated",
+      "notes": "EQS cabin filter. Pattern matches LLM fabrication (chassis_code + 830 00 00)."
+    },
+    "463 830 01 18": {
+      "csv_models": ["G-Class M256"],
+      "real_oem": "463 835 28 00",
+      "source": "eBay genuine listing (Genuine New Mercedes Benz G Wagon Cabin Air Filter 463-835-2800)",
+      "error_type": "wrong_group_and_variant",
+      "notes": "G-Class uses '835' group (not '830') with variant '28 00'. CSV had '830 01 18'."
+    },
+    "907 835 00 00": {
+      "csv_models": ["Sprinter OM654"],
+      "real_oem": "906 830 02 18",
+      "source": "mbparts.mbusa.com (906-830-02-18, 2010-2018 Sprinter)",
+      "error_type": "wrong_prefix_and_variant",
+      "notes": "Sprinter cabin filter uses '906' prefix (previous gen shared part). The W907 may use an updated number but 906 830 02 18 is the established part. MANN CU 30 012 is the aftermarket equivalent."
+    }
+  },
+
+  "summary": {
+    "total_missing_oem_numbers": 29,
+    "corrected_with_real_number": 17,
+    "unverified_need_dealer_check": 12,
+    "error_patterns": {
+      "engine_code_as_prefix": "Most common. LLM used engine code (M274->274, M282->282, M264->264) as part prefix. Real Mercedes numbers use engine family or shared platform prefixes (e.g., M270/M274/M282 all share oil filter 270 180 01 09).",
+      "fabricated_variant_digits": "Second most common. LLM generated '00 00', '00 09', '03 47' variants. Real variants are specific but unpredictable (01 47, 02 00, 14 00, etc.).",
+      "chassis_code_830_00_00_pattern": "EV models (EQA/EQB/EQE/EQS) all follow identical pattern: chassis_code + ' 830 00 00'. This is a clear LLM fabrication template.",
+      "correct_structure_wrong_digits": "Mercedes numbering system (model_code + part_group + variant) was understood correctly. Only the specific digits within each group were fabricated."
+    },
+    "models_fully_correct": ["V-Class OM651", "Vito OM651"],
+    "models_partially_correct": ["A-Class M270 (oil OK)", "C-Class M274 (air OK)", "E-Class M274 (air OK)", "GLC M274 (air OK)", "S-Class M274 (air OK)", "CLA M270 (oil OK)"]
+  }
+}

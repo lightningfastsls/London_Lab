@@ -19,7 +19,7 @@ Git worktrees have emerged as the convergent filesystem isolation primitive acro
 
 The pattern mirrors containerization from DevOps: each agent gets an isolated copy of the codebase so file modifications cannot conflict. Unlike full containers, worktrees share the same git history and can merge results back cleanly.
 
-Worktrees solve a different problem than context isolation. Since [[subagent architecture isolates context degradation by giving each task a focused window and compressing summaries upward]], subagents isolate context windows. Worktrees isolate filesystems. Since [[three parallelization strategies in Claude Code serve different isolation needs: subagents for focused results teams for collaborative discussion worktrees for filesystem safety]], the two are composable — an agent team can use worktrees for filesystem safety while subagents handle focused subtasks.
+Worktrees solve a different problem than context isolation. Since [[subagent architecture isolates context degradation by giving each task a focused window and compressing summaries upward]], subagents isolate context windows. Worktrees isolate filesystems. Since [[three parallelization strategies in Claude Code serve different isolation needs subagents for focused results teams for collaborative discussion worktrees for filesystem safety]], the two are composable — an agent team can use worktrees for filesystem safety while subagents handle focused subtasks.
 
 The convergence on worktrees rather than alternatives (Docker containers, separate clones, branch switching) reflects that git worktrees are lightweight (~instant creation), share object storage (no disk duplication), and produce clean merges via standard git workflows.
 
@@ -28,7 +28,7 @@ The convergence on worktrees rather than alternatives (Docker containers, separa
 Source: claude-code-mcp-ecosystem-march-2026-research-2026-03-02 (archived to archive/inbox/)
 
 Relevant Notes:
-- [[three parallelization strategies in Claude Code serve different isolation needs: subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] -- the three-layer framework
+- [[three parallelization strategies in Claude Code serve different isolation needs subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] -- the three-layer framework
 - [[subagent architecture isolates context degradation by giving each task a focused window and compressing summaries upward]] -- context isolation (complementary)
 
 Topics:

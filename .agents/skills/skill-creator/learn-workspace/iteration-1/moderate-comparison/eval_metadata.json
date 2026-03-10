@@ -1,0 +1,15 @@
+{
+  "eval_id": 1,
+  "eval_name": "moderate-comparison",
+  "prompt": "/learn Python alternatives to DeepSqueak for rodent USV classification",
+  "assertions": [
+    {"name": "inbox-file-created", "description": "Produces a markdown file suitable for the inbox pipeline"},
+    {"name": "frontmatter-valid", "description": "Output has YAML frontmatter with description, source_type, status, date_accessed fields"},
+    {"name": "source-log-present", "description": "Includes a source log or URL list with fetch status"},
+    {"name": "provenance-traceable", "description": "At least one claim can be traced to a specific URL"},
+    {"name": "pipeline-chaining", "description": "Suggests next step like /reduce or /seed"},
+    {"name": "multi-source-synthesis", "description": "Compares multiple Python tools with pros/cons"},
+    {"name": "no-verbatim-copy", "description": "Content is synthesized in own framing, not pasted from sources"},
+    {"name": "vault-check-performed", "description": "Checked existing vault knowledge before web research"}
+  ]
+}

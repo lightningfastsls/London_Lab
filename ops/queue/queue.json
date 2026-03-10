@@ -124,6 +124,55 @@
         "2 enrichments: ICL implicit weight note (added LoRA as explicit counterpart), KV cache compression note (added Doc-to-LoRA as orthogonal approach)",
         "Topic map note: /reflect should create new model-adaptation topic map for this cluster"
       ]
+    },
+    {
+      "id": "seed-008",
+      "type": "extract",
+      "phase": "done",
+      "source": "docs/handoffs/2026-03-07_deepsqueak-import-prefix-match-fix.md",
+      "description": "Extract atomic notes from Codex handoff: DeepSqueak import prefix-match fix — asymmetric round-trip bug, two-pass stem resolution, and silent unmatched mismatch failure signature",
+      "status": "done",
+      "completed": "2026-03-07",
+      "created": "2026-03-07",
+      "priority": "standard",
+      "notes": [
+        "3 new notes: asymmetric export/import directory matching bug, exact-first-then-prefix stem resolution method, silent unmatched_ds+unmatched_det failure signature",
+        "All three added to classification-tools.md topic map under 'DeepSqueak Bridge & Raven Interchange' section",
+        "Source is a Codex handoff — seeded directly to notes/ (no inbox/reduce pipeline; claims already well-reasoned)"
+      ]
+    },
+    {
+      "id": "seed-009",
+      "type": "extract",
+      "phase": "done",
+      "source": "inbox/knowledge-activation-architecture-phase1-2026-03-07.md",
+      "description": "Extract atomic notes from Knowledge Activation Architecture Phase 1 plan — RAG literature patterns (Self-RAG, FLARE, CRAG, Adaptive RAG) applied to vault activation, session-orient hook enrichment, vault canary comments in source files, /kcheck micro-skill design, and knowledge-enriched Codex handoff generation",
+      "status": "done",
+      "completed": "2026-03-07",
+      "created": "2026-03-07",
+      "priority": "high",
+      "notes": [
+        "8 new notes: activation timing core thesis, Self-RAG procedural gates, FLARE intent-based retrieval, CRAG noise-gate fatigue, Adaptive RAG risk routing, static-vs-intent activation lifecycle, fewer-triggers principle, cross-agent knowledge flattening",
+        "1 open question: whether load-rate tracking can identify poorly-described notes",
+        "2 enrichments skipped (targets in methodology/ READ-ONLY — connections established via cross-linking in new notes)",
+        "agent-memory topic map updated with new Knowledge Activation section (8 notes + 1 open question)"
+      ]
+    },
+    {
+      "id": "seed-007",
+      "type": "extract",
+      "phase": "done",
+      "source": "docs/handoffs/2026-03-07_app-save-and-ghost-detection-fixes.md",
+      "description": "Extract atomic notes from Codex handoff: saved-detection deduplication fix (boundary-identity 1ms tolerance), selection mapping isolation in app/core/, three-tier detection state model (current/saved-current/ghost)",
+      "status": "done",
+      "completed": "2026-03-07",
+      "created": "2026-03-07",
+      "priority": "standard",
+      "notes": [
+        "3 new notes: boundary-identity tracker matching, three-tier detection state model, selection mapping isolation in app/core/",
+        "All three added to detection.md topic map under new 'Detection App Save State' section",
+        "Source is a Codex handoff — seeded directly to notes/ (no inbox/reduce pipeline; claims already well-reasoned)"
+      ]
     }
   ],
   "maintenance_conditions": {

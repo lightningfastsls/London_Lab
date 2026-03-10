@@ -1,0 +1,81 @@
+make,model,engine,filter_type,csv_oem,status,notes
+Audi,A8,CZDA,air_filter,4M0 133 843 B,LIKELY_FABRICATED,"Audi A8 air filter. 4M0 is Q7/Q8 prefix, not A8. A8 uses 4H0 prefix."
+BMW,1 Series,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,Not found. BMW air filter numbers usually end differently.
+Ford,Fiesta,M1JE,air_filter,C1B1-9601-AB,LIKELY_FABRICATED,Ford Fiesta MK8 air filter. Real is CN1Z-9601-A.
+Ford,Focus,M8DA,air_filter,F1F1-9601-BC,LIKELY_FABRICATED,Ford Focus air filter. Not found in any source.
+Ford,Focus,M8DA,cabin_filter,F1FZ-19N619-AB,LIKELY_FABRICATED,Not found.
+Ford,Puma,B7JA,cabin_filter,LX6Z-19N619-B,LIKELY_FABRICATED,Not found.
+Hyundai,Santa Fe,G4KL,air_filter,28113-S1100,LIKELY_FABRICATED,Not found. Real Santa Fe uses 28113-L1100 or similar.
+Hyundai,Santa Fe,G4KL,cabin_filter,97133-S1000,LIKELY_FABRICATED,Not found.
+Hyundai,i30,G4FJ,cabin_filter,97133-J9100,LIKELY_FABRICATED,Not found. 97133 prefix is correct for Hyundai cabin filters.
+Kia,Picanto,G4LA,cabin_filter,97133-B5000,LIKELY_FABRICATED,Not found.
+Kia,Picanto,G3LC,air_filter,28113-J9000,LIKELY_FABRICATED,Not found. Older Picanto uses 28113-07100.
+Mazda,2,P3-VPS,air_filter,D09W-13-Z40,LIKELY_FABRICATED,Not found.
+Mazda,MX-5,PE-VPS,cabin_filter,N246-61-J6X,LIKELY_FABRICATED,Not found.
+Nissan,Qashqai,KR15DDT,air_filter,16546-6FR0A,LIKELY_FABRICATED,Nissan Qashqai J12. Not found. 16546-6RA0A exists but different part.
+Suzuki,Jimny,K15B,air_filter,13780-74P10,LIKELY_FABRICATED,Not found. Jimny uses 13780-79210.
+Toyota,Hilux,2GD-FTV,air_filter,17801-0L090,LIKELY_FABRICATED,Real Hilux numbers are 17801-0C010 or 17801-0L040. '0L090' suffix not found anywhere.
+Mercedes-Benz,A-Class,M282,cabin_filter,177 830 00 00,NEEDS_DEALER_CHECK,LLM generated plausible '177 830 00 00' but this doesn't exist. The W177/W247 platform cabin filter real number needs dealer verification. Web sources suggest various numbers but no clear consensus.
+Mercedes-Benz,CLS,M256,air_filter,213 094 01 04,NEEDS_DEALER_CHECK,CLS with M256 engine likely shares air filter with E-Class or uses engine-specific number. Could be 260 094 03 00 (universal M256 air filter found on MB parts) but not confirmed for CLS specifically.
+Mercedes-Benz,EQA,,cabin_filter,243 830 00 00,NEEDS_DEALER_CHECK,EQA (H243) cabin filter. The '243' prefix is plausible but '830 00 00' variant is the LLM's default fabrication pattern. Needs dealer verification.
+Mercedes-Benz,EQE,,cabin_filter,295 830 00 00,NEEDS_DEALER_CHECK,EQE cabin filter. Pattern matches LLM fabrication (chassis_code + 830 00 00).
+Mercedes-Benz,EQS,,cabin_filter,297 830 00 00,NEEDS_DEALER_CHECK,EQS cabin filter. Pattern matches LLM fabrication (chassis_code + 830 00 00).
+Mercedes-Benz,G-Class,M256,air_filter,463 094 01 04,NEEDS_DEALER_CHECK,W463 G-Class M256 air filter not confirmed. The '463' prefix matches chassis code pattern.
+Mercedes-Benz,GLB,M282,cabin_filter,247 830 00 00,NEEDS_DEALER_CHECK,EQB/GLB cabin filter with 247 prefix is plausible (247 is GLB chassis code) but '00 00' variant is likely wrong. Needs dealer verification.
+Mercedes-Benz,GLE,M264,air_filter,167 094 00 04,NEEDS_DEALER_CHECK,GLE W167 uses different air filter systems per engine. The number pattern (167 + 094) follows the LLM's chassis-code prefix pattern which is often wrong. Real numbers likely differ per engine variant.
+Mercedes-Benz,S-Class,M256,air_filter,223 094 00 04,NEEDS_DEALER_CHECK,W223 S-Class M256 air filter not found. May share with other M256 vehicles but specific number unconfirmed.
+Mercedes-Benz,SL,M256,air_filter,232 094 00 04,NEEDS_DEALER_CHECK,R232 SL M256 air filter not found. Likely shares with M256 family but specific number unconfirmed.
+Mercedes-Benz,SL,M256,cabin_filter,232 830 00 00,NEEDS_DEALER_CHECK,SL R232 cabin filter. Pattern matches LLM fabrication (chassis_code + 830 00 00).
+Chery,Tiggo 4 Pro,SQRE4T15C,oil_filter,E4T15-1012010,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chery,Tiggo 4 Pro,SQRE4T15C,air_filter,E4T15-1109111,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chery,Tiggo 7 Pro,SQRF4J16,oil_filter,F4J16-1012010,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chery,Tiggo 7 Pro,SQRF4J16,air_filter,F4J16-1109111,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chrysler,200,ERB,air_filter,68245491AA,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chrysler,300C,ERB,air_filter,68197800AA,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chrysler,300C,EGF,air_filter,68143102AA,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chrysler,Crossfire,M112,air_filter,0000942004,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chrysler,Grand Voyager,EGA,cabin_filter,4885955AB,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chrysler,Grand Voyager,ENS,air_filter,68001735AB,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Chrysler,PT Cruiser,OM646,air_filter,5189959AA,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Cupra,Born,,cabin_filter,1EA 819 641,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Fiat,Tipo,55263624,air_filter,52081805,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Fiat,Tipo,55263624,cabin_filter,77367456,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+GWM,Haval H6,GW4C20B,air_filter,1109120XKZ36A,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+GWM,Jolion,GW4B15A,air_filter,1109120XKZ16A,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+GWM,Jolion,GW4B15A,cabin_filter,8104300XKZ36A,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Geely,Coolray,JLH-3G15TD,oil_filter,1016050811,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Geely,Coolray,JLH-3G15TD,air_filter,1016012681,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Geely,Coolray,JLH-3G15TD,cabin_filter,8022003200,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Honda,HR-V,L15B,cabin_filter,80292-T5A-J01,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Honda,Jazz,LEB,cabin_filter,80292-TLA-A01,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Jaguar,E-Pace,PT204,air_filter,LR108435,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Jaguar,E-Pace,PT204,cabin_filter,T4N6810,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Land Rover,Range Rover Evoque,PT204,air_filter,LR122592,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Land Rover,Range Rover Evoque,PT204,cabin_filter,LR117485,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+MG,ZS,15S4G,oil_filter,10405642,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+MG,ZS,15S4G,air_filter,10405878,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+MG,ZS,15S4G,cabin_filter,10242940,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Nissan,Micra,HR10DET,air_filter,16546-5FA1B,UNVERIFIABLE_COVERAGE_GAP,Nissan Micra K14. Real Micra V uses 16546-5FN1A. This may be K14 specific variant. Unconfirmed.
+Nissan,Navara,YD25DDTi,cabin_filter,27275-EN000,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Nissan,Qashqai,KR15DDT,cabin_filter,27277-6MA0A,UNVERIFIABLE_COVERAGE_GAP,Nissan Qashqai J12 cabin filter. 27277 prefix correct for Nissan cabin. Unconfirmed.
+Opel,Astra,B14XFL,air_filter,13372460,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Peugeot,208,EB2,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Peugeot,208,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Porsche,Macan,CZPA,cabin_filter,95B 819 631,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Renault,Clio,H5H,air_filter,165468187R,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Seat,Altea,CZCA,cabin_filter,1K0 819 653 A,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Skoda,Superb,CZDA,cabin_filter,3Q0 819 653,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Smart,ForFour,4A90,oil_filter,MN195396,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Smart,ForTwo,3B21,air_filter,A1320900001,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Smart,ForTwo,3B21,cabin_filter,A4518350047,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Smart,ForTwo,OM660,oil_filter,A6601800009,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Smart,ForTwo,OM660,air_filter,A6600940004,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Smart,ForTwo,M281,air_filter,A4530940000,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Smart,ForTwo,M281,cabin_filter,A4538350100,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+SsangYong,Korando,D20DTF,air_filter,2319109000,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+SsangYong,Rexton,D22DTR,cabin_filter,6812108000,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+SsangYong,Tivoli,G16DF,air_filter,2319109100,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+SsangYong,Tivoli,G16DF,cabin_filter,6812108100,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Suzuki,Jimny,K15B,cabin_filter,95860-77R00,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Suzuki,Swift,K12B,cabin_filter,95861-62R00,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.
+Volvo,EX90,,cabin_filter,32346498,UNVERIFIABLE_COVERAGE_GAP,Not in English-language parts databases. May be correct.

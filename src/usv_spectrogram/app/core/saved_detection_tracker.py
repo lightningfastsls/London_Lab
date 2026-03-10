@@ -1,5 +1,8 @@
 """Track saved detections to avoid duplicates."""
 
+# VAULT: saved-previous ghost detections current editable and saved-current form three aligned detection state tiers in the app
+# Run `/kcheck` before modifying this file.
+
 import json
 from dataclasses import dataclass, asdict
 from datetime import datetime
@@ -7,6 +10,9 @@ from pathlib import Path
 from typing import List
 
 from usv_spectrogram.app.core.detection_logic import DetectedUSV
+
+
+_MATCH_TOLERANCE_S = 0.001
 
 
 @dataclass
@@ -80,6 +86,11 @@ class SavedDetectionTracker:
     def is_saved(self, detection: DetectedUSV) -> bool:
         """Check if detection already saved.
 
+        Detections explicitly marked `save_state="saved_current"` are treated
+        as saved even if tracker records are unavailable, which matters when
+        labels are reloaded from JSON without reconstructing historical tracker
+        state first.
+
         For manual detections (user_action="added_manually"), checks the
         detection's own save_state since they are new by definition and
         should not be matched against tracker records by time overlap.
@@ -95,6 +106,9 @@ class SavedDetectionTracker:
         Returns:
             True if this detection is already saved
         """
+        if detection.save_state == "saved_current":
+            return True
+
         # Manual detections are new — only trust their own save_state
         if detection.user_action == "added_manually":
             return detection.save_state != "unsaved"
@@ -103,11 +117,12 @@ class SavedDetectionTracker:
         if detection.user_adjusted and detection.save_state == "unsaved":
             return False
 
-        # CNN detections: check tracker by time overlap
+        # CNN detections: check tracker by boundary identity
         for record in self.saved_detections:
-            if self._time_ranges_overlap(
-                detection.start_time_s, detection.end_time_s,
-                record.start_time_s, record.end_time_s
+            if self.matches_record(
+                detection.start_time_s,
+                detection.end_time_s,
+                record,
             ):
                 return True
         return False
@@ -158,21 +173,82 @@ class SavedDetectionTracker:
         """
         return [d for d in all_detections if not self.is_saved(d)]
 
-    def _time_ranges_overlap(self, start1: float, end1: float,
-                            start2: float, end2: float) -> bool:
-        """Check if two time ranges overlap.
+    def matches_record(
+        self,
+        start_time_s: float,
+        end_time_s: float,
+        record: SavedDetectionRecord,
+    ) -> bool:
+        """Return True when boundaries match an existing saved record.
 
-        Uses core detection time (not including context) for overlap checking.
+        Uses core detection time (not including context) and requires both
+        boundaries to match within a small tolerance. Overlap alone is not
+        enough, because adjacent or partially overlapping detections may be
+        distinct user-reviewed events.
 
         Args:
-            start1, end1: First time range
-            start2, end2: Second time range
+            start_time_s: Candidate start time
+            end_time_s: Candidate end time
+            record: Previously saved detection record
 
         Returns:
-            True if ranges overlap
+            True if both boundaries match within tolerance
         """
-        return not (end1 <= start2 or end2 <= start1)
+        return (
+            abs(start_time_s - record.start_time_s) <= _MATCH_TOLERANCE_S
+            and abs(end_time_s - record.end_time_s) <= _MATCH_TOLERANCE_S
+        )
 
     def get_saved_count(self) -> int:
         """Get number of saved detections."""
         return len(self.saved_detections)
+
+    def clear_non_deleted_records(self) -> None:
+        """Remove accepted/manual saved records while preserving deletions."""
+        self.saved_detections = [
+            record for record in self.saved_detections
+            if record.user_action == "deleted_by_user"
+        ]
+        self._save_tracking_file()
+
+    def remove_records_matching(
+        self,
+        start_time_s: float,
+        end_time_s: float,
+        *,
+        include_deleted: bool = False,
+    ) -> List[SavedDetectionRecord]:
+        """Remove and return records matching the given boundaries.
+
+        Args:
+            start_time_s: Start time to match
+            end_time_s: End time to match
+            include_deleted: If False, keep deletion-history records intact
+
+        Returns:
+            Removed records in their original order
+        """
+        removed: List[SavedDetectionRecord] = []
+        kept: List[SavedDetectionRecord] = []
+
+        for record in self.saved_detections:
+            is_deleted = record.user_action == "deleted_by_user"
+            if (not include_deleted and is_deleted) or not self.matches_record(
+                start_time_s,
+                end_time_s,
+                record,
+            ):
+                kept.append(record)
+                continue
+            removed.append(record)
+
+        if removed:
+            self.saved_detections = kept
+            self._save_tracking_file()
+
+        return removed
+
+    def clear_records(self) -> None:
+        """Remove all tracked detections and persist the cleared state."""
+        self.saved_detections.clear()
+        self._save_tracking_file()

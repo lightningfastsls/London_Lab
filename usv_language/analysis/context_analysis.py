@@ -13,7 +13,10 @@ from __future__ import annotations
 import numpy as np
 from scipy import stats
 
-from usv_language.analysis.sequence_analysis import compute_transition_matrix
+from usv_language.analysis.sequence_analysis import (
+    compute_transition_matrix,
+    recording_spans_from_metadata,
+)
 
 
 def group_codes_by_metadata(
@@ -37,19 +40,25 @@ def group_codes_by_metadata(
     -------
     Dict mapping group label -> 1D code array.
     """
-    if "recordings" not in metadata:
+    spans = recording_spans_from_metadata(metadata, total_frames=len(codes))
+    if not spans:
         return {"all": codes}
 
-    groups: dict[str, np.ndarray] = {}
-    for recording in metadata["recordings"]:
-        label = str(recording.get(group_key, "unknown"))
-        start = recording.get("start_frame", 0)
-        end = recording.get("end_frame", len(codes))
-        end = min(end, len(codes))
+    grouped_lists: dict[str, list[np.ndarray]] = {}
+    for recording in spans:
+        label = str(recording.get(group_key, recording.get("recording_id", "unknown")))
+        start = recording["start_frame"]
+        end = recording["end_frame"]
         if start < end:
-            groups[label] = codes[start:end]
+            grouped_lists.setdefault(label, []).append(codes[start:end])
 
-    return groups if groups else {"all": codes}
+    if not grouped_lists:
+        return {"all": codes}
+
+    return {
+        label: np.concatenate(chunks) if len(chunks) > 1 else chunks[0]
+        for label, chunks in grouped_lists.items()
+    }
 
 
 def code_frequency_by_group(

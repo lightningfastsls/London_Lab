@@ -19,6 +19,10 @@ Usage::
     paths = export_raven_tables(config)
 """
 
+# VAULT: Raven selection table format is the standard interchange format between bioacoustic analysis tools,
+#        DeepSqueak regenerates its own spectrograms from raw audio so exported bounding boxes serve as regions of interest not precise frequency boundaries
+# Run `/kcheck` before modifying this file.
+
 from __future__ import annotations
 
 import json

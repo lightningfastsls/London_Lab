@@ -1,0 +1,13 @@
+source_file,row,make,model,engine,filter_type,csv_oem,status,corrected_oem,error_type,verification_source,notes
+filter_specs.csv,26,Hyundai,i30,G4FJ,air_filter,28113-J9100,WRONG_CORRECTED,28113-A9100,Wrong middle code: J9100 should be A9100 (or S0100 for i30N),"hyundaioempartsdirect.com, parts.hyundaicanada.com",
+filter_specs.csv,26,Hyundai,i30,G4FJ,cabin_filter,97133-J9100,LIKELY_FABRICATED,,Not found in any source,,Not found. 97133 prefix is correct for Hyundai cabin filters.
+filter_specs.csv,31,Hyundai,Tucson,G4FP,air_filter,28113-L1500,WRONG_CORRECTED,28113-D3300 or 28113-L1100,L1500 not found. Real is D3300 (2016-2021) or L1100 (2022+),"hyundaioempartsdirect.com, amazon.com genuine",
+filter_specs.csv,34,Hyundai,Ioniq,G4LE,air_filter,28113-G2200,WRONG_CORRECTED,28113-G2700,Wrong suffix: G2200 should be G2700,"hyundaioempartsdirect.com, oempartsonline.com, amazon.com genuine",
+filter_specs.csv,36,Hyundai,Santa Fe,G4KL,air_filter,28113-S1100,LIKELY_FABRICATED,,Not found in any source,,Not found. Real Santa Fe uses 28113-L1100 or similar.
+filter_specs.csv,36,Hyundai,Santa Fe,G4KL,cabin_filter,97133-S1000,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,42,Kia,Picanto,G4LA,cabin_filter,97133-B5000,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,43,Kia,Picanto,G3LC,air_filter,28113-J9000,LIKELY_FABRICATED,,Not found in any source,,Not found. Older Picanto uses 28113-07100.
+stage1_filter_specs.csv,20,SsangYong,Tivoli,G16DF,air_filter,2319109100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,20,SsangYong,Tivoli,G16DF,cabin_filter,6812108100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,22,SsangYong,Korando,D20DTF,air_filter,2319109000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,24,SsangYong,Rexton,D22DTR,cabin_filter,6812108000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.

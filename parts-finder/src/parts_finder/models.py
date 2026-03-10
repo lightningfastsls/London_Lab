@@ -25,6 +25,45 @@ def _clean(value: str | None) -> str | None:
     return value if value else None
 
 
+def _normalize_model_name(value: str) -> str:
+    """Title-case an ALL-CAPS English model name for DB consistency.
+
+    The government API's ``kinuy_mishari`` field often returns model
+    names in ALL CAPS (e.g. "SPORTAGE", "COROLLA") while the DB stores
+    them in Title Case ("Sportage", "Corolla").  Pure-Hebrew names are
+    left unchanged (Hebrew has no case distinction).
+    """
+    # Only transform if all-caps ASCII
+    if value.isascii() and value.isupper() and len(value) > 1:
+        return value.title()
+    return value
+
+
+def _looks_like_model_name(value: str | None) -> bool:
+    """Return True if the value looks like a human-readable model name.
+
+    The API's ``degem_nm`` field sometimes contains internal model codes
+    (e.g. "PB814B", "ZRE181L") rather than readable names (e.g. "Corolla",
+    "SPORTAGE").  Internal codes are typically short alphanumeric strings
+    with digits embedded mid-word — not what a user would recognise.
+
+    Heuristic: reject values that are a single word mixing letters and
+    digits (like "PB814B").  Accept multi-word values or pure-letter words.
+    """
+    if not value:
+        return False
+    cleaned = value.strip()
+    if not cleaned:
+        return False
+    # Multi-word values are likely real names
+    if " " in cleaned:
+        return True
+    # Single word: reject if it mixes letters and digits (internal code)
+    has_alpha = any(c.isalpha() for c in cleaned)
+    has_digit = any(c.isdigit() for c in cleaned)
+    return not (has_alpha and has_digit)
+
+
 def _require_str(record: dict, key: str) -> str:
     """Extract a required string field from an API record.
 
@@ -58,6 +97,7 @@ class VehicleRecord:
     trim: Optional[str] = None
     make_english: Optional[str] = None
     model_english: Optional[str] = None
+    degem_nm: Optional[str] = None
 
     @property
     def lookup_key(self) -> str:
@@ -86,14 +126,19 @@ class VehicleRecord:
         return cls(
             plate=plate.strip(),
             make_hebrew=_require_str(record, "tozeret_nm"),
-            model_hebrew=_require_str(record, "kinuy_mishari"),
+            model_hebrew=_normalize_model_name(_require_str(record, "kinuy_mishari")),
             year=int(record["shnat_yitzur"]),
             engine_code=str(record.get("degem_manoa", "")).strip(),
             fuel_type=_require_str(record, "sug_delek_nm"),
             vin=_clean(record.get("misgeret")),
             trim=_clean(record.get("ramat_gimur")),
             make_english=_clean(record.get("tozeret_eretz_nm")),
-            model_english=_clean(record.get("degem_nm")),
+            model_english=(
+                _clean(record.get("degem_nm"))
+                if _looks_like_model_name(record.get("degem_nm"))
+                else None
+            ),
+            degem_nm=_clean(record.get("degem_nm")),
         )
 
 
@@ -164,10 +209,11 @@ class VehicleSpecs:
 class OilResult:
     """Oil specification lookup result with confidence metadata.
 
-    Produced by OilLookup's three-tier cascade.  The ``confidence`` field
+    Produced by OilLookup's four-tier cascade.  The ``confidence`` field
     indicates which tier matched:
 
     - ``"exact"``          — make + model + year + engine_code
+    - ``"model_year"``     — make + model + year (engine_code ignored)
     - ``"engine_family"``  — make + engine family prefix + year
     - ``"brand_default"``  — most common spec for make (capacity=0.0)
 
@@ -180,12 +226,12 @@ class OilResult:
     spec: str
     oem_approval: str
     change_interval_km: int
-    confidence: Literal["exact", "engine_family", "brand_default"]
+    confidence: Literal["exact", "model_year", "engine_family", "brand_default"]
     source: str
 
     @classmethod
     def from_vehicle_specs(
-        cls, specs: VehicleSpecs, confidence: Literal["exact", "engine_family", "brand_default"],
+        cls, specs: VehicleSpecs, confidence: Literal["exact", "model_year", "engine_family", "brand_default"],
     ) -> OilResult:
         """Extract oil fields from a VehicleSpecs record."""
         source = (

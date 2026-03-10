@@ -1,0 +1,17 @@
+{
+  "eval_id": 2,
+  "eval_name": "deep-survey",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox-compatible format with date-stamped filename"},
+    {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter with all fields"},
+    {"text": "source-log-present", "passed": true, "evidence": "Source Log table at line 176 with 20 entries"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to specific arXiv papers, eLife preprints, and ICASSP proceedings"},
+    {"text": "pipeline-chaining", "passed": true, "evidence": "Suggested /reduce with estimate of 15-25 extractable atomic notes"},
+    {"text": "structured-sections", "passed": true, "evidence": "6 numbered sections: Foundation Models, Self-Supervised Learning, Clustering Pipelines, Task-Specific Pipelines, Benchmarks, Open Challenges"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with project-relevant context throughout"},
+    {"text": "vault-check-performed", "passed": true, "evidence": "Reported no existing notes but identified relevant topic maps (detection, classification, representation-learning)"},
+    {"text": "survey-breadth", "passed": true, "evidence": "20 sources, covers foundation models (5), SSL methods (5), clustering algorithms (4), pipelines (3), benchmarks (3), and 7 open challenges"},
+    {"text": "foundation-models-profiled", "passed": true, "evidence": "6 models profiled with architecture, params, training data, and benchmark results: Perch 2.0, BirdNET, BirdMAE/BEATs, NatureLM-audio, AVES, animal2vec"}
+  ]
+}

@@ -188,6 +188,68 @@ def entropy_rate(codes: np.ndarray, max_order: int = 5) -> list[float]:
 # ---------------------------------------------------------------------------
 
 
+def recording_spans_from_metadata(
+    metadata: dict,
+    total_frames: int | None = None,
+) -> list[dict]:
+    """Extract recording spans from metadata in new or legacy formats.
+
+    Supports either:
+    - ``recordings``: list of dicts with ``recording_id``, ``start_frame``,
+      ``end_frame``
+    - ``frames``: legacy per-frame entries with ``recording_id`` and
+      ``frame_index``
+    """
+    if "recordings" in metadata and metadata["recordings"]:
+        spans = []
+        for recording in metadata["recordings"]:
+            start = int(recording.get("start_frame", 0))
+            end_default = total_frames if total_frames is not None else start
+            end = int(recording.get("end_frame", end_default))
+            if total_frames is not None:
+                end = min(end, total_frames)
+            if start < end:
+                spans.append({
+                    "recording_id": str(recording.get("recording_id", "unknown")),
+                    "start_frame": start,
+                    "end_frame": end,
+                })
+        return spans
+
+    frames = metadata.get("frames", [])
+    if not frames:
+        return []
+
+    ordered_frames = sorted(
+        frames, key=lambda entry: int(entry.get("frame_index", 0))
+    )
+    spans: list[dict] = []
+    current_recording = str(ordered_frames[0].get("recording_id", "unknown"))
+    start_frame = int(ordered_frames[0].get("frame_index", 0))
+    previous_frame = start_frame
+
+    for entry in ordered_frames[1:]:
+        recording_id = str(entry.get("recording_id", "unknown"))
+        frame_index = int(entry.get("frame_index", previous_frame + 1))
+        contiguous = recording_id == current_recording and frame_index == previous_frame + 1
+        if not contiguous:
+            spans.append({
+                "recording_id": current_recording,
+                "start_frame": start_frame,
+                "end_frame": previous_frame + 1,
+            })
+            current_recording = recording_id
+            start_frame = frame_index
+        previous_frame = frame_index
+
+    spans.append({
+        "recording_id": current_recording,
+        "start_frame": start_frame,
+        "end_frame": previous_frame + 1,
+    })
+    return spans
+
+
 def extract_code_sequences(
     hidden_states: np.ndarray,
     vqvae: torch.nn.Module,
@@ -263,15 +325,14 @@ def extract_bout_code_sequences(
     with open(metadata_path, "r") as f:
         metadata = json.load(f)
 
-    # Group by recording_id if available
-    if "recordings" not in metadata:
+    spans = recording_spans_from_metadata(metadata, total_frames=len(all_codes))
+    if not spans:
         return [all_codes]
 
     bout_sequences = []
-    for recording in metadata["recordings"]:
-        start = recording.get("start_frame", 0)
-        end = recording.get("end_frame", len(all_codes))
-        end = min(end, len(all_codes))
+    for recording in spans:
+        start = recording["start_frame"]
+        end = recording["end_frame"]
         if start < end:
             bout_sequences.append(all_codes[start:end])
 

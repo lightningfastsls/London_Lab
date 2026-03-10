@@ -1,0 +1,221 @@
+{
+  "metadata": {
+    "skill_name": "learn",
+    "skill_path": ".claude/skills/skill-creator/learn-workspace/draft-v2",
+    "executor_model": "claude-opus-4-6",
+    "analyzer_model": "claude-opus-4-6",
+    "timestamp": "2026-02-27T18:30:00Z",
+    "evals_run": ["quick-lookup", "moderate-comparison", "deep-survey"],
+    "runs_per_configuration": 3,
+    "iteration": 2
+  },
+
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "quick-lookup",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 10,
+        "failed": 0,
+        "total": 10,
+        "time_seconds": 148.3,
+        "tokens": 30114,
+        "tool_calls": 15,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox structure with frontmatter"},
+        {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter"},
+        {"text": "source-log-present", "passed": true, "evidence": "Source Log table with 7 entries"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "250 kHz traced to PMC, GitHub, wiki"},
+        {"text": "pipeline-chaining", "passed": true, "evidence": "/reduce suggested with 3-4 extractable claims estimate"},
+        {"text": "depth-appropriate", "passed": true, "evidence": "74 lines, thorough with parameter tables"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with inline citations"},
+        {"text": "vault-check-performed", "passed": true, "evidence": "No existing MUPET notes found"},
+        {"text": "cross-verified", "passed": true, "evidence": "3 independent sources: paper, source code, wiki"},
+        {"text": "source-code-detail", "passed": true, "evidence": "configdefault{7}=250000, frame_win_ms, frame_shift_ms, full STFT table"}
+      ]
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "quick-lookup",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 5,
+        "failed": 5,
+        "total": 10,
+        "time_seconds": 180.0,
+        "tokens": 32337,
+        "tool_calls": 20,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": false, "evidence": "No inbox structure"},
+        {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+        {"text": "source-log-present", "passed": false, "evidence": "Provenance section, not structured table"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "Multiple URLs linked to claims"},
+        {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline next steps"},
+        {"text": "depth-appropriate", "passed": true, "evidence": "Concise and factual"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Original framing"},
+        {"text": "vault-check-performed", "passed": false, "evidence": "No vault check"},
+        {"text": "cross-verified", "passed": true, "evidence": "3 independent sources: paper, code, wiki"},
+        {"text": "source-code-detail", "passed": true, "evidence": "MATLAB variable names included"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "moderate-comparison",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 10,
+        "failed": 0,
+        "total": 10,
+        "time_seconds": 354.2,
+        "tokens": 47160,
+        "tool_calls": 38,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox format"},
+        {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter"},
+        {"text": "source-log-present", "passed": true, "evidence": "Source Log with 20 entries"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to papers and repos"},
+        {"text": "pipeline-chaining", "passed": true, "evidence": "/reduce mentioned for extracting atomic claims"},
+        {"text": "multi-source-synthesis", "passed": true, "evidence": "9 tools compared with architecture and benchmarks"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing"},
+        {"text": "vault-check-performed", "passed": true, "evidence": "No existing notes found"},
+        {"text": "landscape-coverage", "passed": true, "evidence": "9 tools covered: DAS, SqueakOut, AMVOC, BootSnap, MoUSE, USVSEG_Python, ContourUSV, VocalMat, USV_Python"},
+        {"text": "actionable-detail", "passed": true, "evidence": "pip install, GitHub URLs, commit counts, perf numbers, comparison matrix"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "moderate-comparison",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 5,
+        "failed": 5,
+        "total": 10,
+        "time_seconds": 239.9,
+        "tokens": 43205,
+        "tool_calls": 23,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": false, "evidence": "No inbox structure"},
+        {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+        {"text": "source-log-present", "passed": false, "evidence": "No structured source log"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "12 repos, 11 publications"},
+        {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline suggestions"},
+        {"text": "multi-source-synthesis", "passed": true, "evidence": "11 tools in matrix with tiers"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Original synthesis"},
+        {"text": "vault-check-performed", "passed": false, "evidence": "No vault check"},
+        {"text": "landscape-coverage", "passed": true, "evidence": "11 tools across 4 tiers"},
+        {"text": "actionable-detail", "passed": true, "evidence": "pip install, URLs, benchmarks, web demo"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "deep-survey",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 10,
+        "failed": 0,
+        "total": 10,
+        "time_seconds": 435.1,
+        "tokens": 60207,
+        "tool_calls": 42,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": true, "evidence": "Proper inbox format"},
+        {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter"},
+        {"text": "source-log-present", "passed": true, "evidence": "Source Log with 20 entries"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to arXiv, eLife, ICASSP"},
+        {"text": "pipeline-chaining", "passed": true, "evidence": "/reduce suggested with 15-25 extractable notes estimate"},
+        {"text": "structured-sections", "passed": true, "evidence": "6 numbered sections covering all major areas"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with project context"},
+        {"text": "vault-check-performed", "passed": true, "evidence": "Identified relevant topic maps"},
+        {"text": "survey-breadth", "passed": true, "evidence": "20 sources, 6 sections, foundation models + SSL + clustering + pipelines + benchmarks + challenges"},
+        {"text": "foundation-models-profiled", "passed": true, "evidence": "6 models: Perch 2.0, BirdNET, BirdMAE/BEATs, NatureLM-audio, AVES, animal2vec"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "deep-survey",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 5,
+        "failed": 5,
+        "total": 10,
+        "time_seconds": 353.0,
+        "tokens": 49014,
+        "tool_calls": 26,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "inbox-file-created", "passed": false, "evidence": "No inbox structure"},
+        {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+        {"text": "source-log-present", "passed": false, "evidence": "Bibliography but no structured table"},
+        {"text": "provenance-traceable", "passed": true, "evidence": "40 sources with URLs"},
+        {"text": "pipeline-chaining", "passed": false, "evidence": "No pipeline suggestions"},
+        {"text": "structured-sections", "passed": true, "evidence": "11 sections with TOC"},
+        {"text": "no-verbatim-copy", "passed": true, "evidence": "682-line synthesis"},
+        {"text": "vault-check-performed", "passed": false, "evidence": "No vault check"},
+        {"text": "survey-breadth", "passed": true, "evidence": "40 sources, 11 sections, all major areas"},
+        {"text": "foundation-models-profiled", "passed": true, "evidence": "7 models with structured tables"}
+      ]
+    }
+  ],
+
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 312.5, "stddev": 145.8, "min": 148.3, "max": 435.1},
+      "tokens": {"mean": 45827, "stddev": 15074, "min": 30114, "max": 60207}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.5, "stddev": 0.0, "min": 0.5, "max": 0.5},
+      "time_seconds": {"mean": 257.6, "stddev": 88.0, "min": 180.0, "max": 353.0},
+      "tokens": {"mean": 41519, "stddev": 8440, "min": 32337, "max": 49014}
+    },
+    "delta": {
+      "pass_rate": "+0.5",
+      "time_seconds": "+54.9",
+      "tokens": "+4308"
+    }
+  },
+
+  "iteration_comparison": {
+    "v1_vs_v2": {
+      "pass_rate": "v1: 1.0 (8/8) -> v2: 1.0 (10/10) -- maintained 100% with 2 harder assertions per test",
+      "time_seconds": "v1 mean: 388.2s -> v2 mean: 312.5s -- 19.5% faster",
+      "tokens": "v1 mean: 52572 -> v2 mean: 45827 -- 12.8% fewer tokens",
+      "quick_time": "v1: 378.2s -> v2: 148.3s -- 60.8% faster (biggest improvement)",
+      "research_depth_improvement": "v2 outputs 74/184/205 lines vs v1 63/145/143 -- 17%/27%/43% more content"
+    }
+  },
+
+  "notes": [
+    "v2 passes all 10 assertions including 2 new research-depth assertions per test that measure qualities the baseline already had (cross-verification, source-code detail, landscape coverage, actionable detail, survey breadth, foundation model profiling)",
+    "The 5 pipeline assertions (inbox, frontmatter, source-log, chaining, vault-check) remain 100% discriminating: all pass with skill, all fail without",
+    "The 5 research-quality assertions (provenance, no-verbatim, depth/synthesis, cross-verify/landscape/breadth, source-code/actionable/foundation) now pass in BOTH configurations -- the skill no longer sacrifices research quality for pipeline integration",
+    "Quick lookup time dropped from 378s to 148s (60% faster) -- lighter config reading and faster vault check (keyword search vs deep_search) eliminated the overhead problem",
+    "Overall time overhead vs baseline dropped from +130.6s (v1) to +54.9s (v2) -- still slower but the gap narrowed by 58%",
+    "Deep survey v2 (205 lines, 20 sources) still shorter than baseline (682 lines, 40 sources) but found cutting-edge work the baseline missed: animal2vec, Birdsong OSC, Peterson et al. gerbil study, ESP hybrid consensus, Biodenoising",
+    "Moderate comparison v2 found ContourUSV (2025, 117x faster) which neither v1 nor the baseline found"
+  ]
+}

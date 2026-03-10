@@ -26,6 +26,9 @@ Relevant Notes:
 - [[electrical interference at 60 kHz harmonics produces horizontal lines easily distinguishable from USVs]] -- one specific noise pattern; FPs arise from subtler energy patterns that mimic USV structure
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- surviving FPs propagate into transformer training data and may create spurious VQ-VAE codebook entries representing noise structure
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- with K=64 codes, even a small fraction of noise-derived entries reduces the effective vocabulary for real USV variation
+- [[including a noise-false-positive class in the USV classifier catches residual detection errors]] -- BootSnap's explicit noise class in the syllable classifier provides a second-pass filter specifically targeting these structural noise mimics
+- [[entropy-based USV detection achieves 94.9 percent recall and 99.3 percent precision as a classical signal processing alternative]] -- entropy detection measures spectral complexity directly, catching the narrow-band-like noise patterns that fool energy thresholding with 99.3% precision
+- [[HybridMouse CNN plus BiLSTM first combined spatial and temporal features for USV detection outperforming DeepSqueak in low SNR]] -- temporal context from BiLSTM helps disambiguate noisy signals that appear USV-like in individual frames
 
 Topics:
 - [[detection]]

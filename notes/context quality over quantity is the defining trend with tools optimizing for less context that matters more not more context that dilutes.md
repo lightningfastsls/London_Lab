@@ -28,6 +28,8 @@ Source: claude-code-mcp-ecosystem-march-2026-research-2026-03-02 (archived to ar
 Relevant Notes:
 - [[simple retrieval tasks tolerate far more context than reasoning tasks requiring latent inference]] -- why precision matters more for reasoning tasks
 - [[structured coherent text creates more context interference than shuffled unstructured text across all tested models]] -- why irrelevant docs actively harm
+- [[fewer well-placed activation triggers outperform many ignored ones because noise teaches agents to skip gates]] — the same precision-over-volume principle applied to knowledge activation: five well-placed canary comments outperform fifty spread across the codebase, exactly as fewer high-quality context tokens outperform many weak ones
+- [[Adaptive RAG routes retrieval depth by query complexity which maps to file modification risk in coding agents]] — applies precision-over-volume to retrieval depth itself: HIGH-risk modifications get deep retrieval, LOW-risk get none, matching the principle that investment should be proportional to reasoning demand
 
 Topics:
 - [[context-management]]

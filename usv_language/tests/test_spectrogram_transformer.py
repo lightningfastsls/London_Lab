@@ -32,10 +32,14 @@ from usv_language.models.transformer import (
 )
 from usv_language.training.train_transformer import (
     CosineWarmupScheduler,
+    build_dataloaders,
     masked_mse_loss,
     save_checkpoint,
     load_checkpoint,
 )
+from usv_language.data.dataset import AugmentationConfig, TransformerDataConfig
+from usv_language.data.dataset import chunk_spectrogram, split_recordings
+from usv_language.training.extract_hidden_states import validate_extraction_layers
 
 
 # ---------------------------------------------------------------------------
@@ -370,3 +374,39 @@ class TestTransformerConfigValidation:
     def test_dropout_out_of_range(self) -> None:
         with pytest.raises(ValueError, match="dropout"):
             TransformerConfig(dropout=1.0)
+
+
+def test_build_dataloaders_requires_nonempty_validation_split() -> None:
+    spectrograms = [np.random.randn(170, 40).astype(np.float32)]
+    recording_ids = ["rec_001"]
+    data_config = TransformerDataConfig(max_seq_len=32, batch_size=2, seed=42)
+    aug_config = AugmentationConfig(enabled=False)
+
+    with pytest.raises(ValueError, match="Validation split is empty"):
+        build_dataloaders(spectrograms, recording_ids, data_config, aug_config)
+
+
+def test_chunk_spectrogram_does_not_duplicate_terminal_partial_chunk() -> None:
+    spec = np.arange(700 * 3, dtype=np.float32).reshape(700, 3)
+
+    chunks = chunk_spectrogram(spec, max_seq_len=512, overlap_ratio=0.0)
+
+    assert len(chunks) == 2
+    assert chunks[0][1] == 512
+    assert chunks[1][1] == 188
+    np.testing.assert_array_equal(chunks[1][0][:188], spec[512:])
+
+
+def test_split_recordings_small_dataset_preserves_validation_when_possible() -> None:
+    config = TransformerDataConfig(train_split=0.8, val_split=0.1, test_split=0.1, seed=123)
+
+    train_ids, val_ids, test_ids = split_recordings(["a", "b"], config)
+
+    assert len(train_ids) == 1
+    assert len(val_ids) == 1
+    assert len(test_ids) == 0
+
+
+def test_validate_extraction_layers_requires_primary_layer_in_requested_layers() -> None:
+    with pytest.raises(ValueError, match="primary_layer=4"):
+        validate_extraction_layers([2, 6], primary_layer=4, n_layers=8)

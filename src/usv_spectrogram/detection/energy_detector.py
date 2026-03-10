@@ -10,6 +10,9 @@ Design principles (see usv_signal_processing_reference.md):
 - Output candidates with full metadata for traceability
 """
 
+# VAULT: 512-point FFT at 300 kHz gives 1.7 ms temporal resolution with 586 Hz frequency bins,
+#        visualization STFT uses different parameters than detection STFT by design
+
 from __future__ import annotations
 
 import csv

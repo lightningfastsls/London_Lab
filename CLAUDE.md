@@ -234,11 +234,33 @@ See `DECISIONS.md` ADR-001 (sample rate) and ADR-002 (STFT parameters) for full 
 - Don't modify test expectations to pass without discussion
 - Don't cite documentation status to contradict user claims without verifying CODE first -- when docs contradict user, grep the codebase (code is truth, docs may be stale)
 
+### Vault Canary Comments
+- Source files with known regression history or non-obvious invariants have `# VAULT:` comments referencing knowledge graph notes
+- HIGH-risk files (5) include `# Run /kcheck before modifying this file.` — this is mandatory
+- MEDIUM-risk files (1) have canary references only — `/kcheck` recommended but not required
+- Registry: `ops/vault-canary-map.md` — audit periodically to ensure referenced notes are still current
+- When adding canaries to new files: place after module docstring, before first import
+
 ### Git Data Safety
 - **NEVER use `git add -A` or `git add .` without reviewing `git status` first** — bulk staging can record accidental deletions of data directories (this happened to `USV_Detections/` in commit 78d1c70, deleting 656 files)
 - **Before any "cleanup" commit**, run `git diff --cached --stat` and check for unexpected deletions — hundreds of deletions is a red flag
 - **Always stage specific files by name** for data directories like `USV_Detections/`, `5970 USV/`, training data, or model artifacts
 - If data goes missing locally, check `git log -- <path>` — it may still exist in history and can be restored with `git checkout <commit> -- <path>`
+
+## Mid-Session Knowledge Checks
+Before modifying files in high-risk directories (detection app, export adapters,
+labeling pipeline), run `/kcheck "<brief description of planned changes>"`.
+This is mandatory for HIGH-risk canary files and recommended for any non-trivial
+modification to existing systems.
+
+Skip /kcheck for: new standalone files, test files, documentation-only changes.
+
+## Codex Handoff Vault Search
+Before writing any Codex task spec in `docs/handoffs/`, search the vault for constraints:
+1. Run `qmd deep_search` (or `/kcheck`) with the task description to find relevant constraint notes
+2. Extract up to 5 constraints relevant to files the task will modify
+3. Flatten each constraint into plain text in the handoff's "Relevant Constraints" section (Codex has no vault access)
+4. Use `templates/codex-handoff.md` for the handoff structure
 
 ---
 
@@ -260,7 +282,7 @@ See `DECISIONS.md` ADR-001 (sample rate) and ADR-002 (STFT parameters) for full 
 
 Every session follows: **Orient -> Work -> Persist**
 
-- **Orient**: Read ops/goals.md, ops/reminders.md, check condition triggers
+- **Orient**: Read ops/goals.md, ops/reminders.md, ops/session-relevance.md (auto-generated), check condition triggers
 - **Work**: Do the task. Surface connections. Write down discoveries immediately.
 - **Persist**: Write new insights as atomic notes, update topic maps, update ops/goals.md, capture methodology learnings
 

@@ -25,6 +25,7 @@ Source:
 Relevant Notes:
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- training data that labels help generate
 - [[batch detection with skip-existing enables incremental processing of large WAV collections]] -- detection outputs that feed the labeling workflow
+- [[saved-previous ghost detections current editable and saved-current form three aligned detection state tiers in the app]] -- the tracker's on-disk format (`_saved_tracking.json`) follows the same JSON persistence pattern, enabling git-friendly inspection and recovery of save states
 
 Topics:
 - [[classification]]

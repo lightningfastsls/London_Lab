@@ -7,13 +7,12 @@ type: moc
 
 ## Active Threads
 - **DeepSqueak Classification Bridge** -- Phase 2 (Raven export) DONE, Phase 3 (MATLAB import+clustering) IN PROGRESS. Resume: open MATLAB -> `DeepSqueak` -> Import from Raven (5 files in `raven_tables/`). See `PROJECTS.md` Section 6 for full steps.
-- Phase 5.2 -- Two-week validation checkpoint (starts 2026-03-06, after 2 weeks of active use). Contract pruning audit (Proposal 5) pairs with this.
+- Phase 5.3 -- Next validation checkpoint (2026-03-21). Focus: maintenance overhead after /reduce fixes, /rethink threshold review.
 
 ## Waiting
 - CC weekly routine first execution -- deferred to a session in D:\we_do_this\tevel-erp
 
 ## Completed
-- Phase 11.1 -- Bout Extraction & Preprocessing on Real Data (2026-02-22): Fixed deleted_by_user filtering, added recursive WAV resolution, validation script, 9 new tests (184 total), pipeline run on 5970 USV data (27 spectrograms), Tier 1 review APPROVED
 - Phase 10.1 -- Active Learning Cycle Runner implemented (2026-02-21): CycleMetrics + generate_cycle_report in training/cycle_report.py, 7-step orchestration CLI in run_training_cycle.py, 34 tests, handoff + review written
 - Phase 9.1 -- Dataset Assembler implemented (2026-02-21): DatasetAssembler, AssemblyConfig, AssemblyReport in dataset/assembler.py, CLI assemble_training_data.py, 10 tests, handoff + review written
 - Phase 8.4 -- Analysis & Interpretation Tools implemented (2026-02-21): 9 analysis modules (config, transformer_suffix, codebook_viz, sequence_analysis, concept_manipulation, context_analysis, compositionality, run_analysis), 17 tests (599 total), 4 reviewer blockers fixed, handoff + review written
@@ -28,3 +27,4 @@ type: moc
 - Classification topic map split (2026-02-19): Split oversized classification (49 notes) into classification (~20 notes, CNN operational pipeline) and representation-learning (~24 notes, VQ-VAE/transformer research). 22 notes moved, 4 bridge notes in both maps. Vault now at 104 notes (6 topic maps).
 - Phase 4.3 -- Integrate reviewer agents with skill graph (2026-02-19): Updated 3 reviewer agents (detection-validator, dsp-reviewer, pr-reviewer) with knowledge graph awareness instructions.
 - Phase 5.1 -- Weekly maintenance routine established (2026-02-20): First execution on USV vault. Health: 0 FAIL, 2 WARN, 6 PASS. Reflect: 12 connections added. Reweave: 25 connections, 7 topic corrections. Baseline: 117 notes, 6 topic maps, 1011 wiki links (avg 8.6/note), 100% schema compliance, 0 orphans.
+- Phase 5.2 -- Two-week validation checkpoint (2026-03-07): Scored 18/25 (all criteria ≥ 3). Decision: DOUBLE DOWN with adjustments (monitor maintenance overhead, consider /rethink threshold lowering). Contract pruning audit: no changes needed. Report: ops/health/phase-5.2-validation-2026-03-07.md

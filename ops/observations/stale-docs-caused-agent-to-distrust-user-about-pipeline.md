@@ -5,7 +5,7 @@ trigger: "Agent cited stale docs to contradict user about energy detector and Py
 status: archived
 archived: 2026-03-03
 archived_by: rethink-2026-03-03
-resolution: "CLAUDE.md guardrail added (line 190): 'Don't cite documentation status to contradict user claims without verifying CODE first'. PROJECTS.md Section 4 updated to 'DONE and operational'."
+resolution: "CLAUDE.md guardrail added. PROJECTS.md Section 4 updated to 'DONE and operational'. Line 29 pipeline description updated to remove energy detector from current flow (rethink-2026-03-04)."
 ---
 
 # Stale documentation caused agent to distrust user's correct description of the current pipeline

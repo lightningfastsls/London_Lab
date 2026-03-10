@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 16-26 contain an 'Extraction Summary' table with counts: Findings (5), Methods (4), Tensions (3), Implementation Ideas (1), Open Questions (1), Total extracted (14), Duplicates/overlaps (5), Net new items (9). Clear numerical breakdown by category."
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "14 total items extracted: 5 findings + 4 methods + 3 tensions + 1 implementation idea + 1 open question = 14, which is >= 8."
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "Only item #9 was marked 'SKIP — already well-covered.' 1 skipped out of 14 candidates = 7.1%, which is below 15%."
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "All 14 items include a 'Rationale' field with substantive explanations. For example, item #1 explains VocalMat's relevance to reproducibility and our ADR-003 threshold, item #6 explains why the parameter-free tension matters for honest cross-tool comparison, item #14 explains the local median filter's potential as a pre-CNN noise rejection step."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Checked representative titles: #1 'VocalMat adaptive thresholding eliminates user-defined parameters as the main source of USV detection variability' (proposition), #6 'VocalMat's parameter-free claim masks implicit parameters in morphological operations' (proposition), #13 'Comparison between VocalMat and DeepSqueak is not apples-to-apples because DeepSqueak can be retrained while VocalMat's pipeline is fixed' (proposition). All are claims/propositions, not topic labels."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "5 distinct categories present: Findings (5 items), Methods (4 items), Tensions (3 items), Implementation Ideas (1 item), Open Questions (1 item)."
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Every item includes an 'Overlap check' field (e.g., item #1: 'No existing note covers adaptive thresholding or parameter-free detection... NEW'). Additionally, a 'Duplicate / Overlap Summary' table (lines 143-151) systematically maps extracted items to existing notes with overlap type classification."
+    },
+    {
+      "text": "The tension between discrete USV categories and continuous acoustic space is captured",
+      "passed": true,
+      "evidence": "Item #9: 'Discrete USV categories may lose information compared to continuous embeddings or latent representations' — explicitly captures this tension, noting 'The paper itself acknowledges that 11 discrete categories may not capture the full continuous variation.' Also supported by item #5 (UMAP/t-SNE overlap zones revealing continuous variation)."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

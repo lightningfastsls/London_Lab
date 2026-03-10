@@ -35,6 +35,7 @@ Relevant Notes:
 - [[hook-driven learning loops create self-improving methodology through observation accumulation]] -- exploits the reprogrammability advantage this note identifies: because hook-habits are file edits not neural entrenchment, the learning loop can revise methodology at the speed of file writes rather than neural plasticity
 - [[behavioral anti-patterns matter more than tool selection]] -- PKM failure is behavioral not tool-dependent, and agents lack both destructive habits (no dopamine from collecting) and constructive habits (no basal ganglia encoding); hooks address the constructive side of this gap
 - [[AI shifts knowledge systems from externalizing memory to externalizing attention]] -- hooks externalize executive function (habit, inhibitory control, prospective memory), which is a specific mechanism within the broader shift from externalizing storage to externalizing attention management
+- [[Self-RAG reflection tokens translate to procedural gates when model fine-tuning is unavailable]] — the retrieve/no-retrieve decision is another cognitive function that agents cannot habituate: Self-RAG would train it as a learned behavior, but without fine-tuning, procedural gates serve the same role as hooks — externalizing a decision that degrades under cognitive load
 
 Topics:
 - [[agent-cognition]]

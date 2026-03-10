@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 26-36: '## SUMMARY' section lists notes: 6, implementation ideas: 3, tensions: 3, enrichment tasks: 4, validations: 1, open questions: 2, skipped: 1, TOTAL OUTPUTS: 20"
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "6 claims + 3 implementation ideas + 3 tensions + 4 enrichments + 1 validation = 17 extractions (plus 2 open questions = 19 non-skipped outputs)"
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "Line 230: 'Skip rate: 1/21 candidates = 4.8%' — 4.8% is well below the 15% threshold"
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "Claims #1-6 each have 'Rationale' fields (e.g., claim #1 lines 47-48: 'The paper's central premise...'). Implementation ideas #1-3 each have 'Why it matters' fields. Tensions #1-3 each have 'Why it matters' fields. Enrichments #1-4 each have 'Why' fields. Validation #1 has 'Evidence' field. Open questions #1-2 each have 'Description' fields explaining why they matter."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Three representative titles: (1) 'temporal averaging of frame-level features discards sub-unit sequential information in bioacoustic analysis' — propositional claim with verb. (2) 'caller identity is encoded more strongly than call type in the acoustic signal of animal vocalizations' — comparative claim. (3) 'k-NN classification with Levenshtein distance loses discriminative information that more sophisticated sequence models could preserve' — causal claim. All are full propositions, not topic labels."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "Six distinct categories present: CLAIMS with 6 items, IMPLEMENTATION IDEAS with 3 items, TENSIONS with 3 items, ENRICHMENT TASKS with 4 items, VALIDATIONS with 1 item, OPEN QUESTIONS with 2 items"
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Lines 13-23: 'Prior Coverage Assessment' section lists 5 existing vault notes referencing this paper, with a table showing what each covers. Each claim includes a 'Duplicate check' field (e.g., claim #1 line 49: 'Grep for temporal averaging and frame-level in notes -- no matches'; claim #3 line 71: 'Grep for caller identity in notes -- zero matches'). Lines 22-25: explicit extraction strategy noting 'enrichment for existing notes' as primary mode."
+    },
+    {
+      "text": "The codebook collapse finding (GVQ underperforms VQ due to collapse) is captured as an extraction",
+      "passed": true,
+      "evidence": "Claim #6 (lines 96-105): 'simpler discretization methods outperform more sophisticated differentiable approaches in bioacoustic token experiments' — explicitly discusses GVQ collapse and VQ superiority. Tension #3 (lines 145-149): 'theoretical elegance of Gumbel-softmax VQ versus empirical robustness of plain VQ' — frames the collapse as a design tension. Enrichment #4 (lines 173-177): explicitly updates the GVQ collapse note with 'GVQ underperformed significantly versus plain VQ' and the broader pattern interpretation."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

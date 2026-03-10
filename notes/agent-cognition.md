@@ -76,6 +76,17 @@ These notes extend agent-cognition findings into the code review domain -- see [
 - [[supervisory QA-Checker agent monitoring conversation prevents prompt drifting improving vulnerability confirmation from 73 to 93 percent]] -- prompt drifting as inter-agent cognitive degradation
 - [[memory wipe per review turn prevents attention degradation treating each attempt as fresh start guided by coach feedback]] -- radical attention reset as cognitive intervention
 
+## Traversal & Emergent Knowledge
+- [[knowledge lives in paths between notes not in any single note]] -- ontological claim: the vault is a generator of inter-note knowledge visible only during traversal, not a warehouse of stored facts
+- [[different traversal starting points produce different emergent knowledge from the same graph]] -- path-dependence: entry point determines which patterns become visible, making topic maps knowledge-production devices
+- [[traversal simultaneously improves the traverser and the graph creating a co-evolutionary loop]] -- bidirectional improvement: each traversal is both a navigation act and a micro-editing opportunity that sharpens the graph
+
+## Between-Session Processing
+- [[between-session observation accumulation is directed dreaming that produces patterns no individual session contained]] -- rethink cycle as directed dreaming: observations accumulate, threshold fires, patterns emerge through generative recombination
+- [[each between-session processing cycle is a training step that does not touch the weights]] -- structural adaptation: vault changes between sessions function identically to weight updates but are faster and instance-specific
+- [[session boundaries simultaneously limit agents and enable between-session processing making the limitation the precondition]] -- the paradox: continuity destruction enables consolidation
+- [[Letta sleep-time compute pairs a primary agent with a sleep-time agent that processes memory during idle periods]] -- production architecture implementing between-session consolidation through paired agents
+
 ## Agent Notes
 - These findings directly inform the vault's session design: the orient-work-persist rhythm, /clear between phases, plan-file-first workflow, and subagent isolation all function as multi-turn mitigations.
 - The bulk-source-processing-strategy in ops/methodology/ applies the Fresh Context principle to knowledge processing.

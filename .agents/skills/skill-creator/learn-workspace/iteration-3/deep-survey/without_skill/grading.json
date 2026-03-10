@@ -1,0 +1,17 @@
+{
+  "eval_id": 2,
+  "eval_name": "deep-survey",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": false, "evidence": "Markdown without inbox structure"},
+    {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter"},
+    {"text": "source-log-present", "passed": false, "evidence": "Source Bibliography with 40 URLs but not structured table with fetch status/relevance"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "40 cited sources with URLs organized by topic area"},
+    {"text": "pipeline-chaining", "passed": false, "evidence": "No mention of /reduce, /seed, or pipeline next steps"},
+    {"text": "structured-sections", "passed": true, "evidence": "11 major sections with TOC covering features, clustering, dim reduction, foundation models, USV tools, frameworks, evaluation, trends, challenges"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Comprehensive 682-line original synthesis"},
+    {"text": "vault-check-performed", "passed": false, "evidence": "No vault check -- went straight to web research"},
+    {"text": "survey-breadth", "passed": true, "evidence": "40 sources, 11 sections, covers all major areas including evaluation metrics, benchmark datasets, and 8 open challenges"},
+    {"text": "foundation-models-profiled", "passed": true, "evidence": "7 models profiled with structured tables: Perch 2.0, BirdNET, AVES/BirdAVES, animal2vec, NatureLM-audio, BioLingual, TweetyBERT"}
+  ]
+}

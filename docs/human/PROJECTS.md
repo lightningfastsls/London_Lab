@@ -12,7 +12,7 @@
 | 1 | USV Detection Pipeline | Neuroscience | Phase 11 (blocked on GPU) | Unblock 11.2 with HPC/cloud access |
 | 2 | USV Vacation Workstreams | Neuroscience | Ready (3 phases) | `/implement Information Theory Metrics` |
 | 3 | Parts Finder (Tevel) | Auto parts / Web | **Phases 1–7.1 DONE** (349+ tests) | Resolve review findings, then 7.2 (needs Tevel data) |
-| 4 | USV Detection Desktop App | Neuroscience | Plan exists, not started | Review plan, decide priority |
+| 4 | USV Detection Desktop App | Neuroscience | **DONE and operational** | — |
 | 5 | Syllable Classification | Neuroscience | Plan exists, not started | Review plan, decide priority |
 | 6 | DeepSqueak Classification Bridge | Neuroscience | **Phase 2 DONE**, Phase 3 in progress | Import Raven tables in MATLAB DeepSqueak |
 | 7 | Knowledge Graph (arscontexta) | Knowledge mgmt | Active (maintenance mode) | `/reduce` inbox (3 items pending) |
@@ -26,7 +26,7 @@
 **Domain:** Ultrasonic vocalization analysis for mouse neuroscience research
 
 ### What It Is
-End-to-end pipeline: WAV recording (300 kHz) -> spectrogram -> energy detection -> CNN classification -> transformer sequence modeling -> VQ-VAE discrete codes -> linguistic analysis. The goal is to discover whether mouse USV sequences contain language-like structure.
+End-to-end pipeline: WAV recording (300 kHz) -> spectrogram -> CNN sliding-window detection (PyQt6 desktop app) -> syllable classification -> transformer sequence modeling -> VQ-VAE discrete codes -> linguistic analysis. The goal is to discover whether mouse USV sequences contain language-like structure. (Note: the energy detector was used historically to generate CNN training data but is not part of the current production detection workflow.)
 
 ### Phase Status
 

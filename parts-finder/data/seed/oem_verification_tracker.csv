@@ -1,0 +1,1069 @@
+source_file,row,make,model,engine,filter_type,csv_oem,status,corrected_oem,error_type,verification_source,notes
+filter_specs.csv,2,Toyota,Corolla,1ZR-FE,oil_filter,04152-YZZA6,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,2,Toyota,Corolla,1ZR-FE,air_filter,17801-YZZ05,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,2,Toyota,Corolla,1ZR-FE,cabin_filter,87139-YZZ20,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,3,Toyota,Corolla,2ZR-FE,oil_filter,04152-YZZA6,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,3,Toyota,Corolla,2ZR-FE,air_filter,17801-YZZ05,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,3,Toyota,Corolla,2ZR-FE,cabin_filter,87139-YZZ20,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,4,Toyota,Corolla,2ZR-FXE,oil_filter,04152-YZZA6,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,4,Toyota,Corolla,2ZR-FXE,air_filter,17801-21060,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,4,Toyota,Corolla,2ZR-FXE,cabin_filter,87139-12010,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,5,Toyota,Corolla,M20A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,5,Toyota,Corolla,M20A-FKS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,5,Toyota,Corolla,M20A-FKS,cabin_filter,87139-12010,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,6,Toyota,Yaris,1NZ-FE,oil_filter,04152-YZZA6,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,6,Toyota,Yaris,1NZ-FE,air_filter,17801-21060,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,6,Toyota,Yaris,1NZ-FE,cabin_filter,87139-52040,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,7,Toyota,Yaris,1NR-FE,oil_filter,04152-YZZA6,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,7,Toyota,Yaris,1NR-FE,air_filter,17801-0Y040,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,7,Toyota,Yaris,1NR-FE,cabin_filter,87139-52040,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,8,Toyota,Yaris,M15A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,8,Toyota,Yaris,M15A-FKS,air_filter,17801-77050,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,8,Toyota,Yaris,M15A-FKS,cabin_filter,87139-52040,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,9,Toyota,Yaris,M15A-FXE,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,9,Toyota,Yaris,M15A-FXE,air_filter,17801-77050,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,9,Toyota,Yaris,M15A-FXE,cabin_filter,87139-52040,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,10,Toyota,RAV4,2AR-FE,oil_filter,04152-31090,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,10,Toyota,RAV4,2AR-FE,air_filter,17801-38011,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,10,Toyota,RAV4,2AR-FE,cabin_filter,87139-0R030,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,11,Toyota,RAV4,A25A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,11,Toyota,RAV4,A25A-FKS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,11,Toyota,RAV4,A25A-FKS,cabin_filter,87139-0R030,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,12,Toyota,RAV4,A25A-FXS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,12,Toyota,RAV4,A25A-FXS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,12,Toyota,RAV4,A25A-FXS,cabin_filter,87139-0R030,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,13,Toyota,Camry,2AR-FE,oil_filter,04152-31090,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,13,Toyota,Camry,2AR-FE,air_filter,17801-38011,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,13,Toyota,Camry,2AR-FE,cabin_filter,87139-06080,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,14,Toyota,Camry,A25A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,14,Toyota,Camry,A25A-FKS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,14,Toyota,Camry,A25A-FKS,cabin_filter,87139-06080,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,15,Toyota,C-HR,2ZR-FXE,oil_filter,04152-YZZA6,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,15,Toyota,C-HR,2ZR-FXE,air_filter,17801-21060,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,15,Toyota,C-HR,2ZR-FXE,cabin_filter,87139-F4010,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,16,Toyota,C-HR,M20A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,16,Toyota,C-HR,M20A-FKS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,16,Toyota,C-HR,M20A-FKS,cabin_filter,87139-F4010,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,17,Toyota,Land Cruiser,1GR-FE,oil_filter,90915-30002,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,17,Toyota,Land Cruiser,1GR-FE,air_filter,17801-38051,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,17,Toyota,Land Cruiser,1GR-FE,cabin_filter,87139-60040,WRONG_CORRECTED,87139-60030,wrong_last_digits (60040->60030),Toyota Parts Express (2024-2025 Land Cruiser),Toyota Land Cruiser cabin filter. Close - last digit off.
+filter_specs.csv,18,Toyota,Hilux,2GD-FTV,oil_filter,04152-38020,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,18,Toyota,Hilux,2GD-FTV,air_filter,17801-0L090,LIKELY_FABRICATED,,Not found in any source,,Real Hilux numbers are 17801-0C010 or 17801-0L040. '0L090' suffix not found anywhere.
+filter_specs.csv,18,Toyota,Hilux,2GD-FTV,cabin_filter,87139-0K070,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,19,Toyota,Hilux,1GD-FTV,oil_filter,04152-38020,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,19,Toyota,Hilux,1GD-FTV,air_filter,17801-0L090,LIKELY_FABRICATED,,Not found in any source,,Real Hilux numbers are 17801-0C010 or 17801-0L040. '0L090' suffix not found anywhere.
+filter_specs.csv,19,Toyota,Hilux,1GD-FTV,cabin_filter,87139-0K070,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,20,Toyota,Fortuner,2GD-FTV,oil_filter,04152-38020,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,20,Toyota,Fortuner,2GD-FTV,air_filter,17801-0L090,LIKELY_FABRICATED,,Not found in any source,,Real Hilux numbers are 17801-0C010 or 17801-0L040. '0L090' suffix not found anywhere.
+filter_specs.csv,20,Toyota,Fortuner,2GD-FTV,cabin_filter,87139-0K070,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,21,Toyota,Corolla Cross,2ZR-FXE,oil_filter,04152-YZZA6,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,21,Toyota,Corolla Cross,2ZR-FXE,air_filter,17801-21060,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,21,Toyota,Corolla Cross,2ZR-FXE,cabin_filter,87139-12010,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,22,Toyota,Corolla Cross,M20A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,22,Toyota,Corolla Cross,M20A-FKS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,22,Toyota,Corolla Cross,M20A-FKS,cabin_filter,87139-12010,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,23,Hyundai,i20,G4FA,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,23,Hyundai,i20,G4FA,air_filter,28113-1J000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,23,Hyundai,i20,G4FA,cabin_filter,97133-D1000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,24,Hyundai,i20,G4LC,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,24,Hyundai,i20,G4LC,air_filter,28113-L1000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,24,Hyundai,i20,G4LC,cabin_filter,97133-L1000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,25,Hyundai,i30,G4FD,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,25,Hyundai,i30,G4FD,air_filter,28113-A5800,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,25,Hyundai,i30,G4FD,cabin_filter,97133-B2000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,26,Hyundai,i30,G4FJ,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,26,Hyundai,i30,G4FJ,air_filter,28113-J9100,WRONG_CORRECTED,28113-A9100,wrong_middle (J9100->A9100),hyundaioempartsdirect.com,Hyundai i30 air filter. Or 28113-S0100 for i30N.
+filter_specs.csv,26,Hyundai,i30,G4FJ,cabin_filter,97133-J9100,LIKELY_FABRICATED,,Not found in any source,,Not found. 97133 prefix is correct for Hyundai cabin filters.
+filter_specs.csv,27,Hyundai,i30,G4LD,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,27,Hyundai,i30,G4LD,air_filter,28113-J9100,WRONG_CORRECTED,28113-A9100,wrong_middle (J9100->A9100),hyundaioempartsdirect.com,Hyundai i30 air filter. Or 28113-S0100 for i30N.
+filter_specs.csv,27,Hyundai,i30,G4LD,cabin_filter,97133-J9100,LIKELY_FABRICATED,,Not found in any source,,Not found. 97133 prefix is correct for Hyundai cabin filters.
+filter_specs.csv,28,Hyundai,i30,G4FP,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,28,Hyundai,i30,G4FP,air_filter,28113-J9100,WRONG_CORRECTED,28113-A9100,wrong_middle (J9100->A9100),hyundaioempartsdirect.com,Hyundai i30 air filter. Or 28113-S0100 for i30N.
+filter_specs.csv,28,Hyundai,i30,G4FP,cabin_filter,97133-J9100,LIKELY_FABRICATED,,Not found in any source,,Not found. 97133 prefix is correct for Hyundai cabin filters.
+filter_specs.csv,29,Hyundai,Tucson,G4FD,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,29,Hyundai,Tucson,G4FD,air_filter,28113-2S000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,29,Hyundai,Tucson,G4FD,cabin_filter,97133-2E250,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,30,Hyundai,Tucson,G4FJ,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,30,Hyundai,Tucson,G4FJ,air_filter,28113-D3300,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,30,Hyundai,Tucson,G4FJ,cabin_filter,97133-D3000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,31,Hyundai,Tucson,G4FP,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,31,Hyundai,Tucson,G4FP,air_filter,28113-L1500,WRONG_CORRECTED,28113-L1100 or 28113-P0400,wrong_suffix (L1500 not found),"hyundaioempartsdirect.com, amazon.com OEM","Hyundai Tucson air filter. L1100 for 2022, P0400 for 2022-2025."
+filter_specs.csv,31,Hyundai,Tucson,G4FP,cabin_filter,97133-L1000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,32,Hyundai,Tucson,G4NL,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,32,Hyundai,Tucson,G4NL,air_filter,28113-L1500,WRONG_CORRECTED,28113-L1100 or 28113-P0400,wrong_suffix (L1500 not found),"hyundaioempartsdirect.com, amazon.com OEM","Hyundai Tucson air filter. L1100 for 2022, P0400 for 2022-2025."
+filter_specs.csv,32,Hyundai,Tucson,G4NL,cabin_filter,97133-L1000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,33,Hyundai,Kona,G4LD,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,33,Hyundai,Kona,G4LD,air_filter,28113-J9100,WRONG_CORRECTED,28113-A9100,wrong_middle (J9100->A9100),hyundaioempartsdirect.com,Hyundai i30 air filter. Or 28113-S0100 for i30N.
+filter_specs.csv,33,Hyundai,Kona,G4LD,cabin_filter,97133-J9100,LIKELY_FABRICATED,,Not found in any source,,Not found. 97133 prefix is correct for Hyundai cabin filters.
+filter_specs.csv,34,Hyundai,Ioniq,G4LE,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,34,Hyundai,Ioniq,G4LE,air_filter,28113-G2200,WRONG_CORRECTED,28113-G2700,wrong_suffix (G2200->G2700),"hyundaioempartsdirect.com, amazon.com OEM",Hyundai Ioniq air filter.
+filter_specs.csv,34,Hyundai,Ioniq,G4LE,cabin_filter,97133-G2000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,35,Hyundai,Santa Fe,G4KE,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,35,Hyundai,Santa Fe,G4KE,air_filter,28113-2P300,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,35,Hyundai,Santa Fe,G4KE,cabin_filter,97133-2E250,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,36,Hyundai,Santa Fe,G4KL,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,36,Hyundai,Santa Fe,G4KL,air_filter,28113-S1100,LIKELY_FABRICATED,,Not found in any source,,Not found. Real Santa Fe uses 28113-L1100 or similar.
+filter_specs.csv,36,Hyundai,Santa Fe,G4KL,cabin_filter,97133-S1000,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,37,Hyundai,Elantra,G4FG,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,37,Hyundai,Elantra,G4FG,air_filter,28113-A5800,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,37,Hyundai,Elantra,G4FG,cabin_filter,97133-F2000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,38,Hyundai,Bayon,G4LC,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,38,Hyundai,Bayon,G4LC,air_filter,28113-L1000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,38,Hyundai,Bayon,G4LC,cabin_filter,97133-L1000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,39,Kia,Sportage,G4FD,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,39,Kia,Sportage,G4FD,air_filter,28113-2S000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,39,Kia,Sportage,G4FD,cabin_filter,97133-2E250,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,40,Kia,Sportage,G4FJ,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,40,Kia,Sportage,G4FJ,air_filter,28113-D3300,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,40,Kia,Sportage,G4FJ,cabin_filter,97133-D3000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,41,Kia,Sportage,G4FP,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,41,Kia,Sportage,G4FP,air_filter,28113-S1100,LIKELY_FABRICATED,,Not found in any source,,Not found. Real Santa Fe uses 28113-L1100 or similar.
+filter_specs.csv,41,Kia,Sportage,G4FP,cabin_filter,97133-S1000,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,42,Kia,Picanto,G4LA,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,42,Kia,Picanto,G4LA,air_filter,28113-07100,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,42,Kia,Picanto,G4LA,cabin_filter,97133-B5000,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,43,Kia,Picanto,G3LC,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,43,Kia,Picanto,G3LC,air_filter,28113-J9000,LIKELY_FABRICATED,,Not found in any source,,Not found. Older Picanto uses 28113-07100.
+filter_specs.csv,43,Kia,Picanto,G3LC,cabin_filter,97133-B5000,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,44,Kia,Ceed,G4FD,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,44,Kia,Ceed,G4FD,air_filter,28113-A5800,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,44,Kia,Ceed,G4FD,cabin_filter,97133-B2000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,45,Kia,Ceed,G4LD,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,45,Kia,Ceed,G4LD,air_filter,28113-J9100,WRONG_CORRECTED,28113-A9100,wrong_middle (J9100->A9100),hyundaioempartsdirect.com,Hyundai i30 air filter. Or 28113-S0100 for i30N.
+filter_specs.csv,45,Kia,Ceed,G4LD,cabin_filter,97133-J9100,LIKELY_FABRICATED,,Not found in any source,,Not found. 97133 prefix is correct for Hyundai cabin filters.
+filter_specs.csv,46,Kia,Niro,G4LE,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,46,Kia,Niro,G4LE,air_filter,28113-G2200,WRONG_CORRECTED,28113-G2700,wrong_suffix (G2200->G2700),"hyundaioempartsdirect.com, amazon.com OEM",Hyundai Ioniq air filter.
+filter_specs.csv,46,Kia,Niro,G4LE,cabin_filter,97133-G2000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,47,Kia,Sorento,G4KE,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,47,Kia,Sorento,G4KE,air_filter,28113-2P300,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,47,Kia,Sorento,G4KE,cabin_filter,97133-2E210,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,48,Kia,Stonic,G4LC,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,48,Kia,Stonic,G4LC,air_filter,28113-J9100,WRONG_CORRECTED,28113-A9100,wrong_middle (J9100->A9100),hyundaioempartsdirect.com,Hyundai i30 air filter. Or 28113-S0100 for i30N.
+filter_specs.csv,48,Kia,Stonic,G4LC,cabin_filter,97133-J9100,LIKELY_FABRICATED,,Not found in any source,,Not found. 97133 prefix is correct for Hyundai cabin filters.
+filter_specs.csv,49,Kia,Seltos,G4FG,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,49,Kia,Seltos,G4FG,air_filter,28113-H8100,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,49,Kia,Seltos,G4FG,cabin_filter,97133-J9100,LIKELY_FABRICATED,,Not found in any source,,Not found. 97133 prefix is correct for Hyundai cabin filters.
+filter_specs.csv,50,Kia,Rio,G4FC,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,50,Kia,Rio,G4FC,air_filter,28113-1R100,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,50,Kia,Rio,G4FC,cabin_filter,97133-B5000,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,51,Kia,Rio,G4LC,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,51,Kia,Rio,G4LC,air_filter,28113-J9000,LIKELY_FABRICATED,,Not found in any source,,Not found. Older Picanto uses 28113-07100.
+filter_specs.csv,51,Kia,Rio,G4LC,cabin_filter,97133-B5000,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,52,Mazda,3,PE-VPS,oil_filter,SH01-14-302A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,52,Mazda,3,PE-VPS,air_filter,SH01-13-3A0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,52,Mazda,3,PE-VPS,cabin_filter,KD45-61-J6X,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,53,Mazda,CX-5,PE-VPS,oil_filter,SH01-14-302A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,53,Mazda,CX-5,PE-VPS,air_filter,SH01-13-3A0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,53,Mazda,CX-5,PE-VPS,cabin_filter,KD45-61-J6X,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,54,Mazda,CX-5,PY-VPS,oil_filter,SH01-14-302A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,54,Mazda,CX-5,PY-VPS,air_filter,SH01-13-3A0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,54,Mazda,CX-5,PY-VPS,cabin_filter,KD45-61-J6X,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,55,Mazda,CX-5,SH-VPTS,oil_filter,SH01-14-302A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,55,Mazda,CX-5,SH-VPTS,air_filter,SH01-13-3A0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,55,Mazda,CX-5,SH-VPTS,cabin_filter,KD45-61-J6X,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,56,Mazda,2,P3-VPS,oil_filter,PE01-14-302B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,56,Mazda,2,P3-VPS,air_filter,D09W-13-Z40,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,56,Mazda,2,P3-VPS,cabin_filter,D09W-61-J6X,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,57,Mazda,CX-30,PE-VPS,oil_filter,SH01-14-302A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,57,Mazda,CX-30,PE-VPS,air_filter,SH01-13-3A0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,57,Mazda,CX-30,PE-VPS,cabin_filter,KD45-61-J6X,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,58,Mazda,CX-3,PE-VPS,oil_filter,PE01-14-302B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,58,Mazda,CX-3,PE-VPS,air_filter,PE07-13-3A0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,58,Mazda,CX-3,PE-VPS,cabin_filter,D09W-61-J6X,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,59,Mazda,CX-9,PY-VPTS,oil_filter,SH01-14-302A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,59,Mazda,CX-9,PY-VPTS,air_filter,PY8W-13-3A0,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,59,Mazda,CX-9,PY-VPTS,cabin_filter,TK48-61-J6X,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,60,Mazda,MX-5,PE-VPS,oil_filter,PE01-14-302B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,60,Mazda,MX-5,PE-VPS,air_filter,PE07-13-3A0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,60,Mazda,MX-5,PE-VPS,cabin_filter,N246-61-J6X,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,61,Skoda,Octavia,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,61,Skoda,Octavia,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,61,Skoda,Octavia,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,62,Skoda,Octavia,CRLB,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,62,Skoda,Octavia,CRLB,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,62,Skoda,Octavia,CRLB,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,63,Skoda,Fabia,CWVA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,63,Skoda,Fabia,CWVA,air_filter,6C0 129 620,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,63,Skoda,Fabia,CWVA,cabin_filter,6R0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,64,Skoda,Karoq,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,64,Skoda,Karoq,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,64,Skoda,Karoq,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,65,Skoda,Karoq,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,65,Skoda,Karoq,DFGA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,65,Skoda,Karoq,DFGA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,66,Skoda,Kodiaq,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,66,Skoda,Kodiaq,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,66,Skoda,Kodiaq,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,67,Skoda,Kodiaq,CZPA,oil_filter,06L 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,67,Skoda,Kodiaq,CZPA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,67,Skoda,Kodiaq,CZPA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,68,Skoda,Kodiaq,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,68,Skoda,Kodiaq,DFGA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,68,Skoda,Kodiaq,DFGA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,69,Skoda,Scala,DKLA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,69,Skoda,Scala,DKLA,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,69,Skoda,Scala,DKLA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,70,Skoda,Kamiq,DKLA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,70,Skoda,Kamiq,DKLA,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,70,Skoda,Kamiq,DKLA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,71,Skoda,Superb,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,71,Skoda,Superb,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,71,Skoda,Superb,CZDA,cabin_filter,3Q0 819 653,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,72,Skoda,Superb,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,72,Skoda,Superb,DFGA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,72,Skoda,Superb,DFGA,cabin_filter,3Q0 819 653,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,73,Volkswagen,Golf,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,73,Volkswagen,Golf,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,73,Volkswagen,Golf,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,74,Volkswagen,Golf,CRLB,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,74,Volkswagen,Golf,CRLB,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,74,Volkswagen,Golf,CRLB,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,75,Volkswagen,Polo,CWVA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,75,Volkswagen,Polo,CWVA,air_filter,6C0 129 620,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,75,Volkswagen,Polo,CWVA,cabin_filter,6R0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,76,Volkswagen,Polo,DKRF,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,76,Volkswagen,Polo,DKRF,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,76,Volkswagen,Polo,DKRF,cabin_filter,2Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,77,Volkswagen,Tiguan,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,77,Volkswagen,Tiguan,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,77,Volkswagen,Tiguan,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,78,Volkswagen,Tiguan,CZPA,oil_filter,06L 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,78,Volkswagen,Tiguan,CZPA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,78,Volkswagen,Tiguan,CZPA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,79,Volkswagen,Tiguan,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,79,Volkswagen,Tiguan,DFGA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,79,Volkswagen,Tiguan,DFGA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,80,Volkswagen,T-Roc,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,80,Volkswagen,T-Roc,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,80,Volkswagen,T-Roc,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,81,Volkswagen,T-Cross,DKRF,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,81,Volkswagen,T-Cross,DKRF,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,81,Volkswagen,T-Cross,DKRF,cabin_filter,2Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,82,Volkswagen,Passat,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,82,Volkswagen,Passat,CZDA,air_filter,3Q0 129 620 B,WRONG_CORRECTED,3Q0 129 620,extra_suffix_B,"myparto.com, volkswagenpartsuk.co.uk","VW Passat air filter. Base number correct, extra B suffix."
+filter_specs.csv,82,Volkswagen,Passat,CZDA,cabin_filter,3Q0 819 653,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,83,Volkswagen,Passat,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,83,Volkswagen,Passat,DFGA,air_filter,3Q0 129 620 B,WRONG_CORRECTED,3Q0 129 620,extra_suffix_B,"myparto.com, volkswagenpartsuk.co.uk","VW Passat air filter. Base number correct, extra B suffix."
+filter_specs.csv,83,Volkswagen,Passat,DFGA,cabin_filter,3Q0 819 653,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,84,Volkswagen,Touran,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,84,Volkswagen,Touran,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,84,Volkswagen,Touran,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,85,Suzuki,Swift,K12B,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,85,Suzuki,Swift,K12B,air_filter,13780-73J00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,85,Suzuki,Swift,K12B,cabin_filter,95861-62R00,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,86,Suzuki,Swift,K12C,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,86,Suzuki,Swift,K12C,air_filter,13780-74P00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,86,Suzuki,Swift,K12C,cabin_filter,95860-74P00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,87,Suzuki,Swift,K14C,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,87,Suzuki,Swift,K14C,air_filter,13780-74P00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,87,Suzuki,Swift,K14C,cabin_filter,95860-74P00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,88,Suzuki,Vitara,M16A,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,88,Suzuki,Vitara,M16A,air_filter,13780-61M00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,88,Suzuki,Vitara,M16A,cabin_filter,95860-61M00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,89,Suzuki,Vitara,K14C,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,89,Suzuki,Vitara,K14C,air_filter,13780-61M00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,89,Suzuki,Vitara,K14C,cabin_filter,95860-61M00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,90,Suzuki,SX4 S-Cross,M16A,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,90,Suzuki,SX4 S-Cross,M16A,air_filter,13780-61M00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,90,Suzuki,SX4 S-Cross,M16A,cabin_filter,95860-61M00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,91,Suzuki,Baleno,K12C,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,91,Suzuki,Baleno,K12C,air_filter,13780-74P00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,91,Suzuki,Baleno,K12C,cabin_filter,95860-74P00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,92,Suzuki,Jimny,K15B,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,92,Suzuki,Jimny,K15B,air_filter,13780-74P10,LIKELY_FABRICATED,,Not found in any source,,Not found. Jimny uses 13780-79210.
+filter_specs.csv,92,Suzuki,Jimny,K15B,cabin_filter,95860-77R00,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,93,Suzuki,Ignis,K12C,oil_filter,16510-61A31,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,93,Suzuki,Ignis,K12C,air_filter,13780-74P00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,93,Suzuki,Ignis,K12C,cabin_filter,95860-74P00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,94,Nissan,Qashqai,MR20DD,oil_filter,15208-65F0E,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,94,Nissan,Qashqai,MR20DD,air_filter,16546-4BA1B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,94,Nissan,Qashqai,MR20DD,cabin_filter,27277-4BU0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,95,Nissan,Qashqai,KR15DDT,oil_filter,15208-65F0E,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,95,Nissan,Qashqai,KR15DDT,air_filter,16546-6FR0A,LIKELY_FABRICATED,,not_found,,Nissan Qashqai J12. Not found. 16546-6RA0A exists but different part.
+filter_specs.csv,95,Nissan,Qashqai,KR15DDT,cabin_filter,27277-6MA0A,UNVERIFIABLE_COVERAGE_GAP,,,,Nissan Qashqai J12 cabin filter. 27277 prefix correct for Nissan cabin. Unconfirmed.
+filter_specs.csv,96,Nissan,Juke,HR16DE,oil_filter,15208-65F0E,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,96,Nissan,Juke,HR16DE,air_filter,16546-JD20A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,96,Nissan,Juke,HR16DE,cabin_filter,27277-1KA4A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,97,Nissan,Juke,HR13DDT,oil_filter,15208-65F0E,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,97,Nissan,Juke,HR13DDT,air_filter,16546-6FR0A,LIKELY_FABRICATED,,not_found,,Nissan Qashqai J12. Not found. 16546-6RA0A exists but different part.
+filter_specs.csv,97,Nissan,Juke,HR13DDT,cabin_filter,27277-6MA0A,UNVERIFIABLE_COVERAGE_GAP,,,,Nissan Qashqai J12 cabin filter. 27277 prefix correct for Nissan cabin. Unconfirmed.
+filter_specs.csv,98,Nissan,X-Trail,MR20DD,oil_filter,15208-65F0E,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,98,Nissan,X-Trail,MR20DD,air_filter,16546-4BA1B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,98,Nissan,X-Trail,MR20DD,cabin_filter,27277-4BU0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,99,Nissan,Micra,HR10DET,oil_filter,15208-65F0E,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,99,Nissan,Micra,HR10DET,air_filter,16546-5FA1B,UNVERIFIABLE_COVERAGE_GAP,,,,Nissan Micra K14. Real Micra V uses 16546-5FN1A. This may be K14 specific variant. Unconfirmed.
+filter_specs.csv,99,Nissan,Micra,HR10DET,cabin_filter,27277-5FA0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,100,Nissan,Navara,YD25DDTi,oil_filter,15208-BN30A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,100,Nissan,Navara,YD25DDTi,air_filter,16546-EB300,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,100,Nissan,Navara,YD25DDTi,cabin_filter,27275-EN000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,101,Honda,Civic,R18Z1,oil_filter,15400-RTA-003,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,101,Honda,Civic,R18Z1,air_filter,17220-R1A-A01,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,101,Honda,Civic,R18Z1,cabin_filter,80292-TF0-G01,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,102,Honda,Civic,L15B7,oil_filter,15400-RTA-003,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,102,Honda,Civic,L15B7,air_filter,17220-5AA-A00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,102,Honda,Civic,L15B7,cabin_filter,80292-TBA-A11,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,103,Honda,Jazz,L15B,oil_filter,15400-RTA-003,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,103,Honda,Jazz,L15B,air_filter,17220-55A-Z01,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,103,Honda,Jazz,L15B,cabin_filter,80292-TF0-G01,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,104,Honda,Jazz,LEB,oil_filter,15400-RTA-003,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,104,Honda,Jazz,LEB,air_filter,17220-5R0-008,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,104,Honda,Jazz,LEB,cabin_filter,80292-TLA-A01,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,105,Honda,HR-V,L15B,oil_filter,15400-RTA-003,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,105,Honda,HR-V,L15B,air_filter,17220-55A-Z01,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,105,Honda,HR-V,L15B,cabin_filter,80292-T5A-J01,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,106,Honda,CR-V,R20A,oil_filter,15400-RTA-003,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,106,Honda,CR-V,R20A,air_filter,17220-R5A-A00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,106,Honda,CR-V,R20A,cabin_filter,80292-T0G-G01,WRONG_CORRECTED,80292-T0G-A01,wrong_letter (G01->A01),"hondapartsnow.com, hondafactoryparts.com",Honda CR-V cabin filter. One letter off.
+filter_specs.csv,107,Honda,CR-V,L15B7,oil_filter,15400-RTA-003,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,107,Honda,CR-V,L15B7,air_filter,17220-5AA-A00,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,107,Honda,CR-V,L15B7,cabin_filter,80292-TBA-A11,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,108,Mitsubishi,Outlander,4B12,oil_filter,1230A114,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,108,Mitsubishi,Outlander,4B12,air_filter,1500A023,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,108,Mitsubishi,Outlander,4B12,cabin_filter,7803A028,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,109,Mitsubishi,ASX,4B10,oil_filter,1230A114,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,109,Mitsubishi,ASX,4B10,air_filter,1500A023,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,109,Mitsubishi,ASX,4B10,cabin_filter,7803A028,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,110,Mitsubishi,L200,4N15,oil_filter,1230A186,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,110,Mitsubishi,L200,4N15,air_filter,1500A617,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,110,Mitsubishi,L200,4N15,cabin_filter,7803A028,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,111,BMW,1 Series,N20B20,oil_filter,11 42 7 953 129,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,111,BMW,1 Series,N20B20,air_filter,13 71 7 602 643,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,111,BMW,1 Series,N20B20,cabin_filter,64 11 9 237 555,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,112,BMW,1 Series,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,112,BMW,1 Series,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,112,BMW,1 Series,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,113,BMW,3 Series,N20B20,oil_filter,11 42 7 953 129,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,113,BMW,3 Series,N20B20,air_filter,13 71 7 602 643,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,113,BMW,3 Series,N20B20,cabin_filter,64 11 9 237 555,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,114,BMW,3 Series,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,114,BMW,3 Series,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,114,BMW,3 Series,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,115,BMW,3 Series,B47D20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,115,BMW,3 Series,B47D20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,115,BMW,3 Series,B47D20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,116,BMW,X1,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,116,BMW,X1,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,116,BMW,X1,B48B20,cabin_filter,64 31 9 194 098,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,117,BMW,X3,N20B20,oil_filter,11 42 7 953 129,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,117,BMW,X3,N20B20,air_filter,13 71 7 602 643,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,117,BMW,X3,N20B20,cabin_filter,64 11 9 237 555,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,118,BMW,X3,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,118,BMW,X3,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,118,BMW,X3,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,119,BMW,X5,N20B20,oil_filter,11 42 7 953 129,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,119,BMW,X5,N20B20,air_filter,13 71 7 602 643,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,119,BMW,X5,N20B20,cabin_filter,64 11 9 237 555,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,120,BMW,X5,B58B30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,120,BMW,X5,B58B30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,120,BMW,X5,B58B30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,121,Mercedes-Benz,A-Class,M270,oil_filter,270 180 01 09,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,121,Mercedes-Benz,A-Class,M270,air_filter,270 094 02 04,WRONG_CORRECTED,274 094 01 04,wrong_prefix_and_suffix,"Spareto confirmed (A2740940104 with 23 products, MANN C 28 004, Filtron AP 035/7)",M270 air filter is actually A 274 094 01 04 (same as M274). The LLM used '270' prefix but the real number uses '274'. Variant is '01 04' not '02 04'. Confirmed on Spareto with both A prefix and without.
+filter_specs.csv,121,Mercedes-Benz,A-Class,M270,cabin_filter,246 830 03 18,WRONG_CORRECTED,246 830 00 18,wrong_variant_digit,"Spareto confirmed (A2468300018 with MANN CUK 26 007, Filtron K 1346A)",Very close! Only middle variant digit wrong: '03' should be '00'. A 246 830 00 18 confirmed on Spareto with multiple cross-references.
+filter_specs.csv,122,Mercedes-Benz,A-Class,M282,oil_filter,282 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,mbparts.mbusa.com lists 270-180-01-09 for 2014-2025 including W177 A-Class,M282 (1.3L turbo) shares oil filter with M270/M274 family. LLM fabricated '282' prefix matching engine code.
+filter_specs.csv,122,Mercedes-Benz,A-Class,M282,air_filter,177 094 02 05,WRONG_CORRECTED,282 094 00 04,wrong_prefix_and_suffix,"eBay.co.uk genuine OEM listing (A2820940004), fmic.eu, classicparts.mbusa.com (177-094-01-00 is for M270 in W177)","M282 air filter is A 282 094 00 04. LLM used '177' (chassis code for A-Class) instead of '282' (engine code). Note: 177 094 01 00 EXISTS but that's for the M270 engine in W177, not M282."
+filter_specs.csv,122,Mercedes-Benz,A-Class,M282,cabin_filter,177 830 00 00,NEEDS_DEALER_CHECK,,fabricated_variant,Amazon lists A2820940004 for W177/W247/C118/X243 but that's the AIR filter. Cabin filter for W177 platform not clearly confirmed.,LLM generated plausible '177 830 00 00' but this doesn't exist. The W177/W247 platform cabin filter real number needs dealer verification. Web sources suggest various numbers but no clear consensus.
+filter_specs.csv,123,Mercedes-Benz,C-Class,M274,oil_filter,274 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,"mbparts.mbusa.com (2014-2025 vehicles), classicparts.mbusa.com, Spareto confirmed",M274 uses the same oil filter housing as M270. The LLM fabricated '274' prefix matching the engine code instead of the actual '270' prefix. Also wrong variant: '00 09' should be '01 09'.
+filter_specs.csv,123,Mercedes-Benz,C-Class,M274,air_filter,274 094 01 04,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,123,Mercedes-Benz,C-Class,M274,cabin_filter,205 835 03 47,WRONG_CORRECTED,205 835 01 47,wrong_variant_digit,"Spareto confirmed (A2058350147), classicparts.mbusa.com (205-835-27-00 superseded), eBay OEM listings",Close! Variant '03' should be '01'. A 205 835 01 47 confirmed. Also used for E-Class W213.
+filter_specs.csv,124,Mercedes-Benz,C-Class,M264,oil_filter,264 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,"mbparts.mbusa.com, Spareto confirmed with 30+ products",M264 shares the oil filter with M270/M274 family. LLM fabricated '264' prefix. Real: A 270 180 01 09.
+filter_specs.csv,124,Mercedes-Benz,C-Class,M264,air_filter,264 094 01 04,WRONG_CORRECTED,264 094 01 00,wrong_last_digit,"classicparts.mbusa.com (264-094-01-00, 2019-2023 vehicles), Spareto confirmed",Very close! Only the last digit is wrong: '04' should be '00'. A 264 094 01 00 exists on both MB Classic Parts and Spareto.
+filter_specs.csv,124,Mercedes-Benz,C-Class,M264,cabin_filter,205 835 03 47,WRONG_CORRECTED,205 835 01 47,wrong_variant_digit,"Spareto confirmed (A2058350147), classicparts.mbusa.com (205-835-27-00 superseded), eBay OEM listings",Close! Variant '03' should be '01'. A 205 835 01 47 confirmed. Also used for E-Class W213.
+filter_specs.csv,125,Mercedes-Benz,E-Class,M274,oil_filter,274 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,"mbparts.mbusa.com (2014-2025 vehicles), classicparts.mbusa.com, Spareto confirmed",M274 uses the same oil filter housing as M270. The LLM fabricated '274' prefix matching the engine code instead of the actual '270' prefix. Also wrong variant: '00 09' should be '01 09'.
+filter_specs.csv,125,Mercedes-Benz,E-Class,M274,air_filter,274 094 01 04,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,125,Mercedes-Benz,E-Class,M274,cabin_filter,213 835 00 47,WRONG_CORRECTED,205 835 01 47,wrong_prefix_and_variant,"eBay OEM listing (A2058350147 for W205/W213), Spareto confirmed","E-Class W213 shares cabin filter with C-Class W205. Real is A 205 835 01 47, not '213 835 00 47'. LLM used chassis code '213' as prefix instead of shared part prefix '205'."
+filter_specs.csv,126,Mercedes-Benz,GLA,M282,oil_filter,282 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,mbparts.mbusa.com lists 270-180-01-09 for 2014-2025 including W177 A-Class,M282 (1.3L turbo) shares oil filter with M270/M274 family. LLM fabricated '282' prefix matching engine code.
+filter_specs.csv,126,Mercedes-Benz,GLA,M282,air_filter,177 094 02 05,WRONG_CORRECTED,282 094 00 04,wrong_prefix_and_suffix,"eBay.co.uk genuine OEM listing (A2820940004), fmic.eu, classicparts.mbusa.com (177-094-01-00 is for M270 in W177)","M282 air filter is A 282 094 00 04. LLM used '177' (chassis code for A-Class) instead of '282' (engine code). Note: 177 094 01 00 EXISTS but that's for the M270 engine in W177, not M282."
+filter_specs.csv,126,Mercedes-Benz,GLA,M282,cabin_filter,177 830 00 00,NEEDS_DEALER_CHECK,,fabricated_variant,Amazon lists A2820940004 for W177/W247/C118/X243 but that's the AIR filter. Cabin filter for W177 platform not clearly confirmed.,LLM generated plausible '177 830 00 00' but this doesn't exist. The W177/W247 platform cabin filter real number needs dealer verification. Web sources suggest various numbers but no clear consensus.
+filter_specs.csv,127,Mercedes-Benz,GLC,M274,oil_filter,274 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,"mbparts.mbusa.com (2014-2025 vehicles), classicparts.mbusa.com, Spareto confirmed",M274 uses the same oil filter housing as M270. The LLM fabricated '274' prefix matching the engine code instead of the actual '270' prefix. Also wrong variant: '00 09' should be '01 09'.
+filter_specs.csv,127,Mercedes-Benz,GLC,M274,air_filter,274 094 01 04,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,127,Mercedes-Benz,GLC,M274,cabin_filter,253 835 02 47,WRONG_CORRECTED,166 830 02 18,wrong_number_entirely,"eBay genuine OEM listing (A1668300218 for W253 GLC/W205 C-Class), mbparts.mbusa.com, mbdirectparts.com","GLC W253 uses A 166 830 02 18 for cabin filter (shared with GLE/GLS platform). The CSV number '253 835 02 47' is completely fabricated - wrong prefix, group, and variant."
+filter_specs.csv,128,Peugeot,208,EB2,oil_filter,1109.CK,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,128,Peugeot,208,EB2,air_filter,1444.TT,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,128,Peugeot,208,EB2,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,129,Peugeot,208,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,129,Peugeot,208,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,129,Peugeot,208,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,130,Peugeot,2008,EB2DT,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,130,Peugeot,2008,EB2DT,air_filter,9802348680,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,130,Peugeot,2008,EB2DT,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,131,Peugeot,308,EP6,oil_filter,1109.CK,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,131,Peugeot,308,EP6,air_filter,1444.VZ,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,131,Peugeot,308,EP6,cabin_filter,6479.C2,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,132,Peugeot,3008,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,132,Peugeot,3008,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,132,Peugeot,3008,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,133,Peugeot,3008,DV5,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,133,Peugeot,3008,DV5,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,133,Peugeot,3008,DV5,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,134,Peugeot,5008,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,134,Peugeot,5008,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,134,Peugeot,5008,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,135,Citroen,C3,EB2,oil_filter,1109.CK,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,135,Citroen,C3,EB2,air_filter,1444.TT,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,135,Citroen,C3,EB2,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,136,Citroen,C3,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,136,Citroen,C3,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,136,Citroen,C3,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,137,Citroen,C4,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,137,Citroen,C4,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,137,Citroen,C4,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,138,Citroen,C5 Aircross,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,138,Citroen,C5 Aircross,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,138,Citroen,C5 Aircross,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,139,Citroen,Berlingo,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,139,Citroen,Berlingo,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,139,Citroen,Berlingo,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,140,Renault,Clio,H5F,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,140,Renault,Clio,H5F,air_filter,165461599R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,140,Renault,Clio,H5F,cabin_filter,272772835R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,141,Renault,Clio,H5H,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,141,Renault,Clio,H5H,air_filter,165468187R,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,141,Renault,Clio,H5H,cabin_filter,272772835R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,142,Renault,Captur,H5F,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,142,Renault,Captur,H5F,air_filter,165461599R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,142,Renault,Captur,H5F,cabin_filter,272772835R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,143,Renault,Captur,H5H,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,143,Renault,Captur,H5H,air_filter,165468187R,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,143,Renault,Captur,H5H,cabin_filter,272772835R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,144,Renault,Megane,H5H,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,144,Renault,Megane,H5H,air_filter,165468187R,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,144,Renault,Megane,H5H,cabin_filter,272773016R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,145,Renault,Kadjar,H5H,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,145,Renault,Kadjar,H5H,air_filter,165468187R,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,145,Renault,Kadjar,H5H,cabin_filter,272775374R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,146,Renault,Koleos,M5P,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,146,Renault,Koleos,M5P,air_filter,16546-00QAU,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,146,Renault,Koleos,M5P,cabin_filter,27277-00Q0A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,147,Fiat,500,312A2.000,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,147,Fiat,500,312A2.000,air_filter,55192012,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,147,Fiat,500,312A2.000,cabin_filter,77366065,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,148,Fiat,Panda,312A2.000,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,148,Fiat,Panda,312A2.000,air_filter,55192012,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,148,Fiat,Panda,312A2.000,cabin_filter,77366065,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,149,Fiat,Tipo,55263624,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,149,Fiat,Tipo,55263624,air_filter,52081805,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,149,Fiat,Tipo,55263624,cabin_filter,77367456,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,150,Fiat,500X,55263624,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,150,Fiat,500X,55263624,air_filter,52081805,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,150,Fiat,500X,55263624,cabin_filter,77367456,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,151,Subaru,XV,FB20,oil_filter,15208-AA160,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,151,Subaru,XV,FB20,air_filter,16546-AA12A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,151,Subaru,XV,FB20,cabin_filter,72880-FL000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,152,Subaru,Forester,FB25,oil_filter,15208-AA160,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,152,Subaru,Forester,FB25,air_filter,16546-AA12A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,152,Subaru,Forester,FB25,cabin_filter,72880-FL000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,153,Subaru,Outback,FB25,oil_filter,15208-AA160,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,153,Subaru,Outback,FB25,air_filter,16546-AA12A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,153,Subaru,Outback,FB25,cabin_filter,72880-FL000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,154,Subaru,Impreza,FB20,oil_filter,15208-AA160,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,154,Subaru,Impreza,FB20,air_filter,16546-AA12A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,154,Subaru,Impreza,FB20,cabin_filter,72880-FL000,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,155,Ford,Focus,M8DA,oil_filter,1883037,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,155,Ford,Focus,M8DA,air_filter,F1F1-9601-BC,LIKELY_FABRICATED,,Not found in any source,,Ford Focus air filter. Not found in any source.
+filter_specs.csv,155,Ford,Focus,M8DA,cabin_filter,F1FZ-19N619-AB,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,156,Ford,Focus,XTDA,oil_filter,1883037,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,156,Ford,Focus,XTDA,air_filter,F1F1-9601-BC,LIKELY_FABRICATED,,Not found in any source,,Ford Focus air filter. Not found in any source.
+filter_specs.csv,156,Ford,Focus,XTDA,cabin_filter,F1FZ-19N619-AB,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,157,Ford,Fiesta,M1JE,oil_filter,1883037,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,157,Ford,Fiesta,M1JE,air_filter,C1B1-9601-AB,LIKELY_FABRICATED,CN1Z-9601-A,wrong_prefix,ford.oempartsonline.com,Ford Fiesta MK8 air filter. Real is CN1Z-9601-A.
+filter_specs.csv,157,Ford,Fiesta,M1JE,cabin_filter,1743587,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,158,Ford,Kuga,M8MA,oil_filter,1883037,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,158,Ford,Kuga,M8MA,air_filter,F1F1-9601-BC,LIKELY_FABRICATED,,Not found in any source,,Ford Focus air filter. Not found in any source.
+filter_specs.csv,158,Ford,Kuga,M8MA,cabin_filter,1776360,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,159,Ford,EcoSport,M1JE,oil_filter,1883037,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,159,Ford,EcoSport,M1JE,air_filter,C1B1-9601-AB,LIKELY_FABRICATED,CN1Z-9601-A,wrong_prefix,ford.oempartsonline.com,Ford Fiesta MK8 air filter. Real is CN1Z-9601-A.
+filter_specs.csv,159,Ford,EcoSport,M1JE,cabin_filter,1743587,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,160,Ford,Puma,B7JA,oil_filter,1883037,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,160,Ford,Puma,B7JA,air_filter,LX6Z-9601-A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,160,Ford,Puma,B7JA,cabin_filter,LX6Z-19N619-B,LIKELY_FABRICATED,,Not found in any source,,Not found.
+filter_specs.csv,161,Seat,Ibiza,CWVA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,161,Seat,Ibiza,CWVA,air_filter,6C0 129 620,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,161,Seat,Ibiza,CWVA,cabin_filter,6R0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,162,Seat,Ibiza,DKRF,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,162,Seat,Ibiza,DKRF,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,162,Seat,Ibiza,DKRF,cabin_filter,2Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,163,Seat,Leon,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,163,Seat,Leon,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,163,Seat,Leon,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,164,Seat,Arona,DKRF,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,164,Seat,Arona,DKRF,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,164,Seat,Arona,DKRF,cabin_filter,2Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,165,Seat,Ateca,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,165,Seat,Ateca,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,165,Seat,Ateca,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,166,Cupra,Formentor,CZPA,oil_filter,06L 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,166,Cupra,Formentor,CZPA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,166,Cupra,Formentor,CZPA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,167,Audi,A3,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,167,Audi,A3,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,167,Audi,A3,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,168,Audi,A4,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,168,Audi,A4,CZDA,air_filter,8W0 133 843,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,168,Audi,A4,CZDA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,169,Audi,Q3,DKRF,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,169,Audi,Q3,DKRF,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,169,Audi,Q3,DKRF,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,170,Audi,Q5,CZPA,oil_filter,06L 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,170,Audi,Q5,CZPA,air_filter,8W0 133 843,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,170,Audi,Q5,CZPA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,171,Dacia,Sandero,H4M,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,171,Dacia,Sandero,H4M,air_filter,165461599R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,171,Dacia,Sandero,H4M,cabin_filter,272772835R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,172,Dacia,Duster,H5H,oil_filter,152095084R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,172,Dacia,Duster,H5H,air_filter,165468187R,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,172,Dacia,Duster,H5H,cabin_filter,272772835R,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,173,Opel,Corsa,B14XEL,oil_filter,55594651,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,173,Opel,Corsa,B14XEL,air_filter,55560894,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,173,Opel,Corsa,B14XEL,cabin_filter,13356914,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,174,Opel,Corsa,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,174,Opel,Corsa,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,174,Opel,Corsa,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,175,Opel,Astra,B14XFL,oil_filter,55594651,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,175,Opel,Astra,B14XFL,air_filter,13372460,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,175,Opel,Astra,B14XFL,cabin_filter,13356914,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,176,Opel,Astra,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,176,Opel,Astra,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,176,Opel,Astra,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,177,Opel,Crossland,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,177,Opel,Crossland,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,177,Opel,Crossland,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,178,Opel,Mokka,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,178,Opel,Mokka,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,178,Opel,Mokka,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,179,Volvo,XC40,B4204T47,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,179,Volvo,XC40,B4204T47,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,179,Volvo,XC40,B4204T47,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,180,Volvo,XC60,B4204T23,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,180,Volvo,XC60,B4204T23,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,180,Volvo,XC60,B4204T23,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,181,Volvo,V40,B4204T11,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,181,Volvo,V40,B4204T11,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,181,Volvo,V40,B4204T11,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,182,MINI,Cooper,B38A15,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,182,MINI,Cooper,B38A15,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,182,MINI,Cooper,B38A15,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,183,MINI,Cooper,B48A20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,183,MINI,Cooper,B48A20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,183,MINI,Cooper,B48A20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,184,MINI,Countryman,B48A20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,184,MINI,Countryman,B48A20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+filter_specs.csv,184,MINI,Countryman,B48A20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,185,Jeep,Renegade,55263624,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,185,Jeep,Renegade,55263624,air_filter,52081805,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,185,Jeep,Renegade,55263624,cabin_filter,77367456,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,186,Jeep,Compass,55263624,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,186,Jeep,Compass,55263624,air_filter,52081805,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,186,Jeep,Compass,55263624,cabin_filter,77367456,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,187,Chery,Tiggo 4 Pro,SQRE4T15C,oil_filter,E4T15-1012010,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,187,Chery,Tiggo 4 Pro,SQRE4T15C,air_filter,E4T15-1109111,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,187,Chery,Tiggo 4 Pro,SQRE4T15C,cabin_filter,T11-8107910,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,188,Chery,Tiggo 7 Pro,SQRF4J16,oil_filter,F4J16-1012010,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,188,Chery,Tiggo 7 Pro,SQRF4J16,air_filter,F4J16-1109111,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,188,Chery,Tiggo 7 Pro,SQRF4J16,cabin_filter,T11-8107910,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,189,Chery,Tiggo 8 Pro,SQRF4J16,oil_filter,F4J16-1012010,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,189,Chery,Tiggo 8 Pro,SQRF4J16,air_filter,F4J16-1109111,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,189,Chery,Tiggo 8 Pro,SQRF4J16,cabin_filter,T11-8107910,VERIFIED_EXISTS,,,Spareto OE lookup,
+filter_specs.csv,190,Geely,Coolray,JLH-3G15TD,oil_filter,1016050811,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,190,Geely,Coolray,JLH-3G15TD,air_filter,1016012681,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,190,Geely,Coolray,JLH-3G15TD,cabin_filter,8022003200,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,191,Geely,Atlas,JLD-4G20,oil_filter,1016050811,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,191,Geely,Atlas,JLD-4G20,air_filter,1016012681,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+filter_specs.csv,191,Geely,Atlas,JLD-4G20,cabin_filter,8022003200,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,2,Lexus,IS,2AR-FSE,oil_filter,04152-31090,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,2,Lexus,IS,2AR-FSE,air_filter,17801-38011,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,2,Lexus,IS,2AR-FSE,cabin_filter,87139-30070,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,3,Lexus,IS,A25A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,3,Lexus,IS,A25A-FKS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,3,Lexus,IS,A25A-FKS,cabin_filter,87139-30070,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,4,Lexus,NX,8AR-FTS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,4,Lexus,NX,8AR-FTS,air_filter,17801-38011,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,4,Lexus,NX,8AR-FTS,cabin_filter,87139-48050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,5,Lexus,NX,A25A-FXS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,5,Lexus,NX,A25A-FXS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,5,Lexus,NX,A25A-FXS,cabin_filter,87139-48050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,6,Lexus,RX,2GR-FKS,oil_filter,04152-31090,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,6,Lexus,RX,2GR-FKS,air_filter,17801-38011,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,6,Lexus,RX,2GR-FKS,cabin_filter,87139-48050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,7,Lexus,RX,A25A-FXS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,7,Lexus,RX,A25A-FXS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,7,Lexus,RX,A25A-FXS,cabin_filter,87139-48050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,8,Lexus,ES,A25A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,8,Lexus,ES,A25A-FKS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,8,Lexus,ES,A25A-FKS,cabin_filter,87139-06080,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,9,Lexus,UX,M20A-FKS,oil_filter,04152-YZZA1,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,9,Lexus,UX,M20A-FKS,air_filter,17801-F0050,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,9,Lexus,UX,M20A-FKS,cabin_filter,87139-F4010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,10,Land Rover,Range Rover Evoque,204PT,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,10,Land Rover,Range Rover Evoque,204PT,air_filter,LR029773,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,10,Land Rover,Range Rover Evoque,204PT,cabin_filter,LR036369,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,11,Land Rover,Range Rover Evoque,PT204,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,11,Land Rover,Range Rover Evoque,PT204,air_filter,LR122592,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,11,Land Rover,Range Rover Evoque,PT204,cabin_filter,LR117485,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,12,Land Rover,Discovery Sport,PT204,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,12,Land Rover,Discovery Sport,PT204,air_filter,LR029773,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,12,Land Rover,Discovery Sport,PT204,cabin_filter,LR036369,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,13,Land Rover,Discovery Sport,204DTD,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,13,Land Rover,Discovery Sport,204DTD,air_filter,LR029773,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,13,Land Rover,Discovery Sport,204DTD,cabin_filter,LR036369,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,14,Land Rover,Range Rover Velar,PT204,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,14,Land Rover,Range Rover Velar,PT204,air_filter,LR122592,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,14,Land Rover,Range Rover Velar,PT204,cabin_filter,LR117485,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,15,Land Rover,Range Rover Velar,204DTA,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,15,Land Rover,Range Rover Velar,204DTA,air_filter,LR122592,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,15,Land Rover,Range Rover Velar,204DTA,cabin_filter,LR117485,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,16,Jaguar,E-Pace,PT204,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,16,Jaguar,E-Pace,PT204,air_filter,LR108435,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,16,Jaguar,E-Pace,PT204,cabin_filter,T4N6810,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,17,Jaguar,F-Pace,PT204,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,17,Jaguar,F-Pace,PT204,air_filter,LR108435,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,17,Jaguar,F-Pace,PT204,cabin_filter,T4N6810,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,18,Jaguar,XE,PT204,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,18,Jaguar,XE,PT204,air_filter,LR108435,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,18,Jaguar,XE,PT204,cabin_filter,T4N6810,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,19,Jaguar,XF,PT204,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,19,Jaguar,XF,PT204,air_filter,LR108435,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,19,Jaguar,XF,PT204,cabin_filter,T4N6810,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,20,SsangYong,Tivoli,G16DF,oil_filter,6731840025,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,20,SsangYong,Tivoli,G16DF,air_filter,2319109100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,20,SsangYong,Tivoli,G16DF,cabin_filter,6812108100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,21,SsangYong,Tivoli,D16DTF,oil_filter,6731803009,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,21,SsangYong,Tivoli,D16DTF,air_filter,2319109100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,21,SsangYong,Tivoli,D16DTF,cabin_filter,6812108100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,22,SsangYong,Korando,D20DTF,oil_filter,6731840025,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,22,SsangYong,Korando,D20DTF,air_filter,2319109000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,22,SsangYong,Korando,D20DTF,cabin_filter,6812108100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,23,SsangYong,Korando,G15DTF,oil_filter,6731840025,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,23,SsangYong,Korando,G15DTF,air_filter,2319109100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,23,SsangYong,Korando,G15DTF,cabin_filter,6812108100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,24,SsangYong,Rexton,D22DTR,oil_filter,6731840025,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,24,SsangYong,Rexton,D22DTR,air_filter,2319109000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,24,SsangYong,Rexton,D22DTR,cabin_filter,6812108000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,25,Alfa Romeo,Giulietta,940A2.000,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,25,Alfa Romeo,Giulietta,940A2.000,air_filter,55192012,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,25,Alfa Romeo,Giulietta,940A2.000,cabin_filter,77366065,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,26,Alfa Romeo,Giulia,55263624,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,26,Alfa Romeo,Giulia,55263624,air_filter,52081805,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,26,Alfa Romeo,Giulia,55263624,cabin_filter,77367456,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,27,Alfa Romeo,Stelvio,55263624,oil_filter,55223416,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,27,Alfa Romeo,Stelvio,55263624,air_filter,52081805,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,27,Alfa Romeo,Stelvio,55263624,cabin_filter,77367456,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,28,DS,DS3,EB2DT,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,28,DS,DS3,EB2DT,air_filter,9802348680,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,28,DS,DS3,EB2DT,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,29,DS,DS7 Crossback,EB2ADTS,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,29,DS,DS7 Crossback,EB2ADTS,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,29,DS,DS7 Crossback,EB2ADTS,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,30,DS,DS7 Crossback,DV5,oil_filter,9818914980,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,30,DS,DS7 Crossback,DV5,air_filter,9818479180,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,30,DS,DS7 Crossback,DV5,cabin_filter,9809647380,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,31,Chevrolet,Cruze,F16D4,oil_filter,55594651,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,31,Chevrolet,Cruze,F16D4,air_filter,13272717,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,31,Chevrolet,Cruze,F16D4,cabin_filter,13271190,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,32,Chevrolet,Cruze,F18D4,oil_filter,55594651,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,32,Chevrolet,Cruze,F18D4,air_filter,13272717,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,32,Chevrolet,Cruze,F18D4,cabin_filter,13271190,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,33,Chevrolet,Aveo,F16D4,oil_filter,55594651,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,33,Chevrolet,Aveo,F16D4,air_filter,96536696,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,33,Chevrolet,Aveo,F16D4,cabin_filter,96449577,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,34,Chevrolet,Spark,B10D1,oil_filter,96570765,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,34,Chevrolet,Spark,B10D1,air_filter,96536696,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,34,Chevrolet,Spark,B10D1,cabin_filter,96449577,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,35,Chevrolet,Trax,F18D4,oil_filter,55594651,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,35,Chevrolet,Trax,F18D4,air_filter,13272717,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,35,Chevrolet,Trax,F18D4,cabin_filter,13271190,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,36,Chevrolet,Captiva,Z22D1,oil_filter,96565412,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,36,Chevrolet,Captiva,Z22D1,air_filter,96628890,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,36,Chevrolet,Captiva,Z22D1,cabin_filter,96554421,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,37,MG,ZS,15S4G,oil_filter,10405642,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,37,MG,ZS,15S4G,air_filter,10405878,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,37,MG,ZS,15S4G,cabin_filter,10242940,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,38,MG,HS,15E4E,oil_filter,10405642,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,38,MG,HS,15E4E,air_filter,10405878,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,38,MG,HS,15E4E,cabin_filter,10242940,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,39,Porsche,Macan,CZPA,oil_filter,06L 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,39,Porsche,Macan,CZPA,air_filter,95B 129 620 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,39,Porsche,Macan,CZPA,cabin_filter,95B 819 631,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,50,GWM,Jolion,GW4B15A,oil_filter,1017100GG010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,50,GWM,Jolion,GW4B15A,air_filter,1109120XKZ16A,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,50,GWM,Jolion,GW4B15A,cabin_filter,8104300XKZ36A,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,51,Lynk & Co,01,B4204T47,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,51,Lynk & Co,01,B4204T47,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,51,Lynk & Co,01,B4204T47,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,52,Omoda,C5,SQRE4T15C,oil_filter,E4T15-1012010,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,52,Omoda,C5,SQRE4T15C,air_filter,E4T15-1109111,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,52,Omoda,C5,SQRE4T15C,cabin_filter,T11-8107910,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage1_filter_specs.csv,53,Jaecoo,J7,SQRF4J16,oil_filter,F4J16-1012010,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,53,Jaecoo,J7,SQRF4J16,air_filter,F4J16-1109111,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage1_filter_specs.csv,53,Jaecoo,J7,SQRF4J16,cabin_filter,T11-8107910,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,2,BMW,2 Series,N20B20,oil_filter,11 42 7 953 129,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,2,BMW,2 Series,N20B20,air_filter,13 71 7 602 643,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,2,BMW,2 Series,N20B20,cabin_filter,64 11 9 237 555,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,3,BMW,2 Series,B47D20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,3,BMW,2 Series,B47D20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,3,BMW,2 Series,B47D20,cabin_filter,64 11 9 237 555,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,4,BMW,2 Series Gran Coupe,B38B15,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,4,BMW,2 Series Gran Coupe,B38B15,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,4,BMW,2 Series Gran Coupe,B38B15,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,5,BMW,2 Series Gran Coupe,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,5,BMW,2 Series Gran Coupe,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,5,BMW,2 Series Gran Coupe,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,6,BMW,4 Series,N20B20,oil_filter,11 42 7 953 129,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,6,BMW,4 Series,N20B20,air_filter,13 71 7 602 643,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,6,BMW,4 Series,N20B20,cabin_filter,64 11 9 237 555,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,7,BMW,4 Series,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,7,BMW,4 Series,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,7,BMW,4 Series,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,8,BMW,4 Series,B47D20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,8,BMW,4 Series,B47D20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,8,BMW,4 Series,B47D20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,9,BMW,5 Series,N20B20,oil_filter,11 42 7 953 129,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,9,BMW,5 Series,N20B20,air_filter,13 71 7 602 643,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,9,BMW,5 Series,N20B20,cabin_filter,64 11 9 163 329,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,10,BMW,5 Series,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,10,BMW,5 Series,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,10,BMW,5 Series,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,11,BMW,5 Series,B47D20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,11,BMW,5 Series,B47D20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,11,BMW,5 Series,B47D20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,12,BMW,5 Series,B58B30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,12,BMW,5 Series,B58B30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,12,BMW,5 Series,B58B30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,13,BMW,6 Series GT,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,13,BMW,6 Series GT,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,13,BMW,6 Series GT,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,14,BMW,7 Series,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,14,BMW,7 Series,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,14,BMW,7 Series,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,15,BMW,7 Series,B58B30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,15,BMW,7 Series,B58B30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,15,BMW,7 Series,B58B30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,16,BMW,7 Series,B57D30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,16,BMW,7 Series,B57D30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,16,BMW,7 Series,B57D30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,17,BMW,8 Series,B58B30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,17,BMW,8 Series,B58B30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,17,BMW,8 Series,B58B30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,18,BMW,X2,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,18,BMW,X2,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,18,BMW,X2,B48B20,cabin_filter,64 31 9 194 098,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,19,BMW,X2,B47D20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,19,BMW,X2,B47D20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,19,BMW,X2,B47D20,cabin_filter,64 31 9 194 098,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,20,BMW,X4,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,20,BMW,X4,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,20,BMW,X4,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,21,BMW,X4,B47D20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,21,BMW,X4,B47D20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,21,BMW,X4,B47D20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,22,BMW,X6,B58B30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,22,BMW,X6,B58B30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,22,BMW,X6,B58B30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,23,BMW,X7,B58B30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,23,BMW,X7,B58B30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,23,BMW,X7,B58B30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,24,BMW,Z4,B48B20,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,24,BMW,Z4,B48B20,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,24,BMW,Z4,B48B20,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,25,BMW,M3,S58B30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,25,BMW,M3,S58B30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,25,BMW,M3,S58B30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,26,BMW,i3,,cabin_filter,64 11 9 237 555,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,27,BMW,i4,,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,28,BMW,iX,,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,29,BMW,iX1,,cabin_filter,64 31 9 194 098,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,30,BMW,iX3,,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,31,Mercedes-Benz,CLA,M270,oil_filter,270 180 01 09,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,31,Mercedes-Benz,CLA,M270,air_filter,270 094 02 04,WRONG_CORRECTED,274 094 01 04,wrong_prefix_and_suffix,"Spareto confirmed (A2740940104 with 23 products, MANN C 28 004, Filtron AP 035/7)",M270 air filter is actually A 274 094 01 04 (same as M274). The LLM used '270' prefix but the real number uses '274'. Variant is '01 04' not '02 04'. Confirmed on Spareto with both A prefix and without.
+expansion_filter_specs.csv,31,Mercedes-Benz,CLA,M270,cabin_filter,246 830 03 18,WRONG_CORRECTED,246 830 00 18,wrong_variant_digit,"Spareto confirmed (A2468300018 with MANN CUK 26 007, Filtron K 1346A)",Very close! Only middle variant digit wrong: '03' should be '00'. A 246 830 00 18 confirmed on Spareto with multiple cross-references.
+expansion_filter_specs.csv,32,Mercedes-Benz,CLA,M282,oil_filter,282 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,mbparts.mbusa.com lists 270-180-01-09 for 2014-2025 including W177 A-Class,M282 (1.3L turbo) shares oil filter with M270/M274 family. LLM fabricated '282' prefix matching engine code.
+expansion_filter_specs.csv,32,Mercedes-Benz,CLA,M282,air_filter,177 094 02 05,WRONG_CORRECTED,282 094 00 04,wrong_prefix_and_suffix,"eBay.co.uk genuine OEM listing (A2820940004), fmic.eu, classicparts.mbusa.com (177-094-01-00 is for M270 in W177)","M282 air filter is A 282 094 00 04. LLM used '177' (chassis code for A-Class) instead of '282' (engine code). Note: 177 094 01 00 EXISTS but that's for the M270 engine in W177, not M282."
+expansion_filter_specs.csv,32,Mercedes-Benz,CLA,M282,cabin_filter,177 830 00 00,NEEDS_DEALER_CHECK,,fabricated_variant,Amazon lists A2820940004 for W177/W247/C118/X243 but that's the AIR filter. Cabin filter for W177 platform not clearly confirmed.,LLM generated plausible '177 830 00 00' but this doesn't exist. The W177/W247 platform cabin filter real number needs dealer verification. Web sources suggest various numbers but no clear consensus.
+expansion_filter_specs.csv,33,Mercedes-Benz,GLB,M282,oil_filter,282 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,mbparts.mbusa.com lists 270-180-01-09 for 2014-2025 including W177 A-Class,M282 (1.3L turbo) shares oil filter with M270/M274 family. LLM fabricated '282' prefix matching engine code.
+expansion_filter_specs.csv,33,Mercedes-Benz,GLB,M282,air_filter,177 094 02 05,WRONG_CORRECTED,282 094 00 04,wrong_prefix_and_suffix,"eBay.co.uk genuine OEM listing (A2820940004), fmic.eu, classicparts.mbusa.com (177-094-01-00 is for M270 in W177)","M282 air filter is A 282 094 00 04. LLM used '177' (chassis code for A-Class) instead of '282' (engine code). Note: 177 094 01 00 EXISTS but that's for the M270 engine in W177, not M282."
+expansion_filter_specs.csv,33,Mercedes-Benz,GLB,M282,cabin_filter,247 830 00 00,NEEDS_DEALER_CHECK,,likely_fabricated_variant,No clear confirmation found,EQB/GLB cabin filter with 247 prefix is plausible (247 is GLB chassis code) but '00 00' variant is likely wrong. Needs dealer verification.
+expansion_filter_specs.csv,34,Mercedes-Benz,B-Class,M282,oil_filter,282 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,mbparts.mbusa.com lists 270-180-01-09 for 2014-2025 including W177 A-Class,M282 (1.3L turbo) shares oil filter with M270/M274 family. LLM fabricated '282' prefix matching engine code.
+expansion_filter_specs.csv,34,Mercedes-Benz,B-Class,M282,air_filter,177 094 02 05,WRONG_CORRECTED,282 094 00 04,wrong_prefix_and_suffix,"eBay.co.uk genuine OEM listing (A2820940004), fmic.eu, classicparts.mbusa.com (177-094-01-00 is for M270 in W177)","M282 air filter is A 282 094 00 04. LLM used '177' (chassis code for A-Class) instead of '282' (engine code). Note: 177 094 01 00 EXISTS but that's for the M270 engine in W177, not M282."
+expansion_filter_specs.csv,34,Mercedes-Benz,B-Class,M282,cabin_filter,177 830 00 00,NEEDS_DEALER_CHECK,,fabricated_variant,Amazon lists A2820940004 for W177/W247/C118/X243 but that's the AIR filter. Cabin filter for W177 platform not clearly confirmed.,LLM generated plausible '177 830 00 00' but this doesn't exist. The W177/W247 platform cabin filter real number needs dealer verification. Web sources suggest various numbers but no clear consensus.
+expansion_filter_specs.csv,35,Mercedes-Benz,GLE,M264,oil_filter,264 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,"mbparts.mbusa.com, Spareto confirmed with 30+ products",M264 shares the oil filter with M270/M274 family. LLM fabricated '264' prefix. Real: A 270 180 01 09.
+expansion_filter_specs.csv,35,Mercedes-Benz,GLE,M264,air_filter,167 094 00 04,NEEDS_DEALER_CHECK,,likely_fabricated,No exact match found. eBay shows A6540902801 as air filter housing for GLE W167 M256,GLE W167 uses different air filter systems per engine. The number pattern (167 + 094) follows the LLM's chassis-code prefix pattern which is often wrong. Real numbers likely differ per engine variant.
+expansion_filter_specs.csv,35,Mercedes-Benz,GLE,M264,cabin_filter,167 835 00 00,WRONG_CORRECTED,167 835 02 00,wrong_variant_digit,"classicparts.mbusa.com (167-835-02-00, 2020-2025), eBay (A1678350200 NEW GENUINE)",Close! Variant '00 00' should be '02 00'. A 167 835 02 00 is the dust filter. A 167 835 04 00 is the fine particle (charcoal) variant.
+expansion_filter_specs.csv,36,Mercedes-Benz,GLE,OM654,oil_filter,654 180 01 09,WRONG_CORRECTED,654 180 11 00,wrong_suffix,"mbparts.mbusa.com (654-180-11-00), idparts.com, mercedesgenuineparts.co.uk (A6541801100), eBay OEM listings",OM654 diesel has its own dedicated filter. Real is A 654 180 11 00. CSV had '01 09' suffix but real is '11 00'. Note: A6541840025 is an alternative/superseded number.
+expansion_filter_specs.csv,36,Mercedes-Benz,GLE,OM654,air_filter,167 094 00 04,NEEDS_DEALER_CHECK,,likely_fabricated,No exact match found. eBay shows A6540902801 as air filter housing for GLE W167 M256,GLE W167 uses different air filter systems per engine. The number pattern (167 + 094) follows the LLM's chassis-code prefix pattern which is often wrong. Real numbers likely differ per engine variant.
+expansion_filter_specs.csv,36,Mercedes-Benz,GLE,OM654,cabin_filter,167 835 00 00,WRONG_CORRECTED,167 835 02 00,wrong_variant_digit,"classicparts.mbusa.com (167-835-02-00, 2020-2025), eBay (A1678350200 NEW GENUINE)",Close! Variant '00 00' should be '02 00'. A 167 835 02 00 is the dust filter. A 167 835 04 00 is the fine particle (charcoal) variant.
+expansion_filter_specs.csv,37,Mercedes-Benz,GLE Coupe,M264,oil_filter,264 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,"mbparts.mbusa.com, Spareto confirmed with 30+ products",M264 shares the oil filter with M270/M274 family. LLM fabricated '264' prefix. Real: A 270 180 01 09.
+expansion_filter_specs.csv,37,Mercedes-Benz,GLE Coupe,M264,air_filter,167 094 00 04,NEEDS_DEALER_CHECK,,likely_fabricated,No exact match found. eBay shows A6540902801 as air filter housing for GLE W167 M256,GLE W167 uses different air filter systems per engine. The number pattern (167 + 094) follows the LLM's chassis-code prefix pattern which is often wrong. Real numbers likely differ per engine variant.
+expansion_filter_specs.csv,37,Mercedes-Benz,GLE Coupe,M264,cabin_filter,167 835 00 00,WRONG_CORRECTED,167 835 02 00,wrong_variant_digit,"classicparts.mbusa.com (167-835-02-00, 2020-2025), eBay (A1678350200 NEW GENUINE)",Close! Variant '00 00' should be '02 00'. A 167 835 02 00 is the dust filter. A 167 835 04 00 is the fine particle (charcoal) variant.
+expansion_filter_specs.csv,38,Mercedes-Benz,GLS,M256,oil_filter,256 180 00 09,WRONG_CORRECTED,256 184 00 00,wrong_part_group_digits,"hndautomotiveparts.com (A2561840000), ecstuning.com (service kit 2561840000KT4), mbpartscenter.com (256-180-32-00 alt)",M256 has its OWN oil filter (not shared with M270 family). Real is A 256 184 00 00. CSV had '180 00 09' (the old filter group code pattern) but M256 uses '184 00 00'.
+expansion_filter_specs.csv,38,Mercedes-Benz,GLS,M256,air_filter,167 094 00 04,NEEDS_DEALER_CHECK,,likely_fabricated,No exact match found. eBay shows A6540902801 as air filter housing for GLE W167 M256,GLE W167 uses different air filter systems per engine. The number pattern (167 + 094) follows the LLM's chassis-code prefix pattern which is often wrong. Real numbers likely differ per engine variant.
+expansion_filter_specs.csv,38,Mercedes-Benz,GLS,M256,cabin_filter,167 835 00 00,WRONG_CORRECTED,167 835 02 00,wrong_variant_digit,"classicparts.mbusa.com (167-835-02-00, 2020-2025), eBay (A1678350200 NEW GENUINE)",Close! Variant '00 00' should be '02 00'. A 167 835 02 00 is the dust filter. A 167 835 04 00 is the fine particle (charcoal) variant.
+expansion_filter_specs.csv,39,Mercedes-Benz,S-Class,M274,oil_filter,274 180 00 09,WRONG_CORRECTED,270 180 01 09,wrong_prefix_and_suffix,"mbparts.mbusa.com (2014-2025 vehicles), classicparts.mbusa.com, Spareto confirmed",M274 uses the same oil filter housing as M270. The LLM fabricated '274' prefix matching the engine code instead of the actual '270' prefix. Also wrong variant: '00 09' should be '01 09'.
+expansion_filter_specs.csv,39,Mercedes-Benz,S-Class,M274,air_filter,274 094 01 04,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,39,Mercedes-Benz,S-Class,M274,cabin_filter,222 830 00 18,WRONG_CORRECTED,222 830 03 18,wrong_variant_digit,eBay OEM listings (2228300318 and 2228300418),"Close! Middle variant '00' should be '03'. A 222 830 03 18 is the dust filter, A 222 830 04 18 is the charcoal variant."
+expansion_filter_specs.csv,40,Mercedes-Benz,S-Class,M256,oil_filter,256 180 00 09,WRONG_CORRECTED,256 184 00 00,wrong_part_group_digits,"hndautomotiveparts.com (A2561840000), ecstuning.com (service kit 2561840000KT4), mbpartscenter.com (256-180-32-00 alt)",M256 has its OWN oil filter (not shared with M270 family). Real is A 256 184 00 00. CSV had '180 00 09' (the old filter group code pattern) but M256 uses '184 00 00'.
+expansion_filter_specs.csv,40,Mercedes-Benz,S-Class,M256,air_filter,223 094 00 04,NEEDS_DEALER_CHECK,,likely_fabricated,No exact match found in search results,W223 S-Class M256 air filter not found. May share with other M256 vehicles but specific number unconfirmed.
+expansion_filter_specs.csv,40,Mercedes-Benz,S-Class,M256,cabin_filter,223 830 00 00,WRONG_CORRECTED,223 830 14 00,wrong_variant_digits,"classicparts.mbusa.com (223-830-14-00, 2021-2025 vehicles)",Variant '00 00' should be '14 00'. A 223 830 14 00 confirmed on MB Classic Parts Store.
+expansion_filter_specs.csv,41,Mercedes-Benz,CLS,M256,oil_filter,256 180 00 09,WRONG_CORRECTED,256 184 00 00,wrong_part_group_digits,"hndautomotiveparts.com (A2561840000), ecstuning.com (service kit 2561840000KT4), mbpartscenter.com (256-180-32-00 alt)",M256 has its OWN oil filter (not shared with M270 family). Real is A 256 184 00 00. CSV had '180 00 09' (the old filter group code pattern) but M256 uses '184 00 00'.
+expansion_filter_specs.csv,41,Mercedes-Benz,CLS,M256,air_filter,213 094 01 04,NEEDS_DEALER_CHECK,,likely_fabricated,Could not find specific CLS M256 air filter number,CLS with M256 engine likely shares air filter with E-Class or uses engine-specific number. Could be 260 094 03 00 (universal M256 air filter found on MB parts) but not confirmed for CLS specifically.
+expansion_filter_specs.csv,41,Mercedes-Benz,CLS,M256,cabin_filter,213 835 00 47,WRONG_CORRECTED,205 835 01 47,wrong_prefix_and_variant,"eBay OEM listing (A2058350147 for W205/W213), Spareto confirmed","E-Class W213 shares cabin filter with C-Class W205. Real is A 205 835 01 47, not '213 835 00 47'. LLM used chassis code '213' as prefix instead of shared part prefix '205'."
+expansion_filter_specs.csv,42,Mercedes-Benz,G-Class,M256,oil_filter,256 180 00 09,WRONG_CORRECTED,256 184 00 00,wrong_part_group_digits,"hndautomotiveparts.com (A2561840000), ecstuning.com (service kit 2561840000KT4), mbpartscenter.com (256-180-32-00 alt)",M256 has its OWN oil filter (not shared with M270 family). Real is A 256 184 00 00. CSV had '180 00 09' (the old filter group code pattern) but M256 uses '184 00 00'.
+expansion_filter_specs.csv,42,Mercedes-Benz,G-Class,M256,air_filter,463 094 01 04,NEEDS_DEALER_CHECK,,likely_fabricated,No exact match found. 260 094 03 00 is a generic M256 air filter on MB USA parts,W463 G-Class M256 air filter not confirmed. The '463' prefix matches chassis code pattern.
+expansion_filter_specs.csv,42,Mercedes-Benz,G-Class,M256,cabin_filter,463 830 01 18,WRONG_CORRECTED,463 835 28 00,wrong_group_and_variant,eBay genuine listing (Genuine New Mercedes Benz G Wagon Cabin Air Filter 463-835-2800),G-Class uses '835' group (not '830') with variant '28 00'. CSV had '830 01 18'.
+expansion_filter_specs.csv,43,Mercedes-Benz,SL,M256,oil_filter,256 180 00 09,WRONG_CORRECTED,256 184 00 00,wrong_part_group_digits,"hndautomotiveparts.com (A2561840000), ecstuning.com (service kit 2561840000KT4), mbpartscenter.com (256-180-32-00 alt)",M256 has its OWN oil filter (not shared with M270 family). Real is A 256 184 00 00. CSV had '180 00 09' (the old filter group code pattern) but M256 uses '184 00 00'.
+expansion_filter_specs.csv,43,Mercedes-Benz,SL,M256,air_filter,232 094 00 04,NEEDS_DEALER_CHECK,,likely_fabricated,No exact match found in search results,R232 SL M256 air filter not found. Likely shares with M256 family but specific number unconfirmed.
+expansion_filter_specs.csv,43,Mercedes-Benz,SL,M256,cabin_filter,232 830 00 00,NEEDS_DEALER_CHECK,,likely_fabricated,,SL R232 cabin filter. Pattern matches LLM fabrication (chassis_code + 830 00 00).
+expansion_filter_specs.csv,44,Mercedes-Benz,V-Class,OM651,oil_filter,651 180 01 09,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,44,Mercedes-Benz,V-Class,OM651,air_filter,651 094 02 04,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,44,Mercedes-Benz,V-Class,OM651,cabin_filter,447 830 00 00,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,45,Mercedes-Benz,Vito,OM651,oil_filter,651 180 01 09,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,45,Mercedes-Benz,Vito,OM651,air_filter,651 094 02 04,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,45,Mercedes-Benz,Vito,OM651,cabin_filter,447 830 00 00,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,46,Mercedes-Benz,Sprinter,OM654,oil_filter,654 180 01 09,WRONG_CORRECTED,654 180 11 00,wrong_suffix,"mbparts.mbusa.com (654-180-11-00), idparts.com, mercedesgenuineparts.co.uk (A6541801100), eBay OEM listings",OM654 diesel has its own dedicated filter. Real is A 654 180 11 00. CSV had '01 09' suffix but real is '11 00'. Note: A6541840025 is an alternative/superseded number.
+expansion_filter_specs.csv,46,Mercedes-Benz,Sprinter,OM654,air_filter,907 094 00 04,WRONG_CORRECTED,907 528 35 00,wrong_part_group,"mbparts.mbusa.com (9075283500, 2023-2025), idparts.com, europarts-sd.com",Sprinter OM654 air filter is A 907 528 35 00. The CSV used '094' (standard air filter group code) but Sprinter uses '528' group code. Confirmed on MB USA Parts and multiple OEM retailers.
+expansion_filter_specs.csv,46,Mercedes-Benz,Sprinter,OM654,cabin_filter,907 835 00 00,WRONG_CORRECTED,906 830 02 18,wrong_prefix_and_variant,"mbparts.mbusa.com (906-830-02-18, 2010-2018 Sprinter)",Sprinter cabin filter uses '906' prefix (previous gen shared part). The W907 may use an updated number but 906 830 02 18 is the established part. MANN CU 30 012 is the aftermarket equivalent.
+expansion_filter_specs.csv,47,Mercedes-Benz,EQA,,cabin_filter,243 830 00 00,NEEDS_DEALER_CHECK,,likely_fabricated,No clear confirmation found,EQA (H243) cabin filter. The '243' prefix is plausible but '830 00 00' variant is the LLM's default fabrication pattern. Needs dealer verification.
+expansion_filter_specs.csv,48,Mercedes-Benz,EQB,,cabin_filter,247 830 00 00,NEEDS_DEALER_CHECK,,likely_fabricated_variant,No clear confirmation found,EQB/GLB cabin filter with 247 prefix is plausible (247 is GLB chassis code) but '00 00' variant is likely wrong. Needs dealer verification.
+expansion_filter_specs.csv,49,Mercedes-Benz,EQE,,cabin_filter,295 830 00 00,NEEDS_DEALER_CHECK,,likely_fabricated,No confirmation found,EQE cabin filter. Pattern matches LLM fabrication (chassis_code + 830 00 00).
+expansion_filter_specs.csv,50,Mercedes-Benz,EQS,,cabin_filter,297 830 00 00,NEEDS_DEALER_CHECK,,likely_fabricated,No confirmation found,EQS cabin filter. Pattern matches LLM fabrication (chassis_code + 830 00 00).
+expansion_filter_specs.csv,51,Audi,A1,CWVA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,51,Audi,A1,CWVA,air_filter,6C0 129 620,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,51,Audi,A1,CWVA,cabin_filter,6R0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,52,Audi,A1,DKRF,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,52,Audi,A1,DKRF,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,52,Audi,A1,DKRF,cabin_filter,2Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,53,Audi,A5,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,53,Audi,A5,CZDA,air_filter,8W0 133 843,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,53,Audi,A5,CZDA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,54,Audi,A5,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,54,Audi,A5,DFGA,air_filter,8W0 133 843,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,54,Audi,A5,DFGA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,55,Audi,A6,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,55,Audi,A6,CZDA,air_filter,4G0 133 843 A,WRONG_CORRECTED,4G0 133 843,extra_suffix_A_and_possibly_wrong_generation,"parts.audiusa.com, ecstuning.com","Audi A6 air filter. 4G0 is C7 prefix. If CSV says C8, the whole number is wrong."
+expansion_filter_specs.csv,55,Audi,A6,CZDA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,56,Audi,A6,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,56,Audi,A6,DFGA,air_filter,4G0 133 843 A,WRONG_CORRECTED,4G0 133 843,extra_suffix_A_and_possibly_wrong_generation,"parts.audiusa.com, ecstuning.com","Audi A6 air filter. 4G0 is C7 prefix. If CSV says C8, the whole number is wrong."
+expansion_filter_specs.csv,56,Audi,A6,DFGA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,57,Audi,A7,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,57,Audi,A7,CZDA,air_filter,4G0 133 843 A,WRONG_CORRECTED,4G0 133 843,extra_suffix_A_and_possibly_wrong_generation,"parts.audiusa.com, ecstuning.com","Audi A6 air filter. 4G0 is C7 prefix. If CSV says C8, the whole number is wrong."
+expansion_filter_specs.csv,57,Audi,A7,CZDA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,58,Audi,A7,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,58,Audi,A7,DFGA,air_filter,4G0 133 843 A,WRONG_CORRECTED,4G0 133 843,extra_suffix_A_and_possibly_wrong_generation,"parts.audiusa.com, ecstuning.com","Audi A6 air filter. 4G0 is C7 prefix. If CSV says C8, the whole number is wrong."
+expansion_filter_specs.csv,58,Audi,A7,DFGA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,59,Audi,A8,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,59,Audi,A8,CZDA,air_filter,4M0 133 843 B,LIKELY_FABRICATED,,wrong_prefix_for_model,Audi parts portal,"Audi A8 air filter. 4M0 is Q7/Q8 prefix, not A8. A8 uses 4H0 prefix."
+expansion_filter_specs.csv,59,Audi,A8,CZDA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,60,Audi,TT,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,60,Audi,TT,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,60,Audi,TT,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,61,Audi,Q2,DKRF,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,61,Audi,Q2,DKRF,air_filter,04C 129 620 C,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,61,Audi,Q2,DKRF,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,62,Audi,Q2,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,62,Audi,Q2,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,62,Audi,Q2,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,63,Audi,Q7,CZPA,oil_filter,06L 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,63,Audi,Q7,CZPA,air_filter,4M0 133 843 B,LIKELY_FABRICATED,,wrong_prefix_for_model,Audi parts portal,"Audi A8 air filter. 4M0 is Q7/Q8 prefix, not A8. A8 uses 4H0 prefix."
+expansion_filter_specs.csv,63,Audi,Q7,CZPA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,64,Audi,Q7,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,64,Audi,Q7,DFGA,air_filter,4M0 133 843 B,LIKELY_FABRICATED,,wrong_prefix_for_model,Audi parts portal,"Audi A8 air filter. 4M0 is Q7/Q8 prefix, not A8. A8 uses 4H0 prefix."
+expansion_filter_specs.csv,64,Audi,Q7,DFGA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,65,Audi,Q8,CZPA,oil_filter,06L 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,65,Audi,Q8,CZPA,air_filter,4M0 133 843 B,LIKELY_FABRICATED,,wrong_prefix_for_model,Audi parts portal,"Audi A8 air filter. 4M0 is Q7/Q8 prefix, not A8. A8 uses 4H0 prefix."
+expansion_filter_specs.csv,65,Audi,Q8,CZPA,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,66,Audi,Q8 e-tron,,cabin_filter,4M0 819 439 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,67,Volvo,XC90,B4204T23,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,67,Volvo,XC90,B4204T23,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,67,Volvo,XC90,B4204T23,cabin_filter,31407748,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,68,Volvo,XC90,D4204T14,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,68,Volvo,XC90,D4204T14,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,68,Volvo,XC90,D4204T14,cabin_filter,31407748,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,69,Volvo,S60,B4204T47,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,69,Volvo,S60,B4204T47,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,69,Volvo,S60,B4204T47,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,70,Volvo,S60,D4204T14,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,70,Volvo,S60,D4204T14,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,70,Volvo,S60,D4204T14,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,71,Volvo,S60,B4204T11,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,71,Volvo,S60,B4204T11,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,71,Volvo,S60,B4204T11,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,72,Volvo,V60,B4204T47,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,72,Volvo,V60,B4204T47,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,72,Volvo,V60,B4204T47,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,73,Volvo,S90,B4204T23,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,73,Volvo,S90,B4204T23,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,73,Volvo,S90,B4204T23,cabin_filter,31407748,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,74,Volvo,V90,B4204T23,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,74,Volvo,V90,B4204T23,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,74,Volvo,V90,B4204T23,cabin_filter,31407748,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,75,Volvo,V40 Cross Country,B4204T11,oil_filter,31372212,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,75,Volvo,V40 Cross Country,B4204T11,air_filter,31370089,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,75,Volvo,V40 Cross Country,B4204T11,cabin_filter,31390880,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,76,Volvo,EX30,,cabin_filter,32296694,WRONG_CORRECTED,31497284 or 80019969,wrong_number,"usparts.volvocars.com, fcpeuro.com, eBay genuine",Volvo EX30 cabin filter. 80019969 is the EV-specific multi filter.
+expansion_filter_specs.csv,77,Volvo,EX90,,cabin_filter,32346498,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,78,Seat,Ateca,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,78,Seat,Ateca,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,78,Seat,Ateca,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,79,Seat,Ateca,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,79,Seat,Ateca,DFGA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,79,Seat,Ateca,DFGA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,80,Seat,Tarraco,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,80,Seat,Tarraco,CZDA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,80,Seat,Tarraco,CZDA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,81,Seat,Tarraco,DFGA,oil_filter,03N 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,81,Seat,Tarraco,DFGA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,81,Seat,Tarraco,DFGA,cabin_filter,5Q0 819 653,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,82,Seat,Alhambra,CZDA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,82,Seat,Alhambra,CZDA,air_filter,3C0 129 620,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,82,Seat,Alhambra,CZDA,cabin_filter,7H0 819 631,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,83,Seat,Altea,CZCA,oil_filter,04E 115 561 H,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,83,Seat,Altea,CZCA,air_filter,5Q0 129 620 B,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,83,Seat,Altea,CZCA,cabin_filter,1K0 819 653 A,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,84,Cupra,Born,,cabin_filter,1EA 819 641,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,85,BMW,M4,S58B30,oil_filter,11 42 8 575 211,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,85,BMW,M4,S58B30,air_filter,13 71 8 519 129,LIKELY_FABRICATED,,Not found in any source,,Not found. BMW air filter numbers usually end differently.
+expansion_filter_specs.csv,85,BMW,M4,S58B30,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,86,BMW,i5,,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,87,BMW,i7,,cabin_filter,64 11 9 321 875,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,88,BMW,iX2,,cabin_filter,64 31 9 194 098,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,89,DS,DS4,EP6,oil_filter,1109.CK,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,89,DS,DS4,EP6,air_filter,1444.VZ,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,89,DS,DS4,EP6,cabin_filter,6479.C2,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,90,Hyundai,Creta,G4FG,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,90,Hyundai,Creta,G4FG,air_filter,28113-A5800,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,90,Hyundai,Creta,G4FG,cabin_filter,97133-B2000,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,91,Kia,Carnival,D4HB,oil_filter,26300-35505,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,91,Kia,Carnival,D4HB,air_filter,28113-2P300,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,91,Kia,Carnival,D4HB,cabin_filter,97133-2E210,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,92,Land Rover,Range Rover Sport,PT204,oil_filter,LR073669,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,92,Land Rover,Range Rover Sport,PT204,air_filter,LR122592,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,92,Land Rover,Range Rover Sport,PT204,cabin_filter,LR117485,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,93,MG,5,15S4G,oil_filter,10405642,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,93,MG,5,15S4G,air_filter,10405878,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,93,MG,5,15S4G,cabin_filter,10242940,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,94,Porsche,Cayenne,DCBA,oil_filter,06L 115 562,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,94,Porsche,Cayenne,DCBA,air_filter,95B 129 620 A,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,94,Porsche,Cayenne,DCBA,cabin_filter,95B 819 631,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,95,GWM,Haval H6,GW4C20B,oil_filter,1017100GG010,VERIFIED_EXISTS,,,Spareto OE lookup,
+expansion_filter_specs.csv,95,GWM,Haval H6,GW4C20B,air_filter,1109120XKZ36A,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,95,GWM,Haval H6,GW4C20B,cabin_filter,8104300XKZ36A,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,96,Geely,Emgrand,JLC-4G15,oil_filter,1016050811,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,96,Geely,Emgrand,JLC-4G15,air_filter,1016012681,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,96,Geely,Emgrand,JLC-4G15,cabin_filter,8022003200,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+expansion_filter_specs.csv,97,Tesla,Model S,,cabin_filter,1035125-00-A,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,2,Daihatsu,Sirion,EJ-VE,oil_filter,15601-87107,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,2,Daihatsu,Sirion,EJ-VE,air_filter,17801-97201,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,3,Daihatsu,Sirion,1KR-FE,oil_filter,04152-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,3,Daihatsu,Sirion,1KR-FE,air_filter,17801-97201,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,3,Daihatsu,Sirion,1KR-FE,cabin_filter,88568-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,4,Daihatsu,Sirion,K3-VE,oil_filter,15601-B2030,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,4,Daihatsu,Sirion,K3-VE,air_filter,17801-87402,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,4,Daihatsu,Sirion,K3-VE,cabin_filter,88568-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,5,Daihatsu,Sirion,3SZ-VE,oil_filter,15601-B2030,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,5,Daihatsu,Sirion,3SZ-VE,air_filter,17801-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,5,Daihatsu,Sirion,3SZ-VE,cabin_filter,88568-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,6,Daihatsu,Terios,HC-EJ,oil_filter,15601-87703,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,6,Daihatsu,Terios,HC-EJ,air_filter,17801-87402,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,7,Daihatsu,Terios,K3-VE,oil_filter,15601-B2030,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,7,Daihatsu,Terios,K3-VE,air_filter,17801-87402,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,7,Daihatsu,Terios,K3-VE,cabin_filter,88568-B4010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,8,Daihatsu,Terios,3SZ-VE,oil_filter,15601-B2030,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,8,Daihatsu,Terios,3SZ-VE,air_filter,17801-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,8,Daihatsu,Terios,3SZ-VE,cabin_filter,88568-B4010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,9,Daihatsu,Materia,K3-VE,oil_filter,15601-B2030,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,9,Daihatsu,Materia,K3-VE,air_filter,17801-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,9,Daihatsu,Materia,K3-VE,cabin_filter,88568-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,10,Daihatsu,Materia,3SZ-VE,oil_filter,15601-B2030,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,10,Daihatsu,Materia,3SZ-VE,air_filter,17801-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,10,Daihatsu,Materia,3SZ-VE,cabin_filter,88568-B1010,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,11,Smart,ForTwo,3B21,oil_filter,A1321800110,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,11,Smart,ForTwo,3B21,air_filter,A1320900001,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,11,Smart,ForTwo,3B21,cabin_filter,A4518350047,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,12,Smart,ForTwo,OM660,oil_filter,A6601800009,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,12,Smart,ForTwo,OM660,air_filter,A6600940004,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,12,Smart,ForTwo,OM660,cabin_filter,A4518350047,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,13,Smart,ForTwo,M281,oil_filter,A2811800210,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,13,Smart,ForTwo,M281,air_filter,A4530940000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,13,Smart,ForTwo,M281,cabin_filter,A4538350100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,14,Smart,ForTwo,H4B,oil_filter,A2811800210,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,14,Smart,ForTwo,H4B,air_filter,A4530940000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,14,Smart,ForTwo,H4B,cabin_filter,A4538350100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,15,Smart,ForFour,4A90,oil_filter,MN195396,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,15,Smart,ForFour,4A90,air_filter,MR968274,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,15,Smart,ForFour,4A90,cabin_filter,MR958016,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,16,Smart,ForFour,4A91,oil_filter,MN195396,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,16,Smart,ForFour,4A91,air_filter,MR968274,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,16,Smart,ForFour,4A91,cabin_filter,MR958016,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,17,Smart,ForFour,4A92,oil_filter,MN195396,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,17,Smart,ForFour,4A92,air_filter,MR968274,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,17,Smart,ForFour,4A92,cabin_filter,MR958016,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,18,Smart,ForFour,M281,oil_filter,A2811800210,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,18,Smart,ForFour,M281,air_filter,A4530940000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,18,Smart,ForFour,M281,cabin_filter,A4538350100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,19,Smart,ForFour,H4B,oil_filter,A2811800210,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,19,Smart,ForFour,H4B,air_filter,A4530940000,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,19,Smart,ForFour,H4B,cabin_filter,A4538350100,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,20,Chrysler,PT Cruiser,ECN/EDZ,oil_filter,4884899AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,20,Chrysler,PT Cruiser,ECN/EDZ,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,20,Chrysler,PT Cruiser,ECN/EDZ,cabin_filter,5058693AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,21,Chrysler,PT Cruiser,OM646,oil_filter,5175571AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,21,Chrysler,PT Cruiser,OM646,air_filter,5189959AA,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,21,Chrysler,PT Cruiser,OM646,cabin_filter,5058693AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,22,Chrysler,Sebring,EDZ,oil_filter,4884899AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,22,Chrysler,Sebring,EDZ,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,22,Chrysler,Sebring,EDZ,cabin_filter,5058693AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,23,Chrysler,Sebring,EBA/ECN,oil_filter,4884899AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,23,Chrysler,Sebring,EBA/ECN,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,23,Chrysler,Sebring,EBA/ECN,cabin_filter,5058693AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,24,Chrysler,Sebring,EER,oil_filter,4892339AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,24,Chrysler,Sebring,EER,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,24,Chrysler,Sebring,EER,cabin_filter,5058693AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,25,Chrysler,300C,EGG,oil_filter,4892339AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,25,Chrysler,300C,EGG,air_filter,4861756AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,25,Chrysler,300C,EGG,cabin_filter,82205905,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,26,Chrysler,300C,EZH,oil_filter,5281090AB,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,26,Chrysler,300C,EZH,air_filter,4861756AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,26,Chrysler,300C,EZH,cabin_filter,82205905,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,27,Chrysler,300C,ERB,oil_filter,68191349AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,27,Chrysler,300C,ERB,air_filter,68197800AA,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,27,Chrysler,300C,ERB,cabin_filter,68071668AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,28,Chrysler,300C,EGF,oil_filter,5175571AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,28,Chrysler,300C,EGF,air_filter,68143102AA,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,28,Chrysler,300C,EGF,cabin_filter,68071668AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,29,Chrysler,Grand Voyager,EGA,oil_filter,4105409AB,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,29,Chrysler,Grand Voyager,EGA,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,29,Chrysler,Grand Voyager,EGA,cabin_filter,4885955AB,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,30,Chrysler,Grand Voyager,ERB,oil_filter,68191349AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,30,Chrysler,Grand Voyager,ERB,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,30,Chrysler,Grand Voyager,ERB,cabin_filter,68042866AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,31,Chrysler,Grand Voyager,ENJ,oil_filter,5019741AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,31,Chrysler,Grand Voyager,ENJ,air_filter,4861480AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,31,Chrysler,Grand Voyager,ENJ,cabin_filter,4885955AB,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,32,Chrysler,Grand Voyager,ENS,oil_filter,68032204AB,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,32,Chrysler,Grand Voyager,ENS,air_filter,68001735AB,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,32,Chrysler,Grand Voyager,ENS,cabin_filter,68042866AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,33,Chrysler,Neon,ECH,oil_filter,4105409AB,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,33,Chrysler,Neon,ECH,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,33,Chrysler,Neon,ECH,cabin_filter,5013595AB,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,34,Chrysler,Crossfire,M112,oil_filter,0001803109,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,34,Chrysler,Crossfire,M112,air_filter,0000942004,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,34,Chrysler,Crossfire,M112,cabin_filter,A2108301018,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,35,Chrysler,200,ECN,oil_filter,4884899AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,35,Chrysler,200,ECN,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,35,Chrysler,200,ECN,cabin_filter,68071668AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,36,Chrysler,200,ERB,oil_filter,68191349AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,36,Chrysler,200,ERB,air_filter,68245491AA,UNVERIFIABLE_COVERAGE_GAP,,,,Not in English-language parts databases. May be correct.
+stage2_filter_specs.csv,36,Chrysler,200,ERB,cabin_filter,68071668AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,37,Chrysler,Town & Country,ERB,oil_filter,68191349AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,37,Chrysler,Town & Country,ERB,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,37,Chrysler,Town & Country,ERB,cabin_filter,68042866AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,38,Dodge,Neon,ECH,oil_filter,4105409AB,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,38,Dodge,Neon,ECH,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,38,Dodge,Neon,ECH,cabin_filter,5013595AB,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,39,Dodge,Caliber,ECN,oil_filter,4884899AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,39,Dodge,Caliber,ECN,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,39,Dodge,Caliber,ECN,cabin_filter,68071668AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,40,Dodge,Journey,ERB,oil_filter,68191349AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,40,Dodge,Journey,ERB,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,40,Dodge,Journey,ERB,cabin_filter,68071668AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,41,Dodge,Journey,ED3,oil_filter,4884899AC,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,41,Dodge,Journey,ED3,air_filter,4891694AA,VERIFIED_EXISTS,,,Spareto OE lookup,
+stage2_filter_specs.csv,41,Dodge,Journey,ED3,cabin_filter,68071668AA,VERIFIED_EXISTS,,,Spareto OE lookup,

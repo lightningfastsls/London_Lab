@@ -1,0 +1,37 @@
+{
+  "skill_name": "reduce",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Extract structured knowledge from this source file about DeepSqueak and USV classification. The file is at inbox/deepsqueak-usv-syllable-classification-practical-guide.md. This is a domain-relevant research synthesis about USV analysis tools and methods. Read the source fully, check for duplicates against existing notes in notes/, and produce an extraction report listing all claims, implementation ideas, tensions, enrichments, and skipped items with rationale. Do NOT create any files — just produce the extraction report. Save the full extraction report to the outputs directory specified.",
+      "expected_output": "A structured extraction report with categorized claims (core notes, implementation ideas, tensions, enrichments, skipped items), each with rationale. Domain-relevant source so skip rate should be < 10%. Should produce 8-15+ outputs from 122 lines.",
+      "files": ["inbox/deepsqueak-usv-syllable-classification-practical-guide.md"],
+      "expectations": [
+        "Report contains a SUMMARY section with numerical counts by category",
+        "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+        "Skip rate is below 15% (skipped items / total candidates)",
+        "Every extracted item includes a rationale explaining why it was extracted",
+        "Extracted titles are phrased as claims/propositions, not topic labels",
+        "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+        "Report mentions checking existing notes for duplicates or overlap",
+        "The continuous-vs-discrete USV manifold tension is captured as an extraction"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Extract structured knowledge from this vacation planning source file. The file is at inbox/vacation-master-plan-v2.md. This captures implementation plans for information theory analysis, probing experiments, and LMT integration for USV research. Read the source fully, check for duplicates against existing notes in notes/, and produce an extraction report listing all claims, implementation ideas, tensions, enrichments, and skipped items with rationale. Do NOT create any files — just produce the extraction report. Save the full extraction report to the outputs directory specified.",
+      "expected_output": "A structured extraction report. This is a planning/implementation doc so should be heavy on implementation ideas and open questions. Should produce 8-15+ outputs from 101 lines.",
+      "files": ["inbox/vacation-master-plan-v2.md"],
+      "expectations": [
+        "Report contains a SUMMARY section with numerical counts by category",
+        "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+        "Skip rate is below 15% (skipped items / total candidates)",
+        "Every extracted item includes a rationale explaining why it was extracted",
+        "Extracted titles are phrased as claims/propositions, not topic labels",
+        "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+        "Report mentions checking existing notes for duplicates or overlap",
+        "Implementation ideas are explicitly categorized (not lumped with core claims)"
+      ]
+    }
+  ]
+}

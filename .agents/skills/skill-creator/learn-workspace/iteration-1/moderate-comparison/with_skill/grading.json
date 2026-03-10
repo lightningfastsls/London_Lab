@@ -1,0 +1,15 @@
+{
+  "eval_id": 1,
+  "eval_name": "moderate-comparison",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": true, "evidence": "Produced python-alternatives-deepsqueak-usv-classification-research-2026-02-27.md in inbox-compatible format"},
+    {"text": "frontmatter-valid", "passed": true, "evidence": "Full YAML frontmatter: description, source_type, url, author, date_accessed, status, research_tool, research_query, research_depth"},
+    {"text": "source-log-present", "passed": true, "evidence": "## Source Log table at line 123 with structured entries (URL, status, relevance, key finding)"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "Claims traced to specific papers (Ivanenko et al. 2023, Scientific Reports) and GitHub repos"},
+    {"text": "pipeline-chaining", "passed": true, "evidence": "Agent report suggested '/reduce inbox/python-alternatives-deepsqueak-usv-classification-research-2026-02-27.md' with estimate of 6-8 extractable claims"},
+    {"text": "multi-source-synthesis", "passed": true, "evidence": "Compared SqueakOut, MoUSE, USVSEG Python port, VocalMat, AMVOC, TrackUSF with performance benchmarks (U-Net 91.1% vs DeepSqueak 66.4%)"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Synthesized with original framing, inline citations, and contextual comparison to project pipeline"},
+    {"text": "vault-check-performed", "passed": true, "evidence": "Found notes/classification.md with 30+ existing notes. Identified 3 tools NOT already in vault. Research focused on gaps."}
+  ]
+}

@@ -86,6 +86,7 @@ def render_tiled_pages(
             figsize=(fig_width, fig_height),
             dpi=cfg.page_dpi,
             squeeze=False,
+            constrained_layout=True,
         )
 
         page_start = page_index * tiles_per_page
@@ -142,7 +143,6 @@ def render_tiled_pages(
         if last_mesh is not None:
             fig.colorbar(last_mesh, ax=axes, label="dB", shrink=0.75)
 
-        fig.tight_layout(rect=(0, 0, 1, 0.97) if title else None)
         output_path = output_dir / f"{base_name}_page{page_index + 1:03d}.png"
         fig.savefig(str(output_path))
         plt.close(fig)

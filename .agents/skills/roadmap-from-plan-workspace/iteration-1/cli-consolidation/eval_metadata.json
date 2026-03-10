@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "eval_name": "cli-consolidation",
+  "prompt": "Convert this plan into a ROADMAP: .claude/skills/roadmap-from-plan-workspace/test-plans/cli-consolidation.md",
+  "assertions": [
+    {"id": "B1", "text": "Output contains exactly 3 /implement blocks (one per plan step)"},
+    {"id": "B2", "text": "Step 2 (migration) explicitly depends on Step 1 (framework)"},
+    {"id": "B3", "text": "No modules assigned Tier 3 (infrastructure, not DSP/ML)"},
+    {"id": "B4", "text": "Mentions backwards compatibility (thin wrappers)"},
+    {"id": "B5", "text": "Contains a Phase Gate section"}
+  ]
+}

@@ -31,7 +31,10 @@ if str(_REPO_ROOT) not in sys.path:
 from usv_language.data.dataset import TransformerDataConfig, USVBoutDataset
 from usv_language.data.normalization import load_normalization_stats, normalize
 from usv_language.models.transformer import SpectrogramTransformer, TransformerConfig
-from usv_language.training.train_transformer import load_bout_spectrograms
+from usv_language.training.train_transformer import (
+    coerce_transformer_config,
+    load_bout_spectrograms,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +42,24 @@ logger = logging.getLogger(__name__)
 def count_total_frames(dataset: USVBoutDataset) -> int:
     """Count total valid (non-padding) frames across all chunks."""
     return sum(max(0, length - 1) for length in dataset.get_lengths())
+
+
+def validate_extraction_layers(
+    target_layers: list[int],
+    primary_layer: int,
+    n_layers: int,
+) -> list[int]:
+    """Validate requested extraction layers and return zero-indexed layer ids."""
+    layer_indices = [int(layer) - 1 for layer in target_layers]
+    for idx in layer_indices:
+        if idx < 0 or idx >= n_layers:
+            raise ValueError(f"Layer {idx + 1} out of range [1, {n_layers}]")
+    if primary_layer not in target_layers:
+        raise ValueError(
+            f"primary_layer={primary_layer} must be included in extracted layers "
+            f"{target_layers}"
+        )
+    return layer_indices
 
 
 def extract_hidden_states(args: argparse.Namespace) -> None:
@@ -53,8 +74,10 @@ def extract_hidden_states(args: argparse.Namespace) -> None:
 
     # Load checkpoint
     checkpoint_path = Path(args.checkpoint)
+    if not checkpoint_path.exists():
+        raise FileNotFoundError(f"Checkpoint not found: {checkpoint_path}")
     checkpoint = torch.load(str(checkpoint_path), map_location="cpu", weights_only=False)
-    config: TransformerConfig = checkpoint["config"]
+    config = coerce_transformer_config(checkpoint.get("config"))
 
     logger.info("Loaded checkpoint from %s (epoch %d)", checkpoint_path, checkpoint["epoch"])
 
@@ -68,12 +91,9 @@ def extract_hidden_states(args: argparse.Namespace) -> None:
 
     # Parse target layers (1-indexed in CLI, 0-indexed internally)
     target_layers = [int(l) for l in args.layers]
-    layer_indices = [l - 1 for l in target_layers]  # convert to 0-indexed
-    for idx in layer_indices:
-        if idx < 0 or idx >= config.n_layers:
-            raise ValueError(
-                f"Layer {idx + 1} out of range [1, {config.n_layers}]"
-            )
+    layer_indices = validate_extraction_layers(
+        target_layers, args.primary_layer, config.n_layers,
+    )
 
     # Load data
     data_dir = Path(args.data_dir)
@@ -113,8 +133,12 @@ def extract_hidden_states(args: argparse.Namespace) -> None:
         )
         mmap_files[layer_num] = mmap
 
-    # Metadata: maps frame index to source info
+    # Metadata: maps frame index to source info and recording-level spans
     metadata_entries: list[dict] = []
+    recording_entries: list[dict] = []
+    current_recording_id: str | None = None
+    current_recording_start = 0
+    current_recording_frames = 0
     frame_offset = 0
 
     # Extract
@@ -150,6 +174,22 @@ def extract_hidden_states(args: argparse.Namespace) -> None:
                     end = frame_offset + valid_len
                     mmap_files[layer_num][frame_offset:end] = h.cpu().numpy()
 
+                rec_id = str(rec_id)
+
+                if current_recording_id is None:
+                    current_recording_id = rec_id
+                    current_recording_start = frame_offset
+                elif rec_id != current_recording_id:
+                    recording_entries.append({
+                        "recording_id": current_recording_id,
+                        "start_frame": current_recording_start,
+                        "end_frame": current_recording_start + current_recording_frames,
+                        "n_frames": current_recording_frames,
+                    })
+                    current_recording_id = rec_id
+                    current_recording_start = frame_offset
+                    current_recording_frames = 0
+
                 # Record metadata for each frame
                 for f in range(valid_len):
                     metadata_entries.append({
@@ -159,6 +199,7 @@ def extract_hidden_states(args: argparse.Namespace) -> None:
                         "frame_within_chunk": f,
                     })
 
+                current_recording_frames += valid_len
                 frame_offset += valid_len
 
             if (batch_idx + 1) % 10 == 0:
@@ -182,6 +223,14 @@ def extract_hidden_states(args: argparse.Namespace) -> None:
             trimmed = full[:frame_offset].copy()
             np.save(str(path), trimmed)
 
+    if current_recording_id is not None:
+        recording_entries.append({
+            "recording_id": current_recording_id,
+            "start_frame": current_recording_start,
+            "end_frame": current_recording_start + current_recording_frames,
+            "n_frames": current_recording_frames,
+        })
+
     # Save metadata
     metadata = {
         "total_frames": frame_offset,
@@ -190,6 +239,7 @@ def extract_hidden_states(args: argparse.Namespace) -> None:
         "primary_layer": args.primary_layer,
         "checkpoint": str(checkpoint_path),
         "checkpoint_epoch": checkpoint["epoch"],
+        "recordings": recording_entries,
         "frames": metadata_entries,
     }
     with open(output_dir / "metadata.json", "w") as f:

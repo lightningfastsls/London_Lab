@@ -71,9 +71,40 @@ def split_recordings(
     rng.shuffle(ids)
 
     n = len(ids)
-    n_train = max(1, round(n * config.train_split))
-    n_val = max(0, round(n * config.val_split))
-    # test gets the remainder
+    if n == 0:
+        return [], [], []
+
+    counts = {"train": 1, "val": 0, "test": 0}
+    if n >= 2 and config.val_split > 0:
+        counts["val"] = 1
+    if n >= 3 and config.test_split > 0:
+        counts["test"] = 1
+
+    allocated = sum(counts.values())
+    if allocated > n:
+        overflow = allocated - n
+        for split_name in ("test", "val"):
+            reducible = min(overflow, counts[split_name])
+            counts[split_name] -= reducible
+            overflow -= reducible
+            if overflow == 0:
+                break
+
+    desired = {
+        "train": config.train_split * n,
+        "val": config.val_split * n,
+        "test": config.test_split * n,
+    }
+    remaining = n - sum(counts.values())
+    for _ in range(remaining):
+        split_name = max(
+            counts.keys(),
+            key=lambda name: (desired[name] - counts[name], desired[name]),
+        )
+        counts[split_name] += 1
+
+    n_train = counts["train"]
+    n_val = counts["val"]
     train_ids = ids[:n_train]
     val_ids = ids[n_train:n_train + n_val]
     test_ids = ids[n_train + n_val:]
@@ -221,11 +252,13 @@ def chunk_spectrogram(
         chunk = np.zeros((max_seq_len, n_freq), dtype=np.float32)
         chunk[:real_len] = spectrogram[start:end]
         chunks.append((chunk, real_len))
+        if end == T:
+            break
+
         start += stride
         # Avoid creating a tiny final chunk that's mostly padding
-        if start < T and T - start < stride // 2:
+        if start < T and start + max_seq_len < T and T - start < stride // 2:
             # Include remaining in a final overlapping chunk
-            real_len = T - (T - max_seq_len)
             chunk = np.zeros((max_seq_len, n_freq), dtype=np.float32)
             chunk_start = max(0, T - max_seq_len)
             actual_data = spectrogram[chunk_start:T]

@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "eval_name": "streaming-viewer",
+  "prompt": "Convert this plan into a ROADMAP: .claude/skills/roadmap-from-plan-workspace/test-plans/streaming-viewer.md",
+  "assertions": [
+    {"id": "C1", "text": "Output contains 4 /implement blocks (one per plan step)"},
+    {"id": "C2", "text": "Contains [ASSUMED] markers OR explicit gap flagging"},
+    {"id": "C3", "text": "References ADR-001 or sr=300000"},
+    {"id": "C4", "text": "At least one module is assigned Tier 3"},
+    {"id": "C5", "text": "Test plans have >= 3 specific test cases per module"}
+  ]
+}

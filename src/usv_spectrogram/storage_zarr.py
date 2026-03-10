@@ -40,20 +40,19 @@ def init_spectrogram_store(
         }
     )
 
-    group.create_dataset(
+    group.create_array(
         FREQS_KEY,
-        shape=freqs_hz.shape,
         data=freqs_hz.astype(np.float32, copy=False),
         overwrite=True,
     )
-    group.create_dataset(
+    group.create_array(
         TIMES_KEY,
         shape=(0,),
         chunks=(cfg.zarr_time_chunk_frames,),
         dtype="f8",
         overwrite=True,
     )
-    group.create_dataset(
+    group.create_array(
         SPECTROGRAM_KEY,
         shape=(freqs_hz.size, 0),
         chunks=(freqs_hz.size, cfg.zarr_time_chunk_frames),

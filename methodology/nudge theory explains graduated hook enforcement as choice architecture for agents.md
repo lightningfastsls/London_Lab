@@ -53,6 +53,7 @@ Relevant Notes:
 - [[observation and tension logs function as dead-letter queues for failed automation]] — accumulation thresholds for these logs embody anti-fatigue design by converting individual signals into occasional actionable batches
 - [[automation should be retired when its false positive rate exceeds its true positive rate or it catches zero issues]] — retirement logic extends to warnings; if alerts haven't changed behavior in five sessions they are noise and should be demoted or removed
 - [[confidence thresholds gate automated action between the mechanical and judgment zones]] — orthogonal graduation axis; this note graduates enforcement SEVERITY (nudge vs block), confidence thresholds graduate enforcement SCOPE (auto-apply vs suggest vs log-only), and the two axes together create a two-dimensional design space for automation decisions
+- [[fewer well-placed activation triggers outperform many ignored ones because noise teaches agents to skip gates]] — the alert fatigue dynamic from the activation side: graduated severity preserves signal value at the enforcement level, while selective trigger placement preserves activation credibility at the knowledge retrieval level; both address the same noise-teaches-agents-to-ignore failure mode
 
 Topics:
 - [[agent-cognition]]

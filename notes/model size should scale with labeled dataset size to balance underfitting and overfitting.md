@@ -24,3 +24,6 @@ Source: [ROADMAP](../ROADMAP.md), Phase 2
 Relevant Notes:
 - [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- decouples model size from trainable parameter count, enabling large pretrained models on small datasets without overfitting
 - [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- LoRA's data efficiency suggests these scaling tiers may be conservative when adapting rather than training from scratch
+- [[foundation model embeddings enable few-shot classification via simple linear probes without end-to-end training]] -- frozen embeddings + linear probe sidestep the capacity scaling problem entirely, since the "model" is just a linear layer regardless of dataset size
+- [[DoRA weight decomposition into magnitude and direction consistently outperforms standard LoRA by 1-4 points across model sizes]] -- if adapting a pretrained model, DoRA's decomposition may shift the optimal tier boundaries further
+- [[DCASE few-shot bioacoustic detection improved from F1 40 percent to 70 percent across 2021-2024 challenge editions]] -- few-shot approaches challenge the assumption that more labels are always needed; metric learning may outperform larger CNNs at small label counts

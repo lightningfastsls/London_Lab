@@ -25,6 +25,7 @@ Relevant Notes:
 - [[Raven selection table format is the standard interchange format between bioacoustic analysis tools]] -- the export side of the bridge
 - [[DeepSqueak regenerates its own spectrograms from raw audio so exported bounding boxes serve as regions of interest not precise frequency boundaries]] -- DeepSqueak's spectrogram regeneration is what causes the timestamp drift this pattern addresses
 - [[temporal alignment between USV detections and LMT behavioral events enables USV-behavior correlation analysis]] -- the same temporal alignment pattern applied to a different cross-system bridge
+- [[DeepSqueak import previously required exact subdirectory name matches while Raven export already supported prefix matches creating a silent asymmetric round-trip]] -- a related matching asymmetry at the naming level: export used prefix match but import required exact match, creating a complementary mismatch to the temporal one this note addresses
 
 Topics:
 - [[experimental-methods]]

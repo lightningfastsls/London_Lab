@@ -29,6 +29,9 @@ Source: mcp-memory-servers-cross-session-knowledge-research-2026-03-02 (archived
 Relevant Notes:
 - [[agents using add-all memory strategies exhibit sustained performance decline making active forgetting essential not optional]] -- why forgetting quality is a differentiator
 - [[progressive disclosure in memory retrieval saves 10-20x tokens by loading compact indices before full content]] -- criterion 2 in practice
+- [[Letta sleep-time compute pairs a primary agent with a sleep-time agent that processes memory during idle periods]] — concrete architecture implementing criterion 8 (consolidation strategy): sleep-time agents process memory during idle gaps, the most explicit paired-agent approach to consolidation
+- [[between-session observation accumulation is directed dreaming that produces patterns no individual session contained]] — the vault's implementation of criterion 8: observation accumulation + threshold-triggered rethink IS a consolidation strategy that produces generative recombination, not just compression
+- [[activation timing matters as much as retrieval quality in agent knowledge systems]] — criterion 1 (retrieval precision) is necessary but not sufficient: timing the retrieve-or-not decision matters equally, and no criterion currently captures this activation dimension
 
 Topics:
 - [[agent-memory]]

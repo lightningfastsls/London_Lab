@@ -1,0 +1,38 @@
+{
+  "eval_name": "cli-consolidation",
+  "run_type": "old_skill",
+  "source_file": "ROADMAP_CLI_CONSOLIDATION.md",
+  "expectations": [
+    {
+      "text": "B1: Output contains exactly 3 /implement blocks",
+      "passed": true,
+      "evidence": "Found 3 /implement blocks"
+    },
+    {
+      "text": "B2: Step 2 explicitly depends on Step 1",
+      "passed": true,
+      "evidence": "Dependency reference found"
+    },
+    {
+      "text": "B3: No modules assigned Tier 3",
+      "passed": true,
+      "evidence": "No Tier 3 (correct)"
+    },
+    {
+      "text": "B4: Mentions backwards compatibility",
+      "passed": true,
+      "evidence": "Backwards compat mentioned"
+    },
+    {
+      "text": "B5: Contains a Phase Gate section",
+      "passed": true,
+      "evidence": "Phase Gate found"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

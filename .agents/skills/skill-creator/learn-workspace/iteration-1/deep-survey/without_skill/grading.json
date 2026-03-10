@@ -1,0 +1,15 @@
+{
+  "eval_id": 2,
+  "eval_name": "deep-survey",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": false, "evidence": "Produced markdown file but without inbox-compatible structure (no YAML frontmatter)"},
+    {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter. Starts with '# Unsupervised Clustering Methods...'"},
+    {"text": "source-log-present", "passed": false, "evidence": "Has a 'Source Bibliography' section with 40 URLs organized by topic, but no structured table with fetch status/relevance"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "40 cited sources with full URLs organized by topic area"},
+    {"text": "pipeline-chaining", "passed": false, "evidence": "No mention of /reduce, /seed, or pipeline next steps"},
+    {"text": "structured-sections", "passed": true, "evidence": "11 major sections with detailed TOC, covering feature representations, clustering algorithms, foundation models, tools, evaluation, and open challenges"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Comprehensive original synthesis across 682 lines"},
+    {"text": "vault-check-performed", "passed": false, "evidence": "No vault check — went straight to web research"}
+  ]
+}

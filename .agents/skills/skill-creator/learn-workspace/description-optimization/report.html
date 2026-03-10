@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="5">
+    <title>learn — Skill Description Optimization</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lora', Georgia, serif;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background: #faf9f5;
+            color: #141413;
+        }
+        h1 { font-family: 'Poppins', sans-serif; color: #141413; }
+        .explainer {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #e8e6dc;
+            color: #b0aea5;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        .summary {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #e8e6dc;
+        }
+        .summary p { margin: 5px 0; }
+        .best { color: #788c5d; font-weight: bold; }
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+        table {
+            border-collapse: collapse;
+            background: white;
+            border: 1px solid #e8e6dc;
+            border-radius: 6px;
+            font-size: 12px;
+            min-width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #e8e6dc;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        th {
+            font-family: 'Poppins', sans-serif;
+            background: #141413;
+            color: #faf9f5;
+            font-weight: 500;
+        }
+        th.test-col {
+            background: #6a9bcc;
+        }
+        th.query-col { min-width: 200px; }
+        td.description {
+            font-family: monospace;
+            font-size: 11px;
+            word-wrap: break-word;
+            max-width: 400px;
+        }
+        td.result {
+            text-align: center;
+            font-size: 16px;
+            min-width: 40px;
+        }
+        td.test-result {
+            background: #f0f6fc;
+        }
+        .pass { color: #788c5d; }
+        .fail { color: #c44; }
+        .rate {
+            font-size: 9px;
+            color: #b0aea5;
+            display: block;
+        }
+        tr:hover { background: #faf9f5; }
+        .score {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        .score-good { background: #eef2e8; color: #788c5d; }
+        .score-ok { background: #fef3c7; color: #d97706; }
+        .score-bad { background: #fceaea; color: #c44; }
+        .train-label { color: #b0aea5; font-size: 10px; }
+        .test-label { color: #6a9bcc; font-size: 10px; font-weight: bold; }
+        .best-row { background: #f5f8f2; }
+        th.positive-col { border-bottom: 3px solid #788c5d; }
+        th.negative-col { border-bottom: 3px solid #c44; }
+        th.test-col.positive-col { border-bottom: 3px solid #788c5d; }
+        th.test-col.negative-col { border-bottom: 3px solid #c44; }
+        .legend { font-family: 'Poppins', sans-serif; display: flex; gap: 20px; margin-bottom: 10px; font-size: 13px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-swatch { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+        .swatch-positive { background: #141413; border-bottom: 3px solid #788c5d; }
+        .swatch-negative { background: #141413; border-bottom: 3px solid #c44; }
+        .swatch-test { background: #6a9bcc; }
+        .swatch-train { background: #141413; }
+    </style>
+</head>
+<body>
+    <h1>learn — Skill Description Optimization</h1>
+    <div class="explainer">
+        <strong>Optimizing your skill's description.</strong> This page updates automatically as Claude tests different versions of your skill's description. Each row is an iteration — a new description attempt. The columns show test queries: green checkmarks mean the skill triggered correctly (or correctly didn't trigger), red crosses mean it got it wrong. The "Train" score shows performance on queries used to improve the description; the "Test" score shows performance on held-out queries the optimizer hasn't seen. When it's done, Claude will apply the best-performing description to your skill.
+    </div>
+
+    <div class="summary">
+        <p><strong>Original:</strong> Research a topic and grow your knowledge graph. Investigates topics using web search, checks existing vault knowledge to avoid redundancy, captures findings as structured inbox source files with full provenance, and chains to the processing pipeline. Use this skill whenever the user wants to research something, investigate a topic, look something up, or add external knowledge to the vault. Triggers on &quot;/learn&quot;, &quot;/learn [topic]&quot;, &quot;research this&quot;, &quot;find out about&quot;, &quot;look up&quot;, &quot;what do we know about&quot;.</p>
+        <p class="best"><strong>Best:</strong> Research a topic and grow your knowledge graph. Investigates topics using web search, checks existing vault knowledge to avoid redundancy, captures findings as structured inbox source files with full provenance, and chains to the processing pipeline. Use this skill whenever the user wants to research something, investigate a topic, look something up, or add external knowledge to the vault. Triggers on &quot;/learn&quot;, &quot;/learn [topic]&quot;, &quot;research this&quot;, &quot;find out about&quot;, &quot;look up&quot;, &quot;what do we know about&quot;.</p>
+        <p><strong>Best Score:</strong> in progress (train)</p>
+        <p><strong>Iterations:</strong> 1 | <strong>Train:</strong> 12 | <strong>Test:</strong> 8</p>
+    </div>
+
+    <div class="legend">
+        <span style="font-weight:600">Query columns:</span>
+        <span class="legend-item"><span class="legend-swatch swatch-positive"></span> Should trigger</span>
+        <span class="legend-item"><span class="legend-swatch swatch-negative"></span> Should NOT trigger</span>
+        <span class="legend-item"><span class="legend-swatch swatch-train"></span> Train</span>
+        <span class="legend-item"><span class="legend-swatch swatch-test"></span> Test</span>
+    </div>
+
+    <div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Iter</th>
+                <th>Train</th>
+                <th>Test</th>
+                <th class="query-col">Description</th>
+                <th class="positive-col">https://arxiv.org/abs/2406.01253</th>
+                <th class="positive-col">research what the state of the art is for handling overlapping vocalizations in dense acoustic environments. Our field recordings sometimes have 2-3 mice vocalizing simultaneously and the current energy detector can&#x27;t separate them</th>
+                <th class="positive-col">I need to understand the current landscape of open-source bioacoustic annotation tools. Not just detection -- I mean the full pipeline: segmentation, labeling, review, export. What&#x27;s out there in 2025 and how do they compare?</th>
+                <th class="positive-col">look up what sample rate DeepSqueak actually uses internally. I remember we had conflicting info last time -- some docs say 250kHz, the paper says something different. Just get me the definitive answer from the source code if you can</th>
+                <th class="positive-col">I just came across this concept of &#x27;contrastive predictive coding&#x27; for audio representations and I&#x27;m not sure how it compares to the masked autoencoders we&#x27;ve been reading about. Can you do a deep dive on CPC vs MAE for bioacoustic feature learning? I want to know which approach is winning on recent benchmarks and whether anyone has applied CPC specifically to USV data</th>
+                <th class="positive-col">/learn VAE-based approaches to mouse USV syllable classification --deep</th>
+                <th class="negative-col">we&#x27;ve got like 5 new notes about clustering methods sitting in notes/ that aren&#x27;t connected to anything. Can you find what they relate to and update the topic maps?</th>
+                <th class="negative-col">process the 3 items sitting in the inbox queue -- there&#x27;s the NatureLM-audio capture, the Perch 2.0 summary, and the AVEX benchmark notes. Run them through the full pipeline</th>
+                <th class="negative-col">I have this paper already in the vault -- the Animal2Vec one from 2024. I want to verify whether our note about its accuracy numbers is still correct or if there&#x27;s been an update to the paper since we captured it</th>
+                <th class="negative-col">I just dropped a new paper PDF into the inbox folder at inbox/bermant-2023-deep-audio-embeddings.md. Can you extract the key claims and turn them into atomic notes? It covers convolutional autoencoders for vocalization clustering</th>
+                <th class="negative-col">what&#x27;s next? I just finished implementing the dataset assembler and I&#x27;m not sure what to work on -- should I do the training pipeline or the detection app first?</th>
+                <th class="negative-col">show me the vault stats -- how many notes do we have, what&#x27;s the link density, how many topic maps, what&#x27;s the processing backlog look like</th>
+                <th class="test-col positive-col">find out about recent advances in few-shot learning for animal sound classification. Specifically interested in approaches that work with less than 10 labeled examples per class, since that&#x27;s our situation with the rare USV call types</th>
+                <th class="test-col positive-col">what do we know about UMAP parameter sensitivity for high-dimensional bioacoustic embeddings? I&#x27;m worried we might be choosing n_neighbors and min_dist arbitrarily -- is there any systematic study on this?</th>
+                <th class="test-col positive-col">hey so I was reading about this tool called WhisperSeg for segmenting birdsong and it sounds pretty cool. Can you research whether it would work for our mouse USV recordings? Like what sample rates does it support, what&#x27;s the architecture, has anyone used it for rodent vocalizations</th>
+                <th class="test-col positive-col">so my advisor mentioned that there&#x27;s a new benchmark dataset for marine bioacoustics that just came out this year. Something about standardizing evaluation across species? can you track it down and tell me what it covers, how big it is, and whether we could use the same evaluation framework for our USV work</th>
+                <th class="test-col negative-col">check the vault health -- I haven&#x27;t run maintenance in a while and I&#x27;m worried there might be orphan notes or broken links piling up</th>
+                <th class="test-col negative-col">why does our vault use atomic notes instead of longer documents? Like what&#x27;s the reasoning behind the single-claim-per-note rule? I feel like sometimes it makes things harder to follow</th>
+                <th class="test-col negative-col">can you read the detection config at src/usv_spectrogram/detection/config.py and explain what each parameter does? I want to understand the threshold settings before I change anything</th>
+                <th class="test-col negative-col">I&#x27;ve been meaning to update the old notes about STFT parameter choices. The ones from last month reference 250kHz but we&#x27;ve since confirmed it should be 300kHz. Can you go back through those notes and fix the outdated references?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="best-row">
+                <td>1</td>
+                <td><span class="score score-ok">18/36</span></td>
+                <td><span class="score score-ok">12/24</span></td>
+                <td class="description">Research a topic and grow your knowledge graph. Investigates topics using web search, checks existing vault knowledge to avoid redundancy, captures findings as structured inbox source files with full provenance, and chains to the processing pipeline. Use this skill whenever the user wants to research something, investigate a topic, look something up, or add external knowledge to the vault. Triggers on &quot;/learn&quot;, &quot;/learn [topic]&quot;, &quot;research this&quot;, &quot;find out about&quot;, &quot;look up&quot;, &quot;what do we know about&quot;.</td>
+                <td class="result fail">✗<span class="rate">0/3</span></td>
+                <td class="result fail">✗<span class="rate">0/3</span></td>
+                <td class="result fail">✗<span class="rate">0/3</span></td>
+                <td class="result fail">✗<span class="rate">0/3</span></td>
+                <td class="result fail">✗<span class="rate">0/3</span></td>
+                <td class="result fail">✗<span class="rate">0/3</span></td>
+                <td class="result pass">✓<span class="rate">0/3</span></td>
+                <td class="result pass">✓<span class="rate">0/3</span></td>
+                <td class="result pass">✓<span class="rate">0/3</span></td>
+                <td class="result pass">✓<span class="rate">0/3</span></td>
+                <td class="result pass">✓<span class="rate">0/3</span></td>
+                <td class="result pass">✓<span class="rate">0/3</span></td>
+                <td class="result test-result fail">✗<span class="rate">0/3</span></td>
+                <td class="result test-result fail">✗<span class="rate">0/3</span></td>
+                <td class="result test-result fail">✗<span class="rate">0/3</span></td>
+                <td class="result test-result fail">✗<span class="rate">0/3</span></td>
+                <td class="result test-result pass">✓<span class="rate">0/3</span></td>
+                <td class="result test-result pass">✓<span class="rate">0/3</span></td>
+                <td class="result test-result pass">✓<span class="rate">0/3</span></td>
+                <td class="result test-result pass">✓<span class="rate">0/3</span></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+</body>
+</html>

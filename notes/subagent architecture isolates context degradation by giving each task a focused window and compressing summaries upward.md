@@ -25,7 +25,7 @@ The Liza system (Vass, 2026) demonstrates an alternative coordination mechanism:
 
 This vault uses the subagent pattern throughout its processing pipeline — /reduce, /reflect, /reweave each operate as focused tasks with fresh context, passing structured outputs (notes, enrichments, connections) rather than accumulated conversation.
 
-As of March 2026, Claude Code now offers since [[three parallelization strategies in Claude Code serve different isolation needs: subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] — subagents remain the lightweight option (report-only, no inter-agent communication), while Agent Teams add full instances with shared task lists, mailbox messaging, and autonomous coordination. Subagents now also support worktree isolation for filesystem safety, making the original summary-compression pattern composable with filesystem isolation.
+As of March 2026, Claude Code now offers since [[three parallelization strategies in Claude Code serve different isolation needs subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] — subagents remain the lightweight option (report-only, no inter-agent communication), while Agent Teams add full instances with shared task lists, mailbox messaging, and autonomous coordination. Subagents now also support worktree isolation for filesystem safety, making the original summary-compression pattern composable with filesystem isolation.
 
 ---
 
@@ -37,6 +37,8 @@ Relevant Notes:
 - [[just-in-time context retrieval via lightweight identifiers outperforms preloading data into context]] -- the complementary pattern
 - [[Liza blackboard architecture coordinates multi-agent work through shared state files without inter-agent conversation]] -- shared-state variant of subagent coordination
 - [[conservation laws for agent delegation constrain total sub-agent resource consumption to not exceed parent budget]] -- formal resource bounds for delegation
+- [[cross-agent knowledge transfer requires flattening graph-traversable constraints into self-contained plain text]] — the knowledge transfer problem at delegation boundaries: subagent summary compression preserves task findings, but constraint flattening preserves architectural invariants that the receiving agent cannot discover independently
+- [[Letta sleep-time compute pairs a primary agent with a sleep-time agent that processes memory during idle periods]] — extends subagent isolation from task-level to session-level: the primary agent operates within a session, the sleep-time agent operates across sessions, applying the same focused-window principle to memory consolidation
 
 Topics:
 - [[agent-cognition]]

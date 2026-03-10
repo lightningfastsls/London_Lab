@@ -21,6 +21,8 @@ Relevant Notes:
 - [[512-point FFT at 300 kHz gives 1.7 ms temporal resolution with 586 Hz frequency bins]] -- derived STFT parameters depend on this rate
 - [[auto sample rate reading from WAV headers prevents silent frequency miscalculation]] -- robustness measure for varying setups
 - [[AviSoft Recorder captures synchronized USV recordings within the LMT behavioral tracking system]] -- the recording software configured to this sample rate
+- [[MUPET operates at 250 kHz sample rate with minimum 90 kHz requirement covering the 25-125 kHz USV band]] -- MUPET uses 250 kHz (Nyquist 125 kHz), our 300 kHz provides 25 kHz more headroom
+- [[frequency shifting USVs into the audible range could enable classification with standard audio foundation models]] -- the 300 kHz sample rate is 6-19x above the 16-48 kHz range foundation models expect, motivating pitch-shift strategies
 
 Topics:
 - [[signal-processing]]

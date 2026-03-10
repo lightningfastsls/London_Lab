@@ -1,0 +1,190 @@
+{
+  "_description": "Complete OEM verification report for all filter CSVs. Covers all 106 NOT FOUND OEM numbers from the Spareto existence check.",
+  "_date": "2026-03-09",
+  "_methodology": "Layer 1: Spareto OE lookup. Layer 2: Manufacturer portals (MB USA Parts, Toyota Parts, Hyundai OEM Parts, etc). Layer 3: Web search cross-reference (eBay genuine, Amazon OEM, specialist retailers).",
+
+  "mercedes_benz": {
+    "status": "DETAILED - see mercedes_oem_corrections.json",
+    "total_missing": 29,
+    "corrected": 17,
+    "unverified": 12,
+    "fully_correct_models": ["V-Class OM651", "Vito OM651"],
+    "summary": "LLM used engine codes as part prefixes instead of shared platform numbers. Oil filters all share A 270 180 01 09 across M270/M274/M264/M282 families."
+  },
+
+  "corrections": {
+    "honda_crv_cabin": {
+      "csv_oem": "80292-T0G-G01",
+      "real_oem": "80292-T0G-A01",
+      "model": "Honda CR-V",
+      "filter_type": "cabin_filter",
+      "error": "One letter wrong: G01 should be A01",
+      "source": "hondapartsnow.com, hondafactoryparts.com, eBay OEM listings",
+      "confidence": "HIGH"
+    },
+    "vw_passat_air": {
+      "csv_oem": "3Q0 129 620 B",
+      "real_oem": "3Q0 129 620",
+      "model": "Volkswagen Passat B8",
+      "filter_type": "air_filter",
+      "error": "Suffix 'B' added. Base number 3Q0 129 620 is correct, also listed as 3QF 129 620",
+      "source": "myparto.com, volkswagenpartsuk.co.uk, oempartsonline.com",
+      "confidence": "HIGH"
+    },
+    "audi_a6_air": {
+      "csv_oem": "4G0 133 843 A",
+      "real_oem": "4G0 133 843",
+      "model": "Audi A6",
+      "filter_type": "air_filter",
+      "error": "Suffix 'A' added. Base number exists for C7 A6 (2012-2018). CSV may have wrong generation - 4G0 is C7 prefix, not C8",
+      "source": "parts.audiusa.com, ecstuning.com, amazon.com genuine",
+      "confidence": "MEDIUM - generation mismatch possible"
+    },
+    "audi_a8_air": {
+      "csv_oem": "4M0 133 843 B",
+      "real_oem": "NEEDS VERIFICATION",
+      "model": "Audi A8",
+      "filter_type": "air_filter",
+      "error": "4M0 prefix matches Q7/Q8, not A8. A8 uses 4H0 prefix. Likely wrong model-prefix mapping.",
+      "source": "Audi parts portal",
+      "confidence": "LOW - prefix suggests wrong model family"
+    },
+    "hyundai_ioniq_air": {
+      "csv_oem": "28113-G2200",
+      "real_oem": "28113-G2700",
+      "model": "Hyundai Ioniq",
+      "filter_type": "air_filter",
+      "error": "Wrong suffix: G2200 should be G2700",
+      "source": "hyundaioempartsdirect.com, oempartsonline.com, amazon.com genuine",
+      "confidence": "HIGH"
+    },
+    "hyundai_i30_air": {
+      "csv_oem": "28113-J9100",
+      "real_oem": "28113-A9100",
+      "model": "Hyundai i30",
+      "filter_type": "air_filter",
+      "error": "Wrong middle code: J9100 should be A9100 (or S0100 for i30N)",
+      "source": "hyundaioempartsdirect.com, parts.hyundaicanada.com",
+      "confidence": "MEDIUM - exact variant depends on i30 sub-model"
+    },
+    "hyundai_tucson_air": {
+      "csv_oem": "28113-L1500",
+      "real_oem": "28113-D3300 or 28113-L1100",
+      "model": "Hyundai Tucson",
+      "filter_type": "air_filter",
+      "error": "L1500 not found. Real is D3300 (2016-2021) or L1100 (2022+)",
+      "source": "hyundaioempartsdirect.com, amazon.com genuine",
+      "confidence": "MEDIUM - depends on model year in CSV"
+    }
+  },
+
+  "not_found_likely_fabricated": {
+    "_note": "These OEM numbers could not be confirmed from any source. They follow plausible format patterns but are likely LLM fabrications.",
+    "list": [
+      {"oem": "17801-0L090", "model": "Toyota Hilux", "type": "air_filter", "notes": "Real Hilux numbers are 17801-0C010 or 17801-0L040. '0L090' suffix not found anywhere."},
+      {"oem": "28113-S1100", "model": "Hyundai Santa Fe", "type": "air_filter", "notes": "Not found. Real Santa Fe uses 28113-L1100 or similar."},
+      {"oem": "97133-J9100", "model": "Hyundai i30", "type": "cabin_filter", "notes": "Not found. 97133 prefix is correct for Hyundai cabin filters."},
+      {"oem": "97133-S1000", "model": "Hyundai Santa Fe", "type": "cabin_filter", "notes": "Not found."},
+      {"oem": "97133-B5000", "model": "Kia Picanto", "type": "cabin_filter", "notes": "Not found."},
+      {"oem": "28113-J9000", "model": "Kia Picanto", "type": "air_filter", "notes": "Not found. Older Picanto uses 28113-07100."},
+      {"oem": "13 71 8 519 129", "model": "BMW 1 Series F40", "type": "air_filter", "notes": "Not found. BMW air filter numbers usually end differently."},
+      {"oem": "C1B1-9601-AB", "model": "Ford Fiesta MK8", "type": "air_filter", "notes": "Not found. Real Fiesta air filter is CN1Z-9601-A."},
+      {"oem": "F1F1-9601-BC", "model": "Ford Focus", "type": "air_filter", "notes": "Not found. Ford Focus uses different prefix."},
+      {"oem": "F1FZ-19N619-AB", "model": "Ford Focus", "type": "cabin_filter", "notes": "Not found."},
+      {"oem": "LX6Z-19N619-B", "model": "Ford Puma", "type": "cabin_filter", "notes": "Not found."},
+      {"oem": "16546-6FR0A", "model": "Nissan Qashqai J12", "type": "air_filter", "notes": "Not found. Close to 16546-6RA0A but that's a different part."},
+      {"oem": "13780-74P10", "model": "Suzuki Jimny JB74", "type": "air_filter", "notes": "Not found. Jimny uses 13780-79210."},
+      {"oem": "D09W-13-Z40", "model": "Mazda 2", "type": "air_filter", "notes": "Not found."},
+      {"oem": "N246-61-J6X", "model": "Mazda MX-5", "type": "cabin_filter", "notes": "Not found."}
+    ]
+  },
+
+  "not_found_coverage_gap": {
+    "_note": "These OEM numbers are not found on Spareto or English-language sources, but this may reflect database coverage gaps rather than fabrication. These brands have limited English-language parts catalog presence.",
+    "chinese_brands": [
+      {"oem": "E4T15-1012010", "model": "Chery Tiggo 4 Pro", "type": "oil_filter"},
+      {"oem": "E4T15-1109111", "model": "Chery Tiggo 4 Pro", "type": "air_filter"},
+      {"oem": "F4J16-1012010", "model": "Chery Tiggo 7 Pro", "type": "oil_filter"},
+      {"oem": "F4J16-1109111", "model": "Chery Tiggo 7 Pro", "type": "air_filter"},
+      {"oem": "1109120XKZ16A", "model": "GWM Jolion", "type": "air_filter"},
+      {"oem": "1109120XKZ36A", "model": "GWM Haval H6", "type": "air_filter"},
+      {"oem": "8104300XKZ36A", "model": "GWM Jolion", "type": "cabin_filter"},
+      {"oem": "1016012681", "model": "Geely Coolray", "type": "air_filter"},
+      {"oem": "1016050811", "model": "Geely Coolray", "type": "oil_filter"},
+      {"oem": "8022003200", "model": "Geely Coolray", "type": "cabin_filter"},
+      {"oem": "10242940", "model": "MG ZS", "type": "cabin_filter"},
+      {"oem": "10405642", "model": "MG ZS", "type": "oil_filter"},
+      {"oem": "10405878", "model": "MG ZS", "type": "air_filter"}
+    ],
+    "korean_newer": [
+      {"oem": "1EA 819 641", "model": "Cupra Born", "type": "cabin_filter", "notes": "Cupra Born is VW Group EV - may use ID.3 parts"},
+      {"oem": "28113-L1500", "model": "Hyundai Tucson NX4e", "type": "air_filter", "notes": "Newer model, real may be 28113-L1100 or 28113-P0400"}
+    ],
+    "smart": [
+      {"oem": "A1320900001", "model": "Smart ForTwo 453", "type": "air_filter"},
+      {"oem": "A4518350047", "model": "Smart ForTwo 451", "type": "cabin_filter"},
+      {"oem": "A4530940000", "model": "Smart ForTwo 451", "type": "air_filter"},
+      {"oem": "A4538350100", "model": "Smart ForTwo 453", "type": "cabin_filter"},
+      {"oem": "A6600940004", "model": "Smart ForTwo 450", "type": "air_filter"},
+      {"oem": "A6601800009", "model": "Smart ForTwo 450", "type": "oil_filter"},
+      {"oem": "MN195396", "model": "Smart ForFour", "type": "oil_filter", "notes": "MN prefix is Mitsubishi - Smart ForFour shares Mitsubishi platform"}
+    ],
+    "ssangyong": [
+      {"oem": "2319109000", "model": "SsangYong Korando", "type": "air_filter"},
+      {"oem": "2319109100", "model": "SsangYong Tivoli", "type": "air_filter"},
+      {"oem": "6812108000", "model": "SsangYong Rexton", "type": "cabin_filter"},
+      {"oem": "6812108100", "model": "SsangYong Tivoli", "type": "cabin_filter"}
+    ],
+    "other": [
+      {"oem": "87139-60040", "model": "Toyota Land Cruiser", "type": "cabin_filter", "notes": "87139 prefix is correct for Toyota cabin filters but this specific number not found"},
+      {"oem": "9818479180", "model": "Peugeot 208 II", "type": "air_filter"},
+      {"oem": "9809647380", "model": "Peugeot 208 II", "type": "cabin_filter"},
+      {"oem": "165468187R", "model": "Renault Clio V", "type": "air_filter"},
+      {"oem": "52081805", "model": "Fiat Tipo", "type": "air_filter"},
+      {"oem": "77367456", "model": "Fiat Tipo", "type": "cabin_filter"},
+      {"oem": "0000942004", "model": "Chrysler Crossfire", "type": "air_filter"},
+      {"oem": "4885955AB", "model": "Chrysler Grand Voyager", "type": "cabin_filter"},
+      {"oem": "5189959AA", "model": "Chrysler PT Cruiser", "type": "air_filter"},
+      {"oem": "68001735AB", "model": "Chrysler Grand Voyager", "type": "air_filter"},
+      {"oem": "68143102AA", "model": "Chrysler 300C", "type": "air_filter"},
+      {"oem": "68197800AA", "model": "Chrysler 300C", "type": "air_filter"},
+      {"oem": "68245491AA", "model": "Chrysler 200", "type": "air_filter"},
+      {"oem": "13372460", "model": "Opel Astra", "type": "air_filter"},
+      {"oem": "LR108435", "model": "Jaguar E-Pace", "type": "air_filter"},
+      {"oem": "T4N6810", "model": "Jaguar E-Pace", "type": "cabin_filter"},
+      {"oem": "LR117485", "model": "Land Rover Range Rover Evoque", "type": "cabin_filter"},
+      {"oem": "LR122592", "model": "Land Rover Range Rover Evoque", "type": "air_filter"},
+      {"oem": "95B 819 631", "model": "Porsche Macan", "type": "cabin_filter"},
+      {"oem": "1K0 819 653 A", "model": "Seat Altea", "type": "cabin_filter"},
+      {"oem": "3Q0 819 653", "model": "Skoda Superb", "type": "cabin_filter"},
+      {"oem": "32296694", "model": "Volvo EX30", "type": "cabin_filter"},
+      {"oem": "32346498", "model": "Volvo EX90", "type": "cabin_filter"},
+      {"oem": "80292-T5A-J01", "model": "Honda HR-V", "type": "cabin_filter"},
+      {"oem": "80292-TLA-A01", "model": "Honda Jazz", "type": "cabin_filter"},
+      {"oem": "16546-5FA1B", "model": "Nissan Micra", "type": "air_filter"},
+      {"oem": "27275-EN000", "model": "Nissan Navara", "type": "cabin_filter"},
+      {"oem": "27277-6MA0A", "model": "Nissan Qashqai", "type": "cabin_filter"},
+      {"oem": "95860-77R00", "model": "Suzuki Jimny", "type": "cabin_filter"},
+      {"oem": "95861-62R00", "model": "Suzuki Swift", "type": "cabin_filter"}
+    ]
+  },
+
+  "overall_summary": {
+    "total_unique_oems_checked": 283,
+    "exist_on_spareto": 177,
+    "not_found_on_spareto": 106,
+    "mercedes_corrected": 17,
+    "mercedes_unverified": 12,
+    "other_brands_corrected": 7,
+    "likely_fabricated": 15,
+    "coverage_gap_unverifiable": 55,
+    "accuracy_estimate": {
+      "confirmed_correct": "177 + some of the 55 coverage-gap items",
+      "confirmed_wrong": "17 (Mercedes) + 7 (other) + 15 (likely fabricated) = 39",
+      "unknown": "12 (Mercedes) + 55 (coverage gap) = 67",
+      "best_case_accuracy": "86% (if all unknowns are correct)",
+      "worst_case_accuracy": "63% (if all unknowns are wrong)",
+      "realistic_estimate": "~70-75% of OEM numbers are correct"
+    }
+  }
+}

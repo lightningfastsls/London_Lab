@@ -16,6 +16,8 @@ Error recovery is a design requirement for batch processing at this scale. Indiv
 
 The processing rate target of more than 5 files per minute on CPU is a practical constraint given the hardware environment. At this rate, the full 6,500-file collection completes in approximately 22 hours. GPU inference would substantially exceed this target, but CPU compatibility ensures the script can run on any lab machine without GPU configuration. The skip-existing logic makes it feasible to run the script across multiple sessions, pausing and resuming as needed. Batch detection generates the raw candidate pool that feeds the [[active learning cycle automates the label-train-evaluate-mine loop for iterative CNN improvement]], and the detection JSONs it produces can be exported to [[Raven selection table format is the standard interchange format between bioacoustic analysis tools]] for cross-tool classification via DeepSqueak -- each new batch run surfaces additional unlabeled candidates that can be prioritized for human review via hard negative mining.
 
+For format interoperability, [[Crowsetta standardizes annotation format interoperability across bioacoustic tools via a unified Python API]] could serve as the translation layer between our JSON output format and tools like Raven and DeepSqueak. Alternatively, [[OpenSoundscape provides a full ML training pipeline with native Raven format support for bioacoustic classification]] offers built-in batch processing with Raven integration that could complement our pipeline for classification tasks.
+
 ---
 
 Source: [ROADMAP](../ROADMAP.md), Phase 3

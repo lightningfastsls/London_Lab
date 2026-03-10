@@ -1,5 +1,9 @@
 """Spectrogram visualization widget."""
 
+# VAULT: saved-previous ghost detections current editable and saved-current form three aligned detection state tiers in the app,
+#        visualization STFT uses different parameters than detection STFT by design
+# Run `/kcheck` before modifying this file.
+
 from __future__ import annotations
 
 from typing import Optional, List
@@ -104,6 +108,16 @@ class SpectrogramCanvas(QWidget):
 
         self.update()
 
+    def clear_selection(self) -> None:
+        """Clear any selected detection or in-progress drag state."""
+        self._selected_detection = None
+        self._selected_detection_idx = None
+        self._dragging_edge = None
+        self._original_time = None
+        self._is_dragging = False
+        self.unsetCursor()
+        self.update()
+
     def _spectrogram_to_image(self, spec_db: np.ndarray) -> np.ndarray:
         """Convert spectrogram to RGB image using magma colormap.
 
@@ -162,21 +176,26 @@ class SpectrogramCanvas(QWidget):
                 if self._selected_detection_idx is not None and idx == self._selected_detection_idx:
                     continue
 
-                # Skip ghost (previously saved) detections - too cluttered
-                if usv.save_state == "saved_previous":
-                    continue
-
                 # Convert column index to pixel coordinate (pixel-perfect alignment)
                 start_x = self._col_to_pixel(usv.start_col)
                 end_x = self._col_to_pixel(usv.end_col)
 
-                # Draw start line (bright green, solid)
-                pen = QPen(QColor(0, 255, 0), 2, Qt.PenStyle.SolidLine)
+                if usv.save_state == "saved_previous":
+                    start_color = QColor(128, 128, 128)
+                    end_color = QColor(160, 160, 160)
+                    line_width = 1
+                else:
+                    start_color = QColor(0, 255, 0)
+                    end_color = QColor(0, 255, 255)
+                    line_width = 2
+
+                # Draw start line
+                pen = QPen(start_color, line_width, Qt.PenStyle.SolidLine)
                 painter.setPen(pen)
                 painter.drawLine(start_x, 0, start_x, self.height())
 
-                # Draw end line (cyan for visibility on magma, dashed)
-                pen = QPen(QColor(0, 255, 255), 2, Qt.PenStyle.DashLine)
+                # Draw end line
+                pen = QPen(end_color, line_width, Qt.PenStyle.DashLine)
                 painter.setPen(pen)
                 painter.drawLine(end_x, 0, end_x, self.height())
 

@@ -27,6 +27,7 @@ Relevant Notes:
 - [[NoLiMa found 11 of 12 models dropped below 50 percent baseline at 32K when lexical shortcuts were removed]] -- the strongest evidence
 - [[maximum effective context window can differ from claimed context by as much as 99 percent and shifts by problem type]] -- the MECW confirmation
 - [[subagent architecture isolates context degradation by giving each task a focused window and compressing summaries upward]] -- the architectural response
+- [[Adaptive RAG routes retrieval depth by query complexity which maps to file modification risk in coding agents]] — applies the retrieval/reasoning distinction to coding agents: HIGH-risk modifications are reasoning-intensive (need deep retrieval) while LOW-risk are retrieval-tolerant (adding context wastes budget)
 
 Topics:
 - [[agent-cognition]]

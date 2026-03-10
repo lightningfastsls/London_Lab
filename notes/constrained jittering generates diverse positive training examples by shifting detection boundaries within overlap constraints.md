@@ -16,6 +16,8 @@ The practical effect is a 5x multiplication of positive sample counts before tra
 
 Jittering applies only to positive examples. Negatives are sampled fresh from unannotated regions at each training cycle, providing variety through sampling diversity rather than synthetic augmentation. The technique is chosen over alternatives such as random cropping because the constraint mechanism preserves temporal alignment with the actual USV event, which matters given that [[recording-level splits reduce effective training set size but prevent data leakage]] already reduces the effective positive pool.
 
+This CNN-stage augmentation contrasts with [[spectrogram SpecAugment-style augmentation with frequency and time masking improves transformer generalization]], which operates on computed spectrogram tensors rather than at the sample-selection level. The two approaches are complementary but not interchangeable: jittering suits the fixed-window CNN because it generates spatially shifted views of the same USV event, while SpecAugment-style masking suits the transformer because it forces sequence-level robustness to partial information loss.
+
 ---
 
 Source: [ROADMAP](../ROADMAP.md), Phase 2

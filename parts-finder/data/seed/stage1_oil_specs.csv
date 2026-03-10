@@ -1,0 +1,85 @@
+make,model,year_from,year_to,engine_code,fuel_type,oil_viscosity,oil_capacity_l,oil_spec,oil_oem_approval,oil_change_interval_km,confidence,notes
+Lexus,IS,2014,2020,2AR-FSE,petrol,0W-20,4.4,API SN ILSAC GF-5,,10000,HIGH,Same as Toyota 2AR family
+Lexus,IS,2021,2024,A25A-FKS,petrol,0W-20,4.8,API SP ILSAC GF-6,,10000,HIGH,Dynamic Force engine
+Lexus,NX,2015,2021,2AR-FXE,hybrid,0W-20,4.4,API SN ILSAC GF-5,,10000,HIGH,Same filter as Toyota RAV4 hybrid
+Lexus,NX,2015,2021,8AR-FTS,petrol,0W-20,4.5,API SN ILSAC GF-5,,10000,HIGH,2.0T turbo
+Lexus,NX,2022,2024,A25A-FKS,petrol,0W-20,4.8,API SP ILSAC GF-6,,10000,HIGH,
+Lexus,NX,2022,2024,A25A-FXS,hybrid,0W-20,4.8,API SP ILSAC GF-6,,10000,HIGH,
+Lexus,RX,2016,2022,2GR-FKS,petrol,0W-20,5.7,API SN ILSAC GF-5,,10000,HIGH,3.5L V6
+Lexus,RX,2016,2022,2GR-FXS,hybrid,0W-20,5.7,API SN ILSAC GF-5,,10000,HIGH,3.5L V6 hybrid
+Lexus,RX,2023,2024,A25A-FXS,hybrid,0W-20,4.8,API SP ILSAC GF-6,,10000,HIGH,New gen 2.5L hybrid
+Lexus,RX,2023,2024,T24A-FTS,petrol,0W-20,5.2,API SP ILSAC GF-6,,10000,MEDIUM,2.4L turbo - capacity estimated
+Lexus,ES,2019,2024,A25A-FKS,petrol,0W-20,4.8,API SP ILSAC GF-6,,10000,HIGH,
+Lexus,ES,2019,2024,A25A-FXS,hybrid,0W-20,4.8,API SP ILSAC GF-6,,10000,HIGH,
+Lexus,UX,2019,2024,M20A-FKS,petrol,0W-20,4.6,API SP ILSAC GF-6,,10000,HIGH,Same as Toyota Corolla 2.0
+Lexus,UX,2019,2024,M20A-FXS,hybrid,0W-20,4.6,API SP ILSAC GF-6,,10000,HIGH,
+Land Rover,Range Rover Evoque,2012,2018,204PT,petrol,5W-30,5.5,ACEA A5/B5,STJLR.03.5003,16000,HIGH,Ingenium 2.0T petrol
+Land Rover,Range Rover Evoque,2012,2018,204DTD,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,Ingenium 2.0 diesel
+Land Rover,Range Rover Evoque,2019,2024,PT204,petrol,0W-20,7.0,ACEA C5,STJLR.51.5122,21000,HIGH,Ingenium 2.0T petrol updated
+Land Rover,Range Rover Evoque,2019,2024,204DTA,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,Ingenium 2.0 diesel updated
+Land Rover,Discovery Sport,2015,2018,204DTD,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,
+Land Rover,Discovery Sport,2015,2018,204PT,petrol,5W-30,5.5,ACEA A5/B5,STJLR.03.5003,16000,HIGH,
+Land Rover,Discovery Sport,2019,2024,PT204,petrol,0W-20,7.0,ACEA C5,STJLR.51.5122,21000,HIGH,
+Land Rover,Discovery Sport,2019,2024,204DTA,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,
+Land Rover,Range Rover Sport,2014,2022,PT204,petrol,0W-20,7.0,ACEA C5,STJLR.51.5122,21000,MEDIUM,
+Land Rover,Range Rover Sport,2014,2022,204DTD,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,MEDIUM,
+Land Rover,Range Rover Velar,2017,2024,PT204,petrol,0W-20,7.0,ACEA C5,STJLR.51.5122,21000,HIGH,
+Land Rover,Range Rover Velar,2017,2024,204DTA,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,
+Jaguar,E-Pace,2018,2024,PT204,petrol,0W-20,7.0,ACEA C5,STJLR.51.5122,21000,HIGH,Same Ingenium as LR
+Jaguar,E-Pace,2018,2024,204DTA,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,
+Jaguar,F-Pace,2016,2024,PT204,petrol,0W-20,7.0,ACEA C5,STJLR.51.5122,21000,HIGH,
+Jaguar,F-Pace,2016,2024,204DTA,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,
+Jaguar,XE,2015,2024,PT204,petrol,0W-20,7.0,ACEA C5,STJLR.51.5122,21000,HIGH,
+Jaguar,XE,2015,2024,204DTA,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,
+Jaguar,XF,2016,2024,PT204,petrol,0W-20,7.0,ACEA C5,STJLR.51.5122,21000,HIGH,
+Jaguar,XF,2016,2024,204DTA,diesel,5W-30,5.5,ACEA C3,STJLR.03.5005,21000,HIGH,
+SsangYong,Tivoli,2015,2024,G16DF,petrol,5W-30,4.0,API SN,,15000,HIGH,1.6 petrol
+SsangYong,Tivoli,2015,2024,D16DTF,diesel,5W-30,5.0,ACEA C3,,15000,HIGH,1.6 e-XDi diesel
+SsangYong,Tivoli,2019,2024,G15DTF,petrol,5W-30,4.5,API SN,,15000,MEDIUM,1.5 turbo petrol
+SsangYong,Korando,2011,2019,D20DTF,diesel,5W-30,6.0,ACEA C3,,15000,HIGH,2.0 e-XDi diesel
+SsangYong,Korando,2020,2024,G15DTF,petrol,5W-30,4.5,API SN,,15000,MEDIUM,1.5 turbo petrol
+SsangYong,Korando,2020,2024,D16DTF,diesel,5W-30,5.0,ACEA C3,,15000,HIGH,1.6 e-XDi diesel
+SsangYong,Rexton,2018,2024,D22DTR,diesel,5W-30,7.0,ACEA C3,,15000,HIGH,2.2 XDi diesel
+SsangYong,Rexton,2018,2024,G20DTR,petrol,5W-30,5.5,API SN,,15000,MEDIUM,2.0 turbo petrol
+Alfa Romeo,Giulietta,2010,2020,940A2.000,petrol,5W-40,4.0,ACEA C3,Fiat 9.55535-S2,15000,HIGH,1.4 MultiAir Turbo
+Alfa Romeo,Giulietta,2010,2020,940A5.000,petrol,5W-40,4.0,ACEA C3,Fiat 9.55535-S2,15000,HIGH,1.4 MultiAir Turbo 170hp
+Alfa Romeo,Giulietta,2010,2020,955A3.000,diesel,5W-30,3.8,ACEA C2,Fiat 9.55535-S1,20000,HIGH,2.0 JTDM
+Alfa Romeo,Giulia,2016,2024,55282328,petrol,0W-20,4.0,ACEA C5,Fiat 9.55535-DM1,15000,HIGH,1.0 FireFly (Israeli market 200hp turbo uses same family)
+Alfa Romeo,Giulia,2016,2024,55263624,petrol,5W-40,3.5,ACEA C3,Fiat 9.55535-S2,15000,HIGH,1.5 T4 / 2.0 GME turbo
+Alfa Romeo,Stelvio,2017,2024,55263624,petrol,5W-40,3.5,ACEA C3,Fiat 9.55535-S2,15000,HIGH,2.0 GME turbo
+Alfa Romeo,Stelvio,2017,2024,55260384,diesel,5W-30,3.8,ACEA C2,Fiat 9.55535-S3,15000,HIGH,2.2 JTDM diesel
+DS,DS3,2010,2019,EB2DT,petrol,0W-30,3.5,ACEA C2,PSA B71 2312,20000,HIGH,Same as Peugeot 208
+DS,DS3,2010,2019,EP6,petrol,5W-30,4.25,ACEA C2,PSA B71 2290,20000,HIGH,
+DS,DS4,2011,2018,EP6,petrol,5W-30,4.25,ACEA C2,PSA B71 2290,20000,HIGH,
+DS,DS7 Crossback,2018,2024,EB2ADTS,petrol,0W-30,3.5,ACEA C2,PSA B71 2290,20000,HIGH,Same PureTech 1.2T
+DS,DS7 Crossback,2018,2024,DV5,diesel,5W-30,3.8,ACEA C2,PSA B71 2290,20000,HIGH,Same BlueHDi 1.5
+Chevrolet,Cruze,2009,2016,F16D4,petrol,5W-30,3.75,ACEA A3/B4,GM Dexos2,15000,HIGH,1.6 ECOTEC
+Chevrolet,Cruze,2009,2016,F18D4,petrol,5W-30,3.75,ACEA A3/B4,GM Dexos2,15000,HIGH,1.8 ECOTEC
+Chevrolet,Aveo,2012,2020,F16D4,petrol,5W-30,3.75,ACEA A3/B4,GM Dexos2,15000,HIGH,
+Chevrolet,Spark,2010,2018,B10D1,petrol,5W-30,3.2,API SN,GM Dexos1,15000,MEDIUM,1.0L
+Chevrolet,Spark,2010,2018,B12D1,petrol,5W-30,3.2,API SN,GM Dexos1,15000,MEDIUM,1.2L
+Chevrolet,Captiva,2012,2018,Z22D1,diesel,5W-30,6.0,ACEA C3,GM Dexos2,15000,MEDIUM,2.2 diesel
+Chevrolet,Trax,2013,2020,F18D4,petrol,5W-30,3.75,ACEA A3/B4,GM Dexos2,15000,HIGH,1.8 ECOTEC
+MG,ZS,2018,2024,15S4G,petrol,5W-30,4.0,API SP,,10000,MEDIUM,1.5L NA petrol - OEM code needs API verification
+MG,ZS,2018,2024,NSE,petrol,5W-30,4.3,API SP,,10000,MEDIUM,1.0T turbo
+MG,HS,2019,2024,15E4E,petrol,5W-30,4.5,API SP,,10000,MEDIUM,1.5T turbo
+MG,5,2020,2024,15S4G,petrol,5W-30,4.0,API SP,,10000,MEDIUM,1.5L NA
+Porsche,Macan,2014,2024,CZPA,petrol,5W-30,5.7,ACEA C3,VW 502.00,15000,HIGH,Same EA888 as VW Tiguan
+Porsche,Macan,2014,2024,DFGA,diesel,5W-30,4.7,ACEA C3,VW 507.00,30000,HIGH,Same EA288 as VW Tiguan
+Porsche,Cayenne,2018,2024,DCBA,petrol,5W-30,8.0,ACEA C3,VW 502.00,15000,MEDIUM,3.0L V6 turbo
+Tesla,Model 3,2017,2024,,electric,,,,,24000,HIGH,EV - no oil needed - cabin filter only
+Tesla,Model Y,2020,2024,,electric,,,,,24000,HIGH,EV - no oil needed - cabin filter only
+Tesla,Model S,2012,2024,,electric,,,,,24000,MEDIUM,EV - cabin filter only
+BYD,Atto 3,2022,2024,,electric,,,,,15000,HIGH,EV - cabin filter only
+BYD,Dolphin,2023,2024,,electric,,,,,15000,HIGH,EV - cabin filter only
+BYD,Seal,2023,2024,,electric,,,,,15000,HIGH,EV - cabin filter only
+BYD,Han,2022,2024,,electric,,,,,15000,MEDIUM,EV - cabin filter only
+Xpeng,G6,2023,2024,,electric,,,,,15000,MEDIUM,EV - cabin filter only
+Xpeng,P7,2022,2024,,electric,,,,,15000,MEDIUM,EV - cabin filter only
+Zeekr,001,2023,2024,,electric,,,,,15000,MEDIUM,EV - cabin filter only
+Zeekr,X,2024,2024,,electric,,,,,15000,MEDIUM,EV - cabin filter only
+GWM,Jolion,2021,2024,GW4B15A,petrol,5W-30,4.3,API SP,,10000,MEDIUM,1.5T Haval engine - OEM code needs verification
+GWM,Haval H6,2021,2024,GW4C20B,petrol,5W-30,4.5,API SP,,10000,MEDIUM,2.0T - code needs verification
+Lynk & Co,01,2020,2024,B4204T47,petrol,0W-20,5.4,ACEA C5,Volvo VCC RBS0-2AE,15000,HIGH,Same Volvo engine
+Omoda,C5,2023,2024,SQRE4T15C,petrol,5W-30,4.0,API SP,,10000,HIGH,Same Chery engine as Tiggo 4 Pro
+Jaecoo,J7,2024,2024,SQRF4J16,petrol,5W-30,4.5,API SP,,10000,HIGH,Same Chery engine as Tiggo 7 Pro

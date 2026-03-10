@@ -107,6 +107,8 @@ Relevant Notes:
 - [[narrow folksonomy optimizes for single-operator retrieval unlike broad consensus tagging]] — explains why description optimization works: single-operator systems can tune ~150-char descriptions entirely to one agent's retrieval patterns without accommodating diverse users, making the filter layer maximally effective for the operator who will actually use it
 - [[BM25 retrieval fails on full-length descriptions because query term dilution reduces match scores]] — reveals that the filter function splits across channels: prose descriptions that work for agent scanning fail keyword search because connective words dilute IDF scoring
 - [[description quality for humans diverges from description quality for keyword search]] — develops the full consequence: the filter function is not one dimension but two, with human scanning and keyword matching as separate optimization targets that can pull in opposite directions
+- [[CRAG's retrieval evaluator prevents noise-induced gate fatigue through relevance thresholds]] — description quality directly affects whether retrieval results pass CRAG-style relevance filtering: poorly-described notes that match semantically but don't signal relevance through descriptions get filtered out, creating feedback pressure toward better descriptions
+- [[whether tracking which surfaced notes agents actually load can identify poorly-described vault entries]] — operationalizes description quality diagnosis: if notes are repeatedly surfaced but never loaded, the description is failing its filter function, providing empirical feedback beyond structural metrics
 
 Topics:
 - [[discovery-retrieval]]

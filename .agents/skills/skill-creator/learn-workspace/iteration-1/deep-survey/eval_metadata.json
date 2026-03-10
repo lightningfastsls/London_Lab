@@ -1,0 +1,15 @@
+{
+  "eval_id": 2,
+  "eval_name": "deep-survey",
+  "prompt": "/learn state of the art in unsupervised clustering methods for bioacoustic vocalizations 2025",
+  "assertions": [
+    {"name": "inbox-file-created", "description": "Produces a markdown file suitable for the inbox pipeline"},
+    {"name": "frontmatter-valid", "description": "Output has YAML frontmatter with description, source_type, status, date_accessed fields"},
+    {"name": "source-log-present", "description": "Includes a source log or URL list with fetch status"},
+    {"name": "provenance-traceable", "description": "At least one claim can be traced to a specific URL"},
+    {"name": "pipeline-chaining", "description": "Suggests next step like /reduce or /seed"},
+    {"name": "structured-sections", "description": "Has organized sub-topic sections covering different clustering approaches"},
+    {"name": "no-verbatim-copy", "description": "Content is synthesized in own framing, not pasted from sources"},
+    {"name": "vault-check-performed", "description": "Checked existing vault knowledge before web research"}
+  ]
+}

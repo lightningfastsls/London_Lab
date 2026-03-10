@@ -1,0 +1,16 @@
+{
+  "eval_id": 1,
+  "eval_name": "vq-sequential",
+  "prompt": "Extract structured knowledge from this source file about VQ-based tokenization of animal vocalizations. The source is a 2025 paper by Sarkar & Magimai-Doss investigating whether discrete token sequences from HuBERT embeddings capture temporal structure in animal calls. Extract all findings, methods, tensions, implementation ideas, and open questions relevant to our USV analysis pipeline.",
+  "source_file": ".claude/skills/reduce-workspace/iteration-2/test-sources/sarkar-sequential-structure-animal-vocalizations-2025.md",
+  "assertions": [
+    "Report contains a SUMMARY section with numerical counts by category",
+    "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+    "Skip rate is below 15% (skipped items / total candidates)",
+    "Every extracted item includes a rationale explaining why it was extracted",
+    "Extracted titles are phrased as claims/propositions, not topic labels",
+    "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+    "Report mentions checking existing notes for duplicates or overlap",
+    "The codebook collapse finding (GVQ underperforms VQ due to collapse) is captured as an extraction"
+  ]
+}

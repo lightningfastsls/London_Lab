@@ -1,7 +1,8 @@
 ---
 description: "Files marked status:processed by /seed remain in inbox/ inflating item count and triggering false inbox-pressure alerts"
 category: process-gap
-status: active
+status: resolved
+resolution: "Added Source Archival section to /reduce SKILL.md (2026-03-07) — moves source from inbox/ to archive/inbox/ after successful extraction"
 first_observed: 2026-03-01
 occurrences: 11
 ---

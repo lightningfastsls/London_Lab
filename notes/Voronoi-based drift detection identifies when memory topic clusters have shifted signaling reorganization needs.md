@@ -23,7 +23,9 @@ Source: mcp-memory-servers-cross-session-knowledge-research-2026-03-02 (archived
 
 Relevant Notes:
 - [[HESTIA scoring uses shadow-decay with quadratic penalty for contradicted memories enabling graceful knowledge evolution without deletion]] -- the complementary scoring mechanism
-- [[three forgetting strategies dominate agent memory: temporal decay importance-based pruning and contradiction-based shadowing]] -- the broader design space
+- [[three forgetting strategies dominate agent memory temporal decay importance-based pruning and contradiction-based shadowing]] -- the broader design space
+- [[between-session observation accumulation is directed dreaming that produces patterns no individual session contained]] — drift detection signals ARE accumulated observations: the vault's rethink cycle detects drift through observation patterns across sessions, serving the same function as Voronoi centroid monitoring but through human-readable friction signals rather than embedding space topology
+- [[each between-session processing cycle is a training step that does not touch the weights]] — drift detection feeds structural updates: when Voronoi-detected drift triggers reorganization, the reorganization is a between-session training step that updates vault structure without model weight changes
 
 Topics:
 - [[agent-memory]]

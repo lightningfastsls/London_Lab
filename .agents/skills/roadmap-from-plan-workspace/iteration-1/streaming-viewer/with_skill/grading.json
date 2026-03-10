@@ -1,0 +1,38 @@
+{
+  "eval_name": "streaming-viewer",
+  "run_type": "with_skill",
+  "source_file": "ROADMAP_STREAMING_VIEWER.md",
+  "expectations": [
+    {
+      "text": "C1: Output contains 4 /implement blocks",
+      "passed": true,
+      "evidence": "Found 4 /implement blocks"
+    },
+    {
+      "text": "C2: Contains [ASSUMED] markers OR explicit gap flagging",
+      "passed": true,
+      "evidence": "Gap detection found"
+    },
+    {
+      "text": "C3: References ADR-001 or sr=300000",
+      "passed": true,
+      "evidence": "ADR/sample rate reference found"
+    },
+    {
+      "text": "C4: At least one module is Tier 3",
+      "passed": true,
+      "evidence": "Tier 3 found"
+    },
+    {
+      "text": "C5: Test plans have >= 3 specific test cases per module",
+      "passed": true,
+      "evidence": "Test counts per module: [10, 12, 12, 10]"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

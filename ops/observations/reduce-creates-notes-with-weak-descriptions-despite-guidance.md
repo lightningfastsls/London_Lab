@@ -3,7 +3,8 @@ description: "/reduce produces descriptions that restate the title instead of ad
 category: friction
 trigger: "Repeated observation across 3+ /reduce runs; confirmed by skill eval data, DeepSqueak batch output, and direct user report (2026-02-28)"
 frequency: recurring
-status: pending
+status: resolved
+resolution: "Added Description Self-Check Gate to /reduce SKILL.md step 7c (2026-03-07) — enforces no-restatement, no-subject-echo, and 'so what' checks with batch failure flagging"
 ---
 
 # /reduce creates notes with weak descriptions despite having quality guidance in the skill

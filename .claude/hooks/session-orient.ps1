@@ -206,6 +206,125 @@ try {
     if ($pendingObsCount -ge $obsThreshold) { Write-Host "TRIGGER: $pendingObsCount pending observations (threshold: $obsThreshold)" }
     if ($pendingTensionCount -ge $tensionThreshold) { Write-Host "TRIGGER: $pendingTensionCount pending tensions (threshold: $tensionThreshold)" }
 
+    # --- Knowledge Activation: Surface relevant vault notes per active thread ---
+    $relevanceFile = Join-Path $VaultRoot "ops\session-relevance.md"
+    $activationSuccess = $false
+
+    try {
+        # Check qmd is available
+        $qmdPath = Get-Command qmd -ErrorAction Stop | Select-Object -ExpandProperty Source
+
+        # Parse thread titles from goalLines
+        $threads = @()
+        foreach ($gl in $goalLines) {
+            $trimGl = $gl.Trim()
+            # Pattern: - **Title** -- description  OR  - Title -- description
+            if ($trimGl -match '^\s*-\s+\*\*(.+?)\*\*\s*--\s*(.+)$') {
+                $threads += @{ Title = $Matches[1].Trim(); Desc = $Matches[2].Trim() }
+            } elseif ($trimGl -match '^\s*-\s+(.+?)\s*--\s*(.+)$') {
+                $threads += @{ Title = $Matches[1].Trim(); Desc = $Matches[2].Trim() }
+            }
+            if ($threads.Count -ge 5) { break }
+        }
+
+        if ($threads.Count -eq 0) {
+            $relevanceContent = "# Session Relevance Brief`n<!-- Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm') -->`n<!-- Threads: 0 active from goals.md -->`n`nNo active threads found in goals.md.`n"
+            Set-Content -Path $relevanceFile -Value $relevanceContent -Encoding UTF8
+            $activationSuccess = $true
+        } else {
+            $allThreadResults = @{}
+            $totalNotes = 0
+
+            foreach ($thread in $threads) {
+                $threadTitle = $thread.Title
+                $threadDesc = $thread.Desc
+                $threadNotes = @{}  # key=note title, value=@{Title; Score; Source}
+
+                # Extract first sentence of description for vsearch query
+                $firstSentence = $threadDesc
+                if ($threadDesc -match '^([^.]+\.)') { $firstSentence = $Matches[1] }
+                $vsearchQuery = "$threadTitle $firstSentence"
+                # Truncate vsearch query to 120 chars
+                if ($vsearchQuery.Length -gt 120) { $vsearchQuery = $vsearchQuery.Substring(0, 120) }
+
+                # --- Keyword search ---
+                $titleWords = $threadTitle -replace '[^\w\s]', '' -replace '\s+', ' '
+                if ($titleWords.Trim().Split(' ').Count -ge 2) {
+                    try {
+                        $kwRaw = & qmd search $titleWords --limit 3 --json 2>&1
+                        $kwJson = ($kwRaw | Out-String).Trim()
+                        if ($kwJson -match '^\[') {
+                            $kwResults = $kwJson | ConvertFrom-Json
+                            foreach ($r in $kwResults) {
+                                if ($r.score -ge 0.1 -and $r.title) {
+                                    $noteKey = $r.title
+                                    if (-not $threadNotes.ContainsKey($noteKey) -or $threadNotes[$noteKey].Score -lt $r.score) {
+                                        $threadNotes[$noteKey] = @{ Title = $r.title; Score = $r.score; Source = 'keyword' }
+                                    }
+                                }
+                            }
+                        }
+                    } catch {}
+                }
+
+                # --- Vector search ---
+                try {
+                    $vsRaw = & qmd vsearch $vsearchQuery --limit 3 --json 2>&1
+                    $vsString = ($vsRaw | Out-String)
+                    # Extract JSON array: find first '[' and parse from there
+                    $bracketIdx = $vsString.IndexOf('[')
+                    if ($bracketIdx -ge 0) {
+                        $vsJsonStr = $vsString.Substring($bracketIdx)
+                        $vsResults = $vsJsonStr | ConvertFrom-Json
+                        foreach ($r in $vsResults) {
+                            if ($r.score -ge 0.3 -and $r.title) {
+                                $noteKey = $r.title
+                                if (-not $threadNotes.ContainsKey($noteKey) -or $threadNotes[$noteKey].Score -lt $r.score) {
+                                    $threadNotes[$noteKey] = @{ Title = $r.title; Score = $r.score; Source = 'vector' }
+                                }
+                            }
+                        }
+                    }
+                } catch {}
+
+                # Cap at 4 notes per thread, sorted by score descending
+                $sortedNotes = $threadNotes.Values | Sort-Object { $_.Score } -Descending | Select-Object -First 4
+                $allThreadResults[$threadTitle] = $sortedNotes
+                $totalNotes += $sortedNotes.Count
+            }
+
+            # Build relevance file content
+            $sb = [System.Text.StringBuilder]::new()
+            [void]$sb.AppendLine("# Session Relevance Brief")
+            [void]$sb.AppendLine("<!-- Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm') -->")
+            [void]$sb.AppendLine("<!-- Threads: $($threads.Count) active from goals.md -->")
+            [void]$sb.AppendLine("")
+
+            foreach ($thread in $threads) {
+                $threadTitle = $thread.Title
+                [void]$sb.AppendLine("## $threadTitle")
+
+                $notes = $allThreadResults[$threadTitle]
+                if ($notes -and $notes.Count -gt 0) {
+                    foreach ($n in $notes) {
+                        [void]$sb.AppendLine("- **$($n.Title)** (score: $($n.Score), $($n.Source))")
+                    }
+                } else {
+                    [void]$sb.AppendLine("- No strong matches above relevance threshold.")
+                }
+                [void]$sb.AppendLine("")
+            }
+
+            Set-Content -Path $relevanceFile -Value $sb.ToString() -Encoding UTF8
+            $activationSuccess = $true
+            Write-Host "Knowledge activation: $totalNotes notes surfaced for $($threads.Count) threads"
+        }
+    } catch {
+        # qmd unavailable or other error - write graceful fallback
+        $relevanceContent = "# Session Relevance Brief`n<!-- Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm') -->`n`nqmd unavailable - knowledge activation skipped.`n"
+        Set-Content -Path $relevanceFile -Value $relevanceContent -Encoding UTF8
+    }
+
     # --- Lifecycle: Archive old completed goals ---
     if (Test-Path $goalsFile) {
         $gLines = Get-Content $goalsFile -ErrorAction SilentlyContinue

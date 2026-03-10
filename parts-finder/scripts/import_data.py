@@ -159,9 +159,9 @@ def coerce_row(
             if key not in schema_fields:
                 continue
             if key in _SPECS_INT_FIELDS:
-                kwargs[key] = int(value)
+                kwargs[key] = int(value) if value.strip() else 0
             elif key in _SPECS_FLOAT_FIELDS:
-                kwargs[key] = float(value)
+                kwargs[key] = float(value) if value.strip() else 0.0
             else:
                 kwargs[key] = value
         return VehicleSpecs(**kwargs)

@@ -56,6 +56,7 @@ Relevant Notes:
 - [[external memory shapes cognition more than base model]] — foundation: retrieval shapes cognition because each note is a capability that enables reasoning the agent could not do without it
 - [[elaborative encoding is the quality gate for new notes]] — quality mechanism: notes become genuine capabilities only through elaborative encoding; connecting to existing knowledge creates the retrieval hooks that make the skill invocable
 - [[implicit knowledge emerges from traversal]] — skill composition through exposure: repeated traversal builds intuitive awareness of which skills compose well together, enabling the emergent capabilities that no single skill contains
+- [[activation timing matters as much as retrieval quality in agent knowledge systems]] — the "injected when relevant" half of the notes-as-skills equation depends entirely on activation timing: a skill exists but is inert unless triggered, and the RAG literature shows that the trigger decision is the primary bottleneck, not skill quality alone
 
 Topics:
 - [[note-design]]

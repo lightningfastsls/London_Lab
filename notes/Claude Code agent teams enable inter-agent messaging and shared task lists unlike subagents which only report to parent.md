@@ -24,7 +24,7 @@ Key limitations: no session resumption for teammates, task status can lag, one t
 Source: claude-code-mcp-ecosystem-march-2026-research-2026-03-02 (archived to archive/inbox/)
 
 Relevant Notes:
-- [[three parallelization strategies in Claude Code serve different isolation needs: subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] -- the comparison framework
+- [[three parallelization strategies in Claude Code serve different isolation needs subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] -- the comparison framework
 - [[subagent architecture isolates context degradation by giving each task a focused window and compressing summaries upward]] -- the subagent pattern teams extend
 
 Topics:

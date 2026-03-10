@@ -79,6 +79,15 @@ class ProbabilityCanvas(QWidget):
 
         self.update()
 
+    def clear(self) -> None:
+        """Clear probability data and any highlighted detections."""
+        self.times = None
+        self.probabilities = None
+        self.column_indices = None
+        self.total_columns = 0
+        self.detections = []
+        self.update()
+
     def paintEvent(self, event):
         """Paint the probability curve."""
         if self.times is None or self.probabilities is None:
@@ -306,3 +315,7 @@ class ProbabilityView(QWidget):
 
         # Don't block signals - let Qt handle the scroll event properly
         scrollbar.setValue(target_value)
+
+    def clear(self) -> None:
+        """Clear the probability view contents."""
+        self.canvas.clear()

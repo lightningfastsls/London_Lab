@@ -26,6 +26,9 @@ Relevant Notes:
 - [[excess entropy measures long-range structure complexity in discrete code sequences]] -- interpretation depends on whether attention is local or global
 - [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the data format providing the long context to attend over
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- if attention is purely local, it cannot capture the sequence-level statistics Hertz identified
+- [[LLMs exhibit a U-shaped attention curve where information in the middle of context degrades by more than 30 percent]] -- attention degradation in the middle of context is a known issue in LLMs; the same U-shaped pattern could appear in our USV transformer, making middle-bout calls harder to attend to
+- [[ALiBi adds linear distance penalties to attention scores enabling train-short-test-long extrapolation with equivalent perplexity at 2x and reasonable degradation at longer ranges]] -- ALiBi's recency bias could help or hinder long-range attention patterns depending on bout structure
+- [[NoLiMa found 11 of 12 models dropped below 50 percent baseline at 32K when lexical shortcuts were removed]] -- long-context attention degradation is widespread; our USV transformer may need explicit mechanisms to maintain long-range attention
 
 Topics:
-- [[classification]]
+- [[representation-learning]]

@@ -27,8 +27,12 @@ How we find USVs in raw audio. The pipeline uses a two-stage architecture: a per
 - [[low-amplitude and short-duration USVs are the primary source of false negatives and training bias]] -- faint/short calls are the hardest to detect
 - [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- noise structural mimicry triggers false positives
 
+## Detection App Save State
+- [[saved-previous ghost detections current editable and saved-current form three aligned detection state tiers in the app]] -- three-tier model: editable current, matched saved-current (blue), historical ghost (gray)
+
 ## Label Persistence
 - [[JSON label files provide human-readable version-controllable persistence for detection labels and metadata]] -- one JSON per WAV stores detections, user labels, probability curves; git-friendly and inspectable
+- [[timestamp proximity matching with configurable tolerance bridges detection systems that use different internal time representations]] -- engineering pattern for re-associating detections across tools when exact timestamps differ due to STFT framing
 
 ## Sub-Maps
 - [[detection-landscape]] -- architectural taxonomy, alternative tools, source separation, annotation ecosystem (28 notes)

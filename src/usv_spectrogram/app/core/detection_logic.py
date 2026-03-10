@@ -4,6 +4,9 @@ Converts CNN probability predictions into discrete USV detections using
 hysteresis thresholding and merging of nearby events.
 """
 
+# VAULT: saved-previous ghost detections current editable and saved-current form three aligned detection state tiers in the app
+# Run `/kcheck` before modifying this file.
+
 from __future__ import annotations
 
 from dataclasses import dataclass

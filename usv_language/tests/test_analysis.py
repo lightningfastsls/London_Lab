@@ -19,6 +19,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -41,8 +42,30 @@ from usv_language.analysis import sequence_analysis
 from usv_language.analysis import concept_manipulation
 from usv_language.analysis import context_analysis
 from usv_language.analysis import compositionality
+from usv_language.analysis import information_theory
+from usv_language.analysis.run_analysis import (
+    build_analysis_sample_spectrogram,
+    coerce_vqvae_config,
+    load_analysis_metadata,
+    resolve_device,
+    run_analysis,
+    validate_analysis_inputs,
+    validate_vqvae_provenance,
+)
+from usv_language.analysis.information_theory import (
+    BurstinessResult,
+    EntropyRateResult,
+    ProductivityResult,
+    ZipfEntropyResult,
+    ZipfResult,
+)
 from usv_language.models.transformer import SpectrogramTransformer, TransformerConfig
 from usv_language.models.vqvae import HiddenStateVQVAE, VQVAEConfig
+from usv_language.training.compare_layers import compare_layers, parse_args as parse_compare_layers_args
+from usv_language.training.extract_hidden_states import (
+    extract_hidden_states,
+    parse_args as parse_extract_hidden_states_args,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -412,3 +435,527 @@ def test_chi_squared_valid_pvalue() -> None:
     assert result["p_value"] > 0.05, (
         f"Same distribution should give p > 0.05, got {result['p_value']}"
     )
+
+
+def test_group_codes_by_legacy_frame_metadata() -> None:
+    codes = np.array([0, 1, 2, 3, 4, 5], dtype=np.int64)
+    metadata = {
+        "frames": [
+            {"frame_index": 0, "recording_id": "rec_a"},
+            {"frame_index": 1, "recording_id": "rec_a"},
+            {"frame_index": 2, "recording_id": "rec_a"},
+            {"frame_index": 3, "recording_id": "rec_b"},
+            {"frame_index": 4, "recording_id": "rec_b"},
+            {"frame_index": 5, "recording_id": "rec_b"},
+        ]
+    }
+
+    grouped = context_analysis.group_codes_by_metadata(codes, metadata)
+
+    assert set(grouped.keys()) == {"rec_a", "rec_b"}
+    np.testing.assert_array_equal(grouped["rec_a"], np.array([0, 1, 2]))
+    np.testing.assert_array_equal(grouped["rec_b"], np.array([3, 4, 5]))
+
+
+def test_extract_bout_code_sequences_from_legacy_metadata(
+    synthetic_hidden_states: np.ndarray,
+    small_vqvae: HiddenStateVQVAE,
+    tmp_path: Path,
+) -> None:
+    metadata_path = tmp_path / "metadata.json"
+    metadata_path.write_text(
+        json.dumps({
+            "frames": [
+                {"frame_index": i, "recording_id": "rec_a" if i < 100 else "rec_b"}
+                for i in range(len(synthetic_hidden_states))
+            ]
+        }),
+        encoding="utf-8",
+    )
+
+    sequences = sequence_analysis.extract_bout_code_sequences(
+        synthetic_hidden_states, metadata_path, small_vqvae, batch_size=64, device="cpu",
+    )
+
+    assert len(sequences) == 2
+    assert sum(len(seq) for seq in sequences) == len(synthetic_hidden_states)
+
+
+def test_build_analysis_sample_spectrogram_shape(
+    small_transformer: SpectrogramTransformer,
+) -> None:
+    hidden_states = np.random.randn(20, small_transformer.config.d_model).astype(np.float32)
+
+    sample = build_analysis_sample_spectrogram(
+        hidden_states, small_transformer, source_layer=1, device=torch.device("cpu"), sample_len=8,
+    )
+
+    assert sample.shape == (1, 8, small_transformer.config.n_freq)
+
+
+def test_resolve_device_falls_back_to_cpu_when_cuda_unavailable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+
+    device = resolve_device("cuda")
+
+    assert device.type == "cpu"
+
+
+def test_coerce_vqvae_config_accepts_dict() -> None:
+    config = coerce_vqvae_config({
+        "d_model": 64,
+        "codebook_size": 8,
+        "codebook_dim": 16,
+        "use_conv_encoder": False,
+    })
+
+    assert isinstance(config, VQVAEConfig)
+    assert config.d_model == 64
+
+
+def test_build_analysis_sample_spectrogram_rejects_empty_hidden_states(
+    small_transformer: SpectrogramTransformer,
+) -> None:
+    with pytest.raises(ValueError, match="at least one frame"):
+        build_analysis_sample_spectrogram(
+            np.empty((0, small_transformer.config.d_model), dtype=np.float32),
+            small_transformer,
+            source_layer=1,
+            device=torch.device("cpu"),
+        )
+
+
+def test_load_analysis_metadata_auto_detects_adjacent_metadata(
+    tmp_path: Path,
+) -> None:
+    hidden_states_path = tmp_path / "hidden_states_layer1.npy"
+    hidden_states_path.write_bytes(b"")
+    metadata_path = tmp_path / "metadata.json"
+    metadata_path.write_text(json.dumps({"total_frames": 8, "d_model": 64}), encoding="utf-8")
+
+    metadata, resolved_path, source = load_analysis_metadata(str(hidden_states_path))
+
+    assert metadata == {"total_frames": 8, "d_model": 64}
+    assert resolved_path == str(metadata_path.resolve())
+    assert source == "adjacent"
+
+
+def test_load_analysis_metadata_rejects_missing_explicit_path(
+    tmp_path: Path,
+) -> None:
+    hidden_states_path = tmp_path / "hidden_states_layer1.npy"
+    hidden_states_path.write_bytes(b"")
+
+    with pytest.raises(FileNotFoundError, match="Metadata file not found"):
+        load_analysis_metadata(
+            str(hidden_states_path),
+            metadata_path=str(tmp_path / "missing_metadata.json"),
+        )
+
+
+def test_run_analysis_records_partial_failures_and_continues(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    transformer = SpectrogramTransformer(
+        TransformerConfig(
+            n_freq=16,
+            d_model=64,
+            n_heads=4,
+            n_layers=2,
+            d_ffn=128,
+            max_seq_len=64,
+            dropout=0.0,
+        )
+    )
+    vqvae = HiddenStateVQVAE(
+        VQVAEConfig(
+            d_model=64,
+            codebook_size=8,
+            codebook_dim=32,
+            use_conv_encoder=False,
+        )
+    )
+
+    transformer_path = tmp_path / "transformer.pt"
+    vqvae_path = tmp_path / "vqvae.pt"
+    hidden_states_path = tmp_path / "hidden_states.npy"
+    output_dir = tmp_path / "analysis_output"
+
+    torch.save(
+        {"model_state_dict": transformer.state_dict(), "config": transformer.config},
+        transformer_path,
+    )
+    torch.save(
+        {
+            "model_state_dict": vqvae.state_dict(),
+            "config": vqvae.config,
+            "provenance": {
+                "hidden_states_path": str(hidden_states_path.resolve()),
+                "hidden_states_filename": hidden_states_path.name,
+                "source_layer": 1,
+            },
+        },
+        vqvae_path,
+    )
+    np.save(hidden_states_path, np.random.randn(32, 64).astype(np.float32))
+    metadata_path = tmp_path / "metadata.json"
+    metadata_path.write_text(
+        json.dumps({"total_frames": 32, "d_model": 64, "layers_extracted": [1]}),
+        encoding="utf-8",
+    )
+
+    def _noop(*args, **kwargs):
+        return None
+
+    monkeypatch.setattr(codebook_viz, "decode_all_entries", lambda *args, **kwargs: np.zeros((8, 16)))
+    monkeypatch.setattr(codebook_viz, "plot_decoded_profiles", _noop)
+    monkeypatch.setattr(codebook_viz, "plot_codebook_usage", _noop)
+    monkeypatch.setattr(codebook_viz, "plot_codebook_projection", _noop)
+    monkeypatch.setattr(codebook_viz, "find_exemplars", lambda *args, **kwargs: {})
+    monkeypatch.setattr(sequence_analysis, "extract_code_sequences", lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("sequence boom")))
+    monkeypatch.setattr(concept_manipulation, "concept_scan", lambda *args, **kwargs: np.zeros((8, 16)))
+    monkeypatch.setattr(concept_manipulation, "plot_concept_scan", _noop)
+
+    run_analysis(
+        transformer_path=str(transformer_path),
+        vqvae_path=str(vqvae_path),
+        hidden_states_path=str(hidden_states_path),
+        output_dir=str(output_dir),
+        source_layer=1,
+        device_name="cpu",
+    )
+
+    summary = json.loads((output_dir / "analysis_summary.json").read_text(encoding="utf-8"))
+    assert summary["artifacts"]["metadata"] == str(metadata_path.resolve())
+    assert summary["artifacts"]["metadata_source"] == "adjacent"
+    assert summary["artifacts"]["vqvae_provenance"]["source_layer"] == 1
+    assert summary["section_status"]["codebook_visualization"]["status"] == "completed"
+    assert summary["section_status"]["sequence_analysis"]["status"] == "failed"
+    assert "sequence boom" in summary["section_status"]["sequence_analysis"]["reason"]
+    assert summary["section_status"]["concept_manipulation"]["status"] == "completed"
+    assert summary["section_status"]["context_analysis"]["status"] == "skipped"
+    assert summary["section_status"]["compositionality"]["status"] == "skipped"
+    assert summary["section_status"]["information_theory"]["status"] == "skipped"
+
+
+def test_run_analysis_rejects_missing_explicit_metadata_path(
+    tmp_path: Path,
+) -> None:
+    transformer = SpectrogramTransformer(
+        TransformerConfig(
+            n_freq=16,
+            d_model=64,
+            n_heads=4,
+            n_layers=2,
+            d_ffn=128,
+            max_seq_len=64,
+            dropout=0.0,
+        )
+    )
+    vqvae = HiddenStateVQVAE(
+        VQVAEConfig(
+            d_model=64,
+            codebook_size=8,
+            codebook_dim=32,
+            use_conv_encoder=False,
+        )
+    )
+
+    transformer_path = tmp_path / "transformer.pt"
+    vqvae_path = tmp_path / "vqvae.pt"
+    hidden_states_path = tmp_path / "hidden_states_layer1.npy"
+
+    torch.save(
+        {"model_state_dict": transformer.state_dict(), "config": transformer.config},
+        transformer_path,
+    )
+    torch.save(
+        {"model_state_dict": vqvae.state_dict(), "config": vqvae.config},
+        vqvae_path,
+    )
+    np.save(hidden_states_path, np.random.randn(16, 64).astype(np.float32))
+
+    with pytest.raises(FileNotFoundError, match="Metadata file not found"):
+        run_analysis(
+            transformer_path=str(transformer_path),
+            vqvae_path=str(vqvae_path),
+            hidden_states_path=str(hidden_states_path),
+            output_dir=str(tmp_path / "analysis_output"),
+            source_layer=1,
+            metadata_path=str(tmp_path / "missing_metadata.json"),
+            device_name="cpu",
+        )
+
+
+def test_tiny_artifact_chain_extract_compare_analyze(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    n_freq = 8
+    d_model = 16
+    transformer = SpectrogramTransformer(
+        TransformerConfig(
+            n_freq=n_freq,
+            d_model=d_model,
+            n_heads=4,
+            n_layers=2,
+            d_ffn=32,
+            max_seq_len=8,
+            dropout=0.0,
+        )
+    )
+
+    data_dir = tmp_path / "bout_data"
+    hidden_states_dir = tmp_path / "hidden_states"
+    compare_output_dir = tmp_path / "compare_output"
+    analysis_output_dir = tmp_path / "analysis_output"
+    transformer_path = tmp_path / "transformer.pt"
+
+    data_dir.mkdir()
+    for idx in range(3):
+        spec = np.random.randn(n_freq, 20).astype(np.float32)
+        np.save(data_dir / f"rec_{idx:02d}_bout0.npy", spec)
+
+    torch.save(
+        {"epoch": 0, "model_state_dict": transformer.state_dict(), "config": transformer.config},
+        transformer_path,
+    )
+
+    extract_args = parse_extract_hidden_states_args([
+        "--checkpoint", str(transformer_path),
+        "--data-dir", str(data_dir),
+        "--output-dir", str(hidden_states_dir),
+        "--layers", "1",
+        "--primary-layer", "1",
+        "--batch-size", "2",
+        "--num-workers", "0",
+    ])
+    extract_hidden_states(extract_args)
+
+    hidden_states_path = hidden_states_dir / "hidden_states_layer1.npy"
+    metadata_path = hidden_states_dir / "metadata.json"
+    assert hidden_states_path.exists()
+    assert metadata_path.exists()
+
+    compare_args = parse_compare_layers_args([
+        "--hidden-states-dir", str(hidden_states_dir),
+        "--output-dir", str(compare_output_dir),
+        "--layers", "1",
+        "--epochs", "1",
+        "--batch-size", "4",
+        "--patience", "0",
+        "--d-model", str(d_model),
+        "--codebook-size", "4",
+        "--codebook-dim", "8",
+        "--window-size", "8",
+        "--stride", "4",
+        "--val-fraction", "0.25",
+        "--num-workers", "0",
+        "--seed", "123",
+    ])
+    compare_layers(compare_args)
+
+    layer_dir = compare_output_dir / "layer_1"
+    vqvae_checkpoint = layer_dir / "best.pt"
+    comparison_report = compare_output_dir / "comparison_report.md"
+    assert vqvae_checkpoint.exists()
+    assert comparison_report.exists()
+
+    def _noop(*args, **kwargs):
+        return None
+
+    monkeypatch.setattr(codebook_viz, "plot_decoded_profiles", _noop)
+    monkeypatch.setattr(codebook_viz, "plot_codebook_usage", _noop)
+    monkeypatch.setattr(codebook_viz, "plot_codebook_projection", _noop)
+    monkeypatch.setattr(codebook_viz, "plot_exemplar_gallery", _noop)
+    monkeypatch.setattr(sequence_analysis, "plot_zipf", _noop)
+    monkeypatch.setattr(sequence_analysis, "plot_entropy_rate", _noop)
+    monkeypatch.setattr(sequence_analysis, "plot_mi_decay", _noop)
+    monkeypatch.setattr(sequence_analysis, "plot_transition_matrix", _noop)
+    monkeypatch.setattr(concept_manipulation, "plot_concept_scan", _noop)
+    monkeypatch.setattr(compositionality, "plot_bigram_productivity", _noop)
+    monkeypatch.setattr(compositionality, "plot_positional_independence", _noop)
+    monkeypatch.setattr(
+        information_theory,
+        "zipf_exponent_mle",
+        lambda codes: ZipfResult(alpha=2.0, xmin=1.0, p_value=1.0, n_tail=len(codes), log_likelihood_ratio=0.0),
+    )
+    monkeypatch.setattr(
+        information_theory,
+        "zipf_via_shannon_entropy",
+        lambda codes, K: ZipfEntropyResult(
+            alpha_estimate=1.0,
+            entropy_observed=1.0,
+            entropy_ci=(0.9, 1.1),
+            method="stub",
+        ),
+    )
+    monkeypatch.setattr(
+        information_theory,
+        "entropy_rate",
+        lambda codes, max_order=8: EntropyRateResult(
+            orders=[1, 2],
+            rates_plugin=[1.0, 0.5],
+            rates_corrected=[1.0, 0.5],
+            convergence_order=2,
+        ),
+    )
+    monkeypatch.setattr(information_theory, "ngram_idioms", lambda *args, **kwargs: [])
+    monkeypatch.setattr(
+        information_theory,
+        "ngram_productivity",
+        lambda *args, **kwargs: ProductivityResult(
+            observed=1,
+            possible=16,
+            productivity_ratio=1 / 16,
+            null_ci_lower=0.0,
+            null_ci_upper=0.1,
+            n=2,
+        ),
+    )
+    monkeypatch.setattr(
+        information_theory,
+        "conditional_entropy_by_lag",
+        lambda *args, **kwargs: [0.1] * 10,
+    )
+    monkeypatch.setattr(
+        information_theory,
+        "mutual_information_rate",
+        lambda *args, **kwargs: [0.2] * 20,
+    )
+    monkeypatch.setattr(
+        information_theory,
+        "burstiness_coefficient",
+        lambda *args, **kwargs: BurstinessResult(
+            cv=1.0,
+            mean_iei=0.1,
+            std_iei=0.1,
+            n_bursts=1,
+            mean_burst_duration=0.1,
+            mean_inter_burst_interval=0.0,
+            interpretation="poisson",
+        ),
+    )
+
+    run_analysis(
+        transformer_path=str(transformer_path),
+        vqvae_path=str(vqvae_checkpoint),
+        hidden_states_path=str(hidden_states_path),
+        output_dir=str(analysis_output_dir),
+        source_layer=1,
+        device_name="cpu",
+    )
+
+    summary = json.loads((analysis_output_dir / "analysis_summary.json").read_text(encoding="utf-8"))
+    report_text = comparison_report.read_text(encoding="utf-8")
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+
+    assert summary["artifacts"]["hidden_states"] == str(hidden_states_path.resolve())
+    assert summary["artifacts"]["metadata"] == str(metadata_path.resolve())
+    assert summary["artifacts"]["metadata_source"] == "adjacent"
+    assert summary["artifacts"]["vqvae_provenance"]["source_layer"] == 1
+    assert summary["section_status"]["codebook_visualization"]["status"] == "completed"
+    assert summary["section_status"]["sequence_analysis"]["status"] == "completed"
+    assert "## Extraction Provenance" in report_text
+    assert str(hidden_states_path.resolve()) in report_text
+    assert str(metadata_path.resolve()) in report_text
+    assert metadata["layers_extracted"] == [1]
+
+
+def test_validate_vqvae_provenance_rejects_mismatched_hidden_states_path(
+    tmp_path: Path,
+) -> None:
+    expected_path = tmp_path / "hidden_states_layer4.npy"
+    expected_path.write_bytes(b"")
+    provided_path = tmp_path / "other_hidden_states_layer4.npy"
+    provided_path.write_bytes(b"")
+
+    with pytest.raises(ValueError, match="different hidden-state artifact"):
+        validate_vqvae_provenance(
+            {"provenance": {"hidden_states_path": str(expected_path.resolve()), "source_layer": 4}},
+            str(provided_path),
+            source_layer=4,
+        )
+
+
+def test_validate_vqvae_provenance_rejects_mismatched_source_layer(
+    tmp_path: Path,
+) -> None:
+    hidden_states_path = tmp_path / "hidden_states_layer4.npy"
+    hidden_states_path.write_bytes(b"")
+
+    with pytest.raises(ValueError, match="source_layer does not match"):
+        validate_vqvae_provenance(
+            {"provenance": {"hidden_states_path": str(hidden_states_path.resolve()), "source_layer": 4}},
+            str(hidden_states_path),
+            source_layer=2,
+        )
+
+
+def test_validate_analysis_inputs_rejects_filename_layer_mismatch(
+    small_transformer: SpectrogramTransformer,
+    tmp_path: Path,
+) -> None:
+    hidden_states_path = tmp_path / "hidden_states_layer4.npy"
+    hidden_states_path.write_bytes(b"")
+
+    with pytest.raises(ValueError, match="filename layer does not match"):
+        validate_analysis_inputs(
+            str(hidden_states_path),
+            np.zeros((8, small_transformer.config.d_model), dtype=np.float32),
+            source_layer=2,
+            transformer=small_transformer,
+        )
+
+
+def test_validate_analysis_inputs_rejects_metadata_total_frames_mismatch(
+    small_transformer: SpectrogramTransformer,
+    tmp_path: Path,
+) -> None:
+    hidden_states_path = tmp_path / "hidden_states_layer1.npy"
+    hidden_states_path.write_bytes(b"")
+
+    with pytest.raises(ValueError, match="Metadata total_frames does not match"):
+        validate_analysis_inputs(
+            str(hidden_states_path),
+            np.zeros((8, small_transformer.config.d_model), dtype=np.float32),
+            source_layer=1,
+            transformer=small_transformer,
+            metadata={"total_frames": 9, "d_model": small_transformer.config.d_model},
+        )
+
+
+def test_validate_analysis_inputs_rejects_metadata_d_model_mismatch(
+    small_transformer: SpectrogramTransformer,
+    tmp_path: Path,
+) -> None:
+    hidden_states_path = tmp_path / "hidden_states_layer1.npy"
+    hidden_states_path.write_bytes(b"")
+
+    with pytest.raises(ValueError, match="Metadata d_model does not match"):
+        validate_analysis_inputs(
+            str(hidden_states_path),
+            np.zeros((8, small_transformer.config.d_model), dtype=np.float32),
+            source_layer=1,
+            transformer=small_transformer,
+            metadata={"total_frames": 8, "d_model": small_transformer.config.d_model + 1},
+        )
+
+
+def test_validate_analysis_inputs_rejects_out_of_range_source_layer(
+    small_transformer: SpectrogramTransformer,
+    tmp_path: Path,
+) -> None:
+    hidden_states_path = tmp_path / "hidden_states_layer3.npy"
+    hidden_states_path.write_bytes(b"")
+
+    with pytest.raises(ValueError, match="source_layer must be in"):
+        validate_analysis_inputs(
+            str(hidden_states_path),
+            np.zeros((8, small_transformer.config.d_model), dtype=np.float32),
+            source_layer=3,
+            transformer=small_transformer,
+        )

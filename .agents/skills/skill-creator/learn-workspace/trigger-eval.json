@@ -1,0 +1,82 @@
+[
+  {
+    "query": "I just came across this concept of 'contrastive predictive coding' for audio representations and I'm not sure how it compares to the masked autoencoders we've been reading about. Can you do a deep dive on CPC vs MAE for bioacoustic feature learning? I want to know which approach is winning on recent benchmarks and whether anyone has applied CPC specifically to USV data",
+    "should_trigger": true
+  },
+  {
+    "query": "/learn VAE-based approaches to mouse USV syllable classification --deep",
+    "should_trigger": true
+  },
+  {
+    "query": "hey so I was reading about this tool called WhisperSeg for segmenting birdsong and it sounds pretty cool. Can you research whether it would work for our mouse USV recordings? Like what sample rates does it support, what's the architecture, has anyone used it for rodent vocalizations",
+    "should_trigger": true
+  },
+  {
+    "query": "what do we know about UMAP parameter sensitivity for high-dimensional bioacoustic embeddings? I'm worried we might be choosing n_neighbors and min_dist arbitrarily -- is there any systematic study on this?",
+    "should_trigger": true
+  },
+  {
+    "query": "look up what sample rate DeepSqueak actually uses internally. I remember we had conflicting info last time -- some docs say 250kHz, the paper says something different. Just get me the definitive answer from the source code if you can",
+    "should_trigger": true
+  },
+  {
+    "query": "https://arxiv.org/abs/2406.01253",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to understand the current landscape of open-source bioacoustic annotation tools. Not just detection -- I mean the full pipeline: segmentation, labeling, review, export. What's out there in 2025 and how do they compare?",
+    "should_trigger": true
+  },
+  {
+    "query": "find out about recent advances in few-shot learning for animal sound classification. Specifically interested in approaches that work with less than 10 labeled examples per class, since that's our situation with the rare USV call types",
+    "should_trigger": true
+  },
+  {
+    "query": "so my advisor mentioned that there's a new benchmark dataset for marine bioacoustics that just came out this year. Something about standardizing evaluation across species? can you track it down and tell me what it covers, how big it is, and whether we could use the same evaluation framework for our USV work",
+    "should_trigger": true
+  },
+  {
+    "query": "research what the state of the art is for handling overlapping vocalizations in dense acoustic environments. Our field recordings sometimes have 2-3 mice vocalizing simultaneously and the current energy detector can't separate them",
+    "should_trigger": true
+  },
+  {
+    "query": "I just dropped a new paper PDF into the inbox folder at inbox/bermant-2023-deep-audio-embeddings.md. Can you extract the key claims and turn them into atomic notes? It covers convolutional autoencoders for vocalization clustering",
+    "should_trigger": false
+  },
+  {
+    "query": "we've got like 5 new notes about clustering methods sitting in notes/ that aren't connected to anything. Can you find what they relate to and update the topic maps?",
+    "should_trigger": false
+  },
+  {
+    "query": "why does our vault use atomic notes instead of longer documents? Like what's the reasoning behind the single-claim-per-note rule? I feel like sometimes it makes things harder to follow",
+    "should_trigger": false
+  },
+  {
+    "query": "check the vault health -- I haven't run maintenance in a while and I'm worried there might be orphan notes or broken links piling up",
+    "should_trigger": false
+  },
+  {
+    "query": "I've been meaning to update the old notes about STFT parameter choices. The ones from last month reference 250kHz but we've since confirmed it should be 300kHz. Can you go back through those notes and fix the outdated references?",
+    "should_trigger": false
+  },
+  {
+    "query": "can you read the detection config at src/usv_spectrogram/detection/config.py and explain what each parameter does? I want to understand the threshold settings before I change anything",
+    "should_trigger": false
+  },
+  {
+    "query": "what's next? I just finished implementing the dataset assembler and I'm not sure what to work on -- should I do the training pipeline or the detection app first?",
+    "should_trigger": false
+  },
+  {
+    "query": "I have this paper already in the vault -- the Animal2Vec one from 2024. I want to verify whether our note about its accuracy numbers is still correct or if there's been an update to the paper since we captured it",
+    "should_trigger": false
+  },
+  {
+    "query": "process the 3 items sitting in the inbox queue -- there's the NatureLM-audio capture, the Perch 2.0 summary, and the AVEX benchmark notes. Run them through the full pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "show me the vault stats -- how many notes do we have, what's the link density, how many topic maps, what's the processing backlog look like",
+    "should_trigger": false
+  }
+]

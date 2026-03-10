@@ -49,6 +49,9 @@ Relevant Notes:
 - [[vivid memories need verification]] — the false familiarity risk: implicit knowledge from traversal may be illusory confidence rather than genuine understanding, paralleling how vivid memories feel accurate while drifting from reality
 - [[external memory shapes cognition more than base model]] — mechanism instance: traversal-built intuition is one pathway through which memory architecture shapes cognition; the vault's link structure determines which paths exist, which determines what implicit knowledge forms, making architecture the variable that produces different agent intuitions from identical weights
 - [[agent notes externalize navigation intuition that search cannot discover and traversal cannot reconstruct]] — persistence mechanism: implicit knowledge builds through traversal but vanishes at session boundaries; agent notes capture the navigational distillate (starting points, productive combinations, dead ends) so the next session can reconstruct orientation without full re-traversal
+- [[knowledge lives in paths between notes not in any single note]] — extends the core claim: traversal doesn't just build intuition (this note) but *produces* knowledge that exists in no single node; the inter-note knowledge is generated fresh by each traversal path
+- [[traversal simultaneously improves the traverser and the graph creating a co-evolutionary loop]] — develops the bidirectional claim hinted at in the incremental formalization paragraph: traversal trains the agent AND crystallizes notes, producing accelerating co-improvement
+- [[different traversal starting points produce different emergent knowledge from the same graph]] — path-dependence consequence: if implicit knowledge comes from traversal, then starting point determines which implicit knowledge forms, making the same vault generate different agents
 
 Topics:
 - [[agent-cognition]]

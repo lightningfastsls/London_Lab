@@ -46,6 +46,19 @@ from usv_language.models.transformer import SpectrogramTransformer, TransformerC
 logger = logging.getLogger(__name__)
 
 
+def coerce_transformer_config(raw_config: TransformerConfig | dict | None) -> TransformerConfig:
+    """Normalize checkpoint config payloads across older/newer formats."""
+    if raw_config is None:
+        return TransformerConfig()
+    if isinstance(raw_config, TransformerConfig):
+        return raw_config
+    if isinstance(raw_config, dict):
+        return TransformerConfig(**raw_config)
+    raise TypeError(
+        f"Unsupported transformer config payload: {type(raw_config)!r}"
+    )
+
+
 # ---------------------------------------------------------------------------
 # Cosine warmup scheduler (standalone copy, decoupled from v1 trainer)
 # ---------------------------------------------------------------------------
@@ -236,6 +249,12 @@ def build_dataloaders(
         augmentation_config=None, training=False, seed=data_config.seed,
     )
 
+    if len(val_ids) == 0 or len(val_dataset) == 0:
+        raise ValueError(
+            "Validation split is empty. Provide more recordings or adjust "
+            "TransformerDataConfig split ratios before training."
+        )
+
     train_sampler = BucketedBatchSampler(
         train_dataset.get_lengths(), data_config.batch_size,
         shuffle=True, seed=data_config.seed,
@@ -410,6 +429,7 @@ def load_checkpoint(
     without the ``module.`` prefix, so we unwrap before loading.
     """
     checkpoint = torch.load(str(path), map_location="cpu", weights_only=False)
+    checkpoint["config"] = coerce_transformer_config(checkpoint.get("config"))
     # Unwrap DataParallel if needed (checkpoints save without module. prefix)
     target = model.module if hasattr(model, "module") else model
     target.load_state_dict(checkpoint["model_state_dict"])
@@ -514,11 +534,23 @@ def train(args: argparse.Namespace) -> None:
             )
         else:
             ckpt = load_checkpoint(resume_path, model, optimizer, scheduler)
+            checkpoint_config = ckpt["config"]
+            if checkpoint_config != model_config:
+                raise ValueError(
+                    "Resume checkpoint model config does not match requested "
+                    "training config. Resume with the original architecture or "
+                    "start a new run."
+                )
             start_epoch = ckpt["epoch"] + 1
             best_val_loss = ckpt.get("best_val_loss", float("inf"))
             patience_counter = ckpt.get("patience_counter", 0)
             history = ckpt.get("history", [])
             logger.info("Resumed from epoch %d", ckpt["epoch"])
+            if start_epoch >= args.epochs:
+                raise ValueError(
+                    f"Checkpoint already reached epoch {ckpt['epoch']}. "
+                    f"Increase --epochs above {ckpt['epoch'] + 1} to resume."
+                )
 
     # Save config
     config_path = output_dir / "config.json"

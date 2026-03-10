@@ -1,4 +1,4 @@
-"""Tests for oil specification lookup (three-tier cascade)."""
+"""Tests for oil specification lookup (four-tier cascade)."""
 
 from __future__ import annotations
 
@@ -175,7 +175,11 @@ class TestOilLookupEngineFamilyFallback(unittest.TestCase):
         self.assertEqual(result.viscosity, "0W-20")
 
     def test_family_match_confidence(self) -> None:
-        vehicle = _make_vehicle(engine_code="2ZR-FAE")
+        # Use a different model so model-year tier doesn't intercept
+        vehicle = _make_vehicle(
+            model_english="Auris", model_hebrew="אוריס",
+            engine_code="2ZR-FAE",
+        )
         result = self.oil.lookup(vehicle)
         self.assertEqual(result.confidence, "engine_family")
 
@@ -291,12 +295,12 @@ class TestOilLookupCascade(unittest.TestCase):
         result = self.oil.lookup(vehicle)
         self.assertIsNone(result)
 
-    def test_empty_engine_falls_to_brand_default(self) -> None:
-        """Empty engine_code skips tiers 1 & 2, hits tier 3."""
+    def test_empty_engine_falls_to_model_year(self) -> None:
+        """Empty engine_code skips tier 1, hits tier 2 (model-year)."""
         vehicle = _make_vehicle(engine_code="")
         result = self.oil.lookup(vehicle)
         self.assertIsNotNone(result)
-        self.assertEqual(result.confidence, "brand_default")
+        self.assertEqual(result.confidence, "model_year")
 
     def test_specs_with_no_oil_data_cascades(self) -> None:
         """VehicleSpecs with empty oil_viscosity is treated as no match at every tier."""
@@ -309,10 +313,9 @@ class TestOilLookupCascade(unittest.TestCase):
         vehicle = _make_vehicle(engine_code="3ZR-FE")
         result = self.oil.lookup(vehicle)
         # Tier 1: exact match (3ZR-FE) has empty oil -> skipped
-        # Tier 2: engine family "3ZR" LIKE '3ZR%' also matches 3ZR-FE -> empty -> skipped
-        # Tier 3: brand_default uses 2ZR-FE record -> 0W-20
+        # Tier 2: model-year Corolla 2019-2023 matches 2ZR-FE record -> has oil data
         self.assertIsNotNone(result)
-        self.assertEqual(result.confidence, "brand_default")
+        self.assertEqual(result.confidence, "model_year")
         self.assertEqual(result.viscosity, "0W-20")
 
 

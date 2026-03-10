@@ -29,4 +29,4 @@ Relevant Notes:
 - [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- LoRA's parameter efficiency reduces the compute requirements for model adaptation, partially mitigating the HPC dependency
 
 Topics:
-- [[classification]]
+- [[representation-learning]]

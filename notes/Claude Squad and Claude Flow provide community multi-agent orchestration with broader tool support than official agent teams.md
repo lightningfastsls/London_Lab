@@ -17,14 +17,14 @@ Two community orchestration tools have achieved significant adoption as alternat
 
 The key differentiator from official agent teams: both support tools beyond Claude Code. Official agent teams only orchestrate Claude Code instances. Community tools orchestrate across AI coding platforms, enabling heterogeneous agent teams that use the best tool for each subtask.
 
-Since [[three parallelization strategies in Claude Code serve different isolation needs: subagents for focused results teams for collaborative discussion worktrees for filesystem safety]], community tools add a fourth dimension: cross-tool orchestration.
+Since [[three parallelization strategies in Claude Code serve different isolation needs subagents for focused results teams for collaborative discussion worktrees for filesystem safety]], community tools add a fourth dimension: cross-tool orchestration.
 
 ---
 
 Source: claude-code-mcp-ecosystem-march-2026-research-2026-03-02 (archived to archive/inbox/)
 
 Relevant Notes:
-- [[three parallelization strategies in Claude Code serve different isolation needs: subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] -- the official parallelization framework these extend
+- [[three parallelization strategies in Claude Code serve different isolation needs subagents for focused results teams for collaborative discussion worktrees for filesystem safety]] -- the official parallelization framework these extend
 - [[git worktrees have become the standard filesystem isolation primitive for multi-agent coding work]] -- the convergent isolation pattern both tools use
 
 Topics:

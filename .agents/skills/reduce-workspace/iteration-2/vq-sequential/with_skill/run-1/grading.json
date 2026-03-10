@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Report contains a SUMMARY section with numerical counts by category",
+      "passed": true,
+      "evidence": "Lines 18-27: '## SUMMARY' section lists notes: 4, implementation ideas: 3, tensions: 1, enrichment tasks: 5, validations: 1, open questions: 2, skipped: 2, TOTAL OUTPUTS: 16"
+    },
+    {
+      "text": "Total extractions (claims + implementation ideas + tensions + enrichments + validations) >= 8",
+      "passed": true,
+      "evidence": "4 claims + 3 implementation ideas + 1 tension + 5 enrichments + 1 validation = 14 extractions (plus 2 open questions = 16 total outputs)"
+    },
+    {
+      "text": "Skip rate is below 15% (skipped items / total candidates)",
+      "passed": true,
+      "evidence": "Line 185: 'Skip rate: 11% (2/18 candidates)' — 11% is below the 15% threshold"
+    },
+    {
+      "text": "Every extracted item includes a rationale explaining why it was extracted",
+      "passed": true,
+      "evidence": "Claims #1-4 each have 'Body reasoning' fields (e.g., claim #1 lines 37-38). Implementation ideas #5-7 each have 'Rationale' fields. Tension #8 has 'Quick Test' and 'When Each Pole Wins'. Enrichments #9-13 each have 'Why' fields. Validation #14 has 'What it validates' description. Open questions #15-16 have 'Rationale' fields."
+    },
+    {
+      "text": "Extracted titles are phrased as claims/propositions, not topic labels",
+      "passed": true,
+      "evidence": "Three representative titles: (1) 'averaging frame-level features across time discards sequential structure in animal vocalizations' — propositional claim with verb and object. (2) 'caller identity is encoded more strongly than call-type identity in acoustic vocalizations' — comparative claim. (3) 'Levenshtein edit distance on discrete token sequences provides a non-parametric sequence similarity metric for vocalization comparison' — method claim with specific capability statement. All are full propositions, not topic labels."
+    },
+    {
+      "text": "At least 3 distinct categories are represented (e.g. core claims, implementation ideas, tensions)",
+      "passed": true,
+      "evidence": "Six distinct categories present: CLAIMS (notes) with 4 items, IMPLEMENTATION IDEAS with 3 items, TENSIONS with 1 item, ENRICHMENT TASKS with 5 items, VALIDATIONS with 1 item, OPEN QUESTIONS with 2 items"
+    },
+    {
+      "text": "Report mentions checking existing notes for duplicates or overlap",
+      "passed": true,
+      "evidence": "Lines 12-14: 'Prior Processing Notice' section explains the paper was previously processed and identifies what this extraction adds beyond existing notes. Additionally, every claim includes a 'Duplicate check' field (e.g., claim #1 line 39: 'No existing note captures this specific claim about averaging discarding temporal order'). Lines 193-198: 'Cross-Reference Summary' lists 5 existing notes directly related to this source."
+    },
+    {
+      "text": "The codebook collapse finding (GVQ underperforms VQ due to collapse) is captured as an extraction",
+      "passed": true,
+      "evidence": "Claim #4 (lines 60-67): 'simpler discretization methods often outperform more sophisticated ones in representation learning' — explicitly discusses GVQ collapse: 'standard post-hoc VQ consistently outperformed Gumbel-softmax VQ... GVQ failure here appears linked to codebook collapse.' Also enrichment #10 (lines 116-119): 'ENRICH: Gumbel-softmax VQ suffered severe codebook collapse' — adds specific collapse mechanism detail ('most input embeddings mapped to one or two centroids')."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

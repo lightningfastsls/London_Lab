@@ -1,6 +1,6 @@
 ---
 name: health
-description: Run condition-based vault health diagnostics. 8 categories — schema compliance, orphan detection, link health, description quality, three-space boundaries, processing throughput, stale notes, MOC coherence. 3 modes — quick (schema+orphans+links), full (all 8), three-space (boundary violations only). Returns actionable FAIL/WARN/PASS report with specific fixes ranked by impact. Triggers on "/health", "check vault health", "maintenance report", "what needs fixing".
+description: Run condition-based vault health diagnostics. 9 categories — schema compliance, orphan detection, link health, description quality, three-space boundaries, processing throughput, stale notes, MOC coherence, canary audit. 3 modes — quick (schema+orphans+links), full (all 9), three-space (boundary violations only). Returns actionable FAIL/WARN/PASS report with specific fixes ranked by impact. Triggers on "/health", "check vault health", "maintenance report", "what needs fixing".
 version: "1.0"
 generated_from: "arscontexta-v1.6"
 user-invocable: true
@@ -43,7 +43,7 @@ Parse the invocation mode immediately:
 | Input | Mode | Categories Run |
 |-------|------|---------------|
 | empty or `quick` | Quick | 1 (Schema), 2 (Orphans), 3 (Links) |
-| `full` | Full | All 8 categories |
+| `full` | Full | All 9 categories |
 | `three-space` | Three-Space | 5 (Three-Space Boundaries) only |
 
 **Execute these steps:**
@@ -78,22 +78,27 @@ Checks adapt to what the platform supports:
 **How to check:**
 
 ```bash
-# Find all note files (exclude topic maps)
+# Find all note files (exclude topic maps and index)
 for f in {vocabulary.notes}/*.md; do
   [[ -f "$f" ]] || continue
+  # Skip topic maps (type: moc) and index — they ARE topics, they don't HAVE topics
+  rg -q '^type: moc' "$f" && continue
+  [[ "$(basename "$f")" == "index.md" ]] && continue
   # Check: YAML frontmatter exists
   head -1 "$f" | grep -q '^---$' || echo "FAIL: $f — no YAML frontmatter"
   # Check: description field present
   rg -q '^description:' "$f" || echo "WARN: $f — missing description field"
-  # Check: topics field present and links to at least one topic map
-  rg -q '^topics:' "$f" || echo "WARN: $f — missing topics field"
+  # Check: topics field present (YAML frontmatter OR body footer section)
+  # Notes use either `topics:` in YAML or `Topics:` as a markdown section
+  rg -q '^topics:|^Topics:' "$f" || echo "WARN: $f — missing topics field"
 done
 ```
 
 **Additional checks:**
 - Domain-specific enum fields have valid values (check against template `_schema` blocks if templates exist)
 - `description` field is non-empty (not just present)
-- `topics` field contains at least one wiki link
+- `topics` field contains at least one wiki link (either YAML `topics:` or body `Topics:` section)
+- **IMPORTANT:** Skip {vocabulary.topic_map} files (`type: moc`) and `index.md` when checking for `topics:` — they are navigation hubs, not claim notes, and don't need topic membership
 
 **If `validate-kernel.sh` exists** in `reference/`, run it and include results.
 
@@ -504,6 +509,58 @@ Bare links without context phrases are address book entries, not navigation. Eve
     Recommendation: split graph-structure into sub-topic-maps; add context phrases to bare links
 ```
 
+### Category 9: Canary Audit (full only)
+
+**What it checks:** VAULT canary comments in source files are fresh, accurate, and cover files with recent regressions.
+
+**How to check:**
+
+1. **Read canary registry:** Read `ops/vault-canary-map.md` to get the list of annotated files and their referenced notes.
+
+2. **Verify referenced notes exist and are current:**
+```bash
+# For each referenced note title in the canary map, check it resolves
+# Use qmd or Grep to find matching note files
+# Check frontmatter meta_state is not "outdated" or "superseded"
+```
+
+3. **Check for un-canary'd regression files:**
+```bash
+# Search recent handoffs (last 30 days) for bug-fix patterns
+rg -l '(Bug|Fix|Regression|broke|broken)' docs/handoffs/ --glob '*.md'
+# Extract file paths mentioned in those handoffs
+# Cross-reference against canary map — files with regressions NOT in the map are candidates
+```
+
+4. **Verify canary comments still present in source files:**
+```bash
+# For each file in canary map, verify it actually contains # VAULT: comments
+rg -l '# VAULT:' src/ --glob '*.py'
+# Compare against canary map entries — missing comments = map is stale
+```
+
+**Thresholds:**
+
+| Condition | Level |
+|-----------|-------|
+| Canary references a note with `meta_state: outdated` or `meta_state: superseded` | FAIL |
+| Canary references a note that doesn't exist | FAIL |
+| Source file in canary map is missing its `# VAULT:` comment | FAIL |
+| File with regression in recent handoff is not in canary map | WARN (candidate for promotion) |
+| All canaries valid and no uncovered regressions | PASS |
+
+**Output format:**
+```
+[9] Canary Audit ................. WARN
+    6 canary files checked, 5 valid
+    Stale canaries:
+      - src/.../raven_export.py references "nonexistent note" — note not found [FAIL]
+    Uncovered regression files:
+      - src/.../label_storage.py had bug fix (2026-03-07 handoff) but no canary [WARN]
+        Candidate note: "JSON label files provide..."
+    Recommendation: add canary to label_storage.py, fix stale reference in raven_export.py
+```
+
 ---
 
 ## Condition-Based Maintenance Signals
@@ -594,6 +651,9 @@ PASS:
 
 [8] MOC Coherence ................ PASS | WARN | FAIL  (full mode only)
     [details — note count per topic map, coverage gaps, bare links]
+
+[9] Canary Audit ................. PASS | WARN | FAIL  (full mode only)
+    [details — stale canaries, uncovered regression files, promotion candidates]
 
 ---
 
@@ -752,6 +812,8 @@ Health report findings feed into other skills:
 | {vocabulary.topic_map} oversized | Manual split or /architect | Split oversized {vocabulary.topic_maps} into sub-{vocabulary.topic_maps} |
 | Accumulated observations | /rethink | Review and triage observations |
 | Accumulated tensions | /rethink | Resolve or dissolve tensions |
+| Stale canary references | Manual fix | Update or remove canary comments in source files |
+| Uncovered regression files | Manual add | Add `# VAULT:` canary + update `ops/vault-canary-map.md` |
 
 **The health-to-action loop:**
 ```

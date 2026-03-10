@@ -1,0 +1,15 @@
+{
+  "eval_id": 1,
+  "eval_name": "moderate-comparison",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "inbox-file-created", "passed": false, "evidence": "Produced markdown file but without inbox-compatible structure (no YAML frontmatter)"},
+    {"text": "frontmatter-valid", "passed": false, "evidence": "No YAML frontmatter. Starts with '# Python Alternatives to DeepSqueak'"},
+    {"text": "source-log-present", "passed": false, "evidence": "URLs embedded inline per tool but no structured source log table with fetch status"},
+    {"text": "provenance-traceable", "passed": true, "evidence": "GitHub URLs, publication links throughout (12 repos, 11 publications cited)"},
+    {"text": "pipeline-chaining", "passed": false, "evidence": "No mention of /reduce, /seed, or pipeline next steps"},
+    {"text": "multi-source-synthesis", "passed": true, "evidence": "Comprehensive comparison of 11 tools in a matrix table with pros/cons, tiers, and practical recommendations"},
+    {"text": "no-verbatim-copy", "passed": true, "evidence": "Original synthesis with structured tiers and relevance notes"},
+    {"text": "vault-check-performed", "passed": false, "evidence": "No vault check — went straight to web research"}
+  ]
+}

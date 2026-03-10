@@ -22,6 +22,10 @@ Usage::
     summary = import_deepsqueak_results(config)
 """
 
+# VAULT: DeepSqueak import previously required exact subdirectory name matches while Raven export already supported prefix matches creating a silent asymmetric round-trip,
+#        timestamp proximity matching with configurable tolerance bridges detection systems that use different internal time representations
+# Run `/kcheck` before modifying this file.
+
 from __future__ import annotations
 
 import json
@@ -434,9 +438,17 @@ def merge_with_detections(
 
     tolerance_s = tolerance_ms / 1000.0
     merged_rows: list[dict] = []
+    ds_stems = [str(stem) for stem in ds_df["wav_stem"].dropna().unique()]
+    ds_to_detection_stem = _resolve_detection_stem_mapping(
+        ds_stems, set(detections_by_stem)
+    )
+    matched_detection_stems: set[str] = set()
 
     for wav_stem, group_df in ds_df.groupby("wav_stem"):
-        available_dets = detections_by_stem.get(wav_stem, [])
+        detection_stem = ds_to_detection_stem.get(str(wav_stem))
+        available_dets = detections_by_stem.get(detection_stem, [])
+        if detection_stem is not None:
+            matched_detection_stems.add(detection_stem)
 
         if not available_dets:
             # All DS calls for this stem are unmatched.
@@ -509,7 +521,7 @@ def merge_with_detections(
 
     # Handle detections for stems with no DS results at all.
     for wav_stem, dets in detections_by_stem.items():
-        if wav_stem not in {str(s) for s in ds_df["wav_stem"].unique()}:
+        if wav_stem not in matched_detection_stems:
             for det in dets:
                 merged_row = _empty_ds_columns()
                 merged_row["wav_stem"] = wav_stem
@@ -521,6 +533,41 @@ def merge_with_detections(
 
     result_df = pd.DataFrame(merged_rows)
     return result_df, summary
+
+
+def _resolve_detection_stem_mapping(
+    ds_stems: list[str],
+    detection_stems: set[str],
+) -> dict[str, str]:
+    """Resolve DS wav stems to detection stems using Raven-export semantics.
+
+    Exact matches win first. Remaining stems may match a detection directory
+    whose name starts with the DS wav stem, mirroring Raven export's prefix
+    matching so round-trip imports work with suffixed detection folders.
+    """
+    resolved: dict[str, str] = {}
+    unmatched_detection_stems = set(detection_stems)
+
+    for ds_stem in sorted(ds_stems, key=len, reverse=True):
+        if ds_stem in unmatched_detection_stems:
+            resolved[ds_stem] = ds_stem
+            unmatched_detection_stems.remove(ds_stem)
+
+    for ds_stem in sorted(ds_stems, key=len, reverse=True):
+        if ds_stem in resolved:
+            continue
+        candidates = [
+            detection_stem
+            for detection_stem in unmatched_detection_stems
+            if detection_stem.startswith(ds_stem)
+        ]
+        if not candidates:
+            continue
+        matched_stem = min(candidates, key=len)
+        resolved[ds_stem] = matched_stem
+        unmatched_detection_stems.remove(matched_stem)
+
+    return resolved
 
 
 def _detection_columns(det: dict) -> dict:
