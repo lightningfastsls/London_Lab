@@ -11,3 +11,17 @@ argument-hint: "[file] — path to source file to seed for processing"
 ---
 
 [Full seed SKILL.md content - Entry point for processing pipeline. See original seed/SKILL.md for complete documentation.]
+
+## KG Conventions (embedded from CLAUDE.md)
+
+### Processing Pipeline
+- **NEVER write directly to notes/.** Route: inbox/ -> /reduce -> notes/. Direct writes skip quality gates.
+- Phases: /seed (research) -> /reduce (extract) -> /reflect (connect) -> /reweave (backward pass) -> /verify (quality check)
+- Processing depth configured in ops/config.yaml (deep | standard | quick)
+
+### Research Provenance
+- Preserve the chain: `source query -> inbox file (metadata preserved) -> /reduce -> notes/`
+- Every claim must be traceable to its origin
+- Source files in inbox/ must preserve metadata (research_tool, research_query, date_accessed)
+
+Full reference: `docs/workflow/knowledge-graph-reference.md`

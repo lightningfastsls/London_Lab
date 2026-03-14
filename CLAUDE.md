@@ -61,6 +61,12 @@ IDLE -> ANALYSIS -> APPROVAL_PENDING -> EXECUTION -> VALIDATION -> DONE
 - **Label assumptions**: Every assumption should be visible, not hidden
 - **Cite sources**: When referencing signal processing concepts, point to where user can learn more
 
+#### Knowledge Activation
+- **Search before reasoning**: Before explaining, analyzing, or modifying domain-specific systems,
+  search the vault (qmd + topic maps). Filter: "Would the vault plausibly change my answer?"
+- **Modifications**: /kcheck mandatory for HIGH-risk canary files, recommended for constrained systems.
+- **Skip for**: pure code mechanics, general knowledge, test files, documentation-only changes.
+
 ### Approval Request Format
 
 **Before any code changes**, present: Intent, Context, Scope, Plan (numbered steps with "why"), Assumptions, Risks, Validation, Learning opportunity. End with "Proceed?"
@@ -99,51 +105,8 @@ WAV files: `$env:USV_WAV_DIR` or fallback `<repo>/5970 USV`
 
 ## Project Structure
 
-```
-src/usv_spectrogram/          # Core USV library
-  config.py                   # SpectrogramConfig dataclass
-  io_wav.py                   # WAV loading (always specify sr=300000)
-  spectrogram.py              # STFT computation
-  _stft_core.py               # Low-level STFT internals
-  stft_stream.py              # Streaming STFT for long files
-  render_tiles.py             # Tiled PNG rendering
-  storage_zarr.py             # Zarr incremental storage
-  detection/                  # Energy-based USV candidate detection
-    energy_detector.py        # EnergyDetector class
-    candidate.py              # Candidate dataclass
-    spectrogram_extractor.py  # Extract candidate spectrograms
-  models/                     # CNN classifier
-    cnn_classifier.py         # USVClassifier architecture
-    trainer.py                # Training loop
-    data_loader.py            # Dataset/DataLoader
-    evaluate.py               # Evaluation metrics
-  dataset/                    # Training data assembly (Phase 9.1)
-    assembler.py              # DatasetAssembler pipeline
-    splits.py                 # Train/val/test splitting
-  app/                        # PyQt6 detection desktop app
-    main_window.py            # Main application window
-    core/                     # Detection logic, audio, inference
-    widgets/                  # SpectrogramView, ProbabilityView
-  clustering/                 # USV repertoire clustering
-  classification/             # Raven export, DeepSqueak import, repertoire stats
-  lmt/                        # Live Mouse Tracker integration
-  param_lab/                  # Streamlit parameter lab
-  labeling/                   # Streamlit labeling + noise review tools
-
-usv_language/                 # Transformer + VQ-VAE for USV compositional structure
-  models/                     # transformer.py, vqvae.py
-  data/                       # Bout extraction, normalization, spectrogram prep
-  training/                   # train_vqvae.py, train_transformer.py
-  analysis/                   # Codebook viz, sequence analysis, compositionality
-
-parts-finder/                 # Israeli auto parts lookup (separate subproject)
-notion_notes/                 # Notion KB automation CLI
-
-scripts/                      # ~76 entry points (see docs/scripts-index.md)
-tests/                        # pytest test suite
-methodology/                  # arscontexta research claims (249 files, READ-ONLY)
-reference/                    # arscontexta structured reference (READ-ONLY)
-```
+See `docs/architecture/project-structure.md` for the full directory tree.
+Key entry points are listed in the Task Routing table below.
 
 ## Task Routing
 
@@ -247,14 +210,6 @@ See `DECISIONS.md` ADR-001 (sample rate) and ADR-002 (STFT parameters) for full 
 - **Always stage specific files by name** for data directories like `USV_Detections/`, `5970 USV/`, training data, or model artifacts
 - If data goes missing locally, check `git log -- <path>` — it may still exist in history and can be restored with `git checkout <commit> -- <path>`
 
-## Mid-Session Knowledge Checks
-Before modifying files in high-risk directories (detection app, export adapters,
-labeling pipeline), run `/kcheck "<brief description of planned changes>"`.
-This is mandatory for HIGH-risk canary files and recommended for any non-trivial
-modification to existing systems.
-
-Skip /kcheck for: new standalone files, test files, documentation-only changes.
-
 ## Codex Handoff Vault Search
 Before writing any Codex task spec in `docs/handoffs/`, search the vault for constraints:
 1. Run `qmd deep_search` (or `/kcheck`) with the task description to find relevant constraint notes
@@ -283,7 +238,7 @@ Before writing any Codex task spec in `docs/handoffs/`, search the vault for con
 Every session follows: **Orient -> Work -> Persist**
 
 - **Orient**: Read ops/goals.md, ops/reminders.md, ops/session-relevance.md (auto-generated), check condition triggers
-- **Work**: Do the task. Surface connections. Write down discoveries immediately.
+- **Work**: Do the task. **Vault search before domain reasoning (Core Rules → Knowledge Activation).** Surface connections. Write down discoveries immediately.
 - **Persist**: Write new insights as atomic notes, update topic maps, update ops/goals.md, capture methodology learnings
 
 ## Where Things Go
@@ -301,52 +256,28 @@ Every session follows: **Orient -> Work -> Persist**
 
 Durable knowledge -> notes/. Temporal coordination -> ops/.
 
-**methodology/ — arscontexta Reference Graph (249 research claims)**
-Read-only reference material backing the knowledge management system. Search here when:
-- Explaining WHY a vault convention exists (e.g., why atomic notes, why MOCs, why descriptions)
-- Justifying a knowledge graph design decision
-- Answering questions about note-taking methodology, knowledge systems, or agent cognition
-- A skill like /reduce, /reflect, or /reweave needs theoretical grounding
-
-**reference/ — arscontexta Structured Reference Docs (routing indexes, constraints, templates)**
-Companion to methodology/. Contains structured reference files that skills like /ask, /architect, /recommend, and /health use as routing indexes into the research graph. Key files: `claim-map.md` (topic→claim routing), `dimension-claim-map.md` (config dimensions→claims), `interaction-constraints.md` (dimension interaction rules), `failure-modes.md` (10 failure patterns), `three-spaces.md` (self/notes/ops boundaries). READ-ONLY.
-Do NOT write to this directory. Do NOT mix these files into notes/ graph metrics.
+**methodology/** (249 research claims, READ-ONLY) — search here when explaining WHY a vault convention exists, justifying a KG design decision, or grounding a skill in research. **reference/** (routing indexes, constraints, READ-ONLY) — used by /ask, /architect, /recommend, /health. Do NOT write to either directory.
 
 ## Atomic Notes
 
-Every note makes exactly one claim. The title IS the claim, written as a complete proposition.
-
-**Composability test:** "This note argues that [title]" -- if it doesn't work, fix the title.
-
-**Good:** `energy detection at 10dB threshold misses low-amplitude calls below 40kHz`
-**Bad:** `detection notes` (topic, not claim) | `STFT parameters` (category, not proposition)
+One claim per note. Title IS the claim (composability test: "This note argues that [title]").
+Full conventions + examples: `docs/workflow/knowledge-graph-reference.md` § Atomic Notes.
 
 ## Wiki Links
 
-- `[[note title]]` -- basic | `since [[claim]]` -- as prose (preferred) | `contradicts [[finding]]` -- typed
-- Link density target: 3+ outgoing links per note
-- Never rename manually -- use `./ops/scripts/rename-note.sh`
-- Dangling links = demand signals. Orphan notes = need /reflect.
+`[[title]]` basic | `since [[claim]]` as prose | Target: 3+ outgoing links/note. Never rename manually (`ops/scripts/rename-note.sh`).
+Full conventions: `docs/workflow/knowledge-graph-reference.md` § Wiki Links.
 
 ## Topic Maps (MOCs)
 
-Three-tier navigation: `index.md -> domain topic maps -> individual notes`
-
-**Context phrases required** on topic map links:
-Bad: `- [[STFT window size affects frequency resolution]]`
-Good: `- [[STFT window size affects frequency resolution]] -- determines temporal/spectral trade-off at 300kHz`
-
-Split when a topic map exceeds ~50 notes (warning at 40, critical at 60).
-
-**Before any topic map split, merge, or creation:** consult `arscontexta-expert` for methodology grounding FIRST. The expert validates split boundaries, prevents premature subordinate-level splits (< 15 notes), and ensures context phrase quality on parent-to-child links.
+Three-tier: `index.md -> topic maps -> notes`. Context phrases required on all links. Split at ~50 notes.
+**Before any topic map split/merge/creation:** consult `arscontexta-expert` FIRST.
+Full conventions + context phrase examples: `docs/workflow/knowledge-graph-reference.md` § Topic Maps.
 
 ## Processing Pipeline
 
-**NEVER write directly to notes/.** Route through: inbox/ -> /reduce -> notes/. Direct writes skip quality gates.
-
-Pipeline phases: /seed (research) -> /reduce (extract) -> /reflect (connect) -> /reweave (backward pass) -> /verify (quality check)
-
-Processing depth configured in ops/config.yaml (deep | standard | quick).
+**NEVER write directly to notes/.** Route: inbox/ -> /reduce -> notes/. Phases: /seed -> /reduce -> /reflect -> /reweave -> /verify.
+Full phase details + extraction categories: `docs/workflow/knowledge-graph-reference.md` § Processing Pipeline.
 
 ## Semantic Search (qmd)
 
@@ -357,11 +288,8 @@ Two discovery layers: **wiki links** (explicit, curated) + **qmd semantic search
 
 ## Schema
 
-Required fields: `description` (max 200 chars, adds context beyond title), `topics` (wiki links to topic maps).
-
-Domain fields: `type` (finding|decision|method|hypothesis|baseline|open-question|pattern), `confidence` (proven|likely|experimental|speculative), `conditions`, `meta_state` (current|outdated|superseded).
-
-Templates in `templates/` are the single source of truth for schema.
+Required: `description` (max 200 chars), `topics` (wiki links to topic maps). Domain: `type`, `confidence`, `conditions`, `meta_state`.
+Full field specs + templates: `docs/workflow/knowledge-graph-reference.md` § Schema.
 
 ## Maintenance
 
@@ -380,45 +308,12 @@ Condition-based, not scheduled. Specific conditions trigger specific actions.
 
 Health checks: `/arscontexta:health` (quick | full | three-space).
 
-## Vault Self-Knowledge
-
-Methodology knowledge lives in ops/methodology/. Browse it for system configuration rationale.
-
 ## Operational Learning Loop
 
-- **Observations** (ops/observations/) -- friction, surprises, process gaps. Category: friction|surprise|process-gap|methodology.
-- **Tensions** (ops/tensions/) -- contradictions between notes or implementation vs methodology. Status: pending|resolved|dissolved.
-- Triggers: 10+ observations -> /rethink. 5+ tensions -> /rethink.
+Observations (ops/observations/) — friction, surprises, process gaps. Tensions (ops/tensions/) — contradictions.
+Triggers: 10+ observations -> /rethink. 5+ tensions -> /rethink.
 
-## Operational Space
-
-```
-ops/
-+-- derivation.md, derivation-manifest.md, config.yaml
-+-- goals.md, reminders.md, tasks.md
-+-- methodology/, observations/, tensions/
-+-- queue/, sessions/, health/, queries/
-```
-
-## Templates
-
-- `templates/note.md` -- Research note
-- `templates/topic-map.md` -- Topic map / MOC
-- `templates/source-capture.md` -- Inbox source capture
-- `templates/observation-note.md` -- Operational observation
-
-## Graph Analysis
-
-Vault = graph database: nodes (markdown), edges (wiki links), properties (YAML frontmatter). Key operations: triangle detection, orphan detection, bridge detection, link density (target: 3+). Use /graph for interactive analysis.
-
-## Research Provenance
-
-Preserve the chain: `source query -> inbox file (metadata preserved) -> /reduce -> notes/`. Every claim traceable to its origin.
-
-## Helper Functions
-
-- **Never rename manually** -- use `./ops/scripts/rename-note.sh "old" "new"`
-- Scripts: `orphan-notes.sh`, `dangling-links.sh`, `backlinks.sh`, `link-density.sh`, `validate-schema.sh`
+> **Reference details** — Operational Space (ops/ directory tree), Templates (4 template files), Graph Analysis (graph operations + /graph command), Research Provenance (source chain), Helper Functions (vault scripts): see `docs/workflow/knowledge-graph-reference.md`.
 
 ## Self-Improvement
 

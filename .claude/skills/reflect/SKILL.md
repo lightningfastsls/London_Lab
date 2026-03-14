@@ -180,6 +180,12 @@ When running in handoff mode via /ralph, the prompt includes the task file path.
 
 **Critical:** The handoff block is OUTPUT, not a replacement for the workflow. Do the full reflect workflow first, update task file, then format results as handoff.
 
+### Graph Analysis Concepts (for connection discovery)
+- **Triangle detection** — find open triads (A links B, B links C, but A doesn't link C) as synthesis opportunities
+- **Bridge detection** — structurally critical notes that connect otherwise-separate clusters
+- **Link density** — target 3+ outgoing links per note; low-density notes need more connections
+- Use /graph for interactive graph analysis when exploring connection patterns.
+
 ### Queue Update (interactive execution)
 
 When running interactively (NOT via /ralph), YOU must advance the phase in the queue. /ralph handles this automatically, but interactive sessions do not.

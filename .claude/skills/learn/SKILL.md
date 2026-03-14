@@ -212,3 +212,7 @@ Then check `ops/config.yaml` for `processing.chaining`:
 **Research yields nothing:** Report honestly. Don't create an empty inbox file.
 
 **Multiple sub-topics:** Handle in a single capture with clear section breaks.
+
+### KG Conventions Reminder
+- **NEVER write directly to notes/.** All content routes: inbox/ -> /reduce -> notes/. /learn creates inbox files only.
+- **Provenance chain**: source query -> inbox file (metadata preserved) -> /reduce -> notes/. Every claim traceable to origin.
