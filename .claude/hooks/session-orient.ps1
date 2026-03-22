@@ -69,7 +69,7 @@ try {
                         $futureCount++
                     }
                 } catch {
-                    # Unparseable date — count as future
+                    # Unparseable date - count as future
                     $futureCount++
                 }
             }
@@ -186,7 +186,8 @@ try {
 
     # --- Trigger warnings (thresholds from queue.json) ---
     $inboxThreshold = 3
-    $obsThreshold = 10
+    $obsThreshold = 7
+    $obsMaxAgeDays = 14
     $tensionThreshold = 5
 
     $queueFile = Join-Path $VaultRoot "ops\queue\queue.json"
@@ -197,6 +198,7 @@ try {
                 $mc = $queueData.maintenance_conditions
                 if ($mc.inbox_threshold) { $inboxThreshold = $mc.inbox_threshold }
                 if ($mc.observation_threshold) { $obsThreshold = $mc.observation_threshold }
+                if ($mc.observation_max_age_days) { $obsMaxAgeDays = $mc.observation_max_age_days }
                 if ($mc.tension_threshold) { $tensionThreshold = $mc.tension_threshold }
             }
         } catch {}
@@ -206,13 +208,28 @@ try {
     if ($pendingObsCount -ge $obsThreshold) { Write-Host "TRIGGER: $pendingObsCount pending observations (threshold: $obsThreshold)" }
     if ($pendingTensionCount -ge $tensionThreshold) { Write-Host "TRIGGER: $pendingTensionCount pending tensions (threshold: $tensionThreshold)" }
 
+    # Time-based observation trigger: any pending observation older than obsMaxAgeDays
+    if ($obsMaxAgeDays -gt 0 -and (Test-Path $obsDir)) {
+        $cutoff = (Get-Date).AddDays(-$obsMaxAgeDays)
+        $staleObs = Get-ChildItem -Path $obsDir -Filter "*.md" -ErrorAction SilentlyContinue | Where-Object {
+            $_.LastWriteTime -lt $cutoff -and (Select-String -Path $_.FullName -Pattern "^status:\s*pending" -Quiet -ErrorAction SilentlyContinue)
+        }
+        if ($staleObs -and $staleObs.Count -gt 0) {
+            Write-Host "TRIGGER: $($staleObs.Count) observation(s) older than $obsMaxAgeDays days without review - run /rethink"
+        }
+    }
+
     # --- Knowledge Activation: Surface relevant vault notes per active thread ---
     $relevanceFile = Join-Path $VaultRoot "ops\session-relevance.md"
     $activationSuccess = $false
 
     try {
-        # Check qmd is available
-        $qmdPath = Get-Command qmd -ErrorAction Stop | Select-Object -ExpandProperty Source
+        # Resolve qmd via node directly (npm shim is broken on Windows - /bin/sh.exe not found)
+        $qmdScript = Join-Path $env:APPDATA "npm\node_modules\@tobilu\qmd\dist\cli\qmd.js"
+        if (-not (Test-Path $qmdScript)) {
+            throw "qmd not found at $qmdScript"
+        }
+        $nodeExe = "node"
 
         # Parse thread titles from goalLines
         $threads = @()
@@ -240,20 +257,26 @@ try {
                 $threadDesc = $thread.Desc
                 $threadNotes = @{}  # key=note title, value=@{Title; Score; Source}
 
-                # Extract first sentence of description for vsearch query
+                # Extract first sentence of description, strip status noise for vsearch
                 $firstSentence = $threadDesc
                 if ($threadDesc -match '^([^.]+\.)') { $firstSentence = $Matches[1] }
-                $vsearchQuery = "$threadTitle $firstSentence"
-                # Truncate vsearch query to 120 chars
+                # Remove status words that dilute BM25 scoring
+                $cleanDesc = $firstSentence -replace '\b(DONE|IN PROGRESS|COMPLETE|TODO|BLOCKED|DEFERRED)\b', '' `
+                    -replace '\bPhase\s+\d+(\.\d+)?\b', '' `
+                    -replace '\(\s*\)', '' `
+                    -replace '\s+', ' '
+                $vsearchQuery = "$threadTitle $cleanDesc".Trim()
                 if ($vsearchQuery.Length -gt 120) { $vsearchQuery = $vsearchQuery.Substring(0, 120) }
 
                 # --- Keyword search ---
-                $titleWords = $threadTitle -replace '[^\w\s]', '' -replace '\s+', ' '
+                $titleWords = $threadTitle -replace '[^\w\s.]', '' -replace '\s+', ' '
                 if ($titleWords.Trim().Split(' ').Count -ge 2) {
                     try {
-                        $kwRaw = & qmd search $titleWords --limit 3 --json 2>&1
-                        $kwJson = ($kwRaw | Out-String).Trim()
-                        if ($kwJson -match '^\[') {
+                        $kwRaw = & $nodeExe $qmdScript search $titleWords --limit 3 --json 2>&1
+                        $kwString = ($kwRaw | Out-String)
+                        $kwBracketIdx = $kwString.IndexOf('[')
+                        if ($kwBracketIdx -ge 0) {
+                            $kwJson = $kwString.Substring($kwBracketIdx)
                             $kwResults = $kwJson | ConvertFrom-Json
                             foreach ($r in $kwResults) {
                                 if ($r.score -ge 0.1 -and $r.title) {
@@ -269,7 +292,7 @@ try {
 
                 # --- Vector search ---
                 try {
-                    $vsRaw = & qmd vsearch $vsearchQuery --limit 3 --json 2>&1
+                    $vsRaw = & $nodeExe $qmdScript vsearch $vsearchQuery --limit 3 --json 2>&1
                     $vsString = ($vsRaw | Out-String)
                     # Extract JSON array: find first '[' and parse from there
                     $bracketIdx = $vsString.IndexOf('[')
@@ -409,7 +432,7 @@ try {
                     $freshCompletedTasks += $task
                 }
             } else {
-                # No date stamp — keep in completed (can't determine age)
+                # No date stamp - keep in completed (can't determine age)
                 $freshCompletedTasks += $task
             }
         }
