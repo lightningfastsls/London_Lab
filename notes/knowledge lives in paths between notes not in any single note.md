@@ -3,6 +3,8 @@ description: "embedding clusters are static snapshots but inter-note synthesis o
 type: pattern
 confidence: likely
 created: 2026-03-08
+topics:
+  - "[[agent-memory]]"
 ---
 
 # knowledge lives in paths between notes not in any single note

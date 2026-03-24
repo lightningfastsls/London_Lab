@@ -5,7 +5,7 @@ confidence: speculative
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # Whether RLHF can be modified to reward clarification-seeking over premature helpfulness in multi-turn settings

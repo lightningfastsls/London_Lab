@@ -13,10 +13,10 @@ context: fork
 ### Operational Learning Loop
 - **Observations** (ops/observations/) — friction, surprises, process gaps. Category: friction|surprise|process-gap|methodology.
 - **Tensions** (ops/tensions/) — contradictions between notes or implementation vs methodology. Status: pending|resolved|dissolved.
-- Triggers: 10+ observations -> /rethink. 5+ tensions -> /rethink.
+- Triggers: 7+ observations (or any > 14 days unreviewed) -> /rethink. 5+ tensions -> /rethink.
 
 ### Maintenance Thresholds (relevant to rethink)
-- Pending observations >= 10 -> Run /rethink
+- Pending observations >= 7 (or any observation > 14 days unreviewed) -> Run /rethink
 - Open tensions >= 5 -> Run /rethink
 - Orphan notes persistent > 7 days -> Run /reflect
 - Stale notes > 30 days old + < 2 incoming links -> Run /reweave

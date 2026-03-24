@@ -5,7 +5,7 @@ confidence: likely
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # The principle of least effort drives conversational underspecification making ambiguity a fundamental feature not a bug

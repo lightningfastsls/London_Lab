@@ -1,6 +1,7 @@
 ---
 description: Behavioral contracts, formal frameworks, enforcement layers, and implementation patterns for constraining AI agent behavior at deployment time
 type: moc
+topics: "[[index]]"
 ---
 
 # agent-governance

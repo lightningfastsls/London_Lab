@@ -530,7 +530,15 @@ Good (reframed):
 
 **d. Create the file**
 
-Write to: `{vocabulary.notes}/[title].md`
+**Filename sanitization (MANDATORY):** Before writing, strip or replace characters
+that are invalid in Windows paths. Apply these substitutions to the title used as filename:
+- Colons (`:`) → em-dash (`—`) or remove entirely
+- Characters `/ < > " * ? + [ ] ( ) { } | \ ^` → remove
+- Trailing dots or spaces → remove
+The `# title` heading INSIDE the note may keep the original punctuation (colons etc.).
+Only the **filename** must be sanitized.
+
+Write to: `{vocabulary.notes}/[sanitized-title].md`
 
 ---
 

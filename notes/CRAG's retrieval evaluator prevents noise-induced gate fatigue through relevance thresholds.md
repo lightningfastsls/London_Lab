@@ -4,6 +4,8 @@ type: method
 confidence: likely
 created: 2026-03-07
 meta_state: current
+topics:
+  - "[[agent-memory]]"
 ---
 
 # CRAG's retrieval evaluator prevents noise-induced gate fatigue through relevance thresholds

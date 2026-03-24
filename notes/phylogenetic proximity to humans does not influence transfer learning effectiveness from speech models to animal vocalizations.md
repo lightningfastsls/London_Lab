@@ -23,6 +23,8 @@ Source: unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-
 Relevant Notes:
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- this finding provides the mechanistic explanation
 - [[a generic cross-species autoencoder performs nearly as well as species-specific models suggesting shared vocalization structure]] -- same universal structure principle
+- [[domain-specific MAE pretraining dramatically outperforms generic Audio-MAE for bioacoustic tasks]] — apparent tension: phylogenetic distance doesn't matter but domain-specific pretraining helps; resolution is that acoustic features transfer universally but pretraining data distribution still matters for fine-grained tasks
+- [[NatureLM-audio combines BEATs encoder with Llama 3.1-8B for zero-shot bioacoustic species identification]] — cross-domain training consistent with universal acoustic features; language model adds semantic structure
 
 Topics:
 - [[bioacoustic-ssl]]

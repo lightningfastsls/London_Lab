@@ -3,6 +3,8 @@ description: "hooks capture friction, observations accumulate, rethink fires at 
 type: pattern
 confidence: likely
 created: 2026-03-08
+topics:
+  - "[[agent-memory]]"
 ---
 
 # each between-session processing cycle is a training step that does not touch the weights

@@ -52,8 +52,9 @@ Parse immediately:
    - Run semantic search for conceptually related {vocabulary.note_plural}
 5. Evaluate each candidate: does a genuine connection exist? Can you articulate WHY?
 6. Add inline wiki-links where connections pass the articulation test
-7. Update relevant {vocabulary.topic_map}(s) with this {vocabulary.note}
-8. If task file in context: update the {vocabulary.reflect} section
+7. If you modify a `description` field: verify no restatement of title, no subject echo, answers "so what?"
+8. Update relevant {vocabulary.topic_map}(s) with this {vocabulary.note}
+9. If task file in context: update the {vocabulary.reflect} section
 9. Report what was connected and why
 10. If `--handoff` in target: output RALPH HANDOFF block
 

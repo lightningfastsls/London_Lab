@@ -25,6 +25,9 @@ Relevant Notes:
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- the shuffled surrogate approach used here is the simplest level of the null model hierarchy
 - [[Zipf's law exponent reveals whether VQ-VAE code sequences have language-like frequency distribution]] -- marginal frequency structure determines the null expectation that idiom detection tests against
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- K=64 determines the number of possible n-grams and thus the severity of multiple comparison correction
+- [[HMM surrogate null model tests whether USV sequences arise from hidden behavioral state switching]] — idioms surviving HMM comparison imply within-state compositional structure beyond behavioral mode switching
+- [[mutual information rate at varying lags measures temporal dependency strength within USV code sequences]] — MI rate measures aggregate dependency; idiom detection identifies the specific patterns driving it
+- [[conditional entropy by lag probes single-token influence at distance unlike entropy rate which uses contiguous history]] — lag decay profile reveals the temporal reach of the dependencies that idioms represent
 
 Topics:
 - [[representation-learning]]

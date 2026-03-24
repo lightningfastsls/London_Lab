@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # Most existing multi-turn benchmarks are episodic and overestimate real multi-turn performance

@@ -1,6 +1,7 @@
 ---
 description: Cross-session memory architecture, forgetting strategies, scoping, evaluation, MCP ecosystem, and multi-agent orchestration infrastructure
 type: moc
+topics: "[[index]]"
 ---
 
 # agent-memory
@@ -39,6 +40,13 @@ Agent memory has emerged as a distinct architectural discipline. Since [[agent m
 ## Token Efficiency
 - [[progressive disclosure in memory retrieval saves 10-20x tokens by loading compact indices before full content]] -- memory-specific application of progressive disclosure (bridge to [[context-management]])
 
+## Description Quality & Retrieval
+- [[descriptions are retrieval filters not summaries]] — descriptions should optimize for search discriminability, not content summary
+- [[description quality for humans diverges from description quality for keyword search]] — human-readable prose vs keyword discriminability are opposing optimization targets
+- [[metacognitive confidence can diverge from retrieval capability]] — agents may be confident their descriptions are good while retrieval tests show otherwise
+- [[retrieval verification loop tests description quality at scale]] — cold-read prediction test reveals systematic description failures
+- [[queries evolve during search so agents should checkpoint]] — search queries shift as agents discover new terms; checkpointing prevents losing original intent
+
 ## Evaluation & Benchmarks
 - [[eight practical criteria for evaluating cross-session memory tools span retrieval precision token efficiency scope isolation forgetting quality setup friction portability auditability and consolidation]] -- synthesized evaluation framework
 - [[Graphiti temporal knowledge graph achieved 94.8 percent accuracy on DMR with entropy-gated fuzzy matching for entity deduplication]] -- leading benchmark baseline
@@ -74,6 +82,7 @@ Agent memory has emerged as a distinct architectural discipline. Since [[agent m
 - [[between-session observation accumulation is directed dreaming that produces patterns no individual session contained]] -- the vault's implementation: observation accumulation + threshold-triggered rethink as directed dreaming
 - [[each between-session processing cycle is a training step that does not touch the weights]] -- reframes between-session processing as structural adaptation equivalent to weight updates
 - [[session boundaries simultaneously limit agents and enable between-session processing making the limitation the precondition]] -- the paradox: the gap that destroys continuity is the gap that enables consolidation
+- [[session handoff creates continuity without persistent memory]] — ops/goals.md and session state files bridge the memory gap between sessions
 
 ## Open Questions
 - [[whether MCP memory servers would improve this vault's session continuity beyond the current ops handoff approach]] -- practical applicability of MCP memory to this vault

@@ -1,6 +1,7 @@
 ---
-description: CNN-based USV classification, the operational pipeline for detecting and labeling USVs, training strategies, and performance baselines
+description: Small CNN (~101K params) binary classifier with human-validated labels feeding future representation learning — bridges operational detection to research
 type: moc
+topics: "[[index]]"
 ---
 
 # classification

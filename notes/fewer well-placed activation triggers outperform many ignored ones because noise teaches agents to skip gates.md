@@ -4,6 +4,8 @@ type: finding
 confidence: likely
 created: 2026-03-07
 meta_state: current
+topics:
+  - "[[agent-memory]]"
 ---
 
 # fewer well-placed activation triggers outperform many ignored ones because noise teaches agents to skip gates

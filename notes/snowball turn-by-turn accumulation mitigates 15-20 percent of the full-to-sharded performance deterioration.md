@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # Snowball turn-by-turn accumulation mitigates 15-20 percent of the full-to-sharded performance deterioration

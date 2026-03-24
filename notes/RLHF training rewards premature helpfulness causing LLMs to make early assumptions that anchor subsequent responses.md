@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # RLHF training rewards premature helpfulness causing LLMs to make early assumptions that anchor subsequent responses

@@ -1,6 +1,7 @@
 ---
-description: STFT computation, frequency analysis, spectrogram parameters, and sample rate conventions at 300 kHz
+description: DSP foundation — 300 kHz sample rate (Nyquist to 150 kHz), with intentionally different STFT configs for detection (temporal precision) vs visualization (frequency detail)
 type: moc
+topics: "[[index]]"
 ---
 
 # signal-processing

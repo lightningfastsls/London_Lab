@@ -1,17 +1,17 @@
 ﻿# Session Relevance Brief
-<!-- Generated: 2026-03-10 17:16 -->
+<!-- Generated: 2026-03-24 18:17 -->
 <!-- Threads: 2 active from goals.md -->
 
 ## DeepSqueak Classification Bridge
-- **DeepSqueak requires MATLAB 2020a plus seven toolboxes and has no Python port** (score: 0.9, keyword)
-- **DeepSqueak regenerates its own spectrograms from raw audio so exported bounding boxes serve as regions of interest not precise frequency boundaries** (score: 0.9, keyword)
-- **Raven Selection Table Export Adapter for DeepSqueak Classification** (score: 0.9, keyword)
-- **classification-tools** (score: 0.9, keyword)
+- **classification** (score: 0.69, vector)
+- **DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision** (score: 0.69, vector)
+- **VQ-VAE investigation of language-like sequential structure in USVs is a separate deeper question from courtship degradation** (score: 0.67, vector)
+- **VocalMat represents supervised classification with predefined categories achieving 86 percent accuracy on 11 USV types** (score: 0.67, vector)
 
 ## Phase 5.3
-- **Rethink Report: 2026-03-03** (score: 0.87, keyword)
-- **AI Fallback Module Review** (score: 0.86, keyword)
-- **Information Theory Metrics** (score: 0.86, keyword)
-- **CNN Test Set Performance Diagnostic Summary** (score: 0.83, keyword)
+- **Pasteur USV cloud platform enables online testing of detection methods without local infrastructure** (score: 0.6, vector)
+- **experimental-methods** (score: 0.59, vector)
+- **normalization statistics must be computed on training set only to prevent data leakage** (score: 0.59, vector)
+- **representation-learning** (score: 0.59, vector)
 
 

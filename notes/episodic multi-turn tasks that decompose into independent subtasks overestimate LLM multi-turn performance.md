@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # Episodic multi-turn tasks that decompose into independent subtasks overestimate LLM multi-turn performance

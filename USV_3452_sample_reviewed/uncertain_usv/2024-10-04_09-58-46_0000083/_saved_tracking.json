@@ -1,0 +1,57 @@
+[
+  {
+    "start_time_s": 0.2798405248549079,
+    "end_time_s": 0.3340169366641433,
+    "save_timestamp": "2026-03-16T21:56:04.567317",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-58-46_0000083\\detection_000_0.280s-0.334s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 0.433838041887459,
+    "end_time_s": 0.4914271410547565,
+    "save_timestamp": "2026-03-16T21:56:04.982318",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-58-46_0000083\\detection_001_0.434s-0.491s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 0.5976470350744386,
+    "end_time_s": 0.6991744839767853,
+    "save_timestamp": "2026-03-16T21:56:05.454817",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-58-46_0000083\\detection_002_0.598s-0.699s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 1.22558150895786,
+    "end_time_s": 1.2639742417360587,
+    "save_timestamp": "2026-03-16T21:56:05.890317",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-58-46_0000083\\detection_003_1.226s-1.264s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 1.2699464446126671,
+    "end_time_s": 1.298527701236437,
+    "save_timestamp": "2026-03-16T21:56:06.346818",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-58-46_0000083\\detection_004_1.270s-1.299s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  }
+]

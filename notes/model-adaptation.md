@@ -1,6 +1,7 @@
 ---
 description: LoRA, PEFT variants, hypernetworks, and the ICL-to-LoRA theoretical bridge -- parameter-efficient adaptation and instant knowledge internalization
 type: moc
+topics: "[[index]]"
 ---
 
 # model-adaptation

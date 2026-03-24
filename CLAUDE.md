@@ -302,7 +302,7 @@ Condition-based, not scheduled. Specific conditions trigger specific actions.
 | Stale notes | > 30 days old + < 2 incoming links | Run /reweave |
 | Topic map oversized | > 40 notes | Split into sub-topic-maps |
 | Inbox items | >= 3 | Run /reduce or /pipeline |
-| Pending observations | >= 10 | Run /rethink |
+| Pending observations | >= 7 (or any observation > 14 days unreviewed) | Run /rethink |
 | Open tensions | >= 5 | Run /rethink |
 | Unprocessed sessions | >= 5 | Run /remember --mine-sessions |
 
@@ -311,7 +311,7 @@ Health checks: `/arscontexta:health` (quick | full | three-space).
 ## Operational Learning Loop
 
 Observations (ops/observations/) — friction, surprises, process gaps. Tensions (ops/tensions/) — contradictions.
-Triggers: 10+ observations -> /rethink. 5+ tensions -> /rethink.
+Triggers: 7+ observations (or any > 14 days old) -> /rethink. 5+ tensions -> /rethink.
 
 > **Reference details** — Operational Space (ops/ directory tree), Templates (4 template files), Graph Analysis (graph operations + /graph command), Research Provenance (source chain), Helper Functions (vault scripts): see `docs/workflow/knowledge-graph-reference.md`.
 

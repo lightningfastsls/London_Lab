@@ -2,6 +2,7 @@
 description: USV detection approaches beyond our pipeline -- architectural taxonomy, alternative tools, source separation methods, and annotation ecosystem
 type: moc
 parent_map: "[[detection]]"
+topics: "[[detection]]"
 ---
 
 # detection-landscape

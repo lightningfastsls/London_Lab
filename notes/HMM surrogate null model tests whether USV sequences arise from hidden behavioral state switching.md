@@ -26,6 +26,10 @@ Source:
 Relevant Notes:
 - [[Chabout et al 2015 established that male mice change syllable syntax with social context]] -- the biological motivation for testing hidden state switching as a sufficient explanation
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- HMM is one level in the hierarchical null model framework
+- [[renewal process null model fits inter-event interval distribution for temporal structure testing]] — renewal preserves temporal spacing but not identity transitions; HMM preserves hidden-state emission structure but not exact timing
+- [[mutual information rate at varying lags measures temporal dependency strength within USV code sequences]] — MI decay profiles against HMM surrogates reveal whether hidden-state switching accounts for all temporal dependency
+- [[Crutchfield and Feldman 2003 block entropy extrapolation is the standard method for computing excess entropy]] — excess entropy of real vs HMM surrogates quantifies structure beyond state-switching explanation
+- [[n-gram idiom detection identifies compositional phrases exceeding chance frequency in USV code sequences]] — idioms surviving HMM surrogate comparison imply within-state compositional structure
 
 Topics:
 - [[representation-learning]]

@@ -3,6 +3,8 @@ description: "entry point determines which patterns become visible — the same 
 type: pattern
 confidence: likely
 created: 2026-03-08
+topics:
+  - "[[agent-memory]]"
 ---
 
 # different traversal starting points produce different emergent knowledge from the same graph

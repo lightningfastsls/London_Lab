@@ -25,6 +25,9 @@ Relevant Notes:
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- entropy rate (the slope h) is a byproduct of the same block entropy computation
 - [[Miller-Madow correction compensates for finite sample bias in entropy rate estimation]] -- block entropy estimation at large L requires bias correction due to sparse sampling of long blocks
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- excess entropy values must be compared against null model baselines to confirm meaningful structure
+- [[mutual information rate at varying lags measures temporal dependency strength within USV code sequences]] — MI rate decomposes the excess entropy scalar by lag, revealing which temporal distances carry the structure
+- [[conditional entropy by lag probes single-token influence at distance unlike entropy rate which uses contiguous history]] — entropy rate from the block entropy slope is the aggregate; conditional entropy by lag decomposes it per-position
+- [[HMM surrogate null model tests whether USV sequences arise from hidden behavioral state switching]] — HMM surrogates have specific excess entropy profiles that test hidden-state-switching sufficiency
 
 Topics:
 - [[representation-learning]]

@@ -1,6 +1,7 @@
 ---
-description: USV detection pipeline -- energy detection, candidate generation, segment continuity, bout extraction
+description: Two-stage detect-then-classify architecture — permissive energy detector maximizes recall, CNN classifier filters for precision, with temporal grouping into bouts
 type: moc
+topics: "[[index]]"
 ---
 
 # detection

@@ -5,7 +5,7 @@ confidence: proven
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # Multi-turn degradation is primarily a 112 percent increase in unreliability rather than capability loss

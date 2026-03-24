@@ -1,5 +1,5 @@
 ---
-description: "Cage impacts produce broadband vertical smears spanning many frequencies — rejected by the 8-10 ms minimum duration filter"
+description: "Cage impacts span many frequencies in under 8 ms — caught by both the minimum duration filter and the 20 kHz max bandwidth filter, providing the functional rationale for the duration boundary"
 type: finding
 confidence: proven
 conditions: []

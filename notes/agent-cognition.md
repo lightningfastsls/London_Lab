@@ -1,54 +1,21 @@
 ---
-description: LLM multi-turn degradation mechanisms, root causes, mitigations, and theoretical framing for agent workflow design
+description: Domain hub for agent cognitive architecture — routes to multi-turn degradation, external cognition, and bridges to RL alignment, ICL-to-weights, and code review
 type: moc
+topics: "[[index]]"
 ---
 
 # agent-cognition
 
-How LLMs degrade across conversational turns, why premature commitment is the root cause, and what mitigations work. This topic map covers the multi-turn behavioral side of agent performance. For context window mechanisms, benchmarks, and architectural management patterns, see [[context-management]].
+Domain hub for agent cognitive architecture. Routes to specialized sub-maps for the two major research clusters. For context window mechanisms, benchmarks, and architectural management patterns, see [[context-management]]. For cross-session memory infrastructure, see [[agent-memory]]. For behavioral contracts and governance, see [[agent-governance]].
+
+## Sub-Maps
+
+- [[multi-turn-degradation]] -- empirical findings on LLM multi-turn performance loss (~39% avg), RLHF root causes, task susceptibility framework, and Fresh Context mitigation pattern
+- [[agent-external-cognition]] -- how vaults, hooks, and session design extend agent cognition beyond the context window: hook theory, traversal dynamics, between-session processing, external cognition
 
 ## Synthesis
 
-Multi-turn degradation (~39% average, Laban et al. 2025) traces to RLHF-driven premature commitment -- primarily unreliability (112% increase), not capability loss. The degradation is architecture-independent: since [[approximately 60 percent of relative multi-turn degradation is constant across model sizes suggesting scaling alone cannot solve it]], the fix must be structural, not just scaling. The convergent mitigation is the Fresh Context Pattern: since [[concatenating all requirements into a single prompt restores approximately 95 percent of single-turn performance]], gathering all requirements before engaging the model eliminates the temporal distribution that causes degradation. Multi-turn degradation also compounds with context window degradation in long sessions (see [[context-management]] for the CW side), which is why the vault's orient-work-persist rhythm, /clear between phases, and subagent isolation all serve as dual mitigations.
-
-## Core Findings
-- [[LLMs lose approximately 25 percentage points average performance when tasks are distributed across conversational turns]] -- the headline finding, 15 models, 6 tasks
-- [[multi-turn degradation is primarily a 112 percent increase in unreliability rather than capability loss]] -- models CAN still solve tasks, they just don't RELIABLY
-- [[even two conversational turns trigger multi-turn degradation regardless of task complexity]] -- temporal distribution, not information volume
-- [[approximately 60 percent of relative multi-turn degradation is constant across model sizes suggesting scaling alone cannot solve it]] -- from Liu et al. 2026
-
-## Task Susceptibility
-- [[tasks vulnerable to multi-turn degradation are generative and non-episodic requiring information fusion across turns]] -- the three-property framework
-- [[episodic multi-turn tasks that decompose into independent subtasks overestimate LLM multi-turn performance]] -- why existing benchmarks mislead
-- [[most existing multi-turn benchmarks are episodic and overestimate real multi-turn performance]] -- the evaluation gap
-
-## Root Causes
-- [[RLHF training rewards premature helpfulness causing LLMs to make early assumptions that anchor subsequent responses]] -- the training incentive root cause
-- [[LLMs attempt full solution generation on the first turn even when given only a vague initial shard]] -- the anchoring mechanism
-- [[answer bloat compounds multi-turn errors as responses grow verbose without pruning incorrect assumptions]] -- the compounding anti-pattern
-- [[LLMs over-adjust based on the last turn of conversation disproportionately weighting recent information]] -- recency bias at conversation level
-- [[LLMs prematurely commit to incorrect solutions in early turns and fail to revise them producing cascading errors]] -- the revision failure pattern
-- [[reasoning models produce longer responses and additional test-time compute does not solve multi-turn unreliability]] -- more thinking ≠ better multi-turn
-
-## Theoretical Framing
-- [[user utterances are a lossy compression of high-dimensional intent into low-dimensional surface forms]] -- Liu's information-theoretic foundation
-- [[the principle of least effort drives conversational underspecification making ambiguity a fundamental feature not a bug]] -- Zipf's law applied to conversation
-
-## Mitigations
-- [[concatenating all requirements into a single prompt restores approximately 95 percent of single-turn performance]] -- validates Fresh Context Pattern
-- [[snowball turn-by-turn accumulation mitigates 15-20 percent of the full-to-sharded performance deterioration]] -- realistic production strategy
-- [[Mediator-Assistant framework separates intent inference from task execution recovering approximately 20 percentage points]] -- Liu et al. architecture
-- [[temperature reduction has minimal effect on multi-turn unreliability because conversation structure introduces variation independently]] -- determinism doesn't help
-- [[RAG-based memory provides only marginal improvement versus intent resolution demonstrating retrieval is not equivalent to resolving intent]] -- memory ≠ understanding
-
-## Methods
-- [[instruction sharding methodology enables controlled comparison between single-turn and multi-turn LLM performance]] -- Laban's core experimental technique
-
-## Tensions
-- [[the 39 percent degradation figure may overstate the problem for well-designed systems while understating it for messy real-world interactions]] -- Arani critique
-
-## CW-MT Interaction
-- [[context window and multi-turn degradation have distinct root causes but compound when both occur in long multi-turn sessions]] -- bridge to [[context-management]], resolves mechanism question
+Two complementary research clusters inform agent workflow design. First, since [[LLMs lose approximately 25 percentage points average performance when tasks are distributed across conversational turns]], multi-turn degradation is the central failure mode — see [[multi-turn-degradation]] for the full treatment. Second, the vault's response to this problem is externalized cognitive architecture: since [[external memory shapes cognition more than base model]], hooks, traversal patterns, and session design compensate for what the model cannot do alone — see [[agent-external-cognition]].
 
 ## RL Alignment Root Causes
 These notes trace multi-turn degradation mechanisms back to their RLHF training origins -- see [[rl-alignment]] for the full RL alignment treatment.
@@ -58,10 +25,6 @@ These notes trace multi-turn degradation mechanisms back to their RLHF training 
 - [[RLHF-trained models exhibit sycophancy verbosity bias and confident nonsense as systematic reward hacking manifestations]] -- the behavioral consequences of reward optimization
 - [[SFT suffers from exposure bias where teacher-forcing creates reliance on ground-truth context that degrades autoregressive generation]] -- why SFT alone cannot fix multi-turn issues
 - [[DeepSeek-R1-Zero trained purely with GRPO produced emergent reasoning behaviors including self-reflection and verification without explicit training]] -- emergent cognitive behaviors from RL training parallel induction head emergence
-
-## Open Questions
-- [[whether RLHF can be modified to reward clarification-seeking over premature helpfulness in multi-turn settings]] -- training objective redesign
-- [[whether context window size and multi-turn degradation are independent or correlated phenomena]] -- largely resolved (see CW-MT Interaction)
 
 ## ICL-to-Weights Knowledge Internalization
 These notes bridge agent cognition with representation learning -- the progression from volatile context-based knowledge to persistent weight-based knowledge.
@@ -76,19 +39,8 @@ These notes extend agent-cognition findings into the code review domain -- see [
 - [[supervisory QA-Checker agent monitoring conversation prevents prompt drifting improving vulnerability confirmation from 73 to 93 percent]] -- prompt drifting as inter-agent cognitive degradation
 - [[memory wipe per review turn prevents attention degradation treating each attempt as fresh start guided by coach feedback]] -- radical attention reset as cognitive intervention
 
-## Traversal & Emergent Knowledge
-- [[knowledge lives in paths between notes not in any single note]] -- ontological claim: the vault is a generator of inter-note knowledge visible only during traversal, not a warehouse of stored facts
-- [[different traversal starting points produce different emergent knowledge from the same graph]] -- path-dependence: entry point determines which patterns become visible, making topic maps knowledge-production devices
-- [[traversal simultaneously improves the traverser and the graph creating a co-evolutionary loop]] -- bidirectional improvement: each traversal is both a navigation act and a micro-editing opportunity that sharpens the graph
-
-## Between-Session Processing
-- [[between-session observation accumulation is directed dreaming that produces patterns no individual session contained]] -- rethink cycle as directed dreaming: observations accumulate, threshold fires, patterns emerge through generative recombination
-- [[each between-session processing cycle is a training step that does not touch the weights]] -- structural adaptation: vault changes between sessions function identically to weight updates but are faster and instance-specific
-- [[session boundaries simultaneously limit agents and enable between-session processing making the limitation the precondition]] -- the paradox: continuity destruction enables consolidation
-- [[Letta sleep-time compute pairs a primary agent with a sleep-time agent that processes memory during idle periods]] -- production architecture implementing between-session consolidation through paired agents
-
 ## Agent Notes
-- These findings directly inform the vault's session design: the orient-work-persist rhythm, /clear between phases, plan-file-first workflow, and subagent isolation all function as multi-turn mitigations.
-- The bulk-source-processing-strategy in ops/methodology/ applies the Fresh Context principle to knowledge processing.
-- Context window mechanisms, benchmarks, architectural patterns, and model-level techniques are now in [[context-management]].
+- This is a domain-level hub. The two sub-maps cover distinct research clusters: multi-turn degradation (what goes wrong) and external cognition (how the vault compensates).
+- The bridge sections above (RL Alignment, ICL-to-Weights, Code Review) remain here because they connect across multiple sub-maps and sibling topic maps.
+- Context window mechanisms, benchmarks, architectural patterns, and model-level techniques are in [[context-management]].
 - For the RL training mechanisms that create premature helpfulness and sycophancy, see [[rl-alignment]].

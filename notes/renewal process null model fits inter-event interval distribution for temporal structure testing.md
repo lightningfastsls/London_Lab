@@ -27,6 +27,9 @@ Relevant Notes:
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- the renewal process is one level in the hierarchy described there
 - [[shuffled null model preserves code frequencies but destroys all sequential structure]] -- the renewal process preserves more structure than shuffled, enabling finer discrimination
 - [[burstiness coefficient via coefficient of variation of inter-event intervals distinguishes Poisson from bursty temporal patterns]] -- the IEI distribution that the renewal process explicitly fits and preserves
+- [[HMM surrogate null model tests whether USV sequences arise from hidden behavioral state switching]] — HMM preserves identity transitions but not exact timing; renewal preserves timing but not identity, making them complementary
+- [[mutual information rate at varying lags measures temporal dependency strength within USV code sequences]] — MI significant against renewal confirms code-identity dependencies beyond temporal spacing
+- [[conditional entropy by lag probes single-token influence at distance unlike entropy rate which uses contiguous history]] — conditional entropy by lag against renewal surrogates isolates identity-based from timing-based predictability
 
 Topics:
 - [[representation-learning]]

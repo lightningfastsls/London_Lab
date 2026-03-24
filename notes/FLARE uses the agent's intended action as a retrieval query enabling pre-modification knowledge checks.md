@@ -4,6 +4,8 @@ type: method
 confidence: likely
 created: 2026-03-07
 meta_state: current
+topics:
+  - "[[agent-memory]]"
 ---
 
 # FLARE uses the agent's intended action as a retrieval query enabling pre-modification knowledge checks

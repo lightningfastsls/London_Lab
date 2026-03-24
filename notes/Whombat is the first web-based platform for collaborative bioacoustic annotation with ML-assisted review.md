@@ -25,6 +25,8 @@ Source:
 Relevant Notes:
 - [[no single bioacoustic tool covers the full detection-annotation-review-export pipeline]] — Whombat comes closest to filling this gap
 - [[active learning annotation workflows are the frontier in bioacoustic tools]] — Whombat implements this paradigm
+- [[the Python vs MATLAB divide in USV tools is shrinking but remains a practical barrier]] — Whombat as a Python/web tool exemplifies the shift from MATLAB-dominated ecosystem
+- [[Crowsetta standardizes annotation format interoperability across bioacoustic tools via a unified Python API]] — bridges Whombat's COCO-inspired format to other tools
 
 Topics:
 - [[detection]]

@@ -1,0 +1,13 @@
+[
+  {
+    "start_time_s": 0.9798585839299923,
+    "end_time_s": 1.0280623282948822,
+    "save_timestamp": "2026-03-17T13:12:07.808979",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_12-16-07_0000594\\detection_000_0.980s-1.028s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "ca0b44ff-af88-462e-9b2b-310c1a67c71f",
+    "user_action": "added_manually"
+  }
+]

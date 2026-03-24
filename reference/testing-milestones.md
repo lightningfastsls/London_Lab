@@ -890,3 +890,23 @@ M6 (Presets) ← M1 + M2 + M3 (validates all three for each preset)
 ```
 
 Milestones 1-3 can be automated as a CI check. Milestones 4-5c require an active agent session. Milestone 6 requires generating multiple vaults and is best run as a manual test suite.
+
+## Purpose
+
+This document defines seven validation milestones for the Ars Contexta v1.6 plugin, each testing a distinct layer of the system from kernel correctness through vocabulary transformation to cross-platform parity. The /setup command's post-generation validation step consults it to verify that generated vaults are functional. It also serves as the regression test specification — when any derivation component changes, the relevant milestones must be re-run.
+
+## Derivation Questions
+
+- After generating a vault, which validation steps must pass before the system is considered functional?
+- What are the common failure modes at each milestone, and how are they remediated?
+- In what order should validation milestones be executed, and what are the dependencies between them?
+- Which milestones can be automated as CI checks vs. which require an active agent session?
+- What does a passing result look like for each milestone's verification steps?
+
+## Curated Claims
+
+- Kernel validation (Milestone 1) is the foundational check: if any of the 15 kernel primitives fail, nothing built on top will function correctly. WARN is acceptable only for semantic search (primitive 8) if qmd is not configured and self space (primitive 9) if disabled.
+- Vocabulary transformation (Milestone 3) requires zero research-domain terms in non-research output, excluding ops/ directory which uses universal operational terms — partial transformation is worse than no transformation.
+- Session capture (Milestone 5b) is INVARIANT (Primitive 15) and must function for all presets regardless of whether self space is enabled or disabled.
+- Condition-based maintenance (Milestone 5c) replaces all time-based triggers in v1.6; no generated context file should contain "weekly", "monthly", or "quarterly" maintenance schedules unless time genuinely is the right trigger.
+- Milestones have strict dependencies: M2 requires M1, M3 requires M2, M4 requires M1+M2, M6 requires M1+M2+M3.

@@ -30,4 +30,10 @@ context: fork
 - `description` (max 200 chars, adds context beyond title), `topics` (wiki links to topic maps)
 - Domain: `type` (finding|decision|method|hypothesis|baseline|open-question|pattern), `confidence`, `conditions`, `meta_state`
 
+### Description Quality Gate (when editing descriptions)
+If you modify a note's `description` field, verify before saving:
+- **No restatement**: description says something the title doesn't
+- **No subject echo**: description starts with a different noun/subject than the title
+- **Answers "so what?"**: a cold reader would know WHY to open this note from the description alone
+
 Full reference: `docs/workflow/knowledge-graph-reference.md`

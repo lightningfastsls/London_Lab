@@ -5,7 +5,7 @@ confidence: likely
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # Reasoning models produce longer responses and additional test-time compute does not solve multi-turn unreliability

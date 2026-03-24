@@ -5,7 +5,7 @@ confidence: likely
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # Whether context window size and multi-turn degradation are independent or correlated phenomena

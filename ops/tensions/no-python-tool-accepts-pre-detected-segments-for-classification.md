@@ -1,6 +1,9 @@
 ---
-status: pending
+status: deferred
 created: 2026-02-23
+reviewed: 2026-03-21
+reviewed_by: rethink-2026-03-21
+review_note: "DeepSqueak bridge (Phase 3) provides immediate MATLAB pathway. Four Python-native resolution paths identified (custom CNN, few-shot, freq shifting, unsupervised). Revisit after DeepSqueak bridge operational."
 ---
 
 # No Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap

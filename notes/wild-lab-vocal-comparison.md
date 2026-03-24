@@ -1,6 +1,7 @@
 ---
 description: Courtship degradation hypotheses, wild mouse vocal behavior, repertoire statistical methods, and the converging research question
 type: moc
+topics: "[[experimental-methods]]"
 ---
 
 # wild-lab-vocal-comparison

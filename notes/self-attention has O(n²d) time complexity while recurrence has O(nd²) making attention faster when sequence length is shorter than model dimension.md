@@ -1,5 +1,5 @@
 ---
-description: "The fundamental complexity tradeoff — attention is quadratic in sequence length but linear in dimension, while recurrence is linear in length but quadratic in dimension"
+description: "Crossover at n=d — typical GPT (d=4096, n=2048) favors attention, but long-context (n=100K+) requires efficient variants like sparse/linear/FlashAttention"
 type: finding
 confidence: proven
 created: 2026-03-02

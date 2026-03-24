@@ -1,5 +1,5 @@
 ---
-description: "The LMT project's Python toolbox for offline USV processing is a potential reference implementation and comparison point"
+description: "Institut Pasteur's standalone toolbox — tuned for same 300 kHz AviSoft recordings, includes WAV-behavior sync and burst analysis scripts directly relevant to Phase 16"
 type: finding
 confidence: likely
 conditions: []

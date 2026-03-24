@@ -3,6 +3,8 @@ description: "discrete session architecture enables a secondary agent to consoli
 type: finding
 confidence: proven
 created: 2026-03-08
+topics:
+  - "[[agent-memory]]"
 ---
 
 # Letta sleep-time compute pairs a primary agent with a sleep-time agent that processes memory during idle periods

@@ -2,6 +2,7 @@
 description: DeepSqueak interop, Python USV classification tools landscape, and Raven interchange for bridging detection pipelines
 type: moc
 parent_map: classification
+topics: "[[classification]]"
 ---
 
 # classification-tools

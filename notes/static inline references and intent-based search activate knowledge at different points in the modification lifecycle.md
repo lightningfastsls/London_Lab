@@ -4,6 +4,8 @@ type: decision
 confidence: likely
 created: 2026-03-07
 meta_state: current
+topics:
+  - "[[agent-memory]]"
 ---
 
 # static inline references and intent-based search activate knowledge at different points in the modification lifecycle

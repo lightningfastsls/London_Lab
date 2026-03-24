@@ -18,6 +18,9 @@ Source:
 
 Relevant Notes:
 - [[two-stage coarse-to-fine filtering is effective for imbalanced detection tasks]] — our pipeline shares this binary detection limitation
+- [[hardware approaches solve USV attribution but not signal separation for overlapping calls]] — hardware spatial cues could supplement segmentation to resolve merged calls
+- [[six USV detection architectural approaches span object detection to speech model transfer with distinct tradeoff profiles]] — segmentation is one of six architectural categories, each with this overlap limitation
+- [[USVSEG Python port provides signal-processing-based USV segmentation without deep learning]] — USVSEG's spectral peak tracking partially handles non-crossing overlaps
 
 Topics:
 - [[detection]]

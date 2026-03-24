@@ -22,6 +22,9 @@ Source:
 
 Relevant Notes:
 - [[BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice]] — domain-specific features matter
+- [[TweetyBERT self-supervised masked spectrogram prediction addresses temporal resolution limitations of speech SSL models for animal vocalizations]] — another domain-specific SSL approach, operating at 2.7ms resolution for birdsong
+- [[CPC has been superseded by masked prediction and masked autoencoding for audio representation learning]] — MAE is the winning paradigm; domain-specific MAE amplifies the advantage further
+- [[phylogenetic proximity to humans does not influence transfer learning effectiveness from speech models to animal vocalizations]] — generic speech models fail across species, reinforcing the case for domain-specific pretraining
 
 Topics:
 - [[bioacoustic-ssl]]

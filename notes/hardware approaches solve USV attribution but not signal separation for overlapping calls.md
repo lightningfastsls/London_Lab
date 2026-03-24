@@ -27,6 +27,8 @@ Relevant Notes:
 - [[HyVL hybrid beamforming achieves 3 to 5 mm USV localization precision with 91 percent source assignment]] — spatial cues but not separation
 - [[wearable miniature microphones achieve 90 percent USV attribution from amplitude alone]] — amplitude cues but not separation
 - [[no published single-channel USV source separation method exists as of 2026]] — the computational gap
+- [[spectrogram segmentation tools like SqueakOut and VocalMat are binary detectors that cannot separate overlapping USVs]] — the software-side limitation that hardware spatial cues could help resolve
+- [[six USV detection architectural approaches span object detection to speech model transfer with distinct tradeoff profiles]] — hardware adds an orthogonal dimension to all six software approaches
 
 Topics:
 - [[detection]]

@@ -1,0 +1,37 @@
+{
+  "detection_index": 0,
+  "core_time": {
+    "start_s": 1.121915862425653,
+    "end_s": 1.1863300336177918,
+    "duration_ms": 64.41417119213865
+  },
+  "saved_region": {
+    "start_s": 1.101915862425653,
+    "end_s": 1.2063300336177918,
+    "context_ms": 20.0
+  },
+  "probabilities": {
+    "max": 0.0,
+    "mean": 0.0,
+    "original_cnn_probability": null
+  },
+  "spectrogram_columns": {
+    "start_col": 2628,
+    "end_col": 2779
+  },
+  "user_action": "added_manually",
+  "session": {
+    "session_id": "ca0b44ff-af88-462e-9b2b-310c1a67c71f",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03
+  },
+  "timestamp": "2026-03-17T13:08:03.959680",
+  "review": {
+    "label": "uncertain",
+    "confidence": "low",
+    "note": "Not sure if this is a USV - no clear contour visible in spectrogram, noisy background",
+    "reviewed_by": "mickey",
+    "reviewed_date": "2026-03-16"
+  }
+}

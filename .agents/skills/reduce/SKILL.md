@@ -500,15 +500,45 @@ Topics:
 **c. Verify before writing**
 
 - Title passes the claim test ("this {vocabulary.note} argues that [title]")
-- Description adds information beyond the title (not a restatement)
+- **Description passes the self-check gate** (see below)
 - Body shows reasoning, not just assertion
 - At least one relevant {vocabulary.note} connection identified
 - At least one {vocabulary.topic_map} link
 - Source attribution present
 
+**Description Self-Check Gate (MANDATORY):**
+
+For EACH description, verify all three criteria before writing the file:
+
+| Check | Question | If FAIL |
+|-------|----------|---------|
+| **No restatement** | Does the description say something the title doesn't? | Rewrite to answer "so what?" or "when does this matter?" |
+| **No subject echo** | Does the description start with a DIFFERENT noun/subject than the title? | Reframe from the reader's perspective or start with the implication |
+| **Answers "so what?"** | Would a cold reader know WHY to open this note from the description alone? | Add the mechanism, scope, or practical consequence |
+
+**Subject-echo rule:** Never start a description with the same noun/subject that begins the title. This primes restating rather than reframing.
+
+Bad (subject echo):
+- Title: "DeepSqueak v3 switched from Faster R-CNN to YOLO v2"
+- Description: "DeepSqueak versions 1-2 used Faster-RCNN; v3.1 adopted YOLO v2 for faster detection"
+
+Good (reframed):
+- Title: "DeepSqueak v3 switched from Faster R-CNN to YOLO v2"
+- Description: "the architecture change trades anchor-based region proposals for grid-based detection — relevant because our CNN uses similar anchor-free design"
+
+**Batch check:** If 3+ descriptions in a single /reduce run fail any criterion, flag it as a process concern in the session summary — do not silently pass.
+
 **d. Create the file**
 
-Write to: `{vocabulary.notes}/[title].md`
+**Filename sanitization (MANDATORY):** Before writing, strip or replace characters
+that are invalid in Windows paths. Apply these substitutions to the title used as filename:
+- Colons (`:`) → em-dash (`—`) or remove entirely
+- Characters `/ < > " * ? + [ ] ( ) { } | \ ^` → remove
+- Trailing dots or spaces → remove
+The `# title` heading INSIDE the note may keep the original punctuation (colons etc.).
+Only the **filename** must be sanitized.
+
+Write to: `{vocabulary.notes}/[sanitized-title].md`
 
 ---
 
@@ -697,6 +727,32 @@ Go back through candidates you marked as "duplicate" or "rejected":
    - NO -> verify it is not worth tracking
 
 **Do not proceed with handoff until low yield is investigated.**
+
+---
+
+## Source Archival (REQUIRED — After Successful Extraction)
+
+After all notes are written and the calibration check passes, archive the source file to prevent ghost inbox items:
+
+**Move the source file** from `{vocabulary.inbox}/` to `archive/{vocabulary.inbox}/`:
+
+```
+archive/{vocabulary.inbox}/[source filename]
+```
+
+**Why this matters:** Processed inbox files that remain in `{vocabulary.inbox}/` create false inbox pressure — the orient hook counts them, /reduce re-scans them, and agents waste time triaging already-processed material. This was observed 11 times before being identified as a systemic gap.
+
+**Rules:**
+- Archive ONLY after successful extraction (all notes written and approved)
+- If extraction was partial (user stopped early), do NOT archive — the file needs further processing
+- If the source has `--handoff` mode active, archive happens after queue updates are complete
+- Create the `archive/{vocabulary.inbox}/` directory if it doesn't exist
+- The source file is preserved in archive — no data is lost. Claims also link back via `Source: [[filename]]`
+
+**Verification:** After archiving, confirm:
+1. Source file exists in `archive/{vocabulary.inbox}/`
+2. Source file no longer exists in `{vocabulary.inbox}/`
+3. All created notes have valid `Source:` references
 
 ---
 

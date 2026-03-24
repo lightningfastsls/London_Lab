@@ -25,6 +25,7 @@ Source:
 
 Relevant Notes:
 - [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] -- selectivity is the primary correction applied to probe accuracy results in that analysis
+- [[pooling strategy choice over the time dimension determines what information probing experiments can access from hidden states]] — pooling can inflate apparent selectivity if it happens to align with class distributions; results must be stable across pooling strategies to be credible
 
 Topics:
 - [[representation-learning]]

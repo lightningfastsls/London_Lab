@@ -4,6 +4,8 @@ type: pattern
 confidence: likely
 created: 2026-03-07
 meta_state: current
+topics:
+  - "[[agent-memory]]"
 ---
 
 # cross-agent knowledge transfer requires flattening graph-traversable constraints into self-contained plain text

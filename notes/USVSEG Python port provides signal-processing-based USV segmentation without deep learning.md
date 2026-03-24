@@ -24,6 +24,9 @@ Source: python-alternatives-deepsqueak-usv-classification-research-2026-02-27 (a
 Relevant Notes:
 - [[U-Net semantic segmentation exceeded 95 percent precision recall for USV detection in systematic DL comparison]] -- U-Net beats USVSEG, but USVSEG needs no training data
 - [[entropy-based USV detection achieves 94.9 percent recall and 99.3 percent precision as a classical signal processing alternative]] -- another competitive classical approach
+- [[six USV detection architectural approaches span object detection to speech model transfer with distinct tradeoff profiles]] — USVSEG falls in the classical signal processing category of the six-approach taxonomy
+- [[the Python vs MATLAB divide in USV tools is shrinking but remains a practical barrier]] — USVSEG's Python port is a concrete example of this divide closing
+- [[spectrogram segmentation tools like SqueakOut and VocalMat are binary detectors that cannot separate overlapping USVs]] — USVSEG shares this binary limitation for overlapping calls
 
 Topics:
 - [[detection]]

@@ -647,3 +647,23 @@ Observe (create observation/tension)
 7. **Feature disabling is safe and reversible.** The progressive configuration test (Test 8) confirms that disabling optional features does not break the system. Each optional feature has a fallback path. INVARIANT primitives cannot be disabled, ensuring the structural foundation is always present. The system ships complete and users opt down — the reverse of the former tier-based approach.
 
 **Derivation engine confidence: HIGH.** The 15 kernel primitives provide a universal base. The 8 configuration dimensions parameterize the variation space. Interaction constraints prevent incoherent combinations. The 3 presets (Research, Personal Assistant, Experimental) provide pre-validated starting points. The system derives working configurations for research, therapy, competitive gaming, multi-domain composition, minimal platforms, constraint recovery, vocabulary-verified domains, progressive configuration, and self-improving operational loops.
+
+## Purpose
+
+This document provides nine validation tests that verify the derivation engine produces coherent, functional systems. The /setup command's quality assurance process runs these tests after any changes to init.md, interaction-constraints.md, or tradition-presets.md. Each test validates a distinct aspect: self-derivation accuracy, cross-domain coherence, novel domain handling, multi-domain composition, minimal platform viability, constraint violation recovery, vocabulary transformation fidelity, progressive configuration, and the operational learning loop.
+
+## Derivation Questions
+
+- Does the derivation engine produce configurations that match known-good systems (self-derivation test)?
+- Can the engine generate coherent systems for domains outside the preset list (novel domain test)?
+- Does vocabulary transformation completely eliminate cross-domain term leakage?
+- When given intentionally incoherent configurations, does the constraint system detect violations and guide toward valid configurations?
+- Does the operational learning loop function as a complete cycle from observation capture through threshold detection to triage?
+
+## Curated Claims
+
+- The Research preset predicts the actual vault's configuration with zero dimension mismatches; gaps are evolutionary features consistent with the seed-evolve-reseed lifecycle, not derivation failures.
+- All 15 kernel primitives can be satisfied through context file instructions alone (convention-only), meaning Ars Contexta can generate valid systems for any platform that supports text files.
+- The constraint system is productive, not just prohibitive: it guides users toward valid configurations by recommending minimal corrections rather than simply rejecting bad configurations.
+- Vocabulary transformation is not cosmetic — "surface patterns in reflections" vs. "extract claims from sources" changes how the system feels to use, and partial transformation is worse than no transformation.
+- Feature disabling is safe and reversible because each optional feature has a fallback path and INVARIANT primitives cannot be disabled.

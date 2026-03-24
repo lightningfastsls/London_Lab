@@ -4,6 +4,8 @@ type: open-question
 confidence: speculative
 created: 2026-03-07
 meta_state: current
+topics:
+  - "[[agent-memory]]"
 ---
 
 # whether tracking which surfaced notes agents actually load can identify poorly-described vault entries

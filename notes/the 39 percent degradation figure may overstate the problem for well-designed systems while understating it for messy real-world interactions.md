@@ -5,7 +5,7 @@ confidence: likely
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # The 39 percent degradation figure may overstate the problem for well-designed systems while understating it for messy real-world interactions

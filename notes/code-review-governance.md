@@ -2,6 +2,7 @@
 description: Empirical foundations, multi-agent architectures, cost optimization, effectiveness research, and tooling for AI-assisted code review as a governance mechanism
 type: moc
 parent_map: "[[agent-governance]]"
+topics: "[[agent-governance]]"
 ---
 
 # code-review-governance
@@ -26,6 +27,7 @@ The empirical foundation is stark: since [[same-model generation and review crea
 - [[memory wipe per review turn prevents attention degradation treating each attempt as fresh start guided by coach feedback]] -- Block g3 dialectical pattern
 - [[no instruction path from failure to commit is the critical safety invariant in automated code pipelines]] -- metaswarm pipeline safety
 - [[supervisory QA-Checker agent monitoring conversation prevents prompt drifting improving vulnerability confirmation from 73 to 93 percent]] -- novel oversight agent pattern
+- [[same-session subagent review catches bugs but biases fix interpretation for high-tier reviews]] -- implementor controls verdict layer despite context isolation; tier-dependent mitigation
 
 ## Cost & Efficiency
 

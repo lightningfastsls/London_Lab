@@ -1,6 +1,7 @@
 ---
 description: Diffusion models, flow matching, and generative frameworks — stability analysis, prediction targets, acceleration methods, and production adoption
 type: moc
+topics: "[[index]]"
 ---
 
 # generative-modeling

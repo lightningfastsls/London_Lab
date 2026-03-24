@@ -324,3 +324,23 @@ self/
 **The pattern:** self/ mirrors the main notes structure — atomic notes with prose titles, linked from MOCs. Journal serves as capture zone for processing into atomic notes.
 
 **Critical rule:** Read self/ at EVERY session start. This is non-negotiable. The agent must remember who it is before doing anything else.
+
+## Purpose
+
+This document provides implementation blueprints for every structural component of a generated knowledge system. The derivation engine's /setup command consults it when generating vault scaffolding — each blueprint explains What, Why, and How for a component so that both the generator and the agent can build or extend components with full understanding. It also serves as the self-extension reference: agents use these blueprints to build their own hooks, skills, and schema extensions after initial scaffolding.
+
+## Derivation Questions
+
+- What structural components must a generated knowledge system include, and what does each do?
+- How should a specific component (e.g., hooks, search, health checks) be implemented on a given platform?
+- What quality gates must each component satisfy to be considered functional?
+- When should conditional components (sleep skill, semantic search) be enabled vs. disabled?
+- How does the agent self-extend by building new components from blueprints?
+
+## Curated Claims
+
+- Every knowledge system is built from the same structural primitives (Notes, Schema, Links, Navigation, Folders, Templates, Hooks, Search, Health, Graph, Task Stack, Methodology Folder, Session Capture, Self Space) regardless of domain.
+- Hooks must encode verification (deterministic checks), not judgment (quality assessment) — the determinism boundary separates hook methodology from skill methodology.
+- The composability test ("This note argues that [title]") is the universal quality gate for atomic notes across all domains.
+- Templates are the single source of truth for schema; validation checks notes against templates, never against independently defined field lists.
+- The sleep skill is conditional on processing >= moderate AND platform scheduling support; light-processing systems do not generate enough material to justify it.

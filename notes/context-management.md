@@ -1,6 +1,7 @@
 ---
 description: Within-session context window degradation, attention mechanisms, benchmarks, architectural patterns, context-to-weights transfer, and context augmentation strategies
 type: moc
+topics: "[[index]]"
 ---
 
 # context-management

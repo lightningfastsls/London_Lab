@@ -1,5 +1,5 @@
 ---
-description: Chi-squared on aggregated syllable counts may be simpler than PERMANOVA for repertoire comparison but statistical power remains untested
+description: Chi-squared is computationally trivial but assumes discrete well-separated categories — PERMANOVA captures multivariate distributional structure via Bray-Curtis but needs permutation testing
 type: open-question
 confidence: speculative
 topics: "[[classification-methodology]]"

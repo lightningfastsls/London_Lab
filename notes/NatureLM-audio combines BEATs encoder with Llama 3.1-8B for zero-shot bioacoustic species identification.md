@@ -23,6 +23,8 @@ Source: unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-
 Relevant Notes:
 - [[Perch 2.0 trained on 14795 species achieves state of the art bioacoustic embeddings that transfer across taxa]] -- practical alternative for embedding extraction (12M vs 8B params)
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- NatureLM-audio's cross-domain training is consistent with this
+- [[self-supervised models detect seasonal vocal plasticity without temporal labels demonstrating unsupervised biological discovery]] — NatureLM-audio's language component could narrate the acoustic patterns that SSL models discover
+- [[phylogenetic proximity to humans does not influence transfer learning effectiveness from speech models to animal vocalizations]] — universal acoustic features explain why cross-species audio-language training works
 
 Topics:
 - [[bioacoustic-ssl]]

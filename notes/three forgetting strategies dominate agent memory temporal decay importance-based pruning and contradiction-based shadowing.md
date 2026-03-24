@@ -1,5 +1,5 @@
 ---
-description: Taxonomy of temporal decay, importance-based pruning, and contradiction-based shadowing as the dominant memory management paradigms
+description: Each strategy trades off different failure modes — decay loses critical early insights, pruning depends on scoring accuracy, shadowing requires contradiction detection
 type: finding
 confidence: likely
 topics: "[[agent-memory]]"

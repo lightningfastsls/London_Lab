@@ -1,6 +1,7 @@
 ---
 description: Self-supervised learning paradigms, foundation models, cross-species transfer, and the USV-specific gap at 300 kHz -- pretrained representations for bioacoustic analysis
 type: moc
+topics: "[[index]]"
 ---
 
 # bioacoustic-ssl

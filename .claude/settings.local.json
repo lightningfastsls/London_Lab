@@ -62,7 +62,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd.exe /c .claude\\hooks\\check_agents_tag.cmd"
+            "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/check_agents_tag.ps1 || true"
           }
         ]
       },
@@ -70,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd.exe /c .claude\\hooks\\session-capture.cmd"
+            "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/session-capture.ps1 || true"
           }
         ]
       }
@@ -81,7 +81,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd.exe /c .claude\\hooks\\check_plan_mode.cmd"
+            "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/check_plan_mode.ps1 || true"
           }
         ]
       }
@@ -92,11 +92,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd.exe /c .claude\\hooks\\validate-note.cmd"
+            "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/validate-note.ps1"
           },
           {
             "type": "command",
-            "command": "cmd.exe /c .claude\\hooks\\auto-commit.cmd",
+            "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/auto-commit.ps1 || true",
             "async": true
           }
         ]

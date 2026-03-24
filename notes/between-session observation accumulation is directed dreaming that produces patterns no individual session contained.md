@@ -3,6 +3,8 @@ description: "the rethink cycle recombines observations without new input — li
 type: pattern
 confidence: likely
 created: 2026-03-08
+topics:
+  - "[[agent-memory]]"
 ---
 
 # between-session observation accumulation is directed dreaming that produces patterns no individual session contained

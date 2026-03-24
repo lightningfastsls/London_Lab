@@ -1,12 +1,24 @@
 # Vocabulary Transformation Reference
 
-When generating a knowledge system for a specific domain, every universal term in the generated context file, templates, skills, and self/ files must use the domain-native equivalent. Vocabulary transformation is not cosmetic — it changes how the system feels to use.
+## Purpose
 
-"Surface patterns in reflections" is therapy work. "Extract claims from sources" is research work. Same structural operation, different cognitive framing.
+This document provides the complete lookup tables for transforming universal arscontexta terms into domain-native equivalents during system derivation. Vocabulary transformation is not cosmetic — it changes how the system feels to use. "Surface patterns in reflections" is therapy work. "Extract claims from sources" is research work. Same structural operation, different cognitive framing. The derivation engine consults these tables at Step 5b (vocabulary derivation) of the init wizard, and the vocabulary transformation test (Testing Milestone 3) uses them as ground truth for verifying zero cross-domain term leakage.
 
----
+## Derivation Questions
 
-## Universal → Domain Mapping
+- What is the domain-native equivalent of universal term X for use case Y?
+- What template/folder/skill names should be generated for a given domain?
+- How should the init wizard prompt for custom vocabulary in Experimental/mixed use cases?
+- What is the quality check for vocabulary transformation completeness?
+- What quality check ensures zero instances of cross-domain terms remain in generated files?
+
+## Curated Claims
+
+### Vocabulary Mapping Tables
+
+The following tables function as lookup claims — each row maps a universal structural concept to its domain-native equivalent across seven domains. These are kept as tables rather than individual per-claim entries because their utility depends on cross-domain comparison and quick lookup during derivation. Four mapping dimensions must be transformed consistently: terms, template names, folder names, and skill names.
+
+#### Universal → Domain Mapping
 
 | Universal Term | Research | Therapy | Learning | Relationships | Creative | PM | Companion |
 |---------------|----------|---------|----------|---------------|----------|-----|-----------|
@@ -28,7 +40,7 @@ When generating a knowledge system for a specific domain, every universal term i
 
 ---
 
-## Template Name Mapping
+#### Template Name Mapping
 
 | Universal Template | Research | Therapy | Learning | Relationships | Creative | PM | Companion |
 |-------------------|----------|---------|----------|---------------|----------|-----|-----------|
@@ -37,7 +49,7 @@ When generating a knowledge system for a specific domain, every universal term i
 
 ---
 
-## Folder Name Mapping
+#### Folder Name Mapping
 
 | Universal Folder | Research | Therapy | Learning | Relationships | Creative | PM | Companion |
 |-----------------|----------|---------|----------|---------------|----------|-----|-----------|
@@ -48,7 +60,7 @@ When generating a knowledge system for a specific domain, every universal term i
 
 ---
 
-## Skill Name Mapping
+#### Skill Name Mapping
 
 | Universal Skill | Research | Therapy | Learning | Relationships | Creative | PM | Companion |
 |----------------|----------|---------|----------|---------------|----------|-----|-----------|
@@ -65,7 +77,7 @@ When generating a knowledge system for a specific domain, every universal term i
 
 ---
 
-## Applying Transformations
+### Applying Transformations
 
 ### In the init wizard (Step 5b):
 
@@ -83,3 +95,22 @@ The vocabulary test: read the generated context file as if you were the domain u
 ### Extending the table:
 
 For "Custom / Mixed" use cases, the init wizard should ask the user for their preferred vocabulary. Populate a custom column using the universal terms as prompts: "What do you call a single knowledge unit?" → their answer becomes the "note" equivalent.
+
+---
+
+## Exclusion Notes
+
+- **Legal domain vocabulary:** Not yet mapped — legal knowledge systems (case briefs, precedent tracking, statute notes) have specialized terminology that requires domain expert input. Candidate for future column addition.
+- **Medical/clinical domain:** Not yet mapped — clinical documentation vocabulary (SOAP notes, differential diagnoses, treatment plans) overlaps with but diverges from Therapy. Requires separate column, not a Therapy variant.
+- **Software engineering domain:** Not yet mapped — while Developer/Engineering was excluded as a separate use-case preset, its vocabulary (ADR, runbook, postmortem, spike) is distinct enough to warrant a mapping column when the domain is supported.
+- **Multi-language vocabulary:** Current tables are English-only. Localization of domain-native terms (e.g., Spanish therapy vocabulary) is out of scope but may be needed for international deployments.
+- **Verb tense/conjugation transforms:** Evaluated whether mapping tables should include verb conjugations (e.g., "reducing" -> "surfacing") — excluded because the init wizard handles these programmatically from the base verb mapping.
+
+---
+
+## Version
+
+- **Date:** 2026-03-20
+- **Source claim count:** 4 mapping tables (terms, templates, folders, skills) across 7 domains + application procedure = 5
+- **Included count:** 4 mapping tables + 1 application procedure (all original content preserved)
+- **Excluded count:** 5 (Legal, Medical, Software Engineering, Multi-language, Verb conjugation transforms)

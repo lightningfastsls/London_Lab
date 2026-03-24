@@ -24,6 +24,9 @@ Relevant Notes:
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- the aggregate entropy rate curve that this lag-specific analysis decomposes into individual contributions
 - [[excess entropy measures long-range structure complexity in discrete code sequences]] -- excess entropy integrates all long-range dependencies; conditional entropy by lag reveals their temporal distribution
 - [[null models are essential for interpreting information-theoretic metrics on USV code sequences]] -- Markov null models will show specific lag decay profiles that serve as baselines for the real data
+- [[mutual information rate at varying lags measures temporal dependency strength within USV code sequences]] — measures the complementary quantity I(X_t;X_{t+lag}) = H(X_t) - H(X_t|X_{t+lag}), symmetric and bounded
+- [[Crutchfield and Feldman 2003 block entropy extrapolation is the standard method for computing excess entropy]] — block entropy slope gives the entropy rate that this lag analysis decomposes
+- [[renewal process null model fits inter-event interval distribution for temporal structure testing]] — comparing lag decay profiles against renewal surrogates isolates code-identity from temporal-spacing effects
 
 Topics:
 - [[representation-learning]]

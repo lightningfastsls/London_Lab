@@ -1,6 +1,7 @@
 ---
 description: Recording-level splits, negative sampling, augmentation, labeling policy, classification baselines, and tool interoperability for USV model training
 type: moc
+topics: "[[experimental-methods]]"
 ---
 
 # training-methodology

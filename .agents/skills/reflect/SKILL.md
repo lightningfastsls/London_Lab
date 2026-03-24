@@ -52,8 +52,9 @@ Parse immediately:
    - Run semantic search for conceptually related {vocabulary.note_plural}
 5. Evaluate each candidate: does a genuine connection exist? Can you articulate WHY?
 6. Add inline wiki-links where connections pass the articulation test
-7. Update relevant {vocabulary.topic_map}(s) with this {vocabulary.note}
-8. If task file in context: update the {vocabulary.reflect} section
+7. If you modify a `description` field: verify no restatement of title, no subject echo, answers "so what?"
+8. Update relevant {vocabulary.topic_map}(s) with this {vocabulary.note}
+9. If task file in context: update the {vocabulary.reflect} section
 9. Report what was connected and why
 10. If `--handoff` in target: output RALPH HANDOFF block
 
@@ -179,6 +180,12 @@ When running in handoff mode via /ralph, the prompt includes the task file path.
 - Discovery trace summary
 
 **Critical:** The handoff block is OUTPUT, not a replacement for the workflow. Do the full reflect workflow first, update task file, then format results as handoff.
+
+### Graph Analysis Concepts (for connection discovery)
+- **Triangle detection** — find open triads (A links B, B links C, but A doesn't link C) as synthesis opportunities
+- **Bridge detection** — structurally critical notes that connect otherwise-separate clusters
+- **Link density** — target 3+ outgoing links per note; low-density notes need more connections
+- Use /graph for interactive graph analysis when exploring connection patterns.
 
 ### Queue Update (interactive execution)
 

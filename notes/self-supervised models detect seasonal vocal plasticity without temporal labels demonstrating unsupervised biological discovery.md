@@ -24,6 +24,8 @@ Relevant Notes:
 - [[TweetyBERT self-supervised masked spectrogram prediction discovers birdsong syllable units matching biophysical models]] -- parent finding on the same model
 - [[whether specific USV call types predict specific courtship outcomes like female receptivity to mounting]] -- unsupervised discovery could address this open question
 - [[USVs are one component of a multimodal courtship behavior suite including mounting approach and movement]] -- seasonal plasticity connects to behavioral context
+- [[domain-specific MAE pretraining dramatically outperforms generic Audio-MAE for bioacoustic tasks]] — domain-specific models like TweetyBERT enable this kind of unsupervised discovery; generic models would lack the acoustic sensitivity
+- [[NatureLM-audio combines BEATs encoder with Llama 3.1-8B for zero-shot bioacoustic species identification]] — audio-language models could extend this discovery paradigm by connecting acoustic patterns to textual behavioral descriptions
 
 Topics:
 - [[bioacoustic-ssl]]

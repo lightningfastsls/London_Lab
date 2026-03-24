@@ -4,6 +4,8 @@ type: pattern
 confidence: likely
 created: 2026-03-07
 meta_state: current
+topics:
+  - "[[agent-memory]]"
 ---
 
 # Adaptive RAG routes retrieval depth by query complexity which maps to file modification risk in coding agents

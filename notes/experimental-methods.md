@@ -1,6 +1,7 @@
 ---
 description: Hub for experimental methodology -- training data preparation, wild-lab vocal comparison, and behavioral integration
 type: moc
+topics: "[[index]]"
 ---
 
 # experimental-methods

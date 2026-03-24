@@ -1,0 +1,24 @@
+[
+  {
+    "start_time_s": 1.9648359798461952,
+    "end_time_s": 2.0190118695306287,
+    "save_timestamp": "2026-03-22T16:34:19.388392",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-05_23-20-50_0004970\\detection_000_1.965s-2.019s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "ae82c654-b06c-4096-9c60-382df05bd800",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 2.0957965950676214,
+    "end_time_s": 2.1516788119862107,
+    "save_timestamp": "2026-03-22T16:34:19.801366",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-05_23-20-50_0004970\\detection_001_2.096s-2.152s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "ae82c654-b06c-4096-9c60-382df05bd800",
+    "user_action": "added_manually"
+  }
+]

@@ -4,6 +4,8 @@ type: finding
 confidence: likely
 created: 2026-03-07
 meta_state: current
+topics:
+  - "[[agent-memory]]"
 ---
 
 # activation timing matters as much as retrieval quality in agent knowledge systems

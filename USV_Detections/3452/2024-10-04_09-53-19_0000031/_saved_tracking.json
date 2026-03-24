@@ -1,0 +1,46 @@
+[
+  {
+    "start_time_s": 1.600108533545479,
+    "end_time_s": 1.6487388597189079,
+    "save_timestamp": "2026-03-16T21:42:23.313067",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-53-19_0000031\\detection_000_1.600s-1.649s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 1.7165653672765848,
+    "end_time_s": 1.769888093343941,
+    "save_timestamp": "2026-03-16T21:42:23.827567",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-53-19_0000031\\detection_001_1.717s-1.770s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 1.806574128878282,
+    "end_time_s": 1.888051254309202,
+    "save_timestamp": "2026-03-16T21:42:24.300067",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-53-19_0000031\\detection_002_1.807s-1.888s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  },
+  {
+    "start_time_s": 2.0109068151683904,
+    "end_time_s": 2.0612434685759746,
+    "save_timestamp": "2026-03-16T21:42:24.832567",
+    "output_path": "D:\\mickey_london_lab\\USV_Detections\\2024-10-04_09-53-19_0000031\\detection_003_2.011s-2.061s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03,
+    "session_id": "f9342f76-fc97-4f3f-8ffb-98956f5775a7",
+    "user_action": "added_manually"
+  }
+]

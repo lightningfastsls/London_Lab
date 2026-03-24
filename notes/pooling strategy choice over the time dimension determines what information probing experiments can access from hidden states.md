@@ -33,6 +33,7 @@ Relevant Notes:
 - [[linear and MLP probes on frozen transformer hidden states identify which layer encodes which acoustic property]] -- the probing method whose results depend on this pooling choice
 - [[layer-property heatmap is the key output showing where acoustic information lives across transformer depth]] -- heatmap entries change depending on pooling strategy used
 - [[acoustic property extraction from spectrogram data produces ground truth targets for probing experiments]] -- the target properties whose detectability is pooling-dependent
+- [[probe selectivity measured as accuracy minus majority baseline distinguishes genuine encoding from trivial prediction]] — selectivity correction needed for classification targets must be applied consistently across all pooling strategies to ensure comparability
 
 Topics:
 - [[representation-learning]]

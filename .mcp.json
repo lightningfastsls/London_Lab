@@ -2,9 +2,9 @@
   "mcpServers": {
     "qmd": {
       "command": "node",
-      "args": ["C:/Users/shach/AppData/Roaming/npm/node_modules/@tobilu/qmd/dist/qmd.js", "mcp"],
+      "args": ["/home/light/.npm-global/lib/node_modules/@tobilu/qmd/dist/cli/qmd.js", "mcp"],
       "env": {
-        "INDEX_PATH": "C:\\Users\\shach\\.cache\\qmd\\index.sqlite"
+        "INDEX_PATH": "/home/light/.cache/qmd/index.sqlite"
       },
       "autoapprove": [
         "mcp__qmd__search",

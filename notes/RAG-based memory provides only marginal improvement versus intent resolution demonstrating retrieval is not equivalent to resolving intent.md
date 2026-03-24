@@ -5,7 +5,7 @@ confidence: likely
 created: 2026-03-01
 meta_state: current
 topics:
-  - "[[agent-cognition]]"
+  - "[[multi-turn-degradation]]"
 ---
 
 # RAG-based memory provides only marginal improvement versus intent resolution demonstrating retrieval is not equivalent to resolving intent

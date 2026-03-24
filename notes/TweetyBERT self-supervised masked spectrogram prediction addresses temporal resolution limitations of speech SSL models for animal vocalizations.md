@@ -22,6 +22,8 @@ Source:
 
 Relevant Notes:
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] — TweetyBERT takes the opposite approach (domain-specific from scratch)
+- [[domain-specific MAE pretraining dramatically outperforms generic Audio-MAE for bioacoustic tasks]] — Bird-MAE confirms the domain-specific advantage with 10.6-point MAP gain
+- [[CPC has been superseded by masked prediction and masked autoencoding for audio representation learning]] — TweetyBERT uses masked prediction, the winning paradigm over CPC-style contrastive approaches
 
 Topics:
 - [[bioacoustic-ssl]]

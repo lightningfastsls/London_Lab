@@ -170,3 +170,21 @@ Claims appearing in multiple topics — these are synthesis opportunities:
 | [[local-first file formats are inherently agent-native]] | agent-cognition, maintenance-evolution |
 | [[PKM failure follows a predictable cycle]] | processing-workflow, maintenance-evolution |
 | [[skills encode methodology]] | processing-workflow, note-design |
+
+## Purpose
+
+This document provides a navigational index from topic areas to their grounding research claims, organized by the six topic MOCs in the knowledge graph. The /ask, /recommend, and /architect skills consult it when they need to find research-backed evidence for a specific methodology question without traversing the full claim corpus. It is the fastest path from "I have a question about X" to "here are the relevant research claims."
+
+## Derivation Questions
+
+- Which research claims are relevant to a given topic area (e.g., graph-structure, agent-cognition)?
+- What tensions exist within each topic area that remain unresolved?
+- Which claims bridge multiple topics and represent synthesis opportunities?
+- What risks are documented for each topic area?
+
+## Curated Claims
+
+- The knowledge graph is organized into six topic areas: graph-structure, agent-cognition, discovery-retrieval, processing-workflow, note-design, and maintenance-evolution.
+- Claims that appear in multiple topics (cross-topic bridge claims) are the highest-value synthesis opportunities and should be prioritized for connection work.
+- Each topic area has documented tensions and risks alongside its core claims, ensuring the knowledge graph captures uncertainty, not just assertions.
+- Wiki-link format (`[[claim title]]`) is the canonical reference form for all claims, enabling direct traversal from this map to claim notes.

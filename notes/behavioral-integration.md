@@ -1,6 +1,7 @@
 ---
 description: LMT synchronization architecture, recording infrastructure, and methods for correlating USV sequences with behavioral events
 type: moc
+topics: "[[experimental-methods]]"
 ---
 
 # behavioral-integration

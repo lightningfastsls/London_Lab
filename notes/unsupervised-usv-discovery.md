@@ -1,6 +1,7 @@
 ---
 description: Unsupervised clustering methods, USV literature context, and alternative approaches for discovering vocal repertoire structure without predefined categories
 type: moc
+topics: "[[index]]"
 ---
 
 # unsupervised-usv-discovery

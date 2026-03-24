@@ -227,7 +227,7 @@ Maintenance is condition-based, not scheduled. Specific conditions trigger speci
 | Stale notes | > 30 days old + < 2 incoming links | Run /reweave |
 | Topic map oversized | > 40 notes | Split into sub-topic-maps |
 | Inbox items | >= 3 | Run /reduce or /pipeline |
-| Pending observations | >= 10 | Run /rethink |
+| Pending observations | >= 7 (or any observation > 14 days unreviewed) | Run /rethink |
 | Open tensions | >= 5 | Run /rethink |
 | Unprocessed sessions | >= 5 | Run /remember --mine-sessions |
 
@@ -289,7 +289,7 @@ When you notice friction, surprises, process gaps, or methodology insights durin
 When two notes contradict each other, or an implementation conflicts with methodology, capture the tension in ops/tensions/. Each tension names the conflicting notes and tracks resolution status (pending | resolved | dissolved).
 
 ### Accumulation Triggers
-- **10+ pending observations** -> Run /rethink to triage and process
+- **7+ pending observations** (or any observation > 14 days unreviewed) -> Run /rethink to triage and process
 - **5+ pending tensions** -> Run /rethink to resolve conflicts
 
 ---

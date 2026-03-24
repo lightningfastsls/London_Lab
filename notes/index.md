@@ -1,6 +1,7 @@
 ---
-description: Entry point to the knowledge system -- start here to navigate
+description: Root navigation hub for ~520 notes across USV signal processing, detection, classification, representation learning, agent tooling, and methodology
 type: moc
+topics: "[[index]]"
 ---
 
 # index
@@ -22,13 +23,16 @@ Welcome to your USV research knowledge system.
   - [[training-methodology]] -- splits, augmentation, labeling, classification baselines
   - [[wild-lab-vocal-comparison]] -- courtship degradation hypotheses, repertoire statistics
   - [[behavioral-integration]] -- LMT synchronization, recording infrastructure
-- [[agent-cognition]] -- LLM multi-turn degradation, root causes, mitigations, and theoretical framing
+- [[agent-cognition]] -- domain hub for agent cognitive architecture, RL alignment bridges, ICL-to-weights, code review
+  - [[multi-turn-degradation]] -- empirical findings, task susceptibility, RLHF root causes, Fresh Context mitigations
+  - [[agent-external-cognition]] -- hook theory, vault traversal, between-session processing, external cognition
 - [[context-management]] -- within-session context window degradation, attention mechanisms, benchmarks, and architectural patterns
 - [[agent-memory]] -- cross-session memory architecture, forgetting strategies, MCP ecosystem, and multi-agent orchestration infrastructure
 - [[agent-governance]] -- behavioral contracts, formal compliance frameworks, enforcement layers, and implementation patterns for constraining agent behavior
   - [[code-review-governance]] -- multi-agent review architectures, cost optimization, effectiveness research, and tooling
 - [[transformer-architecture]] -- self-attention mechanics, positional encoding, MLP function, residual streams, and in-context learning theory
 - [[rl-alignment]] -- RLHF pipeline, policy optimization algorithms (PPO, GRPO, REINFORCE, DPO), reward hacking dynamics, reward engineering meta-finding
+- [[graph-structure]] — graph traversal theory, emergent inter-note knowledge, path-dependent discovery
 - [[generative-modeling]] -- diffusion models, flow matching, stability analysis (Jensen Gap vs bounded gain), prediction targets, acceleration, production adoption
 
 ## Getting Started

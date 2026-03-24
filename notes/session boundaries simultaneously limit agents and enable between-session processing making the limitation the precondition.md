@@ -3,6 +3,9 @@ description: "continuous systems have no idle time for memory processing — the
 type: pattern
 confidence: likely
 created: 2026-03-08
+topics:
+  - "[[agent-memory]]"
+  - "[[agent-external-cognition]]"
 ---
 
 # session boundaries simultaneously limit agents and enable between-session processing making the limitation the precondition

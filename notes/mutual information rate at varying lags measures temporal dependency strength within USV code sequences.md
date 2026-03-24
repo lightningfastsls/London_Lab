@@ -24,6 +24,10 @@ Relevant Notes:
 - [[conditional entropy by lag probes single-token influence at distance unlike entropy rate which uses contiguous history]] — measures the complementary quantity H rather than I at the same lag distances
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] — uses contiguous history rather than isolated lag, capturing different aspect of sequential structure
 - [[excess entropy measures long-range structure complexity in discrete code sequences]] — captures total long-range information as a single scalar, while MI rate decomposes it by lag
+- [[Crutchfield and Feldman 2003 block entropy extrapolation is the standard method for computing excess entropy]] — the canonical computation for the excess entropy scalar that MI rate decomposes by lag
+- [[HMM surrogate null model tests whether USV sequences arise from hidden behavioral state switching]] — MI decay profiles against HMM surrogates test whether hidden-state switching fully explains temporal dependencies
+- [[renewal process null model fits inter-event interval distribution for temporal structure testing]] — MI significant against renewal surrogates confirms code-identity dependencies beyond temporal spacing
+- [[n-gram idiom detection identifies compositional phrases exceeding chance frequency in USV code sequences]] — detects specific over-represented patterns while MI rate measures aggregate dependency strength
 
 Topics:
 - [[representation-learning]]

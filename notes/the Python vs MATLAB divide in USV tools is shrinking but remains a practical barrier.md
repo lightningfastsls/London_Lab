@@ -25,6 +25,9 @@ Source:
 Relevant Notes:
 - [[DeepSqueak requires MATLAB 2020a plus seven toolboxes and has no Python port]] — the specific MATLAB dependency barrier
 - [[DeepSqueak is fundamentally GUI-centric with no officially supported headless or scriptable operation]] — compounding the automation challenge
+- [[USVSEG Python port provides signal-processing-based USV segmentation without deep learning]] — concrete example of the divide closing: MATLAB USVSEG ported to Python
+- [[Whombat is the first web-based platform for collaborative bioacoustic annotation with ML-assisted review]] — Python-native tool filling the annotation gap that MATLAB tools dominate
+- [[six USV detection architectural approaches span object detection to speech model transfer with distinct tradeoff profiles]] — the platform divide cuts across all six architectural approaches
 
 Topics:
 - [[detection]]

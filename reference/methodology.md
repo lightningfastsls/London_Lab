@@ -281,3 +281,23 @@ These claims from the TFT research graph ground the methodology:
 - **Throughput matters more than accumulation** — processing velocity, not archive size
 - **The generation effect requires active transformation not just storage** — moving files is not processing
 - **Backward maintenance asks what would be different if written today** — living documents, not finished artifacts
+
+## Purpose
+
+This document provides the domain-agnostic methodology distilled from the Tools for Thought for Agents research. It powers design decisions across all commands and skills by establishing the cognitive science foundations, universal note patterns, quality standards, and session rhythm that every generated system must implement. The /setup command, /ask skill, and arscontexta-expert agent all consult it when they need to justify a structural decision or explain why a convention exists.
+
+## Derivation Questions
+
+- What cognitive science principles ground the vault's structural conventions (wiki links, MOCs, descriptions, session rhythm)?
+- What is the universal note pattern that all domains must follow, and what are its quality gates?
+- What operations must every knowledge system support, regardless of domain or configuration?
+- How should sessions be structured to maximize quality across orient, work, and persist phases?
+- What domain-specific schema extensions are appropriate for a given use case?
+
+## Curated Claims
+
+- The vault is an extended thinking structure (Clark & Chalmers Extended Mind), not storage — when an agent reads self/ to remember who it is, that is cognition, not retrieval.
+- The composability test ("This note argues that [title]") is the universal quality gate for notes; if the title does not pass this test, it is a topic label, not a proper note.
+- Descriptions must add NEW information beyond the title; they are retrieval filters optimized for decision-making, not summaries.
+- The self-extension principle requires that after scaffolding, the agent can build its own hooks, skills, ingestion connectors, schema extensions, and context file modifications.
+- Session rhythm (orient, work, persist) is non-negotiable: without orientation, every session starts cold; without persistence, nothing survives to the next session.

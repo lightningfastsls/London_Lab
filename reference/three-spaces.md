@@ -1,24 +1,106 @@
 # Three-Space Architecture Reference
 
-Every generated system divides its workspace into three spaces: self, notes, and ops. This is not an organizational preference but an architectural decision driven by failure mode prevention. The three spaces have fundamentally different durability profiles, growth patterns, and query characteristics. Conflating any two produces predictable, documented failures.
+## Purpose
+
+This document defines the three-space architecture (Self, Notes, Ops) that every generated system must implement. It serves as the derivation engine's primary structural reference for workspace partitioning, ensuring that each space's durability profile, growth pattern, and query characteristics remain distinct. The six failure modes of conflation establish why space boundaries are architectural constraints, not organizational preferences.
 
 ---
 
-## Self Space — The Agent's Persistent Mind (Configurable)
+## Derivation Questions
 
-**Enforcement:** Configurable. Off by default for research vaults, on by default for personal assistant vaults. Toggled via /architect.
+1. **How should workspace directories be partitioned?** Every generated system divides into self/, notes/, and ops/ based on durability, growth pattern, and load pattern — not by content topic.
+2. **When should self-space be enabled vs disabled?** Self-space is configurable (off for research vaults, on for personal assistant vaults) depending on whether persistent agent identity adds value beyond what the context file provides.
+3. **Where does a specific piece of content belong?** The memory type routing decision tree classifies content by asking: is it about the agent? Is it durable? Is it domain knowledge? Is it operational coordination?
+4. **What breaks when spaces are conflated?** Six documented failure modes predict the specific decay pattern for each possible conflation, enabling the derivation engine to generate targeted warnings.
+5. **How does content move between spaces?** Promotion is one-directional: ops/ -> notes/ or self/. Durable knowledge never becomes temporal scaffolding.
 
-**Durability:** Permanent. Content accumulates slowly and is rarely deleted.
+---
 
-**Growth pattern:** Slow — tens of files, not hundreds. Updated incrementally at session end, not batch-processed.
+## Curated Claims
 
-**Load pattern:** Full load at every session start. Small enough to fit in context without progressive disclosure.
+### Space Definitions
 
-**Purpose:** The agent must remember who it is before doing anything else. Without self/, every session starts from zero — the agent knows methodology but not identity, goals, or accumulated operational wisdom.
+#### Self space holds the agent's persistent mind
 
-### When Self Space Is Enabled
+**Summary:** Self space stores agent identity, methodology, goals, and accumulated operational wisdom. It is permanent, slow-growing (tens of files), and fully loaded at every session start. Without it, every session starts from zero.
 
-#### Core Files
+**Derivation Implication:** When self-space is enabled, the derivation engine must scaffold identity.md, methodology.md, and goals.md. When disabled, these functions route to ops/goals.md (orientation), ops/methodology/ (self-knowledge), and the context file (identity).
+
+**Source:** arscontexta three-space architecture — self-space primitive.
+
+#### Notes space is the user's knowledge graph
+
+**Summary:** Notes space holds durable, composable, worth-finding-again knowledge. It grows steadily (10-50 claims/week for research, 2-5 memories/week for companion), uses progressive disclosure (MOC navigation, semantic search, link traversal), and is the reason the system exists.
+
+**Derivation Implication:** The derivation engine must generate structural constants (flat folder, prose-sentence titles, MOC navigation, wiki links, topics footer) while adapting vocabulary and schema fields to the domain.
+
+**Source:** arscontexta three-space architecture — notes-space primitive.
+
+#### Ops space provides operational coordination
+
+**Summary:** Ops space holds temporal content that flows through, gets processed, and either graduates to notes/self or gets archived. It fluctuates in size, is loaded only in targeted fashion, and keeps the knowledge graph clean by separating scaffolding from durable knowledge.
+
+**Derivation Implication:** The derivation engine must generate ops/ with derivation.md, derivation-manifest.md, reminders.md, sessions/, health/, observations/, queue/, and user-overrides.md. Content promotion rules must be included in the context file.
+
+**Source:** arscontexta three-space architecture — ops-space primitive.
+
+### Conflation Failure Modes
+
+#### Conflating ops into notes pollutes search with processing debris
+
+**Summary:** When processing queue state, session logs, and health reports end up in notes/, search returns temporal content alongside real knowledge. Note counts inflate, MOCs accumulate operational entries, and the graph becomes noisy.
+
+**Derivation Implication:** The derivation engine must generate clear routing rules that prevent operational state from entering notes/. Generated context files must include the "What Does NOT Belong in Notes" list.
+
+**Source:** arscontexta conflation failure analysis — ops-into-notes.
+
+#### Conflating self into notes creates schema confusion and search pollution
+
+**Summary:** When agent identity and methodology end up in the user's knowledge graph, schema fields diverge, search mixes agent self-knowledge with domain content, and progressive disclosure loads irrelevant content.
+
+**Derivation Implication:** When self-space is enabled, the derivation engine must enforce that agent self-knowledge routes exclusively to self/, not notes/. The routing decision tree must be included.
+
+**Source:** arscontexta conflation failure analysis — self-into-notes.
+
+#### Conflating notes into ops traps insights in temporal storage
+
+**Summary:** When genuine insights stay in session logs or observation files without promotion, they are lost when ops/ is archived. Knowledge cannot compound because session-trapped insights cannot be linked. The vault appears thinner than the work invested.
+
+**Derivation Implication:** The derivation engine must generate the content promotion rule (ops/ -> notes/) and include promotion triggers in the context file. The /reflect phase must be part of the processing pipeline.
+
+**Source:** arscontexta conflation failure analysis — notes-into-ops.
+
+#### Conflating self into ops scatters identity across session logs
+
+**Summary:** When agent identity is distributed across 50 session logs instead of curated self/ files, orientation fails because the agent cannot load all logs. Identity drifts without an authoritative source.
+
+**Derivation Implication:** When self-space is enabled, session logs (ops/) must not serve as the primary location for identity evolution. The derivation engine must route identity learnings to self/identity.md or self/methodology.md.
+
+**Source:** arscontexta conflation failure analysis — self-into-ops.
+
+#### Conflating ops into self bloats identity with temporal state
+
+**Summary:** When queue status, health metrics, and processing state enter self/, it becomes too large to load at session start. Temporal content creates noise in identity orientation.
+
+**Derivation Implication:** The derivation engine must enforce that self/ contains only durable self-knowledge. Current processing state always routes to ops/ regardless of self-space configuration.
+
+**Source:** arscontexta conflation failure analysis — ops-into-self.
+
+#### Conflating notes into self stores domain knowledge as identity
+
+**Summary:** When domain knowledge is stored in self/ because it "felt personally relevant," self/ bloats beyond loadable size. Search in notes/ misses content hidden in self/. The distinction between agent self-knowledge and domain knowledge collapses.
+
+**Derivation Implication:** The derivation engine must include the design rule: "Only what the agent needs about itself." Domain knowledge always routes to notes/, even when the agent finds it interesting.
+
+**Source:** arscontexta conflation failure analysis — notes-into-self.
+
+---
+
+### Supplementary Reference
+
+The following tables and specifications preserve detailed implementation guidance that supports the curated claims above.
+
+#### Self Space — Core Files (when enabled)
 
 | File | Contents | Update Trigger |
 |------|----------|----------------|
@@ -26,7 +108,7 @@ Every generated system divides its workspace into three spaces: self, notes, and
 | `methodology.md` | How the agent works — quality standards, processing principles, operational patterns | When operational learnings accumulate (evolves as agent learns) |
 | `goals.md` | Current threads — what's active, deferred, completed | Every session (the orientation file) |
 
-#### Optional Extensions (generated based on configuration)
+#### Self Space — Optional Extensions
 
 | File/Directory | Included When | Purpose |
 |---------------|---------------|---------|
@@ -35,9 +117,7 @@ Every generated system divides its workspace into three spaces: self, notes, and
 | `journal/` | Agent captures raw session observations | Processing input for self-knowledge — analogous to inbox |
 | `sessions/` | Session logs need graduated storage | Session-specific logs that might graduate to memory/ or methodology.md |
 
-### When Self Space Is Disabled
-
-When self/ is off (the default for research vaults), the essential functions route elsewhere:
+#### Self Space — Disabled Fallback Routing
 
 | Function | Fallback Location | Notes |
 |----------|-------------------|-------|
@@ -47,7 +127,7 @@ When self/ is off (the default for research vaults), the essential functions rou
 
 The key insight is that self/ serves two distinct purposes: (1) agent identity/personality and (2) operational orientation. Research vaults typically do not need a persistent agent personality — the context file handles identity. Operational orientation (goals, methodology) routes to ops/ where it belongs alongside other operational state.
 
-### Toggle Mechanism
+#### Toggle Mechanism
 
 Self space is toggled via `/architect`:
 
@@ -58,11 +138,11 @@ Self space is toggled via `/architect`:
 
 The toggle preserves content — disabling self/ moves goals to ops/ rather than deleting them. Enabling self/ creates the directory and scaffolds the core files.
 
-### Design Rule
+#### Self Space Design Rule
 
 **Only what the agent needs about itself.** Self/ is not a second knowledge graph — it holds agent identity, operational learning, and current orientation. Domain knowledge lives in notes/. Processing scaffolding lives in ops/. Self/ answers: "Who am I? How do I work? What am I working on?"
 
-### The Session Rhythm Integration
+#### Session Rhythm Integration
 
 Self space integrates with the session rhythm primitive, but is not required by it:
 
@@ -74,21 +154,7 @@ Persist -> update orientation state (self/ or ops/goals.md)
 
 The session rhythm primitive depends on markdown-yaml, not on self-space. When self/ is disabled, the orient/persist cycle still works — it just reads from and writes to ops/ instead. The context file always provides methodology and identity; self/ adds a richer, evolving layer on top.
 
----
-
-## Notes Space — The User's Knowledge Graph
-
-**Durability:** Permanent. Everything here should be worth finding again.
-
-**Growth pattern:** Steady — varies by domain and processing intensity. Research vaults grow at 10-50 claims/week. Companion vaults grow at 2-5 memories/week.
-
-**Load pattern:** Progressive disclosure. Too large to load fully. Use MOC navigation, description queries, semantic search, and link traversal to find relevant content.
-
-**Purpose:** The reason the system exists. The user's intellectual workspace where knowledge compounds through connections.
-
-### Structural Constants (from the kernel)
-
-These hold across all generated systems:
+#### Notes Space — Structural Constants
 
 | Constant | Implementation | Why It's Universal |
 |----------|---------------|-------------------|
@@ -98,7 +164,7 @@ These hold across all generated systems:
 | Wiki links | `[[note title]]` creates graph edges | Spreading activation without infrastructure |
 | Topics footer | Every note declares MOC membership | Bidirectional navigation |
 
-### What Varies by Domain
+#### Notes Space — Domain Adaptation
 
 | Aspect | Universal Pattern | Domain Adaptation |
 |--------|-------------------|-------------------|
@@ -107,11 +173,11 @@ These hold across all generated systems:
 | Schema fields | `description`, `topics` | Domain fields: `person`, `session_date`, `confidence`, `alternatives` |
 | MOC vocabulary | Hub, domain, topic | Domain groupings: "themes", "project areas", "study guides" |
 
-### Design Rule
+#### Notes Space Design Rule
 
 **Durable, composable, worth finding again.** If it won't be queried or linked, it doesn't belong here. Session-specific observations start in ops/ and get promoted when they earn permanence. Raw capture starts in inbox/ and gets processed into notes/ through the processing pipeline.
 
-### What Does NOT Belong in Notes
+#### What Does NOT Belong in Notes
 
 - Processing queue state -> ops/queue/
 - Session logs -> ops/sessions/
@@ -119,19 +185,7 @@ These hold across all generated systems:
 - Health reports -> ops/health/
 - Temporary scaffolding -> ops/
 
----
-
-## Ops Space — Operational Coordination
-
-**Durability:** Temporal. Content flows through, gets processed, and either graduates or gets archived.
-
-**Growth pattern:** Fluctuating — grows during active work, shrinks during maintenance. Nothing in ops/ is permanent knowledge.
-
-**Load pattern:** Targeted. Queue status, today's session log, latest health report. Never loaded in bulk.
-
-**Purpose:** Keep the knowledge graph clean by separating operational scaffolding from durable knowledge. Without ops/, session logs, queue state, and health reports accumulate alongside genuine insights, polluting search results and inflating note counts.
-
-### Contents
+#### Ops Space — Contents
 
 | Directory | Contents | Lifecycle |
 |-----------|----------|-----------|
@@ -144,7 +198,7 @@ These hold across all generated systems:
 | `queue/` | Processing queue state — what needs extraction, connection, verification | Flowing — items move through and complete |
 | `user-overrides.md` | User customizations that reseed must preserve as immutable | Semi-permanent — grows as user modifies generated content |
 
-### Reminders Specification
+#### Reminders Specification
 
 `ops/reminders.md` is a flat markdown file for user-delegated time-bound actions:
 
@@ -161,7 +215,7 @@ These hold across all generated systems:
 - Completed items are marked with `[x]` and date, then archived when the list grows long
 - No complex scheduling — if the user needs recurring reminders, that's a different tool
 
-### Content Promotion Rule
+#### Content Promotion Rule
 
 **Content moves from temporal to durable, never the reverse.** Promotion is one-directional:
 
@@ -173,72 +227,14 @@ ops/sessions/ -> self/memory/ (when session insight is personally significant)
 
 Content never moves FROM notes/ or self/ INTO ops/. Durable knowledge doesn't become temporal scaffolding.
 
-### The Promotion Pattern
+#### The Promotion Pattern
 
 1. Content enters ops/ at low ceremony (friction logs, session notes, queue entries)
 2. When it demonstrates persistence — same observation recurs, insight proves useful across sessions, pattern is confirmed — it gets promoted
 3. Promotion means creating a proper note in notes/ or adding to self/, not moving the ops entry
 4. The ops entry can then be archived, its value extracted
 
----
-
-## Six Failure Modes of Conflation
-
-Each conflation pattern produces specific, predictable failures:
-
-### 1. Ops into Notes
-
-**What happens:** Processing queue state, session logs, and health reports end up in the notes/ directory alongside genuine insights.
-
-**What breaks:** Search returns processing debris alongside real knowledge. Note counts are inflated with temporal content. MOCs accumulate operational entries that don't belong. The knowledge graph becomes noisy — an agent searching for "learning patterns" finds session log mentions alongside genuine claims.
-
-**Example:** A session log that says "processed 5 papers today, found connection between X and Y" gets filed in notes/. The connection between X and Y should be a note; the processing status should not.
-
-### 2. Self into Notes
-
-**What happens:** Agent identity, preferences, and operational methodology end up in the user's knowledge graph.
-
-**What breaks:** Schema confusion — agent self-knowledge has different fields than domain knowledge. Search pollution — "how I process therapy reflections" is agent methodology, not a therapy insight. The user's graph contains content about the agent rather than about the domain. Progressive disclosure loads agent self-knowledge when searching for domain content.
-
-**Example:** An agent note saying "I work best when processing in small batches" gets filed alongside user's therapy reflections.
-
-### 3. Notes into Ops
-
-**What happens:** Genuine insights stay trapped in session logs or observation files, never becoming permanent notes.
-
-**What breaks:** Insights are lost when ops/ is archived or purged. Knowledge doesn't compound because session-trapped insights can't be linked from other notes. The user has to re-discover insights that were already captured but never promoted. The vault appears thinner than the work invested would suggest.
-
-**Example:** A session log captures "realized that morning anxiety correlates with skipping exercise" but it never becomes a proper note in reflections/. Three months later, the session log is archived and the insight is effectively gone.
-
-### 4. Self into Ops
-
-**What happens:** Agent identity is scattered across 50 session logs instead of curated in self/ files.
-
-**What breaks:** Orientation fails — the agent can't load 50 session logs to remember who it is. Identity drifts because there's no authoritative source. Session logs that mention identity ("I should be more direct") don't accumulate into identity evolution — they're temporal artifacts.
-
-**Example:** The agent's evolving understanding of its voice is spread across session notes instead of living in self/identity.md where it can be loaded, refined, and maintained.
-
-### 5. Ops into Self
-
-**What happens:** Agent identity gets polluted with temporal processing state — today's queue status, current health metrics, in-progress session context.
-
-**What breaks:** Self/ becomes too large to load fully at session start. Temporal content creates noise in identity orientation. The agent's self-model includes "I have 12 items in queue" as if it were identity rather than current state.
-
-**Example:** self/methodology.md includes "currently processing the Johnson 2026 paper" — which is ops state, not methodology.
-
-### 6. Notes into Self
-
-**What happens:** Domain knowledge gets stored in self/ because it felt personally relevant to the agent.
-
-**What breaks:** Self/ bloats beyond what can be loaded at session start. The agent carries domain-specific knowledge as identity, which doesn't scale. Search in notes/ misses content that's hidden in self/. The distinction between "what the agent knows about itself" and "what the agent knows about the domain" collapses.
-
-**Example:** A research agent stores "spaced repetition works better after exercise" in self/memory/ instead of notes/. It's domain knowledge, not agent self-knowledge — even though the agent found it interesting.
-
----
-
-## Filesystem Layout
-
-### Claude Code Platform
+#### Filesystem Layout — Claude Code Platform
 
 ```
 project-root/
@@ -272,11 +268,7 @@ project-root/
     └── queue/
 ```
 
----
-
-## Memory Type Routing Decision Tree
-
-When the agent captures something, this decision tree determines where it belongs:
+#### Memory Type Routing Decision Tree
 
 ```
 Is this about the agent itself?
@@ -294,7 +286,7 @@ Is this about the agent itself?
         └── YES -> ops/ (queue state, health report, session handoff)
 ```
 
-**Quick routing rules:**
+#### Quick Routing Rules
 
 | Content Type | Destination | Why |
 |-------------|-------------|-----|
@@ -310,9 +302,27 @@ Is this about the agent itself?
 
 ---
 
+## Exclusion Notes
+
+### Four-space models (adding archive/ as a top-level space)
+**Reason:** Archive is a lifecycle state of content, not a distinct space with its own durability profile. Processed sources in archive/ are inert — they don't grow, get queried differently, or have unique load patterns. Elevating archive/ to a space would add complexity without preventing any failure mode.
+
+### Per-domain space partitioning (separate spaces per knowledge domain)
+**Reason:** Domains are organized within notes/ via MOCs, not via separate top-level spaces. Separate domain spaces would break cross-domain linking and fragment the knowledge graph.
+
+---
+
 ## Cross-Reference
 
 - **Failure modes that afflict each space:** See `failure-modes.md` for the full failure mode taxonomy. Conflation failures (this document) are structural; failure-modes.md covers operational decay (collector's fallacy, orphan drift, schema erosion).
 - **How personality affects each space:** See `personality-layer.md` for how warmth/formality dimensions change the voice of self/identity.md, skill instructions, and health reports.
 - **What goes in each space per domain:** See `use-case-presets.md` for domain-specific routing decisions (therapy reflections vs research claims vs PM decisions).
 - **Kernel primitives that depend on three-space separation:** `self-space` (configurable), `session-rhythm`, `discovery-first`, `task-stack`, `methodology-folder`, and `session-capture` all assume clean space boundaries. See `kernel.yaml`.
+
+---
+
+## Version
+- **Last curated:** 2026-03-20
+- **Source claims evaluated:** 11
+- **Claims included:** 9 (3 space definitions, 6 conflation failure modes)
+- **Claims excluded:** 2

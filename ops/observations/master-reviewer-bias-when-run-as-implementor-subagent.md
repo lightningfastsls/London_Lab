@@ -2,7 +2,10 @@
 description: "Master-reviewer subagent catches real bugs but implementor interprets findings and marks own fixes — bias risk for high-tier reviews"
 category: methodology
 trigger: "Phase 8.4 review — user questioned whether same-chat subagent review is independent enough"
-status: pending
+status: archived
+archived: 2026-03-21
+archived_by: rethink-2026-03-21
+resolution: "Promoted to note: [[same-session subagent review catches bugs but biases fix interpretation for high-tier reviews]]. Tier 2 vs Tier 3 review distinction documented."
 ---
 
 # Master-reviewer run as implementor subagent creates bias in fix interpretation

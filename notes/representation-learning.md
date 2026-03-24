@@ -1,6 +1,7 @@
 ---
 description: VQ-VAE pipeline for unsupervised discovery of discrete USV vocabulary -- transformer architecture, codebook design, information-theoretic analysis, null models, and probing
 type: moc
+topics: "[[index]]"
 ---
 
 # representation-learning

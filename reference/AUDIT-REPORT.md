@@ -236,3 +236,23 @@ The four fully compliant documents (semantic-vs-keyword.md, session-lifecycle.md
 5. **Version block** with curated date, source count, included count, excluded count, and cross-references
 
 These documents were likely written after the PRD template was finalized, while the non-compliant documents predate it or were written organically without the template in mind.
+
+## Purpose
+
+This document records the compliance status of all reference/ files against the PRD-specified structural template (Section 15). The arscontexta-expert agent and the /health skill consult it to identify which reference documents need restructuring, prioritize remediation work, and track progress toward full compliance across the reference corpus.
+
+## Derivation Questions
+
+- Which reference documents are fully compliant with the PRD structural template, and which have gaps?
+- What is the priority order for restructuring non-compliant reference documents?
+- Which extra files in reference/ should be formalized as canonical documents vs. merged into existing ones?
+- What are the most common structural gaps across the non-compliant files?
+- How do the four compliant documents differ structurally from the non-compliant ones?
+
+## Curated Claims
+
+- Every non-exempt reference document must contain five sections: Purpose, Derivation Questions, Curated Claims (with Summary/Derivation Implication/Source per claim), Exclusion Notes, and Version.
+- kernel.yaml and derivation-validation.md are exempt from the markdown template due to their non-prose formats.
+- The four compliant documents (semantic-vs-keyword.md, session-lifecycle.md, evolution-lifecycle.md, self-space.md) were written after the PRD template was finalized; non-compliant documents predate it.
+- three-spaces.md is the highest-priority gap because the PRD explicitly cited it as the example of expected content depth.
+- components.md and methodology.md exist as extra files not in the original PRD list and need a decision on whether to formalize or merge.

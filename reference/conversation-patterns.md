@@ -1,12 +1,28 @@
 # Conversation Pattern Examples
 
-Worked examples validating the derivation heuristics end-to-end. Each pattern shows the full path from user description through signal extraction to derived configuration to vocabulary mapping. If a pattern produces clearly wrong dimensions, the heuristic needs adjustment. If patterns consistently produce coherent systems, the heuristics are earning their keep.
+## Purpose
 
-These patterns are living documents that evolve with the heuristics. Run the init wizard with each conversation pattern to validate — compare derived dimensions against the expected output, flag discrepancies as heuristic bugs or pattern inaccuracies.
+This document provides end-to-end worked examples that validate the derivation engine's signal-to-configuration heuristics. Each pattern traces the full path from a user's natural-language description through signal extraction, dimension derivation, vocabulary mapping, and feature block selection. These patterns serve as the primary training reference for the derivation engine — if a pattern produces clearly wrong dimensions, the heuristic needs adjustment; if patterns consistently produce coherent systems, the heuristics are earning their keep. The patterns are living documents that evolve with the heuristics.
 
----
+## Derivation Questions
 
-## Pattern 1: Book Notes and Reading Habits
+- Given a user's natural-language description, what signals map to which configuration dimensions?
+- How do follow-up questions resolve ambiguous signals without overwhelming the user?
+- What vocabulary transformations make the system feel native to each domain?
+- Which feature blocks should be included or excluded for a given dimension profile?
+- How do personality signals affect generated file content?
+- When does a conversation pattern converge with a preset vs require full dimension exploration?
+- What cross-pattern invariants hold across all domains (e.g., flat organization, convention automation)?
+
+## Curated Claims
+
+### Pattern 1: Book Notes and Reading Habits
+
+**Summary:** Demonstrates light-processing, low-volume derivation where the user's goal is personal capture, not analytical extraction. Validates that the engine correctly avoids atomic granularity and heavy processing for simple personal use cases.
+
+**Derivation Implication:** Confirms that volume-based cascades correctly produce minimal schema, 2-tier navigation, and lax maintenance thresholds when projected note count is low (~25-35/year).
+
+**Source:** Conversation-derived worked example.
 
 **User statement:** "I read 2-3 books a month and want to remember my reactions — what struck me, what I disagreed with, and how books connect to each other."
 
@@ -88,7 +104,13 @@ The follow-ups clarify processing intensity (personal capture vs analytical extr
 
 ---
 
-## Pattern 2: Family and Friends Memory
+### Pattern 2: Family and Friends Memory
+
+**Summary:** Demonstrates entity-centric navigation where per-person MOCs are the primary lookup pattern. Validates personality derivation for warm, emotionally attentive domains.
+
+**Derivation Implication:** Confirms that entity-centric signals produce moderate schema with emotional context fields, and that personality signals (warmth, emotional awareness) are functional requirements in relationship domains.
+
+**Source:** Conversation-derived worked example.
 
 **User statement:** "I want to remember things about the people I care about — their preferences, what's going on in their lives, birthdays, the little things that make someone feel seen."
 
@@ -180,7 +202,13 @@ The first question calibrates volume and maintenance trigger thresholds. The sec
 
 ---
 
-## Pattern 3: Climate Adaptation Research
+### Pattern 3: Climate Adaptation Research
+
+**Summary:** Demonstrates heavy-processing, high-volume research derivation with cross-disciplinary claim tracking. Validates that the engine activates semantic search and full extraction pipeline when discipline-crossing signals are present.
+
+**Derivation Implication:** Confirms that unambiguous research signals (high volume, cross-disciplinary, claim-tracking language) converge with the Research preset, and that semantic search is essential when different vocabularies describe the same phenomena.
+
+**Source:** Conversation-derived worked example.
 
 **User statement:** "I'm reading 5-10 papers a week on climate adaptation and need to track claims across disciplines — the policy papers cite different evidence than the engineering ones, and I need to see where they agree and disagree."
 
@@ -262,7 +290,13 @@ The first question affects processing intensity (output-directed processing is h
 
 ---
 
-## Pattern 4: Therapy Journal
+### Pattern 4: Therapy Journal
+
+**Summary:** Demonstrates moderate-processing derivation for sensitive personal content where personality encoding is a functional requirement, not a nice-to-have. Validates that maintenance output becomes the core product (pattern surfacing IS the therapy value).
+
+**Derivation Implication:** Confirms that emotional-register signals produce warm personality encoding, tight maintenance thresholds, and therapy-specific ethical guardrails. Shows that "moderate processing" means pattern detection specifically, not generic extraction.
+
+**Source:** Conversation-derived worked example.
 
 **User statement:** "I want to track my therapy journey and notice patterns between sessions — like when the same feeling keeps coming up in different situations, or when something my therapist says clicks weeks later."
 
@@ -369,7 +403,13 @@ The personality profile (warm, neutral, casual, emotionally attentive) produces 
 
 ---
 
-## Pattern 5: Multi-Project PM
+### Pattern 5: Multi-Project PM
+
+**Summary:** Demonstrates multi-domain derivation with dense schema driven by the domain's inherent structure (decisions have inputs, outputs, dependencies). Validates that flat organization prevents product silos and that the `superseded_by` field emerges naturally from PM temporal dynamics.
+
+**Derivation Implication:** Confirms that professional-register signals with explicit cross-domain linking needs produce dense schema, multi-domain feature block activation, and flat organization to prevent siloing.
+
+**Source:** Conversation-derived worked example.
 
 **User statement:** "I manage three products and need to track decisions and their rationale — why we chose X over Y, what we considered, and how those decisions connect across products."
 
@@ -540,3 +580,20 @@ Across all five examples, effective follow-up questions share characteristics:
 3. **They're concrete, not abstract.** "What granularity do you prefer?" means nothing to users. "Would you rather have one big note per book, or separate notes for different reactions?" makes the tradeoff tangible.
 
 4. **They limit to 2-3 per conversation.** More than 3 follow-ups feels like an interrogation. The derivation engine should extract maximum signal from each answer and fill remaining gaps with domain-appropriate defaults.
+
+---
+
+## Exclusion Notes
+
+- **Creative Writing pattern:** Evaluated but not included — insufficient signal diversity to distinguish from Personal Assistant preset with vocabulary transformation. Would add pattern volume without testing new derivation logic.
+- **Legal Research pattern:** Considered as a heavy-processing variant but deferred because domain-specific compliance constraints (privilege, confidentiality) require a governance layer not yet specified. See `open-questions.md` § Governance Layer.
+- **Per-claim atomic format for worked examples:** Evaluated during PRD audit. Rejected because decomposing end-to-end worked examples into isolated claims would destroy the signal-to-config traceability that makes these patterns useful as training references. The worked-example-with-claim-intro format preserves both composability and narrative coherence.
+
+---
+
+## Version
+
+- **Date:** 2026-03-20
+- **Source claim count:** 5 worked examples + 1 cross-pattern analysis section
+- **Included count:** 5 patterns (Book Notes, Family Memory, Climate Research, Therapy Journal, Multi-Project PM) + cross-pattern synthesis
+- **Excluded count:** 3 (Creative Writing, Legal Research, per-claim atomic format)

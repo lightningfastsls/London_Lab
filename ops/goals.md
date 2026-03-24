@@ -7,7 +7,7 @@ type: moc
 
 ## Active Threads
 - **DeepSqueak Classification Bridge** -- Phase 2 (Raven export) DONE, Phase 3 (MATLAB import+clustering) IN PROGRESS. Resume: open MATLAB -> `DeepSqueak` -> Import from Raven (5 files in `raven_tables/`). See `PROJECTS.md` Section 6 for full steps.
-- Phase 5.3 -- Next validation checkpoint (2026-03-21). Focus: maintenance overhead after /reduce fixes, /rethink threshold review.
+- Phase 5.3 -- Validation checkpoint COMPLETE (2026-03-21). Scored 19/25 (up from 18/25). Maintenance overhead improved (score 3→4). /rethink threshold lowered to 7. Next review: organic (triggered by 7 observations or 14-day staleness). Report: ops/health/phase-5.3-validation-2026-03-21.md
 
 ## Waiting
 - CC weekly routine first execution -- deferred to a session in D:\we_do_this\tevel-erp

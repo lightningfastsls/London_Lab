@@ -154,6 +154,14 @@ class DetectionExporter:
         # Convert frequencies to kHz for display
         freqs_khz = freqs / 1000.0
 
+        # MAD-based dynamic range normalization (matches on-screen display)
+        median = np.median(spec)
+        mad = np.median(np.abs(spec - median))
+        mad_vmin_scale = 2.0
+        mad_vmax_scale = 4.0
+        vmin = median - mad_vmin_scale * mad
+        vmax = median + mad_vmax_scale * mad
+
         # Plot spectrogram
         im = ax.imshow(
             spec,
@@ -161,7 +169,9 @@ class DetectionExporter:
             origin='lower',
             extent=[times[0], times[-1], freqs_khz[0], freqs_khz[-1]],
             cmap='magma',
-            interpolation='nearest'
+            interpolation='nearest',
+            vmin=vmin,
+            vmax=vmax
         )
 
         # Draw detection boundaries as vertical lines

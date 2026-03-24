@@ -28,6 +28,10 @@ Source: usv-detection-methods-landscape-2024-2026-research-2026-02-28 (archived 
 Relevant Notes:
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- our pipeline as hybrid
 - [[two-stage coarse-to-fine filtering is effective for imbalanced detection tasks]] -- the general pattern
+- [[USVSEG Python port provides signal-processing-based USV segmentation without deep learning]] — classical signal processing category; competitive with DL despite no training data
+- [[spectrogram segmentation tools like SqueakOut and VocalMat are binary detectors that cannot separate overlapping USVs]] — semantic segmentation category limitation shared across approaches
+- [[hardware approaches solve USV attribution but not signal separation for overlapping calls]] — hardware adds a spatial dimension orthogonal to all six software approaches
+- [[the Python vs MATLAB divide in USV tools is shrinking but remains a practical barrier]] — ecosystem fragmentation across these six approaches compounds the tooling challenge
 
 Topics:
 - [[detection]]

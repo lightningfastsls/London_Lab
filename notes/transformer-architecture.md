@@ -1,6 +1,7 @@
 ---
 description: Self-attention mechanics, positional encoding, MLP function, residual streams, normalization, and in-context learning theory -- the mechanistic internals of transformer models
 type: moc
+topics: "[[index]]"
 ---
 
 # transformer-architecture

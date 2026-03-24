@@ -569,7 +569,7 @@ After running all applicable diagnostic categories, check these condition-based 
 
 | Condition | Threshold | Recommendation |
 |-----------|-----------|---------------|
-| Pending observations | >= 10 files in ops/observations/ | Consider running /rethink |
+| Pending observations | >= 7 files in ops/observations/ (or any > 14 days unreviewed) | Consider running /rethink |
 | Open tensions | >= 5 files in ops/tensions/ | Consider running /rethink |
 | Inbox items | >= 3 items | Consider /reduce or /pipeline |
 | Unprocessed sessions | >= 5 files in ops/sessions/ | Consider /remember --mine-sessions |

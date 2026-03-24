@@ -1,5 +1,5 @@
 ---
-description: "K=64 chosen as interpretable codebook size -- traditional USV taxonomy has ~10-15 types, K=64 gives headroom for subtypes"
+description: "Reduced from K=512 (v1, too large for analysis) to K=64 — 4-6x the ~10-15 traditional syllable types, enabling discovery of sub-types and transition states"
 type: decision
 confidence: experimental
 conditions: []

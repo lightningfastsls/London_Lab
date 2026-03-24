@@ -1,20 +1,33 @@
 # Use-Case Presets Reference
 
-Named points in the configuration space derived from methodology traditions and adapted for specific use cases. Each preset is a pre-validated coherent starting point — the derivation engine uses them as anchors, adjusting individual dimensions based on conversation signals.
+## Purpose
 
----
+This document defines three use-case presets (Research, Personal Assistant, Experimental) as pre-validated coherent starting points in the configuration space. The derivation engine uses these as anchors — matching user signals to the closest preset, then adjusting individual dimensions based on conversation specifics. Each preset includes dimension values, block configuration, vocabulary mappings, failure mode risks, and a preset selection algorithm.
 
-## Three Use-Case Presets
+## Derivation Questions
 
-### Research
+- Which preset best matches a given user's signals and stated goals?
+- What dimension values, block configurations, and vocabulary does each preset recommend?
+- How should the derivation engine adjust dimensions when user signals diverge from the preset?
+- What failure modes are most likely for each use case?
+- When should the engine route to the Experimental preset instead of forcing a fit?
+- How are tradition anchors translated into use-case-specific configurations?
+
+## Curated Claims
+
+### Use-Case Preset Configurations
+
+#### Research preset optimizes for deep synthesis with full automation from day one
+
+**Summary:** The Research preset combines Zettelkasten's atomic granularity and explicit linking with Cornell's multi-phase processing pipeline. Full automation from day one — all pipeline skills at full depth, all blocks active. This is the reference implementation and the most fully specified preset.
+
+**Derivation Implication:** When user signals include academic language, source tracking, cross-domain synthesis, or high-volume knowledge processing, Research is the primary anchor. Its high processing and automation values mean users must accept significant upfront system complexity.
+
+**Source:** Derived from Zettelkasten + Cornell traditions; arscontexta use-case analysis.
 
 **Display name:** Knowledge Research
 
-**Optimizes for:** Deep synthesis, cross-domain connection density, long-term knowledge accumulation
-
 **Closest tradition:** Zettelkasten + Cornell processing phases
-
-**Philosophy:** Full automation from day one. All pipeline skills at full depth, all blocks active. The reference implementation.
 
 | Dimension | Value | Rationale |
 |-----------|-------|-----------|
@@ -71,15 +84,17 @@ Named points in the configuration space derived from methodology traditions and 
 
 ---
 
-### Personal Assistant
+#### Personal Assistant preset optimizes for life reflection with warm-supportive personality
+
+**Summary:** A custom configuration combining moderate processing for pattern detection with warm personality voice for personal content. All skills available and active from day one, adapted for personal use. Full pipeline with personal extraction categories. Includes self-space for relationship tracking and growth awareness.
+
+**Derivation Implication:** When user signals include personal growth language, relationship tracking, emotional awareness, or "remember what I care about" framing, Personal Assistant is the primary anchor. Its self-space and warm personality are the key differentiators from Research.
+
+**Source:** Custom configuration; arscontexta use-case analysis on personal knowledge systems.
 
 **Display name:** Personal Assistant
 
-**Optimizes for:** Life reflection, pattern detection, personal growth tracking, relationship awareness
-
 **Closest tradition:** Custom — moderate processing for pattern detection, warm voice for personal content
-
-**Philosophy:** All skills available and active from day one, adapted for personal use. Full pipeline with personal extraction categories.
 
 | Dimension | Value | Rationale |
 |-----------|-------|-----------|
@@ -135,15 +150,17 @@ Named points in the configuration space derived from methodology traditions and 
 
 ---
 
-### Experimental / Build Your Own
+#### Experimental preset enables user co-design through conversation-driven derivation
+
+**Summary:** Rather than starting from a pre-configured anchor, the Experimental preset walks the user through each design decision with relevant thinking notes surfaced as context. All dimension values are null until user-chosen during onboarding. In-depth onboarding with thinking notes surfaced for every design decision — the user co-designs the system.
+
+**Derivation Implication:** When no preset scores above 2.0 in affinity scoring, or the user explicitly asks to customize, route here. The engine must surface trade-off explanations for every dimension and check interaction constraints after each choice. Configuration paralysis is the primary risk.
+
+**Source:** arscontexta derivation engine design; interaction constraint research.
 
 **Display name:** Experimental / Build Your Own
 
-**Optimizes for:** User co-design, deep understanding of trade-offs, custom configuration
-
 **Closest tradition:** None — derived from conversation
-
-**Philosophy:** In-depth onboarding with thinking notes surfaced for every design decision. The user co-designs the system.
 
 | Dimension | Value | Rationale |
 |-----------|-------|-----------|
@@ -187,7 +204,7 @@ Named points in the configuration space derived from methodology traditions and 
 
 ---
 
-## Five Methodology Tradition Points
+### Tradition Reference Summary
 
 Traditions are named coherence points in the 8-dimensional space. They are reference anchors, not templates.
 
@@ -206,7 +223,7 @@ Traditions are named coherence points in the 8-dimensional space. They are refer
 
 ---
 
-## Preset Selection Algorithm
+### Preset Selection Algorithm
 
 The derivation engine maps conversation signals to the closest preset, then adjusts individual dimensions.
 
@@ -281,7 +298,7 @@ For each universal term:
 
 ---
 
-## Novel Domain Handling
+### Novel Domain Handling
 
 When no preset cleanly matches the user's description, the Experimental preset provides the framework for co-design. Unlike the Research and Personal Assistant presets which start with pre-configured dimensions, Experimental walks the user through each design decision with relevant thinking notes surfaced as context.
 
@@ -339,3 +356,21 @@ Novel domains often need schema fields that no preset provides. Derive them from
 **Novel vocabulary:** "tasting note" (not "reflection" or "claim"), "wine library" (not "life area"), "cellar" (not "archive")
 
 **Novel schema field:** `pairing: ["food pairing notes"]` — domain-specific field not in any preset.
+
+---
+
+## Exclusion Notes
+
+- **Team/Collaborative preset:** Evaluated but excluded — multi-user knowledge systems introduce access control, merge conflicts, and shared-vs-personal note boundaries that require a separate architectural layer. May be added when collaboration primitives are designed.
+- **Developer/Engineering preset:** Evaluated but excluded — code-centric knowledge management (ADRs, runbooks, incident postmortems) overlaps heavily with Research preset. Domain vocabulary differs but dimension values are nearly identical. Can be served by Research with vocabulary overrides.
+- **Student preset:** Considered as distinct from Learning use case — excluded because the Learning tradition reference in tradition-presets.md already covers this. A Student preset would be Cornell + Zettelkasten atomicity, which is exactly the Learning row in the use-case derivation summary.
+- **Journaling-only preset:** Excluded — journaling without pattern detection or connection is a degenerate case (capture-only). Personal Assistant with reduced processing covers this better than a dedicated preset.
+
+---
+
+## Version
+
+- **Date:** 2026-03-20
+- **Source claim count:** 3 presets + selection algorithm + novel domain handling + 4 exclusion candidates = 9
+- **Included count:** 3 presets (Research, Personal Assistant, Experimental) + 2 supporting algorithms
+- **Excluded count:** 4 (Team/Collaborative, Developer/Engineering, Student, Journaling-only)

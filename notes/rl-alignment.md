@@ -1,6 +1,7 @@
 ---
 description: RL-based LLM alignment methods -- RLHF pipeline, policy optimization algorithms (PPO, GRPO, REINFORCE, DPO), reward hacking dynamics, and the reward-engineering-over-algorithm-engineering meta-finding
 type: moc
+topics: "[[index]]"
 ---
 
 # rl-alignment

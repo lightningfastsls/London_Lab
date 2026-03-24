@@ -22,6 +22,8 @@ Source:
 
 Relevant Notes:
 - [[masked prediction outperforms contrastive learning for bioacoustic representation tasks]] — the benchmark evidence
+- [[domain-specific MAE pretraining dramatically outperforms generic Audio-MAE for bioacoustic tasks]] — domain-specific MAE builds on the MAE paradigm that superseded CPC, showing even larger gains
+- [[TweetyBERT self-supervised masked spectrogram prediction addresses temporal resolution limitations of speech SSL models for animal vocalizations]] — a concrete masked-prediction model for bioacoustics, validating the shift away from CPC
 
 Topics:
 - [[bioacoustic-ssl]]

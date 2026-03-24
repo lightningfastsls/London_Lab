@@ -3,6 +3,8 @@ description: "each traversal is a micro-improvement opportunity — since the va
 type: pattern
 confidence: likely
 created: 2026-03-08
+topics:
+  - "[[agent-memory]]"
 ---
 
 # traversal simultaneously improves the traverser and the graph creating a co-evolutionary loop
