@@ -6,7 +6,7 @@ generated_from: "manual"
 user-invocable: true
 context: fork
 model: haiku
-allowed-tools: Read, Grep, Glob, mcp__qmd__vector_search, mcp__qmd__search
+allowed-tools: Read, Grep, Glob, Bash
 argument-hint: "<what I'm about to do>"
 ---
 
@@ -27,19 +27,21 @@ Extract from the user's description:
 
 ### Phase 2: Search
 
-Run both searches in parallel:
+Run vault search via topic map traversal + ripgrep:
 
-1. **Semantic search** — find conceptually related notes even if they use different vocabulary:
+1. **Structural + content search** — find notes via topic map routing and keyword matching:
+   ```bash
+   node ops/scripts/vault-search.mjs --query "[full description of planned work]" --limit 8
    ```
-   mcp__qmd__vector_search  query="[full description of planned work]"  collection="mickey_london_lab"  limit=8  minScore=0.3
-   ```
+   Parse the JSON output to get note titles, descriptions, types, and scores.
 
-2. **Keyword search** — find notes that mention specific terms:
+2. **Supplementary keyword search** — catch any notes the structural search missed:
+   ```bash
+   rg -il "key-term-1|key-term-2" notes/
    ```
-   mcp__qmd__search  query="[extracted key concepts]"  collection="mickey_london_lab"  limit=8  minScore=0.1
-   ```
+   Read any additional matches not already in the vault-search results.
 
-**Deduplication:** Merge results by note title (use the path basename without extension as identity). Keep the highest score per unique note. Cap at 8 results total, sorted by score descending.
+**Deduplication:** Results from vault-search.mjs are already deduplicated. Merge any supplementary ripgrep finds by note title. Cap at 8 results total, sorted by score descending.
 
 ### Phase 3: Format & Flag
 

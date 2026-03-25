@@ -2,7 +2,7 @@
 name: reflect
 description: Find connections between notes and update MOCs. Requires semantic judgment to identify genuine relationships. Use after /reduce creates notes, when exploring connections, or when a topic needs synthesis. Triggers on "/reflect", "/reflect [note]", "find connections", "update MOCs", "connect these notes".
 user-invocable: true
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash, mcp__qmd__search, mcp__qmd__vector_search, mcp__qmd__deep_search, mcp__qmd__status
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 context: fork
 ---
 
@@ -113,26 +113,26 @@ External loop mode for /ralph:
 
 ### Phase 0: Verify Index Freshness
 
-Before using semantic search, verify the index is current. This is self-healing: if {vocabulary.note_plural} were created outside the pipeline (manual edits, other skills), reflect catches the drift before searching.
+Before searching, verify the topic map index is current. This is self-healing: if {vocabulary.note_plural} were created outside the pipeline (manual edits, other skills), reflect catches the drift before searching.
 
-1. Try `mcp__qmd__status` to get the indexed document count for the target collection
-2. **If MCP unavailable** (tool fails or returns error): fall back to bash:
+1. Check if `ops/cache/topic-map-index.json` exists and is recent (< 24 hours):
    ```bash
-   LOCKDIR="ops/queue/.locks/qmd.lock"
-   while ! mkdir "$LOCKDIR" 2>/dev/null; do sleep 2; done
-   qmd_count=$(qmd status 2>/dev/null | grep -A2 '{vocabulary.notes_collection}' | grep 'documents' | grep -oE '[0-9]+' | head -1)
-   rm -rf "$LOCKDIR"
+   if [[ ! -f ops/cache/topic-map-index.json ]] || [[ -n "$(find ops/cache/topic-map-index.json -mmin +1440 2>/dev/null)" ]]; then
+       node ops/scripts/topic-map-index.mjs
+   fi
    ```
-3. Count actual files:
+2. Count notes in index vs actual files to verify freshness:
    ```bash
    file_count=$(ls -1 {vocabulary.notes}/*.md 2>/dev/null | wc -l | tr -d ' ')
    ```
-4. If the counts differ, sync the index:
+3. If the index note count differs significantly from file count, regenerate:
    ```bash
-   qmd update && qmd embed
+   node ops/scripts/topic-map-index.mjs
    ```
 
-Run this check before proceeding. If stale, sync and continue. If current, proceed immediately.
+Run this check before proceeding. If stale, regenerate and continue. If current, proceed immediately.
+
+**Connection discovery:** Use `node ops/scripts/vault-search.mjs --mode find-related --note "note title"` to find structurally related notes via topic map co-membership and cross-refs. Supplement with `rg -il "key-term" notes/` for content-based discovery.
 
 [... remaining reflect content truncated for space - full content preserved in file ...]
 

@@ -12,6 +12,9 @@ type: moc
 ## Waiting
 - CC weekly routine first execution -- deferred to a session in D:\we_do_this\tevel-erp
 
+## Recently Completed
+- **Vault Retrieval Overhaul** (2026-03-25): Replaced broken qmd dependency with 3-layer vault-search.mjs (topic-map traversal + ripgrep + wiki-link following). Session-orient hook migrated to bash, 11 skills migrated off qmd, 13/13 tests pass, 4/4 smoke tests pass. Plan: PLAN_fix-session-orient-knowledge-activation.md
+
 ## Completed
 - Phase 10.1 -- Active Learning Cycle Runner implemented (2026-02-21): CycleMetrics + generate_cycle_report in training/cycle_report.py, 7-step orchestration CLI in run_training_cycle.py, 34 tests, handoff + review written
 - Phase 9.1 -- Dataset Assembler implemented (2026-02-21): DatasetAssembler, AssemblyConfig, AssemblyReport in dataset/assembler.py, CLI assemble_training_data.py, 10 tests, handoff + review written

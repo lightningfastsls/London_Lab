@@ -91,7 +91,7 @@ Agent memory has emerged as a distinct architectural discipline. Since [[agent m
 - [[whether tracking which surfaced notes agents actually load can identify poorly-described vault entries]] -- CRAG-inspired diagnostic: load-rate as description quality signal
 
 ## Agent Notes
-- This vault is itself a hybrid memory system: wiki links as typed edges, atomic notes as entities, YAML frontmatter as metadata, qmd for semantic search. The cross-session memory research validates this architecture while revealing gaps (no automatic forgetting, no cross-tool portability).
+- This vault is itself a hybrid memory system: wiki links as typed edges, atomic notes as entities, YAML frontmatter as metadata, topic-map-traversal + ripgrep for retrieval. <!-- Superseded: previously used qmd semantic search; replaced March 2026 --> The cross-session memory research validates this architecture while revealing gaps (no automatic forgetting, no cross-tool portability).
 - The vault's processing pipeline (/reduce -> /reflect -> /reweave -> /verify) serves as a manual forgetting mechanism — it prevents raw accumulation by forcing curation, analogous to the three forgetting strategies.
 - The orient->work->persist session rhythm implements temporal scoping: each session starts fresh with just ops/goals.md and MEMORY.md, avoiding the unbounded accumulation that degrades performance.
 - Bridge notes to [[context-management]]: MCP Tool Search (context pollution = within-session concern), progressive disclosure (memory retrieval affects context budget), subagent architecture (orchestration pattern in both).

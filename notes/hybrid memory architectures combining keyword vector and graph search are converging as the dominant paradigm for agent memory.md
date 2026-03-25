@@ -18,7 +18,7 @@ The graph-based memory taxonomy survey (Feb 2026) concludes that no single parad
 
 Each paradigm addresses a different retrieval failure mode. Keyword search (BM25) excels at exact-match precision but misses semantic equivalents. Vector search catches conceptual similarity but cannot perform logical joins. Graph traversal enables multi-hop reasoning but scales poorly. Combining them means no single failure mode blocks retrieval.
 
-This mirrors the dual-discovery principle in knowledge management: since [[just-in-time context retrieval via lightweight identifiers outperforms preloading data into context]], hybrid retrieval reduces the risk that relevant memory is unfindable. This vault's own architecture implements a version of this: wiki links (explicit graph) plus qmd semantic search (implicit vector), as documented in CLAUDE.md's "Semantic Search" section.
+This mirrors the dual-discovery principle in knowledge management: since [[just-in-time context retrieval via lightweight identifiers outperforms preloading data into context]], hybrid retrieval reduces the risk that relevant memory is unfindable. This vault's own architecture implements a version of this: wiki links (explicit graph) plus topic-map-traversal and ripgrep keyword search, as documented in CLAUDE.md's "Knowledge Activation" section. <!-- Superseded: previously used qmd semantic search; replaced by topic-map-traversal + ripgrep approach, March 2026 -->
 
 ---
 

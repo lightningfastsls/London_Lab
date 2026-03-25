@@ -210,10 +210,23 @@ if [[ $pending_tension_count -ge $tension_threshold ]]; then echo "TRIGGER: $pen
 
 # --- Knowledge Activation ---
 RELEVANCE_FILE="$VAULT_ROOT/ops/session-relevance.md"
-if command -v qmd &>/dev/null && [[ ${#GOAL_LINES[@]} -gt 0 ]]; then
+VAULT_SEARCH="$VAULT_ROOT/ops/scripts/vault-search.mjs"
+INDEX_FILE="$VAULT_ROOT/ops/cache/topic-map-index.json"
+
+if command -v node &>/dev/null && [[ -f "$VAULT_SEARCH" ]] && [[ ${#GOAL_LINES[@]} -gt 0 ]]; then
+    # Auto-regenerate index if stale (>24h) or missing
+    if [[ ! -f "$INDEX_FILE" ]] || [[ -n "$(find "$INDEX_FILE" -mmin +1440 2>/dev/null)" ]]; then
+        if ! node "$VAULT_ROOT/ops/scripts/topic-map-index.mjs" "$VAULT_ROOT/notes" "$INDEX_FILE" 2>/dev/null; then
+            # Index generation failed — use stale index if available, or skip Layer 1
+            if [[ ! -f "$INDEX_FILE" ]]; then
+                echo "Warning: topic-map index generation failed and no stale index available" >&2
+            fi
+        fi
+    fi
+
     total_notes=0
     thread_count=0
-    relevance_content="# Session Relevance Brief\n<!-- Generated: $(date '+%Y-%m-%d %H:%M') -->\n"
+    relevance_content="# Session Relevance Brief\n<!-- Generated: $(date '+%Y-%m-%d %H:%M') -->\n<!-- Method: topic-map-traversal + ripgrep -->\n"
 
     for gl in "${GOAL_LINES[@]}"; do
         # Extract thread title: - **Title** -- description
@@ -232,37 +245,34 @@ if command -v qmd &>/dev/null && [[ ${#GOAL_LINES[@]} -gt 0 ]]; then
 
         relevance_content+="\n## $title\n"
 
-        # Keyword search
-        clean_title=$(echo "$title" | sed 's/[^a-zA-Z0-9 ]//g')
-        word_count=$(echo "$clean_title" | wc -w)
+        # Search via vault-search.mjs (topic map traversal + ripgrep)
+        search_results=$(node "$VAULT_SEARCH" --query "$title" --context "${desc:0:100}" --limit 3 2>/dev/null || echo "[]")
         found_any=false
 
-        if [[ $word_count -ge 2 ]]; then
-            kw_results=$(qmd search "$clean_title" --limit 3 --json 2>/dev/null || echo "[]")
-            if [[ "$kw_results" == "["* ]]; then
-                while IFS= read -r note_title; do
-                    [[ -n "$note_title" ]] && {
-                        relevance_content+="- **$note_title** (keyword)\n"
-                        ((total_notes++)) || true
-                        found_any=true
-                    }
-                done < <(python3 -c "import json,sys; [print(r.get('title','')) for r in json.loads(sys.argv[1]) if r.get('title')]" "$kw_results" 2>/dev/null)
-            fi
-        fi
-
-        # Vector search
-        query="$title ${desc:0:100}"
-        query="${query:0:120}"
-        vs_results=$(qmd vsearch "$query" --limit 3 --json 2>/dev/null || echo "[]")
-        vs_json=$(echo "$vs_results" | sed -n '/\[/,$p')
-        if [[ -n "$vs_json" ]]; then
-            while IFS= read -r note_title; do
-                [[ -n "$note_title" ]] && {
-                    relevance_content+="- **$note_title** (vector)\n"
+        if [[ "$search_results" != "[]" ]]; then
+            while IFS= read -r line; do
+                note_title=$(echo "$line" | sed -n 's/.*"note": *"\([^"]*\)".*/\1/p')
+                note_desc=$(echo "$line" | sed -n 's/.*"description": *"\([^"]*\)".*/\1/p')
+                note_type=$(echo "$line" | sed -n 's/.*"type": *"\([^"]*\)".*/\1/p')
+                note_section=$(echo "$line" | sed -n 's/.*"section": *"\([^"]*\)".*/\1/p')
+                note_ctx=$(echo "$line" | sed -n 's/.*"context_phrase": *"\([^"]*\)".*/\1/p')
+                if [[ -n "$note_title" ]]; then
+                    ctx_display=""
+                    [[ -n "$note_ctx" ]] && ctx_display=" -- $note_ctx"
+                    type_display=""
+                    [[ -n "$note_type" ]] && type_display=" ($note_type)"
+                    relevance_content+="- \"$note_title\"${type_display}${ctx_display}\n"
                     ((total_notes++)) || true
                     found_any=true
-                }
-            done < <(python3 -c "import json,sys; [print(r.get('title','')) for r in json.loads(sys.argv[1]) if r.get('title')]" "$vs_json" 2>/dev/null)
+                fi
+            done < <(echo "$search_results" | python3 -c "
+import json, sys
+try:
+    results = json.load(sys.stdin)
+    for r in results:
+        print(json.dumps(r))
+except: pass
+" 2>/dev/null)
         fi
 
         if ! $found_any; then
@@ -272,8 +282,51 @@ if command -v qmd &>/dev/null && [[ ${#GOAL_LINES[@]} -gt 0 ]]; then
 
     echo -e "$relevance_content" > "$RELEVANCE_FILE"
     echo "Knowledge activation: $total_notes notes surfaced for $thread_count threads"
+
+elif command -v qmd &>/dev/null && [[ ${#GOAL_LINES[@]} -gt 0 ]]; then
+    # Fallback: qmd (demoted but still available)
+    total_notes=0
+    thread_count=0
+    relevance_content="# Session Relevance Brief\n<!-- Generated: $(date '+%Y-%m-%d %H:%M') -->\n<!-- Method: qmd fallback -->\n"
+
+    for gl in "${GOAL_LINES[@]}"; do
+        if [[ "$gl" =~ ^[[:space:]]*-[[:space:]]+\*\*(.+)\*\*[[:space:]]*--[[:space:]]*(.+)$ ]]; then
+            title="${BASH_REMATCH[1]}"
+            desc="${BASH_REMATCH[2]}"
+        elif [[ "$gl" =~ ^[[:space:]]*-[[:space:]]+(.+)[[:space:]]*--[[:space:]]*(.+)$ ]]; then
+            title="${BASH_REMATCH[1]}"
+            desc="${BASH_REMATCH[2]}"
+        else
+            continue
+        fi
+
+        ((thread_count++)) || true
+        [[ $thread_count -gt 5 ]] && break
+
+        relevance_content+="\n## $title\n"
+        clean_title=$(echo "$title" | sed 's/[^a-zA-Z0-9 ]//g')
+        found_any=false
+
+        kw_results=$(qmd search "$clean_title" --limit 3 --json 2>/dev/null || echo "[]")
+        if [[ "$kw_results" == "["* ]]; then
+            while IFS= read -r note_title; do
+                [[ -n "$note_title" ]] && {
+                    relevance_content+="- **$note_title** (keyword)\n"
+                    ((total_notes++)) || true
+                    found_any=true
+                }
+            done < <(python3 -c "import json,sys; [print(r.get('title','')) for r in json.loads(sys.argv[1]) if r.get('title')]" "$kw_results" 2>/dev/null)
+        fi
+
+        if ! $found_any; then
+            relevance_content+="- No strong matches above relevance threshold.\n"
+        fi
+    done
+
+    echo -e "$relevance_content" > "$RELEVANCE_FILE"
+    echo "Knowledge activation (qmd fallback): $total_notes notes surfaced for $thread_count threads"
 else
-    echo -e "# Session Relevance Brief\n<!-- Generated: $(date '+%Y-%m-%d %H:%M') -->\n\nqmd unavailable - knowledge activation skipped." > "$RELEVANCE_FILE"
+    echo -e "# Session Relevance Brief\n<!-- Generated: $(date '+%Y-%m-%d %H:%M') -->\n\nKnowledge activation unavailable (node and qmd both missing)." > "$RELEVANCE_FILE"
 fi
 
 echo "=== End Orient ==="

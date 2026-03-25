@@ -6,7 +6,7 @@ generated_from: "arscontexta-v1.6"
 user-invocable: true
 context: fork
 model: opus
-allowed-tools: Read, Grep, Glob, mcp__qmd__search, mcp__qmd__vector_search, mcp__qmd__deep_search, mcp__qmd__get, mcp__qmd__multi_get
+allowed-tools: Read, Grep, Glob, Bash
 argument-hint: "[question about knowledge systems or methodology]"
 ---
 
@@ -20,7 +20,7 @@ If no question provided, ask the user what they want to know.
 
 1. **Classify the question** — determine which knowledge base tier(s) to consult (see Query Classification below)
 2. **Search the knowledge base** — route to appropriate tiers based on classification
-3. **Read relevant claims and docs** — load 3-7 most relevant sources fully (use `mcp__qmd__multi_get` when reading multiple IDs)
+3. **Read relevant claims and docs** — load 3-7 most relevant sources fully (use the Read tool to read matching files)
 4. **Check user context** — read `ops/derivation.md` if the question involves their specific system
 5. **Synthesize an answer** — weave claims into a coherent, opinionated argument
 6. **Cite sources** — reference specific claims and documents so the user can explore further
@@ -47,7 +47,7 @@ The plugin's knowledge base has three distinct parts, each serving a different f
 - Failure modes and anti-patterns
 - Agent-specific constraints (context windows, session boundaries)
 
-**Search strategy:** Use `mcp__qmd__deep_search` (highest quality, LLM-reranked) for conceptual questions. Use `mcp__qmd__vector_search` for semantic exploration. Use `mcp__qmd__search` for known terminology. All searches use the `methodology` collection.
+**Search strategy:** Use `rg -il "key-term-1|key-term-2" methodology/` to find relevant research claims. For broader discovery: `rg -l "kind: research" methodology/ | head -20` then grep within those for topic-specific terms. Read the top matches with the Read tool.
 
 ### Tier 2: Guidance Docs (HOW)
 
@@ -66,7 +66,7 @@ The plugin's knowledge base has three distinct parts, each serving a different f
 - Multi-domain composition rules
 - Onboarding and evolution decisions
 
-**Search strategy:** `mcp__qmd__search` with keywords from the question using the `methodology` collection. To narrow to guidance docs, add `kind:guidance` to your grep filter on results.
+**Search strategy:** `rg -il "key-terms" methodology/` to find guidance docs. To narrow to guidance docs: `rg -l "kind: guidance" methodology/` then grep within those for specific terms.
 
 ### Tier 3: Domain Examples (WHAT IT LOOKS LIKE)
 
@@ -81,7 +81,7 @@ The plugin's knowledge base has three distinct parts, each serving a different f
 - Creative vaults (worldbuilding, character tracking)
 - Engineering, legal, trading, student learning, relationships
 
-**Search strategy:** Use `mcp__qmd__vector_search` across the `methodology` collection for semantic domain matching. To list all examples: `rg '^kind: example' methodology/`.
+**Search strategy:** Use `rg -il "domain-term" methodology/` to find relevant examples. To list all examples: `rg '^kind: example' methodology/`.
 
 ### Reference Documents (structured derivation context)
 
@@ -163,27 +163,24 @@ Read `reference/claim-map.md` first. This is the routing index — it shows whic
 ### Step 2: Search the Appropriate Tier
 
 **For WHY questions (Research Graph):**
+```bash
+rg -il "key-term-1|key-term-2" methodology/
 ```
-mcp__qmd__deep_search  query="[user's question rephrased as a search]"  collection="methodology"  limit=10
-```
-Use `mcp__qmd__deep_search` (hybrid + LLM reranking) for conceptual questions because the best connections often use different vocabulary than the question. Results will include all kinds; prioritize `kind: research` results.
+Search for research claims using multiple synonyms/related terms. Read the top 5-10 matches. Prioritize files with `kind: research` in frontmatter.
 
 **For HOW questions (Guidance Docs):**
+```bash
+rg -l "kind: guidance" methodology/ | xargs rg -il "key-terms"
 ```
-mcp__qmd__search  query="[key terms from question]"  collection="methodology"  limit=5
-```
-Use keyword search first since guidance docs use consistent terminology. Fall back to semantic if keyword misses. Prioritize `kind: guidance` results.
+Filter to guidance docs first, then search within them. Guidance docs use consistent terminology so keyword search works well.
 
 **For WHAT questions (Domain Examples):**
+```bash
+rg -l "kind: example" methodology/ | xargs rg -il "domain-term"
 ```
-mcp__qmd__vector_search  query="[domain + what the user wants to see]"  collection="methodology"  limit=5
-```
-Use semantic search to find the most relevant domain examples even if the exact domain name differs. Prioritize `kind: example` results.
+Filter to example docs, then search for the relevant domain. Read matching examples fully.
 
-**Fallback chain for qmd lookups:**
-- MCP tools (`mcp__qmd__deep_search`, `mcp__qmd__vector_search`, `mcp__qmd__search`)
-- qmd CLI (`qmd query`, `qmd vsearch`, `qmd search`)
-- direct file reads/grep on `methodology/` and `reference/`
+**Search approach:** ripgrep over methodology/ (249 files, fast keyword search over small corpus). Use multiple search terms and synonyms to compensate for vocabulary differences. Read claim-map.md first for routing.
 
 **For Reference documents:**
 Read specific reference documents based on the topic. The claim-map will indicate which reference docs are relevant. Load the 2-4 most relevant — not all of them.
@@ -281,7 +278,7 @@ Every answer follows this structure:
 **Classification:** WHY -> Primary: Research Graph. Secondary: Reference (dimension-claim-map).
 
 **Search:**
-1. `mcp__qmd__deep_search  query="atomic notes vs compound documents granularity"  collection="methodology"  limit=8`
+1. `rg -il "atomic.*note\|compound.*document\|granularity" methodology/`
 2. Read `reference/dimension-claim-map.md` — find granularity dimension's informing claims
 3. Read `ops/derivation.md` — check user's granularity position
 
@@ -299,8 +296,8 @@ Every answer follows this structure:
 **Classification:** HOW -> Primary: Guidance Docs. Secondary: Research Graph.
 
 **Search:**
-1. `mcp__qmd__search  query="large source processing chunking"  collection="methodology"  limit=5`
-2. `mcp__qmd__deep_search  query="context degradation large documents extraction"  collection="methodology"  limit=5`
+1. `rg -il "large source\|processing\|chunking" methodology/`
+2. `rg -il "context degradation\|extraction" methodology/`
 
 **Answer:**
 > For sources over 2500 lines, chunk into segments of 350-1200 lines and process each chunk with fresh context. [Guidance: pipeline processing workflow] explains the chunking strategy in detail.
@@ -322,7 +319,7 @@ Every answer follows this structure:
 **Classification:** WHAT -> Primary: Domain Examples. Secondary: Guidance Docs.
 
 **Search:**
-1. `mcp__qmd__vector_search  query="cooking recipes culinary knowledge system"  collection="methodology"  limit=5`
+1. `rg -il "cooking\|recipe\|culinary" methodology/`
 2. Read closest domain examples for structural inspiration
 
 **Answer:**

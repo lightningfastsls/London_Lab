@@ -4,7 +4,7 @@ description: Extract and structure knowledge from source material into atomic no
 version: "1.0"
 generated_from: "arscontexta-v1.6"
 user-invocable: true
-allowed-tools: Read, Write, Grep, Glob, mcp__qmd__vector_search
+allowed-tools: Read, Write, Grep, Glob, Bash
 context: fork
 ---
 
@@ -113,9 +113,8 @@ Parse immediately:
 2. **Source size check:** If source exceeds 2500 lines, STOP. Plan chunks of 350-1200 lines. Process each chunk with fresh context. See "Large Source Handling" section below.
 3. Hunt for insights that serve the domain (see extraction categories below)
 4. For each candidate:
-   - Tier 1 (preferred): use `mcp__qmd__vector_search` with query "[claim as sentence]", collection="{vocabulary.notes_collection}", limit=5
-   - Tier 2 (CLI fallback): `qmd vsearch "[claim as sentence]" --collection {vocabulary.notes_collection} -n 5`
-   - Tier 3 fallback if qmd is unavailable: use keyword grep duplicate checks
+   - Tier 1 (preferred): `node ops/scripts/vault-search.mjs --mode dedup-check --title "[claim as sentence]"` — checks title overlap + ripgrep
+   - Tier 2 (fallback): `rg -il "distinctive-keyword" notes/` — keyword grep duplicate check
    - If duplicate exists: evaluate for enrichment or skip
    - Classify as OPEN (needs more investigation) or CLOSED (standalone, ready)
 5. Output extraction report with titles, classifications, extraction rationale
@@ -353,7 +352,7 @@ This is the critical step that prevents over-rejection. Categorize FIRST, then r
 For each candidate, run duplicate detection:
 
 ```
-mcp__qmd__vector_search  query="[proposed claim as sentence]"  collection="{vocabulary.notes_collection}"  limit=5
+node ops/scripts/vault-search.mjs --mode dedup-check --title "[proposed claim as sentence]"
 ```
 If MCP is unavailable, run:
 ```bash

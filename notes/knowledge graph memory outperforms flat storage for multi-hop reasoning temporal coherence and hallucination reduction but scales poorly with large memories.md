@@ -24,6 +24,7 @@ Source: mcp-memory-servers-cross-session-knowledge-research-2026-03-02 (archived
 Relevant Notes:
 - [[graph-based memory reduces hallucination by grounding agent outputs in structured verifiable content]] -- the mechanism behind the reliability benefit
 - [[hybrid memory architectures combining keyword vector and graph search are converging as the dominant paradigm for agent memory]] -- the convergence driven by these trade-offs
+- [[96 MCP memory servers exist as of March 2026 fragmented across unstructured markdown knowledge graph and hybrid vector-graph paradigms]] -- landscape showing the three camps this note's trade-offs predict
 
 Topics:
 - [[agent-memory]]

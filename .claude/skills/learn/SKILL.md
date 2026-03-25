@@ -3,7 +3,7 @@ name: learn
 description: Research a topic and grow your knowledge graph. Investigates using web search, checks existing vault knowledge, and captures findings as structured inbox source files. Use this skill whenever the user wants to research, investigate, or add external knowledge to the vault. Triggers on "/learn", "/learn [topic]", "research this", "find out about", "what do we know about".
 version: "3.0"
 user-invocable: true
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash, WebSearch, WebFetch, mcp__qmd__search, mcp__qmd__vector_search, mcp__qmd__deep_search, mcp__qmd__get
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash, WebSearch, WebFetch
 context: fork
 argument-hint: "[topic] -- what to research (e.g., 'VAE clustering for USV classification')"
 ---
@@ -58,8 +58,8 @@ If `--quick` or `--deep` is in the arguments, use that override. Tell the user w
 ### 1b. Check Existing Knowledge (parallel with depth assessment)
 
 Check what the vault already knows so you can focus on gaps:
-- **Quick depth**: Use `mcp__qmd__search(query="<topic keywords>")` -- fast keyword search is enough
-- **Moderate/deep**: Use `mcp__qmd__deep_search(query="<topic>")` and skim relevant topic maps in `notes/index.md`
+- **Quick depth**: `rg -il "key-term" notes/` — fast keyword search is enough
+- **Moderate/deep**: `node ops/scripts/vault-search.mjs --query "<topic>"` and skim relevant topic maps in `notes/index.md`
 
 Report briefly: "Found 3 existing notes on X. I'll focus on Y." Then move on immediately.
 

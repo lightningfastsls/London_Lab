@@ -3,7 +3,7 @@ name: refresh-human-docs
 description: Regenerate human-readable docs from knowledge graph and ops state. Reads notes/, ops/goals.md, ROADMAP files, and topic maps to synthesize up-to-date PROJECTS.md and DECISIONS.md in docs/human/. Triggers on "/refresh-human-docs", "refresh human docs", "regenerate project dashboard".
 version: "1.0"
 user-invocable: true
-allowed-tools: Read, Write, Grep, Glob, mcp__qmd__search, mcp__qmd__deep_search
+allowed-tools: Read, Write, Grep, Glob, Bash
 context: fork
 ---
 

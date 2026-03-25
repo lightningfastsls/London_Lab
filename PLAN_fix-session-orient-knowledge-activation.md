@@ -1,6 +1,8 @@
-# Plan: Fix session-orient Knowledge Activation
+# Plan: Fix session-orient Knowledge Activation — COMPLETED 2026-03-25
 
-> **Priority:** CRITICAL — knowledge activation has never worked on this system
+> **Status:** DONE — All phases complete. 4/4 smoke tests passed. Vault retrieval migrated from qmd to vault-search.mjs (topic-map traversal + ripgrep + wiki-link following).
+>
+> ~~**Priority:** CRITICAL — knowledge activation has never worked on this system~~
 > **File to modify:** `.claude/hooks/session-orient.ps1`
 > **Lines affected:** 222-339 (Knowledge Activation section)
 > **Risk level:** MEDIUM — modifying a SessionStart hook; must not break other sections of the script

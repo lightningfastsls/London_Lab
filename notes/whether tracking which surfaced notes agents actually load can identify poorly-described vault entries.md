@@ -20,7 +20,7 @@ Both are actionable. Since [[descriptions are retrieval filters not summaries]],
 
 This feedback loop would directly address the gap identified by the finding that since [[metacognitive confidence can diverge from retrieval capability]], a vault that feels well-organized may silently fail at actual retrieval. Load-rate tracking converts that abstract divergence into a measurable signal.
 
-The open question is whether this tracking is practical in Claude Code's environment. Session transcripts are large, MCP tool calls are logged but not easily queried, and the infrastructure for correlating "surfaced in /kcheck" with "subsequently loaded via qmd get" would need to be built. The diagnostic value is clear — the implementation cost is the uncertainty.
+The open question is whether this tracking is practical in Claude Code's environment. Session transcripts are large, MCP tool calls are logged but not easily queried, and the infrastructure for correlating "surfaced in /kcheck" with "subsequently loaded" would need to be built. <!-- Superseded: qmd get replaced by topic-map-traversal + ripgrep approach, March 2026 --> The diagnostic value is clear — the implementation cost is the uncertainty.
 
 If feasible, this creates a feedback loop: retrieval → surface → load-or-skip → description quality signal → improve description → better retrieval precision. Since [[CRAG's retrieval evaluator prevents noise-induced gate fatigue through relevance thresholds]], load-rate tracking extends the evaluator pattern from binary filtering to continuous quality improvement.
 

@@ -63,7 +63,11 @@ IDLE -> ANALYSIS -> APPROVAL_PENDING -> EXECUTION -> VALIDATION -> DONE
 
 #### Knowledge Activation
 - **Search before reasoning**: Before explaining, analyzing, or modifying domain-specific systems,
-  search the vault (qmd + topic maps). Filter: "Would the vault plausibly change my answer?"
+  search the vault (topic-map traversal + ripgrep). Filter: "Would the vault plausibly change my answer?"
+- **Retrieval hierarchy:** (1) Topic map traversal via `vault-search.mjs` — "what do I know about X?"
+  (2) ripgrep keyword search `rg -il "term" notes/` — "find the note mentioning X"
+  (3) Wiki-link traversal from current notes — "what's related to what I'm reading?"
+  (4) qmd BM25 fallback (available but not primary)
 - **Modifications**: /kcheck mandatory for HIGH-risk canary files, recommended for constrained systems.
 - **Skip for**: pure code mechanics, general knowledge, test files, documentation-only changes.
 
@@ -212,7 +216,7 @@ See `DECISIONS.md` ADR-001 (sample rate) and ADR-002 (STFT parameters) for full 
 
 ## Codex Handoff Vault Search
 Before writing any Codex task spec in `docs/handoffs/`, search the vault for constraints:
-1. Run `qmd deep_search` (or `/kcheck`) with the task description to find relevant constraint notes
+1. Run `node ops/scripts/vault-search.mjs --query "task description"` or `rg -il "key terms" notes/` (or `/kcheck`) to find relevant constraint notes
 2. Extract up to 5 constraints relevant to files the task will modify
 3. Flatten each constraint into plain text in the handoff's "Relevant Constraints" section (Codex has no vault access)
 4. Use `templates/codex-handoff.md` for the handoff structure

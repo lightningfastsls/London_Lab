@@ -12,7 +12,7 @@ topics:
 
 The key lesson across Self-RAG, FLARE, CRAG, and Adaptive RAG is that retrieval quality alone does not determine system effectiveness. The decision of *when to retrieve* — and whether to retrieve at all — is equally critical. A system with excellent retrieval infrastructure but no activation triggers will underperform a system with mediocre retrieval but well-timed triggers.
 
-This maps directly to knowledge vault operation. The vault has good retrieval: qmd provides keyword and semantic search, topic maps organize navigation, and dense wiki links enable spreading activation. But since [[spreading activation models how agents should traverse]], activation only works once traversal is triggered. The gap is entirely in activation — the agent must voluntarily decide to search, and under cognitive load that decision is the first to be dropped.
+This maps directly to knowledge vault operation. The vault has good retrieval: <!-- Superseded: qmd replaced by topic-map-traversal + ripgrep approach, March 2026 --> topic maps organize navigation, ripgrep provides keyword search, and dense wiki links enable spreading activation. But since [[spreading activation models how agents should traverse]], activation only works once traversal is triggered. The gap is entirely in activation — the agent must voluntarily decide to search, and under cognitive load that decision is the first to be dropped.
 
 The four papers each address a different aspect of timing:
 - **Self-RAG** (Asai et al., ICLR 2024): trains the model to decide retrieve/no-retrieve via reflection tokens

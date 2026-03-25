@@ -6,7 +6,7 @@ generated_from: "arscontexta-v1.6"
 user-invocable: true
 context: fork
 model: opus
-allowed-tools: Read, Grep, Glob, Bash, mcp__qmd__vector_search
+allowed-tools: Read, Grep, Glob, Bash
 argument-hint: "[optional: 'quick', 'full', or 'three-space']"
 ---
 
@@ -61,7 +61,8 @@ Parse the invocation mode immediately:
 ### Platform Adaptation
 
 Checks adapt to what the platform supports:
-- If semantic search (qmd) is not configured, skip semantic-dependent checks and note their absence
+- If topic-map index (`ops/cache/topic-map-index.json`) is stale or missing, regenerate via `node ops/scripts/topic-map-index.mjs`
+- Topic map coverage check: compare notes in index vs notes in notes/ directory
 - If hooks are not available, note that validation is convention-only (no automated enforcement)
 - If self/ directory does not exist (disabled by config), skip self-space checks but verify ops/ absorbs self-space content correctly
 
@@ -520,7 +521,7 @@ Bare links without context phrases are address book entries, not navigation. Eve
 2. **Verify referenced notes exist and are current:**
 ```bash
 # For each referenced note title in the canary map, check it resolves
-# Use qmd or Grep to find matching note files
+# Use rg or Grep to find matching note files in notes/
 # Check frontmatter meta_state is not "outdated" or "superseded"
 ```
 

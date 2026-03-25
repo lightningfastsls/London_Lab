@@ -19,7 +19,7 @@ The memory architecture emerging in Claude Code practice is not a single system 
 
 Since [[Claude Code auto-memory captures configuration not learning because it preserves workspace patterns but loses diagnostic reasoning paths]], the MCP layer fills the gap that auto-memory leaves. And since [[auto-memory 200-line hard-coded limit and lack of automatic consolidation creates growing redundancy without manual intervention]], MCP servers offer managed lifecycle as an alternative.
 
-This vault implements a variant of this pattern: CLAUDE.md for rules, MEMORY.md for session patterns, and the notes/ knowledge graph (with qmd semantic search) for structured reasoning. The notes/ graph is not an MCP memory server, but it serves the same architectural role — persistent, searchable, structured knowledge with explicit connections.
+This vault implements a variant of this pattern: CLAUDE.md for rules, MEMORY.md for session patterns, and the notes/ knowledge graph (with topic-map-traversal + ripgrep retrieval) for structured reasoning. <!-- Superseded: previously used qmd semantic search; replaced March 2026 --> The notes/ graph is not an MCP memory server, but it serves the same architectural role — persistent, searchable, structured knowledge with explicit connections.
 
 ---
 

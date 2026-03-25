@@ -21,6 +21,7 @@ The central biological question: did domestication alter mouse vocal repertoires
 
 ## Wild Mouse Vocal Behavior
 - [[Zala et al 2020 showed wild-derived mice modulate USVs with social context producing 9 types during interaction versus 6 during introduction]] -- context-dependent repertoire modulation in wild mice
+- [[recording groups 5970 3452 2379 are all wild mouse dyads not different strains]] -- all current data is wild mice; numeric IDs are dyad identifiers
 
 ## Research Strategy
 - [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- immediate science: classify first, then model
