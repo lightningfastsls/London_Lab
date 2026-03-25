@@ -46,4 +46,8 @@ tmp/
 !USV_Detections/**
 !USV_Detections/**/*.png
 !USV_Detections/**/*.wav
+!USV_3452_sample/
+!USV_3452_sample/**
+!USV_3452_sample_reviewed/
+!USV_3452_sample_reviewed/**
 *.xlsx
