@@ -4,6 +4,15 @@
 > For current status see `ops/goals.md` (agent) or `docs/human/PROJECTS.md` (human).
 > New entries should be appended at the top with a dated header.
 
+## 2026-03-28 — Module 15.5: False Positive Filter
+
+- Created: `src/usv_spectrogram/postprocessing/fp_filter.py` — `FalsePositiveFilter` class (LogisticRegression + StandardScaler pipeline)
+- Created: `scripts/train_fp_filter.py` — CLI training script with recording-level CV
+- Updated: `postprocessing/__init__.py` — added `FalsePositiveFilter` to exports
+- Fixed: `tests/test_fp_filter.py` — spec error in CV test (sequential split on ordered data → deterministic shuffle)
+- Tests: 16/16 pass (16 pre-existing from test-architect)
+- Handoff: `docs/reviews/fp-filter-handoff.md`
+
 **Started:** 2026-01-16
 **Plan Document:** USV_DETECTION_IMPLEMENTATION_PLAN.md
 **Reference:** docs/reference/usv_signal_processing_reference.md
@@ -11,6 +20,20 @@
 ---
 
 ## Session Log
+
+### 2026-03-28 — Phase 15.4 fixes: Option B column mapping + naming inversions (event-features)
+
+**Review:** `docs/reviews/event-features-review.md` (re-review pending)
+
+**Fixes applied:**
+- BLOCKER 1: Column extraction switched from consecutive to hop-spaced (`cols = np.arange(window_count) * hop_px + start_col`). Samples across full event duration. Decision documented in `docs/handoffs/event-features-column-mapping.md`.
+- WARNING 2: `prob_smoothness` → `prob_roughness` (high = jagged, matches metric direction)
+- WARNING 3: `freq_continuity` → `freq_modulation_rate` (high = FM sweep, matches metric direction)
+- Updated: `event_features.py`, `test_event_features.py`, `test_fp_filter.py`, `ROADMAP_POST_PROCESSING.md`, `event-features.md` module doc
+
+**Tests:** 17 passed after fixes
+
+---
 
 ### 2026-03-28 — Phase 15.6: Per-Recording Score Normalization
 
