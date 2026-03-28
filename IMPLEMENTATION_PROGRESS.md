@@ -12,7 +12,120 @@
 
 ## Session Log
 
-**Latest Update (2026-02-25):**
+### 2026-03-28 — Phase 15.6: Per-Recording Score Normalization
+
+**Status:** COMPLETE
+**Files created:**
+- `src/usv_spectrogram/postprocessing/normalization.py` — `normalize_scores_per_recording()`, `normalize_scores_batch()`
+- `docs/modules/normalization.md` — Module documentation
+- `docs/reviews/normalization-handoff.md` — Implementation handoff
+- `docs/reviews/normalization-review.md` — Review (Tier 2)
+
+**Files modified:**
+- `src/usv_spectrogram/postprocessing/__init__.py` — Added exports
+
+**Tests:** 16 passed (all pre-existing from test-architect, no modifications)
+**Key decisions:** Two-tier spread estimation — full-array MAD when noise slice has variation (avoids Q1 centering bias), mean-AD fallback when noise slice is constant (handles degenerate cases where median-based estimators collapse). Float64 output enforced on all paths.
+**Review fixes:** Removed unreachable dead code (inner MAD fallback), added float64 cast on main return path, corrected tier to Tier 2.
+
+---
+
+### 2026-03-28 — Phase 15.4: Event Feature Extraction
+
+**Status:** COMPLETE
+**Files created:**
+- `src/usv_spectrogram/postprocessing/event_features.py` — `EventFeatures` frozen dataclass (11 fields), `extract_event_features()` function
+- `docs/modules/event-features.md` — Module documentation
+- `docs/reviews/event-features-handoff.md` — Implementation handoff
+
+**Files modified:**
+- `src/usv_spectrogram/postprocessing/__init__.py` — Added exports
+
+**Tests:** 17 passed (all pre-existing from test-architect, no modifications)
+**Key decisions:** Tonality = 1 - SFM (inverted spectral flatness), GM in log domain, SNR in dB space, population std (ddof=0), manual excess kurtosis (no scipy dep)
+
+---
+
+### 2026-03-28 — Phase 15.2 fixes: B-1 + W-1..W-8 (event-scoring-hysteresis-optimization)
+
+**Review:** `docs/reviews/event-scoring-hysteresis-optimization-review.md` (re-review: APPROVED)
+
+**Fixes applied:**
+- B-1: sustain direction inversion — `+params["sustain_threshold"]` in `_find_one_se_params`
+- W-1: grid ranges restored — onset=[0.60..0.95], min_dur=[3..10]
+- W-2: added `test_one_sd_conservative_selection`
+- W-3: added `test_one_detection_spans_two_adjacent_gts`
+- W-4: `main() -> int`, `return 0`, `sys.exit(main())`
+- W-5: `min_iou: float = 0.0` added to `EventScoringConfig`
+- W-6: handoff test counts updated (47 total)
+- W-7: `docs/modules/event-scoring.md` created
+- W-8: "1SE" → "1SD" with inline rationale comment
+
+**Verification:** 47 passed (16 event_scoring + 21 hysteresis + 10 dataset_assembler), 0 failed
+
+### 2026-03-28 — Phase 15.3: Temperature Scaling Calibration
+
+**ROADMAP:** `ROADMAP_POST_PROCESSING.md` §15.3
+**Review Tier:** 2 (Standard)
+**Review:** `docs/reviews/calibration-review.md` — CHANGES NEEDED (0 blockers, 5 warnings). All 5 warnings resolved same session.
+
+**What was built:**
+- `TemperatureScaler` dataclass: L-BFGS-B fitting, JSON save/load, stable binary NLL
+- `compute_ece()`: Expected Calibration Error measurement
+- `InferenceResult.logits` field + `return_logits` param on `SlidingInference.infer()`
+- CLI script `scripts/calibrate_temperature.py` for fitting T on validation set
+
+**Files created:**
+- `src/usv_spectrogram/postprocessing/calibration.py` (~160 lines)
+- `scripts/calibrate_temperature.py` (~100 lines)
+- `tests/test_calibration.py` (11 tests)
+- `docs/modules/calibration.md`
+- `docs/reviews/calibration-handoff.md`
+- `docs/reviews/calibration-review.md`
+
+**Files modified:**
+- `src/usv_spectrogram/postprocessing/__init__.py` — added exports
+- `src/usv_spectrogram/app/core/sliding_inference.py` — InferenceResult.logits, return_logits param
+
+**Review fixes applied:**
+- W-1: Added `test_logits_shape_matches_probabilities` test
+- W-2: Changed logit sentinel from 0.0 to -20.0 for energy-skipped windows
+- W-3: This entry
+- W-4: Default temperature changed to 1.5, `x0` uses `self.temperature`
+- W-5: Added shape validation in `fit()` + test
+
+**Verification:** 11/11 tests pass, 0 regressions in full suite
+
+**Agents:** master-reviewer (Tier 2)
+
+---
+
+**Latest Update (2026-03-27):**
+- **Hysteresis Parameter Optimization (Phase 15.2)** -- Code complete, pending optimization run
+  - Created `src/usv_spectrogram/postprocessing/event_scoring.py`: collar-based matching (±200ms) + F-beta scoring
+  - Created `scripts/optimize_hysteresis.py`: 2688-combo grid search with 5-fold stratified CV, inference caching, micro-averaged F2, 1SE conservative param selection
+  - Created `tests/test_event_scoring.py`: 14 tests (all pass)
+  - Updated `postprocessing/__init__.py` with new exports
+  - Handoff: `docs/reviews/event-scoring-hysteresis-optimization-handoff.md`
+
+**Update (2026-03-27):**
+- **Hysteresis Post-Processing Module** -- Complete
+  - Created `src/usv_spectrogram/postprocessing/hysteresis.py` (~170 lines):
+    - 2 frozen dataclasses: `HysteresisConfig` (4 fields with `__post_init__` validation), `USVEvent` (9 fields)
+    - Core function: `hysteresis_detect()` — dual-threshold seed-extend-merge-filter pipeline with bidirectional extension
+    - Format bridge: `convert_to_detection_format()` — ADR-010/LabelStorage compatible dict output
+    - Input validation: array length mismatch, probability range [0,1], column_indices bounds
+  - Created `src/usv_spectrogram/postprocessing/__init__.py`: Package init with `__all__` exports
+  - Created `tests/test_hysteresis.py` (20 tests): synthetic probability arrays covering all algorithm stages
+  - Created `docs/modules/hysteresis-detection.md`: Module documentation
+  - Created `docs/reviews/hysteresis-detection-handoff.md`: Handoff for review
+  - Review: `docs/reviews/hysteresis-detection-review.md` (Tier 2, B-1 test count fixed, W-1 through W-5 fixed, S-1/S-2 fixed)
+  - 21 tests pass, no regressions
+  - Key decisions: bidirectional extension (vs app's forward-only) to capture rising edges; window-index space (not column indices); center-to-center `duration_ms` convention
+  - Architectural note: This module is a standalone batch alternative to `app/core/detection_logic.py::HysteresisDetector` — see B-2 in review for ROADMAP alignment discussion
+  - *Files created: `src/usv_spectrogram/postprocessing/hysteresis.py`, `src/usv_spectrogram/postprocessing/__init__.py`, `tests/test_hysteresis.py`, `docs/modules/hysteresis-detection.md`, `docs/reviews/hysteresis-detection-handoff.md`*
+
+**Previous Update (2026-02-25):**
 - **Syllable Repertoire Statistical Analysis (Phase 14.3)** -- Complete
   - Created `src/usv_spectrogram/classification/repertoire_stats.py` (~700 lines):
     - 1 frozen dataclass: RepertoireConfig (8 fields) with `__post_init__` validation
