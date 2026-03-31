@@ -143,6 +143,7 @@ def assembly_config(tmp_path, mock_wav_dir, mock_labels_dir):
     return AssemblyConfig(
         labels_dir=mock_labels_dir,
         wav_dir=mock_wav_dir,
+        use_global_mad=False,
         output_dir=tmp_path / "output",
         jitter_n_samples=3,  # Fewer for test speed
         neg_ratio=1.0,
@@ -316,6 +317,7 @@ class TestEmptyLabelsDir:
         config = AssemblyConfig(
             labels_dir=empty_dir,
             wav_dir=mock_wav_dir,
+            use_global_mad=False,
             output_dir=tmp_path / "output",
         )
         assembler = DatasetAssembler(config)
@@ -378,6 +380,7 @@ class TestJitterFailureForLongUSVs:
         config = AssemblyConfig(
             labels_dir=labels_dir,
             wav_dir=mock_wav_dir,
+            use_global_mad=False,
             output_dir=tmp_path / "output_long",
             jitter_n_samples=5,
             seed=42,
@@ -429,6 +432,7 @@ class TestAllLabelsDeleted:
         config = AssemblyConfig(
             labels_dir=labels_dir,
             wav_dir=mock_wav_dir,
+            use_global_mad=False,
             output_dir=tmp_path / "output_deleted",
         )
         assembler = DatasetAssembler(config)

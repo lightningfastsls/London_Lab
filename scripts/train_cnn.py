@@ -24,7 +24,8 @@ from usv_spectrogram.models import (
 # Model size configurations
 # Guidelines for model selection based on dataset size:
 # - small (~101K params): 2K-10K samples - good starting point
-# - medium (~400K params): 10K-20K samples - use when small model shows underfitting
+# - mid (~207K params): 10K-15K samples - wider deep layers, small head, good inference/capacity tradeoff
+# - medium (~400K params): 15K-20K samples - use when mid model shows underfitting
 # - large (~1.6M params): 20K-30K+ samples - only with large datasets and strong regularization
 #
 # Scaling decision criteria:
@@ -38,11 +39,17 @@ MODEL_CONFIGS = {
         "params_approx": "~101K",
         "recommended_samples": "2K-10K"
     },
+    "mid": {
+        "filters": [32, 96, 192],
+        "dense_units": 64,
+        "params_approx": "~207K",
+        "recommended_samples": "10K-15K"
+    },
     "medium": {
         "filters": [64, 128, 256],
         "dense_units": 128,
         "params_approx": "~400K",
-        "recommended_samples": "10K-20K"
+        "recommended_samples": "15K-20K"
     },
     "large": {
         "filters": [128, 256, 512],
@@ -113,7 +120,7 @@ def main():
         '--model-size',
         type=str,
         default='small',
-        choices=['small', 'medium', 'large'],
+        choices=['small', 'mid', 'medium', 'large'],
         help='Model size configuration: small (~101K params, 2K-10K samples), '
              'medium (~400K params, 10K-20K samples), large (~1.6M params, 20K-30K+ samples). '
              'Default: small'
@@ -202,7 +209,7 @@ def main():
         train_csv=args.train_csv,
         val_csv=args.val_csv,
         batch_size=args.batch_size,
-        num_workers=0,  # Windows compatibility
+        num_workers=2,  # Parallel data loading (0 for Windows, 2+ for Linux/WSL)
         normalize_mode=args.normalize_mode,
         use_class_weights=args.use_class_weights
     )

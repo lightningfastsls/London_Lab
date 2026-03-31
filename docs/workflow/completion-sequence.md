@@ -169,7 +169,8 @@ During the completion sequence, these agents should be invoked at specific point
 | `dsp-reviewer` | Any STFT/signal processing change | Between Steps 4 and 6 |
 | `detection-validator` | Any detection logic change | Between Steps 4 and 6 |
 | `streamlit-expert` | Any Streamlit UI work | During Step 2 |
-| `test-writer` | New features needing tests | During Step 2 |
+| `test-architect` | New modules (writes failing tests from ROADMAP spec) | Before Step 2 |
+| `test-hardener` | After implementation passes review | Between Steps 5 and 6 |
 | `pr-reviewer` | Before declaring complete | Between Steps 6 and 7 |
 
 ---

@@ -1,7 +1,7 @@
 # assess_summary.ps1 — Run Claude Code against today's monitor summary
 # Scheduled daily at 19:10 via Task Scheduler
 
-Set-Location "C:\Users\shach\PycharmProjects\mickey_london_lab"
+Set-Location "\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab"
 
 $date = Get-Date -Format "yyyyMMdd"
 $file = "summary_$date.txt"

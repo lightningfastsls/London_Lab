@@ -157,6 +157,14 @@ Implementation plans — especially from web Claude — are dual-purpose documen
 
 This step matters because six months from now, someone will look at the `/implement` block and know *what* to build, but not *why* this approach was chosen over alternatives. The KG preserves that reasoning.
 
+## Step 7.5: Test Scaffolding Reminder
+
+After the ROADMAP file is written and KG extraction is complete, inform the user:
+
+> "The ROADMAP is ready. Before implementing the first module, consider running `test-architect` on it to generate failing tests as an executable specification. This catches spec ambiguities early and ensures the implementation has a clear target. Usage: spawn `test-architect` with the module name."
+
+This is a reminder, not an automatic invocation. The user decides whether to use test-architect. The `/implement` command knows how to detect and use pre-existing test files from test-architect (step 3.5).
+
 ## Formatting Rules
 
 1. **Phase numbering**: Always dynamic — read ROADMAP.md and count. Never hardcode.

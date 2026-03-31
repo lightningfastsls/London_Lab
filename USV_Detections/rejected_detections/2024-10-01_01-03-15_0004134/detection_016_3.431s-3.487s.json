@@ -1,0 +1,30 @@
+{
+  "detection_index": 16,
+  "core_time": {
+    "start_s": 3.4312533333333333,
+    "end_s": 3.48672,
+    "duration_ms": 55.466666666666775
+  },
+  "saved_region": {
+    "start_s": 3.4112533333333332,
+    "end_s": 3.50672,
+    "context_ms": 20.0
+  },
+  "probabilities": {
+    "max": 0.12401168793439865,
+    "mean": 0.07141248881816864,
+    "original_cnn_probability": 0.12401168793439865
+  },
+  "spectrogram_columns": {
+    "start_col": 8040,
+    "end_col": 8170
+  },
+  "user_action": "deleted_by_user",
+  "session": {
+    "session_id": "aab4cf6b-4968-4076-8844-f35eb4dde482",
+    "threshold_preset": null,
+    "threshold_high": 0.04,
+    "threshold_low": 0.03
+  },
+  "timestamp": "2026-03-31T13:03:33.835567"
+}

@@ -35,14 +35,17 @@ While in plan mode (read-only tools only — no code writing allowed):
 
 **FIRST: Create your task list immediately** using TaskCreate. Include ALL of these as separate tasks:
 - One task per implementation step (config, core logic, scripts, tests)
-- **MANDATORY final task:** "Write implementation handoff (`docs/reviews/<module>-handoff.md`)"
-  (This task persists in the list as a visible reminder even after test output bloats the context)
+- "Write implementation handoff (`docs/reviews/<module>-handoff.md`)"
+- "Spawn master-reviewer (Phase 4)"
+- "Spawn test-hardener after reviewer approval (Phase 4.5)"
+  (These persist in the list as visible reminders even after test output bloats the context)
 
 Then implement in this order, marking tasks in_progress/completed as you go:
 1. **Config** — Frozen dataclasses in the appropriate config module
 2. **Core logic** — Implementation in `src/usv_spectrogram/` or `usv_language/`
 3. **Scripts** — CLI entry points in `scripts/`
-4. **Tests** — Write tests covering: happy path, edge cases, DSP parameter validation
+3.5. **Check for pre-existing tests** — If `tests/test_<module>.py` (or `usv_language/tests/test_<module>.py`) already exists (written by `test-architect`), read it. These tests are the executable specification — your implementation must make them pass. Do NOT modify the test expectations unless you identify a genuine spec error (in which case, STOP and discuss per the anti-greenwashing protocol). Note in the handoff: "Pre-existing tests from test-architect: N"
+4. **Tests** — Write ADDITIONAL tests covering gaps not already in the pre-existing file: happy path, edge cases, DSP parameter validation. If no pre-existing test file exists, write the full test suite as before.
 5. **Run module tests** — `.\.venv\Scripts\python.exe -m pytest tests/test_<module>.py -v`
 6. **Run full test suite** — `.\.venv\Scripts\python.exe -m pytest tests/ -v`
 7. Fix any failures — iterate until green
@@ -86,10 +89,25 @@ After writing the handoff, spawn the `master-reviewer` agent (subagent_type: `ma
    - **BLOCKERs require re-review** — the implementor cannot self-report that blockers are resolved. Spawn master-reviewer again as a spot-check (can be Tier 1 scope focused on the specific fixes).
    - **Tier 3 recommendation:** For Tier 3 (critical) modules, recommend that re-review happens in a **separate session** for fresh context. The implementor and reviewer sharing the same conversation risks anchoring bias.
 
+## Phase 4.5: HARDEN
+
+After the master-reviewer approves (verdict = APPROVED), spawn the `test-hardener` agent (subagent_type: `test-hardener`) to find remaining coverage gaps:
+
+```
+Harden tests for module [MODULE NAME].
+Source files: [list source files from implementation]
+Test file: tests/test_<module>.py
+```
+
+Review the hardener's report. If bugs are found (skipped tests with `BUG FOUND` comments),
+decide whether to fix now or defer. Document any deferred bugs in the handoff. Note in the
+handoff: "Tests after hardening: N total (M pre-existing + K implementation + J hardener)"
+
 ## Phase 5: REPORT
 Summarize to the user:
 - What was created (files, classes, functions)
-- Test results (pass counts)
+- Test results (pass counts, including hardener additions)
 - Review verdict and any issues found
+- Bugs found by test-hardener (if any)
 - Any known limitations
 

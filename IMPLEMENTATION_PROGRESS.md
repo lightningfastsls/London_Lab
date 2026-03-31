@@ -4,6 +4,24 @@
 > For current status see `ops/goals.md` (agent) or `docs/human/PROJECTS.md` (human).
 > New entries should be appended at the top with a dated header.
 
+## 2026-03-29 — Phase 15 Gate Check: Code Complete
+
+- **All 7 modules implemented:** 15.1 Hysteresis, 15.2 Event Scoring + Optimization, 15.3 Temperature Scaling, 15.4 Event Features, 15.5 FP Filter, 15.6 Normalization, 15.7 Triage + Batch Output
+- **Test suite:** 346/346 Phase 15 tests pass (including hardened tests for all modules), 855/855 project-wide tests pass (excluding 5 pre-existing DeepSqueak import failures due to missing `openpyxl`)
+- **Module docs:** 7/7 written (hysteresis-detection, event-scoring, calibration, event-features, fp-filter, normalization, recording-triage)
+- **Gate status:** 9/9 criteria met. All empirical runs completed 2026-03-28: hysteresis optimization F2=0.885±0.016 (198 recordings, 5-fold CV), FP filter F2=0.850±0.084, temperature T=0.905 (ECE 0.024→0.014), batch run on 5970 dataset
+- **Phase 15 CLOSED**
+
+## 2026-03-28 — Module 15.7: Recording-Level Triage and Batch Output
+
+- Created: `src/usv_spectrogram/postprocessing/triage.py` — `TriageConfig`, `RecordingResult`, `triage_recording()`
+- Created: `src/usv_spectrogram/postprocessing/batch_output.py` — `write_batch_results()` (parquet + per-recording JSON)
+- Created: `scripts/run_batch_detection.py` — CLI for full batch pipeline (AudioLoader → SlidingInference → optional stages → Triage → Output)
+- Updated: `postprocessing/__init__.py` — added triage + batch_output exports
+- Added: `pyarrow` to requirements.txt
+- Pre-existing tests: 19 from test-architect, all pass without modification
+- Module doc: `docs/modules/recording-triage.md`
+
 ## 2026-03-28 — Module 15.5: False Positive Filter
 
 - Created: `src/usv_spectrogram/postprocessing/fp_filter.py` — `FalsePositiveFilter` class (LogisticRegression + StandardScaler pipeline)

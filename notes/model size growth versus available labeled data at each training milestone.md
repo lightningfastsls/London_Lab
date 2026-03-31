@@ -26,6 +26,7 @@ Relevant Notes:
 - [[recording-level splits reduce effective training set size but prevent data leakage]] -- constrains effective data diversity at each milestone
 - [[model size should scale with labeled dataset size to balance underfitting and overfitting]] -- the general principle this note elaborates
 - [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]] -- the small regime architecture
+- [[mid-c-cnn-balances-capacity-and-inference-speed-for-14k-samples]] -- empirical interpolation between small and medium tiers for the 14.7K matched-windows retrain
 
 Topics:
 - [[classification]]

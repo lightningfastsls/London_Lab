@@ -6,7 +6,7 @@
 $ErrorActionPreference = 'SilentlyContinue'
 
 try {
-    $VaultRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+    $VaultRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).ProviderPath
 
     # Guard: only run in arscontexta vaults
     if (-not (Test-Path (Join-Path $VaultRoot ".arscontexta"))) { [Environment]::Exit(0) }
@@ -220,16 +220,32 @@ try {
     }
 
     # --- Knowledge Activation: Surface relevant vault notes per active thread ---
+    # Uses vault-search.mjs (topic-map traversal + ripgrep), replacing the old qmd approach.
     $relevanceFile = Join-Path $VaultRoot "ops\session-relevance.md"
+    $vaultSearch = Join-Path $VaultRoot "ops\scripts\vault-search.mjs"
+    $indexFile = Join-Path $VaultRoot "ops\cache\topic-map-index.json"
+    $indexScript = Join-Path $VaultRoot "ops\scripts\topic-map-index.mjs"
     $activationSuccess = $false
 
     try {
-        # Resolve qmd via node directly (npm shim is broken on Windows - /bin/sh.exe not found)
-        $qmdScript = Join-Path $env:APPDATA "npm\node_modules\@tobilu\qmd\dist\cli\qmd.js"
-        if (-not (Test-Path $qmdScript)) {
-            throw "qmd not found at $qmdScript"
+        $nodeExe = (Get-Command node -ErrorAction Stop).Source
+
+        if (-not (Test-Path $vaultSearch)) {
+            throw "vault-search.mjs not found at $vaultSearch"
         }
-        $nodeExe = "node"
+
+        # Auto-regenerate topic-map index if stale (>24h) or missing
+        if (-not (Test-Path $indexFile) -or (Test-Path $indexFile) -and ((Get-Date) - (Get-Item $indexFile).LastWriteTime).TotalMinutes -gt 1440) {
+            if (Test-Path $indexScript) {
+                try {
+                    & $nodeExe $indexScript (Join-Path $VaultRoot "notes") $indexFile 2>$null
+                } catch {
+                    if (-not (Test-Path $indexFile)) {
+                        Write-Host "Warning: topic-map index generation failed and no stale index available" -ForegroundColor Yellow
+                    }
+                }
+            }
+        }
 
         # Parse thread titles from goalLines
         $threads = @()
@@ -249,91 +265,51 @@ try {
             Set-Content -Path $relevanceFile -Value $relevanceContent -Encoding UTF8
             $activationSuccess = $true
         } else {
-            $allThreadResults = @{}
+            $sb = [System.Text.StringBuilder]::new()
+            [void]$sb.AppendLine("# Session Relevance Brief")
+            [void]$sb.AppendLine("<!-- Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm') -->")
+            [void]$sb.AppendLine("<!-- Method: topic-map-traversal + ripgrep -->")
+            [void]$sb.AppendLine("")
+
             $totalNotes = 0
 
             foreach ($thread in $threads) {
                 $threadTitle = $thread.Title
                 $threadDesc = $thread.Desc
-                $threadNotes = @{}  # key=note title, value=@{Title; Score; Source}
-
-                # Extract first sentence of description, strip status noise for vsearch
-                $firstSentence = $threadDesc
-                if ($threadDesc -match '^([^.]+\.)') { $firstSentence = $Matches[1] }
-                # Remove status words that dilute BM25 scoring
-                $cleanDesc = $firstSentence -replace '\b(DONE|IN PROGRESS|COMPLETE|TODO|BLOCKED|DEFERRED)\b', '' `
-                    -replace '\bPhase\s+\d+(\.\d+)?\b', '' `
-                    -replace '\(\s*\)', '' `
-                    -replace '\s+', ' '
-                $vsearchQuery = "$threadTitle $cleanDesc".Trim()
-                if ($vsearchQuery.Length -gt 120) { $vsearchQuery = $vsearchQuery.Substring(0, 120) }
-
-                # --- Keyword search ---
-                $titleWords = $threadTitle -replace '[^\w\s.]', '' -replace '\s+', ' '
-                if ($titleWords.Trim().Split(' ').Count -ge 2) {
-                    try {
-                        $kwRaw = & $nodeExe $qmdScript search $titleWords --limit 3 --json 2>&1
-                        $kwString = ($kwRaw | Out-String)
-                        $kwBracketIdx = $kwString.IndexOf('[')
-                        if ($kwBracketIdx -ge 0) {
-                            $kwJson = $kwString.Substring($kwBracketIdx)
-                            $kwResults = $kwJson | ConvertFrom-Json
-                            foreach ($r in $kwResults) {
-                                if ($r.score -ge 0.1 -and $r.title) {
-                                    $noteKey = $r.title
-                                    if (-not $threadNotes.ContainsKey($noteKey) -or $threadNotes[$noteKey].Score -lt $r.score) {
-                                        $threadNotes[$noteKey] = @{ Title = $r.title; Score = $r.score; Source = 'keyword' }
-                                    }
-                                }
-                            }
-                        }
-                    } catch {}
-                }
-
-                # --- Vector search ---
-                try {
-                    $vsRaw = & $nodeExe $qmdScript vsearch $vsearchQuery --limit 3 --json 2>&1
-                    $vsString = ($vsRaw | Out-String)
-                    # Extract JSON array: find first '[' and parse from there
-                    $bracketIdx = $vsString.IndexOf('[')
-                    if ($bracketIdx -ge 0) {
-                        $vsJsonStr = $vsString.Substring($bracketIdx)
-                        $vsResults = $vsJsonStr | ConvertFrom-Json
-                        foreach ($r in $vsResults) {
-                            if ($r.score -ge 0.3 -and $r.title) {
-                                $noteKey = $r.title
-                                if (-not $threadNotes.ContainsKey($noteKey) -or $threadNotes[$noteKey].Score -lt $r.score) {
-                                    $threadNotes[$noteKey] = @{ Title = $r.title; Score = $r.score; Source = 'vector' }
-                                }
-                            }
-                        }
-                    }
-                } catch {}
-
-                # Cap at 4 notes per thread, sorted by score descending
-                $sortedNotes = $threadNotes.Values | Sort-Object { $_.Score } -Descending | Select-Object -First 4
-                $allThreadResults[$threadTitle] = $sortedNotes
-                $totalNotes += $sortedNotes.Count
-            }
-
-            # Build relevance file content
-            $sb = [System.Text.StringBuilder]::new()
-            [void]$sb.AppendLine("# Session Relevance Brief")
-            [void]$sb.AppendLine("<!-- Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm') -->")
-            [void]$sb.AppendLine("<!-- Threads: $($threads.Count) active from goals.md -->")
-            [void]$sb.AppendLine("")
-
-            foreach ($thread in $threads) {
-                $threadTitle = $thread.Title
                 [void]$sb.AppendLine("## $threadTitle")
 
-                $notes = $allThreadResults[$threadTitle]
-                if ($notes -and $notes.Count -gt 0) {
-                    foreach ($n in $notes) {
-                        [void]$sb.AppendLine("- **$($n.Title)** (score: $($n.Score), $($n.Source))")
+                # Truncate context to first 100 chars
+                $context = $threadDesc
+                if ($context.Length -gt 100) { $context = $context.Substring(0, 100) }
+
+                # Search via vault-search.mjs (topic map traversal + ripgrep)
+                try {
+                    $searchRaw = & $nodeExe $vaultSearch --query $threadTitle --context $context --limit 3 2>$null
+                    $searchString = ($searchRaw | Out-String).Trim()
+                    $bracketIdx = $searchString.IndexOf('[')
+                    $foundAny = $false
+
+                    if ($bracketIdx -ge 0) {
+                        $searchJson = $searchString.Substring($bracketIdx)
+                        $results = $searchJson | ConvertFrom-Json
+                        foreach ($r in $results) {
+                            if ($r.note) {
+                                $typeDisplay = ""
+                                if ($r.type) { $typeDisplay = " ($($r.type))" }
+                                $ctxDisplay = ""
+                                if ($r.context_phrase) { $ctxDisplay = " -- $($r.context_phrase)" }
+                                [void]$sb.AppendLine("- `"$($r.note)`"${typeDisplay}${ctxDisplay}")
+                                $totalNotes++
+                                $foundAny = $true
+                            }
+                        }
                     }
-                } else {
-                    [void]$sb.AppendLine("- No strong matches above relevance threshold.")
+
+                    if (-not $foundAny) {
+                        [void]$sb.AppendLine("- No strong matches above relevance threshold.")
+                    }
+                } catch {
+                    [void]$sb.AppendLine("- Search failed for this thread.")
                 }
                 [void]$sb.AppendLine("")
             }
@@ -343,8 +319,8 @@ try {
             Write-Host "Knowledge activation: $totalNotes notes surfaced for $($threads.Count) threads"
         }
     } catch {
-        # qmd unavailable or other error - write graceful fallback
-        $relevanceContent = "# Session Relevance Brief`n<!-- Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm') -->`n`nqmd unavailable - knowledge activation skipped.`n"
+        # vault-search unavailable or node missing - write graceful fallback
+        $relevanceContent = "# Session Relevance Brief`n<!-- Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm') -->`n`nKnowledge activation unavailable (node or vault-search.mjs missing).`n"
         Set-Content -Path $relevanceFile -Value $relevanceContent -Encoding UTF8
     }
 

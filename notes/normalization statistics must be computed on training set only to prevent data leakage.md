@@ -14,7 +14,7 @@ The correct procedure is to compute per-bin mean and std exclusively on training
 
 This principle is the preprocessing analog of [[recording-level splits prevent data leakage in USV classification]], which applies at the sample assignment level. That decision ensures no recording contributes samples to both training and evaluation splits. The current decision ensures the preprocessing statistics themselves do not encode evaluation-set information. Both constraints address the same underlying concern: that the measured performance should reflect generalization to genuinely unseen data.
 
-In practice, the training-set normalization statistics are saved to an npz file alongside the model checkpoint. See [[per-frequency-bin normalization removes frequency-dependent energy bias in spectrogram input]] for the formula and implementation details. Without the saved statistics file, a loaded model cannot be applied correctly to new data.
+In practice, the training-set normalization statistics are saved to an npz file alongside the model checkpoint. See [[per-frequency-bin normalization removes frequency-dependent energy bias in spectrogram input]] for the formula and implementation details. Without the saved statistics file, a loaded model cannot be applied correctly to new data. At the recording level, [[per-recording normalization compensates for varying noise floors across recording sessions]] addresses session-level variation through dynamic vmin/vmax -- both normalization strategies must use training-set statistics only.
 
 ---
 

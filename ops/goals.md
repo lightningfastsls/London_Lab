@@ -13,7 +13,8 @@ type: moc
 - CC weekly routine first execution -- deferred to a session in D:\we_do_this\tevel-erp
 
 ## Recently Completed
-- **Vault Retrieval Overhaul** (2026-03-25): Replaced broken qmd dependency with 3-layer vault-search.mjs (topic-map traversal + ripgrep + wiki-link following). Session-orient hook migrated to bash, 11 skills migrated off qmd, 13/13 tests pass, 4/4 smoke tests pass. Plan: PLAN_fix-session-orient-knowledge-activation.md
+- **Phase 15 Post-Processing Pipeline** (2026-03-29): 7 modules (hysteresis, event scoring, calibration, event features, FP filter, normalization, triage+batch output). 346 tests, 7 module docs. Hysteresis F2=0.885, FP filter F2=0.850, T=0.905. Batch run on 198 labeled + 5970 dataset. Gate: 9/9. ROADMAP_POST_PROCESSING.md.
+- **Vault Retrieval Overhaul** (2026-03-25): Replaced broken qmd with vault-search.mjs (topic-map traversal + ripgrep + wiki-link following). All hooks migrated (ps1 fixed 2026-03-29), 11 skills migrated off qmd. Plan: PLAN_fix-session-orient-knowledge-activation.md
 
 ## Completed
 - Phase 10.1 -- Active Learning Cycle Runner implemented (2026-02-21): CycleMetrics + generate_cycle_report in training/cycle_report.py, 7-step orchestration CLI in run_training_cycle.py, 34 tests, handoff + review written

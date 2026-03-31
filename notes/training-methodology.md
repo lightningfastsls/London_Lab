@@ -12,6 +12,7 @@ How we prepare training data and evaluate model performance. Recording-level spl
 - [[recording-level splits prevent data leakage in USV classification]] -- split by recording file stem, not individual candidates
 - [[recording-level splits reduce effective training set size but prevent data leakage]] -- the tradeoff: honest metrics vs smaller training set
 - [[normalization statistics must be computed on training set only to prevent data leakage]] -- same leakage principle applied to preprocessing statistics
+- [[recording groups 5970 3452 2379 are all wild mouse dyads not different strains]] -- all current training data is wild mice; numeric IDs are dyad identifiers, not populations
 
 ## Training Sample Quality
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- random chunks, inter-USV gaps, low-energy regions
@@ -28,6 +29,7 @@ How we prepare training data and evaluate model performance. Recording-level spl
 - [[spectrogram SpecAugment-style augmentation with frequency and time masking improves transformer generalization]] -- 4 augmentations at p=0.5 for transformer training
 - [[length-bucketed batching minimizes padding waste when sequences vary in duration]] -- 6-8 buckets for variable-length bout spectrograms
 - [[model size growth versus available labeled data at each training milestone]] -- small/medium/large CNN scaling tied to label count
+- [[mid-c-cnn-balances-capacity-and-inference-speed-for-14k-samples]] -- custom [32, 96, 192] config interpolating between small and medium tiers for matched-windows retrain
 - [[active learning cycle automates the label-train-evaluate-mine loop for iterative CNN improvement]] -- 5-milestone scaling from 2K to 30K labels
 - [[recall versus precision tradeoff in two-stage USV detection]] -- defines evaluation methodology: what metrics matter and why
 

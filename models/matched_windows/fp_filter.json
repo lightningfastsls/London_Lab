@@ -1,0 +1,89 @@
+{
+  "cv_results": {
+    "fold_results": [
+      {
+        "fold": 0,
+        "f2": 0.8881,
+        "tp": 238,
+        "fp": 14,
+        "fn": 34,
+        "n_train": 1244,
+        "n_val": 293,
+        "n_val_recordings": 28
+      },
+      {
+        "fold": 1,
+        "f2": 0.6824,
+        "tp": 232,
+        "fp": 8,
+        "fn": 133,
+        "n_train": 1106,
+        "n_val": 431,
+        "n_val_recordings": 28
+      },
+      {
+        "fold": 2,
+        "f2": 0.8984,
+        "tp": 260,
+        "fp": 11,
+        "fn": 34,
+        "n_train": 1198,
+        "n_val": 339,
+        "n_val_recordings": 28
+      },
+      {
+        "fold": 3,
+        "f2": 0.8859,
+        "tp": 163,
+        "fp": 9,
+        "fn": 24,
+        "n_train": 1318,
+        "n_val": 219,
+        "n_val_recordings": 28
+      },
+      {
+        "fold": 4,
+        "f2": 0.8974,
+        "tp": 203,
+        "fp": 8,
+        "fn": 27,
+        "n_train": 1282,
+        "n_val": 255,
+        "n_val_recordings": 28
+      }
+    ],
+    "mean_f2": 0.8504,
+    "std_f2": 0.0842,
+    "n_folds_completed": 5
+  },
+  "feature_importances": {
+    "peak_probability": 1.8462375600123202,
+    "mean_probability": 0.48868033305668546,
+    "prob_std": 0.19337582540898338,
+    "prob_kurtosis": 0.2828766578411586,
+    "prob_roughness": 0.07448512442794983,
+    "duration_windows": 0.3058648421209289,
+    "tonality": 1.1200674078931558,
+    "mean_peak_freq_bin": 0.2171202675931574,
+    "freq_range_bins": 0.12053106238613893,
+    "freq_modulation_rate": 0.052236573478735004,
+    "snr_db": 1.4499186236837753
+  },
+  "n_events": 1537,
+  "n_usv": 1348,
+  "n_fp": 189,
+  "hysteresis_config": {
+    "onset_threshold": 0.6,
+    "sustain_threshold": 0.45,
+    "gap_fill_windows": 0,
+    "min_duration_windows": 3
+  },
+  "args": {
+    "model": "models/matched_windows/best_model.pt",
+    "labels": "data/unified_labels.json",
+    "cv_folds": 5,
+    "collar_s": 0.2,
+    "hop_px": 10,
+    "seed": 42
+  }
+}

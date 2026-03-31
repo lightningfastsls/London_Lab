@@ -1,7 +1,9 @@
 ---
 description: qmd retrieval replaced by topic-map traversal + ripgrep after investigation 4.3 showed 0% recall on goal-thread prose
 type: observation
-status: processed
+status: archived
+archived: 2026-03-29
+archived_by: rethink-2026-03-29
 created: 2026-03-25
 ---
 

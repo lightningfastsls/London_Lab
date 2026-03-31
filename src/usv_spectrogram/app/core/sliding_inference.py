@@ -6,6 +6,7 @@ generate per-timepoint probability predictions.
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Tuple
@@ -16,6 +17,8 @@ from PIL import Image
 
 from ...models.cnn_classifier import USVClassifierCNN
 
+logger = logging.getLogger(__name__)
+
 
 @dataclass
 class InferenceResult:
@@ -24,6 +27,7 @@ class InferenceResult:
     probabilities: np.ndarray  # Shape: (n_windows,), probabilities in [0, 1]
     column_indices: np.ndarray  # Shape: (n_windows,), center column index for each window
     times: np.ndarray  # Shape: (n_windows,), center time in seconds for each window
+    logits: np.ndarray | None = None  # Shape: (n_windows,), raw model outputs before sigmoid
 
 
 class SlidingInference:
@@ -42,7 +46,7 @@ class SlidingInference:
         batch_size: int = 32,
         device: str | None = None,
         energy_threshold: float = 0.1,
-        enable_per_window_norm: bool = True
+        enable_per_window_norm: bool = False
     ):
         """Initialize sliding inference.
 
@@ -100,8 +104,14 @@ class SlidingInference:
             # Assume checkpoint is the state dict itself
             state_dict = checkpoint
 
-        # Instantiate model with same architecture
-        model = USVClassifierCNN()
+        # Instantiate model with architecture from checkpoint (if available)
+        model_kwargs = {}
+        if isinstance(checkpoint, dict):
+            if 'num_filters' in checkpoint:
+                model_kwargs['num_filters'] = checkpoint['num_filters']
+            if 'dense_units' in checkpoint:
+                model_kwargs['dense_units'] = checkpoint['dense_units']
+        model = USVClassifierCNN(**model_kwargs)
         model.load_state_dict(state_dict)
 
         return model
@@ -109,13 +119,15 @@ class SlidingInference:
     def infer(
         self,
         spectrogram_db: np.ndarray,
-        times: np.ndarray
+        times: np.ndarray,
+        return_logits: bool = False,
     ) -> InferenceResult:
         """Run sliding window inference on spectrogram.
 
         Args:
             spectrogram_db: Spectrogram in dB, shape (freqs, times)
             times: Time bins in seconds, shape (times,)
+            return_logits: If True, also return raw logits for calibration.
 
         Returns:
             InferenceResult with probabilities and window positions
@@ -157,11 +169,15 @@ class SlidingInference:
             return InferenceResult(
                 probabilities=np.empty(0),
                 column_indices=np.empty(0, dtype=int),
-                times=np.empty(0)
+                times=np.empty(0),
+                logits=np.empty(0, dtype=np.float32) if return_logits else None,
             )
 
         # Extract windows and run inference in batches
         all_probabilities = np.zeros(n_windows, dtype=np.float32)  # Pre-allocate, default 0.0
+        # Energy-skipped windows get logit=-20.0 so sigmoid(-20/T) ≈ 0.0,
+        # matching the probabilities=0.0 convention for skipped windows.
+        all_logits = np.full(n_windows, -20.0, dtype=np.float32) if return_logits else None
         skipped_count = 0  # Track how many windows we skip
         window_max_values = []  # Track max values for debugging
 
@@ -203,7 +219,12 @@ class SlidingInference:
 
                 # Run inference (no gradient computation)
                 with torch.no_grad():
-                    batch_probs = self.model.predict_proba(batch_tensor)
+                    if return_logits:
+                        batch_logits = self.model.forward(batch_tensor).squeeze(dim=1)
+                        batch_probs = torch.sigmoid(batch_logits)
+                        batch_logits_np = batch_logits.cpu().numpy().flatten()
+                    else:
+                        batch_probs = self.model.predict_proba(batch_tensor)
 
                 # Convert to numpy
                 batch_probs = batch_probs.cpu().numpy().flatten()
@@ -212,24 +233,42 @@ class SlidingInference:
                 for idx, prob in zip(window_indices, batch_probs):
                     all_probabilities[idx] = prob
 
+                # Fill in logits if requested
+                if return_logits:
+                    for idx, logit in zip(window_indices, batch_logits_np):
+                        all_logits[idx] = logit
+
         # Get times for window centers
         window_times = times[window_centers]
 
         # Debug output
         window_max_array = np.array(window_max_values)
-        print(f"[SlidingInference] Total windows: {n_windows}")
-        print(f"[SlidingInference] Window max values - min: {window_max_array.min():.3f}, median: {np.median(window_max_array):.3f}, max: {window_max_array.max():.3f}")
-        print(f"[SlidingInference] Energy threshold: {self.energy_threshold:.3f}")
-        print(f"[SlidingInference] Windows skipped by energy filter: {skipped_count} ({100*skipped_count/n_windows:.1f}%)")
-        print(f"[SlidingInference] Windows processed by CNN: {n_windows - skipped_count}")
-        print(f"[SlidingInference] Per-window normalization: {'enabled' if self.enable_per_window_norm else 'disabled'}")
+        logger.debug("Total windows: %d", n_windows)
+        logger.debug(
+            "Window max values - min: %.3f, median: %.3f, max: %.3f",
+            window_max_array.min(), np.median(window_max_array), window_max_array.max(),
+        )
+        logger.debug("Energy threshold: %.3f", self.energy_threshold)
+        logger.info(
+            "Windows skipped by energy filter: %d (%.1f%%)",
+            skipped_count, 100 * skipped_count / n_windows,
+        )
+        logger.info("Windows processed by CNN: %d", n_windows - skipped_count)
+        logger.debug(
+            "Per-window normalization: %s",
+            "enabled" if self.enable_per_window_norm else "disabled",
+        )
         if self.enable_per_window_norm:
-            print("[WARNING] Per-window normalization adds extra normalization not present in training pipeline")
+            logger.warning(
+                "Per-window normalization adds extra normalization "
+                "not present in training pipeline"
+            )
 
         return InferenceResult(
             probabilities=all_probabilities,
             column_indices=window_centers,
-            times=window_times
+            times=window_times,
+            logits=all_logits,
         )
 
     def _prepare_batch(self, windows: list[np.ndarray]) -> torch.Tensor:
@@ -309,16 +348,9 @@ class SlidingInference:
         # Convert to torch tensor
         batch_tensor = torch.from_numpy(batch).float()
 
-        # CRITICAL FIX: Pad to 512px width to match training
-        # Training used variable-width spectrograms padded to 512px for batch consistency
-        # Even though CNN has global pooling, it was trained with padded inputs
-        MAX_WIDTH = 512
-        current_width = batch_tensor.shape[3]
-        if current_width < MAX_WIDTH:
-            pad_width = MAX_WIDTH - current_width
-            batch_tensor = torch.nn.functional.pad(
-                batch_tensor, (0, pad_width, 0, 0), value=0
-            )
+        # No padding — all windows are fixed width (window_columns), matching
+        # training pipeline. The old 512px padding diluted signal through
+        # GlobalAvgPool and is removed as part of the matched-window retrain.
 
         return batch_tensor
 

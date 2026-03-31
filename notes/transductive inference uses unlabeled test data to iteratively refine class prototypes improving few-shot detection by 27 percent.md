@@ -22,6 +22,7 @@ Source:
 
 Relevant Notes:
 - [[prototypical networks are the dominant paradigm for few-shot bioacoustic event detection]] -- transductive inference enhances prototypical networks
+- [[no few-shot learning method has been applied to USV syllable-type classification]] -- transductive inference is especially relevant to USVs because the energy detector produces many unlabeled candidates per session that could serve as free adaptation signal
 
 Topics:
 - [[classification-methodology]]

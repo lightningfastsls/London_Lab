@@ -8,10 +8,10 @@
 %   - Prints Box sample for visual confirmation
 %
 % Usage:
-%   >> run('C:\Users\shach\PycharmProjects\mickey_london_lab\scripts\create_deepsqueak_mats.m')
+%   >> run('\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\scripts\create_deepsqueak_mats.m')
 
-ravenDir = 'C:\Users\shach\PycharmProjects\mickey_london_lab\raven_tables';
-wavDir   = 'C:\Users\shach\PycharmProjects\mickey_london_lab\5970 USV';
+ravenDir = '\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\raven_tables';
+wavDir   = '\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\5970 USV';
 outDir   = fullfile(fileparts(which('DeepSqueak')), 'Detections');
 
 if ~isfolder(outDir)

@@ -22,6 +22,7 @@ Source:
 
 Relevant Notes:
 - [[prototypical networks are the dominant paradigm for few-shot bioacoustic event detection]] -- the methods driving this improvement
+- [[no few-shot learning method has been applied to USV syllable-type classification]] -- despite this progress in general bioacoustics, the USV field has not adopted these methods
 
 Topics:
 - [[classification-methodology]]

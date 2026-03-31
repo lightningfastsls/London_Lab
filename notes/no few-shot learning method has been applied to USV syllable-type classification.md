@@ -23,6 +23,8 @@ Source:
 Relevant Notes:
 - [[no self-supervised foundation model has been applied to rodent USV data]] -- parallel gap in SSL
 - [[No single Python tool cleanly accepts pre-detected USV segments and classifies them into syllable types as of 2026]] -- the broader classification gap
+- [[transductive inference uses unlabeled test data to iteratively refine class prototypes improving few-shot detection by 27 percent]] -- especially promising for USVs because the energy detector produces many unlabeled candidates per session
+- [[DCASE few-shot bioacoustic detection improved from F1 40 percent to 70 percent across 2021-2024 challenge editions]] -- demonstrates rapid maturation of few-shot methods in bioacoustics that USV research has not adopted
 
 Topics:
 - [[classification-methodology]]

@@ -9,8 +9,10 @@ pytest
 torch
 torchvision
 pandas
+pyarrow
 pillow
 scikit-learn
 PyQt6
+sounddevice
 notion-client
 anthropic

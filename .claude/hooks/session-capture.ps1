@@ -16,7 +16,7 @@ try {
     # Only create session file if we have a transcript to reference
     if (-not $input_json.transcript_path) { [Environment]::Exit(0) }
 
-    $VaultRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+    $VaultRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).ProviderPath
 
     # Guard: only run in arscontexta vaults
     if (-not (Test-Path (Join-Path $VaultRoot ".arscontexta"))) { [Environment]::Exit(0) }

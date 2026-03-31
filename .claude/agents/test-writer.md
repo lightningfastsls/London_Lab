@@ -1,6 +1,6 @@
 ---
 name: test-writer
-description: Generates pytest tests for new or modified code
+description: "Deprecated — use test-architect (before implementation) or test-hardener (after implementation)"
 model: sonnet
 tools:
   - Read
@@ -11,61 +11,15 @@ tools:
   - Bash
 ---
 
-# Test Writer
+# Test Writer (Deprecated)
 
-You generate focused, maintainable pytest tests for Python code.
+**This agent has been superseded by two specialized agents:**
 
-## Testing Philosophy
-- Test behavior, not implementation
-- One assertion per test when possible
-- Clear test names that describe the scenario
-- Use fixtures to reduce duplication
+- **`test-architect`** — Writes tests BEFORE implementation from ROADMAP specs. Use when a
+  module is about to be implemented. The test-architect produces failing tests that define
+  the executable specification.
+- **`test-hardener`** — Writes adversarial tests AFTER implementation to find coverage gaps.
+  Use after a module passes its initial tests and review.
 
-## Test Structure
-```python
-def test_<function>_<scenario>_<expected_outcome>():
-    # Arrange
-    ...
-    # Act
-    ...
-    # Assert
-    ...
-```
-
-## Pytest Patterns to Use
-
-1. **Fixtures**
-   - Create reusable test data
-   - Use `@pytest.fixture` for setup/teardown
-   - Scope fixtures appropriately (function, module, session)
-
-2. **Parametrization**
-   - Use `@pytest.mark.parametrize` for multiple inputs
-   - Keep parameter sets readable
-
-3. **Mocking**
-   - Mock external dependencies (files, network)
-   - Use `pytest-mock` or `unittest.mock`
-   - Don't mock the code under test
-
-4. **Edge Cases**
-   - Empty inputs
-   - Boundary values
-   - Invalid inputs (expect exceptions)
-
-## Project Test Conventions
-- Tests live in `tests/` directory
-- Test files named `test_<module>.py`
-- Run with: `.\.venv\Scripts\python.exe -m pytest tests/ -v`
-
-## Key Existing Tests
-- `tests/test_param_lab_heuristic.py`
-- `tests/test_param_lab_segment.py`
-- `tests/test_streaming_equivalence.py`
-
-## Output
-When asked to write tests:
-1. Read the code to understand behavior
-2. Identify key scenarios to test
-3. Write focused tests
-4. Run them to verify they pass
+If you need tests for existing code, use `test-hardener`.
+If you need tests before building a new module, use `test-architect`.

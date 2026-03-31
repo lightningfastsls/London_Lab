@@ -1,4 +1,8 @@
-"""Streamlit entrypoint for the USV Parameter Lab."""
+"""Streamlit entrypoint for the USV Parameter Lab.
+
+DEPRECATED: This Streamlit app is no longer in active use.
+The primary UI is now the PyQt6 desktop app (usv_spectrogram.app.main).
+"""
 
 from __future__ import annotations
 

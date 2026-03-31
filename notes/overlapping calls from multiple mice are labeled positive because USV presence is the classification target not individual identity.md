@@ -21,6 +21,8 @@ Source:
 Relevant Notes:
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- both stages detect presence, not identity
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the research question that shapes this labeling decision
+- [[Ivanenko et al 2020 showed DNNs achieve 77-84 percent accuracy classifying emitter sex from spectrograms]] -- demonstrates that identity information IS present in spectrograms, though we deliberately ignore it for the presence-detection task
+- [[wearable miniature microphones achieve 90 percent USV attribution from amplitude alone]] -- hardware-based attribution approach that could complement this presence-only labeling if individual identity becomes needed
 
 Topics:
 - [[detection]]

@@ -3,7 +3,7 @@
 %
 % Usage:
 %   1. Open MATLAB
-%   2. >> run('C:\Users\shach\PycharmProjects\mickey_london_lab\scripts\diagnose_deepsqueak.m')
+%   2. >> run('\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\scripts\diagnose_deepsqueak.m')
 %   3. Copy the output and paste it back
 %
 % What this checks:

@@ -90,6 +90,7 @@ Full template: `docs/workflow/approval-request-template.md`
 | Unknown | Fail | **STOP** - don't assume which is wrong, discuss |
 
 **NEVER modify test expected values to make tests pass without discussion.**
+Pre-existing test files (from `test-architect`) are treated as spec — do NOT modify their expectations during implementation without discussion.
 
 ---
 
@@ -105,7 +106,7 @@ USV Spectrogram Generator - Python tools for analyzing ultrasonic vocalization (
 .\.venv\Scripts\python.exe -m py_compile <file.py>
 ```
 
-WAV files: `$env:USV_WAV_DIR` or fallback `<repo>/5970 USV`
+WAV files: No single canonical directory. Recordings span multiple locations (e.g., `USV5/usv_lmt_034/`, `USV_3452_sample_reviewed/`). Use `--wav-search-dirs` in `scripts/unify_labels.py` to resolve paths. Legacy fallback: `$env:USV_WAV_DIR`.
 
 ## Project Structure
 
@@ -139,7 +140,7 @@ All `src/` paths above are relative to `src/usv_spectrogram/` unless they start 
 |----------|--------------|
 | `ops/goals.md` | **Start of every session** (session state, active threads) |
 | `notes/index.md` + topic maps | **Before any architectural/design choice** (domain knowledge) |
-| `ROADMAP.md` | **Before implementing any module** |
+| `ROADMAP*.md` / plan files | Before implementing — check relevant plan (no single master ROADMAP) |
 | `docs/architecture/patterns.md` | Before implementing (follow established patterns) |
 | `docs/workflow/completion-sequence.md` | When implementing 2+ file changes (includes handoff rules) |
 | `docs/reviews/REVIEW-TEMPLATE.md` | When writing handoff or requesting review (includes tier system) |
@@ -162,12 +163,20 @@ All `src/` paths above are relative to `src/usv_spectrogram/` unless they start 
 |------|-------|-------------|
 | Review STFT/DSP/math changes | `dsp-reviewer` | ANY change to energy computation, FFT, dB scaling |
 | Implement Streamlit UI | `streamlit-expert` | ANY Streamlit UI work |
-| Write tests for code | `test-writer` | After implementing new features |
+| Write pre-implementation tests | `test-architect` | BEFORE implementing a new module (reads ROADMAP spec) |
+| Harden tests post-implementation | `test-hardener` | AFTER implementation passes review (finds coverage gaps) |
 | Validate detection changes | `detection-validator` | ANY change to detection logic |
 | Final review before commit | `pr-reviewer` | Before telling user "done" |
 | KG architecture decisions | `arscontexta-expert` | Topic map strategy, note schema, methodology questions |
 
 **Using appropriate agents is required, not optional.**
+
+**Testing workflow sequence:** For new modules, the full test lifecycle is:
+1. `roadmap-from-plan` generates the ROADMAP with test plan
+2. `test-architect` writes failing tests from the spec (optional but recommended)
+3. `/implement` builds the module (uses pre-existing tests if available, step 3.5)
+4. `master-reviewer` reviews implementation and tests
+5. `test-hardener` finds remaining coverage gaps (after review approval, phase 4.5)
 
 ---
 

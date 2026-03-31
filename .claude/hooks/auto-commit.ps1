@@ -15,7 +15,7 @@ try {
     # Only auto-commit vault files (notes/, ops/, inbox/, self/)
     if ($path -notmatch '[/\\](notes|ops|inbox|self)[/\\]') { [Environment]::Exit(0) }
 
-    $VaultRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+    $VaultRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).ProviderPath
 
     # Guard: only run in arscontexta vaults
     if (-not (Test-Path (Join-Path $VaultRoot ".arscontexta"))) { [Environment]::Exit(0) }

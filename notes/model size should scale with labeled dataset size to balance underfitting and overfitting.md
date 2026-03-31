@@ -27,3 +27,4 @@ Relevant Notes:
 - [[foundation model embeddings enable few-shot classification via simple linear probes without end-to-end training]] -- frozen embeddings + linear probe sidestep the capacity scaling problem entirely, since the "model" is just a linear layer regardless of dataset size
 - [[DoRA weight decomposition into magnitude and direction consistently outperforms standard LoRA by 1-4 points across model sizes]] -- if adapting a pretrained model, DoRA's decomposition may shift the optimal tier boundaries further
 - [[DCASE few-shot bioacoustic detection improved from F1 40 percent to 70 percent across 2021-2024 challenge editions]] -- few-shot approaches challenge the assumption that more labels are always needed; metric learning may outperform larger CNNs at small label counts
+- [[mid-c-cnn-balances-capacity-and-inference-speed-for-14k-samples]] -- demonstrates practical interpolation between the small and medium tiers when dataset size falls near a boundary

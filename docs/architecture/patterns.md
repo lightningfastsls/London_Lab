@@ -47,7 +47,7 @@ class DetectionConfig:
 **Rules:**
 - `frozen=True` — immutable after creation
 - Sensible defaults for every field
-- Numeric field suffixes encode units: `_hz`, `_ms`, `_db`, `_px`, `_s`
+- Numeric field suffixes encode units: `_hz`, `_ms`, `_db`, `_px`, `_s`, `_windows`
 - `__post_init__` validates interdependent constraints
 - Convenience methods for derived values (e.g. `hop_ms()`, `freq_resolution_hz()`)
 

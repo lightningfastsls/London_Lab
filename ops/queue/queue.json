@@ -18,7 +18,7 @@
         "New note: FSQ (Mentzer ICLR 2024) as alternative to VQ-VAE that eliminates codebook collapse",
         "New note: STSG discrete token approach (K-means 16k tokens) significantly underperforms transfer learning baselines",
         "New note: speech SSL models transfer to bioacoustics with only marginal gain from domain-specific pretraining",
-        "Synthesis note: gap analysis table — what combinations of discrete/end-to-end/learned codebook exist in literature"
+        "Synthesis note: gap analysis table \u2014 what combinations of discrete/end-to-end/learned codebook exist in literature"
       ]
     },
     {
@@ -26,26 +26,26 @@
       "type": "extract",
       "phase": "reduce",
       "source": "inbox/vacation-master-plan-v2.md",
-      "description": "Extract atomic notes from Vacation Master Plan v2 — information theory + null models merged spec (Zipf MLE, Shannon entropy cross-validation, entropy rate, excess entropy, burstiness, idiom detection), probing framework design, LMT integration tiers, and workstream convergence narrative",
+      "description": "Extract atomic notes from Vacation Master Plan v2 \u2014 information theory + null models merged spec (Zipf MLE, Shannon entropy cross-validation, entropy rate, excess entropy, burstiness, idiom detection), probing framework design, LMT integration tiers, and workstream convergence narrative",
       "status": "done",
       "completed": "2026-02-24",
       "created": "2026-02-23",
       "priority": "high",
       "notes": [
         "1 new note: pooling strategy choice over the time dimension determines what information probing experiments can access from hidden states",
-        "33 candidate claims already existed in vault from prior extraction — near-complete prior coverage confirmed"
+        "33 candidate claims already existed in vault from prior extraction \u2014 near-complete prior coverage confirmed"
       ],
       "note_candidates": [
         "zipf_via_shannon_entropy cross-validates MLE Zipf estimate and is more robust for datasets < 10K tokens",
         "ngram_idioms detects compositional phrases by comparing observed n-gram frequency to independence baseline (z-score > 3 or FDR p < 0.01)",
         "burstiness CV distinguishes Poisson (CV=1), bursty (CV>1), and regular (CV<1) USV emission patterns",
         "burstiness_by_context bridges information-theoretic analysis and LMT behavioral annotation",
-        "null models are prerequisite for interpreting information-theoretic metrics — without them Zipf and entropy rate are uninterpretable",
+        "null models are prerequisite for interpreting information-theoretic metrics \u2014 without them Zipf and entropy rate are uninterpretable",
         "conditional_entropy_by_lag (single token at lag k) is complementary to entropy_rate (contiguous history up to order k)",
-        "LMT-USV-Toolbox already implements WAV-behavioral synchronization — no need to build from scratch",
-        "probing heatmap of (layer × acoustic property) directly guides VQ-VAE layer selection",
+        "LMT-USV-Toolbox already implements WAV-behavioral synchronization \u2014 no need to build from scratch",
+        "probing heatmap of (layer \u00d7 acoustic property) directly guides VQ-VAE layer selection",
         "excess entropy I(past;future) distinguishes language-like structure from Markov chains",
-        "phase-randomized surrogates preserve autocorrelation but destroy higher-order structure — tests whether structure is just pairwise temporal correlation",
+        "phase-randomized surrogates preserve autocorrelation but destroy higher-order structure \u2014 tests whether structure is just pairwise temporal correlation",
         "HMM surrogate tests the hidden behavioral states hypothesis as alternative to compositional structure"
       ]
     },
@@ -53,9 +53,12 @@
       "id": "seed-004",
       "type": "extract",
       "current_phase": "reweave",
-      "completed_phases": ["reduce", "reflect"],
+      "completed_phases": [
+        "reduce",
+        "reflect"
+      ],
       "source": "inbox/raven-deepsqueak-classification-bridge-plan.md",
-      "description": "Extract atomic notes from Raven-DeepSqueak bridge plan — Raven format spec, DeepSqueak classification features, statistical methods for repertoire comparison (PERMANOVA, Shannon entropy, JSD, transition matrices)",
+      "description": "Extract atomic notes from Raven-DeepSqueak bridge plan \u2014 Raven format spec, DeepSqueak classification features, statistical methods for repertoire comparison (PERMANOVA, Shannon entropy, JSD, transition matrices)",
       "status": "done",
       "completed": "2026-02-24",
       "created": "2026-02-24",
@@ -87,8 +90,7 @@
         "7 enrichments: DeepSqueak monolithic (version history/reqs/formats), Goffinet continuum (GMM k<=2/AVA URL), Hertz sequence (SIS/no mapping), VocalMat (12954/AlexNet), wild-vs-lab (statistical framework/Zala), MUPET (gammatone validation), DeepSqueak classification (Raven import/scipy.io)",
         "1 open question: whether BootSnap code is publicly available"
       ]
-    }
-    ,
+    },
     {
       "id": "seed-005",
       "type": "extract",
@@ -105,13 +107,16 @@
         "1 open question: review comment feedback loop into agent learning",
         "2 new sections added to agent-governance topic map: Code Review as Governance Application, Automated Review Effectiveness"
       ]
-    }
-    ,
+    },
     {
       "id": "seed-006",
       "type": "extract",
       "current_phase": "done",
-      "completed_phases": ["reduce", "reflect", "reweave"],
+      "completed_phases": [
+        "reduce",
+        "reflect",
+        "reweave"
+      ],
       "source": "inbox/lora-doc-to-lora-hypernetworks-research-2026-03-02.md",
       "description": "Extract atomic notes from LoRA fundamentals, PEFT landscape, Doc-to-LoRA hypernetworks, and ICL-LoRA adaptation spectrum",
       "status": "done",
@@ -120,7 +125,7 @@
       "created": "2026-03-02",
       "priority": "standard",
       "notes": [
-        "21 new notes: LoRA intrinsic rank (10000x fewer params), low intrinsic dimension, direction amplification (21.5x), multi-matrix > single-matrix, no inference latency, multi-epoch overfitting, dataset quality > quantity, DoRA magnitude+direction (+1-4pt), QLoRA consumer GPU, rsLoRA sqrt scaling, implicit regularizer forgetting, multi-LoRA production serving, hypernetworks meta-learning, Doc-to-LoRA Perceiver 309M, chunk rank concatenation (256→32K), KV-cache 12GB→50MB constant, Text-to-LoRA task description→adapter, VLM→text cross-modal (75%), ICL→LoRA→D2L progression, LoRA-as-explicit-ICL bridge, context distillation bridges",
+        "21 new notes: LoRA intrinsic rank (10000x fewer params), low intrinsic dimension, direction amplification (21.5x), multi-matrix > single-matrix, no inference latency, multi-epoch overfitting, dataset quality > quantity, DoRA magnitude+direction (+1-4pt), QLoRA consumer GPU, rsLoRA sqrt scaling, implicit regularizer forgetting, multi-LoRA production serving, hypernetworks meta-learning, Doc-to-LoRA Perceiver 309M, chunk rank concatenation (256\u219232K), KV-cache 12GB\u219250MB constant, Text-to-LoRA task description\u2192adapter, VLM\u2192text cross-modal (75%), ICL\u2192LoRA\u2192D2L progression, LoRA-as-explicit-ICL bridge, context distillation bridges",
         "2 enrichments: ICL implicit weight note (added LoRA as explicit counterpart), KV cache compression note (added Doc-to-LoRA as orthogonal approach)",
         "Topic map note: /reflect should create new model-adaptation topic map for this cluster"
       ]
@@ -130,7 +135,7 @@
       "type": "extract",
       "phase": "done",
       "source": "docs/handoffs/2026-03-07_deepsqueak-import-prefix-match-fix.md",
-      "description": "Extract atomic notes from Codex handoff: DeepSqueak import prefix-match fix — asymmetric round-trip bug, two-pass stem resolution, and silent unmatched mismatch failure signature",
+      "description": "Extract atomic notes from Codex handoff: DeepSqueak import prefix-match fix \u2014 asymmetric round-trip bug, two-pass stem resolution, and silent unmatched mismatch failure signature",
       "status": "done",
       "completed": "2026-03-07",
       "created": "2026-03-07",
@@ -138,7 +143,7 @@
       "notes": [
         "3 new notes: asymmetric export/import directory matching bug, exact-first-then-prefix stem resolution method, silent unmatched_ds+unmatched_det failure signature",
         "All three added to classification-tools.md topic map under 'DeepSqueak Bridge & Raven Interchange' section",
-        "Source is a Codex handoff — seeded directly to notes/ (no inbox/reduce pipeline; claims already well-reasoned)"
+        "Source is a Codex handoff \u2014 seeded directly to notes/ (no inbox/reduce pipeline; claims already well-reasoned)"
       ]
     },
     {
@@ -146,7 +151,7 @@
       "type": "extract",
       "phase": "done",
       "source": "inbox/knowledge-activation-architecture-phase1-2026-03-07.md",
-      "description": "Extract atomic notes from Knowledge Activation Architecture Phase 1 plan — RAG literature patterns (Self-RAG, FLARE, CRAG, Adaptive RAG) applied to vault activation, session-orient hook enrichment, vault canary comments in source files, /kcheck micro-skill design, and knowledge-enriched Codex handoff generation",
+      "description": "Extract atomic notes from Knowledge Activation Architecture Phase 1 plan \u2014 RAG literature patterns (Self-RAG, FLARE, CRAG, Adaptive RAG) applied to vault activation, session-orient hook enrichment, vault canary comments in source files, /kcheck micro-skill design, and knowledge-enriched Codex handoff generation",
       "status": "done",
       "completed": "2026-03-07",
       "created": "2026-03-07",
@@ -154,7 +159,7 @@
       "notes": [
         "8 new notes: activation timing core thesis, Self-RAG procedural gates, FLARE intent-based retrieval, CRAG noise-gate fatigue, Adaptive RAG risk routing, static-vs-intent activation lifecycle, fewer-triggers principle, cross-agent knowledge flattening",
         "1 open question: whether load-rate tracking can identify poorly-described notes",
-        "2 enrichments skipped (targets in methodology/ READ-ONLY — connections established via cross-linking in new notes)",
+        "2 enrichments skipped (targets in methodology/ READ-ONLY \u2014 connections established via cross-linking in new notes)",
         "agent-memory topic map updated with new Knowledge Activation section (8 notes + 1 open question)"
       ]
     },
@@ -171,8 +176,48 @@
       "notes": [
         "3 new notes: boundary-identity tracker matching, three-tier detection state model, selection mapping isolation in app/core/",
         "All three added to detection.md topic map under new 'Detection App Save State' section",
-        "Source is a Codex handoff — seeded directly to notes/ (no inbox/reduce pipeline; claims already well-reasoned)"
+        "Source is a Codex handoff \u2014 seeded directly to notes/ (no inbox/reduce pipeline; claims already well-reasoned)"
       ]
+    },
+    {
+      "id": "seed-010",
+      "type": "extract",
+      "phase": "reduce",
+      "source": "archive/inbox/post-processing-pipeline-research.md",
+      "description": "Extract atomic notes from USV post-processing pipeline research synthesis \u2014 hysteresis dual-threshold detection, CNN temperature scaling calibration, PCEN adaptive normalization, two-stage false positive filtering, F-beta scoring for bioacoustic detection, and event-level evaluation methods (collar-based vs IoU)",
+      "status": "done",
+      "created": "2026-03-29",
+      "priority": "standard",
+      "source_metadata": {
+        "source_type": "web_claude_session",
+        "date": "2026-03-27",
+        "topics": [
+          "detection",
+          "classification",
+          "bioacoustics methodology"
+        ]
+      },
+      "candidate_claims": [
+        "No existing mouse USV tool uses explicit hysteresis \u2014 all use single-threshold + gap-filling + min-duration",
+        "Hysteresis subsumes gap-filling and minimum duration as special cases of dual-threshold logic",
+        "DCASE Cances 2019: class-dependent post-processing parameters improved F1 from 37.1% to 43.9%",
+        "WhaleVAD-BPN 2024 demonstrates comprehensive hysteresis pipeline for bioacoustic detection",
+        "scikit-maad implements double-threshold hysteresis binarization for ecological acoustics",
+        "Modern CNNs are systematically miscalibrated (Guo et al., 2017 ICML)",
+        "Temperature scaling: single scalar T divides logits before sigmoid \u2014 simplest effective calibration",
+        "ROC AUC is invariant to temperature scaling (monotonic transformation) but threshold interpretability improves",
+        "For small validation sets isotonic regression overfits \u2014 prefer temperature scaling",
+        "PCEN is gold standard for adaptive normalization in bioacoustic literature (Lostanlen 2019)",
+        "BirdVoxDetect PCEN reduced false alarm rates 50x near-field and 5x far-field",
+        "PCEN requires retraining \u2014 not suitable for current pipeline without model retrain",
+        "Clarfeld 2025: secondary logistic regression on features from primary detections 84.5-89.8% accuracy for FP filtering",
+        "VocalMat two-stage: morphological filtering + CNN noise classification, >98% detection rate",
+        "BootSnap includes explicit false-positive class alongside 11 USV categories",
+        "F2 score (beta=2) weights recall ~4x more than precision \u2014 standard when FNs are more costly",
+        "Collar-based evaluation (\u00b1200ms tolerance) better for bioacoustics with uncertain event boundaries",
+        "IoU-based evaluation (>=50% overlap) more strict, penalizes fragmented detections"
+      ],
+      "completed": "2026-03-29T19:55:00Z"
     }
   ],
   "maintenance_conditions": {

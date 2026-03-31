@@ -617,7 +617,9 @@ The knowledge system is not separate from the research — it *is* the research 
 | detection-validator | Validates detection algorithm changes against baselines |
 | pr-reviewer | Final quality review before commit/PR |
 | streamlit-expert | Implements and reviews Streamlit UI |
-| test-writer | Generates pytest tests for new/modified code |
+| test-architect | Writes failing tests from ROADMAP specs BEFORE implementation |
+| test-hardener | Adversarial coverage hardening AFTER implementation |
+| test-writer | *(Deprecated)* — redirects to test-architect / test-hardener |
 
 All reviewer agents have knowledge graph awareness — they read relevant topic maps and grep `notes/` for findings before making recommendations.
 

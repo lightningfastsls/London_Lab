@@ -35,6 +35,7 @@ Relevant Notes:
 - [[whether BootSnap code is publicly available or must be requested from Abbasi Zala Penn at Vienna]] -- the unresolved access question
 - [[DeepSqueak is fundamentally GUI-centric with no officially supported headless or scriptable operation]] -- the GUI-only constraint that compounds the Python tool gap
 - [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- strategic workaround: use DeepSqueak via Raven bridge despite this gap
+- [[three viable Python strategies for replacing DeepSqueak target segmentation-first unsupervised discovery and supervised classification]] -- the three compositional strategies that work around this tool gap
 
 Topics:
 - [[classification-tools]]

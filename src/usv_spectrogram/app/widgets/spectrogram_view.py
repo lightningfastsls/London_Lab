@@ -495,6 +495,7 @@ class SpectrogramView(QWidget):
 
     def __init__(self):
         super().__init__()
+        self._syncing = False  # Guard against infinite scroll loops
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -503,14 +504,16 @@ class SpectrogramView(QWidget):
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(False)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         self.canvas = SpectrogramCanvas()
         self.scroll_area.setWidget(self.canvas)
 
         layout.addWidget(self.scroll_area)
 
-        self.setMinimumHeight(200)  # Reduced for compact layout
+        self.setMinimumHeight(150)  # Compact layout
+        # USV spectrogram has ~170 freq bins + scrollbar (~20px) — don't waste more
+        self.setMaximumHeight(210)
 
         # Connect scroll bar to emit normalized position
         self.scroll_area.horizontalScrollBar().valueChanged.connect(
@@ -519,6 +522,8 @@ class SpectrogramView(QWidget):
 
     def _on_scroll_changed(self, value: int):
         """Emit normalized scroll position (0.0 to 1.0)."""
+        if self._syncing:
+            return
         scrollbar = self.scroll_area.horizontalScrollBar()
         scroll_range = scrollbar.maximum() - scrollbar.minimum()
         if scroll_range > 0:
@@ -561,8 +566,9 @@ class SpectrogramView(QWidget):
 
         target_value = scrollbar.minimum() + int(normalized_pos * scroll_range)
 
-        # No need to block signals - we only have one-way connection now
+        self._syncing = True
         scrollbar.setValue(target_value)
+        self._syncing = False
 
     def wheelEvent(self, event: QWheelEvent):
         """Redirect mouse wheel to horizontal scrollbar for spectrogram navigation."""

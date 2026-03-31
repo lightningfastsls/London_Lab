@@ -37,6 +37,7 @@ from .core.saved_detection_tracker import SavedDetectionTracker
 from .core.detection_exporter import DetectionExporter
 from .widgets.spectrogram_view import SpectrogramView
 from .widgets.probability_view import ProbabilityView
+from .widgets.sonic_view import SonicSpectrogramView
 
 # App version for settings migration
 # Increment when default settings change
@@ -160,9 +161,12 @@ class MainWindow(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
+        main_layout.setContentsMargins(5, 2, 5, 2)
+        main_layout.setSpacing(2)
 
-        # Control panel
+        # Control panel (fixed height — don't let it stretch)
         control_panel = self._create_control_panel()
+        control_panel.setFixedHeight(40)
         main_layout.addWidget(control_panel)
 
         # Splitter for views
@@ -171,12 +175,17 @@ class MainWindow(QMainWindow):
         # Left side: Spectrogram and Probability views (stacked vertically)
         left_widget = QWidget()
         left_layout = QVBoxLayout(left_widget)
+        left_layout.setContentsMargins(0, 0, 0, 0)
+        left_layout.setSpacing(2)
 
         self.spectrogram_view = SpectrogramView()
+        self.sonic_view = SonicSpectrogramView()
         self.probability_view = ProbabilityView()
 
-        left_layout.addWidget(QLabel("Spectrogram:"), 0)
+        left_layout.addWidget(QLabel("Spectrogram (20-120 kHz):"), 0)
         left_layout.addWidget(self.spectrogram_view, 3)
+        left_layout.addWidget(QLabel("Sonic (0-30 kHz):"), 0)
+        left_layout.addWidget(self.sonic_view, 2)
         left_layout.addWidget(QLabel("Probability:"), 0)
         left_layout.addWidget(self.probability_view, 1)
 
@@ -200,9 +209,11 @@ class MainWindow(QMainWindow):
         self.file_info_label.setStyleSheet("QLabel { color: #555; margin-right: 10px; }")
         self.statusBar.addPermanentWidget(self.file_info_label)
 
-        # Connect scroll synchronization - one scrollbar controls both views
-        # Only spectrogram scrollbar is visible, it controls probability view
+        # Connect scroll synchronization - bidirectional between all views
+        self.spectrogram_view.scroll_changed.connect(self.sonic_view.set_scroll_position)
         self.spectrogram_view.scroll_changed.connect(self.probability_view.set_scroll_position)
+        self.sonic_view.scroll_changed.connect(self.spectrogram_view.set_scroll_position)
+        self.sonic_view.scroll_changed.connect(self.probability_view.set_scroll_position)
 
         # Connect boundary adjustment signal
         self.spectrogram_view.canvas.boundary_adjusted.connect(self._on_boundary_adjusted)
@@ -259,10 +270,17 @@ class MainWindow(QMainWindow):
         """Create control panel with action buttons."""
         panel = QWidget()
         layout = QHBoxLayout(panel)
+        layout.setContentsMargins(0, 0, 0, 0)
 
         self.load_btn = QPushButton("Open WAV File")
         self.load_btn.clicked.connect(self._open_wav)
         layout.addWidget(self.load_btn)
+
+        self.play_btn = QPushButton("Play")
+        self.play_btn.clicked.connect(self._toggle_playback)
+        self.play_btn.setEnabled(False)
+        self.play_btn.setToolTip("Play/stop audio (48 kHz downsampled)")
+        layout.addWidget(self.play_btn)
 
         self.detect_btn = QPushButton("Run Detection")
         self.detect_btn.clicked.connect(self._run_detection)
@@ -536,6 +554,9 @@ class MainWindow(QMainWindow):
             # Update file info display
             self.file_info_label.setText(f"File: {wav_path.name}")
 
+            # Stop any active playback
+            self._stop_playback()
+
             # Clear previous detection results when loading new file
             self.detection_result = None
             self.inference_result = None
@@ -544,6 +565,7 @@ class MainWindow(QMainWindow):
 
             # Clear prior review visuals/actions until this file is detected or labels are loaded
             self.probability_view.clear()
+            self.sonic_view.clear()
             self.spectrogram_view.canvas.clear_selection()
             self.spectrogram_view.set_detections([])
             self.apply_btn.setEnabled(False)
@@ -565,6 +587,19 @@ class MainWindow(QMainWindow):
                 self.audio_data.frequencies,
                 total_columns=total_columns
             )
+
+            # Display sonic spectrogram (match USV canvas width for scroll sync)
+            if self.audio_data.sonic_spectrogram_db is not None:
+                usv_width = self.spectrogram_view.get_canvas_width()
+                self.sonic_view.set_data(
+                    self.audio_data.sonic_spectrogram_db,
+                    self.audio_data.sonic_times,
+                    self.audio_data.sonic_frequencies,
+                    target_width=usv_width,
+                )
+
+            # Enable playback button
+            self.play_btn.setEnabled(self.audio_data.playback_audio is not None)
 
             # Reset noise label button state for new file
             if hasattr(self, 'label_noise_btn'):
@@ -652,6 +687,36 @@ class MainWindow(QMainWindow):
                 f"⚠ Could not move file: {str(e)[:40]}",
                 4000
             )
+
+    def _toggle_playback(self):
+        """Toggle audio playback (Play/Stop)."""
+        if self.audio_data is None or self.audio_data.playback_audio is None:
+            return
+
+        if getattr(self, '_is_playing', False):
+            self._stop_playback()
+        else:
+            try:
+                import sounddevice as sd
+                sd.play(self.audio_data.playback_audio, self.audio_data.playback_sr)
+                self._is_playing = True
+                self.play_btn.setText("Stop")
+            except Exception as e:
+                QMessageBox.warning(
+                    self, "Playback Error",
+                    f"Could not play audio:\n{e}"
+                )
+
+    def _stop_playback(self):
+        """Stop audio playback and reset button."""
+        try:
+            import sounddevice as sd
+            sd.stop()
+        except Exception:
+            pass
+        self._is_playing = False
+        if hasattr(self, 'play_btn'):
+            self.play_btn.setText("Play")
 
     def _run_detection(self):
         """Run CNN inference and detection."""

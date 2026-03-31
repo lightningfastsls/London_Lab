@@ -26,7 +26,7 @@ class ProbabilityCanvas(QWidget):
         self.detections: List[DetectedUSV] = []
         self._scroll_offset: int = 0  # Horizontal scroll offset for sticky Y-axis labels
 
-        self.setMinimumHeight(200)
+        self.setMinimumHeight(120)
         self.setMinimumWidth(800)
 
     def set_scroll_offset(self, offset: int):
@@ -271,7 +271,7 @@ class ProbabilityView(QWidget):
 
         layout.addWidget(self.scroll_area)
 
-        self.setMinimumHeight(200)
+        self.setMinimumHeight(120)
 
         # Connect scroll to update Y-axis label position
         self.scroll_area.horizontalScrollBar().valueChanged.connect(

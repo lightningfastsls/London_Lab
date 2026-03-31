@@ -24,6 +24,7 @@ Relevant Notes:
 - [[recording-level splits prevent data leakage in USV classification]] -- the small architecture is partly motivated by the limited effective training set from recording-level splits
 - [[model size should scale with labeled dataset size to balance underfitting and overfitting]] -- the three-tier scaling principle that places this 101K architecture at the small end for datasets under 5K labels
 - [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- as an alternative to scaling this small CNN, LoRA adaptation of a pre-trained foundation model could achieve better classification with the same limited data
+- [[mid-c-cnn-balances-capacity-and-inference-speed-for-14k-samples]] -- custom [32, 96, 192] variant that preserves this 3-block template while doubling capacity for the 14.7K matched-windows dataset
 
 Topics:
 - [[classification]]

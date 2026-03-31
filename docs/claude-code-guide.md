@@ -84,7 +84,9 @@ This is where all Claude Code extensions live:
 │   ├── dsp-reviewer.md
 │   ├── detection-validator.md
 │   ├── pr-reviewer.md
-│   ├── test-writer.md
+│   ├── test-architect.md
+│   ├── test-hardener.md
+│   ├── test-writer.md       # Deprecated — redirects to test-architect/test-hardener
 │   ├── streamlit-expert.md
 │   └── arscontexta-expert.md
 ├── commands/              # 7 slash commands (legacy format)
@@ -163,7 +165,9 @@ Subagents are specialized Claude instances spawned for specific tasks. Each is a
 | `dsp-reviewer` | **opus** | Read, Grep, Glob | Reviews signal processing math (higher model for harder math) |
 | `detection-validator` | — | Read, Grep, Glob, Bash | Validates USV detection algorithm changes |
 | `pr-reviewer` | — | Read, Grep, Glob, Bash | Final quality check before commits |
-| `test-writer` | — | Read, Grep, Glob, Edit, Write, Bash | Generates pytest tests for new code |
+| `test-architect` | sonnet | Read, Grep, Glob, Write, Bash | Writes failing tests from ROADMAP specs BEFORE implementation |
+| `test-hardener` | sonnet | Read, Grep, Glob, Write, Bash | Adversarial coverage hardening AFTER implementation |
+| `test-writer` | — | *(Deprecated)* | Redirects to test-architect / test-hardener |
 | `streamlit-expert` | — | Read, Grep, Glob, Edit, Write | Streamlit UI implementation |
 | `arscontexta-expert` | — | Read, Grep, Glob, + MCP tools | Knowledge graph architecture decisions |
 

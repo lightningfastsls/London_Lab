@@ -42,6 +42,7 @@ Relevant Notes:
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- sequential syntax comparison complements this compositional test
 - [[null model comparison framework produces z-scores rank-based p-values and effect sizes as the publishable statistical output]] -- shared permutation-based statistical philosophy
 - [[classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data]] -- the population-specific differences PERMANOVA is designed to detect and quantify
+- [[whether chi-squared on pooled syllable counts provides sufficient power as a simpler alternative to PERMANOVA for repertoire comparison]] -- open question on when the simpler chi-squared test suffices versus when PERMANOVA's multivariate structure is needed
 
 Topics:
 - [[experimental-methods]]

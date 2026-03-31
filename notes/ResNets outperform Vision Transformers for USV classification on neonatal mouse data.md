@@ -23,6 +23,7 @@ Source: usv-detection-methods-landscape-2024-2026-research-2026-02-28 (archived 
 Relevant Notes:
 - [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]] -- our CNN architecture is validated by this comparison
 - [[transformer-based bioacoustic models require attentive probing not just linear probing to extract full representational power]] -- ViT underperformance may be partially due to probing/evaluation method
+- [[self-attention lacks inductive bias for local structure leading to hybrid architectures for domains where locality matters]] -- theoretical explanation for why convolutions outperform pure attention on USV spectrograms
 
 Topics:
 - [[classification-methodology]]
