@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 0.9736533333333334,
+    "end_time_s": 1.0760533333333333,
+    "duration_s": 0.10239999999999994,
+    "start_col": 2230,
+    "end_col": 2470,
+    "max_probability": 0.9992218017578125,
+    "mean_probability": 0.9363156509399414
+  },
+  {
+    "start_time_s": 1.0973866666666667,
+    "end_time_s": 1.22112,
+    "duration_s": 0.12373333333333325,
+    "start_col": 2520,
+    "end_col": 2810,
+    "max_probability": 0.9994788765907288,
+    "mean_probability": 0.9627408881982168
+  },
+  {
+    "start_time_s": 1.25952,
+    "end_time_s": 1.3832533333333332,
+    "duration_s": 0.12373333333333325,
+    "start_col": 2900,
+    "end_col": 3190,
+    "max_probability": 0.9994662404060364,
+    "mean_probability": 0.9651864568392435
+  },
+  {
+    "start_time_s": 1.6477866666666667,
+    "end_time_s": 1.68192,
+    "duration_s": 0.03413333333333335,
+    "start_col": 3810,
+    "end_col": 3890,
+    "max_probability": 0.844075083732605,
+    "mean_probability": 0.807502269744873
+  },
+  {
+    "start_time_s": 1.7373866666666666,
+    "end_time_s": 1.86112,
+    "duration_s": 0.12373333333333347,
+    "start_col": 4020,
+    "end_col": 4310,
+    "max_probability": 0.9999955892562866,
+    "mean_probability": 0.9794974048932393
+  },
+  {
+    "start_time_s": 1.88672,
+    "end_time_s": 2.048853333333333,
+    "duration_s": 0.16213333333333324,
+    "start_col": 4370,
+    "end_col": 4750,
+    "max_probability": 0.9999428987503052,
+    "mean_probability": 0.9789904065621204
+  },
+  {
+    "start_time_s": 2.0829866666666668,
+    "end_time_s": 2.223786666666667,
+    "duration_s": 0.14080000000000004,
+    "start_col": 4830,
+    "end_col": 5160,
+    "max_probability": 0.999911904335022,
+    "mean_probability": 0.9641297634910134
+  },
+  {
+    "start_time_s": 2.2621866666666666,
+    "end_time_s": 2.3261866666666666,
+    "duration_s": 0.06400000000000006,
+    "start_col": 5250,
+    "end_col": 5400,
+    "max_probability": 0.9985641837120056,
+    "mean_probability": 0.9441231302917004
+  }
+]

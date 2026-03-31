@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 0.9352533333333334,
+    "end_time_s": 0.9821866666666667,
+    "duration_s": 0.04693333333333327,
+    "start_col": 2140,
+    "end_col": 2250,
+    "max_probability": 0.9419649839401245,
+    "mean_probability": 0.8633525893092155
+  },
+  {
+    "start_time_s": 1.0248533333333334,
+    "end_time_s": 1.1357866666666667,
+    "duration_s": 0.11093333333333333,
+    "start_col": 2350,
+    "end_col": 2610,
+    "max_probability": 0.9996675252914429,
+    "mean_probability": 0.9727332658237882
+  },
+  {
+    "start_time_s": 1.1485866666666666,
+    "end_time_s": 1.2637866666666666,
+    "duration_s": 0.11519999999999997,
+    "start_col": 2640,
+    "end_col": 2910,
+    "max_probability": 0.9997773766517639,
+    "mean_probability": 0.9787171844925199
+  },
+  {
+    "start_time_s": 1.2765866666666668,
+    "end_time_s": 1.4600533333333334,
+    "duration_s": 0.18346666666666667,
+    "start_col": 2940,
+    "end_col": 3370,
+    "max_probability": 0.9997779726982117,
+    "mean_probability": 0.954246386885643
+  },
+  {
+    "start_time_s": 1.52832,
+    "end_time_s": 1.6008533333333332,
+    "duration_s": 0.07253333333333334,
+    "start_col": 3530,
+    "end_col": 3700,
+    "max_probability": 0.9994262456893921,
+    "mean_probability": 0.9596690734227499
+  },
+  {
+    "start_time_s": 1.65632,
+    "end_time_s": 1.72032,
+    "duration_s": 0.06400000000000006,
+    "start_col": 3830,
+    "end_col": 3980,
+    "max_probability": 0.9950405955314636,
+    "mean_probability": 0.9038646221160889
+  },
+  {
+    "start_time_s": 1.7800533333333333,
+    "end_time_s": 1.86112,
+    "duration_s": 0.08106666666666684,
+    "start_col": 4120,
+    "end_col": 4310,
+    "max_probability": 0.9997019171714783,
+    "mean_probability": 0.9634252250194549
+  },
+  {
+    "start_time_s": 1.89952,
+    "end_time_s": 2.0104533333333334,
+    "duration_s": 0.11093333333333333,
+    "start_col": 4400,
+    "end_col": 4660,
+    "max_probability": 0.9997567534446716,
+    "mean_probability": 0.9597355568850482
+  }
+]
