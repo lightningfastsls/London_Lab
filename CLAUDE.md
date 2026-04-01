@@ -108,75 +108,50 @@ USV Spectrogram Generator - Python tools for analyzing ultrasonic vocalization (
 
 WAV files: No single canonical directory. Recordings span multiple locations (e.g., `USV5/usv_lmt_034/`, `USV_3452_sample_reviewed/`). Use `--wav-search-dirs` in `scripts/unify_labels.py` to resolve paths. Legacy fallback: `$env:USV_WAV_DIR`.
 
+## Compaction Preservation
+When compacting or summarizing this conversation, ALWAYS preserve:
+- All file paths modified and what changed in each
+- Current task, its phase, and completion status
+- Failing test output or error messages still being debugged
+- Architectural decisions made this session
+- Active debugging hypotheses
+Do NOT discard line numbers, variable names, or function signatures under active discussion.
+
+## Context Decay
+After 10+ messages: re-read any file before editing it.
+After any compaction event: treat ALL file memory as stale.
+Never edit from memory alone in a long session.
+
+## Verification Protocol
+After every code change, before reporting success:
+1. `python -m py_compile <modified_file>` (syntax)
+2. `pytest <relevant_test> -x -q` if tests exist for modified code
+3. If no tests exist, state: "No test coverage for this change"
+Never say "Done" or "Complete" with failing checks.
+NOTE: mypy is not configured. Do not claim type-safety without it.
+
+## Large File Protocol
+These files exceed 1000 LOC and MUST be read in chunks:
+- `main_window.py` (1,819 lines) -- read in 500-line segments
+- `assembler.py` (1,490 lines)
+- `repertoire_stats.py` (1,142 lines)
+- `test_fp_filter.py` (1,119 lines)
+- `information_theory.py` (1,075 lines)
+For ANY file over 500 LOC: use offset/limit to read in chunks.
+Never assume a single read captured the full file. State the total line count after your first read.
+
 ## Project Structure
 
 See `docs/architecture/project-structure.md` for the full directory tree.
-Key entry points are listed in the Task Routing table below.
-
-## Task Routing
-
-| Task Type | Start With | Reference Doc |
-|-----------|-----------|---------------|
-| Spectrogram / STFT changes | `spectrogram.py`, `_stft_core.py`, `config.py` | `docs/reference/usv_signal_processing_reference.md` |
-| Detection pipeline | `detection/energy_detector.py`, `detection/config.py` | `docs/modules/energy-detector.md` |
-| CNN training / evaluation | `models/cnn_classifier.py`, `models/trainer.py` | `docs/modules/cnn-classifier.md` |
-| Training data assembly | `dataset/assembler.py`, `scripts/assemble_training_data.py` | `docs/modules/dataset-assembler.md` |
-| PyQt6 desktop app | `app/main_window.py`, `app/core/`, `app/widgets/` | `docs/plans/USV_DETECTION_APP_IMPLEMENTATION.md` |
-| Labeling tool (Streamlit) | `labeling/labeling_app.py` | `docs/LABELING_TOOL_QUICKSTART.md` |
-| Parameter Lab (Streamlit) | `param_lab/app.py`, `param_lab/ui/` | — |
-| Clustering / repertoire | `clustering/`, `classification/repertoire_stats.py` | `docs/modules/repertoire-stats.md` |
-| DeepSqueak / Raven bridge | `classification/raven_export.py`, `classification/deepsqueak_import.py` | `docs/modules/raven-export.md`, `docs/modules/deepsqueak-import.md` |
-| VQ-VAE / Transformer | `usv_language/models/`, `usv_language/training/` | `docs/plans/vq_vae_transformer_plan.md` |
-| LMT behavioral integration | `lmt/`, `scripts/run_event_triggered_analysis.py` | `docs/modules/event-triggered-analysis.md` |
-| Script index (all ~76) | — | `docs/scripts-index.md` |
-
-All `src/` paths above are relative to `src/usv_spectrogram/` unless they start with `usv_language/`.
-
----
-
-## Key Reference Documents
-
-| Document | When to Read |
-|----------|--------------|
-| `ops/goals.md` | **Start of every session** (session state, active threads) |
-| `notes/index.md` + topic maps | **Before any architectural/design choice** (domain knowledge) |
-| `ROADMAP*.md` / plan files | Before implementing — check relevant plan (no single master ROADMAP) |
-| `docs/architecture/patterns.md` | Before implementing (follow established patterns) |
-| `docs/workflow/completion-sequence.md` | When implementing 2+ file changes (includes handoff rules) |
-| `docs/reviews/REVIEW-TEMPLATE.md` | When writing handoff or requesting review (includes tier system) |
-| `docs/workflow/approval-request-template.md` | Full approval request + struggle protocol templates |
-| `docs/workflow/knowledge-graph-reference.md` | Full verbose KG section details |
-| `docs/plans/USV_TRAINING_PIPELINE_PLAN.md` | Building training data generation pipeline |
-| `docs/plans/USV_DETECTION_APP_IMPLEMENTATION.md` | Building PyQt6 desktop app for detection |
-| `docs/reference/usv_signal_processing_reference.md` | Any signal processing work |
-| `IMPLEMENTATION_PROGRESS.md` | **Append after implementation** (session archive, never modify existing entries) |
-
-**After implementing a module**, also update: module doc (`docs/modules/<module>.md`), `docs/architecture/patterns.md` (if new pattern), create decision note in `notes/` + run `/reflect` (if non-obvious architectural decision).
+Task routing and key reference documents: `.claude/rules/task-routing.md`.
 
 > **NOT for agents:** `docs/human/PROJECTS.md` and `docs/human/DECISIONS.md` are human-readable dashboards regenerated by `/refresh-human-docs`. Agents should use `ops/goals.md` and `notes/` instead.
 
 ---
 
-## Project-Specific Agents
+## Agents
 
-| Task | Agent | When to Use |
-|------|-------|-------------|
-| Review STFT/DSP/math changes | `dsp-reviewer` | ANY change to energy computation, FFT, dB scaling |
-| Implement Streamlit UI | `streamlit-expert` | ANY Streamlit UI work |
-| Write pre-implementation tests | `test-architect` | BEFORE implementing a new module (reads ROADMAP spec) |
-| Harden tests post-implementation | `test-hardener` | AFTER implementation passes review (finds coverage gaps) |
-| Validate detection changes | `detection-validator` | ANY change to detection logic |
-| Final review before commit | `pr-reviewer` | Before telling user "done" |
-| KG architecture decisions | `arscontexta-expert` | Topic map strategy, note schema, methodology questions |
-
-**Using appropriate agents is required, not optional.**
-
-**Testing workflow sequence:** For new modules, the full test lifecycle is:
-1. `roadmap-from-plan` generates the ROADMAP with test plan
-2. `test-architect` writes failing tests from the spec (optional but recommended)
-3. `/implement` builds the module (uses pre-existing tests if available, step 3.5)
-4. `master-reviewer` reviews implementation and tests
-5. `test-hardener` finds remaining coverage gaps (after review approval, phase 4.5)
+See `AGENTS.md` for the full agent table and testing workflow sequence. **Using appropriate agents is required, not optional.**
 
 ---
 
@@ -234,25 +209,14 @@ Before writing any Codex task spec in `docs/handoffs/`, search the vault for con
 
 # Knowledge Graph
 
-## Philosophy
-
-**If it won't exist next session, write it down now.** You are the primary operator of this knowledge system -- the agent who builds, maintains, and traverses a knowledge network. Notes are your external memory. Wiki-links are your connections. Topic maps are your attention managers.
-
-## Discovery-First Design
-
-**Every note must be findable by a future agent who doesn't know it exists.** Before writing to notes/, verify:
-1. **Title as claim** -- reads naturally when linked: `since [[title]]`
-2. **Description quality** -- adds info beyond the title
-3. **Topic map membership** -- linked from at least one topic map
-4. **Composability** -- linkable without dragging irrelevant context
+**If it won't exist next session, write it down now.** You operate a knowledge network: notes (external memory), wiki-links (connections), topic maps (attention managers). Full conventions: `docs/workflow/knowledge-graph-reference.md`.
 
 ## Session Rhythm
 
 Every session follows: **Orient -> Work -> Persist**
-
-- **Orient**: Read ops/goals.md, ops/reminders.md, ops/session-relevance.md (auto-generated), check condition triggers
-- **Work**: Do the task. **Vault search before domain reasoning (Core Rules → Knowledge Activation).** Surface connections. Write down discoveries immediately.
-- **Persist**: Write new insights as atomic notes, update topic maps, update ops/goals.md, capture methodology learnings
+- **Orient**: Read ops/goals.md, ops/reminders.md, ops/session-relevance.md, check condition triggers
+- **Work**: Vault search before domain reasoning. Surface connections. Write discoveries immediately.
+- **Persist**: Write atomic notes, update topic maps, update ops/goals.md
 
 ## Where Things Go
 
@@ -268,69 +232,28 @@ Every session follows: **Orient -> Work -> Persist**
 | arscontexta structured reference (READ-ONLY) | reference/ |
 
 Durable knowledge -> notes/. Temporal coordination -> ops/.
+**methodology/** and **reference/** are READ-ONLY. Do NOT write to either directory.
 
-**methodology/** (249 research claims, READ-ONLY) — search here when explaining WHY a vault convention exists, justifying a KG design decision, or grounding a skill in research. **reference/** (routing indexes, constraints, READ-ONLY) — used by /ask, /architect, /recommend, /health. Do NOT write to either directory.
+## Critical Rules
 
-## Atomic Notes
+- **NEVER write directly to notes/.** Route: inbox/ -> /reduce -> notes/.
+- Pipeline: /seed -> /reduce -> /reflect -> /reweave -> /verify.
+- Before any topic map split/merge/creation: consult `arscontexta-expert` FIRST.
 
-One claim per note. Title IS the claim (composability test: "This note argues that [title]").
-Full conventions + examples: `docs/workflow/knowledge-graph-reference.md` § Atomic Notes.
-
-## Wiki Links
-
-`[[title]]` basic | `since [[claim]]` as prose | Target: 3+ outgoing links/note. Never rename manually (`ops/scripts/rename-note.sh`).
-Full conventions: `docs/workflow/knowledge-graph-reference.md` § Wiki Links.
-
-## Topic Maps (MOCs)
-
-Three-tier: `index.md -> topic maps -> notes`. Context phrases required on all links. Split at ~50 notes.
-**Before any topic map split/merge/creation:** consult `arscontexta-expert` FIRST.
-Full conventions + context phrase examples: `docs/workflow/knowledge-graph-reference.md` § Topic Maps.
-
-## Processing Pipeline
-
-**NEVER write directly to notes/.** Route: inbox/ -> /reduce -> notes/. Phases: /seed -> /reduce -> /reflect -> /reweave -> /verify.
-Full phase details + extraction categories: `docs/workflow/knowledge-graph-reference.md` § Processing Pipeline.
-
-## Semantic Search (qmd)
-
-Two discovery layers: **wiki links** (explicit, curated) + **qmd semantic search** (implicit, content-based).
-- Known connection -> wiki link
-- Discovery -> semantic search
-- Verification -> both (find missed connections)
-
-## Schema
-
-Required: `description` (max 200 chars), `topics` (wiki links to topic maps). Domain: `type`, `confidence`, `conditions`, `meta_state`.
-Full field specs + templates: `docs/workflow/knowledge-graph-reference.md` § Schema.
-
-## Maintenance
-
-Condition-based, not scheduled. Specific conditions trigger specific actions.
+## Maintenance Triggers
 
 | Condition | Threshold | Action |
 |-----------|-----------|--------|
-| Orphan notes | Any persistent (> 7 days) | Run /reflect on orphaned notes |
-| Dangling links | Any | Fix broken references immediately |
-| Stale notes | > 30 days old + < 2 incoming links | Run /reweave |
-| Topic map oversized | > 40 notes | Split into sub-topic-maps |
-| Inbox items | >= 3 | Run /reduce or /pipeline |
-| Pending observations | >= 7 (or any observation > 14 days unreviewed) | Run /rethink |
-| Open tensions | >= 5 | Run /rethink |
-| Unprocessed sessions | >= 5 | Run /remember --mine-sessions |
+| Orphan notes | > 7 days | /reflect |
+| Dangling links | Any | Fix immediately |
+| Stale notes | > 30 days + < 2 incoming links | /reweave |
+| Topic map oversized | > 40 notes | Split |
+| Inbox items | >= 3 | /reduce or /pipeline |
+| Pending observations | >= 7 (or any > 14 days) | /rethink |
+| Open tensions | >= 5 | /rethink |
+| Unprocessed sessions | >= 5 | /remember --mine-sessions |
 
 Health checks: `/arscontexta:health` (quick | full | three-space).
-
-## Operational Learning Loop
-
-Observations (ops/observations/) — friction, surprises, process gaps. Tensions (ops/tensions/) — contradictions.
-Triggers: 7+ observations (or any > 14 days old) -> /rethink. 5+ tensions -> /rethink.
-
-> **Reference details** — Operational Space (ops/ directory tree), Templates (4 template files), Graph Analysis (graph operations + /graph command), Research Provenance (source chain), Helper Functions (vault scripts): see `docs/workflow/knowledge-graph-reference.md`.
-
-## Self-Improvement
-
-On friction: /remember to capture observation -> continue work -> 3+ occurrences -> propose CLAUDE.md update. User says "remember this" -> update immediately.
 
 ## Guardrails
 
@@ -338,10 +261,4 @@ On friction: /remember to capture observation -> continue work -> 3+ occurrences
 - Never infer/record unshared information
 - Present inferences as patterns, not facts
 - Source attribution required -- trace claims to origins
-
-## Common Pitfalls
-
-- **Collector's Fallacy**: Process before capturing more. Inbox >= 3 -> /reduce first.
-- **Orphan Drift**: /reflect after note creation batches. No orphan > 7 days.
-- **Verbatim Risk**: Restate insights in your own framing. No paper-abstract copying.
-- **Topic Map Sprawl**: Start with 4-5 broad maps. Split only at ~35 notes.
+- On friction: /remember -> continue -> 3+ occurrences -> propose CLAUDE.md update
