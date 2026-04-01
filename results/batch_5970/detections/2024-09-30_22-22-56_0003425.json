@@ -1,0 +1,146 @@
+[
+  {
+    "start_time_s": 0.9053866666666667,
+    "end_time_s": 0.95232,
+    "duration_s": 0.04693333333333338,
+    "start_col": 2070,
+    "end_col": 2180,
+    "max_probability": 0.9263929724693298,
+    "mean_probability": 0.8432284245888392
+  },
+  {
+    "start_time_s": 0.9992533333333333,
+    "end_time_s": 1.1144533333333333,
+    "duration_s": 0.11519999999999997,
+    "start_col": 2290,
+    "end_col": 2560,
+    "max_probability": 0.9993380904197693,
+    "mean_probability": 0.9658445055995669
+  },
+  {
+    "start_time_s": 1.14432,
+    "end_time_s": 1.3192533333333334,
+    "duration_s": 0.17493333333333339,
+    "start_col": 2630,
+    "end_col": 3040,
+    "max_probability": 0.9998106360435486,
+    "mean_probability": 0.9839796211038317
+  },
+  {
+    "start_time_s": 1.3533866666666667,
+    "end_time_s": 1.46432,
+    "duration_s": 0.11093333333333333,
+    "start_col": 3120,
+    "end_col": 3380,
+    "max_probability": 0.9996272325515747,
+    "mean_probability": 0.9745668592276396
+  },
+  {
+    "start_time_s": 1.4941866666666668,
+    "end_time_s": 1.61792,
+    "duration_s": 0.12373333333333325,
+    "start_col": 3450,
+    "end_col": 3740,
+    "max_probability": 0.9997959733009338,
+    "mean_probability": 0.9528434793154399
+  },
+  {
+    "start_time_s": 1.64352,
+    "end_time_s": 1.8013866666666667,
+    "duration_s": 0.1578666666666666,
+    "start_col": 3800,
+    "end_col": 4170,
+    "max_probability": 0.99980229139328,
+    "mean_probability": 0.9818776908673739
+  },
+  {
+    "start_time_s": 1.8440533333333333,
+    "end_time_s": 1.8952533333333332,
+    "duration_s": 0.05119999999999991,
+    "start_col": 4270,
+    "end_col": 4390,
+    "max_probability": 0.9897953867912292,
+    "mean_probability": 0.9294692461307232
+  },
+  {
+    "start_time_s": 2.76992,
+    "end_time_s": 2.83392,
+    "duration_s": 0.06400000000000006,
+    "start_col": 6440,
+    "end_col": 6590,
+    "max_probability": 0.9947106838226318,
+    "mean_probability": 0.9189512990415096
+  },
+  {
+    "start_time_s": 2.8637866666666665,
+    "end_time_s": 2.9277866666666665,
+    "duration_s": 0.06400000000000006,
+    "start_col": 6660,
+    "end_col": 6810,
+    "max_probability": 0.9819154739379883,
+    "mean_probability": 0.8850412853062153
+  },
+  {
+    "start_time_s": 2.9789866666666667,
+    "end_time_s": 3.03872,
+    "duration_s": 0.059733333333333416,
+    "start_col": 6930,
+    "end_col": 7070,
+    "max_probability": 0.9970778226852417,
+    "mean_probability": 0.9330644448598225
+  },
+  {
+    "start_time_s": 3.07712,
+    "end_time_s": 3.1325866666666666,
+    "duration_s": 0.055466666666666775,
+    "start_col": 7160,
+    "end_col": 7290,
+    "max_probability": 0.9984496831893921,
+    "mean_probability": 0.9604683220386505
+  },
+  {
+    "start_time_s": 3.1752533333333335,
+    "end_time_s": 3.23072,
+    "duration_s": 0.05546666666666633,
+    "start_col": 7390,
+    "end_col": 7520,
+    "max_probability": 0.9950271248817444,
+    "mean_probability": 0.918915005666869
+  },
+  {
+    "start_time_s": 3.26912,
+    "end_time_s": 3.33312,
+    "duration_s": 0.06400000000000006,
+    "start_col": 7610,
+    "end_col": 7760,
+    "max_probability": 0.997234046459198,
+    "mean_probability": 0.9215889535844326
+  },
+  {
+    "start_time_s": 3.3757866666666665,
+    "end_time_s": 3.43552,
+    "duration_s": 0.059733333333333416,
+    "start_col": 7860,
+    "end_col": 8000,
+    "max_probability": 0.9968493580818176,
+    "mean_probability": 0.9032582700252533
+  },
+  {
+    "start_time_s": 3.4909866666666667,
+    "end_time_s": 3.5677866666666667,
+    "duration_s": 0.07679999999999998,
+    "start_col": 8130,
+    "end_col": 8310,
+    "max_probability": 0.9997854828834534,
+    "mean_probability": 0.9645403905918724
+  },
+  {
+    "start_time_s": 3.62752,
+    "end_time_s": 3.682986666666667,
+    "duration_s": 0.055466666666666775,
+    "start_col": 8450,
+    "end_col": 8580,
+    "max_probability": 0.9940724968910217,
+    "mean_probability": 0.9239379337855748
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 0.9992533333333333,
+    "end_time_s": 1.1101866666666667,
+    "duration_s": 0.11093333333333333,
+    "start_col": 2290,
+    "end_col": 2550,
+    "max_probability": 0.9994528889656067,
+    "mean_probability": 0.9594228466351827
+  },
+  {
+    "start_time_s": 1.1528533333333333,
+    "end_time_s": 1.24672,
+    "duration_s": 0.09386666666666676,
+    "start_col": 2650,
+    "end_col": 2870,
+    "max_probability": 0.9974616765975952,
+    "mean_probability": 0.932206102039503
+  },
+  {
+    "start_time_s": 1.2637866666666666,
+    "end_time_s": 1.3405866666666666,
+    "duration_s": 0.07679999999999998,
+    "start_col": 2910,
+    "end_col": 3090,
+    "max_probability": 0.9973981380462646,
+    "mean_probability": 0.8780633524844521
+  },
+  {
+    "start_time_s": 1.3661866666666667,
+    "end_time_s": 1.50272,
+    "duration_s": 0.1365333333333334,
+    "start_col": 3150,
+    "end_col": 3470,
+    "max_probability": 0.9992602467536926,
+    "mean_probability": 0.8954483947970651
+  },
+  {
+    "start_time_s": 1.5368533333333334,
+    "end_time_s": 1.6861866666666667,
+    "duration_s": 0.14933333333333332,
+    "start_col": 3550,
+    "end_col": 3900,
+    "max_probability": 0.9991565942764282,
+    "mean_probability": 0.9529169085952971
+  },
+  {
+    "start_time_s": 1.7416533333333333,
+    "end_time_s": 1.82272,
+    "duration_s": 0.08106666666666662,
+    "start_col": 4030,
+    "end_col": 4220,
+    "max_probability": 0.9862043857574463,
+    "mean_probability": 0.9119499921798706
+  },
+  {
+    "start_time_s": 1.8653866666666667,
+    "end_time_s": 1.93792,
+    "duration_s": 0.07253333333333334,
+    "start_col": 4320,
+    "end_col": 4490,
+    "max_probability": 0.9978218078613281,
+    "mean_probability": 0.8940786388185289
+  },
+  {
+    "start_time_s": 2.4840533333333332,
+    "end_time_s": 2.55232,
+    "duration_s": 0.0682666666666667,
+    "start_col": 5770,
+    "end_col": 5930,
+    "max_probability": 0.9962653517723083,
+    "mean_probability": 0.9125771452398861
+  }
+]

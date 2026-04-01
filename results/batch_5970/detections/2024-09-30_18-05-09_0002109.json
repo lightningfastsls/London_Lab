@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 1.0120533333333332,
+    "end_time_s": 1.13152,
+    "duration_s": 0.11946666666666683,
+    "start_col": 2320,
+    "end_col": 2600,
+    "max_probability": 0.9991523027420044,
+    "mean_probability": 0.8923965980266703
+  },
+  {
+    "start_time_s": 1.1400533333333334,
+    "end_time_s": 1.25952,
+    "duration_s": 0.11946666666666661,
+    "start_col": 2620,
+    "end_col": 2900,
+    "max_probability": 0.9996848106384277,
+    "mean_probability": 0.8987529945784601
+  },
+  {
+    "start_time_s": 1.2680533333333333,
+    "end_time_s": 1.38752,
+    "duration_s": 0.11946666666666683,
+    "start_col": 2920,
+    "end_col": 3200,
+    "max_probability": 0.9996838569641113,
+    "mean_probability": 0.8987967320557299
+  },
+  {
+    "start_time_s": 1.3960533333333334,
+    "end_time_s": 1.51552,
+    "duration_s": 0.11946666666666661,
+    "start_col": 3220,
+    "end_col": 3500,
+    "max_probability": 0.9996838569641113,
+    "mean_probability": 0.8987316324793059
+  },
+  {
+    "start_time_s": 1.5240533333333333,
+    "end_time_s": 1.64352,
+    "duration_s": 0.11946666666666683,
+    "start_col": 3520,
+    "end_col": 3800,
+    "max_probability": 0.9996845722198486,
+    "mean_probability": 0.8988415496102695
+  },
+  {
+    "start_time_s": 1.6520533333333334,
+    "end_time_s": 1.77152,
+    "duration_s": 0.11946666666666661,
+    "start_col": 3820,
+    "end_col": 4100,
+    "max_probability": 0.9996839761734009,
+    "mean_probability": 0.8986927281165945
+  },
+  {
+    "start_time_s": 1.7800533333333333,
+    "end_time_s": 1.89952,
+    "duration_s": 0.11946666666666683,
+    "start_col": 4120,
+    "end_col": 4400,
+    "max_probability": 0.99968421459198,
+    "mean_probability": 0.8987297724033224
+  },
+  {
+    "start_time_s": 1.9080533333333334,
+    "end_time_s": 2.061653333333333,
+    "duration_s": 0.15359999999999974,
+    "start_col": 4420,
+    "end_col": 4780,
+    "max_probability": 0.9996844530105591,
+    "mean_probability": 0.8625387219158379
+  }
+]

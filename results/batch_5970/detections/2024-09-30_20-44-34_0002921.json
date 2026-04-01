@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 1.0248533333333334,
+    "end_time_s": 1.0632533333333334,
+    "duration_s": 0.03839999999999999,
+    "start_col": 2350,
+    "end_col": 2440,
+    "max_probability": 0.9548300504684448,
+    "mean_probability": 0.9257117450237274
+  },
+  {
+    "start_time_s": 1.11872,
+    "end_time_s": 1.1656533333333334,
+    "duration_s": 0.04693333333333349,
+    "start_col": 2570,
+    "end_col": 2680,
+    "max_probability": 0.9132577776908875,
+    "mean_probability": 0.7943000967303911
+  },
+  {
+    "start_time_s": 1.24672,
+    "end_time_s": 1.2936533333333333,
+    "duration_s": 0.04693333333333327,
+    "start_col": 2870,
+    "end_col": 2980,
+    "max_probability": 0.9132577776908875,
+    "mean_probability": 0.7943000967303911
+  },
+  {
+    "start_time_s": 1.37472,
+    "end_time_s": 1.4216533333333334,
+    "duration_s": 0.04693333333333349,
+    "start_col": 3170,
+    "end_col": 3280,
+    "max_probability": 0.9132577776908875,
+    "mean_probability": 0.7943000967303911
+  },
+  {
+    "start_time_s": 1.50272,
+    "end_time_s": 1.5496533333333333,
+    "duration_s": 0.04693333333333327,
+    "start_col": 3470,
+    "end_col": 3580,
+    "max_probability": 0.9132577776908875,
+    "mean_probability": 0.7943000967303911
+  },
+  {
+    "start_time_s": 1.63072,
+    "end_time_s": 1.6776533333333334,
+    "duration_s": 0.04693333333333349,
+    "start_col": 3770,
+    "end_col": 3880,
+    "max_probability": 0.9132577776908875,
+    "mean_probability": 0.7943000967303911
+  },
+  {
+    "start_time_s": 1.75872,
+    "end_time_s": 1.8056533333333333,
+    "duration_s": 0.04693333333333327,
+    "start_col": 4070,
+    "end_col": 4180,
+    "max_probability": 0.9132577776908875,
+    "mean_probability": 0.7943000967303911
+  },
+  {
+    "start_time_s": 1.88672,
+    "end_time_s": 1.9336533333333332,
+    "duration_s": 0.04693333333333327,
+    "start_col": 4370,
+    "end_col": 4480,
+    "max_probability": 0.9132577776908875,
+    "mean_probability": 0.7943000967303911
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 1.02912,
+    "end_time_s": 1.0760533333333333,
+    "duration_s": 0.04693333333333327,
+    "start_col": 2360,
+    "end_col": 2470,
+    "max_probability": 0.9499854445457458,
+    "mean_probability": 0.8810793062051138
+  },
+  {
+    "start_time_s": 1.1400533333333334,
+    "end_time_s": 1.2253866666666666,
+    "duration_s": 0.08533333333333326,
+    "start_col": 2620,
+    "end_col": 2820,
+    "max_probability": 0.9991400241851807,
+    "mean_probability": 0.9164898310388837
+  },
+  {
+    "start_time_s": 1.2552533333333333,
+    "end_time_s": 1.4813866666666666,
+    "duration_s": 0.2261333333333333,
+    "start_col": 2890,
+    "end_col": 3420,
+    "max_probability": 0.9999994039535522,
+    "mean_probability": 0.9665818523477625
+  },
+  {
+    "start_time_s": 1.52832,
+    "end_time_s": 1.75872,
+    "duration_s": 0.23040000000000016,
+    "start_col": 3530,
+    "end_col": 4070,
+    "max_probability": 0.9999728202819824,
+    "mean_probability": 0.9812270446257157
+  },
+  {
+    "start_time_s": 1.8184533333333333,
+    "end_time_s": 2.0104533333333334,
+    "duration_s": 0.19200000000000017,
+    "start_col": 4210,
+    "end_col": 4660,
+    "max_probability": 0.9999450445175171,
+    "mean_probability": 0.9792240404564402
+  },
+  {
+    "start_time_s": 2.04032,
+    "end_time_s": 2.27072,
+    "duration_s": 0.23039999999999994,
+    "start_col": 4730,
+    "end_col": 5270,
+    "max_probability": 0.9999312162399292,
+    "mean_probability": 0.9555183974179354
+  },
+  {
+    "start_time_s": 2.3133866666666667,
+    "end_time_s": 2.3816533333333334,
+    "duration_s": 0.0682666666666667,
+    "start_col": 5370,
+    "end_col": 5530,
+    "max_probability": 0.9989257454872131,
+    "mean_probability": 0.9404245895497939
+  },
+  {
+    "start_time_s": 2.42432,
+    "end_time_s": 2.4712533333333333,
+    "duration_s": 0.04693333333333349,
+    "start_col": 5630,
+    "end_col": 5740,
+    "max_probability": 0.9680823683738708,
+    "mean_probability": 0.8993451694647471
+  }
+]

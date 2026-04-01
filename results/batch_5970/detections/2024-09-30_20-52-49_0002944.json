@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 0.97792,
+    "end_time_s": 1.0589866666666667,
+    "duration_s": 0.08106666666666673,
+    "start_col": 2240,
+    "end_col": 2430,
+    "max_probability": 0.9996569156646729,
+    "mean_probability": 0.9528397679328918
+  },
+  {
+    "start_time_s": 1.1016533333333334,
+    "end_time_s": 1.1912533333333333,
+    "duration_s": 0.0895999999999999,
+    "start_col": 2530,
+    "end_col": 2740,
+    "max_probability": 0.9998513460159302,
+    "mean_probability": 0.9731800176880576
+  },
+  {
+    "start_time_s": 1.22112,
+    "end_time_s": 1.36192,
+    "duration_s": 0.14080000000000004,
+    "start_col": 2810,
+    "end_col": 3140,
+    "max_probability": 0.9999996423721313,
+    "mean_probability": 0.9837698270292843
+  },
+  {
+    "start_time_s": 1.38752,
+    "end_time_s": 1.63072,
+    "duration_s": 0.24319999999999986,
+    "start_col": 3200,
+    "end_col": 3770,
+    "max_probability": 0.9999955892562866,
+    "mean_probability": 0.9791561437064203
+  },
+  {
+    "start_time_s": 1.6605866666666667,
+    "end_time_s": 1.7757866666666666,
+    "duration_s": 0.11519999999999997,
+    "start_col": 3840,
+    "end_col": 4110,
+    "max_probability": 0.9999914169311523,
+    "mean_probability": 0.9848861247301102
+  },
+  {
+    "start_time_s": 2.3133866666666667,
+    "end_time_s": 2.44992,
+    "duration_s": 0.1365333333333334,
+    "start_col": 5370,
+    "end_col": 5690,
+    "max_probability": 0.9994615912437439,
+    "mean_probability": 0.9480769977425084
+  },
+  {
+    "start_time_s": 2.4797866666666666,
+    "end_time_s": 2.5992533333333334,
+    "duration_s": 0.11946666666666683,
+    "start_col": 5760,
+    "end_col": 6040,
+    "max_probability": 0.9994633793830872,
+    "mean_probability": 0.9716635551945917
+  },
+  {
+    "start_time_s": 2.637653333333333,
+    "end_time_s": 2.6845866666666667,
+    "duration_s": 0.04693333333333349,
+    "start_col": 6130,
+    "end_col": 6240,
+    "max_probability": 0.9900782108306885,
+    "mean_probability": 0.9445097148418427
+  }
+]

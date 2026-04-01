@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 0.9352533333333334,
+    "end_time_s": 1.1016533333333334,
+    "duration_s": 0.1664,
+    "start_col": 2140,
+    "end_col": 2530,
+    "max_probability": 0.9998120665550232,
+    "mean_probability": 0.9120168805122375
+  },
+  {
+    "start_time_s": 1.1101866666666667,
+    "end_time_s": 1.20832,
+    "duration_s": 0.0981333333333334,
+    "start_col": 2550,
+    "end_col": 2780,
+    "max_probability": 0.9997805953025818,
+    "mean_probability": 0.9482919424772263
+  },
+  {
+    "start_time_s": 1.2765866666666668,
+    "end_time_s": 1.3448533333333332,
+    "duration_s": 0.06826666666666648,
+    "start_col": 2940,
+    "end_col": 3100,
+    "max_probability": 0.9994947910308838,
+    "mean_probability": 0.9511881014880013
+  },
+  {
+    "start_time_s": 1.4045866666666667,
+    "end_time_s": 1.4557866666666666,
+    "duration_s": 0.05119999999999991,
+    "start_col": 3240,
+    "end_col": 3360,
+    "max_probability": 0.9662975668907166,
+    "mean_probability": 0.8907441221750699
+  },
+  {
+    "start_time_s": 2.3773866666666668,
+    "end_time_s": 2.46272,
+    "duration_s": 0.08533333333333326,
+    "start_col": 5520,
+    "end_col": 5720,
+    "max_probability": 0.9995816349983215,
+    "mean_probability": 0.9392297722044445
+  },
+  {
+    "start_time_s": 2.47552,
+    "end_time_s": 2.8637866666666665,
+    "duration_s": 0.38826666666666654,
+    "start_col": 5750,
+    "end_col": 6660,
+    "max_probability": 0.9999734163284302,
+    "mean_probability": 0.973575080866399
+  },
+  {
+    "start_time_s": 2.9064533333333333,
+    "end_time_s": 2.96192,
+    "duration_s": 0.055466666666666775,
+    "start_col": 6760,
+    "end_col": 6890,
+    "max_probability": 0.9794936776161194,
+    "mean_probability": 0.8876692397253854
+  },
+  {
+    "start_time_s": 3.02592,
+    "end_time_s": 3.085653333333333,
+    "duration_s": 0.05973333333333297,
+    "start_col": 7040,
+    "end_col": 7180,
+    "max_probability": 0.9979667663574219,
+    "mean_probability": 0.9385776360829671
+  }
+]

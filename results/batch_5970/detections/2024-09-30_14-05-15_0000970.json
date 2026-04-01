@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 0.9864533333333333,
+    "end_time_s": 1.1656533333333334,
+    "duration_s": 0.17920000000000014,
+    "start_col": 2260,
+    "end_col": 2680,
+    "max_probability": 0.9999994039535522,
+    "mean_probability": 0.9742778941642406
+  },
+  {
+    "start_time_s": 1.19552,
+    "end_time_s": 1.36192,
+    "duration_s": 0.1664000000000001,
+    "start_col": 2750,
+    "end_col": 3140,
+    "max_probability": 0.9999966621398926,
+    "mean_probability": 0.9768599167466163
+  },
+  {
+    "start_time_s": 1.4088533333333333,
+    "end_time_s": 1.5880533333333333,
+    "duration_s": 0.17920000000000003,
+    "start_col": 3250,
+    "end_col": 3670,
+    "max_probability": 0.9999998807907104,
+    "mean_probability": 0.9874199961507043
+  },
+  {
+    "start_time_s": 1.6264533333333333,
+    "end_time_s": 1.84832,
+    "duration_s": 0.22186666666666666,
+    "start_col": 3760,
+    "end_col": 4280,
+    "max_probability": 0.9999997615814209,
+    "mean_probability": 0.9742471125890624
+  },
+  {
+    "start_time_s": 1.8952533333333332,
+    "end_time_s": 2.300586666666667,
+    "duration_s": 0.40533333333333355,
+    "start_col": 4390,
+    "end_col": 5340,
+    "max_probability": 0.9999719858169556,
+    "mean_probability": 0.9585940297693014
+  },
+  {
+    "start_time_s": 2.36032,
+    "end_time_s": 2.441386666666667,
+    "duration_s": 0.08106666666666662,
+    "start_col": 5480,
+    "end_col": 5670,
+    "max_probability": 0.9998286962509155,
+    "mean_probability": 0.9488566130399704
+  },
+  {
+    "start_time_s": 2.4925866666666665,
+    "end_time_s": 2.56512,
+    "duration_s": 0.07253333333333334,
+    "start_col": 5790,
+    "end_col": 5960,
+    "max_probability": 0.9988693594932556,
+    "mean_probability": 0.9093545228242874
+  },
+  {
+    "start_time_s": 2.62912,
+    "end_time_s": 2.68032,
+    "duration_s": 0.051200000000000134,
+    "start_col": 6110,
+    "end_col": 6230,
+    "max_probability": 0.9534216523170471,
+    "mean_probability": 0.8537666568389306
+  }
+]

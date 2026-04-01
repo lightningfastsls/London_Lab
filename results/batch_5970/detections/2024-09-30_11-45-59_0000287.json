@@ -1,0 +1,29 @@
+[
+  {
+    "start_time_s": 1.0248533333333334,
+    "end_time_s": 1.0845866666666666,
+    "duration_s": 0.059733333333333194,
+    "start_col": 2350,
+    "end_col": 2490,
+    "max_probability": 0.9964189529418945,
+    "mean_probability": 0.9346038540204366
+  },
+  {
+    "start_time_s": 1.1400533333333334,
+    "end_time_s": 1.3021866666666666,
+    "duration_s": 0.16213333333333324,
+    "start_col": 2620,
+    "end_col": 3000,
+    "max_probability": 0.9998759031295776,
+    "mean_probability": 0.9858745412948804
+  },
+  {
+    "start_time_s": 1.3704533333333333,
+    "end_time_s": 1.4045866666666667,
+    "duration_s": 0.03413333333333335,
+    "start_col": 3160,
+    "end_col": 3240,
+    "max_probability": 0.8916664719581604,
+    "mean_probability": 0.8229381044705709
+  }
+]
