@@ -31,6 +31,15 @@ The original CNN model (`models/matched_windows/best_model.pt`) was producing fa
 
 Trade-off is exactly what was intended: fewer false positives at cost of some recall.
 
+### Temperature Scaling
+
+| | Old Model | New Model |
+|--|-----------|-----------|
+| Temperature | 0.9050 | 0.9019 |
+| File | `models/matched_windows/temperature.json` | `models/hard_neg_retrain/temperature.json` |
+
+Both models landed at nearly identical temperatures (~0.90), meaning both are slightly overconfident and need the same mild softening.
+
 ### Hysteresis Parameters
 
 | Param | Old Model (229 recs) | New Model v1 (5 recs) | New Model FINAL (220 recs) |
@@ -39,9 +48,14 @@ Trade-off is exactly what was intended: fewer false positives at cost of some re
 | sustain | 0.45 | 0.20 | **0.40** |
 | gap_fill | 0 | 2 | **0** |
 | min_duration | 3 | 3 | 3 |
-| F2 | — | 0.9471 (inflated) | **0.8669** |
+| F2 | 0.8848 | 0.9471 (inflated) | **0.8669** |
 
-The 5-recording optimization was wildly misleading (sustain=0.20, gap_fill=2). With proper data, params converged close to the old model.
+| | Old Model | New Model (v1, discard) | New Model (FINAL) |
+|--|-----------|------------------------|-------------------|
+| File | `results/hysteresis_optimization.json` | `models/hard_neg_retrain/hysteresis_optimization.json` | `models/hard_neg_retrain/hysteresis_optimization_v2.json` |
+| Recordings | 229 | 5 | 220 |
+
+The 5-recording optimization was wildly misleading (sustain=0.20, gap_fill=2). With proper data, params converged close to the old model. The v1 hysteresis file should NOT be used — `_v2` is the correct one.
 
 ### FP Filter
 
@@ -107,14 +121,24 @@ The CNN now handles what the old FP filter used to catch (low-SNR, non-tonal noi
 
 | File | Purpose |
 |------|---------|
+| **New model (production)** | |
 | `models/hard_neg_retrain/best_model.pt` | **Production model** (207K params, mid, epoch 8) |
 | `models/hard_neg_retrain/temperature.json` | Temperature scaling (T=0.9019) |
-| `models/hard_neg_retrain/hysteresis_optimization_v2.json` | Hysteresis params (220 recordings) |
+| `models/hard_neg_retrain/hysteresis_optimization_v2.json` | **Correct** hysteresis params (220 recordings) |
+| `models/hard_neg_retrain/hysteresis_optimization.json` | Old/broken hysteresis (5 recordings — DO NOT USE) |
 | `models/hard_neg_retrain/fp_filter.pkl` | FP filter (logistic regression) |
 | `models/hard_neg_retrain/fp_filter.json` | FP filter training report |
 | `models/hard_neg_retrain/evaluation/` | Test set metrics, curves |
-| `models/matched_windows/evaluation/` | Old model test metrics (generated this session) |
-| `results/batch_5970_v2_full/` | Full pipeline batch results (6,400 files) |
+| **Old model (baseline)** | |
+| `models/matched_windows/best_model.pt` | Previous model (207K params, mid, epoch 13) |
+| `models/matched_windows/temperature.json` | Temperature scaling (T=0.9050) |
+| `results/hysteresis_optimization.json` | Hysteresis params (229 recordings) |
+| `models/matched_windows/fp_filter.pkl` | FP filter |
+| `models/matched_windows/fp_filter.json` | FP filter training report |
+| `models/matched_windows/evaluation/` | Test set metrics (generated this session) |
+| **Results & review** | |
+| `results/batch_5970_v2_full/` | New model full pipeline batch (6,400 files) |
+| `results/batch_5970/` | Old model batch (6,400 files) |
 | `results/batch_5970_v2_full/manual_review_pngs/` | PNGs for sub-threshold events only |
 | `results/batch_5970_v2_full/manual_review_wavs/` | Symlinked WAVs for manual review |
 | `results/batch_5970_v2_full/downgraded_review_pngs/` | PNGs for old auto_accept → downgraded |

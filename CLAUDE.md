@@ -102,6 +102,25 @@ USV Spectrogram Generator - Python tools for analyzing ultrasonic vocalization (
 
 The current production CNN is `models/hard_neg_retrain/best_model.pt` — retrained with 620 hard negatives + 144 hard positives. Full pipeline results at `docs/handoffs/v2-full-pipeline-results.md`. Key stats: precision 90.55% (+3.35%), 16/18 known noise files eliminated, 98.7% USV rate in manual review tier. The PyQt6 app defaults to this model.
 
+**DEPRECATED — do NOT use:** `models/matched_windows/best_model.pt` or `models/production/best_model.pt`. These are older models kept only as baselines.
+
+### Running Batch Detection
+
+**Always use this exact pipeline** when running detection on any WAV folder:
+
+```bash
+.venv/bin/python scripts/run_batch_detection.py \
+    --wav-dir <WAV_FOLDER>/ \
+    --model models/hard_neg_retrain/best_model.pt \
+    --output-dir results/batch_<NAME>/ \
+    --temperature models/hard_neg_retrain/temperature.json \
+    --fp-filter models/hard_neg_retrain/fp_filter.pkl \
+    --hysteresis-config models/hard_neg_retrain/hysteresis_optimization_v2.json \
+    --workers 4
+```
+
+All five flags (model, temperature, fp-filter, hysteresis-config, workers) are required for correct results. Omitting `--fp-filter` or `--hysteresis-config` produces an incomplete pipeline with unreliable triage.
+
 ## Environment Setup
 
 ```powershell
