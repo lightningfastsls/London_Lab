@@ -22,12 +22,12 @@ class ThresholdPreset:
         )
 
 
-# Default presets calibrated for matched-windows CNN (2026-03-27).
-# Derived from hysteresis optimization on 229 labeled recordings (F2=0.885).
+# Default presets calibrated for hard-neg retrained CNN (2026-03-31).
+# Derived from hysteresis optimization on 220 labeled recordings (F2=0.867).
 DEFAULT_PRESETS: List[ThresholdPreset] = [
-    ThresholdPreset(name="Conservative (1SD)", high_threshold=0.65, low_threshold=0.50),
-    ThresholdPreset(name="Best F2", high_threshold=0.60, low_threshold=0.45),
-    ThresholdPreset(name="High Recall", high_threshold=0.50, low_threshold=0.35),
+    ThresholdPreset(name="Conservative (1SD)", high_threshold=0.80, low_threshold=0.50),
+    ThresholdPreset(name="Best F2", high_threshold=0.60, low_threshold=0.40),
+    ThresholdPreset(name="High Recall", high_threshold=0.50, low_threshold=0.30),
 ]
 
 

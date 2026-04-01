@@ -1,0 +1,89 @@
+{
+  "cv_results": {
+    "fold_results": [
+      {
+        "fold": 0,
+        "f2": 0.8642,
+        "tp": 233,
+        "fp": 7,
+        "fn": 44,
+        "n_train": 1028,
+        "n_val": 291,
+        "n_val_recordings": 26
+      },
+      {
+        "fold": 1,
+        "f2": 0.8161,
+        "tp": 276,
+        "fp": 7,
+        "fn": 76,
+        "n_train": 946,
+        "n_val": 373,
+        "n_val_recordings": 26
+      },
+      {
+        "fold": 2,
+        "f2": 0.8582,
+        "tp": 178,
+        "fp": 3,
+        "fn": 36,
+        "n_train": 1095,
+        "n_val": 224,
+        "n_val_recordings": 25
+      },
+      {
+        "fold": 3,
+        "f2": 0.7678,
+        "tp": 160,
+        "fp": 6,
+        "fn": 59,
+        "n_train": 1076,
+        "n_val": 243,
+        "n_val_recordings": 25
+      },
+      {
+        "fold": 4,
+        "f2": 0.8103,
+        "tp": 135,
+        "fp": 10,
+        "fn": 37,
+        "n_train": 1131,
+        "n_val": 188,
+        "n_val_recordings": 25
+      }
+    ],
+    "mean_f2": 0.8233,
+    "std_f2": 0.0352,
+    "n_folds_completed": 5
+  },
+  "feature_importances": {
+    "peak_probability": 1.6501027574920961,
+    "mean_probability": 0.5617740307703831,
+    "prob_std": 0.314200592317706,
+    "prob_kurtosis": 0.3605357429942923,
+    "prob_roughness": 0.06320719462402814,
+    "duration_windows": 0.2472019340982199,
+    "tonality": 0.011110380932557295,
+    "mean_peak_freq_bin": 0.19701192452153246,
+    "freq_range_bins": 0.2238510907925808,
+    "freq_modulation_rate": 0.010614037211600376,
+    "snr_db": 0.18588664194494614
+  },
+  "n_events": 1319,
+  "n_usv": 1234,
+  "n_fp": 85,
+  "hysteresis_config": {
+    "onset_threshold": 0.6,
+    "sustain_threshold": 0.4,
+    "gap_fill_windows": 0,
+    "min_duration_windows": 3
+  },
+  "args": {
+    "model": "models/hard_neg_retrain/best_model.pt",
+    "labels": "data/unified_labels.json",
+    "cv_folds": 5,
+    "collar_s": 0.2,
+    "hop_px": 10,
+    "seed": 42
+  }
+}

@@ -98,6 +98,10 @@ Pre-existing test files (from `test-architect`) are treated as spec — do NOT m
 
 USV Spectrogram Generator - Python tools for analyzing ultrasonic vocalization (USV) recordings at 300 kHz. Includes spectrogram generation, tiled PNG rendering, Zarr storage, USV detection pipeline, Streamlit-based Parameter Lab, and candidate labeling tool.
 
+### Production Model (2026-04-01)
+
+The current production CNN is `models/hard_neg_retrain/best_model.pt` — retrained with 620 hard negatives + 144 hard positives. Full pipeline results at `docs/handoffs/v2-full-pipeline-results.md`. Key stats: precision 90.55% (+3.35%), 16/18 known noise files eliminated, 98.7% USV rate in manual review tier. The PyQt6 app defaults to this model.
+
 ## Environment Setup
 
 ```powershell
