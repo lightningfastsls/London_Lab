@@ -51,3 +51,21 @@ tmp/
 !USV_3452_sample_reviewed/
 !USV_3452_sample_reviewed/**
 *.xlsx
+
+# Large data / training directories
+/5970/
+/5970 USV/
+data/training/hard_noises/
+data/training/matched_windows/
+
+# Caches and intermediate results
+models/hard_neg_retrain/hysteresis_cache/
+models/hard_neg_retrain/hysteresis_cache_v2/
+results/inference_cache/
+results/pipeline_comparison/
+results/batch_5970_v2/
+results/batch_5970_v2_full/
+
+# Junk
+*.Zone.Identifier
+.claude/hooks/*.bak
