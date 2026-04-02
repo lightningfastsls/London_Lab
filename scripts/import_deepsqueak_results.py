@@ -75,6 +75,12 @@ Examples:
         help="Timestamp matching tolerance in ms. Default: 5.0",
     )
     parser.add_argument(
+        "--batch-format",
+        action="store_true",
+        help="Read flat batch detection JSONs (one per WAV) instead of "
+        "per-detection subdirectories.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Load and match but don't write output files.",
@@ -122,6 +128,7 @@ def main() -> int:
             detections_dir=detections_dir,
             output_path=Path(args.output),
             tolerance_ms=args.tolerance_ms,
+            batch_format=args.batch_format,
         )
     except ValueError as exc:
         print(f"Error: Invalid configuration: {exc}", file=sys.stderr)
@@ -130,6 +137,7 @@ def main() -> int:
     if args.dry_run:
         from usv_spectrogram.classification.deepsqueak_import import (
             load_all_deepsqueak_results,
+            load_batch_detections_for_merge,
             load_detections_for_merge,
             merge_with_detections,
         )
@@ -140,7 +148,10 @@ def main() -> int:
             print(f"Error loading results: {exc}", file=sys.stderr)
             return 1
 
-        det_by_stem = load_detections_for_merge(config.detections_dir)
+        if config.batch_format:
+            det_by_stem = load_batch_detections_for_merge(config.detections_dir)
+        else:
+            det_by_stem = load_detections_for_merge(config.detections_dir)
         _, summary = merge_with_detections(
             ds_df, det_by_stem, tolerance_ms=config.tolerance_ms
         )

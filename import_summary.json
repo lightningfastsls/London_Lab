@@ -1,12 +1,12 @@
 {
-  "total_ds_calls": 289,
-  "total_detections": 757,
-  "matched": 289,
-  "unmatched_ds": 0,
-  "unmatched_det": 468,
+  "total_ds_calls": 7864,
+  "total_detections": 7575,
+  "matched": 7518,
+  "unmatched_ds": 346,
+  "unmatched_det": 57,
   "files_processed": 1,
-  "match_rate": 1.0,
+  "match_rate": 0.956,
   "per_file_counts": {
-    "classified_Stats.xlsx": 289
+    "classified_Stats.xlsx": 7864
   }
 }

@@ -113,6 +113,7 @@ class DeepSqueakImportConfig:
     detections_dir: Path
     output_path: Path
     tolerance_ms: float = 5.0
+    batch_format: bool = False
 
     def __post_init__(self) -> None:
         # Allow string paths for convenience (same pattern as RavenExportConfig).
@@ -402,6 +403,73 @@ def load_detections_for_merge(
     return result
 
 
+def load_batch_detections_for_merge(
+    detections_dir: Path,
+) -> dict[str, list[dict]]:
+    """Load flat batch detection JSONs for merge (one file per WAV).
+
+    Batch detection files are produced by ``run_batch_detection.py``.  Each
+    file is ``<wav_stem>.json`` containing a JSON list of dicts with keys
+    ``start_time_s``, ``end_time_s``, ``duration_s``, ``max_probability``,
+    ``mean_probability``.
+
+    Parameters
+    ----------
+    detections_dir : Path
+        Directory of flat ``.json`` files (one per WAV).
+
+    Returns
+    -------
+    dict[str, list[dict]]
+        ``{wav_stem: [detection dicts]}`` sorted by start time, with fields
+        normalized to the same schema as :func:`load_detections_for_merge`.
+    """
+    if not detections_dir.is_dir():
+        raise FileNotFoundError(
+            f"Detections directory not found: {detections_dir}"
+        )
+
+    result: dict[str, list[dict]] = {}
+
+    for json_path in sorted(detections_dir.glob("*.json")):
+        wav_stem = json_path.stem
+
+        try:
+            with open(json_path, "r", encoding="utf-8") as fh:
+                data = json.load(fh)
+        except json.JSONDecodeError as exc:
+            logger.warning("Skipping %s: malformed JSON: %s", json_path.name, exc)
+            continue
+
+        if not isinstance(data, list) or not data:
+            continue
+
+        detections: list[dict] = []
+        for idx, det_raw in enumerate(data):
+            try:
+                detections.append({
+                    "start_s": det_raw["start_time_s"],
+                    "end_s": det_raw["end_time_s"],
+                    "duration_ms": det_raw.get("duration_s", 0) * 1000,
+                    "detection_index": idx,
+                    "prob_max": det_raw.get("max_probability"),
+                    "prob_mean": det_raw.get("mean_probability"),
+                    "user_action": None,
+                    "json_path": str(json_path),
+                })
+            except KeyError as exc:
+                logger.warning(
+                    "Skipping detection in %s: missing key %s",
+                    json_path.name, exc,
+                )
+
+        if detections:
+            detections.sort(key=lambda d: d["start_s"])
+            result[wav_stem] = detections
+
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Timestamp proximity matching
 # ---------------------------------------------------------------------------
@@ -677,7 +745,10 @@ def import_deepsqueak_results(config: DeepSqueakImportConfig) -> ImportSummary:
     )
 
     # Step 2: Load detection JSONs.
-    detections_by_stem = load_detections_for_merge(config.detections_dir)
+    if config.batch_format:
+        detections_by_stem = load_batch_detections_for_merge(config.detections_dir)
+    else:
+        detections_by_stem = load_detections_for_merge(config.detections_dir)
     total_dets = sum(len(v) for v in detections_by_stem.values())
     logger.info(
         "Loaded %d detections across %d WAV stems",
