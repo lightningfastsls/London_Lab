@@ -59,13 +59,19 @@ Examples:
     )
     parser.add_argument(
         "--wav-dir",
-        default=str(REPO_ROOT / "5970 USV"),
-        help='Directory containing source .wav files. Default: "5970 USV/"',
+        default=None,
+        help='Directory containing source .wav files. Required unless --batch-format.',
     )
     parser.add_argument(
         "--output-dir",
         default=str(REPO_ROOT / "raven_tables"),
         help="Where to write Raven .txt files. Default: raven_tables/",
+    )
+    parser.add_argument(
+        "--batch-format",
+        action="store_true",
+        help="Read flat batch detection JSONs (one per WAV, each a list of "
+        "detections) instead of per-detection subdirectories.",
     )
     parser.add_argument(
         "--low-freq",
@@ -105,7 +111,7 @@ def main() -> int:
 
     # Validate input directories exist early.
     detections_dir = Path(args.detections_dir)
-    wav_dir = Path(args.wav_dir)
+    wav_dir = Path(args.wav_dir) if args.wav_dir else None
 
     if not detections_dir.is_dir():
         print(
@@ -114,9 +120,10 @@ def main() -> int:
         )
         return 1
 
-    if not wav_dir.is_dir():
+    if not args.batch_format and (wav_dir is None or not wav_dir.is_dir()):
         print(
-            f"Error: WAV directory not found: {wav_dir}",
+            f"Error: WAV directory not found: {wav_dir}  "
+            f"(use --batch-format if reading flat batch JSONs)",
             file=sys.stderr,
         )
         return 1
@@ -128,25 +135,38 @@ def main() -> int:
             output_dir=Path(args.output_dir),
             low_freq_hz=args.low_freq,
             high_freq_hz=args.high_freq,
+            batch_format=args.batch_format,
         )
     except ValueError as exc:
         print(f"Error: Invalid configuration: {exc}", file=sys.stderr)
         return 1
 
     if args.dry_run:
-        from usv_spectrogram.classification.raven_export import (
-            discover_wav_detection_mapping,
-        )
+        if args.batch_format:
+            from usv_spectrogram.classification.raven_export import (
+                discover_batch_detection_mapping,
+            )
+            mapping = discover_batch_detection_mapping(config.detections_dir)
+            print(f"Dry run (batch) — {len(mapping)} WAV files with detections:\n")
+            total = 0
+            for stem, dets in sorted(mapping.items()):
+                print(f"  {stem}: {len(dets)} detections")
+                total += len(dets)
+            print(f"\nTotal detections: {total}")
+        else:
+            from usv_spectrogram.classification.raven_export import (
+                discover_wav_detection_mapping,
+            )
+            mapping = discover_wav_detection_mapping(
+                config.detections_dir, config.wav_dir
+            )
+            print(f"Dry run — {len(mapping)} WAV files matched:\n")
+            total = 0
+            for stem, paths in sorted(mapping.items()):
+                print(f"  {stem}: {len(paths)} detections")
+                total += len(paths)
+            print(f"\nTotal detections: {total}")
 
-        mapping = discover_wav_detection_mapping(
-            config.detections_dir, config.wav_dir
-        )
-        print(f"Dry run — {len(mapping)} WAV files matched:\n")
-        total = 0
-        for stem, paths in sorted(mapping.items()):
-            print(f"  {stem}: {len(paths)} detections")
-            total += len(paths)
-        print(f"\nTotal detections: {total}")
         print(f"Output would go to: {config.output_dir}")
         return 0
 

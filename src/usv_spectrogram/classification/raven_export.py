@@ -64,27 +64,40 @@ class RavenExportConfig:
         Root of the detection tree (e.g. ``USV_Detections/``).
         Each immediate subdirectory corresponds to one WAV file.
     wav_dir : Path
-        Directory containing the source ``.wav`` files.
+        Directory containing the source ``.wav`` files.  May be ``None``
+        when ``batch_format=True`` (batch JSONs encode their own stems).
     output_dir : Path
         Where to write the ``.Table.1.selections.txt`` files.
     low_freq_hz : float
         Lower frequency bound written into every selection row.
     high_freq_hz : float
         Upper frequency bound written into every selection row.
+    batch_format : bool
+        When True, *detections_dir* contains flat JSON files (one per WAV,
+        each holding a list of detection dicts) as produced by
+        ``run_batch_detection.py``.  The WAV stem is the JSON filename.
     """
 
     detections_dir: Path
-    wav_dir: Path
-    output_dir: Path
+    wav_dir: Path | None = None
+    output_dir: Path = Path("raven_tables")
     low_freq_hz: float = 25_000.0
     high_freq_hz: float = 125_000.0
+    batch_format: bool = False
 
     def __post_init__(self) -> None:
         # Allow string paths for convenience.
-        for attr in ("detections_dir", "wav_dir", "output_dir"):
+        for attr in ("detections_dir", "output_dir"):
             val = getattr(self, attr)
             if not isinstance(val, Path):
                 object.__setattr__(self, attr, Path(val))
+        if self.wav_dir is not None and not isinstance(self.wav_dir, Path):
+            object.__setattr__(self, "wav_dir", Path(self.wav_dir))
+
+        if not self.batch_format and self.wav_dir is None:
+            raise ValueError(
+                "wav_dir is required when batch_format is False"
+            )
 
         if self.low_freq_hz < 0 or self.high_freq_hz < 0:
             raise ValueError(
@@ -245,6 +258,71 @@ def discover_wav_detection_mapping(
     return mapping
 
 
+def discover_batch_detection_mapping(
+    detections_dir: Path,
+) -> dict[str, list[dict]]:
+    """Load batch-format detection JSONs (one flat file per WAV).
+
+    Batch detection files are produced by ``run_batch_detection.py``.  Each
+    file is named ``<wav_stem>.json`` and contains a JSON list of detection
+    dicts with keys ``start_time_s``, ``end_time_s``, ``duration_s``,
+    ``max_probability``, ``mean_probability``.
+
+    Parameters
+    ----------
+    detections_dir : Path
+        Directory of flat ``.json`` files (one per WAV).
+
+    Returns
+    -------
+    dict[str, list[dict]]
+        ``{wav_stem: [detection dicts]}`` for every WAV with ≥1 detection.
+        Each detection dict is normalized to ``{start_s, end_s, duration_ms}``.
+    """
+    if not detections_dir.is_dir():
+        raise FileNotFoundError(
+            f"Detections directory not found: {detections_dir}"
+        )
+
+    mapping: dict[str, list[dict]] = {}
+
+    for json_path in sorted(detections_dir.glob("*.json")):
+        wav_stem = json_path.stem
+
+        try:
+            with open(json_path, "r", encoding="utf-8") as fh:
+                data = json.load(fh)
+        except json.JSONDecodeError as exc:
+            logger.warning("Skipping %s: malformed JSON: %s", json_path.name, exc)
+            continue
+
+        if not isinstance(data, list):
+            logger.warning("Skipping %s: expected list, got %s", json_path.name, type(data).__name__)
+            continue
+
+        if not data:
+            continue  # Empty list = no detections for this WAV.
+
+        detections: list[dict] = []
+        for det_raw in data:
+            try:
+                detections.append({
+                    "start_s": det_raw["start_time_s"],
+                    "end_s": det_raw["end_time_s"],
+                    "duration_ms": det_raw.get("duration_s", 0) * 1000,
+                })
+            except KeyError as exc:
+                logger.warning(
+                    "Skipping detection in %s: missing key %s",
+                    json_path.name, exc,
+                )
+
+        if detections:
+            mapping[wav_stem] = sorted(detections, key=lambda d: d["start_s"])
+
+    return mapping
+
+
 def detections_to_raven_table(
     detections: list[dict],
     low_freq_hz: float = 25_000.0,
@@ -307,12 +385,19 @@ def export_raven_tables(config: RavenExportConfig) -> list[Path]:
         raise FileNotFoundError(
             f"Detections directory not found: {config.detections_dir}"
         )
-    if not config.wav_dir.is_dir():
+
+    config.output_dir.mkdir(parents=True, exist_ok=True)
+
+    if config.batch_format:
+        # Batch path: flat JSON files, no WAV directory needed.
+        batch_mapping = discover_batch_detection_mapping(config.detections_dir)
+        return _export_from_preloaded(config, batch_mapping)
+
+    # Per-detection subdirectory path (original).
+    if config.wav_dir is None or not config.wav_dir.is_dir():
         raise FileNotFoundError(
             f"WAV directory not found: {config.wav_dir}"
         )
-
-    config.output_dir.mkdir(parents=True, exist_ok=True)
 
     # -- Step 1: discover --
     mapping = discover_wav_detection_mapping(
@@ -390,6 +475,48 @@ def export_raven_tables(config: RavenExportConfig) -> list[Path]:
         )
 
     # -- Step 4: summary file --
+    summary_path = config.output_dir / "export_summary.json"
+    with open(summary_path, "w", encoding="utf-8") as fh:
+        json.dump(summary.to_dict(), fh, indent=2)
+    logger.info("Export summary -> %s", summary_path)
+
+    return created_paths
+
+
+def _export_from_preloaded(
+    config: RavenExportConfig,
+    detections_by_stem: dict[str, list[dict]],
+) -> list[Path]:
+    """Write Raven tables from pre-loaded detection dicts.
+
+    Shared write path for batch format (dicts already loaded) vs
+    per-detection format (which loads from individual JSON files).
+    """
+    summary = ExportSummary(total_wav_files=len(detections_by_stem))
+    created_paths: list[Path] = []
+
+    for wav_stem, detections in sorted(detections_by_stem.items()):
+        if not detections:
+            continue
+
+        df = detections_to_raven_table(
+            detections,
+            low_freq_hz=config.low_freq_hz,
+            high_freq_hz=config.high_freq_hz,
+        )
+
+        out_path = config.output_dir / f"{wav_stem}.Table.1.selections.txt"
+        df.to_csv(out_path, sep="\t", index=False, lineterminator="\n")
+
+        created_paths.append(out_path)
+        summary.total_detections += len(detections)
+        summary.total_tables_written += 1
+        summary.per_wav_counts[wav_stem] = len(detections)
+
+        logger.info(
+            "Wrote %d selections -> %s", len(detections), out_path.name
+        )
+
     summary_path = config.output_dir / "export_summary.json"
     with open(summary_path, "w", encoding="utf-8") as fh:
         json.dump(summary.to_dict(), fh, indent=2)

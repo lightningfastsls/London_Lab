@@ -16,9 +16,27 @@
 % Usage:
 %   >> run('\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\scripts\create_deepsqueak_mats.m')
 
-ravenDir = '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\raven_tables';
-wavDir   = '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\5970 USV';
+% --- Configuration ---
+% Switch between smoke test (10 files) and full run (1328 files):
+%   ravenDir: raven_tables (smoke) or raven_tables_full (full)
+%   wavDirs:  list of root directories to search recursively for WAVs
+
+ravenDir = '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\raven_tables_full';
+wavDirs  = {'\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\5970', ...
+             '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\5970_reviewed'};
 outDir   = fullfile(fileparts(which('DeepSqueak')), 'Detections');
+
+% Build WAV lookup: stem -> full path (recursive search across all wavDirs)
+fprintf('Building WAV lookup table...\n');
+wavLookup = containers.Map();
+for d = 1:length(wavDirs)
+    wavFiles_d = dir(fullfile(wavDirs{d}, '**', '*.wav'));
+    for w = 1:length(wavFiles_d)
+        [~, stem, ~] = fileparts(wavFiles_d(w).name);
+        wavLookup(stem) = fullfile(wavFiles_d(w).folder, wavFiles_d(w).name);
+    end
+end
+fprintf('Found %d WAV files across %d directories.\n\n', wavLookup.Count, length(wavDirs));
 
 if ~isfolder(outDir)
     mkdir(outDir);
@@ -46,13 +64,12 @@ for i = 1:length(ravenFiles)
         continue;
     end
     wavStem = tokens{1}{1};
-    wavName = [wavStem '.wav'];
-    wavPath = fullfile(wavDir, wavName);
 
-    if ~isfile(wavPath)
+    if ~wavLookup.isKey(wavStem)
         fprintf('[SKIP] No WAV file for: %s\n', ravenFiles(i).name);
         continue;
     end
+    wavPath = wavLookup(wavStem);
 
     % Read Raven selection table
     ravenTable = readtable(ravenPath, 'Delimiter', 'tab');
