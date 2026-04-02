@@ -14,7 +14,7 @@
 | 3 | Parts Finder (Tevel) | Auto parts / Web | **Phases 1–7.1 DONE** (349+ tests) | Resolve review findings, then 7.2 (needs Tevel data) |
 | 4 | USV Detection Desktop App | Neuroscience | **DONE and operational** | — |
 | 5 | Syllable Classification | Neuroscience | Plan exists, not started | Review plan, decide priority |
-| 6 | DeepSqueak Classification Bridge | Neuroscience | **Phase 2 DONE**, Phase 3 in progress | Import Raven tables in MATLAB DeepSqueak |
+| 6 | DeepSqueak Classification Bridge | Neuroscience | **COMPLETE** (Phases 1-4), 7,518 calls classified | Repertoire analysis (Phase 5) |
 | 7 | Knowledge Graph (arscontexta) | Knowledge mgmt | Active (maintenance mode) | `/reduce` inbox (3 items pending) |
 
 ---
@@ -45,7 +45,7 @@ End-to-end pipeline: WAV recording (300 kHz) -> spectrogram -> CNN sliding-windo
 | 11.4 | Analysis on real codes | BLOCKED — needs 11.3 |
 | 12 | Cross-population USV comparison | FUTURE |
 | 13 | Batch detection pipeline | FUTURE |
-| 14 | DeepSqueak classification bridge | **14.1 DONE** (Raven export), 14.2 IN PROGRESS |
+| 14 | DeepSqueak classification bridge | **14.1-14.2 DONE** (Raven export + import), full 5970 run complete |
 
 ### Blocker
 **Phase 11.2 needs GPU access.** The AMD RX 5700 is insufficient for the ~25-30M param transformer model. Need HPC cluster or cloud GPU (Colab Pro, Lambda, etc.).
@@ -174,31 +174,33 @@ Bridge between our Python detection pipeline and DeepSqueak's MATLAB classificat
 | Phase | Description | Status |
 |-------|-------------|--------|
 | 1 | Discovery — WAV↔detection mapping | DONE |
-| 2 | Raven export module (`raven_export.py`) | **DONE** — 33 tests, reviewed |
-| 2.1 | Export real data | **DONE** — 93 detections across 5 WAVs (31 dirs awaiting WAV files from other machine) |
-| 3 | DeepSqueak import & classification (MATLAB) | **IN PROGRESS** — DeepSqueak v3.1.0 installed, Raven tables ready to import. **RESUME HERE** (see steps below) |
-| 4 | DeepSqueak results ingestion (`deepsqueak_import.py`) | NOT STARTED — needs Excel output from Step 3 |
-| 5 | Statistical analysis (`repertoire_stats.py`) | NOT STARTED — needs classified data |
+| 2 | Raven export module (`raven_export.py`) | **DONE** — 33 tests, batch format added |
+| 2.1 | Export real data | **DONE** — 7,575 detections across 1,328 WAVs (full 5970 dataset) |
+| 3 | DeepSqueak classification (MATLAB headless) | **DONE** — 7,864 calls classified into 27 k-means clusters |
+| 4 | DeepSqueak results ingestion (`deepsqueak_import.py`) | **DONE** — 7,518 matched (99.2%), batch format support added |
+| 5 | Statistical analysis (`repertoire_stats.py`) | NOT STARTED — classified data now available |
 
 ### Key Files
-- `src/usv_spectrogram/classification/raven_export.py` — core export module
-- `scripts/export_raven_tables.py` — CLI entry point
-- `raven_tables/` — 5 exported Raven selection tables (ready for DeepSqueak)
-- `raven_tables/export_summary.json` — export manifest
+- `src/usv_spectrogram/classification/raven_export.py` — Raven export (per-detection + batch format)
+- `src/usv_spectrogram/classification/deepsqueak_import.py` — DeepSqueak import + merge
+- `scripts/export_raven_tables.py` — Raven export CLI (`--batch-format` for flat JSONs)
+- `scripts/import_deepsqueak_results.py` — Import CLI (`--batch-format`, `--tolerance-ms 75.0`)
+- `scripts/create_deepsqueak_mats.m` — Raven TSV -> DeepSqueak .mat (recursive WAV lookup)
+- `scripts/deepsqueak_batch_classify.m` — Headless k-means clustering (no GUI)
+- `scripts/deepsqueak_export_stats.m` — 18-feature acoustic stats export
+- `scripts/test_deepsqueak_batch.m` — Post-run validation (16 checks)
+- `classified_detections_full.csv` — **Main output**: 7,921 rows, 31 columns
+- `deepsqueak_output_full/classified_Stats.xlsx` — Raw DeepSqueak output
+- `raven_tables_full/` — 1,328 Raven selection tables
+- `docs/handoffs/deepsqueak-full-pipeline-results.md` — Full pipeline handoff
 
 ### Known Issues
-- 31 detection directories have no matching WAV files in `5970 USV/` (WAVs are on another machine)
 - 1 malformed detection JSON (`0000004/detection_003_1.025s-1.063s.json`) was skipped
+- 75ms tolerance needed (not 5ms default) due to DeepSqueak spectrogram ridge recomputation
+- 289 duplicate calls from smoke test .mat files (10 stems processed twice)
 
-### Resume Steps (MATLAB — do these manually)
-1. Open MATLAB, type `DeepSqueak` in Command Window
-2. **File → Import from Raven** — for each of 5 files, pick the `.txt` from `raven_tables/` then the matching `.wav` from `5970 USV/`
-3. **File → Load Calls/Detections** — load one of the saved `.mat` files
-4. **Tools → Call Classification → Unsupervised Clustering** — name the syllable clusters
-5. **File → Export to Excel** — produces `_Stats.xlsx` with 18 columns
-
-### Next Action (after MATLAB)
-Implement Phase 4 (`deepsqueak_import.py`) to ingest the Excel output back into Python. Also: retrieve remaining WAV files from other machine to export the other 31 detection directories.
+### Next Action
+Implement Phase 5: repertoire statistics on the classified data. Or run the same pipeline on the 3452 dataset (855 reviewed WAVs).
 
 ---
 
