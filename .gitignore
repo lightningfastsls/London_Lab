@@ -68,4 +68,5 @@ results/batch_5970_v2_full/
 
 # Junk
 *.Zone.Identifier
+*:Zone.Identifier
 .claude/hooks/*.bak
