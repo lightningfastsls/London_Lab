@@ -17,14 +17,15 @@ The module bridges the gap between our custom detection pipeline and established
 ```python
 @dataclass(frozen=True)
 class RavenExportConfig:
-    detections_dir: Path          # USV_Detections/ root
-    wav_dir: Path                 # Source WAV file directory
+    detections_dir: Path          # USV_Detections/ root or batch detections dir
+    wav_dir: Path | None = None   # Source WAV dir (required unless batch_format)
     output_dir: Path              # Where to write .txt files
     low_freq_hz: float = 25_000  # Mouse USV band lower bound (Hz)
     high_freq_hz: float = 125_000 # Mouse USV band upper bound (Hz)
+    batch_format: bool = False    # Read flat batch JSONs instead of subdirectories
 ```
 
-Validates: low < high, non-negative frequencies, auto-converts string paths to `Path`.
+Validates: low < high, non-negative frequencies, wav_dir required when not batch_format, auto-converts string paths to `Path`.
 
 ### `ExportSummary`
 
@@ -45,6 +46,7 @@ class ExportSummary:
 |----------|-----------|---------|
 | `load_detection_json` | `(Path) -> dict` | Load one detection JSON, extract `core_time` fields |
 | `discover_wav_detection_mapping` | `(Path, Path) -> dict[str, list[Path]]` | Map detection subdirectories to WAV stems |
+| `discover_batch_detection_mapping` | `(Path) -> dict[str, list[dict]]` | Load flat batch JSONs (one per WAV, list of detections) |
 | `detections_to_raven_table` | `(list[dict], float, float) -> pd.DataFrame` | Convert detections to Raven-format DataFrame |
 | `export_raven_tables` | `(RavenExportConfig) -> list[Path]` | Full pipeline: discover, convert, write TSV + summary |
 
@@ -76,16 +78,22 @@ Output naming: `{wav_stem}.Table.1.selections.txt` (Raven convention).
 ## CLI Usage
 
 ```bash
-# Standard export
+# Per-detection subdirectory format (original)
 python scripts/export_raven_tables.py \
-    --detections-dir USV_Detections \
+    --detections-dir USV_Detections/5970 \
     --wav-dir "5970 USV" \
     --output-dir raven_tables
 
+# Batch format (flat JSONs from run_batch_detection.py)
+python scripts/export_raven_tables.py \
+    --detections-dir results/batch_5970_v2_full/detections \
+    --batch-format \
+    --output-dir raven_tables_full
+
 # Dry run (mapping + counts only)
 python scripts/export_raven_tables.py \
-    --detections-dir USV_Detections \
-    --wav-dir "5970 USV" \
+    --detections-dir results/batch_5970_v2_full/detections \
+    --batch-format \
     --dry-run -v
 ```
 
@@ -95,6 +103,7 @@ python scripts/export_raven_tables.py \
 - **Fixed frequency bounds**: Per-syllable frequency extraction isn't available; the full 25-125 kHz band is written for every row.
 - **One table per WAV**: Follows Raven's convention for associating selection tables with sound files.
 - **Directory name = WAV stem**: Supports both exact match and prefix match (longest stem wins).
+- **Batch format support** (2026-04-03): Added `discover_batch_detection_mapping()` for flat batch JSONs. Normalizes `start_time_s`/`end_time_s` to `start_s`/`end_s`. No WAV directory needed since the JSON filename encodes the stem.
 
 ## Integration Points
 
