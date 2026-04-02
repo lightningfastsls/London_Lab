@@ -245,7 +245,18 @@ def load_deepsqueak_excel(path: Path) -> pd.DataFrame:
 
     df = _normalize_columns(df)
     df["source_file"] = path.name
-    df["wav_stem"] = _extract_wav_stem(path.name)
+
+    # Determine wav_stem: prefer the per-row ``file`` column when present
+    # (handles consolidated multi-WAV Excel files like classified_Stats.xlsx),
+    # fall back to filename-based extraction for single-WAV-per-file exports.
+    if "file" in df.columns and df["file"].nunique() > 1:
+        df["wav_stem"] = df["file"].astype(str)
+    elif "file" in df.columns and df["file"].nunique() == 1:
+        # Single WAV in file column — use it directly since it's more
+        # specific than the Excel filename.
+        df["wav_stem"] = df["file"].astype(str)
+    else:
+        df["wav_stem"] = _extract_wav_stem(path.name)
     return df
 
 
