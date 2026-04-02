@@ -7,6 +7,12 @@
 %   - Verify-after-save: reloads each .mat and checks structure
 %   - Prints Box sample for visual confirmation
 %
+% Full headless pipeline (run in order):
+%   1. create_deepsqueak_mats.m     (Raven TSV -> .mat)       <-- this file
+%   2. deepsqueak_batch_classify.m  (headless classification)
+%   3. deepsqueak_export_stats.m    (export Excel stats)
+%   4. import_deepsqueak_results.py (Python: merge with detections)
+%
 % Usage:
 %   >> run('\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\scripts\create_deepsqueak_mats.m')
 
