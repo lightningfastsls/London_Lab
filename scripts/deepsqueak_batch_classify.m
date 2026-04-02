@@ -39,9 +39,9 @@ function deepsqueak_batch_classify(matDir, dsFolder, outputDir, method)
 %
 %   Usage:
 %     >> deepsqueak_batch_classify( ...
-%            '\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_mats', ...
+%            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_mats', ...
 %            'C:\path\to\DeepSqueak', ...
-%            '\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_output', ...
+%            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_output', ...
 %            'kmeans')
 %
 %     Or from command line:
@@ -119,16 +119,30 @@ function deepsqueak_batch_classify(matDir, dsFolder, outputDir, method)
     handles.data.settings.AmplitudeThreshold = AMPLITUDE_THRESHOLD;
     handles.data.squeakfolder = dsFolder;
 
-    % Find .mat files
+    % Find .mat files (skip bundled DeepSqueak examples)
     matFiles_struct = dir(fullfile(matDir, '*.mat'));
     if isempty(matFiles_struct)
         error('deepsqueak_batch_classify:noMatFiles', ...
             'No .mat files found in: %s', matDir);
     end
 
-    matFiles = cell(length(matFiles_struct), 1);
+    matFiles = {};
+    skipped = {};
     for k = 1:length(matFiles_struct)
-        matFiles{k} = fullfile(matDir, matFiles_struct(k).name);
+        fname = matFiles_struct(k).name;
+        if startsWith(fname, 'Example ', 'IgnoreCase', true)
+            skipped{end+1} = fname; %#ok<AGROW>
+        else
+            matFiles{end+1} = fullfile(matDir, fname); %#ok<AGROW>
+        end
+    end
+    matFiles = matFiles(:);  % column cell array
+    if ~isempty(skipped)
+        fprintf('Skipped %d non-project files (Example recordings).\n', length(skipped));
+    end
+    if isempty(matFiles)
+        error('deepsqueak_batch_classify:noMatFiles', ...
+            'No project .mat files found in: %s', matDir);
     end
     fprintf('Found %d .mat detection files.\n\n', length(matFiles));
 
@@ -288,9 +302,13 @@ function deepsqueak_batch_classify(matDir, dsFolder, outputDir, method)
             clusterNames = unique(clustAssign_new);
 
             % Save clustering model for reuse
+            % (use temp file + copyfile to work around MATLAB save() UNC limitation)
             modelPath = fullfile(outputDir, 'clustering_model_kmeans.mat');
-            save(modelPath, 'C', 'FREQ_WEIGHT', 'SLOPE_WEIGHT', 'DURATION_WEIGHT', ...
+            tmpModel = fullfile(tempdir, 'clustering_model_kmeans.mat');
+            save(tmpModel, 'C', 'FREQ_WEIGHT', 'SLOPE_WEIGHT', 'DURATION_WEIGHT', ...
                 'optimalK', '-v7.3');
+            copyfile(tmpModel, modelPath);
+            delete(tmpModel);
             fprintf('  Clustering model saved: %s\n', modelPath);
 
         case 'artwarp'
@@ -312,8 +330,12 @@ function deepsqueak_batch_classify(matDir, dsFolder, outputDir, method)
             clusterNames = unique(clustAssign_new);
 
             % Save clustering model for reuse
+            % (use temp file + copyfile to work around MATLAB save() UNC limitation)
             modelPath = fullfile(outputDir, 'clustering_model_artwarp.mat');
-            save(modelPath, 'net', 'ARTWARP_SETTINGS', 'nClusters', '-v7.3');
+            tmpModel = fullfile(tempdir, 'clustering_model_artwarp.mat');
+            save(tmpModel, 'net', 'ARTWARP_SETTINGS', 'nClusters', '-v7.3');
+            copyfile(tmpModel, modelPath);
+            delete(tmpModel);
             fprintf('  Clustering model saved: %s\n', modelPath);
 
         otherwise

@@ -148,8 +148,13 @@ function deepsqueak_export_stats(matFiles, handles, outputExcel)
     end
 
     % Build table and write
+    % (use temp file + copyfile to work around MATLAB writetable() UNC limitation)
     t = cell2table(allRows, 'VariableNames', colHeaders);
-    writetable(t, outputExcel);
+    [~, xlName, xlExt] = fileparts(outputExcel);
+    tmpExcel = fullfile(tempdir, [xlName xlExt]);
+    writetable(t, tmpExcel);
+    copyfile(tmpExcel, outputExcel);
+    delete(tmpExcel);
 
     fprintf('\n=== Export complete ===\n');
     fprintf('  Total calls exported: %d\n', totalCalls);

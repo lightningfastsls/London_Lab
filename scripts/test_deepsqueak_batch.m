@@ -12,8 +12,8 @@
 %
 % Usage:
 %   >> test_deepsqueak_batch( ...
-%          '\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_mats', ...
-%          '\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_output')
+%          '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_mats', ...
+%          '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_output')
 
 function test_deepsqueak_batch(matDir, outputDir)
 
@@ -29,9 +29,20 @@ function test_deepsqueak_batch(matDir, outputDir)
     %% === Test 1: .mat files have cluster labels ===
     fprintf('--- Test 1: Cluster labels in .mat files ---\n\n');
 
-    matFiles = dir(fullfile(matDir, '*.mat'));
+    allMatFiles = dir(fullfile(matDir, '*.mat'));
+    % Filter out bundled DeepSqueak example recordings
+    keep = true(length(allMatFiles), 1);
+    for ii = 1:length(allMatFiles)
+        if startsWith(allMatFiles(ii).name, 'Example ', 'IgnoreCase', true)
+            keep(ii) = false;
+        end
+    end
+    matFiles = allMatFiles(keep);
+    if sum(~keep) > 0
+        fprintf('  Skipped %d non-project files (Example recordings).\n', sum(~keep));
+    end
     if isempty(matFiles)
-        fprintf('  [FAIL] No .mat files found in: %s\n', matDir);
+        fprintf('  [FAIL] No project .mat files found in: %s\n', matDir);
         failCount = failCount + 1;
     else
         fprintf('  Found %d .mat files\n', length(matFiles));
@@ -223,13 +234,13 @@ function test_deepsqueak_batch(matDir, outputDir)
     artwarpModel = fullfile(outputDir, 'clustering_model_artwarp.mat');
 
     if isfile(kmeansModel)
-        m = load(kmeansModel);
+        m = unc_safe_load(kmeansModel);
         fprintf('  [PASS] K-means model found: k=%d\n', m.optimalK);
         fprintf('         Weights: freq=%.0f, slope=%.0f, duration=%.0f\n', ...
             m.FREQ_WEIGHT, m.SLOPE_WEIGHT, m.DURATION_WEIGHT);
         passCount = passCount + 1;
     elseif isfile(artwarpModel)
-        m = load(artwarpModel);
+        m = unc_safe_load(artwarpModel);
         fprintf('  [PASS] ARTwarp model found: %d clusters\n', m.nClusters);
         passCount = passCount + 1;
     else
@@ -314,4 +325,18 @@ function test_deepsqueak_batch(matDir, outputDir)
         fprintf('\n  %d failures detected. Fix before proceeding to Python import.\n', failCount);
     end
     fprintf('\n');
+end
+
+function data = unc_safe_load(filepath)
+% unc_safe_load  Load a .mat file, working around MATLAB's UNC path limitation.
+%   Copies to tempdir first if the path is a UNC path (\\...).
+    if startsWith(filepath, '\\')
+        [~, name, ext] = fileparts(filepath);
+        tmpPath = fullfile(tempdir, [name ext]);
+        copyfile(filepath, tmpPath);
+        data = load(tmpPath);
+        delete(tmpPath);
+    else
+        data = load(filepath);
+    end
 end

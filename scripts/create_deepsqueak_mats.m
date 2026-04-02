@@ -14,10 +14,10 @@
 %   4. import_deepsqueak_results.py (Python: merge with detections)
 %
 % Usage:
-%   >> run('\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\scripts\create_deepsqueak_mats.m')
+%   >> run('\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\scripts\create_deepsqueak_mats.m')
 
-ravenDir = '\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\raven_tables';
-wavDir   = '\\wsl$\Ubuntu\home\shachar\projects\mickey_london_lab\5970 USV';
+ravenDir = '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\raven_tables';
+wavDir   = '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\5970 USV';
 outDir   = fullfile(fileparts(which('DeepSqueak')), 'Detections');
 
 if ~isfolder(outDir)
