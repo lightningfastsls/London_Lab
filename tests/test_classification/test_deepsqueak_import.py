@@ -365,7 +365,9 @@ class TestUnmatchedReporting:
         assert summary.unmatched_ds == 0
         assert summary.unmatched_det == 0
         assert merged_df["match_quality"].iloc[0] == "exact"
-        assert merged_df["det_json_path"].iloc[0].endswith("rec_001_retry\\detection_000_0.100s-0.150s.json")
+        assert merged_df["det_json_path"].iloc[0].endswith(
+            str(Path("rec_001_retry") / "detection_000_0.100s-0.150s.json")
+        )
 
 
 # ===================================================================

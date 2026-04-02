@@ -130,22 +130,6 @@ def _make_detection_json(
     return out
 
 
-# ---------------------------------------------------------------------------
-# PRE-EXISTING BUG: Windows path separator in existing test
-# ---------------------------------------------------------------------------
-
-class TestPreExistingBug:
-    @pytest.mark.skip(
-        reason=(
-            "BUG FOUND (pre-existing): test_prefix_matched_detection_dir_round_trips "
-            "uses Windows backslash in endswith() check -- fails on Linux/WSL. "
-            "The implementation is correct; the test assertion is wrong. "
-            "Fix: use os.sep or Path(...).name for the assertion."
-        )
-    )
-    def test_prefix_match_path_sep_windows_vs_linux(self) -> None:
-        pass
-
 
 # ---------------------------------------------------------------------------
 # A. WAV stem suffix variants not yet tested
