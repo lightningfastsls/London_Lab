@@ -4,6 +4,15 @@
 > For current status see `ops/goals.md` (agent) or `docs/human/PROJECTS.md` (human).
 > New entries should be appended at the top with a dated header.
 
+## 2026-04-03 — UMAP + HDBSCAN Re-clustering
+
+- **Task:** Replace DeepSqueak's 27 k-means clusters with density-based clustering on 10 acoustic features
+- **Result:** HDBSCAN found **3 natural clusters** from 7,864 valid points — cluster 2 (7,598, 96.6%) is the continuous USV manifold, clusters 0 and 1 are small outlier groups (98 and 131 points), 37 noise points. Confirms Goffinet 2021 (k<=2 for mice).
+- **Created:** `scripts/recluster_umap_hdbscan.py` (~350 lines), `tests/test_recluster_umap_hdbscan.py` (36 tests), `tests/test_recluster_umap_hdbscan_adversarial.py` (31 tests)
+- **Output:** `results/recluster_umap_hdbscan/` — reclassified CSV, UMAP scatter plots, contingency matrix, cluster summary, gallery PNGs
+- **Tests:** 67/67 pass (including `-W error::FutureWarning`)
+- **Handoff:** `docs/handoffs/umap-hdbscan-recluster.md`
+
 ## 2026-03-29 — Phase 15 Gate Check: Code Complete
 
 - **All 7 modules implemented:** 15.1 Hysteresis, 15.2 Event Scoring + Optimization, 15.3 Temperature Scaling, 15.4 Event Features, 15.5 FP Filter, 15.6 Normalization, 15.7 Triage + Batch Output
