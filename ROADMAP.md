@@ -16,7 +16,7 @@
    - **`/implement` command**: copy-paste into Claude Code (or type `/implement <module description>`)
    - **Test plan**: how Claude Code should verify the module works
    - **Exit criteria**: what "done" looks like
-3. After each module: commit, run `/review-all`, fix issues, commit again
+3. After each module: commit, run review agents if needed, fix issues, commit again
 4. Phase gates must pass before starting the next phase
 5. **Phases 1–9, 11.1, 13, 14.1** are all DONE. Current work: **Phase 14** (DeepSqueak Classification Bridge — 14.2 BLOCKED on manual MATLAB step).
 
