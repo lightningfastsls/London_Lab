@@ -66,6 +66,10 @@ results/pipeline_comparison/
 results/batch_5970_v2/
 results/batch_5970_v2_full/
 
+# Graphify outputs (generated, large)
+graphify-out/
+graphify-pilot/
+
 # Junk
 *.Zone.Identifier
 *:Zone.Identifier
