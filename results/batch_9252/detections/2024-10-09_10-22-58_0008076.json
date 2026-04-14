@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 0.41045333333333334,
+    "end_time_s": 0.46165333333333336,
+    "duration_s": 0.05120000000000002,
+    "start_col": 910,
+    "end_col": 1030,
+    "max_probability": 0.9926362037658691,
+    "mean_probability": 0.9312410721412072
+  },
+  {
+    "start_time_s": 0.97792,
+    "end_time_s": 1.0632533333333334,
+    "duration_s": 0.08533333333333337,
+    "start_col": 2240,
+    "end_col": 2440,
+    "max_probability": 0.9948760867118835,
+    "mean_probability": 0.9194108276140123
+  },
+  {
+    "start_time_s": 1.2296533333333333,
+    "end_time_s": 1.28512,
+    "duration_s": 0.055466666666666775,
+    "start_col": 2830,
+    "end_col": 2960,
+    "max_probability": 0.9982933402061462,
+    "mean_probability": 0.9354921515498843
+  },
+  {
+    "start_time_s": 1.38752,
+    "end_time_s": 1.4685866666666667,
+    "duration_s": 0.08106666666666662,
+    "start_col": 3200,
+    "end_col": 3390,
+    "max_probability": 0.9998347759246826,
+    "mean_probability": 0.9358461916446685
+  },
+  {
+    "start_time_s": 1.7117866666666666,
+    "end_time_s": 1.7928533333333334,
+    "duration_s": 0.08106666666666684,
+    "start_col": 3960,
+    "end_col": 4150,
+    "max_probability": 0.9998539686203003,
+    "mean_probability": 0.9702654927968979
+  },
+  {
+    "start_time_s": 2.1768533333333333,
+    "end_time_s": 2.2152533333333335,
+    "duration_s": 0.03840000000000021,
+    "start_col": 5050,
+    "end_col": 5140,
+    "max_probability": 0.8679327368736267,
+    "mean_probability": 0.7851660847663879
+  },
+  {
+    "start_time_s": 2.29632,
+    "end_time_s": 2.3304533333333333,
+    "duration_s": 0.03413333333333313,
+    "start_col": 5330,
+    "end_col": 5410,
+    "max_probability": 0.8318348526954651,
+    "mean_probability": 0.7872614794307284
+  },
+  {
+    "start_time_s": 2.735786666666667,
+    "end_time_s": 2.78272,
+    "duration_s": 0.04693333333333305,
+    "start_col": 6360,
+    "end_col": 6470,
+    "max_probability": 0.9803438186645508,
+    "mean_probability": 0.9093596239884695
+  }
+]

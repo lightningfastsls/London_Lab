@@ -1,0 +1,11 @@
+[
+  {
+    "start_time_s": 0.17152,
+    "end_time_s": 0.23125333333333334,
+    "duration_s": 0.05973333333333333,
+    "start_col": 350,
+    "end_col": 490,
+    "max_probability": 0.9414406418800354,
+    "mean_probability": 0.8409525513648987
+  }
+]
