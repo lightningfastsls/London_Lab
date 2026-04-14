@@ -45,9 +45,16 @@ class FalsePositiveFilter:
 
     Wraps an sklearn Pipeline (StandardScaler → LogisticRegression) and
     provides a typed interface over EventFeatures dataclasses.
+
+    Parameters
+    ----------
+    excluded_features : set[str] | None
+        Feature names to drop before training and prediction. For example,
+        ``{"duration_windows"}`` trains a 10-feature model that ignores
+        event duration. Default ``None`` uses all 11 features.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, excluded_features: set[str] | None = None) -> None:
         self.pipeline = Pipeline([
             ("scaler", StandardScaler()),
             ("classifier", LogisticRegression(
@@ -58,6 +65,21 @@ class FalsePositiveFilter:
         ])
         self._fitted = False
         self._constant_label: bool | None = None
+        self.excluded_features: set[str] = excluded_features or set()
+        # Precompute column mask for feature array slicing
+        self._feature_mask: list[int] = [
+            i for i, name in enumerate(_FEATURE_NAMES)
+            if name not in self.excluded_features
+        ]
+        self._active_feature_names: list[str] = [
+            _FEATURE_NAMES[i] for i in self._feature_mask
+        ]
+
+    def _apply_mask(self, X: np.ndarray) -> np.ndarray:
+        """Drop columns for excluded features."""
+        if not self.excluded_features:
+            return X
+        return X[:, self._feature_mask]
 
     def fit(self, features: List[EventFeatures], labels: List[bool]) -> None:
         """Train the filter on labeled event features.
@@ -74,7 +96,7 @@ class FalsePositiveFilter:
                 f"features and labels must have the same length, "
                 f"got {len(features)} and {len(labels)}"
             )
-        X = _features_to_array(features)
+        X = self._apply_mask(_features_to_array(features))
         y = np.array(labels, dtype=bool)
 
         n_classes = len(np.unique(y))
@@ -108,7 +130,7 @@ class FalsePositiveFilter:
             return []
         if self._constant_label is not None:
             return [self._constant_label] * len(features)
-        X = _features_to_array(features)
+        X = self._apply_mask(_features_to_array(features))
         raw = self.pipeline.predict(X)
         return [bool(v) for v in raw]
 
@@ -128,7 +150,7 @@ class FalsePositiveFilter:
             col = 1 if self._constant_label else 0
             proba[:, col] = 1.0
             return proba
-        X = _features_to_array(features)
+        X = self._apply_mask(_features_to_array(features))
         return self.pipeline.predict_proba(X)
 
     def feature_importances(self) -> dict[str, float]:
@@ -141,7 +163,7 @@ class FalsePositiveFilter:
         coefs = self.pipeline["classifier"].coef_[0]
         return {
             name: float(abs(c))
-            for name, c in zip(_FEATURE_NAMES, coefs)
+            for name, c in zip(self._active_feature_names, coefs)
         }
 
     def save(self, path: Path) -> None:
@@ -153,11 +175,20 @@ class FalsePositiveFilter:
 
     @classmethod
     def load(cls, path: Path) -> FalsePositiveFilter:
-        """Deserialize a filter from a pickle file."""
+        """Deserialize a filter from a pickle file.
+
+        Backward compatible: old pickles without ``excluded_features``
+        get an empty set (all features active).
+        """
         with open(path, "rb") as f:
             obj = pickle.load(f)
         if not isinstance(obj, cls):
             raise TypeError(
                 f"Expected FalsePositiveFilter, got {type(obj).__name__}"
             )
+        # Backfill attributes missing from older pickles
+        if not hasattr(obj, "excluded_features"):
+            obj.excluded_features = set()
+            obj._feature_mask = list(range(len(_FEATURE_NAMES)))
+            obj._active_feature_names = list(_FEATURE_NAMES)
         return obj

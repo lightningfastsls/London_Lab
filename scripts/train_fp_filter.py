@@ -327,6 +327,7 @@ def cross_validate_filter(
     labeled_events: List[LabeledEvent],
     n_folds: int = 5,
     seed: int = 42,
+    excluded_features: set[str] | None = None,
 ) -> Dict:
     """Evaluate the FP filter with stratified k-fold CV on recordings.
 
@@ -372,7 +373,7 @@ def cross_validate_filter(
             logger.warning("Fold %d: training set has only one class, skipping", fold_i)
             continue
 
-        filt = FalsePositiveFilter()
+        filt = FalsePositiveFilter(excluded_features=excluded_features)
         filt.fit(train_features, train_labels)
         preds = filt.predict(val_features)
 
@@ -448,6 +449,10 @@ def parse_args() -> argparse.Namespace:
         help="Directory to cache inference .npz files",
     )
     parser.add_argument(
+        "--exclude-features", nargs="*", default=[],
+        help="Feature names to exclude (e.g., --exclude-features duration_windows)",
+    )
+    parser.add_argument(
         "--verbose", action="store_true",
         help="Enable verbose logging",
     )
@@ -497,10 +502,16 @@ def main() -> int:
         logger.error("Too few labeled events (%d) — need at least 10", len(labeled_events))
         return 1
 
+    # Feature exclusion
+    excluded = set(args.exclude_features) if args.exclude_features else set()
+    if excluded:
+        logger.info("Excluding features: %s", excluded)
+
     # Cross-validation
     logger.info("Running %d-fold cross-validation...", args.cv_folds)
     cv_results = cross_validate_filter(
         labeled_events, n_folds=args.cv_folds, seed=args.seed,
+        excluded_features=excluded,
     )
 
     # Train final model on all data
@@ -508,7 +519,7 @@ def main() -> int:
     all_features = [e.features for e in labeled_events]
     all_labels = [e.is_usv for e in labeled_events]
 
-    final_filter = FalsePositiveFilter()
+    final_filter = FalsePositiveFilter(excluded_features=excluded)
     final_filter.fit(all_features, all_labels)
 
     # Save
@@ -547,6 +558,7 @@ def main() -> int:
         "n_events": len(labeled_events),
         "n_usv": sum(1 for e in labeled_events if e.is_usv),
         "n_fp": sum(1 for e in labeled_events if not e.is_usv),
+        "excluded_features": sorted(excluded),
         "hysteresis_config": hyst_data["best_params"],
         "args": {
             "model": str(args.model),

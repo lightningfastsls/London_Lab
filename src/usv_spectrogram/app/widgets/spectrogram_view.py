@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import Optional, List
 
 import numpy as np
@@ -15,6 +16,8 @@ from PyQt6.QtGui import QPainter, QPixmap, QImage, QPen, QColor, QMouseEvent, QK
 from PyQt6.QtCore import Qt, QRect, pyqtSignal
 
 from ..core.detection_logic import DetectedUSV
+
+AXIS_HEIGHT = 25  # Pixels reserved for time axis below spectrogram
 
 
 class SpectrogramCanvas(QWidget):
@@ -160,11 +163,12 @@ class SpectrogramCanvas(QWidget):
         return img_rgb
 
     def paintEvent(self, event):
-        """Paint the spectrogram with detection overlays."""
+        """Paint the spectrogram with detection overlays and time axis."""
         if self.pixmap is None:
             return
 
         painter = QPainter(self)
+        spec_height = self.pixmap.height()
 
         # Draw spectrogram
         painter.drawPixmap(0, 0, self.pixmap)
@@ -192,12 +196,12 @@ class SpectrogramCanvas(QWidget):
                 # Draw start line
                 pen = QPen(start_color, line_width, Qt.PenStyle.SolidLine)
                 painter.setPen(pen)
-                painter.drawLine(start_x, 0, start_x, self.height())
+                painter.drawLine(start_x, 0, start_x, spec_height)
 
                 # Draw end line
                 pen = QPen(end_color, line_width, Qt.PenStyle.DashLine)
                 painter.setPen(pen)
-                painter.drawLine(end_x, 0, end_x, self.height())
+                painter.drawLine(end_x, 0, end_x, spec_height)
 
         # Draw selected detection with highlights
         if self._selected_detection_idx is not None and self.total_columns > 0:
@@ -210,17 +214,17 @@ class SpectrogramCanvas(QWidget):
                 # Draw the boundary being adjusted in yellow (highlighted)
                 if self._dragging_edge == 'start':
                     painter.setPen(QPen(QColor(255, 255, 0), 3, Qt.PenStyle.SolidLine))
-                    painter.drawLine(start_x, 0, start_x, self.height())
+                    painter.drawLine(start_x, 0, start_x, spec_height)
                     # Draw the other boundary normally
                     painter.setPen(QPen(QColor(0, 255, 255), 2, Qt.PenStyle.DashLine))
-                    painter.drawLine(end_x, 0, end_x, self.height())
+                    painter.drawLine(end_x, 0, end_x, spec_height)
                 else:  # dragging end
                     # Draw the other boundary normally
                     painter.setPen(QPen(QColor(0, 255, 0), 2, Qt.PenStyle.SolidLine))
-                    painter.drawLine(start_x, 0, start_x, self.height())
+                    painter.drawLine(start_x, 0, start_x, spec_height)
                     # Draw the boundary being adjusted in yellow (highlighted)
                     painter.setPen(QPen(QColor(255, 255, 0), 3, Qt.PenStyle.DashLine))
-                    painter.drawLine(end_x, 0, end_x, self.height())
+                    painter.drawLine(end_x, 0, end_x, spec_height)
 
         # Draw creation preview box (right-click-drag)
         if self._creating_detection:
@@ -228,13 +232,13 @@ class SpectrogramCanvas(QWidget):
             end_x = max(self._creation_start_x, self._creation_current_x)
 
             # Draw semi-transparent yellow rectangle
-            painter.fillRect(start_x, 0, end_x - start_x, self.height(),
+            painter.fillRect(start_x, 0, end_x - start_x, spec_height,
                            QColor(255, 255, 0, 50))
 
             # Draw boundary lines
             painter.setPen(QPen(QColor(255, 255, 0), 2, Qt.PenStyle.SolidLine))
-            painter.drawLine(start_x, 0, start_x, self.height())
-            painter.drawLine(end_x, 0, end_x, self.height())
+            painter.drawLine(start_x, 0, start_x, spec_height)
+            painter.drawLine(end_x, 0, end_x, spec_height)
 
         painter.end()
 
@@ -487,6 +491,109 @@ class SpectrogramCanvas(QWidget):
         super().keyPressEvent(event)
 
 
+class TimeAxisWidget(QWidget):
+    """Time axis widget showing millisecond labels, synchronized with spectrogram scroll."""
+
+    def __init__(self):
+        super().__init__()
+        self.times: Optional[np.ndarray] = None
+        self.canvas_width: int = 0
+        self.scroll_offset: int = 0
+        self.setFixedHeight(AXIS_HEIGHT)
+
+    def set_data(self, times: np.ndarray, canvas_width: int):
+        """Set the time range and canvas pixel width for coordinate mapping."""
+        self.times = times
+        self.canvas_width = canvas_width
+        self.update()
+
+    def set_scroll_offset(self, offset: int):
+        """Update horizontal scroll offset (called by scrollbar valueChanged)."""
+        self.scroll_offset = offset
+        self.update()
+
+    def paintEvent(self, event):
+        """Draw time ticks and ms labels for the visible viewport region."""
+        if self.times is None or len(self.times) == 0 or self.canvas_width <= 0:
+            return
+
+        painter = QPainter(self)
+        width = self.width()  # viewport width
+
+        t_min_ms = self.times[0] * 1000
+        t_max_ms = self.times[-1] * 1000
+        duration_ms = t_max_ms - t_min_ms
+
+        if duration_ms <= 0:
+            painter.end()
+            return
+
+        # Dark background
+        painter.fillRect(0, 0, width, AXIS_HEIGHT, QColor(30, 30, 30))
+
+        # Top separator line
+        painter.setPen(QPen(QColor(180, 180, 180), 1))
+        painter.drawLine(0, 0, width, 0)
+
+        # Choose tick interval: ~1 tick per 80px of canvas, snapped to nice values
+        nice_intervals = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
+        target_ticks = max(5, min(self.canvas_width // 80, 100))
+        raw_interval = duration_ms / target_ticks
+        tick_interval = nice_intervals[-1]
+        for ni in nice_intervals:
+            if ni >= raw_interval:
+                tick_interval = ni
+                break
+
+        # Font for labels
+        font = painter.font()
+        font.setPointSize(7)
+        painter.setFont(font)
+        fm = painter.fontMetrics()
+
+        # Draw ticks, converting canvas coords to viewport coords via scroll offset
+        first_tick = math.ceil(t_min_ms / tick_interval) * tick_interval
+        tick = first_tick
+        first_visible = True
+        while tick <= t_max_ms:
+            # Canvas-space x position
+            fraction = (tick - t_min_ms) / duration_ms
+            canvas_x = int(fraction * self.canvas_width)
+
+            # Viewport x (shift by scroll offset)
+            vx = canvas_x - self.scroll_offset
+
+            # Skip ticks outside visible area (with label margin)
+            if vx < -50 or vx > width + 50:
+                tick += tick_interval
+                continue
+
+            # Tick mark
+            painter.setPen(QPen(QColor(180, 180, 180), 1))
+            painter.drawLine(vx, 0, vx, 5)
+
+            # Label
+            if tick_interval >= 1:
+                label = str(int(tick))
+            else:
+                label = f"{tick:.1f}"
+
+            # First visible label gets unit suffix
+            if first_visible:
+                label += " ms"
+                first_visible = False
+
+            painter.setPen(QPen(QColor(200, 200, 200), 1))
+            label_width = fm.horizontalAdvance(label)
+            label_x = vx - label_width // 2
+            label_x = max(2, min(label_x, width - label_width - 2))
+            painter.drawText(label_x, 17, label)
+
+            tick += tick_interval
+
+        painter.end()
+
+
 class SpectrogramView(QWidget):
     """Spectrogram view with scrolling support."""
 
@@ -499,6 +606,7 @@ class SpectrogramView(QWidget):
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
 
         # Create scroll area
         self.scroll_area = QScrollArea()
@@ -511,13 +619,19 @@ class SpectrogramView(QWidget):
 
         layout.addWidget(self.scroll_area)
 
+        self.time_axis = TimeAxisWidget()
+        layout.addWidget(self.time_axis)
+
         self.setMinimumHeight(150)  # Compact layout
-        # USV spectrogram has ~170 freq bins + scrollbar (~20px) — don't waste more
-        self.setMaximumHeight(210)
+        # USV spectrogram has ~170 freq bins + axis (25px) + scrollbar (~20px)
+        self.setMaximumHeight(235)
 
         # Connect scroll bar to emit normalized position
         self.scroll_area.horizontalScrollBar().valueChanged.connect(
             self._on_scroll_changed
+        )
+        self.scroll_area.horizontalScrollBar().valueChanged.connect(
+            self.time_axis.set_scroll_offset
         )
 
     def _on_scroll_changed(self, value: int):
@@ -541,6 +655,8 @@ class SpectrogramView(QWidget):
     ):
         """Set spectrogram data."""
         self.canvas.set_data(spectrogram_db, times, frequencies, total_columns)
+        canvas_width = self.canvas.pixmap.width() if self.canvas.pixmap else 0
+        self.time_axis.set_data(times, canvas_width)
 
     def set_detections(self, detections: List[DetectedUSV]):
         """Set detection overlays."""

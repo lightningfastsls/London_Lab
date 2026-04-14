@@ -1,0 +1,91 @@
+{
+  "cv_results": {
+    "fold_results": [
+      {
+        "fold": 0,
+        "f2": 0.88,
+        "tp": 179,
+        "fp": 10,
+        "fn": 28,
+        "n_train": 1083,
+        "n_val": 221,
+        "n_val_recordings": 26
+      },
+      {
+        "fold": 1,
+        "f2": 0.8254,
+        "tp": 277,
+        "fp": 5,
+        "fn": 72,
+        "n_train": 937,
+        "n_val": 367,
+        "n_val_recordings": 25
+      },
+      {
+        "fold": 2,
+        "f2": 0.8315,
+        "tp": 152,
+        "fp": 6,
+        "fn": 37,
+        "n_train": 1101,
+        "n_val": 203,
+        "n_val_recordings": 25
+      },
+      {
+        "fold": 3,
+        "f2": 0.8202,
+        "tp": 177,
+        "fp": 2,
+        "fn": 48,
+        "n_train": 1063,
+        "n_val": 241,
+        "n_val_recordings": 25
+      },
+      {
+        "fold": 4,
+        "f2": 0.8095,
+        "tp": 198,
+        "fp": 9,
+        "fn": 56,
+        "n_train": 1032,
+        "n_val": 272,
+        "n_val_recordings": 25
+      }
+    ],
+    "mean_f2": 0.8333,
+    "std_f2": 0.0244,
+    "n_folds_completed": 5
+  },
+  "feature_importances": {
+    "peak_probability": 1.3312464775446364,
+    "mean_probability": 0.16367623306556872,
+    "prob_std": 0.21684594806825552,
+    "prob_kurtosis": 0.35367063854837255,
+    "prob_roughness": 0.10736720138737353,
+    "tonality": 0.24718769425638776,
+    "mean_peak_freq_bin": 0.25493935997552086,
+    "freq_range_bins": 0.33557970412242333,
+    "freq_modulation_rate": 0.04281806948631152,
+    "snr_db": 0.24965655307563459
+  },
+  "n_events": 1304,
+  "n_usv": 1224,
+  "n_fp": 80,
+  "excluded_features": [
+    "duration_windows"
+  ],
+  "hysteresis_config": {
+    "onset_threshold": 0.6,
+    "sustain_threshold": 0.4,
+    "gap_fill_windows": 0,
+    "min_duration_windows": 3
+  },
+  "args": {
+    "model": "models/hard_neg_retrain/best_model.pt",
+    "labels": "data/unified_labels.json",
+    "cv_folds": 5,
+    "collar_s": 0.2,
+    "hop_px": 10,
+    "seed": 42
+  }
+}
