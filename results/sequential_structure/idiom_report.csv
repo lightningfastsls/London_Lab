@@ -1,0 +1,654 @@
+ngram,ngram_codes,n,observed,expected,z_score,p_value
+Complex → Complex → Complex → Complex → Complex,"(4, 4, 4, 4, 4)",5,15,0.0,67.56,0.0
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(5, 5, 5, 5, 5)",5,6,0.0,60.2,0.0
+Down → Down → Down → Down → Down,"(1, 1, 1, 1, 1)",5,42,0.4,52.48,0.0
+Short → Short → Short → Short → Short,"(3, 3, 3, 3, 3)",5,21,0.1,50.53,0.0
+Complex → Complex → Complex → Complex,"(4, 4, 4, 4)",4,25,0.2,48.9,0.0
+Short → Complex → Complex → Complex → Complex,"(3, 4, 4, 4, 4)",5,3,0.0,42.46,0.0
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(5, 5, 5, 5)",4,11,0.1,30.23,0.0
+Down → Down → Down → Down,"(1, 1, 1, 1)",4,72,4.1,29.72,0.0
+Short → Short → Short → Short,"(3, 3, 3, 3)",4,39,1.4,28.72,0.0
+Complex → Complex → Complex,"(4, 4, 4)",3,47,3.2,23.12,0.0
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump → Flat,"(5, 5, 5, 5, 0)",5,3,0.0,21.29,0.0
+Flat → Flat → Flat → Flat → Flat,"(0, 0, 0, 0, 0)",5,96,11.8,20.47,0.0
+Down → Down → Down,"(1, 1, 1)",3,142,29.6,20.33,0.0
+Short → Up → Up → Up,"(3, 6, 6, 6)",4,2,0.0,20.0,0.0
+Short → Short → Short → Short → Up,"(3, 3, 3, 3, 6)",5,3,0.0,19.06,0.0
+Short → Short → Short,"(3, 3, 3)",3,81,12.8,18.7,0.0
+Frequency_Jump → Frequency_Jump → Frequency_Jump,"(5, 5, 5)",3,27,2.1,17.67,0.0
+Flat → Flat → Flat → Flat,"(0, 0, 0, 0)",4,182,44.3,17.44,0.0
+Flat → Flat → Flat,"(0, 0, 0)",3,388,171.0,16.91,0.0
+Complex → Complex → Short → Complex → Short,"(4, 4, 3, 4, 3)",5,2,0.0,16.33,0.0
+Down → Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(1, 5, 5, 5, 5)",5,2,0.0,16.33,0.0
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Flat → Flat,"(5, 5, 5, 0, 0)",5,6,0.1,16.23,0.0
+Flat → Flat,"(0, 0)",2,930,660.7,14.8,0.0
+Complex → Complex,"(4, 4)",2,130,44.7,14.39,0.0
+Up → Short → Up → Up,"(6, 3, 6, 6)",4,2,0.0,14.14,0.0
+Up → Up → Up → Short,"(6, 6, 6, 3)",4,2,0.0,14.14,0.0
+Short → Short → Short → Up → Short,"(3, 3, 3, 6, 3)",5,2,0.0,14.14,0.0
+Up → Frequency_Jump → Frequency_Jump → Frequency_Jump → Flat,"(6, 5, 5, 5, 0)",5,2,0.0,14.14,0.0
+Short → Frequency_Jump → Frequency_Jump → Complex → Complex,"(3, 5, 5, 4, 4)",5,1,0.0,14.11,0.0
+Up → Complex → Complex → Complex → Up,"(6, 4, 4, 4, 6)",5,1,0.0,14.11,0.0
+Short → Up → Short → Short → Complex,"(3, 6, 3, 3, 4)",5,1,0.0,14.11,0.0
+Chevron → Up → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(2, 6, 5, 5, 5)",5,1,0.0,14.11,0.0
+Complex → Up → Complex → Short → Short,"(4, 6, 4, 3, 3)",5,1,0.0,14.11,0.0
+Complex → Down → Short → Up → Up,"(4, 1, 3, 6, 6)",5,1,0.0,14.11,0.0
+Down → Complex → Complex → Up → Up,"(1, 4, 4, 6, 6)",5,1,0.0,14.11,0.0
+Down → Down → Complex → Up → Up,"(1, 1, 4, 6, 6)",5,1,0.0,14.11,0.0
+Down → Chevron → Frequency_Jump → Frequency_Jump → Up,"(1, 2, 5, 5, 6)",5,1,0.0,14.11,0.0
+Down → Short → Up → Up → Chevron,"(1, 3, 6, 6, 2)",5,1,0.0,14.11,0.0
+Complex → Complex → Short → Frequency_Jump → Up,"(4, 4, 3, 5, 6)",5,1,0.0,14.11,0.0
+Chevron → Chevron → Chevron → Chevron → Chevron,"(2, 2, 2, 2, 2)",5,10,0.5,12.92,0.0
+Up → Short → Short → Chevron → Short,"(6, 3, 3, 2, 3)",5,2,0.0,12.65,0.0
+Short → Up → Up → Short → Short,"(3, 6, 6, 3, 3)",5,2,0.0,12.65,0.0
+Flat → Flat → Short → Up → Up,"(0, 0, 3, 6, 6)",5,2,0.0,12.65,0.0
+Down → Down,"(1, 1)",2,359,204.6,12.46,0.0
+Frequency_Jump → Frequency_Jump → Flat → Flat → Flat,"(5, 5, 0, 0, 0)",5,10,0.6,12.34,0.0
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Flat,"(5, 5, 5, 0)",4,9,0.6,11.65,0.0
+Down → Complex → Complex → Complex → Complex,"(1, 4, 4, 4, 4)",5,2,0.0,11.55,0.0
+Short → Short,"(3, 3)",2,221,113.7,11.39,0.0
+Short → Short → Up → Short → Short,"(3, 3, 6, 3, 3)",5,2,0.0,10.69,0.0
+Frequency_Jump → Chevron → Flat → Frequency_Jump → Frequency_Jump,"(5, 2, 0, 5, 5)",5,2,0.0,10.69,0.0
+Complex → Complex → Complex → Up,"(4, 4, 4, 6)",4,3,0.1,10.45,0.0
+Chevron → Frequency_Jump → Chevron → Complex → Chevron,"(2, 5, 2, 4, 2)",5,3,0.1,10.38,0.0
+Frequency_Jump → Frequency_Jump,"(5, 5)",2,98,35.4,10.05,0.0
+Chevron → Down → Down → Complex → Up,"(2, 1, 1, 4, 6)",5,2,0.0,10.0,0.0
+Short → Up → Up → Chevron → Short,"(3, 6, 6, 2, 3)",5,1,0.0,9.95,0.0
+Frequency_Jump → Up → Short → Up → Flat,"(5, 6, 3, 6, 0)",5,1,0.0,9.95,0.0
+Down → Complex → Up → Up → Chevron,"(1, 4, 6, 6, 2)",5,1,0.0,9.95,0.0
+Complex → Down → Short → Short → Up,"(4, 1, 3, 3, 6)",5,1,0.0,9.95,0.0
+Flat → Short → Up → Short → Up,"(0, 3, 6, 3, 6)",5,1,0.0,9.95,0.0
+Up → Up → Up → Chevron → Flat,"(6, 6, 6, 2, 0)",5,1,0.0,9.95,0.0
+Frequency_Jump → Complex → Chevron → Frequency_Jump → Up,"(5, 4, 2, 5, 6)",5,1,0.0,9.95,0.0
+Complex → Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(4, 5, 5, 5, 5)",5,1,0.0,9.95,0.0
+Chevron → Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(2, 5, 5, 5, 5)",5,1,0.0,9.95,0.0
+Complex → Complex → Complex → Complex → Up,"(4, 4, 4, 4, 6)",5,1,0.0,9.95,0.0
+Up → Up → Up → Flat → Chevron,"(6, 6, 6, 0, 2)",5,1,0.0,9.95,0.0
+Short → Up → Flat → Up → Up,"(3, 6, 0, 6, 6)",5,1,0.0,9.95,0.0
+Frequency_Jump → Frequency_Jump → Up → Complex → Complex,"(5, 5, 6, 4, 4)",5,1,0.0,9.95,0.0
+Up → Up → Chevron → Short → Chevron,"(6, 6, 2, 3, 2)",5,1,0.0,9.95,0.0
+Short → Up → Short → Short → Chevron,"(3, 6, 3, 3, 2)",5,2,0.0,9.43,0.0
+Complex → Complex → Complex → Complex → Flat,"(4, 4, 4, 4, 0)",5,2,0.0,9.43,0.0
+Frequency_Jump → Complex → Complex → Down → Short,"(5, 4, 4, 1, 3)",5,2,0.0,9.43,0.0
+Down → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(1, 5, 5, 5)",4,5,0.3,9.2,0.0
+Short → Short → Short → Up,"(3, 3, 3, 6)",4,6,0.4,9.17,0.0
+Frequency_Jump → Frequency_Jump → Flat,"(5, 5, 0)",3,38,9.0,9.06,0.0
+Chevron → Chevron → Frequency_Jump → Down → Up,"(2, 2, 5, 1, 6)",5,2,0.1,8.95,0.0
+Chevron → Short → Short → Short → Short,"(2, 3, 3, 3, 3)",5,4,0.2,8.57,0.0
+Down → Complex → Complex → Short → Complex,"(1, 4, 4, 3, 4)",5,2,0.1,8.53,0.0
+Chevron → Chevron → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(2, 2, 5, 5, 5)",5,2,0.1,8.53,0.0
+Short → Short → Short → Up → Chevron,"(3, 3, 3, 6, 2)",5,2,0.0,8.49,0.0
+Chevron → Chevron → Chevron → Chevron,"(2, 2, 2, 2)",4,20,3.4,8.29,1.1102230246251565e-16
+Up → Up → Up,"(6, 6, 6)",3,4,0.2,8.28,1.1102230246251565e-16
+Short → Short → Short → Short → Complex,"(3, 3, 3, 3, 4)",5,2,0.1,8.17,1.1102230246251565e-16
+Frequency_Jump → Frequency_Jump → Flat → Frequency_Jump,"(5, 5, 0, 5)",4,7,0.7,8.15,2.220446049250313e-16
+Short → Short → Up → Chevron → Short,"(3, 3, 6, 2, 3)",5,2,0.1,8.13,2.220446049250313e-16
+Frequency_Jump → Frequency_Jump → Flat → Flat,"(5, 5, 0, 0)",4,16,2.5,8.13,2.220446049250313e-16
+Complex → Up → Up → Up,"(4, 6, 6, 6)",4,1,0.0,8.1,2.220446049250313e-16
+Up → Short → Short → Short → Frequency_Jump,"(6, 3, 3, 3, 5)",5,1,0.0,8.1,2.220446049250313e-16
+Complex → Short → Frequency_Jump → Up → Flat,"(4, 3, 5, 6, 0)",5,1,0.0,8.1,2.220446049250313e-16
+Frequency_Jump → Frequency_Jump → Up → Down → Down,"(5, 5, 6, 1, 1)",5,1,0.0,8.1,2.220446049250313e-16
+Frequency_Jump → Frequency_Jump → Down → Frequency_Jump → Frequency_Jump,"(5, 5, 1, 5, 5)",5,1,0.0,8.1,2.220446049250313e-16
+Chevron → Chevron → Up → Frequency_Jump → Frequency_Jump,"(2, 2, 6, 5, 5)",5,1,0.0,8.1,2.220446049250313e-16
+Up → Complex → Complex → Complex → Complex,"(6, 4, 4, 4, 4)",5,1,0.0,8.1,2.220446049250313e-16
+Down → Down → Complex → Complex → Up,"(1, 1, 4, 4, 6)",5,1,0.0,8.1,2.220446049250313e-16
+Up → Short → Short → Flat → Up,"(6, 3, 3, 0, 6)",5,1,0.0,8.1,2.220446049250313e-16
+Complex → Frequency_Jump → Frequency_Jump → Frequency_Jump → Down,"(4, 5, 5, 5, 1)",5,1,0.0,8.1,2.220446049250313e-16
+Chevron → Complex → Short → Complex → Complex,"(2, 4, 3, 4, 4)",5,1,0.0,8.1,2.220446049250313e-16
+Down → Frequency_Jump → Frequency_Jump → Frequency_Jump → Complex,"(1, 5, 5, 5, 4)",5,1,0.0,8.1,2.220446049250313e-16
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Down → Frequency_Jump,"(5, 5, 5, 1, 5)",5,1,0.0,8.1,2.220446049250313e-16
+Down → Down → Up → Down → Up,"(1, 1, 6, 1, 6)",5,1,0.0,8.1,2.220446049250313e-16
+Short → Up → Chevron → Short → Up,"(3, 6, 2, 3, 6)",5,1,0.0,8.1,2.220446049250313e-16
+Complex → Complex → Complex → Complex → Short,"(4, 4, 4, 4, 3)",5,1,0.0,8.1,2.220446049250313e-16
+Short → Complex → Short → Up → Short,"(3, 4, 3, 6, 3)",5,1,0.0,8.1,2.220446049250313e-16
+Short → Chevron → Short → Frequency_Jump → Up,"(3, 2, 3, 5, 6)",5,1,0.0,8.1,2.220446049250313e-16
+Down → Complex → Complex → Complex → Up,"(1, 4, 4, 4, 6)",5,1,0.0,8.1,2.220446049250313e-16
+Short → Short → Short → Frequency_Jump → Up,"(3, 3, 3, 5, 6)",5,1,0.0,8.1,2.220446049250313e-16
+Up → Up → Short → Short → Chevron,"(6, 6, 3, 3, 2)",5,1,0.0,8.1,2.220446049250313e-16
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump → Chevron,"(5, 5, 5, 5, 2)",5,1,0.0,8.1,2.220446049250313e-16
+Frequency_Jump → Chevron → Short → Chevron → Up,"(5, 2, 3, 2, 6)",5,1,0.0,8.1,2.220446049250313e-16
+Up → Up → Short → Short,"(6, 6, 3, 3)",4,2,0.1,7.85,2.1094237467877974e-15
+Up → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(6, 5, 5, 5)",4,2,0.1,7.85,2.1094237467877974e-15
+Frequency_Jump → Frequency_Jump → Chevron → Flat → Frequency_Jump,"(5, 5, 2, 0, 5)",5,2,0.1,7.81,2.7755575615628914e-15
+Short → Up → Short → Short,"(3, 6, 3, 3)",4,4,0.3,7.81,2.886579864025407e-15
+Frequency_Jump → Frequency_Jump → Flat → Frequency_Jump → Flat,"(5, 5, 0, 5, 0)",5,3,0.1,7.69,7.549516567451064e-15
+Flat → Frequency_Jump → Frequency_Jump → Flat → Flat,"(0, 5, 5, 0, 0)",5,7,0.7,7.59,1.5432100042289676e-14
+Down → Complex → Complex → Flat → Frequency_Jump,"(1, 4, 4, 0, 5)",5,2,0.1,7.56,1.9539925233402755e-14
+Flat → Complex → Complex → Complex → Complex,"(0, 4, 4, 4, 4)",5,2,0.1,7.56,1.9539925233402755e-14
+Up → Complex → Complex → Complex,"(6, 4, 4, 4)",4,2,0.1,7.31,1.3500311979441904e-13
+Up → Down → Down → Flat → Complex,"(6, 1, 1, 0, 4)",5,2,0.1,7.31,1.3500311979441904e-13
+Frequency_Jump → Frequency_Jump → Flat → Frequency_Jump → Down,"(5, 5, 0, 5, 1)",5,2,0.1,7.31,1.3500311979441904e-13
+Down → Frequency_Jump → Chevron → Flat → Up,"(1, 5, 2, 0, 6)",5,2,0.1,7.31,1.3500311979441904e-13
+Frequency_Jump → Frequency_Jump → Flat → Frequency_Jump → Chevron,"(5, 5, 0, 5, 2)",5,2,0.1,7.27,1.751931932858497e-13
+Frequency_Jump → Flat → Flat → Flat → Flat,"(5, 0, 0, 0, 0)",5,13,2.6,7.24,2.2459811788166917e-13
+Down → Frequency_Jump → Frequency_Jump → Flat → Frequency_Jump,"(1, 5, 5, 0, 5)",5,2,0.1,7.04,9.429124148141454e-13
+Short → Chevron → Complex → Complex → Complex,"(3, 2, 4, 4, 4)",5,2,0.1,7.02,1.1198819649393954e-12
+Short → Short → Frequency_Jump → Up → Short,"(3, 3, 5, 6, 3)",5,1,0.0,7.02,1.1259881915748338e-12
+Complex → Complex → Down → Short → Frequency_Jump,"(4, 4, 1, 3, 5)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Complex → Frequency_Jump → Complex → Chevron,"(4, 4, 5, 4, 2)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Short → Up → Short → Short,"(4, 3, 6, 3, 3)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Frequency_Jump → Chevron → Chevron → Complex,"(4, 5, 2, 2, 4)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Chevron → Frequency_Jump → Up → Flat,"(4, 2, 5, 6, 0)",5,1,0.0,7.0,1.2798651027878805e-12
+Chevron → Complex → Complex → Complex → Complex,"(2, 4, 4, 4, 4)",5,1,0.0,7.0,1.2798651027878805e-12
+Up → Short → Short → Complex → Flat,"(6, 3, 3, 4, 0)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Complex → Up → Short → Short,"(4, 4, 6, 3, 3)",5,1,0.0,7.0,1.2798651027878805e-12
+Up → Complex → Short → Short → Short,"(6, 4, 3, 3, 3)",5,1,0.0,7.0,1.2798651027878805e-12
+Down → Complex → Complex → Up → Short,"(1, 4, 4, 6, 3)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Complex → Complex → Short → Frequency_Jump,"(4, 4, 4, 3, 5)",5,1,0.0,7.0,1.2798651027878805e-12
+Short → Chevron → Down → Complex → Up,"(3, 2, 1, 4, 6)",5,1,0.0,7.0,1.2798651027878805e-12
+Short → Chevron → Up → Complex → Complex,"(3, 2, 6, 4, 4)",5,1,0.0,7.0,1.2798651027878805e-12
+Chevron → Frequency_Jump → Frequency_Jump → Up → Down,"(2, 5, 5, 6, 1)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Complex → Short → Up → Chevron,"(4, 4, 3, 6, 2)",5,1,0.0,7.0,1.2798651027878805e-12
+Chevron → Frequency_Jump → Down → Down → Up,"(2, 5, 1, 1, 6)",5,1,0.0,7.0,1.2798651027878805e-12
+Chevron → Frequency_Jump → Chevron → Up → Short,"(2, 5, 2, 6, 3)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Frequency_Jump → Complex → Complex → Down,"(4, 5, 4, 4, 1)",5,1,0.0,7.0,1.2798651027878805e-12
+Down → Chevron → Chevron → Frequency_Jump → Up,"(1, 2, 2, 5, 6)",5,1,0.0,7.0,1.2798651027878805e-12
+Up → Complex → Complex → Short → Chevron,"(6, 4, 4, 3, 2)",5,1,0.0,7.0,1.2798651027878805e-12
+Flat → Up → Short → Up → Short,"(0, 6, 3, 6, 3)",5,1,0.0,7.0,1.2798651027878805e-12
+Complex → Up → Up → Chevron → Flat,"(4, 6, 6, 2, 0)",5,1,0.0,7.0,1.2798651027878805e-12
+Frequency_Jump → Chevron → Up → Short → Short,"(5, 2, 6, 3, 3)",5,1,0.0,7.0,1.2798651027878805e-12
+Flat → Frequency_Jump → Up → Short → Up,"(0, 5, 6, 3, 6)",5,1,0.0,7.0,1.2798651027878805e-12
+Chevron → Chevron → Chevron,"(2, 2, 2)",3,59,23.9,6.9,2.5407453918546707e-12
+Frequency_Jump → Frequency_Jump → Chevron → Flat → Chevron,"(5, 5, 2, 0, 2)",5,3,0.2,6.86,3.3368863228133705e-12
+Chevron → Chevron → Complex → Chevron → Complex,"(2, 2, 4, 2, 4)",5,2,0.1,6.83,4.168110301350225e-12
+Frequency_Jump → Flat → Flat → Flat,"(5, 0, 0, 0)",4,32,10.6,6.69,1.1217804463115044e-11
+Short → Short → Short → Short → Flat,"(3, 3, 3, 3, 0)",5,4,0.3,6.66,1.3321566072477253e-11
+Frequency_Jump → Flat → Flat,"(5, 0, 0)",3,80,39.7,6.65,1.4355072686100812e-11
+Down → Frequency_Jump → Frequency_Jump → Chevron → Flat,"(1, 5, 5, 2, 0)",5,3,0.2,6.6,2.060462911401828e-11
+Down → Flat → Flat → Flat → Flat,"(1, 0, 0, 0, 0)",5,22,6.4,6.57,2.438937940496544e-11
+Down → Frequency_Jump → Flat → Chevron,"(1, 5, 0, 2)",4,13,2.8,6.46,5.228339983176511e-11
+Down → Short → Short → Short → Short,"(1, 3, 3, 3, 3)",5,3,0.2,6.42,6.65265620369837e-11
+Flat → Flat → Flat → Up,"(0, 0, 0, 6)",4,19,4.8,6.4,7.529554757468304e-11
+Flat → Frequency_Jump → Frequency_Jump → Flat,"(0, 5, 5, 0)",4,12,2.6,6.4,7.827039016916615e-11
+Flat → Flat → Flat → Flat → Up,"(0, 0, 0, 0, 6)",5,8,1.2,6.39,8.332001755206875e-11
+Chevron → Down → Down → Down → Down,"(2, 1, 1, 1, 1)",5,5,0.6,6.36,1.0218026424979598e-10
+Down → Flat → Frequency_Jump → Frequency_Jump → Down,"(1, 0, 5, 5, 1)",5,3,0.2,6.26,1.9127011086084167e-10
+Down → Frequency_Jump → Chevron → Flat → Frequency_Jump,"(1, 5, 2, 0, 5)",5,3,0.2,6.26,1.9127011086084167e-10
+Short → Down → Down → Down → Down,"(3, 1, 1, 1, 1)",5,5,0.5,6.25,2.1108270686909236e-10
+Frequency_Jump → Frequency_Jump → Down → Up → Down,"(5, 5, 1, 6, 1)",5,1,0.0,6.24,2.119027175950805e-10
+Down → Complex → Short → Up → Flat,"(1, 4, 3, 6, 0)",5,1,0.0,6.24,2.119027175950805e-10
+Down → Frequency_Jump → Up → Chevron → Chevron,"(1, 5, 6, 2, 2)",5,1,0.0,6.24,2.119027175950805e-10
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Chevron → Frequency_Jump,"(5, 5, 5, 2, 5)",5,1,0.0,6.24,2.119027175950805e-10
+Short → Short → Short → Complex → Short,"(3, 3, 3, 4, 3)",5,1,0.0,6.24,2.119027175950805e-10
+Up → Complex → Chevron → Up → Flat,"(6, 4, 2, 6, 0)",5,1,0.0,6.24,2.119027175950805e-10
+Flat → Short → Up → Up → Short,"(0, 3, 6, 6, 3)",5,1,0.0,6.24,2.119027175950805e-10
+Complex → Flat → Complex → Up → Complex,"(4, 0, 4, 6, 4)",5,1,0.0,6.24,2.119027175950805e-10
+Up → Up → Short → Chevron → Flat,"(6, 6, 3, 2, 0)",5,1,0.0,6.24,2.119027175950805e-10
+Complex → Complex → Complex → Up → Flat,"(4, 4, 4, 6, 0)",5,1,0.0,6.24,2.119027175950805e-10
+Flat → Complex → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(0, 4, 5, 5, 5)",5,1,0.0,6.24,2.119027175950805e-10
+Complex → Short → Short → Short → Frequency_Jump,"(4, 3, 3, 3, 5)",5,1,0.0,6.24,2.119027175950805e-10
+Frequency_Jump → Up → Complex → Chevron → Flat,"(5, 6, 4, 2, 0)",5,1,0.0,6.24,2.119027175950805e-10
+Up → Short → Up → Short → Flat,"(6, 3, 6, 3, 0)",5,1,0.0,6.24,2.119027175950805e-10
+Flat → Down → Chevron → Up → Up,"(0, 1, 2, 6, 6)",5,1,0.0,6.24,2.119027175950805e-10
+Complex → Up → Flat → Chevron → Frequency_Jump,"(4, 6, 0, 2, 5)",5,1,0.0,6.24,2.119027175950805e-10
+Complex → Complex → Complex → Complex → Chevron,"(4, 4, 4, 4, 2)",5,1,0.0,6.24,2.119027175950805e-10
+Complex → Down → Complex → Up → Complex,"(4, 1, 4, 6, 4)",5,1,0.0,6.24,2.119027175950805e-10
+Frequency_Jump → Up → Flat → Chevron → Complex,"(5, 6, 0, 2, 4)",5,1,0.0,6.24,2.119027175950805e-10
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Down → Down,"(5, 5, 5, 1, 1)",5,1,0.0,6.24,2.119027175950805e-10
+Short → Complex → Complex → Complex,"(3, 4, 4, 4)",4,4,0.3,6.21,2.5840918294051107e-10
+Flat → Frequency_Jump → Flat → Flat,"(0, 5, 0, 0)",4,29,10.0,6.21,2.6921731510753943e-10
+Frequency_Jump → Down → Flat → Frequency_Jump → Frequency_Jump,"(5, 1, 0, 5, 5)",5,2,0.1,6.18,3.172142548635293e-10
+Frequency_Jump → Chevron → Flat → Frequency_Jump → Chevron,"(5, 2, 0, 5, 2)",5,3,0.2,6.06,6.958302822823725e-10
+Up → Up → Short → Chevron,"(6, 6, 3, 2)",4,2,0.1,6.01,9.372341791547e-10
+Frequency_Jump → Down → Frequency_Jump → Frequency_Jump → Flat,"(5, 1, 5, 5, 0)",5,2,0.1,6.01,9.372341791547e-10
+Up → Short → Short,"(6, 3, 3)",3,13,3.2,5.97,1.1884616624158184e-09
+Flat → Flat → Flat → Flat → Frequency_Jump,"(0, 0, 0, 0, 5)",5,12,2.7,5.91,1.6845423944644722e-09
+Short → Complex → Short → Short → Chevron,"(3, 4, 3, 3, 2)",5,2,0.1,5.91,1.7242525185423574e-09
+Short → Complex → Chevron → Short → Short,"(3, 4, 2, 3, 3)",5,2,0.1,5.91,1.7242525185423574e-09
+Flat → Short → Short → Short → Short,"(0, 3, 3, 3, 3)",5,3,0.3,5.9,1.800603888213459e-09
+Complex → Chevron → Short → Short → Short,"(4, 2, 3, 3, 3)",5,2,0.1,5.88,2.0907092723732035e-09
+Flat → Flat → Flat → Flat → Chevron,"(0, 0, 0, 0, 2)",5,19,5.9,5.86,2.2555856071804214e-09
+Short → Frequency_Jump → Up → Flat → Flat,"(3, 5, 6, 0, 0)",5,2,0.1,5.85,2.4306586743350067e-09
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Flat → Chevron,"(5, 5, 5, 0, 2)",5,2,0.1,5.85,2.4306586743350067e-09
+Down → Down → Down → Down → Flat,"(1, 1, 1, 1, 0)",5,7,1.1,5.74,4.726204205773854e-09
+Chevron → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(2, 5, 5, 5)",4,3,0.3,5.72,5.201264419163465e-09
+Chevron → Short → Frequency_Jump → Up → Complex,"(2, 3, 5, 6, 4)",5,1,0.0,5.7,6.12771766661524e-09
+Short → Short → Up → Flat → Up,"(3, 3, 6, 0, 6)",5,1,0.0,5.7,6.12771766661524e-09
+Complex → Complex → Up → Up,"(4, 4, 6, 6)",4,1,0.0,5.69,6.493316107025748e-09
+Up → Up → Up → Chevron,"(6, 6, 6, 2)",4,1,0.0,5.69,6.493316107025748e-09
+Chevron → Complex → Flat → Frequency_Jump → Up,"(2, 4, 0, 5, 6)",5,1,0.0,5.69,6.493316107025748e-09
+Chevron → Frequency_Jump → Up → Short → Short,"(2, 5, 6, 3, 3)",5,1,0.0,5.69,6.493316107025748e-09
+Down → Complex → Complex → Chevron → Up,"(1, 4, 4, 2, 6)",5,1,0.0,5.69,6.493316107025748e-09
+Up → Up → Chevron → Flat → Short,"(6, 6, 2, 0, 3)",5,1,0.0,5.69,6.493316107025748e-09
+Chevron → Complex → Frequency_Jump → Complex → Complex,"(2, 4, 5, 4, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Short → Up → Frequency_Jump → Down → Chevron,"(3, 6, 5, 1, 2)",5,1,0.0,5.69,6.493316107025748e-09
+Up → Up → Short → Chevron → Short,"(6, 6, 3, 2, 3)",5,1,0.0,5.69,6.493316107025748e-09
+Down → Complex → Up → Complex → Complex,"(1, 4, 6, 4, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Frequency_Jump → Frequency_Jump → Chevron → Frequency_Jump → Down,"(5, 5, 2, 5, 1)",5,1,0.0,5.69,6.493316107025748e-09
+Frequency_Jump → Frequency_Jump → Down → Short → Complex,"(5, 5, 1, 3, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Up → Up → Short → Short → Flat,"(6, 6, 3, 3, 0)",5,1,0.0,5.69,6.493316107025748e-09
+Chevron → Chevron → Complex → Down → Up,"(2, 2, 4, 1, 6)",5,1,0.0,5.69,6.493316107025748e-09
+Chevron → Frequency_Jump → Flat → Frequency_Jump → Up,"(2, 5, 0, 5, 6)",5,1,0.0,5.69,6.493316107025748e-09
+Short → Complex → Complex → Complex → Chevron,"(3, 4, 4, 4, 2)",5,1,0.0,5.69,6.493316107025748e-09
+Short → Up → Up → Flat → Chevron,"(3, 6, 6, 0, 2)",5,1,0.0,5.69,6.493316107025748e-09
+Chevron → Up → Complex → Complex → Short,"(2, 6, 4, 4, 3)",5,1,0.0,5.69,6.493316107025748e-09
+Short → Short → Short → Frequency_Jump → Complex,"(3, 3, 3, 5, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Down → Down → Complex → Short → Up,"(1, 1, 4, 3, 6)",5,1,0.0,5.69,6.493316107025748e-09
+Short → Down → Short → Up → Complex,"(3, 1, 3, 6, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Down → Complex → Complex → Frequency_Jump → Complex,"(1, 4, 4, 5, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Complex → Chevron → Frequency_Jump → Frequency_Jump → Complex,"(4, 2, 5, 5, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Complex → Complex → Short → Chevron → Complex,"(4, 4, 3, 2, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Complex → Down → Short → Frequency_Jump → Complex,"(4, 1, 3, 5, 4)",5,1,0.0,5.69,6.493316107025748e-09
+Short → Frequency_Jump → Up → Complex → Chevron,"(3, 5, 6, 4, 2)",5,1,0.0,5.69,6.493316107025748e-09
+Frequency_Jump → Complex → Frequency_Jump → Complex → Chevron,"(5, 4, 5, 4, 2)",5,1,0.0,5.69,6.493316107025748e-09
+Down → Flat → Frequency_Jump → Frequency_Jump,"(1, 0, 5, 5)",4,8,1.4,5.66,7.592797723887657e-09
+Chevron → Flat → Flat → Flat → Flat,"(2, 0, 0, 0, 0)",5,20,6.2,5.63,9.061136729826558e-09
+Chevron → Complex → Complex → Complex,"(2, 4, 4, 4)",4,4,0.4,5.56,1.3138528154321705e-08
+Short → Up → Up,"(3, 6, 6)",3,6,0.8,5.56,1.3830526945923793e-08
+Down → Down → Down → Down → Frequency_Jump,"(1, 1, 1, 1, 5)",5,3,0.2,5.53,1.5785806106727307e-08
+Chevron → Short → Short → Up → Flat,"(2, 3, 3, 6, 0)",5,2,0.1,5.5,1.8528157896824382e-08
+Frequency_Jump → Flat → Chevron → Frequency_Jump → Short,"(5, 0, 2, 5, 3)",5,2,0.1,5.5,1.8528157896824382e-08
+Down → Flat → Flat → Flat,"(1, 0, 0, 0)",4,51,24.9,5.45,2.578095281702275e-08
+Short → Down → Complex → Complex → Flat,"(3, 1, 4, 4, 0)",5,2,0.1,5.43,2.86851448150216e-08
+Frequency_Jump → Flat → Flat → Flat → Chevron,"(5, 0, 0, 0, 2)",5,8,1.4,5.41,3.2053756648942056e-08
+Down → Down → Down → Down → Up,"(1, 1, 1, 1, 6)",5,2,0.1,5.4,3.300196527167287e-08
+Frequency_Jump → Chevron → Short → Down → Flat,"(5, 2, 3, 1, 0)",5,3,0.2,5.32,5.273134784378186e-08
+Complex → Complex → Chevron → Up,"(4, 4, 2, 6)",4,2,0.1,5.3,5.642090550317391e-08
+Down → Frequency_Jump → Frequency_Jump → Flat,"(1, 5, 5, 0)",4,7,1.4,5.27,6.65998021176506e-08
+Short → Short → Chevron → Frequency_Jump → Up,"(3, 3, 2, 5, 6)",5,1,0.0,5.26,7.25154342129386e-08
+Short → Chevron → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(3, 2, 5, 5, 5)",5,1,0.0,5.25,7.569935545070905e-08
+Chevron → Complex → Complex → Complex → Chevron,"(2, 4, 4, 4, 2)",5,1,0.0,5.25,7.569935545070905e-08
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Down → Short,"(5, 5, 5, 1, 3)",5,1,0.0,5.25,7.569935545070905e-08
+Complex → Frequency_Jump → Flat → Chevron → Up,"(4, 5, 0, 2, 6)",5,1,0.0,5.25,7.569935545070905e-08
+Complex → Short → Complex → Down → Up,"(4, 3, 4, 1, 6)",5,1,0.0,5.25,7.569935545070905e-08
+Complex → Frequency_Jump → Complex → Chevron → Short,"(4, 5, 4, 2, 3)",5,1,0.0,5.25,7.569935545070905e-08
+Complex → Frequency_Jump → Complex → Chevron → Frequency_Jump,"(4, 5, 4, 2, 5)",5,1,0.0,5.25,7.569935545070905e-08
+Complex → Up → Short → Chevron → Down,"(4, 6, 3, 2, 1)",5,1,0.0,5.25,7.569935545070905e-08
+Down → Complex → Down → Short → Up,"(1, 4, 1, 3, 6)",5,1,0.0,5.25,7.569935545070905e-08
+Frequency_Jump → Frequency_Jump → Complex → Complex → Down,"(5, 5, 4, 4, 1)",5,1,0.0,5.25,7.569935545070905e-08
+Complex → Down → Complex → Complex → Short,"(4, 1, 4, 4, 3)",5,1,0.0,5.25,7.569935545070905e-08
+Frequency_Jump → Chevron → Short → Short → Up,"(5, 2, 3, 3, 6)",5,1,0.0,5.25,7.569935545070905e-08
+Flat → Frequency_Jump → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(0, 5, 5, 5, 5)",5,1,0.0,5.25,7.569935545070905e-08
+Up → Flat → Frequency_Jump → Flat → Chevron,"(6, 0, 5, 0, 2)",5,2,0.1,5.24,8.118142080792978e-08
+Short → Up → Up → Short,"(3, 6, 6, 3)",4,2,0.1,5.19,1.0362229641014409e-07
+Chevron → Chevron → Flat → Flat → Flat,"(2, 2, 0, 0, 0)",5,12,3.3,5.17,1.1604080718541354e-07
+Frequency_Jump → Chevron → Flat → Frequency_Jump,"(5, 2, 0, 5)",4,7,1.2,5.17,1.1922420739551853e-07
+Flat → Down → Frequency_Jump → Flat → Chevron,"(0, 1, 5, 0, 2)",5,5,0.7,5.16,1.23448359978795e-07
+Down → Flat → Frequency_Jump → Frequency_Jump → Flat,"(1, 0, 5, 5, 0)",5,3,0.3,5.16,1.2391652037813117e-07
+Frequency_Jump → Flat → Frequency_Jump → Down → Chevron,"(5, 0, 5, 1, 2)",5,2,0.1,5.15,1.2969325313694213e-07
+Chevron → Chevron → Chevron → Frequency_Jump → Chevron,"(2, 2, 2, 5, 2)",5,2,0.2,5.1,1.7160555765283192e-07
+Flat → Frequency_Jump → Frequency_Jump,"(0, 5, 5)",3,26,9.5,5.05,2.222551734876177e-07
+Frequency_Jump → Flat,"(5, 0)",2,204,154.5,5.02,2.5664943692493836e-07
+Up → Short → Down → Flat → Chevron,"(6, 3, 1, 0, 2)",5,2,0.2,5.02,2.5969023809135905e-07
+Down → Chevron → Chevron → Chevron → Frequency_Jump,"(1, 2, 2, 2, 5)",5,2,0.2,5.02,2.5969023809135905e-07
+Frequency_Jump → Up → Complex → Chevron,"(5, 6, 4, 2)",4,2,0.1,4.99,3.033392035334259e-07
+Complex → Complex → Complex → Chevron,"(4, 4, 4, 2)",4,4,0.5,4.97,3.281342331185044e-07
+Frequency_Jump → Flat → Down → Frequency_Jump → Chevron,"(5, 0, 1, 5, 2)",5,2,0.1,4.96,3.4532815818000273e-07
+Flat → Flat → Flat → Chevron,"(0, 0, 0, 2)",4,48,23.4,4.95,3.7856128398683353e-07
+Complex → Chevron → Short → Short,"(4, 2, 3, 3)",4,6,1.1,4.94,3.808230306656668e-07
+Complex → Chevron → Chevron → Short → Short,"(4, 2, 2, 3, 3)",5,2,0.1,4.94,3.839475719580321e-07
+Down → Flat → Flat → Flat → Up,"(1, 0, 0, 0, 6)",5,5,0.7,4.94,3.9696200149208494e-07
+Up → Up → Up → Flat,"(6, 6, 6, 0)",4,1,0.0,4.91,4.6594617819639694e-07
+Chevron → Frequency_Jump → Chevron → Chevron → Up,"(2, 5, 2, 2, 6)",5,1,0.0,4.9,4.816785043049165e-07
+Down → Frequency_Jump → Frequency_Jump → Frequency_Jump → Chevron,"(1, 5, 5, 5, 2)",5,1,0.0,4.9,4.816785043049165e-07
+Chevron → Frequency_Jump → Frequency_Jump → Frequency_Jump → Down,"(2, 5, 5, 5, 1)",5,1,0.0,4.9,4.816785043049165e-07
+Short → Frequency_Jump → Frequency_Jump → Frequency_Jump → Down,"(3, 5, 5, 5, 1)",5,1,0.0,4.9,4.816785043049165e-07
+Chevron → Flat → Complex → Complex → Up,"(2, 0, 4, 4, 6)",5,1,0.0,4.9,4.816785043049165e-07
+Up → Complex → Down → Short → Short,"(6, 4, 1, 3, 3)",5,1,0.0,4.9,4.816785043049165e-07
+Frequency_Jump → Chevron → Complex → Chevron → Complex,"(5, 2, 4, 2, 4)",5,1,0.0,4.9,4.816785043049165e-07
+Chevron → Complex → Flat → Complex → Up,"(2, 4, 0, 4, 6)",5,1,0.0,4.9,4.816785043049165e-07
+Down → Flat → Up → Up → Short,"(1, 0, 6, 6, 3)",5,1,0.0,4.9,4.816785043049165e-07
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Complex → Flat,"(5, 5, 5, 4, 0)",5,1,0.0,4.9,4.816785043049165e-07
+Chevron → Down → Flat → Up → Up,"(2, 1, 0, 6, 6)",5,1,0.0,4.9,4.816785043049165e-07
+Complex → Short → Up → Flat → Short,"(4, 3, 6, 0, 3)",5,1,0.0,4.9,4.816785043049165e-07
+Flat → Down → Complex → Complex → Up,"(0, 1, 4, 4, 6)",5,1,0.0,4.9,4.816785043049165e-07
+Complex → Complex → Short → Short → Short,"(4, 4, 3, 3, 3)",5,1,0.0,4.9,4.816785043049165e-07
+Short → Short → Chevron → Up → Complex,"(3, 3, 2, 6, 4)",5,1,0.0,4.9,4.816785043049165e-07
+Complex → Down → Up → Flat → Complex,"(4, 1, 6, 0, 4)",5,1,0.0,4.9,4.816785043049165e-07
+Frequency_Jump → Frequency_Jump → Frequency_Jump → Down,"(5, 5, 5, 1)",4,3,0.3,4.89,5.068638627703237e-07
+Complex → Complex → Complex → Short,"(4, 4, 4, 3)",4,3,0.3,4.88,5.29909968238762e-07
+Up → Up → Flat → Flat → Flat,"(6, 6, 0, 0, 0)",5,2,0.1,4.87,5.635956320526603e-07
+Down → Down → Complex → Complex → Down,"(1, 1, 4, 4, 1)",5,2,0.1,4.87,5.635956320526603e-07
+Chevron → Chevron → Down → Flat → Up,"(2, 2, 1, 0, 6)",5,2,0.1,4.87,5.635956320526603e-07
+Complex → Complex → Up,"(4, 4, 6)",3,7,1.4,4.86,5.783007741566593e-07
+Flat → Flat → Flat → Frequency_Jump → Frequency_Jump,"(0, 0, 0, 5, 5)",5,4,0.6,4.84,6.399476090157563e-07
+Chevron → Down → Flat → Frequency_Jump → Frequency_Jump,"(2, 1, 0, 5, 5)",5,2,0.1,4.82,7.287010189704901e-07
+Up → Up → Short,"(6, 6, 3)",3,5,0.8,4.8,7.932729518822512e-07
+Complex → Complex → Short,"(4, 4, 3)",3,16,5.0,4.79,8.435618072955009e-07
+Down → Frequency_Jump → Flat → Chevron → Flat,"(1, 5, 0, 2, 0)",5,5,0.8,4.78,8.927507274547608e-07
+Down → Flat → Frequency_Jump → Chevron → Short,"(1, 0, 5, 2, 3)",5,3,0.3,4.77,9.43328795854903e-07
+Chevron → Chevron → Complex → Chevron → Short,"(2, 2, 4, 2, 3)",5,2,0.2,4.75,1.0253520094094526e-06
+Flat → Flat → Frequency_Jump → Flat → Flat,"(0, 0, 5, 0, 0)",5,10,2.6,4.75,1.0329045111445723e-06
+Chevron → Flat → Flat → Flat,"(2, 0, 0, 0)",4,44,23.1,4.72,1.1692045589484223e-06
+Chevron → Chevron → Chevron → Chevron → Short,"(2, 2, 2, 2, 3)",5,3,0.4,4.72,1.1844014702333538e-06
+Down → Flat → Flat,"(1, 0, 0)",3,141,96.0,4.71,1.2232109501963961e-06
+Down → Complex → Complex,"(1, 4, 4)",3,18,6.8,4.71,1.2307537481381914e-06
+Down → Chevron → Chevron → Chevron → Chevron,"(1, 2, 2, 2, 2)",5,4,0.5,4.71,1.26635483366222e-06
+Down → Flat → Complex → Frequency_Jump → Frequency_Jump,"(1, 0, 4, 5, 5)",5,2,0.1,4.7,1.3221069662394669e-06
+Down → Frequency_Jump → Frequency_Jump,"(1, 5, 5)",3,15,5.1,4.68,1.4172601269235585e-06
+Down → Down → Down → Chevron,"(1, 1, 1, 2)",4,13,4.0,4.67,1.4788069719884334e-06
+Complex → Complex → Short → Complex,"(4, 4, 3, 4)",4,3,0.3,4.66,1.61784977370516e-06
+Flat → Down → Down → Down → Down,"(0, 1, 1, 1, 1)",5,6,1.0,4.66,1.618740135711505e-06
+Chevron → Chevron → Up → Down → Flat,"(2, 2, 6, 1, 0)",5,2,0.2,4.64,1.701381053154094e-06
+Flat → Flat → Up,"(0, 0, 6)",3,37,18.1,4.61,1.974054908870926e-06
+Flat → Short → Short → Up → Up,"(0, 3, 3, 6, 6)",5,1,0.0,4.61,1.991525332090127e-06
+Complex → Up → Frequency_Jump → Down → Flat,"(4, 6, 5, 1, 0)",5,1,0.0,4.61,2.0449744502215594e-06
+Flat → Frequency_Jump → Flat → Up → Up,"(0, 5, 0, 6, 6)",5,1,0.0,4.61,2.0449744502215594e-06
+Frequency_Jump → Frequency_Jump → Chevron → Frequency_Jump → Flat,"(5, 5, 2, 5, 0)",5,1,0.0,4.61,2.0449744502215594e-06
+Short → Up → Chevron → Short → Chevron,"(3, 6, 2, 3, 2)",5,1,0.0,4.61,2.0449744502215594e-06
+Short → Chevron → Up → Complex → Down,"(3, 2, 6, 4, 1)",5,1,0.0,4.61,2.0449744502215594e-06
+Up → Short → Flat → Frequency_Jump → Down,"(6, 3, 0, 5, 1)",5,1,0.0,4.61,2.0449744502215594e-06
+Short → Short → Down → Short → Up,"(3, 3, 1, 3, 6)",5,1,0.0,4.61,2.0449744502215594e-06
+Up → Short → Up → Flat → Flat,"(6, 3, 6, 0, 0)",5,1,0.0,4.61,2.0449744502215594e-06
+Complex → Flat → Flat → Frequency_Jump → Up,"(4, 0, 0, 5, 6)",5,1,0.0,4.61,2.0449744502215594e-06
+Chevron → Short → Up → Frequency_Jump → Down,"(2, 3, 6, 5, 1)",5,1,0.0,4.61,2.0449744502215594e-06
+Down → Chevron → Up → Up → Flat,"(1, 2, 6, 6, 0)",5,1,0.0,4.61,2.0449744502215594e-06
+Complex → Short → Frequency_Jump → Chevron → Complex,"(4, 3, 5, 2, 4)",5,1,0.0,4.61,2.0449744502215594e-06
+Short → Chevron → Short → Short → Up,"(3, 2, 3, 3, 6)",5,1,0.0,4.61,2.0449744502215594e-06
+Short → Complex → Down → Up → Chevron,"(3, 4, 1, 6, 2)",5,1,0.0,4.61,2.0449744502215594e-06
+Frequency_Jump → Down → Up → Down → Down,"(5, 1, 6, 1, 1)",5,1,0.0,4.61,2.0449744502215594e-06
+Chevron → Frequency_Jump → Flat → Flat → Flat,"(2, 5, 0, 0, 0)",5,7,1.4,4.58,2.2834903546931073e-06
+Chevron → Chevron → Flat → Frequency_Jump → Flat,"(2, 2, 0, 5, 0)",5,5,0.9,4.56,2.5330106612209136e-06
+Up → Flat → Flat → Flat → Flat,"(6, 0, 0, 0, 0)",5,6,1.2,4.49,3.5863468387242747e-06
+Chevron → Flat → Frequency_Jump → Chevron → Flat,"(2, 0, 5, 2, 0)",5,4,0.7,4.49,3.6080411550676317e-06
+Flat → Flat → Flat → Up → Flat,"(0, 0, 0, 6, 0)",5,6,1.1,4.48,3.779277442106377e-06
+Complex → Down → Chevron → Short → Short,"(4, 1, 2, 3, 3)",5,2,0.2,4.46,4.059814274759432e-06
+Frequency_Jump → Frequency_Jump → Down → Flat → Chevron,"(5, 5, 1, 0, 2)",5,2,0.2,4.46,4.059814274759432e-06
+Short → Chevron → Complex → Complex,"(3, 2, 4, 4)",4,4,0.6,4.45,4.229223767082679e-06
+Down → Down → Down → Down → Chevron,"(1, 1, 1, 1, 2)",5,4,0.6,4.45,4.288274800701153e-06
+Down → Chevron → Chevron → Chevron,"(1, 2, 2, 2)",4,12,3.6,4.44,4.603317661722173e-06
+Short → Short → Up,"(3, 3, 6)",3,11,3.2,4.43,4.748528529718854e-06
+Up → Up,"(6, 6)",2,19,7.6,4.42,4.945122504262933e-06
+Down → Frequency_Jump → Frequency_Jump → Flat → Flat,"(1, 5, 5, 0, 0)",5,3,0.4,4.39,5.5744695276471745e-06
+Down → Flat → Chevron → Up → Down,"(1, 0, 2, 6, 1)",5,2,0.2,4.39,5.615073015330374e-06
+Down → Down → Flat → Chevron,"(1, 1, 0, 2)",4,19,7.2,4.39,5.755940006846316e-06
+Chevron → Chevron → Chevron → Frequency_Jump → Up,"(2, 2, 2, 5, 6)",5,1,0.0,4.36,6.395907088729835e-06
+Down → Frequency_Jump → Complex → Complex → Short,"(1, 5, 4, 4, 3)",5,1,0.0,4.36,6.395907088729835e-06
+Complex → Up → Short → Flat → Frequency_Jump,"(4, 6, 3, 0, 5)",5,1,0.0,4.36,6.395907088729835e-06
+Up → Up → Flat → Chevron → Short,"(6, 6, 0, 2, 3)",5,1,0.1,4.36,6.535922683403861e-06
+Short → Down → Up → Complex → Down,"(3, 1, 6, 4, 1)",5,1,0.1,4.36,6.535922683403861e-06
+Flat → Complex → Up → Frequency_Jump → Down,"(0, 4, 6, 5, 1)",5,1,0.1,4.36,6.535922683403861e-06
+Flat → Flat → Up → Short → Up,"(0, 0, 6, 3, 6)",5,1,0.1,4.36,6.535922683403861e-06
+Down → Chevron → Short → Frequency_Jump → Up,"(1, 2, 3, 5, 6)",5,1,0.1,4.36,6.535922683403861e-06
+Chevron → Short → Chevron → Up → Short,"(2, 3, 2, 6, 3)",5,1,0.1,4.36,6.535922683403861e-06
+Down → Up → Up → Flat → Flat,"(1, 6, 6, 0, 0)",5,1,0.1,4.36,6.535922683403861e-06
+Chevron → Chevron → Complex → Complex → Complex,"(2, 2, 4, 4, 4)",5,1,0.1,4.36,6.535922683403861e-06
+Flat → Short → Up → Up → Flat,"(0, 3, 6, 6, 0)",5,1,0.1,4.36,6.535922683403861e-06
+Complex → Up → Complex → Down → Flat,"(4, 6, 4, 1, 0)",5,1,0.1,4.36,6.535922683403861e-06
+Frequency_Jump → Chevron → Complex → Short → Complex,"(5, 2, 4, 3, 4)",5,1,0.1,4.36,6.535922683403861e-06
+Flat → Frequency_Jump → Frequency_Jump → Down → Up,"(0, 5, 5, 1, 6)",5,1,0.1,4.36,6.535922683403861e-06
+Short → Chevron → Frequency_Jump → Up → Short,"(3, 2, 5, 6, 3)",5,1,0.1,4.36,6.535922683403861e-06
+Frequency_Jump → Flat → Frequency_Jump → Up → Flat,"(5, 0, 5, 6, 0)",5,1,0.1,4.36,6.535922683403861e-06
+Frequency_Jump → Chevron → Flat → Up → Short,"(5, 2, 0, 6, 3)",5,1,0.1,4.36,6.535922683403861e-06
+Complex → Complex → Chevron → Short → Complex,"(4, 4, 2, 3, 4)",5,1,0.1,4.36,6.535922683403861e-06
+Complex → Short → Chevron → Frequency_Jump → Complex,"(4, 3, 2, 5, 4)",5,1,0.1,4.36,6.535922683403861e-06
+Flat → Short → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(0, 3, 5, 5, 5)",5,1,0.1,4.36,6.535922683403861e-06
+Frequency_Jump → Flat → Frequency_Jump → Flat → Flat,"(5, 0, 5, 0, 0)",5,4,0.6,4.33,7.304981864630911e-06
+Down → Chevron → Frequency_Jump → Flat → Flat,"(1, 2, 5, 0, 0)",5,4,0.7,4.33,7.317229891445898e-06
+Frequency_Jump → Frequency_Jump → Flat → Down → Chevron,"(5, 5, 0, 1, 2)",5,2,0.2,4.32,7.8486541205125e-06
+Chevron → Short → Short → Short,"(2, 3, 3, 3)",4,7,1.6,4.31,8.328790685130372e-06
+Frequency_Jump → Frequency_Jump → Down → Frequency_Jump,"(5, 5, 1, 5)",4,2,0.2,4.29,8.908275905383789e-06
+Complex → Frequency_Jump → Frequency_Jump → Frequency_Jump,"(4, 5, 5, 5)",4,2,0.2,4.27,9.8635340173292e-06
+Chevron → Chevron → Chevron → Frequency_Jump,"(2, 2, 2, 5)",4,6,1.4,4.25,1.059430775973702e-05
+Down → Down → Down → Frequency_Jump → Chevron,"(1, 1, 1, 5, 2)",5,2,0.2,4.24,1.1045248499264027e-05
+Complex → Short → Short → Short,"(4, 3, 3, 3)",4,5,0.9,4.24,1.1161219351629725e-05
+Flat → Frequency_Jump → Flat,"(0, 5, 0)",3,64,39.6,4.22,1.2322695925659488e-05
+Chevron → Flat → Up → Short → Down,"(2, 0, 6, 3, 1)",5,2,0.2,4.2,1.322896584521338e-05
+Complex → Complex → Flat → Flat → Frequency_Jump,"(4, 4, 0, 0, 5)",5,2,0.2,4.17,1.4944062106225786e-05
+Chevron → Chevron → Complex → Flat → Frequency_Jump,"(2, 2, 4, 0, 5)",5,2,0.2,4.17,1.4944062106225786e-05
+Chevron → Chevron → Flat → Frequency_Jump → Complex,"(2, 2, 0, 5, 4)",5,2,0.2,4.16,1.6233866290127352e-05
+Flat → Up → Up → Up,"(0, 6, 6, 6)",4,1,0.0,4.15,1.6679510905115436e-05
+Chevron → Frequency_Jump → Frequency_Jump → Complex → Down,"(2, 5, 5, 4, 1)",5,1,0.0,4.15,1.6679510905115436e-05
+Up → Chevron → Flat → Up → Short,"(6, 2, 0, 6, 3)",5,1,0.0,4.15,1.6679510905115436e-05
+Up → Complex → Flat → Chevron → Frequency_Jump,"(6, 4, 0, 2, 5)",5,1,0.0,4.15,1.6679510905115436e-05
+Chevron → Short → Up → Chevron → Short,"(2, 3, 6, 2, 3)",5,1,0.0,4.15,1.6679510905115436e-05
+Up → Chevron → Chevron → Short → Chevron,"(6, 2, 2, 3, 2)",5,1,0.0,4.15,1.6679510905115436e-05
+Chevron → Complex → Down → Complex → Up,"(2, 4, 1, 4, 6)",5,1,0.0,4.15,1.6679510905115436e-05
+Frequency_Jump → Short → Complex → Frequency_Jump → Flat,"(5, 3, 4, 5, 0)",5,1,0.1,4.15,1.6983592589836505e-05
+Frequency_Jump → Up → Short → Up,"(5, 6, 3, 6)",4,1,0.1,4.15,1.6983592589836505e-05
+Chevron → Frequency_Jump → Up → Flat → Short,"(2, 5, 6, 0, 3)",5,1,0.1,4.15,1.6983592589836505e-05
+Complex → Chevron → Frequency_Jump → Chevron → Frequency_Jump,"(4, 2, 5, 2, 5)",5,1,0.1,4.15,1.6983592589836505e-05
+Complex → Down → Complex → Chevron → Complex,"(4, 1, 4, 2, 4)",5,1,0.1,4.15,1.6983592589836505e-05
+Complex → Complex → Complex → Chevron → Short,"(4, 4, 4, 2, 3)",5,1,0.1,4.15,1.6983592589836505e-05
+Short → Frequency_Jump → Complex → Chevron → Short,"(3, 5, 4, 2, 3)",5,1,0.1,4.15,1.6983592589836505e-05
+Complex → Complex → Chevron → Frequency_Jump → Down,"(4, 4, 2, 5, 1)",5,1,0.1,4.15,1.6983592589836505e-05
+Flat → Chevron → Up → Flat → Up,"(0, 2, 6, 0, 6)",5,1,0.1,4.15,1.6983592589836505e-05
+Short → Up → Short → Short → Short,"(3, 6, 3, 3, 3)",5,1,0.1,4.15,1.6983592589836505e-05
+Up → Down → Flat → Frequency_Jump → Chevron,"(6, 1, 0, 5, 2)",5,1,0.1,4.15,1.6983592589836505e-05
+Short → Short → Up → Flat → Complex,"(3, 3, 6, 0, 4)",5,1,0.1,4.15,1.6983592589836505e-05
+Chevron → Short → Up → Short → Short,"(2, 3, 6, 3, 3)",5,1,0.1,4.15,1.6983592589836505e-05
+Short → Short → Chevron → Complex → Complex,"(3, 3, 2, 4, 4)",5,1,0.1,4.15,1.6983592589836505e-05
+Down → Complex → Chevron → Complex → Frequency_Jump,"(1, 4, 2, 4, 5)",5,1,0.1,4.15,1.6983592589836505e-05
+Down → Complex → Complex → Chevron → Frequency_Jump,"(1, 4, 4, 2, 5)",5,1,0.1,4.15,1.6983592589836505e-05
+Chevron → Up → Chevron → Chevron → Short,"(2, 6, 2, 2, 3)",5,1,0.1,4.15,1.6983592589836505e-05
+Up → Short → Up,"(6, 3, 6)",3,4,0.7,4.12,1.853673784624199e-05
+Chevron → Frequency_Jump → Flat → Flat,"(2, 5, 0, 0)",4,15,5.2,4.12,1.8809981525591546e-05
+Flat → Chevron → Chevron → Chevron → Up,"(0, 2, 2, 2, 6)",5,2,0.2,4.11,1.9925980931478904e-05
+Short → Up → Chevron → Short,"(3, 6, 2, 3)",4,3,0.5,4.1,2.097954855917461e-05
+Flat → Short → Short → Complex → Short,"(0, 3, 3, 4, 3)",5,2,0.2,4.07,2.381353268998687e-05
+Up → Short → Short → Chevron,"(6, 3, 3, 2)",4,3,0.5,4.04,2.621039581296447e-05
+Flat → Chevron → Frequency_Jump → Chevron → Complex,"(0, 2, 5, 2, 4)",5,2,0.2,4.04,2.624771789183633e-05
+Chevron → Chevron,"(2, 2)",2,231,179.8,4.03,2.7717731115539657e-05
+Down → Down → Frequency_Jump → Flat → Chevron,"(1, 1, 5, 0, 2)",5,3,0.4,4.01,3.0140367068609564e-05
+Chevron → Up → Down → Flat → Down,"(2, 6, 1, 0, 1)",5,2,0.2,3.99,3.347808824571974e-05
+Down → Chevron → Chevron → Up → Frequency_Jump,"(1, 2, 2, 6, 5)",5,1,0.1,3.96,3.7197492024243495e-05
+Chevron → Up → Short → Short → Short,"(2, 6, 3, 3, 3)",5,1,0.1,3.96,3.7197492024243495e-05
+Down → Up → Down → Up → Flat,"(1, 6, 1, 6, 0)",5,1,0.1,3.96,3.7197492024243495e-05
+Short → Up → Flat → Frequency_Jump → Flat,"(3, 6, 0, 5, 0)",5,1,0.1,3.96,3.77719466341242e-05
+Up → Chevron → Short → Short → Short,"(6, 2, 3, 3, 3)",5,1,0.1,3.96,3.77719466341242e-05
+Frequency_Jump → Chevron → Complex → Chevron → Chevron,"(5, 2, 4, 2, 2)",5,1,0.1,3.96,3.77719466341242e-05
+Short → Up → Short → Flat → Complex,"(3, 6, 3, 0, 4)",5,1,0.1,3.96,3.77719466341242e-05
+Short → Short → Short → Complex → Frequency_Jump,"(3, 3, 3, 4, 5)",5,1,0.1,3.96,3.77719466341242e-05
+Complex → Complex → Short → Chevron → Short,"(4, 4, 3, 2, 3)",5,1,0.1,3.96,3.77719466341242e-05
+Complex → Short → Chevron → Complex → Chevron,"(4, 3, 2, 4, 2)",5,1,0.1,3.96,3.77719466341242e-05
+Short → Complex → Complex → Short → Short,"(3, 4, 4, 3, 3)",5,1,0.1,3.96,3.77719466341242e-05
+Complex → Chevron → Up → Chevron → Chevron,"(4, 2, 6, 2, 2)",5,1,0.1,3.96,3.77719466341242e-05
+Frequency_Jump → Chevron → Complex → Frequency_Jump → Down,"(5, 2, 4, 5, 1)",5,1,0.1,3.96,3.77719466341242e-05
+Up → Short → Chevron → Short → Chevron,"(6, 3, 2, 3, 2)",5,1,0.1,3.96,3.77719466341242e-05
+Down → Down → Down → Flat → Chevron,"(1, 1, 1, 0, 2)",5,5,1.0,3.95,3.961223410420267e-05
+Complex → Complex → Complex → Flat → Flat,"(4, 4, 4, 0, 0)",5,2,0.2,3.94,3.993350416264807e-05
+Down → Chevron → Complex → Flat → Complex,"(1, 2, 4, 0, 4)",5,2,0.2,3.94,3.993350416264807e-05
+Down → Complex → Complex → Short,"(1, 4, 4, 3)",4,4,0.7,3.94,4.00833117417676e-05
+Flat → Frequency_Jump → Flat → Flat → Flat,"(0, 5, 0, 0, 0)",5,9,2.6,3.93,4.171311539657996e-05
+Short → Short → Complex → Flat → Short,"(3, 3, 4, 0, 3)",5,2,0.2,3.93,4.312966966790732e-05
+Flat → Flat → Flat → Chevron → Chevron,"(0, 0, 0, 2, 2)",5,10,3.3,3.91,4.7067786450361027e-05
+Flat → Frequency_Jump → Chevron → Flat → Frequency_Jump,"(0, 5, 2, 0, 5)",5,2,0.3,3.87,5.495097988272857e-05
+Flat → Chevron → Frequency_Jump → Flat → Chevron,"(0, 2, 5, 0, 2)",5,4,0.7,3.86,5.639247536026737e-05
+Flat → Flat → Flat → Frequency_Jump → Flat,"(0, 0, 0, 5, 0)",5,9,2.6,3.84,6.153865774849443e-05
+Down → Complex → Complex → Up,"(1, 4, 4, 6)",4,2,0.2,3.84,6.21180617156325e-05
+Frequency_Jump → Down → Down → Down → Down,"(5, 1, 1, 1, 1)",5,2,0.2,3.84,6.21180617156325e-05
+Frequency_Jump → Down → Chevron → Flat → Flat,"(5, 1, 2, 0, 0)",5,4,0.8,3.83,6.279609326231839e-05
+Flat → Complex → Flat → Flat → Up,"(0, 4, 0, 0, 6)",5,2,0.2,3.83,6.313053191442375e-05
+Down → Frequency_Jump → Flat → Chevron → Frequency_Jump,"(1, 5, 0, 2, 5)",5,2,0.2,3.83,6.533910034545176e-05
+Complex → Complex → Up → Short,"(4, 4, 6, 3)",4,2,0.2,3.8,7.195871667720066e-05
+Short → Up → Complex → Flat → Chevron,"(3, 6, 4, 0, 2)",5,1,0.1,3.8,7.353164845402826e-05
+Chevron → Flat → Complex → Chevron → Up,"(2, 0, 4, 2, 6)",5,1,0.1,3.8,7.353164845402826e-05
+Short → Short → Up → Up,"(3, 3, 6, 6)",4,1,0.1,3.79,7.450740666514744e-05
+Short → Up → Up → Chevron,"(3, 6, 6, 2)",4,1,0.1,3.79,7.450740666514744e-05
+Chevron → Short → Short → Complex → Complex,"(2, 3, 3, 4, 4)",5,1,0.1,3.79,7.450740666514744e-05
+Complex → Chevron → Complex → Chevron → Short,"(4, 2, 4, 2, 3)",5,1,0.1,3.79,7.450740666514744e-05
+Complex → Complex → Short → Complex → Down,"(4, 4, 3, 4, 1)",5,1,0.1,3.79,7.450740666514744e-05
+Chevron → Up → Up → Flat → Flat,"(2, 6, 6, 0, 0)",5,1,0.1,3.79,7.450740666514744e-05
+Frequency_Jump → Frequency_Jump → Down → Down → Down,"(5, 5, 1, 1, 1)",5,1,0.1,3.79,7.450740666514744e-05
+Complex → Chevron → Short → Short → Complex,"(4, 2, 3, 3, 4)",5,1,0.1,3.79,7.450740666514744e-05
+Up → Up → Chevron → Flat → Flat,"(6, 6, 2, 0, 0)",5,1,0.1,3.79,7.450740666514744e-05
+Chevron → Frequency_Jump → Flat → Down → Up,"(2, 5, 0, 1, 6)",5,1,0.1,3.79,7.450740666514744e-05
+Frequency_Jump → Flat → Down → Down → Up,"(5, 0, 1, 1, 6)",5,1,0.1,3.79,7.450740666514744e-05
+Frequency_Jump → Chevron → Down → Chevron → Up,"(5, 2, 1, 2, 6)",5,1,0.1,3.79,7.450740666514744e-05
+Complex → Complex → Down → Short → Short,"(4, 4, 1, 3, 3)",5,1,0.1,3.79,7.450740666514744e-05
+Chevron → Down → Frequency_Jump → Flat → Up,"(2, 1, 5, 0, 6)",5,1,0.1,3.79,7.450740666514744e-05
+Chevron → Up → Down → Flat → Frequency_Jump,"(2, 6, 1, 0, 5)",5,1,0.1,3.79,7.450740666514744e-05
+Frequency_Jump → Chevron → Complex → Chevron,"(5, 2, 4, 2)",4,4,0.7,3.78,7.718731699779546e-05
+Flat → Frequency_Jump → Chevron → Short → Short,"(0, 5, 2, 3, 3)",5,2,0.2,3.78,7.802216768515446e-05
+Chevron → Flat → Down → Frequency_Jump → Flat,"(2, 0, 1, 5, 0)",5,4,0.8,3.78,7.830074613868199e-05
+Down → Down → Flat → Chevron → Frequency_Jump,"(1, 1, 0, 2, 5)",5,3,0.4,3.78,7.854342432089823e-05
+Frequency_Jump → Flat → Chevron → Flat → Flat,"(5, 0, 2, 0, 0)",5,6,1.4,3.76,8.402728473755339e-05
+Complex → Short → Complex → Short,"(4, 3, 4, 3)",4,3,0.4,3.74,9.241285526917498e-05
+Flat → Short → Up → Up,"(0, 3, 6, 6)",4,2,0.2,3.73,9.497095005106537e-05
+Down → Down → Down → Down → Complex,"(1, 1, 1, 1, 4)",5,2,0.2,3.73,9.497095005106537e-05
+Chevron → Frequency_Jump → Down → Flat → Complex,"(2, 5, 1, 0, 4)",5,2,0.2,3.69,0.0001141550154265536
+Down → Frequency_Jump → Flat,"(1, 5, 0)",3,39,22.3,3.67,0.00012328353680068904
+Down → Complex → Complex → Complex,"(1, 4, 4, 4)",4,3,0.5,3.66,0.00012433040042869603
+Chevron → Complex → Chevron → Complex,"(2, 4, 2, 4)",4,4,0.8,3.65,0.00013031380519423763
+Complex → Complex → Complex → Flat,"(4, 4, 4, 0)",4,4,0.8,3.65,0.00013120785553055736
+Down → Flat → Up → Flat → Up,"(1, 0, 6, 0, 6)",5,1,0.1,3.65,0.00013219240606643368
+Complex → Complex → Up → Flat → Short,"(4, 4, 6, 0, 3)",5,1,0.1,3.65,0.00013219240606643368
+Short → Complex → Short → Complex → Short,"(3, 4, 3, 4, 3)",5,1,0.1,3.65,0.00013219240606643368
+Up → Flat → Up → Up,"(6, 0, 6, 6)",4,1,0.1,3.64,0.00013371806012130172
+Flat → Chevron → Complex → Frequency_Jump → Complex,"(0, 2, 4, 5, 4)",5,1,0.1,3.64,0.00013371806012130172
+Frequency_Jump → Chevron → Frequency_Jump → Flat → Frequency_Jump,"(5, 2, 5, 0, 5)",5,1,0.1,3.64,0.00013371806012130172
+Up → Chevron → Short → Chevron → Down,"(6, 2, 3, 2, 1)",5,1,0.1,3.64,0.00013371806012130172
+Short → Short → Frequency_Jump → Complex → Chevron,"(3, 3, 5, 4, 2)",5,1,0.1,3.64,0.00013371806012130172
+Chevron → Short → Frequency_Jump → Up → Flat,"(2, 3, 5, 6, 0)",5,1,0.1,3.64,0.00013371806012130172
+Complex → Down → Up → Chevron → Down,"(4, 1, 6, 2, 1)",5,1,0.1,3.64,0.00013371806012130172
+Complex → Up → Flat → Chevron → Short,"(4, 6, 0, 2, 3)",5,1,0.1,3.64,0.00013371806012130172
+Frequency_Jump → Flat → Frequency_Jump → Chevron → Complex,"(5, 0, 5, 2, 4)",5,1,0.1,3.64,0.00013371806012130172
+Frequency_Jump → Short → Chevron → Chevron → Frequency_Jump,"(5, 3, 2, 2, 5)",5,1,0.1,3.64,0.00013371806012130172
+Complex → Short → Complex → Short → Chevron,"(4, 3, 4, 3, 2)",5,1,0.1,3.64,0.00013371806012130172
+Flat → Complex → Complex → Up → Flat,"(0, 4, 4, 6, 0)",5,1,0.1,3.64,0.00013371806012130172
+Down → Complex → Up → Flat → Complex,"(1, 4, 6, 0, 4)",5,1,0.1,3.64,0.00013371806012130172
+Down → Up → Complex → Down → Short,"(1, 6, 4, 1, 3)",5,1,0.1,3.64,0.00013371806012130172
+Complex → Short → Chevron → Complex → Complex,"(4, 3, 2, 4, 4)",5,1,0.1,3.64,0.00013371806012130172
+Chevron → Short → Complex → Complex → Short,"(2, 3, 4, 4, 3)",5,1,0.1,3.64,0.00013371806012130172
+Up → Flat → Frequency_Jump → Flat → Frequency_Jump,"(6, 0, 5, 0, 5)",5,1,0.1,3.64,0.00013371806012130172
+Short → Complex → Short,"(3, 4, 3)",3,17,7.7,3.63,0.00014104238697620897
+Chevron → Down → Down → Down,"(2, 1, 1, 1)",4,11,4.0,3.61,0.0001532114213361746
+Flat → Frequency_Jump → Flat → Flat → Complex,"(0, 5, 0, 0, 4)",5,4,0.8,3.6,0.00016026216876940946
+Up → Up → Flat → Chevron,"(6, 6, 0, 2)",4,2,0.3,3.58,0.00017130708761892155
+Chevron → Chevron → Chevron → Down → Chevron,"(2, 2, 2, 1, 2)",5,3,0.5,3.57,0.00017637438415940565
+Frequency_Jump → Frequency_Jump → Chevron → Frequency_Jump,"(5, 5, 2, 5)",4,2,0.2,3.56,0.0001849250201767516
+Complex → Complex → Down → Short,"(4, 4, 1, 3)",4,4,0.8,3.56,0.00018598269780922827
+Short → Chevron → Up → Complex,"(3, 2, 6, 4)",4,2,0.2,3.55,0.00019569944243802428
+Frequency_Jump → Frequency_Jump → Flat → Chevron,"(5, 5, 0, 2)",4,5,1.2,3.54,0.00019649651320741146
+Chevron → Chevron → Chevron → Chevron → Down,"(2, 2, 2, 2, 1)",5,3,0.5,3.54,0.00020298510274574522
+Flat → Up → Short → Down → Flat,"(0, 6, 3, 1, 0)",5,2,0.3,3.53,0.0002045572551940822
+Flat → Flat → Flat → Frequency_Jump,"(0, 0, 0, 5)",4,22,10.5,3.52,0.00021850767334175014
+Down → Complex → Chevron → Complex → Complex,"(1, 4, 2, 4, 4)",5,1,0.1,3.51,0.00022023681236926773
+Flat → Complex → Up → Complex → Down,"(0, 4, 6, 4, 1)",5,1,0.1,3.51,0.00022247059073943198
+Down → Complex → Complex → Short → Chevron,"(1, 4, 4, 3, 2)",5,1,0.1,3.51,0.00022247059073943198
+Frequency_Jump → Flat → Chevron,"(5, 0, 2)",3,35,20.4,3.47,0.00025776152369494376
+Flat → Chevron → Down → Flat → Up,"(0, 2, 1, 0, 6)",5,2,0.3,3.45,0.0002758405583612733
+Frequency_Jump → Complex → Complex → Short,"(5, 4, 4, 3)",4,2,0.3,3.43,0.0003028550384175377
+Down → Down → Flat,"(1, 1, 0)",3,76,53.9,3.42,0.0003085519486810684
+Frequency_Jump → Chevron → Flat → Chevron → Short,"(5, 2, 0, 2, 3)",5,2,0.3,3.42,0.000310364786693329
+Down → Short → Short → Short → Up,"(1, 3, 3, 3, 6)",5,1,0.1,3.41,0.0003218487627348887
+Short → Down → Up → Flat → Flat,"(3, 1, 6, 0, 0)",5,2,0.3,3.41,0.00032257029904381174
+Chevron → Chevron → Frequency_Jump → Up,"(2, 2, 5, 6)",4,2,0.3,3.4,0.0003409196491928057
+Short → Down → Down → Chevron → Short,"(3, 1, 1, 2, 3)",5,2,0.3,3.4,0.0003409196491928057
+Frequency_Jump → Frequency_Jump → Flat → Flat → Up,"(5, 5, 0, 0, 6)",5,1,0.1,3.39,0.0003448789251840889
+Complex → Flat → Frequency_Jump → Up → Flat,"(4, 0, 5, 6, 0)",5,1,0.1,3.39,0.0003448789251840889
+Chevron → Frequency_Jump → Chevron → Chevron → Complex,"(2, 5, 2, 2, 4)",5,1,0.1,3.39,0.0003448789251840889
+Frequency_Jump → Chevron → Flat → Up → Down,"(5, 2, 0, 6, 1)",5,1,0.1,3.39,0.0003448789251840889
+Frequency_Jump → Up → Chevron → Chevron → Flat,"(5, 6, 2, 2, 0)",5,1,0.1,3.39,0.0003448789251840889
+Frequency_Jump → Frequency_Jump → Down → Down → Complex,"(5, 5, 1, 1, 4)",5,1,0.1,3.39,0.0003448789251840889
+Down → Short → Short → Chevron → Up,"(1, 3, 3, 2, 6)",5,1,0.1,3.39,0.0003448789251840889
+Frequency_Jump → Chevron → Chevron → Up → Down,"(5, 2, 2, 6, 1)",5,1,0.1,3.39,0.0003448789251840889
+Complex → Complex → Chevron → Short → Short,"(4, 4, 2, 3, 3)",5,1,0.1,3.39,0.0003448789251840889
+Complex → Complex → Flat → Frequency_Jump → Chevron,"(4, 4, 0, 5, 2)",5,1,0.1,3.39,0.0003479809496371722
+Short → Down → Complex → Chevron → Complex,"(3, 1, 4, 2, 4)",5,1,0.1,3.39,0.0003479809496371722
+Flat → Flat → Up → Down → Up,"(0, 0, 6, 1, 6)",5,1,0.1,3.39,0.0003479809496371722
+Flat → Complex → Chevron → Up → Chevron,"(0, 4, 2, 6, 2)",5,1,0.1,3.39,0.0003479809496371722
+Chevron → Down → Up → Short → Short,"(2, 1, 6, 3, 3)",5,1,0.1,3.39,0.0003479809496371722
+Short → Down → Frequency_Jump → Complex → Complex,"(3, 1, 5, 4, 4)",5,1,0.1,3.39,0.0003479809496371722
+Down → Chevron → Chevron → Frequency_Jump → Frequency_Jump,"(1, 2, 2, 5, 5)",5,1,0.1,3.39,0.0003479809496371722
+Frequency_Jump → Frequency_Jump → Chevron → Flat,"(5, 5, 2, 0)",4,5,1.3,3.39,0.0003487010313122374
+Frequency_Jump → Complex → Down → Flat,"(5, 4, 1, 0)",4,5,1.3,3.36,0.00038336454876142234
+Frequency_Jump → Complex → Chevron → Flat → Flat,"(5, 4, 2, 0, 0)",5,2,0.3,3.35,0.00040784951389472024
+Down → Down → Frequency_Jump → Down → Chevron,"(1, 1, 5, 1, 2)",5,2,0.2,3.35,0.00040874226212850306
+Flat → Flat → Frequency_Jump → Flat,"(0, 0, 5, 0)",4,21,10.6,3.33,0.0004283254657797553
+Flat → Frequency_Jump → Chevron,"(0, 5, 2)",3,36,21.5,3.33,0.0004410582253628892
+Complex → Complex → Up → Flat,"(4, 4, 6, 0)",4,2,0.3,3.31,0.0004666973914805306
+Up → Short → Short → Short,"(6, 3, 3, 3)",4,2,0.3,3.3,0.0004827749781377566
+Frequency_Jump → Flat → Chevron → Flat,"(5, 0, 2, 0)",4,13,5.5,3.29,0.0005012440854400557
+Frequency_Jump → Short → Short → Short → Chevron,"(5, 3, 3, 3, 2)",5,1,0.1,3.28,0.0005131443641958056
+Chevron → Down → Chevron → Up → Down,"(2, 1, 2, 6, 1)",5,1,0.1,3.28,0.0005131443641958056
+Chevron → Up → Down → Down → Chevron,"(2, 6, 1, 1, 2)",5,1,0.1,3.28,0.0005131443641958056
+Up → Complex → Chevron → Up,"(6, 4, 2, 6)",4,1,0.1,3.28,0.0005131443641958056
+Short → Short → Complex → Complex → Short,"(3, 3, 4, 4, 3)",5,1,0.1,3.28,0.0005131443641958056
+Short → Frequency_Jump → Down → Frequency_Jump → Chevron,"(3, 5, 1, 5, 2)",5,1,0.1,3.28,0.0005131443641958056
+Chevron → Frequency_Jump → Frequency_Jump → Down → Down,"(2, 5, 5, 1, 1)",5,1,0.1,3.28,0.0005131443641958056
+Short → Complex → Chevron → Frequency_Jump → Chevron,"(3, 4, 2, 5, 2)",5,1,0.1,3.28,0.0005131443641958056
+Up → Flat → Flat → Short → Up,"(6, 0, 0, 3, 6)",5,1,0.1,3.28,0.0005131443641958056
+Short → Up → Chevron → Short → Short,"(3, 6, 2, 3, 3)",5,1,0.1,3.28,0.0005131443641958056
+Chevron → Frequency_Jump → Frequency_Jump → Flat → Frequency_Jump,"(2, 5, 5, 0, 5)",5,1,0.1,3.28,0.0005131443641958056
+Chevron → Complex → Chevron → Complex → Chevron,"(2, 4, 2, 4, 2)",5,1,0.1,3.28,0.0005172700168368793
+Chevron → Down → Up → Frequency_Jump → Flat,"(2, 1, 6, 5, 0)",5,1,0.1,3.28,0.0005172700168368793
+Complex → Complex → Frequency_Jump → Flat → Down,"(4, 4, 5, 0, 1)",5,1,0.1,3.28,0.0005172700168368793
+Chevron → Complex → Complex → Down → Short,"(2, 4, 4, 1, 3)",5,1,0.1,3.28,0.0005172700168368793
+Short → Frequency_Jump → Down → Complex → Down,"(3, 5, 1, 4, 1)",5,1,0.1,3.28,0.0005172700168368793
+Frequency_Jump → Complex → Complex → Flat → Chevron,"(5, 4, 4, 0, 2)",5,1,0.1,3.28,0.0005172700168368793
+Chevron → Flat → Frequency_Jump → Complex → Flat,"(2, 0, 5, 4, 0)",5,2,0.3,3.26,0.0005500550467213428
+Complex → Flat → Short → Short → Short,"(4, 0, 3, 3, 3)",5,2,0.3,3.25,0.0005745213568442153
+Down → Chevron → Flat → Flat → Chevron,"(1, 2, 0, 0, 2)",5,6,1.8,3.24,0.0005903883963604972
+Flat → Frequency_Jump → Flat → Flat → Up,"(0, 5, 0, 0, 6)",5,2,0.3,3.24,0.0005965525390528859
+Chevron → Short → Short → Down → Chevron,"(2, 3, 3, 1, 2)",5,2,0.3,3.23,0.0006106417708535705
+Frequency_Jump → Frequency_Jump → Flat → Chevron → Flat,"(5, 5, 0, 2, 0)",5,2,0.3,3.23,0.0006106417708535705
+Chevron → Short → Short,"(2, 3, 3)",3,28,16.1,3.23,0.0006189838650766388
+Down → Down → Down → Chevron → Down,"(1, 1, 1, 2, 1)",5,3,0.6,3.22,0.0006521124607480333
+Down → Frequency_Jump → Chevron → Flat,"(1, 5, 2, 0)",4,8,2.9,3.2,0.0006839866793685312
+Chevron → Frequency_Jump → Complex → Short → Chevron,"(2, 5, 4, 3, 2)",5,1,0.1,3.19,0.0007163053049911161
+Complex → Short → Up → Chevron → Flat,"(4, 3, 6, 2, 0)",5,1,0.1,3.18,0.0007315956502171872
+Flat → Frequency_Jump → Frequency_Jump → Flat → Up,"(0, 5, 5, 0, 6)",5,1,0.1,3.18,0.0007315956502171872
+Short → Frequency_Jump → Chevron → Complex → Short,"(3, 5, 2, 4, 3)",5,1,0.1,3.18,0.0007315956502171872
+Chevron → Complex → Complex → Complex → Short,"(2, 4, 4, 4, 3)",5,1,0.1,3.18,0.0007315956502171872
+Flat → Complex → Complex → Short → Complex,"(0, 4, 4, 3, 4)",5,1,0.1,3.18,0.0007315956502171872
+Frequency_Jump → Complex → Complex → Short → Flat,"(5, 4, 4, 3, 0)",5,1,0.1,3.18,0.0007315956502171872
+Complex → Chevron → Short → Down → Complex,"(4, 2, 3, 1, 4)",5,1,0.1,3.18,0.000736890421937586
+Flat → Up → Complex → Flat → Complex,"(0, 6, 4, 0, 4)",5,1,0.1,3.18,0.000736890421937586
+Chevron → Complex → Complex → Frequency_Jump → Down,"(2, 4, 4, 5, 1)",5,1,0.1,3.18,0.000736890421937586
+Short → Short → Complex → Chevron → Complex,"(3, 3, 4, 2, 4)",5,1,0.1,3.18,0.000736890421937586
+Frequency_Jump → Frequency_Jump → Complex → Down → Flat,"(5, 5, 4, 1, 0)",5,1,0.1,3.18,0.000736890421937586
+Frequency_Jump → Chevron → Short → Short → Short,"(5, 2, 3, 3, 3)",5,1,0.1,3.18,0.000736890421937586
+Flat → Flat → Frequency_Jump → Up → Short,"(0, 0, 5, 6, 3)",5,1,0.1,3.18,0.000736890421937586
+Up → Flat → Flat → Flat → Up,"(6, 0, 0, 0, 6)",5,1,0.1,3.18,0.000736890421937586
+Short → Complex → Complex → Chevron → Short,"(3, 4, 4, 2, 3)",5,1,0.1,3.18,0.000736890421937586
+Up → Down → Up → Flat → Flat,"(6, 1, 6, 0, 0)",5,1,0.1,3.18,0.000736890421937586
+Down → Chevron → Down → Complex → Frequency_Jump,"(1, 2, 1, 4, 5)",5,1,0.1,3.18,0.000736890421937586
+Chevron → Frequency_Jump → Down → Up,"(2, 5, 1, 6)",4,2,0.3,3.17,0.0007575205384140471
+Flat → Flat → Chevron,"(0, 0, 2)",3,115,90.3,3.12,0.0008940740566708572
+Short → Down → Flat → Chevron → Short,"(3, 1, 0, 2, 3)",5,3,0.6,3.12,0.00091329952671515
+Up → Up → Flat → Chevron → Flat,"(6, 6, 0, 2, 0)",5,1,0.1,3.1,0.0009567686153637567
+Flat → Frequency_Jump → Frequency_Jump → Chevron → Frequency_Jump,"(0, 5, 5, 2, 5)",5,1,0.1,3.1,0.0009567686153637567
+Down → Down → Down → Up → Short,"(1, 1, 1, 6, 3)",5,1,0.1,3.09,0.0010061357169260932
+Frequency_Jump → Chevron → Flat → Chevron → Up,"(5, 2, 0, 2, 6)",5,1,0.1,3.09,0.0010061357169260932
+Flat → Short → Down → Up → Complex,"(0, 3, 1, 6, 4)",5,1,0.1,3.09,0.0010061357169260932
+Chevron → Down → Complex → Up → Flat,"(2, 1, 4, 6, 0)",5,1,0.1,3.09,0.0010061357169260932
+Short → Complex → Short → Chevron → Complex,"(3, 4, 3, 2, 4)",5,1,0.1,3.09,0.0010061357169260932
+Complex → Chevron → Down → Down → Complex,"(4, 2, 1, 1, 4)",5,1,0.1,3.09,0.0010061357169260932
+Frequency_Jump → Complex → Down → Flat → Complex,"(5, 4, 1, 0, 4)",5,1,0.1,3.09,0.0010061357169260932
+Complex → Chevron → Short → Complex → Short,"(4, 2, 3, 4, 3)",5,1,0.1,3.09,0.0010061357169260932
+Down → Up → Flat → Chevron → Short,"(1, 6, 0, 2, 3)",5,1,0.1,3.09,0.0010127315865802178
+Down → Short → Down → Down → Up,"(1, 3, 1, 1, 6)",5,1,0.1,3.09,0.0010127315865802178
+Complex → Chevron → Chevron → Flat → Up,"(4, 2, 2, 0, 6)",5,1,0.1,3.09,0.0010127315865802178
+Chevron → Up → Complex → Down → Flat,"(2, 6, 4, 1, 0)",5,1,0.1,3.09,0.0010127315865802178
+Short → Short → Short → Flat → Short,"(3, 3, 3, 0, 3)",5,2,0.3,3.08,0.0010364306904042664
+Short → Up → Flat → Flat → Flat,"(3, 6, 0, 0, 0)",5,3,0.6,3.08,0.0010460764036178682
+Flat → Frequency_Jump → Chevron → Short → Down,"(0, 5, 2, 3, 1)",5,2,0.3,3.04,0.001169549826586791
+Short → Short → Short → Down → Flat,"(3, 3, 3, 1, 0)",5,3,0.5,3.04,0.0011733627719406892
+Frequency_Jump → Flat → Short → Chevron → Chevron,"(5, 0, 3, 2, 2)",5,2,0.3,3.04,0.001174751239632732
+Frequency_Jump → Down → Down → Up → Down,"(5, 1, 1, 6, 1)",5,1,0.1,3.02,0.0012818002752691404
+Down → Complex → Up → Flat → Short,"(1, 4, 6, 0, 3)",5,1,0.1,3.01,0.0013187038672771711
+Chevron → Complex → Complex → Chevron → Short,"(2, 4, 4, 2, 3)",5,1,0.1,3.0,0.0013418848285899898
+Flat → Complex → Down → Up → Down,"(0, 4, 1, 6, 1)",5,1,0.1,3.0,0.0013418848285899898
+Chevron → Chevron → Flat → Complex → Up,"(2, 2, 0, 4, 6)",5,1,0.1,3.0,0.0013418848285899898
+Flat → Frequency_Jump → Frequency_Jump → Down → Frequency_Jump,"(0, 5, 5, 1, 5)",5,1,0.1,3.0,0.0013418848285899898
+Up → Short → Short → Chevron → Flat,"(6, 3, 3, 2, 0)",5,1,0.1,3.0,0.0013418848285899898
+Short → Chevron → Frequency_Jump → Chevron → Complex,"(3, 2, 5, 2, 4)",5,1,0.1,3.0,0.0013418848285899898
+Up → Short → Short → Short → Chevron,"(6, 3, 3, 3, 2)",5,1,0.1,3.0,0.0013418848285899898
+Short → Chevron → Complex → Complex → Down,"(3, 2, 4, 4, 1)",5,1,0.1,3.0,0.0013498980316301035
+Complex → Short → Chevron → Chevron → Complex,"(4, 3, 2, 2, 4)",5,1,0.1,3.0,0.0013498980316301035
+Short → Short → Short → Complex → Chevron,"(3, 3, 3, 4, 2)",5,1,0.1,3.0,0.0013498980316301035
+Chevron → Chevron → Chevron → Frequency_Jump → Complex,"(2, 2, 2, 5, 4)",5,1,0.1,3.0,0.0013498980316301035
+Chevron → Chevron → Chevron → Short → Up,"(2, 2, 2, 3, 6)",5,1,0.1,3.0,0.0013498980316301035
+Complex → Chevron → Short → Complex → Down,"(4, 2, 3, 4, 1)",5,1,0.1,3.0,0.0013498980316301035
+Complex → Flat → Frequency_Jump → Complex → Down,"(4, 0, 5, 4, 1)",5,1,0.1,3.0,0.0013498980316301035
+Short → Short → Chevron → Down → Complex,"(3, 3, 2, 1, 4)",5,1,0.1,3.0,0.0013498980316301035
+Frequency_Jump → Flat → Flat → Frequency_Jump → Flat,"(5, 0, 0, 5, 0)",5,3,0.7,2.99,0.0014164292912010046
+Frequency_Jump → Flat → Flat → Flat → Frequency_Jump,"(5, 0, 0, 0, 5)",5,3,0.6,2.97,0.0014917264579328293
+Flat → Down → Complex → Chevron → Short,"(0, 1, 4, 2, 3)",5,2,0.3,2.96,0.0015188077719821003
+Chevron → Down → Short → Short → Down,"(2, 1, 3, 3, 1)",5,2,0.3,2.96,0.0015356410015604505
+Chevron → Flat → Short → Down → Frequency_Jump,"(2, 0, 3, 1, 5)",5,2,0.3,2.94,0.0016187999282282206
+Down → Flat → Complex → Down → Up,"(1, 0, 4, 1, 6)",5,1,0.1,2.93,0.0017155333310610033
+Chevron → Up → Frequency_Jump → Flat → Flat,"(2, 6, 5, 0, 0)",5,1,0.1,2.92,0.0017431198848504303
+Frequency_Jump → Complex → Down → Chevron → Chevron,"(5, 4, 1, 2, 2)",5,1,0.1,2.92,0.0017431198848504303
+Short → Chevron → Chevron → Complex → Complex,"(3, 2, 2, 4, 4)",5,1,0.1,2.92,0.0017431198848504303
+Chevron → Chevron → Complex → Down → Complex,"(2, 2, 4, 1, 4)",5,1,0.1,2.92,0.001752649840248699
+Chevron → Chevron → Chevron → Up → Down,"(2, 2, 2, 6, 1)",5,1,0.1,2.92,0.001752649840248699
+Down → Frequency_Jump → Chevron → Chevron → Frequency_Jump,"(1, 5, 2, 2, 5)",5,1,0.1,2.92,0.001752649840248699
+Down → Complex → Frequency_Jump → Flat → Short,"(1, 4, 5, 0, 3)",5,1,0.1,2.92,0.001752649840248699
+Flat → Frequency_Jump → Frequency_Jump → Flat → Down,"(0, 5, 5, 0, 1)",5,2,0.3,2.91,0.0017811559610784178
+Down → Flat → Chevron → Short → Chevron,"(1, 0, 2, 3, 2)",5,3,0.7,2.91,0.0018206612091447028
+Short → Down → Frequency_Jump → Flat → Chevron,"(3, 1, 5, 0, 2)",5,2,0.3,2.89,0.0019240686579895527
+Down → Down → Down → Complex → Down,"(1, 1, 1, 4, 1)",5,2,0.3,2.87,0.0020483705877049063
+Short → Short → Flat → Short → Short,"(3, 3, 0, 3, 3)",5,2,0.4,2.87,0.002065148871660427
+Down → Complex → Up → Flat → Chevron,"(1, 4, 6, 0, 2)",5,1,0.1,2.86,0.002129581334593844
