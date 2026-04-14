@@ -144,6 +144,19 @@ If the plan spans multiple modules, add a phase gate after the last module:
 
 **Do NOT write to ROADMAP.md.** After approval, write to a standalone `ROADMAP_<PLAN_NAME>.md` file. Standalone roadmaps work with `/implement` just as well, and keeping them separate prevents bloating the main ROADMAP.
 
+## Step 6.5: Generate Pre-Implementation Tests
+
+After the ROADMAP file is written and approved, spawn the `test-architect` agent to convert each module's test plan into actual, runnable test files.
+
+For each module with a **Test plan** in its `/implement` block:
+1. Spawn `test-architect` (subagent_type: `test-architect`) with the full `/implement` block as prompt context
+2. The agent writes test files to the appropriate test directory — all tests must FAIL initially (no implementation exists yet)
+3. Commit each module's tests: `test(<module>): pre-implementation test spec from ROADMAP`
+
+Multiple modules can be spawned in parallel if they have no test-level dependencies.
+
+If the user declines test generation for specific modules, note which modules were skipped and why — `/implement` Phase 0 will catch the gap later.
+
 ## Step 7: Extract Theoretical Knowledge to KG
 
 Implementation plans — especially from web Claude — are dual-purpose documents. They contain both *task specifications* AND *domain knowledge*. The ROADMAP captures the "what to build" but loses the "why this method" and "how this connects to the literature."
@@ -156,14 +169,6 @@ Implementation plans — especially from web Claude — are dual-purpose documen
 4. Run `/reduce` on the source file
 
 This step matters because six months from now, someone will look at the `/implement` block and know *what* to build, but not *why* this approach was chosen over alternatives. The KG preserves that reasoning.
-
-## Step 7.5: Test Scaffolding Reminder
-
-After the ROADMAP file is written and KG extraction is complete, inform the user:
-
-> "The ROADMAP is ready. Before implementing the first module, consider running `test-architect` on it to generate failing tests as an executable specification. This catches spec ambiguities early and ensures the implementation has a clear target. Usage: spawn `test-architect` with the module name."
-
-This is a reminder, not an automatic invocation. The user decides whether to use test-architect. The `/implement` command knows how to detect and use pre-existing test files from test-architect (step 3.5).
 
 ## Formatting Rules
 

@@ -52,7 +52,11 @@ tmp/
 !USV_3452_sample_reviewed/**
 *.xlsx
 
+# ZIP archives (raw data backups, too large for git)
+*.zip
+
 # Large data / training directories
+/USV_9252/
 /5970/
 /5970 USV/
 data/training/hard_noises/

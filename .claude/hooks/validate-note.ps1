@@ -94,7 +94,7 @@ try {
         [Environment]::Exit(1)
     }
 } catch {
-    [Console]::Error.WriteLine("[HOOK validate-note] $($_.Exception.Message)")
+    Write-Host "[HOOK validate-note] $($_.Exception.Message)"
 }
 
 [Environment]::Exit(0)

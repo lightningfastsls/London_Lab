@@ -1,19 +1,20 @@
-# Run the USV Parameter Lab App
+# Run the USV Detection App
 
-Launch the Streamlit application for interactive spectrogram exploration.
+Launch the PyQt6 desktop application for USV detection and review.
 
 ## Command
-```powershell
-.\.venv\Scripts\streamlit.exe run scripts/usv_parameter_lab.py
+```bash
+.venv/bin/python scripts/run_app.py
 ```
 
 ## Notes
-- The app will open in your default browser
-- Make sure USV_WAV_DIR is set or WAV files are in `<repo>/5970 USV`
-- Use Ctrl+C in the terminal to stop the app
+- The app uses the production model at `models/hard_neg_retrain/best_model.pt`
+- WAV files span multiple directories — no single canonical location
+- Close the app window or use Ctrl+C in the terminal to stop
 
 ## Troubleshooting
 If the app fails to start:
-1. Check that .venv exists and has streamlit installed
-2. Run `.\.venv\Scripts\pip.exe install -r requirements.txt`
-3. Check for syntax errors: `.\.venv\Scripts\python.exe -m py_compile scripts/usv_parameter_lab.py`
+1. Check that .venv exists and has PyQt6 installed
+2. Run `.venv/bin/pip install -r requirements.txt`
+3. Check for syntax errors: `.venv/bin/python -m py_compile scripts/run_app.py`
+4. Torch must be imported before PyQt6 (handled by `run_app.py`)
