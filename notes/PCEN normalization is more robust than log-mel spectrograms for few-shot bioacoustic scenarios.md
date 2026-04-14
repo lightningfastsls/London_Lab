@@ -23,6 +23,8 @@ Source:
 
 Relevant Notes:
 - [[energy threshold at negative 60 dB is deliberately low to maximize recall in the first stage]] -- our current approach uses fixed thresholds rather than adaptive normalization
+- [[BirdVoxDetect PCEN reduced false alarm rates 50x near-field and 5x far-field]] -- strongest empirical validation: 50x near-field FP reduction from PCEN, confirming the adaptive normalization benefit is not just theoretical
+- [[PCEN is the gold standard adaptive normalization in bioacoustic literature]] -- the method overview and implementation constraints
 
 Topics:
 - [[signal-processing]]

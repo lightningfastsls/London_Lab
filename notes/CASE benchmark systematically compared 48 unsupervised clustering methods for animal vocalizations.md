@@ -22,6 +22,7 @@ Source: unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-
 Relevant Notes:
 - [[UMAP plus HDBSCAN is now the dominant unsupervised clustering pipeline for bioacoustic vocalizations]] -- HDBSCAN emerged as the winner from benchmarks like CASE
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- clustering methods must handle continuous variation
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- our empirical application of HDBSCAN (one of CASE's 48 methods) on mouse USVs confirmed density-based clustering finds far fewer clusters than k-means
 
 Topics:
 - [[unsupervised-usv-discovery]]

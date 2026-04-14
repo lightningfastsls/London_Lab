@@ -25,6 +25,8 @@ Source: unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-
 Relevant Notes:
 - [[CNN baseline of 89.7 percent precision and 93.8 percent recall at threshold 0.05 validates the two-stage detection approach]] -- unsupervised clustering could be a third stage
 - [[including a noise-false-positive class in the USV classifier catches residual detection errors]] -- supervised noise class vs unsupervised noise clustering
+- [[Clarfeld 2025 secondary logistic regression on primary detections achieved 85-90 percent FP filtering accuracy]] -- supervised two-stage FP filtering achieving similar precision gains; unsupervised clustering offers a label-free alternative
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- unified classification with explicit noise class versus clustering-based FP rejection represent two ends of the supervision spectrum
 
 Topics:
 - [[unsupervised-usv-discovery]]

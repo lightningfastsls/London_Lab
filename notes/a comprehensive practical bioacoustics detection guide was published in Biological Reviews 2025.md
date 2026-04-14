@@ -25,6 +25,7 @@ Source:
 Relevant Notes:
 - [[no single bioacoustic tool covers the full detection-annotation-review-export pipeline]] — methodological standardization is part of the broader fragmentation problem
 - [[two-stage coarse-to-fine filtering is effective for imbalanced detection tasks]] — our approach that would benefit from standardized evaluation
+- [[collar-based evaluation with tolerance windows suits bioacoustics better than IoU-based overlap matching]] -- the guide advocates transparent evaluation criteria; collar-based matching with explicit tolerance is the specific standard adopted in DCASE and our pipeline
 
 Topics:
 - [[detection]]

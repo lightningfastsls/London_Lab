@@ -30,6 +30,9 @@ Relevant Notes:
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the paradigm VocalMat implements vs the continuum reality
 - [[VocalMat provides 12954 labeled USV spectrograms freely available as training data]] -- the 12,954-sample dataset available for transfer learning
 - [[classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data]] -- VocalMat's lab-mouse data has limited generalization
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- BootSnap uses the same 11-type taxonomy but elevates noise to an explicit competing class in the softmax, whereas VocalMat treats noise as separate training data
+- [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- VocalMat represents the supervised half of the dual strategy; its predefined categories enable literature comparability
+- [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- VocalMat's 11 predefined categories exemplify the risk of forcing calls into discrete bins
 
 Topics:
 - [[classification-methodology]]

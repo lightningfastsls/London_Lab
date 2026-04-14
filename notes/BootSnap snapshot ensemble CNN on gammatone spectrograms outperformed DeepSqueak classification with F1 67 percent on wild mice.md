@@ -30,6 +30,7 @@ Relevant Notes:
 - [[whether BootSnap code is publicly available or must be requested from Abbasi Zala Penn at Vienna]] -- unresolved access question
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- our research question that BootSnap's cross-population results directly inform
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- another gammatone-based tool
+- [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- BootSnap could serve as the supervised branch of the dual approach, especially for wild mice where it achieves the best F1
 
 Topics:
 - [[classification-tools]]

@@ -27,6 +27,7 @@ Relevant Notes:
 - [[good negative training samples must be unambiguously not USV to prevent label noise]] -- the quality criterion for the other class
 - [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- the failure mode this labeling policy is designed to address
 - [[PCEN normalization is more robust than log-mel spectrograms for few-shot bioacoustic scenarios]] -- PCEN's adaptive gain control could help the model better distinguish USVs from noise in these degraded samples by normalizing per-channel energy before classification
+- [[BirdVoxDetect PCEN reduced false alarm rates 50x near-field and 5x far-field]] -- empirical evidence that adaptive normalization dramatically reduces false alarms from variable-energy signals, directly relevant because noisy USVs exhibit the same distance-dependent energy variation that drove the 50x improvement
 
 Topics:
 - [[classification]]

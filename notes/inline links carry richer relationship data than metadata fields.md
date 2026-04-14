@@ -9,7 +9,7 @@ topics:
 
 # inline links carry richer relationship data than metadata fields
 
-A wiki-link in prose carries relationship type, directionality, and context: "since `[[claim X]]`, we can conclude Y" is fundamentally richer than a topics field listing `[[topic-map]]`. The prose context captures WHY two notes are connected — causation, contrast, extension, qualification. Metadata fields capture only THAT they are connected.
+A wiki-link in prose carries relationship type, directionality, and context: "since `[[claim A]]`, we can conclude B" is fundamentally richer than a topics field listing `[[some-topic]]`. The prose context captures WHY two notes are connected — causation, contrast, extension, qualification. Metadata fields capture only THAT they are connected.
 
 Since [[each new note compounds value by creating traversal paths]], the quality of those paths depends on whether the links carry enough context for a traverser to follow them productively. Context phrases on topic map links serve the same purpose at the MOC level: they tell the traverser what to expect before following the link. A graph where most links are bare references is navigable but opaque; a graph where links carry relationship types is both navigable and self-documenting.
 

@@ -24,6 +24,7 @@ Relevant Notes:
 - [[recall versus precision tradeoff in two-stage USV detection]] -- the designed tradeoff
 - [[DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision]] -- competitive positioning vs the most widely used alternative
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- detection output feeds the representation learning pipeline; detection bias propagates into VQ-VAE codebook quality
+- [[DCASE class-dependent post-processing parameters improved F1 from 37 to 44 percent]] -- empirical evidence that post-processing optimization alone (without model changes) yields 7pp F1 gain, justifying our investment in hysteresis parameter tuning as the post-processing layer
 
 Topics:
 - [[detection]]

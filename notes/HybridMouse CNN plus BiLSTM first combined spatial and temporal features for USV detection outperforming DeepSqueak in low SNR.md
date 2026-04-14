@@ -23,6 +23,8 @@ Source: usv-detection-methods-landscape-2024-2026-research-2026-02-28 (archived 
 Relevant Notes:
 - [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- low SNR is our primary challenge; BiLSTM helps
 - [[DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input]] -- temporal approach on raw audio; HybridMouse achieves temporal modeling on spectrograms
+- [[self-attention provides O(1)-path global context from layer 1 while CNNs require many stacked layers to aggregate distant information]] -- the theoretical framing for why CNN alone needed BiLSTM: local receptive fields cannot reach distant temporal context without external help
+- [[self-attention requires only O(1) sequential operations enabling full parallelization versus O(n) for RNNs]] -- the BiLSTM component pays O(n) sequential cost per sequence, which is why transformer-based alternatives can train dramatically faster on the same data
 
 Topics:
 - [[detection]]

@@ -30,6 +30,7 @@ Relevant Notes:
 - [[VocalMat provides 12954 labeled USV spectrograms freely available as training data]] -- includes 2,083 noise samples for training
 - [[good negative training samples must be unambiguously not USV to prevent label noise]] -- quality criterion for the noise class
 - [[BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice]] -- the tool that demonstrated this practice
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- the unified architecture where noise competes directly with USV classes in softmax, rather than being filtered post-hoc
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- the pipeline architecture that benefits from an additional noise filter
 
 Topics:

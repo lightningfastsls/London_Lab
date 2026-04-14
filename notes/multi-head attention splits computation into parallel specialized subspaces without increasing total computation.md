@@ -24,6 +24,7 @@ Source: transformer-architecture-icl-fundamentals-research-2026-03-02 (archived 
 Relevant Notes:
 - [[Q-K-V separation enables asymmetric context-dependent relevance matching through three independently specialized projections]] -- per-head projections enable further specialization
 - [[attention heads empirically specialize into positional syntactic semantic and rare-word roles with most encoder information concentrated in few heads]] -- empirical evidence this specialization occurs
+- [[dividing by sqrt(d_k) prevents softmax saturation by rescaling dot products to unit variance regardless of dimension]] -- the d_k = d_model/h from multi-head splitting determines the scaling denominator
 
 Topics:
 - [[transformer-architecture]]

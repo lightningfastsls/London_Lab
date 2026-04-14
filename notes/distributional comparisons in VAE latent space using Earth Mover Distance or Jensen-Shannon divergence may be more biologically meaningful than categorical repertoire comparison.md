@@ -38,6 +38,12 @@ Relevant Notes:
 - [[Jensen-Shannon divergence on categorical syllable proportions provides a symmetric bounded measure for comparing repertoire distributions between populations]] -- the categorical JSD counterpart to latent-space JSD; comparing both approaches on the same data tests whether categories lose information
 - [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- the standard categorical test this latent-space approach aims to complement or surpass
 - [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- flow matching produces continuous trajectories that are naturally suited to distributional comparison, bypassing the discretization tension entirely
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- our HDBSCAN finding strengthens the case: if 96% of calls form one manifold, categorical comparison discards nearly all within-manifold variation
+- [[Goffinet 2021 found 64 to 95 percent of traditional USV feature information captured in VAE latent space]] -- establishes that VAE latent space retains 64-95% of traditional feature info, validating that distributional comparisons in this space are grounded in real acoustic structure
+- [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- the choice of embedding model matters: distributional comparison in raw-feature space vs learned latent space may yield different conclusions
+- [[wild mice show more diverse USV repertoires than lab mice as preliminary evidence for courtship vocal degradation]] -- the informal diversity observation that latent-space EMD/JSD would formalize as a continuous, non-categorical measure
+- [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- complementary evaluation: SIS measures how well any categorization captures sequential structure, while EMD/JSD measure how well continuous space captures distributional differences
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the categorical framework that latent-space distributional comparison aims to supersede
 
 Topics:
 - [[unsupervised-usv-discovery]]

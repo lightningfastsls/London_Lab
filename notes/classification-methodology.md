@@ -23,6 +23,8 @@ Methods for determining what USV types exist, comparing repertoires across popul
 - [[CASE benchmark systematically compared 48 unsupervised clustering methods for animal vocalizations]] -- Schneider 2022 open benchmark; 48 algorithms tested
 - [[unsupervised clustering as post-detection filtering eliminates 88 percent false positives while retaining 95 percent true positives]] -- clustering as a label-free precision filter stage
 - [[SqueakOut autoencoder segmentation achieves Dice 90.2 designed to feed downstream unsupervised clustering pipelines]] -- upstream segmentation for better downstream clustering
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- own-data result: HDBSCAN collapses 27 k-means clusters to 3 (96% in one), independently confirming GMM k<=2
+- [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- open question qualifying the HDBSCAN result: encoder embeddings might reveal more structure
 
 ## Methodological Tensions
 

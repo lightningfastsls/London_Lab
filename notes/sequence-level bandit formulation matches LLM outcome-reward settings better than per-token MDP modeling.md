@@ -25,6 +25,7 @@ Relevant Notes:
 - [[credit assignment over hundreds of tokens from a single scalar reward is the central bottleneck of RLHF]] — the problem this finding addresses
 - [[REINFORCE bandit formulation works for LLMs because strong pretrained priors make complex RL machinery unnecessary]] — the practical consequence
 - [[REINFORCE Leave-One-Out uses 50-70 percent less memory than PPO while consistently outperforming it on alignment tasks]] — the empirical validation
+- [[REINFORCE++ bridges REINFORCE simplicity with PPO stability via token-level KL penalty and ratio clipping achieving 30 percent training time reduction]] — interesting hybrid: sequence-level reward but token-level KL constraint
 
 Topics:
 - [[agent-cognition]]

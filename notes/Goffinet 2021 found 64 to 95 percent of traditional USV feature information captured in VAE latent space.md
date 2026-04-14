@@ -31,6 +31,9 @@ Relevant Notes:
 - [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- quantifying the information loss from discretization
 - [[Garrobe Fonollosa 2024 showed VAE plus temporal convolutional network achieved AUC over 0.9 for sperm whale click classification]] -- VAE information retention demonstrated in another species (cetaceans)
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the 64-95% retention quantifies how well learned features capture what the traditional taxonomy describes
+- [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- the 64-95% retention validates that distributional comparisons in this latent space are grounded in real acoustic information
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- our HDBSCAN used raw features, not learned representations; the 64-95% retention baseline suggests learned features may reveal sub-structure raw features miss
+- [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- the information gap between raw and learned features directly motivates testing whether richer representations change clustering outcomes
 
 Topics:
 - [[unsupervised-usv-discovery]]

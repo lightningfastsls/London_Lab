@@ -24,6 +24,7 @@ Source: usv-detection-methods-landscape-2024-2026-research-2026-02-28 (archived 
 Relevant Notes:
 - [[SqueakOut autoencoder segmentation achieves Dice 90.2 designed to feed downstream unsupervised clustering pipelines]] -- another semantic segmentation approach for USVs
 - [[CNN baseline of 89.7 percent precision and 93.8 percent recall at threshold 0.05 validates the two-stage detection approach]] -- our baseline for comparison
+- [[collar-based evaluation with tolerance windows suits bioacoustics better than IoU-based overlap matching]] -- this study used IoU >= 0.6 matching; collar-based evaluation would yield different (likely higher) scores for the same detections by tolerating boundary imprecision
 
 Topics:
 - [[detection]]

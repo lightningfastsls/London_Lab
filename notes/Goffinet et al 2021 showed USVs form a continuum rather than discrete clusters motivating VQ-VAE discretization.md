@@ -33,6 +33,9 @@ Relevant Notes:
 - [[Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs]] -- quantitative GMM clustering result
 - [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- methodological consequence of the continuum finding
 - [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- the continuum finding motivates considering continuous generative models (flow matching) rather than discrete (VQ-VAE)
+- [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- direct consequence: if USVs are a continuum, forced categorization loses within-category variation
+- [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the practical strategy for navigating the continuum: run both categorical (for literature) and unsupervised (for discovery)
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- independent replication on our own data using a different method (HDBSCAN vs GMM)
 
 Topics:
 - [[unsupervised-usv-discovery]]

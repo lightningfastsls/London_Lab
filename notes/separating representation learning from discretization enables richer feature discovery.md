@@ -24,6 +24,8 @@ Relevant Notes:
 - [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- empirical evidence: post-hoc discretization loses 14pp UAR vs continuous baselines
 - [[STSG spectrogram token skip-gram achieved only 0.559 AUC versus 0.810 for transfer learning on bioacoustic classification]] -- even harsher evidence: K-means discretization without learned representations performs dramatically worse
 - [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- the same principle at the weight level: LoRA succeeds because pre-trained weights already contain task-relevant directions, just as our transformer already contains rich representations before VQ-VAE discovers discrete structure in them
+- [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- separation principle directly addresses this tension: learn the continuum first, then discretize it carefully
+- [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- directly tests the separation principle: raw features found one big cluster, but learned representations might reveal sub-structure that justifies discretization
 
 Topics:
 - [[representation-learning]]

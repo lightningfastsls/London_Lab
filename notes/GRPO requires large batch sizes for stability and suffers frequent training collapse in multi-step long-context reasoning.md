@@ -25,6 +25,7 @@ Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 Relevant Notes:
 - [[GRPO eliminates the critic network through group-relative advantage scoring achieving 50 percent memory reduction over PPO]] — the mechanism that creates the instability
 - [[Search-R1 found REINFORCE outperformed both PPO and GRPO for agentic deep research tasks with the highest accuracy and most efficient search strategies]] — the comparison evidence
+- [[REINFORCE++ bridges REINFORCE simplicity with PPO stability via token-level KL penalty and ratio clipping achieving 30 percent training time reduction]] — alternative critic-free approach using global normalization that avoids the batch-size dependency
 
 Topics:
 - [[model-adaptation]]

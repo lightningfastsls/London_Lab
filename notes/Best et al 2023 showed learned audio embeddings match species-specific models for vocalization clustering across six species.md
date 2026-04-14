@@ -36,6 +36,7 @@ Relevant Notes:
 - [[end-to-end VQ-VAE on animal vocalizations remains an open research gap as of February 2026]] -- Best 2023 uses continuous AE (not VQ-VAE), appearing in the gap analysis table
 - [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- Best 2023 uses continuous AE, not VQ-VAE
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- another unsupervised clustering approach
+- [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- our HDBSCAN analysis used raw features, not learned embeddings like Best et al; this is the key open question their work motivates
 
 Topics:
 - [[unsupervised-usv-discovery]]

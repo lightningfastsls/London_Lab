@@ -22,6 +22,7 @@ Relevant Notes:
 - [[bout gap threshold of 500 ms groups temporally clustered USVs while separating distinct episodes]] -- bout-level grouping is a higher level of temporal structure
 - [[recall versus precision tradeoff in two-stage USV detection]] -- splitting inflates recall counts without affecting precision per-fragment
 - [[saved-previous ghost detections current editable and saved-current form three aligned detection state tiers in the app]] -- ghost detections help the user see previously saved segments that the current CNN pass may have split differently, providing visual context for split boundaries
+- [[collar-based evaluation with tolerance windows suits bioacoustics better than IoU-based overlap matching]] -- collar-based evaluation tolerates this CNN-level fragmentation because each fragment's onset/offset may still fall within the tolerance window, whereas IoU penalizes splits harshly
 
 Topics:
 - [[detection]]

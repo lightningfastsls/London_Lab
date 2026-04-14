@@ -22,6 +22,8 @@ Relevant Notes:
 - [[CNN trained only on energy-detector candidates classifies everything as USV because it never sees normal audio]] -- the problem
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- the solution
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- the pipeline creating the bias
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- BootSnap's noise class training requires the same bootstrapping: a preliminary detector must generate representative false positives before the unified model can learn what noise looks like
+- [[Clarfeld 2025 secondary logistic regression on primary detections achieved 85-90 percent FP filtering accuracy]] -- Clarfeld's secondary classifier inherits pre-filtering bias from the primary detector, needing representative FPs in its training set
 
 Topics:
 - [[classification]]

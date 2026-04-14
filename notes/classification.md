@@ -40,6 +40,7 @@ The operational classification system. A small CNN (~101K params) classifies ene
 ## Key Literature (Cross-Domain Bridges)
 
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the paradigm-setting finding that challenged discrete taxonomies and motivated VQ-VAE
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- own-data confirmation: our 5970 dataset independently replicates the continuum finding
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the paradigm shift from discrete to continuous
 - [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- cross-species AE clustering bridges to [[representation-learning]]
 - [[AVES self-supervised model pretrained on general audio outperformed supervised baselines for bioacoustic tasks]] -- SSL backbone bridges to [[bioacoustic-ssl]]

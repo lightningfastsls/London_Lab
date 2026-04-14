@@ -24,6 +24,10 @@ Source: transformer-architecture-icl-fundamentals-research-2026-03-02 (archived 
 Relevant Notes:
 - [[unscaled attention dot products grow with dimension causing softmax collapse to one-hot distributions with vanishing gradients]] -- the problem this solves
 - [[Q-K-V separation enables asymmetric context-dependent relevance matching through three independently specialized projections]] -- the projections whose outputs are being scaled
+- [[multi-head attention splits computation into parallel specialized subspaces without increasing total computation]] -- multi-head design sets d_k = d_model/h, directly determining the scaling denominator
+- [[pre-norm leaves the residual path untouched enabling stable gradient flow while OLMo 2 and Gemma 3 adopted hybrid peri-normalization combining pre-norm and output-norm with QK-Norm]] -- QK-Norm is a complementary approach: normalizes Q and K vectors before scoring rather than scaling the dot product after
+- [[rsLoRA rank-stabilized scaling uses alpha over sqrt(r) instead of alpha over r preventing adaptation strength from depending on rank choice]] -- same mathematical pattern: sqrt-based scaling to decouple output magnitude from a dimension parameter
+- [[temperature scaling is the simplest effective calibration — one scalar divides logits before sigmoid]] -- same mechanism at inference time: dividing by a scalar before a saturating activation (sigmoid/softmax) to control output sharpness and prevent extreme distributions
 
 Topics:
 - [[transformer-architecture]]

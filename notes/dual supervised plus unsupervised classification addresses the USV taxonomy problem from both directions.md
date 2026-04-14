@@ -31,6 +31,13 @@ Relevant Notes:
 - [[BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice]] -- potential tool for the supervised component
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- the risk the dual approach mitigates
 - [[Raven selection table format is the standard interchange format between bioacoustic analysis tools]] -- the bridge format enabling supervised classification via DeepSqueak while unsupervised methods are developed in parallel
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- validates the unsupervised branch: UMAP+HDBSCAN on our data found 96% of calls in one continuous manifold
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the paradigm shift that necessitates the dual approach rather than pure supervised classification
+- [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- SIS could validate both branches: compare SIS of supervised categories vs unsupervised cluster labels
+- [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- the unsupervised branch results depend on feature choice; encoder embeddings may reveal sub-structure raw features miss
+- [[wild mice show more diverse USV repertoires than lab mice as preliminary evidence for courtship vocal degradation]] -- preliminary observation the dual approach will quantify statistically
+- [[No single Python tool cleanly accepts pre-detected USV segments and classifies them into syllable types as of 2026]] -- the tool gap that motivates building our own dual pipeline rather than using off-the-shelf solutions
+- [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- a third analytical lens beyond the supervised and unsupervised branches: latent-space distributional comparison
 
 Topics:
 - [[classification-methodology]]

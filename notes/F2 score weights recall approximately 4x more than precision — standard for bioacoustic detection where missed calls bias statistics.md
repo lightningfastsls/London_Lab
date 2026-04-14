@@ -25,6 +25,7 @@ Source:
 Relevant Notes:
 - [[no existing mouse USV tool uses explicit hysteresis for event detection]] -- the detection method whose parameters are optimized using F2
 - [[Clarfeld 2025 secondary logistic regression on primary detections achieved 85-90 percent FP filtering accuracy]] -- the FP filter whose performance is also evaluated with F2
+- [[collar-based evaluation with tolerance windows suits bioacoustics better than IoU-based overlap matching]] -- collar-based matching determines the TP/FP/FN counts that F2 operates on; the two form the complete evaluation framework
 
 Topics:
 - [[detection]]

@@ -25,6 +25,8 @@ Relevant Notes:
 - [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- a caveat to staged approaches: post-hoc discretization loses 14 percentage points vs continuous (Sarkar 2025), motivating tighter integration between stages
 - [[error amplification near targets is a general instability pattern in iterative refinement systems beyond diffusion models]] -- the general instability risk: when the second stage amplifies errors from the first stage, the pipeline has unbounded gain; our CNN second stage is a classifier (bounded confidence output) which avoids this
 - [[bounded gain in iterative refinement prevents error amplification while unbounded gain creates structural instability regardless of domain]] -- the abstracted design principle: our CNN classifier's bounded output (0-1 confidence) ensures the two-stage pipeline has bounded gain, unlike unbounded parameterizations in diffusion models
+- [[Clarfeld 2025 secondary logistic regression on primary detections achieved 85-90 percent FP filtering accuracy]] -- strongest cross-taxa empirical validation of the two-stage pattern: primary detector for recall, secondary classifier for precision, 85-90% accuracy across multiple species
+- [[DCASE class-dependent post-processing parameters improved F1 from 37 to 44 percent]] -- Cances et al. 2019 showed that independent optimization of post-processing parameters per class yields 7pp F1 gain without model changes, validating the principle that each stage benefits from separate tuning
 
 Topics:
 - [[detection]]

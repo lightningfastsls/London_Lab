@@ -25,6 +25,11 @@ Source:
 Relevant Notes:
 - [[no existing mouse USV tool uses explicit hysteresis for event detection]] -- our pipeline adds hysteresis as the primary stage before FP filtering
 - [[3x class weight boost compensates for USV class imbalance in CNN training]] -- related class imbalance handling in the primary CNN stage
+- [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- the specific FP failure mode that Clarfeld's two-stage pattern addresses; our FP filter targets these structural noise mimics
+- [[two-stage coarse-to-fine filtering is effective for imbalanced detection tasks]] -- Clarfeld's work is the strongest empirical validation of this general pattern across multiple bioacoustic taxa
+- [[unsupervised clustering as post-detection filtering eliminates 88 percent false positives while retaining 95 percent true positives]] -- unsupervised clustering offers a label-free alternative to Clarfeld's supervised secondary classifier, achieving comparable precision gains
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- unified classification with noise class versus Clarfeld's modular two-stage approach represent different integration points for FP rejection
+- [[multi-source negative sampling is necessary when the training pipeline pre-filters candidates]] -- Clarfeld's secondary classifier inherits the same pre-filtering bias; its training set must include representative false positives from the primary detector
 
 Topics:
 - [[detection]]

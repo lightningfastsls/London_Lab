@@ -25,6 +25,7 @@ Source: rl-alignment-rlhf-ppo-grpo-reinforce-dpo-research-2026-03-02
 Relevant Notes:
 - [[PPO for RLHF requires four models simultaneously creating a memory bottleneck that motivated critic-free alternatives]] — the memory side of the cost problem
 - [[DPO eliminates the reward model by deriving a closed-form relationship between optimal policy and reward function enabling pure classification-based alignment]] — the offline alternative that avoids generation cost
+- [[REINFORCE++ bridges REINFORCE simplicity with PPO stability via token-level KL penalty and ratio clipping achieving 30 percent training time reduction]] — eliminates the critic from the loop, explaining the 30% speedup
 
 Topics:
 - [[model-adaptation]]

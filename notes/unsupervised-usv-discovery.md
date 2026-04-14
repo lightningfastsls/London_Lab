@@ -18,6 +18,8 @@ Methods and evidence for discovering USV type categories without human-defined l
 - [[AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering]] -- MIT-licensed Python autoencoder alternative
 - [[SqueakOut autoencoder segmentation achieves Dice 90.2 designed to feed downstream unsupervised clustering pipelines]] -- upstream segmentation improves downstream clustering quality
 - [[unsupervised clustering as post-detection filtering eliminates 88 percent false positives while retaining 95 percent true positives]] -- clustering as precision filter without labels
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- own-data replication: density-based clustering confirms k<=2 finding with different method on different dataset
+- [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- open question: our HDBSCAN used raw features; encoder embeddings might reveal sub-structure within the main cluster
 - [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- SIS evaluates whether any discretization captures meaningful sequential structure
 - [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- continuous comparison alternative to categorical methods
 - [[burstiness by behavioral context bridges information theory and LMT behavioral analysis]] -- burstiness broken down by behavioral context labels

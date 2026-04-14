@@ -28,6 +28,32 @@ How we find USVs in raw audio. The pipeline uses a two-stage architecture: a per
 - [[low-amplitude and short-duration USVs are the primary source of false negatives and training bias]] -- faint/short calls are the hardest to detect
 - [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- noise structural mimicry triggers false positives
 
+## Post-Processing Pipeline
+- [[hysteresis subsumes gap-filling and minimum duration as special cases of dual-threshold logic]] -- dual-threshold detection unifies three post-hoc filters into one principled mechanism
+- [[no existing mouse USV tool uses explicit hysteresis for event detection]] -- landscape gap: DeepSqueak, DAS, VocalMat, USVSEG, MUPET all use single threshold + gap-fill
+- [[scikit-maad implements double-threshold hysteresis binarization for ecological acoustics]] -- independent validation of hysteresis in broader bioacoustics
+- [[DCASE class-dependent post-processing parameters improved F1 from 37 to 44 percent]] -- post-processing parameter optimization yields large gains without model changes
+
+## Calibration
+- [[modern CNNs are systematically miscalibrated — confidence does not match accuracy]] -- Guo et al 2017: overconfidence distorts threshold semantics
+- [[temperature scaling is the simplest effective calibration — one scalar divides logits before sigmoid]] -- our T=0.905 indicates mild overconfidence; ECE halved
+- [[isotonic regression overfits on small validation sets — prefer temperature scaling]] -- 2139 validation samples are borderline for isotonic; 1-param approach safer
+- [[ROC AUC is invariant to temperature scaling but threshold interpretability improves]] -- calibration improves threshold portability, not discrimination
+
+## Evaluation Methodology
+- [[F2 score weights recall approximately 4x more than precision — standard for bioacoustic detection where missed calls bias statistics]] -- recall-weighted metric aligns with scientific use case
+- [[collar-based evaluation with tolerance windows suits bioacoustics better than IoU-based overlap matching]] -- ±200ms tolerance accommodates STFT boundary uncertainty
+
+## Two-Stage FP Filtering (Literature)
+- [[Clarfeld 2025 secondary logistic regression on primary detections achieved 85-90 percent FP filtering accuracy]] -- validates two-stage pattern across taxa
+- [[VocalMat two-stage morphological filtering plus CNN noise classification achieves over 98 percent detection rate]] -- hand-engineered first stage versus our model-derived approach
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- unified classification with explicit noise class as alternative to two-stage filtering
+- [[BirdVoxDetect PCEN reduced false alarm rates 50x near-field and 5x far-field]] -- PCEN normalization as preprocessing-stage FP reduction
+- [[PCEN is the gold standard adaptive normalization in bioacoustic literature]] -- next-iteration improvement requiring model retraining
+
+## CNN Architecture
+- [[mid-c-cnn-balances-capacity-and-inference-speed-for-14k-samples]] -- [32,96,192] filter config with ~207K params for matched-windows retrain
+
 ## Detection App Save State
 - [[saved-previous ghost detections current editable and saved-current form three aligned detection state tiers in the app]] -- three-tier model: editable current, matched saved-current (blue), historical ghost (gray)
 

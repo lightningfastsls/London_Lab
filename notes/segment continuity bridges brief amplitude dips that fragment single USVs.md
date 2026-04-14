@@ -23,6 +23,7 @@ Relevant Notes:
 - [[recall versus precision tradeoff in two-stage USV detection]] -- over-bridging merges separate USVs (precision loss) while under-bridging fragments them (recall loss)
 - [[bout gap threshold of 500 ms groups temporally clustered USVs while separating distinct episodes]] -- bouts group between USVs while segment continuity groups within USVs, two levels of temporal structure
 - [[noise-interrupted long USVs get split into two detections by the CNN sliding window]] -- CNN-level splitting that occurs downstream of energy detector bridging
+- [[collar-based evaluation with tolerance windows suits bioacoustics better than IoU-based overlap matching]] -- collar-based evaluation tolerates residual fragmentation that gap-bridging does not fully resolve, avoiding unfair IoU penalties on correctly identified calls
 
 Topics:
 - [[detection]]

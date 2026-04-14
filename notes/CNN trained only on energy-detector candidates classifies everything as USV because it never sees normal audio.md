@@ -20,6 +20,7 @@ Source:
 Relevant Notes:
 - [[three-source negative sampling teaches the CNN the full spectrum of non-USV audio]] -- the solution
 - [[multi-source negative sampling is necessary when the training pipeline pre-filters candidates]] -- the general pattern
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- an alternative architecture that avoids this bias by design: the noise class is part of the unified training objective, so the model inherently sees non-USV audio
 - [[two-stage detection uses permissive energy detector followed by CNN precision filter]] -- the pipeline that created the bias
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- upstream detection bias propagates to VQ-VAE: the transformer only sees bouts built from detected candidates
 - [[separating representation learning from discretization enables richer feature discovery]] -- the separation principle cannot compensate for upstream selection bias: richer continuous features still reflect a biased input distribution

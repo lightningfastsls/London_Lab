@@ -36,6 +36,10 @@ Relevant Notes:
 - [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- method that partially dissolves the tension
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- VQ-VAE codebook as "reference points along a continuum" not natural categories
 - [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- flow matching's continuous trajectories avoid the discretization problem entirely, though at the cost of interpretability
+- [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- empirical proof from our own data: 27 k-means clusters collapse to 1 main HDBSCAN cluster, demonstrating that forced categorization imposes structure the data doesn't support
+- [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- even our own HDBSCAN result used raw features; learned embeddings might reveal more structure within the continuum
+- [[wild mice show more diverse USV repertoires than lab mice as preliminary evidence for courtship vocal degradation]] -- the diversity observation could be an artifact of categorical analysis if categories lose within-group variation
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the specific taxonomy most commonly imposed, and its empirical refutation
 
 Topics:
 - [[classification-methodology]]

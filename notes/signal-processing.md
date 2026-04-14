@@ -52,6 +52,7 @@ The DSP foundation for everything else. All audio is recorded at 300 kHz (Nyquis
 - [[the 300 kHz USV sample rate creates a domain shift challenge for applying audio foundation models]] -- 10-19x gap with pretrained models; frequency shifting or spectrogram-as-image needed
 - [[frequency shifting USVs into the audible range could enable classification with standard audio foundation models]] -- pitch-shift 50-90 kHz to 2-10 kHz preserving relative spectral structure
 - [[PCEN normalization is more robust than log-mel spectrograms for few-shot bioacoustic scenarios]] -- per-channel energy normalization adapts to local noise; robust to varying recording conditions
+- [[BirdVoxDetect PCEN reduced false alarm rates 50x near-field and 5x far-field]] -- strongest empirical evidence for PCEN: 50x FP reduction near-field, driven by adaptive normalization of distance-dependent energy variation
 
 ## Source Separation Signal Processing
 - [[frequency separation provides a partial solution when overlapping USVs occupy different spectral bands]] -- spectral peak splitting when calls occupy different frequency ranges

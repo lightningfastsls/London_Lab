@@ -5,7 +5,8 @@ confidence: likely
 conditions:
   - as of February 2026 landscape survey
   - BootSnap was designed for this but code availability is uncertain
-meta_state: current
+meta_state: superseded
+superseded_by: "Three classification approaches built in-house by April 2026: rule-based traditional taxonomy (Python), UMAP+HDBSCAN unsupervised (Python), DeepSqueak bridge (MATLAB). The integration gap no longer exists."
 source: "inbox/deepsqueak-usv-syllable-classification-practical-guide.md"
 topics:
   - "[[classification]]"
@@ -36,6 +37,8 @@ Relevant Notes:
 - [[DeepSqueak is fundamentally GUI-centric with no officially supported headless or scriptable operation]] -- the GUI-only constraint that compounds the Python tool gap
 - [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- strategic workaround: use DeepSqueak via Raven bridge despite this gap
 - [[three viable Python strategies for replacing DeepSqueak target segmentation-first unsupervised discovery and supervised classification]] -- the three compositional strategies that work around this tool gap
+- [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the recommended dual approach requires a custom pipeline precisely because no off-the-shelf tool fills this gap
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the tool gap exists partly because existing tools assume discrete Holy & Guo categories; the continuum finding invalidates that assumption but no tool has adapted
 
 Topics:
 - [[classification-tools]]

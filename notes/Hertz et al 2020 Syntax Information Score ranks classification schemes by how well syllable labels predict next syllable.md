@@ -31,6 +31,10 @@ Relevant Notes:
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- another compared scheme
 - [[bigram productivity ratio measures compositionality of USV code sequences]] -- complementary sequential structure metric
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- SIS evaluates whether labels capture sequential structure; transition matrices operationalize that structure as testable population-level differences
+- [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- SIS found no one-to-one mapping between Holy & Guo, MUPET, and DeepSqueak schemes, undermining the assumption of objectively "correct" discrete categories
+- [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- SIS partially dissolves this tension by offering a principled criterion for evaluating any categorization
+- [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- SIS could evaluate both the supervised (Scattoni categories) and unsupervised (HDBSCAN cluster labels) branches of the dual approach
+- [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- complementary evaluation axis: SIS measures sequential predictiveness of categories; EMD/JSD measures distributional separation in continuous space
 
 Topics:
 - [[unsupervised-usv-discovery]]

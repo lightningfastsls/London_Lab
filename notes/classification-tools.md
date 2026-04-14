@@ -28,6 +28,7 @@ Tools and interoperability for USV classification. DeepSqueak remains the domina
 - [[three viable Python strategies for replacing DeepSqueak target segmentation-first unsupervised discovery and supervised classification]] -- three compositional strategies outperform monolithic MATLAB
 - [[USVSEG Python port provides signal-processing-based USV segmentation without deep learning]] -- MIT license, v1.0.2; 85.7%/88.0% outperforms DeepSqueak without NN
 - [[BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice]] -- best supervised classifier for pre-detected USVs, macro F1 67% on wild mice
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- unified noise class competing in softmax as alternative to two-stage FP filtering
 - [[AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering]] -- MIT-licensed Python autoencoder, adaptable to external detections
 - [[DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input]] -- highest detection metrics but raw-audio-only
 - [[WhisperSeg adapts OpenAI Whisper transformer for animal vocalization segmentation with positive cross-species transfer]] -- Whisper-based, outperforms DAS but raw-audio-only
@@ -41,6 +42,10 @@ Tools and interoperability for USV classification. DeepSqueak remains the domina
 - [[25000-125000 Hz is the standard mouse USV frequency band used across bioacoustic tools for defining regions of interest]] -- cross-tool frequency convention (vs our 20-120 kHz)
 - [[timestamp proximity matching with configurable tolerance bridges detection systems that use different internal time representations]] -- re-associating DeepSqueak results with our detections
 - [[DeepSqueak import previously required exact subdirectory name matches while Raven export already supported prefix matches creating a silent asymmetric round-trip]] -- the 2026-03-07 bug: export supported prefix match, import required exact name, breaking round-trips for suffixed dirs
+
+## Broader Bioacoustics Tools
+
+- [[scikit-maad implements double-threshold hysteresis binarization for ecological acoustics]] -- Ulloa et al 2021 open-source Python library for soundscape analysis; provides reference hysteresis implementation on spectrogram masks (2D) vs our CNN probability stream (1D)
 
 ## Open Questions
 

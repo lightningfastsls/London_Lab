@@ -27,6 +27,7 @@ Relevant Notes:
 - [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the data format that determines training compute requirements
 - [[QLoRA 4-bit quantization enables 7B model fine-tuning on consumer GPUs with 33 percent memory savings at 39 percent runtime cost]] -- QLoRA specifically addresses the HPC gap for LoRA-based adaptation: 7B model fine-tuning becomes feasible on consumer RTX 3090/4090
 - [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- LoRA's parameter efficiency reduces the compute requirements for model adaptation, partially mitigating the HPC dependency
+- [[self-attention requires only O(1) sequential operations enabling full parallelization versus O(n) for RNNs]] -- the architectural property that makes transformer training GPU-parallel and thus HPC-dependent
 
 Topics:
 - [[representation-learning]]

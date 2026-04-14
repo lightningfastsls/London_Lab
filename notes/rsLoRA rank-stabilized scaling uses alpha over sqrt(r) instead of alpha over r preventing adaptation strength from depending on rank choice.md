@@ -23,6 +23,7 @@ Relevant Notes:
 - [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- the base scaling formula this corrects
 - [[adapting multiple LoRA weight matrices with lower rank outperforms single-matrix adaptation at higher rank for the same parameter budget]] -- the rank experimentation context where this matters
 - [[DoRA weight decomposition into magnitude and direction consistently outperforms standard LoRA by 1-4 points across model sizes]] -- another LoRA variant addressing different scaling limitations
+- [[dividing by sqrt(d_k) prevents softmax saturation by rescaling dot products to unit variance regardless of dimension]] -- same mathematical pattern: sqrt-based scaling to decouple magnitude from a dimension parameter, applied to attention rather than LoRA
 
 Topics:
 - [[model-adaptation]]

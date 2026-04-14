@@ -46,6 +46,7 @@ These notes cover the RL fine-tuning stage that operates on adapted model weight
 - [[DPO eliminates the reward model by deriving a closed-form relationship between optimal policy and reward function enabling pure classification-based alignment]] -- alignment as classification rather than RL, requiring only 2 models
 - [[PPO consistently outperforms DPO across dialogue code generation and safety tasks but DPO adoption grew 45 percent by 2025 due to simplicity]] -- simplicity-quality trade-off paralleling LoRA's own efficiency-quality balance
 - [[SFT suffers from exposure bias where teacher-forcing creates reliance on ground-truth context that degrades autoregressive generation]] -- why RL fine-tuning is needed after SFT
+- [[REINFORCE++ bridges REINFORCE simplicity with PPO stability via token-level KL penalty and ratio clipping achieving 30 percent training time reduction]] -- selective PPO innovation adoption: keeps clipping and KL, drops critic
 - [[pairwise comparisons produce more reliable human preference data than absolute ratings because relative judgments avoid calibration problems]] -- the preference data methodology underlying reward model training
 - [[reward model training uses Bradley-Terry pairwise comparison on approximately 50k labeled preference samples]] -- the scale of labeled data parallels the dataset quality finding for LoRA
 

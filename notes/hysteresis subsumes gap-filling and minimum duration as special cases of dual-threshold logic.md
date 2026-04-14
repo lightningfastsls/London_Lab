@@ -26,6 +26,8 @@ Source:
 Relevant Notes:
 - [[no existing mouse USV tool uses explicit hysteresis for event detection]] -- the landscape gap that motivates adopting this approach
 - [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- the noise pattern that the onset threshold specifically addresses
+- [[scikit-maad implements double-threshold hysteresis binarization for ecological acoustics]] -- independent implementation in ecological acoustics validates that dual-threshold hysteresis is an established technique beyond our application
+- [[DCASE class-dependent post-processing parameters improved F1 from 37 to 44 percent]] -- demonstrates that careful post-processing parameter optimization (which hysteresis simplifies by reducing the parameter space) yields large detection gains
 
 Topics:
 - [[detection]]

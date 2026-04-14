@@ -23,6 +23,9 @@ Relevant Notes:
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- the analytical framework for testing this
 - [[Shannon entropy quantifies USV repertoire diversity with higher values indicating more evenly distributed syllable usage]] -- the specific metric that would quantify "more diverse" as higher H for wild mice
 - [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- the multivariate test for formalizing this observation statistically
+- [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- caveat: the diversity observation depends on how calls are categorized; categorical analysis may understate or mischaracterize the true difference
+- [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- continuous distributional comparison would formalize this observation without relying on discrete categories
+- [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the analytical strategy that will quantify this preliminary observation through both categorical and data-driven lenses
 
 Topics:
 - [[experimental-methods]]

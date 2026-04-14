@@ -29,6 +29,8 @@ Relevant Notes:
 - [[including a noise-false-positive class in the USV classifier catches residual detection errors]] -- BootSnap's explicit noise class in the syllable classifier provides a second-pass filter specifically targeting these structural noise mimics
 - [[entropy-based USV detection achieves 94.9 percent recall and 99.3 percent precision as a classical signal processing alternative]] -- entropy detection measures spectral complexity directly, catching the narrow-band-like noise patterns that fool energy thresholding with 99.3% precision
 - [[HybridMouse CNN plus BiLSTM first combined spatial and temporal features for USV detection outperforming DeepSqueak in low SNR]] -- temporal context from BiLSTM helps disambiguate noisy signals that appear USV-like in individual frames
+- [[Clarfeld 2025 secondary logistic regression on primary detections achieved 85-90 percent FP filtering accuracy]] -- a secondary classifier trained on features from these noisy-region FPs can learn to reject them with 85-90% accuracy
+- [[BootSnap includes an explicit false-positive class alongside 11 USV syllable categories]] -- training the classifier to explicitly recognize these noise patterns as a class, rather than filtering them post-hoc
 
 Topics:
 - [[detection]]
