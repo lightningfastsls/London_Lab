@@ -47,8 +47,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--detection-dir",
         type=Path,
-        required=True,
+        default=None,
         help="Directory containing detection results (subdirs per recording)",
+    )
+    parser.add_argument(
+        "--detection-csv",
+        type=Path,
+        default=None,
+        help="CSV file with columns: wav_file, start_time_s, end_time_s",
     )
     parser.add_argument(
         "--wav-dir",
@@ -112,15 +118,24 @@ def main(argv: list[str] | None = None) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Step 1: Extract bouts
-    logger.info("Step 1: Extracting bouts from %s", args.detection_dir)
+    if not args.detection_dir and not args.detection_csv:
+        logger.error("Must specify --detection-dir or --detection-csv")
+        return
+    source = args.detection_csv or args.detection_dir
+    logger.info("Step 1: Extracting bouts from %s", source)
     bout_config = BoutExtractionConfig(
         bout_gap_threshold_ms=args.bout_gap_ms,
         context_padding_ms=args.padding_ms,
     )
     extractor = BoutExtractor(bout_config)
-    bouts = extractor.extract_from_detection_dir(
-        args.detection_dir, wav_dir=args.wav_dir,
-    )
+    if args.detection_csv:
+        bouts = extractor.extract_from_csv(
+            args.detection_csv, wav_dir=args.wav_dir,
+        )
+    else:
+        bouts = extractor.extract_from_detection_dir(
+            args.detection_dir, wav_dir=args.wav_dir,
+        )
     logger.info("  Found %d bouts from detection results", len(bouts))
 
     if not bouts:
