@@ -1,9 +1,12 @@
 ---
-status: deferred
+status: resolved
 created: 2026-02-23
 reviewed: 2026-03-21
 reviewed_by: rethink-2026-03-21
 review_note: "DeepSqueak bridge (Phase 3) provides immediate MATLAB pathway. Four Python-native resolution paths identified (custom CNN, few-shot, freq shifting, unsupervised). Revisit after DeepSqueak bridge operational."
+resolved: 2026-04-06
+resolved_by: rethink-2026-04-06
+resolution: "Three classification approaches now operational: (1) Python rule-based traditional taxonomy (7 types), (2) Python UMAP+HDBSCAN unsupervised clustering, (3) MATLAB DeepSqueak bridge (27 k-means clusters). The original integration gap no longer exists."
 ---
 
 # No Python USV tool cleanly accepts pre-detected segments for classification creating an integration gap

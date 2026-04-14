@@ -1,11 +1,21 @@
 ﻿# Session Relevance Brief
-<!-- Generated: 2026-03-31 13:30 -->
+<!-- Generated: 2026-04-14 14:46 -->
 <!-- Method: topic-map-traversal + ripgrep -->
 
+## USV Analysis Stage
+- "BootSnap includes an explicit false-positive class alongside 11 USV syllable categories" (finding) -- unified noise class competing in softmax as alternative to two-stage FP filtering
+- "VocalMat two-stage morphological filtering plus CNN noise classification achieves over 98 percent detection rate" (finding) -- hand-engineered first stage versus our model-derived approach
+- "DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input" (finding) -- highest detection metrics but raw-audio-only
+
+## Dataset 9252
+- "DAS temporal convolutional network achieves 98 percent precision and 99 percent recall on mouse USVs but requires raw audio input" (finding) -- highest reported detection metrics (Python, TensorFlow)
+- "WhisperSeg adapts OpenAI Whisper transformer for animal vocalization segmentation with positive cross-species transfer" (finding) -- outperforms DAS with cross-species transfer
+- "DeepSqueak v3 switched from Faster R-CNN to YOLO v2 improving speed and accuracy for USV detection" (finding) -- DeepSqueak's MATLAB-only detection architecture evolution
+
 ## DeepSqueak Classification Bridge
-- "DeepSqueak import previously required exact subdirectory name matches while Raven export already supported prefix matches creating a silent asymmetric round-trip" (finding) -- the 2026-03-07 bug: export supported prefix match, import required exact name, breaking round-trips for suffixed dirs
-- "DeepSqueak regenerates its own spectrograms from raw audio so exported bounding boxes serve as regions of interest not precise frequency boundaries" (finding) -- frequency bounds need only be approximate
-- "Raven selection table format is the standard interchange format between bioacoustic analysis tools" (method) -- tab-separated .txt format used by Raven Pro, DeepSqueak, Audacity
+- "HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold" (finding) -- own-data result: HDBSCAN collapses 27 k-means clusters to 3 (96% in one), independently confirming GMM k<=2
+- "BootSnap includes an explicit false-positive class alongside 11 USV syllable categories" (finding) -- unified noise class competing in softmax as alternative to two-stage FP filtering
+- "VocalMat provides 12954 labeled USV spectrograms freely available as training data" (finding) -- largest freely available labeled USV dataset (10,871 USVs + 2,083 noise)
 
 ## Phase 5.3
 - "DeepSqueak k-means clustering on USV contour shape frequency and duration yielded 20 optimal syllable types via elbow method" (finding) -- k-means finds k=20 but GMM finds k<=2 on learned representations

@@ -11,15 +11,15 @@ When ingesting multiple research topics (5-10+), use **phase-batched, cluster-gr
 
 ## Why not breadth-first (all /learn, then all /reduce, then /reflect)
 
-Triggers the Collector's Fallacy (PKM failure Stage 1). Inbox items lose context freshness per Ebbinghaus decay curves — beyond 72 hours is "critical" priority. Unprocessed inbox files are "organized debris" per [[throughput matters more than accumulation]].
+Triggers the Collector's Fallacy (PKM failure Stage 1). Inbox items lose context freshness per Ebbinghaus decay curves — beyond 72 hours is "critical" priority. Unprocessed inbox files are "organized debris" per the principle that *throughput matters more than accumulation* (methodology/).
 
 ## Why not depth-first (learn→reduce→reflect per topic in one session)
 
-Chaining phases in a single session runs later phases on degraded context. Capture, process, connect, and verify are "genuinely different cognitive operations that interfere when mixed" per [[every knowledge domain shares a four-phase processing skeleton that diverges only in the process step]].
+Chaining phases in a single session runs later phases on degraded context. Capture, process, connect, and verify are "genuinely different cognitive operations that interfere when mixed" per the principle that *every knowledge domain shares a four-phase processing skeleton that diverges only in the process step* (methodology/).
 
 ## The hybrid: cluster-grouped, phase-batched
 
-1. **Group topics into clusters of 2-3 by context similarity** — processing context-similar items consecutively means loading context once and applying it multiple times, per [[batching by context similarity reduces switching costs in agent processing]].
+1. **Group topics into clusters of 2-3 by context similarity** — processing context-similar items consecutively means loading context once and applying it multiple times, per the principle that *batching by context similarity reduces switching costs in agent processing* (methodology/).
 2. **Run /learn for each topic in the cluster** (separate sessions).
 3. **Run /reduce for each inbox file** (one per session, /clear between).
 4. **Run /reflect across all new notes from the cluster** — gives reflect enough material (5-15 notes) to find cross-note patterns.
@@ -30,9 +30,9 @@ Chaining phases in a single session runs later phases on degraded context. Captu
 
 - **One /reduce per session.** Per [[fresh context per task preserves quality better than chaining phases]].
 - **End every session with a handoff.** Write `ops/last-session.md` with: what was done, what's next (exact commands), current vault count, and any unresolved issues. The next session starts by reading this — if it's missing or stale, continuity breaks.
-- **Process existing inbox backlog first.** Per [[WIP limits force processing over accumulation]], inbox should not exceed ~20 items.
+- **Process existing inbox backlog first.** Per the principle that *WIP limits force processing over accumulation* (methodology/), inbox should not exceed ~20 items.
 - **Do not capture faster than you process.** Each capture batch should be processed before the next begins.
-- **3-5 items per session.** Per [[continuous small-batch processing eliminates review dread]].
+- **3-5 items per session.** Per the principle that *continuous small-batch processing eliminates review dread* (methodology/).
 
 ## Empirical grounding
 

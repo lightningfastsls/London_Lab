@@ -11,11 +11,11 @@ When processing a cluster of 2-3 related topics through the /learn â†’ /reduce â
 
 ## Why defer /reflect
 
-1. **Cross-source /reflect is more valuable than single-source.** Per [[incremental reading enables cross-source connection finding]], juxtaposing notes from two related sources produces the highest-value connections. Single-source /reflect finds within-source patterns that are often already captured during /reduce.
+1. **Cross-source /reflect is more valuable than single-source.** Per the principle that *incremental reading enables cross-source connection finding* (methodology/), juxtaposing notes from two related sources produces the highest-value connections. Single-source /reflect finds within-source patterns that are often already captured during /reduce.
 
-2. **Processed notes don't decay.** Per [[temporal processing priority creates age-based inbox urgency]], temporal urgency applies to inbox items (raw captures), not to notes already in notes/. The Ebbinghaus decay concern is about capture-to-processing gaps, not processing-to-reflection gaps. Notes in notes/ are stable and will wait.
+2. **Processed notes don't decay.** Per the principle that *temporal processing priority creates age-based inbox urgency* (methodology/), temporal urgency applies to inbox items (raw captures), not to notes already in notes/. The Ebbinghaus decay concern is about capture-to-processing gaps, not processing-to-reflection gaps. Notes in notes/ are stable and will wait.
 
-3. **Early /reflect creates redundant work.** You would need to /reflect AGAIN after the remaining topics are processed, making the first pass partially redundant. The [[bulk-source-processing-strategy]] was designed to avoid this duplication.
+3. **Early /reflect creates redundant work.** You would need to /reflect AGAIN after the remaining topics are processed, making the first pass partially redundant. The [bulk-source-processing-strategy](bulk-source-processing-strategy.md) was designed to avoid this duplication.
 
 4. **The collector's fallacy doesn't apply when inbox is empty.** /learn adds to inbox, but the WIP limit constraint (inbox < 20) only triggers when the inbox is already populated. Capture is safe when processing is current.
 
@@ -27,7 +27,7 @@ When processing a cluster of 2-3 related topics through the /learn â†’ /reduce â
 
 ## The sequence
 
-Per [[bulk-source-processing-strategy]]:
+Per [bulk-source-processing-strategy](bulk-source-processing-strategy.md):
 1. /learn all topics in cluster (separate sessions)
 2. /reduce each inbox file (one per session, /clear between)
 3. /reflect across ALL new notes from the cluster

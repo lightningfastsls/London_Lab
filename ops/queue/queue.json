@@ -218,6 +218,26 @@
         "IoU-based evaluation (>=50% overlap) more strict, penalizes fragmented detections"
       ],
       "completed": "2026-03-29T19:55:00Z"
+    },
+    {
+      "id": "seed-011",
+      "type": "extract",
+      "phase": "reduce",
+      "source": "archive/inbox/hdbscan-recluster-confirms-continuum.md",
+      "description": "Extract atomic notes from lab empirical finding: UMAP+HDBSCAN re-clustering of 7,864 USV calls found only 3 natural clusters vs 27 k-means clusters, independently corroborating Goffinet GMM k<=2 continuum finding. Includes feature-dependence limitation (raw features vs learned embeddings).",
+      "status": "done",
+      "created": "2026-04-05",
+      "completed": "2026-04-06T00:00:00Z",
+      "priority": "standard",
+      "source_metadata": {
+        "source_type": "own_analysis",
+        "date": "2026-04-03",
+        "topics": ["clustering", "HDBSCAN", "UMAP", "mouse-USV", "continuum"]
+      },
+      "notes": [
+        "2 new notes created: HDBSCAN re-clustering headline finding + raw vs learned embeddings open question",
+        "3 enrichments applied: Goffinet GMM k<=2 note, UMAP+HDBSCAN pipeline note, DeepSqueak k-means note"
+      ]
     }
   ],
   "maintenance_conditions": {

@@ -20,4 +20,4 @@ The tension dissolves if both methods agree. If they disagree, the resolution de
 Run both analyses and compare. If they agree, the tension was never real. If they disagree, the resolution depends on the specific downstream task. For the core research question (comparing wild vs. lab vocal repertoires), acoustic interpretability likely matters more than codebook diversity — suggesting probing results should take precedence. But this decision should be made explicitly when the data is available, not assumed in advance.
 
 Source:
-- [[vacation-master-plan-v2]]
+- vacation-master-plan-v2 (archived source: `archive/inbox/vacation-master-plan-v2.md`)

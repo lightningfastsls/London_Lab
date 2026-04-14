@@ -45,4 +45,4 @@ Claude Code with full automation. Existing hooks (check_agents_tag.ps1, check_pl
 ---
 
 Topics:
-- [[methodology]]
+- [methodology](methodology.md)
