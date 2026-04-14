@@ -1,0 +1,74 @@
+[
+  {
+    "start_time_s": 1.02912,
+    "end_time_s": 1.1016533333333334,
+    "duration_s": 0.07253333333333334,
+    "start_col": 2360,
+    "end_col": 2530,
+    "max_probability": 0.999904990196228,
+    "mean_probability": 0.9475963215033213
+  },
+  {
+    "start_time_s": 1.16992,
+    "end_time_s": 1.2296533333333333,
+    "duration_s": 0.059733333333333194,
+    "start_col": 2690,
+    "end_col": 2830,
+    "max_probability": 0.9989457726478577,
+    "mean_probability": 0.9300056060155233
+  },
+  {
+    "start_time_s": 1.29792,
+    "end_time_s": 1.3576533333333334,
+    "duration_s": 0.059733333333333416,
+    "start_col": 2990,
+    "end_col": 3130,
+    "max_probability": 0.998941957950592,
+    "mean_probability": 0.929891582330068
+  },
+  {
+    "start_time_s": 1.7544533333333334,
+    "end_time_s": 1.80992,
+    "duration_s": 0.05546666666666655,
+    "start_col": 4060,
+    "end_col": 4190,
+    "max_probability": 0.9958698153495789,
+    "mean_probability": 0.9380832229341779
+  },
+  {
+    "start_time_s": 1.9421866666666667,
+    "end_time_s": 2.00192,
+    "duration_s": 0.059733333333333416,
+    "start_col": 4500,
+    "end_col": 4640,
+    "max_probability": 0.9829119443893433,
+    "mean_probability": 0.8977633555730183
+  },
+  {
+    "start_time_s": 2.582186666666667,
+    "end_time_s": 2.6248533333333333,
+    "duration_s": 0.04266666666666641,
+    "start_col": 6000,
+    "end_col": 6100,
+    "max_probability": 0.9843857884407043,
+    "mean_probability": 0.9459992376240817
+  },
+  {
+    "start_time_s": 2.8637866666666665,
+    "end_time_s": 2.9277866666666665,
+    "duration_s": 0.06400000000000006,
+    "start_col": 6660,
+    "end_col": 6810,
+    "max_probability": 0.9997807145118713,
+    "mean_probability": 0.9653346613049507
+  },
+  {
+    "start_time_s": 3.71712,
+    "end_time_s": 3.76832,
+    "duration_s": 0.051200000000000134,
+    "start_col": 8660,
+    "end_col": 8780,
+    "max_probability": 0.9844100475311279,
+    "mean_probability": 0.9194998190953181
+  }
+]
