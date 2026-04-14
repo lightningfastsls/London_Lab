@@ -1,0 +1,22 @@
+metric,value
+total_calls,7864
+total_files,1338
+timeline_start,2024-09-30 11:18:17.789393333
+timeline_end,2024-10-01 19:42:45.179220
+timeline_hours,32.407608285
+bin_minutes,60
+peak_hour,2024-09-30 11:00:00
+peak_hour_calls,1089
+silent_hours,3
+median_ici_s,0.19298648834228516
+mean_ici_s,14.837516193124275
+n_bouts,1579
+threshold_s,0.5789594650268555
+mean_bout_calls,4.980367321089297
+median_bout_calls,4.0
+mean_bout_duration_s,0.7347130356700442
+median_bout_duration_s,0.477393333
+mean_inter_bout_s,73.93370711440822
+median_inter_bout_s,12.428788304328918
+single_call_bouts,302
+single_call_bout_pct,19.126029132362255
