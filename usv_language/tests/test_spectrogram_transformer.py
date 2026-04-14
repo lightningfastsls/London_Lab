@@ -410,3 +410,67 @@ def test_split_recordings_small_dataset_preserves_validation_when_possible() -> 
 def test_validate_extraction_layers_requires_primary_layer_in_requested_layers() -> None:
     with pytest.raises(ValueError, match="primary_layer=4"):
         validate_extraction_layers([2, 6], primary_layer=4, n_layers=8)
+
+
+# ---------------------------------------------------------------------------
+# CosineWarmupScheduler: state roundtrip + LR boundaries
+# ---------------------------------------------------------------------------
+
+
+def test_cosine_scheduler_state_roundtrip() -> None:
+    """state_dict/load_state_dict produces identical LR sequences.
+
+    Save state after 15 steps, load into a fresh scheduler with different
+    init params, then verify LR matches the original for 20 more steps.
+    """
+    model = SpectrogramTransformer(TransformerConfig(
+        n_freq=170, d_model=64, n_heads=4, n_layers=2, d_ffn=128, max_seq_len=32,
+    ))
+    opt1 = torch.optim.AdamW(model.parameters(), lr=1e-3)
+    sched1 = CosineWarmupScheduler(opt1, warmup_steps=10, max_steps=100, min_lr=1e-6)
+
+    # Step 15 times
+    for _ in range(15):
+        sched1.step()
+    saved_state = sched1.state_dict()
+
+    # Create a fresh scheduler with DIFFERENT initial params
+    opt2 = torch.optim.AdamW(model.parameters(), lr=5e-4)  # different LR
+    sched2 = CosineWarmupScheduler(opt2, warmup_steps=999, max_steps=999, min_lr=0.1)
+    sched2.load_state_dict(saved_state)
+
+    # LRs should now match for the next 20 steps
+    for step in range(20):
+        sched1.step()
+        sched2.step()
+        lr1 = sched1.get_lr()
+        lr2 = sched2.get_lr()
+        assert abs(lr1 - lr2) < 1e-10, (
+            f"Step {16 + step}: LR mismatch {lr1:.10f} vs {lr2:.10f}"
+        )
+
+
+def test_cosine_scheduler_lr_boundaries() -> None:
+    """LR reaches base_lr at end of warmup and ~min_lr at max_steps."""
+    model = torch.nn.Linear(10, 10)
+    opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+    sched = CosineWarmupScheduler(opt, warmup_steps=10, max_steps=100, min_lr=1e-6)
+
+    # Before any step: LR is the initial optimizer LR
+    assert abs(opt.param_groups[0]["lr"] - 1e-3) < 1e-10
+
+    # Step through warmup
+    for _ in range(10):
+        sched.step()
+    lr_warmup_end = sched.get_lr()
+    assert abs(lr_warmup_end - 1e-3) < 1e-6, (
+        f"LR at end of warmup should be ~1e-3, got {lr_warmup_end}"
+    )
+
+    # Step to max_steps
+    for _ in range(90):
+        sched.step()
+    lr_end = sched.get_lr()
+    assert abs(lr_end - 1e-6) < 1e-7, (
+        f"LR at max_steps should be ~1e-6, got {lr_end}"
+    )

@@ -165,7 +165,7 @@ def masked_mse_loss(
     # Mean over all valid elements
     n_valid = mask_expanded.sum() * predictions.shape[-1]
     if n_valid == 0:
-        return torch.tensor(0.0, device=predictions.device)
+        return (predictions * 0).sum()
     return masked_error.sum() / n_valid
 
 
@@ -203,17 +203,20 @@ def load_bout_spectrograms(
         return spectrograms, recording_ids
 
     # Fallback: directory of .npy files
-    npy_files = sorted(data_dir.glob("*_bout*.npy"))
+    npy_files = sorted(data_dir.glob("*.npy"))
     if not npy_files:
         raise FileNotFoundError(
             f"No bout spectrograms found in {data_dir}. "
-            f"Expected bout_spectrograms.h5 or *_bout*.npy files."
+            f"Expected bout_spectrograms.h5 or *.npy files."
         )
     spectrograms = []
     recording_ids = []
     for p in npy_files:
         spec = np.load(str(p)).astype(np.float32)
-        rec_id = p.stem.rsplit("_bout", 1)[0]
+        if "_bout" in p.stem:
+            rec_id = p.stem.rsplit("_bout", 1)[0]
+        else:
+            rec_id = p.stem
         spectrograms.append(spec)
         recording_ids.append(rec_id)
     return spectrograms, recording_ids
@@ -299,11 +302,18 @@ def build_optimizer(
     decay_params = []
     no_decay_params = []
 
+    # Collect parameter IDs for LayerNorm and Embedding modules
+    no_decay_set = set()
+    for module in model.modules():
+        if isinstance(module, (nn.LayerNorm, nn.Embedding)):
+            for param in module.parameters():
+                no_decay_set.add(id(param))
+
     for name, param in model.named_parameters():
         if not param.requires_grad:
             continue
-        # No decay for biases, LayerNorm, and embeddings
-        if "bias" in name or "norm" in name or "embed" in name:
+        # No decay for biases, LayerNorm params, and embeddings
+        if id(param) in no_decay_set or "bias" in name:
             no_decay_params.append(param)
         else:
             decay_params.append(param)

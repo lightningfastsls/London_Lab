@@ -249,3 +249,44 @@ class TestRecordingSplits:
         assert 70 <= len(train) <= 90
         assert 5 <= len(val) <= 20
         assert 5 <= len(test) <= 20
+
+
+# ---------------------------------------------------------------------------
+# Chunking and dataset edge cases
+# ---------------------------------------------------------------------------
+
+
+class TestChunkingEdgeCases:
+    def test_chunk_exact_max_seq_len(self):
+        """Spectrogram exactly max_seq_len frames -> 1 chunk, no padding."""
+        max_seq_len = 512
+        spec_t = np.random.randn(max_seq_len, N_FREQ).astype(np.float32)
+        chunks = chunk_spectrogram(spec_t, max_seq_len, overlap_ratio=0.5)
+
+        assert len(chunks) == 1
+        chunk, real_len = chunks[0]
+        assert real_len == max_seq_len
+        assert chunk.shape == (max_seq_len, N_FREQ)
+        # No padding — last row should be non-zero (random data)
+        np.testing.assert_array_equal(chunk, spec_t)
+
+    def test_single_frame_spectrogram_produces_all_zero_mask(self):
+        """A 1-frame spectrogram produces a dataset item with all-zero mask.
+
+        After next-column prediction shift: valid_len = max(0, 1-1) = 0.
+        This connects to the masked_mse_loss backward crash bug — if a
+        batch contains only such items, loss.backward() would fail.
+        """
+        spec = np.random.randn(N_FREQ, 1).astype(np.float32)  # (n_freq, T=1)
+        config = TransformerDataConfig(max_seq_len=32, overlap_ratio=0.0)
+        dataset = USVBoutDataset([spec], ["rec"], config)
+
+        assert len(dataset) == 1
+        item = dataset[0]
+
+        # Mask should be all zeros (no valid frames after shift)
+        assert item["mask"].sum().item() == 0.0
+        # Shapes should still be correct
+        assert item["input"].shape == (31, N_FREQ)
+        assert item["target"].shape == (31, N_FREQ)
+        assert item["mask"].shape == (31,)

@@ -358,14 +358,16 @@ def _zipf_mle_powerlaw(freqs: np.ndarray) -> ZipfResult:
     alpha = fit.power_law.alpha
     xmin = fit.power_law.xmin
 
-    # p-value via KS test
-    p_value = 0.0
+    # distribution_compare returns (R, p) where R is log-likelihood ratio
+    # and p is the significance of the comparison (two-sided).
+    log_likelihood_ratio = 0.0
+    p_value = 1.0
     try:
-        # Distribution comparison gives (R, p)
         R, p = fit.distribution_compare("power_law", "exponential")
         log_likelihood_ratio = float(R)
+        p_value = float(p)
     except Exception:
-        log_likelihood_ratio = 0.0
+        pass
 
     n_tail = int(np.sum(freqs >= xmin))
 
@@ -827,6 +829,7 @@ def ngram_idioms(
     max_n: int = 5,
     n_shuffles: int = 100,
     fdr_alpha: float = 0.01,
+    sentinel: Optional[int] = None,
 ) -> list[IdiomResult]:
     """Detect statistically over-represented n-grams via shuffle surrogates.
 
@@ -846,6 +849,11 @@ def ngram_idioms(
         Number of shuffle surrogates (default 100 for speed).
     fdr_alpha : float
         FDR significance threshold.
+    sentinel : int, optional
+        If provided, positions containing this value are held fixed during
+        shuffles.  Use when the sequence contains boundary markers (e.g.
+        bout-boundary sentinels) whose positions must be preserved so the
+        null model maintains the same segmentation structure.
 
     Returns
     -------
@@ -879,7 +887,16 @@ def ngram_idioms(
         }
 
         for _ in range(n_shuffles):
-            shuffled = rng.permutation(sequence)
+            if sentinel is not None:
+                # Shuffle only non-sentinel positions to preserve structure
+                # (e.g. bout boundaries marked by sentinel codes).
+                shuffled = sequence.copy()
+                non_sentinel_mask = sequence != sentinel
+                values = sequence[non_sentinel_mask].copy()
+                rng.shuffle(values)
+                shuffled[non_sentinel_mask] = values
+            else:
+                shuffled = rng.permutation(sequence)
             shuf_ngrams = extract_ngrams(shuffled, n)
             for ng in observed_ngrams:
                 shuffle_counts[ng].append(shuf_ngrams.get(ng, 0))
