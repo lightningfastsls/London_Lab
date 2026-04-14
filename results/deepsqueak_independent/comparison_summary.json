@@ -1,0 +1,13 @@
+{
+  "files_compared": 197,
+  "files_with_cnn_dets": 44,
+  "files_with_ds_dets": 53,
+  "total_cnn": 226,
+  "total_ds": 277,
+  "agree": 241,
+  "cnn_only": 10,
+  "ds_only": 36,
+  "mean_iou_agree": 0.989,
+  "cnn_coverage_rate": 0.9558,
+  "ds_confirmation_rate": 0.87
+}
