@@ -584,11 +584,11 @@ After running all applicable diagnostic categories, check these condition-based 
 **How to check condition counts:**
 
 ```bash
-# Pending observations
-OBS_COUNT=$(find ops/observations/ -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+# Pending observations (status-filtered: archive-in-place convention means file count != pending work)
+OBS_COUNT=$(find ops/observations/ -name '*.md' -exec grep -l "^status: pending" {} + 2>/dev/null | wc -l | tr -d ' ')
 
-# Open tensions
-TENSION_COUNT=$(find ops/tensions/ -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+# Open tensions (same status filter; archived tensions remain in-place)
+TENSION_COUNT=$(find ops/tensions/ -name '*.md' -exec grep -l "^status: pending" {} + 2>/dev/null | wc -l | tr -d ' ')
 
 # Inbox items
 INBOX_COUNT=$(find {vocabulary.inbox}/ -name '*.md' -not -path '*/archive/*' 2>/dev/null | wc -l | tr -d ' ')
