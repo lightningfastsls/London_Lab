@@ -30,6 +30,7 @@ Relevant Notes:
 - [[DeepSqueak 3.2 ms FFT window with 2.8 ms overlap translates to 960-sample FFTs at 300 kHz]] -- DeepSqueak chose finer frequency resolution
 - [[chevron calls expose the STFT time-frequency tradeoff because they require simultaneous temporal and spectral precision]] -- the fundamental tradeoff this finding resolves toward frequency
 - [[gammatone spectrograms outperform standard STFTs for USV classification according to BootSnap]] -- alternative spectral representation that may bypass STFT resolution limits
+- [[AMVOC uses 2ms non-overlapping spectrogram windows giving 0.5 kHz frequency resolution at the expense of temporal smoothness]] -- AMVOC's 0.5 kHz frequency resolution (comparable to our 586 Hz) with 2 ms zero-overlap frames validates that this frequency resolution is sufficient for autoencoder feature extraction even without classification-optimal finer bins
 
 Topics:
 - [[signal-processing]]

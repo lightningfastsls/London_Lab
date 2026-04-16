@@ -23,6 +23,9 @@ Self-supervised and foundation model approaches for learning audio representatio
 - [[combined self-supervised pretraining followed by supervised post-training yields best bioacoustic representations]] -- OpenBEATs: data diversity > architecture
 - [[increasing pretext task difficulty improves embedding quality for downstream few-shot classification]] -- Perch 2.0: harder problems produce better embedding spaces
 
+## Cross-Lab SSL Collaborations
+- [[GmSLM is a London-Omer collaboration applying self-supervised speech models to marmoset vocalizations]] -- Sternberg et al. 2025 (EMNLP Findings); direct London-Omer collaboration using SSL on primate calls
+
 ## USV-Specific SSL Gap
 - [[no self-supervised foundation model has been applied to rodent USV data]] -- 50-90 kHz range at 300 kHz sample rate remains untested
 - [[spectrogram-based SSL avoids the sample rate mismatch that limits waveform-based models for USV analysis]] -- spectrograms abstract away sample rate

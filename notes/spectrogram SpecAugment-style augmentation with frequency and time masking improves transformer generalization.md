@@ -26,6 +26,7 @@ Relevant Notes:
 - [[bout-level spectrograms preserve inter-USV timing context for transformer training]] -- the input format these augmentations are applied to
 - [[per-frequency-bin normalization removes frequency-dependent energy bias in spectrogram input]] -- why masked regions are set to zero (post-normalization mean)
 - [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- Gaussian noise augmentation simulates the noisy recording environment
+- [[AMVOC trains for only 2 epochs deliberately because the undercomplete bottleneck acts as implicit regularizer]] -- AMVOC's bottleneck provides sufficient regularization to train without augmentation; our deeper transformer architecture requires explicit augmentation (SpecAugment) because it has far more capacity and no bottleneck constraint
 
 Topics:
 - [[experimental-methods]]

@@ -38,6 +38,7 @@ Relevant Notes:
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] — our result strengthens this concern
 - [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] — the limitation that qualifies this finding
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] — our data independently confirms the paradigm shift away from Holy & Guo discrete types
+- [[AMVOC 4-stage feature pipeline reduces 1280 bottleneck features through variance thresholding StandardScaler and PCA to cluster-ready dimensions]] — AMVOC clustered in PCA-reduced autoencoder-embedding space and still found structure at k=6 with blinded human validation; our raw-feature HDBSCAN found k=3; the difference could reflect feature quality (learned 1280D embeddings vs raw 10D metrics) rather than genuine cluster count
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] — validates the unsupervised branch: UMAP+HDBSCAN reveals the continuum that k-means obscures
 - [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] — if 96% of calls form one manifold, distributional comparison within that manifold captures variation that categorical analysis discards
 

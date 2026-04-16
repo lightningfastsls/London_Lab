@@ -37,6 +37,8 @@ Relevant Notes:
 - [[no published work has applied VQ-VAE to animal vocalizations making this a genuine research gap]] -- Best 2023 uses continuous AE, not VQ-VAE
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- another unsupervised clustering approach
 - [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- our HDBSCAN analysis used raw features, not learned embeddings like Best et al; this is the key open question their work motivates
+- [[AMVOC autoencoder encodes 64x160 spectrogram patches through three convolutional layers to an 8x8x20 bottleneck with 8x compression]] -- architectural contrast: Best 2023 uses a deeper architecture with 256-dim bottleneck and perceptual loss, while AMVOC uses a shallower 3-conv encoder with 1,280-dim bottleneck and BCE loss; both produce embeddings for unsupervised clustering but from different design philosophies
+- [[AMVOC deep autoencoder features scored 37 percent higher than 4-feature handcrafted baselines in blinded human evaluation]] -- independent confirmation that learned autoencoder features outperform handcrafted features for vocalization clustering, though Best 2023 demonstrated this across 6 species while AMVOC validated on mice specifically
 
 Topics:
 - [[unsupervised-usv-discovery]]

@@ -232,11 +232,123 @@
       "source_metadata": {
         "source_type": "own_analysis",
         "date": "2026-04-03",
-        "topics": ["clustering", "HDBSCAN", "UMAP", "mouse-USV", "continuum"]
+        "topics": [
+          "clustering",
+          "HDBSCAN",
+          "UMAP",
+          "mouse-USV",
+          "continuum"
+        ]
       },
       "notes": [
         "2 new notes created: HDBSCAN re-clustering headline finding + raw vs learned embeddings open question",
         "3 enrichments applied: Goffinet GMM k<=2 note, UMAP+HDBSCAN pipeline note, DeepSqueak k-means note"
+      ]
+    },
+    {
+      "id": "seed-012",
+      "type": "extract",
+      "phase": "reweave",
+      "source": "archive/inbox/amvoc-stoumpou-2022-deep-read-2026-04-15.md",
+      "description": "Extract atomic notes from AMVOC deep-read (Stoumpou et al. 2022) \u2014 convolutional autoencoder architecture (64\u00d7160 input, 8-filter bottleneck, BCE loss), preprocessing pipeline (2ms non-overlapping frames, per-max normalization, zero-pad/center-crop to 64 frames), 4-stage feature post-processing (var threshold\u2192scaler\u2192PCA\u2192t-SNE), clustering methods, hand-crafted baseline comparison (37% improvement for deep features), detection algorithm, and actionable gaps for our wild-mouse VQ-VAE pipeline",
+      "status": "done",
+      "completed": "2026-04-15T00:00:00Z",
+      "created": "2026-04-15",
+      "priority": "high",
+      "source_metadata": {
+        "source_type": "paper",
+        "paper": "Stoumpou et al. (2022). Analysis of Mouse Vocal Communication (AMVOC). Bioacoustics, 32(2), 199\u2013229.",
+        "url": "https://github.com/tyiannak/amvoc",
+        "date_accessed": "2026-04-15",
+        "research_depth": "deep"
+      },
+      "candidate_claims": [
+        "AMVOC autoencoder uses 64\u00d7160 input (128ms \u00d7 80kHz range at 0.5kHz resolution) \u2014 well-justified for our pipeline",
+        "AMVOC encoder bottleneck is 8 filters \u00d7 8 \u00d7 20 = 1,280 values (8\u00d7 compression from 10,240 input pixels)",
+        "BCE loss with sigmoid output treats each spectrogram pixel as a probability \u2014 requires per-max normalization to [0,1]",
+        "AMVOC uses per-spectrogram max normalization (divide by max value) \u2014 not min-max, not z-score, not log-scale",
+        "AMVOC 2ms non-overlapping windows (ST_STEP = ST_WIN) give 0.5 kHz frequency resolution at 30\u2013110 kHz",
+        "AMVOC zero-pads short USVs symmetrically and center-crops long USVs to achieve fixed 64 time frames",
+        "AMVOC 4-stage feature pipeline: variance thresholding (1,280\u2192~320) \u2192 StandardScaler \u2192 PCA (95% variance) \u2192 t-SNE (visualization only)",
+        "AMVOC deep features achieved 37% higher global annotation scores over 4-feature handcrafted baseline (p < 0.01)",
+        "AMVOC trained for only 2 epochs deliberately to avoid overfitting \u2014 undercomplete bottleneck acts as implicit regularizer",
+        "AMVOC lacks batch normalization, dropout, validation monitoring, VAE variant, and UMAP \u2014 all improvements for our pipeline",
+        "AMVOC code discrepancy: training_task.py uses 8 bottleneck filters (matches paper), conv_autoencoder.py uses 4 filters (may be semi-supervised variant)",
+        "AMVOC feature mode 3 (90-dim resampled frequency contour) is architecturally similar to Didi's peak-frequency vectorization"
+      ],
+      "completed_phases": [
+        "reduce",
+        "reflect"
+      ],
+      "reflect_summary": "2026-04-16: 10 new AMVOC notes reviewed. Cross-linking from the extract phase was already thorough \u2014 each note had 3-6 genuine semantic backlinks and was listed in its declared topic maps (unsupervised-usv-discovery, classification-methodology, detection-landscape, signal-processing). One real reflect gap: the AMVOC hub note only referenced 3 of 10 child notes. Added the 7 missing wiki-links (4-stage pipeline, 2ms STFT, 2-epoch training, SVM-smoothed contour, semi-supervised retraining, dual-criterion detection, t-SNE-vs-UMAP tension) so the hub now points to all child notes. Triangle check: DeepSqueak-features \u2192 raw-vs-learned \u2192 AMVOC-37pct triangle already closed. No new synthesis opportunities beyond what extract captured. No dangling links introduced."
+    },
+    {
+      "id": "seed-013",
+      "type": "extract",
+      "phase": "done",
+      "completed_phases": [
+        "reduce",
+        "reflect",
+        "reweave"
+      ],
+      "source": "inbox/oren-2024-vocal-labeling-deep-read-2026-04-15.md",
+      "description": "Extract atomic notes from Oren et al. 2024 (Science) deep-read \u2014 Omer lab vectorization technique (STFT ridge extraction \u2192 80D FM+AM vector), MATLAB spectrogramming.m pipeline, random forest receiver-ID classification (AUC 0.798), vocal labels evidence, family dialect finding, and Python adaptation notes for mouse USV analysis",
+      "status": "done",
+      "completed": "2026-04-15",
+      "created": "2026-04-15",
+      "priority": "high",
+      "source_metadata": {
+        "source_type": "paper",
+        "paper": "Oren, G., Shapira, A., Lifshitz, R., Vinepinsky, E., Cohen, R., Fried, T., Hadad, G.P., & Omer, D. (2024). Vocal labeling of others by nonhuman primates. Science, 385(6712), 996-1003.",
+        "doi": "10.1126/science.adp3757",
+        "zenodo": "https://zenodo.org/records/12721811",
+        "date_accessed": "2026-04-15",
+        "research_depth": "deep"
+      },
+      "candidate_claims": [
+        "Omer lab vectorization extracts peak frequency per spectrogram column (FM ridge) and amplitude at that ridge (AM) then resamples both to 40 time steps giving an 80-dimensional call vector",
+        "MATLAB tfridge extracts the dominant frequency ridge with continuity constraints \u2014 Python equivalent is argmax per column with optional smoothness regularization",
+        "Omer 2024 spectrogramming.m uses a 50ms Hanning window with 25ms hop and crops to 6-9 kHz before ridge extraction \u2014 for mouse USVs window should be ~1ms and range 30-110 kHz",
+        "The 80D vector is [AM\u2081...AM\u2084\u2080, FM\u2081...FM\u2084\u2080] where AM is the absolute value of the complex STFT at the ridge position and FM is the frequency value of the ridge",
+        "Omer lab normalizes AM and FM independently per caller to [0,1] using rescale \u2014 for mouse USVs this would be per-recording or per-mouse normalization",
+        "AM features in Omer 2024 are median-smoothed (window=6) and FM features are mean-smoothed (window=5) before concatenation",
+        "Omer 2024 random forest receiver-ID classifier achieved average AUC 0.798 across 9 marmoset callers using 150-tree TreeBagger with Random Under-Sampling at 100 calls per class",
+        "Omer 2024 leave-one-session-out cross-validation showed no session-specific artifacts (KS test P=0.49) confirming classifier generalizes across sessions",
+        "Omer 2024 playback experiment showed monkeys respond with significantly higher probability to calls directed at them versus calls directed at others (Cox regression \u03b2=1.39 P < 2.4e-9)",
+        "Omer 2024 family dialect analysis using random forest leaf co-occurrence proximity showed within-family calls cluster together even across unrelated adult pairs confirming vocal learning not genetics",
+        "Both AM and FM features contribute to receiver-ID classification with AM showing significantly but slightly higher importance (t=5.06 P<0.0001)",
+        "The 16 named acoustic features (8 FM + 8 AM) used for explained-variance analysis are separate from the 80D classification vector \u2014 they include freq_diff, freq_max, freq_mean, amp_max, amp_mean, and related scalar summaries",
+        "GmSLM (Sternberg et al. 2025 EMNLP) is a Mickey London + Didi Omer collaboration applying self-supervised speech models to marmoset vocalizations \u2014 a directly adjacent method to our pipeline",
+        "Omer 2025 Current Biology commentary on singing mice shows Didi is actively thinking about mouse vocalizations making the Omer lab a key potential collaborator",
+        "The Omer vectorization technique originated in this 2024 Science paper and is not referenced from an earlier publication"
+      ]
+    },
+    {
+      "id": "seed-013",
+      "type": "extract",
+      "phase": "done",
+      "completed_phases": [
+        "reduce",
+        "reflect",
+        "reweave"
+      ],
+      "source": "hertz_2020_deep_read.md",
+      "description": "Extract atomic notes from Hertz et al. 2020 deep read \u2014 SIS formula (entropy difference form, KL-divergence form), suffix tree implementation and validity criterion (<10% zero-prob tuples), SIS normalization by log2(Nc), iMSA rule-based pitch-jump algorithm, iMUPET 16-filter adaptation, SIM centroid perturbation algorithm, quantitative SIS benchmarks, self-repetition dominance finding, ISI=160ms sequence boundary, dataset scale (346K syllables / 43x our size)",
+      "status": "done",
+      "created": "2026-04-15",
+      "completed": "2026-04-15",
+      "priority": "high",
+      "source_metadata": {
+        "source_type": "paper",
+        "paper": "Hertz et al. (2020). Temporal Structure of Mouse Courtship Vocalizations Facilitates Syllable Labeling. Communications Biology, 3, 333.",
+        "doi": "10.1038/s42003-020-1053-7",
+        "date_accessed": "2026-04-15",
+        "research_depth": "deep"
+      },
+      "notes": [
+        "8 new notes: SIS formula (entropy-difference/KL-divergence/sum forms), suffix tree validity criterion, SIS normalization, iMSA pitch-jump algorithm, iMUPET 16-filter adaptation, SIM centroid perturbation, quantitative benchmarks (iMSA 0.22 / iMUPET 0.13 / iVoICE 0.10 / SIM 0.23 bits depth-1), self-repetition dominance, ISI=160ms threshold, Hertz 2020 dataset scale",
+        "4 enrichments: existing Hertz SIS note, existing Hertz sequence note, entropy rate note, MI rate note, MUPET note",
+        "2 topic map updates: classification-methodology.md (new SIS Framework section + 2 new notes), wild-lab-vocal-comparison.md (2 new references)"
       ]
     }
   ],

@@ -38,6 +38,10 @@ Wild mouse vocalization literature is primarily from Michael London's own resear
 
 The specific causal hypothesis is directional: [[inbreeding and absence of courtship selection pressure in captivity caused lab mice to degrade courtship vocal competence]] — not just that wild and lab mice differ, but that lab mice have specifically degraded their courtship vocal repertoire. Preliminary evidence supports this: [[wild mice show more diverse USV repertoires than lab mice as preliminary evidence for courtship vocal degradation]]. The significance of the finding depends on [[combined cross-modal evidence from USV repertoire and MiceCraft movement data builds a stronger case for courtship degradation]].
 
+### Behavioral Validation Paradigm (from Oren 2024)
+
+Oren et al. (2024) provide a behavioral validation template via their playback experiment: test whether animals respond differentially to "addressed" vs "non-addressed" vocalizations. For mouse USVs, an analogous experiment could probe whether USVs carry individual-identity or partner-specific encoding. Their Cox regression on cumulative response probability (beta = 1.39, P < 2.4 x 10^-9) provides a quantitative template for measuring directed-call effects. The [[random forest receiver-identity classification achieved AUC 0.798 across nine marmoset callers confirming vocalization-level social targeting|AUC 0.798 result]] establishes the bar for what vocalization-level identity classification achieves in primates.
+
 ---
 
 Source:
@@ -45,6 +49,7 @@ Source:
 - inbox/deepsqueak-usv-syllable-classification-practical-guide.md (Compass artifact, 2026-02-23) -- statistical framework, Zala et al. evidence
 - inbox/raven-deepsqueak-classification-bridge-plan.md (2026-02-23) -- Shannon entropy prediction, chi-squared alternative
 - vacation-master-plan-v2 (archived to archive/inbox/)
+- inbox/oren-2024-vocal-labeling-deep-read-2026-04-15.md (deep read, April 2026) — playback paradigm and identity classification precedent
 
 Relevant Notes:
 - [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- immediate science strategy using existing tools
@@ -56,6 +61,8 @@ Relevant Notes:
 - [[classifiers trained on lab mice generalize poorly to wild mice requiring population-specific training data]] -- generalization challenge for cross-population work
 - [[BootSnap snapshot ensemble CNN on gammatone spectrograms outperformed DeepSqueak classification with F1 67 percent on wild mice]] -- best available wild-mouse classification baseline
 - [[burstiness by behavioral context bridges information theory and LMT behavioral analysis]] -- temporal emission patterns per behavioral context differ between populations
+- [[random forest receiver-identity classification achieved AUC 0.798 across nine marmoset callers confirming vocalization-level social targeting]] -- primate precedent for vocalization-level identity encoding
+- [[leave-one-session-out cross-validation rules out session-specific artifacts in vocalization-based social identity classifiers]] -- validation design for cross-session generalization
 - [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- primary multivariate comparison method
 - [[Jensen-Shannon divergence on categorical syllable proportions provides a symmetric bounded measure for comparing repertoire distributions between populations]] -- pairwise distributional distance
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- sequential syntax comparison method

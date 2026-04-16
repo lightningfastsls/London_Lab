@@ -17,6 +17,7 @@ Six architectural approaches span the detection space, from object detection (De
 
 - [[six USV detection architectural approaches span object detection to speech model transfer with distinct tradeoff profiles]] -- taxonomy: object detection, segmentation, temporal, classical, speech transfer, hybrid
 - [[entropy-based USV detection achieves 94.9 percent recall and 99.3 percent precision as a classical signal processing alternative]] -- entropy measures spectral complexity; outperforms energy detector precision
+- [[AMVOC dual-criterion dynamic spectral thresholding achieved Event F1 90.5 percent outperforming DeepSqueak and VocalMat on the same benchmark]] -- dual time+frequency threshold; highest event F1 among 6 tools; 21.2× real-time
 - [[U-Net semantic segmentation exceeded 95 percent precision recall for USV detection in systematic DL comparison]] -- Ivanenko 2023: AE, U-Net, RNN all >90%; U-Net best generalization
 - [[HybridMouse CNN plus BiLSTM first combined spatial and temporal features for USV detection outperforming DeepSqueak in low SNR]] -- spatial+temporal hybrid; low-SNR robustness
 

@@ -33,6 +33,8 @@ Relevant Notes:
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- the codebook still discretizes, but the codes are learned from data rather than imposed by taxonomy
 - [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- VQ-VAE code proportions could also be compared distributionally (code frequency JSD), bridging categorical and continuous approaches
 - [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- natural density-based clustering finds only 3 clusters; K=64 intentionally over-discretizes to capture sub-continuum variation that density methods merge into one manifold
+- [[AMVOC autoencoder encodes 64x160 spectrogram patches through three convolutional layers to an 8x8x20 bottleneck with 8x compression]] -- AMVOC's 1,280-dim bottleneck feeds PCA for dimensionality reduction; our K=64 codebook provides an alternative reduction with learned discrete structure rather than linear projection
+- [[AMVOC t-SNE plus user-specified k versus field-standard UMAP plus HDBSCAN for bioacoustic clustering]] -- our VQ-VAE codebook is a third clustering paradigm: data-driven discretization that over-discretizes deliberately, complementing AMVOC's user-specified k and HDBSCAN's density-based automatic k
 
 Topics:
 - [[representation-learning]]

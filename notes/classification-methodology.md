@@ -18,6 +18,8 @@ Methods for determining what USV types exist, comparing repertoires across popul
 - [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- SIS validates whether categories capture meaningful structure
 - [[Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs]] -- GMM model selection only supports k<=2 for mice
 - [[MUPET gammatone filterbank with k-means discovers 100 to 140 data-driven syllable types as a handcrafted feature baseline]] -- gammatone features with k-means; tension with GMM finding k<=2
+- [[iMUPET adapted for Hertz 2020 uses 16 gammatone filters producing 2016-dimensional feature vectors per syllable]] -- adapted MUPET with 16 (not 64) filters, K=8 for cross-algorithm comparison
+- [[iMSA rule-based pitch-jump classification produces the highest SIS among compared methods despite lower label entropy]] -- rule-based pitch-jump approach beats clustering on sequential structure
 - [[ResNets outperform Vision Transformers for USV classification on neonatal mouse data]] -- 2024: adapted ResNets 86.79% accuracy; ViT did NOT outperform CNNs
 - [[UMAP plus HDBSCAN is now the dominant unsupervised clustering pipeline for bioacoustic vocalizations]] -- field standard: embed then UMAP then HDBSCAN; auto cluster count
 - [[CASE benchmark systematically compared 48 unsupervised clustering methods for animal vocalizations]] -- Schneider 2022 open benchmark; 48 algorithms tested
@@ -25,6 +27,21 @@ Methods for determining what USV types exist, comparing repertoires across popul
 - [[SqueakOut autoencoder segmentation achieves Dice 90.2 designed to feed downstream unsupervised clustering pipelines]] -- upstream segmentation for better downstream clustering
 - [[HDBSCAN re-clustering of our 7864 USV calls found only 3 natural clusters with 96 percent collapsing into one continuous manifold]] -- own-data result: HDBSCAN collapses 27 k-means clusters to 3 (96% in one), independently confirming GMM k<=2
 - [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- open question qualifying the HDBSCAN result: encoder embeddings might reveal more structure
+
+## SIS Framework & Sequential Structure Evaluation
+
+- [[SIS equals entropy rate at depth zero minus entropy rate at depth D giving information gained from sequential context]] -- exact SIS formula: H_0 - H_D = mutual information between next syllable and D-depth suffix
+- [[suffix trees store empirical transition counts for Markov models and require less than 10 percent zero-probability tuples for reliable SIS estimation]] -- validity criterion: <10% zero-prob tuples; limits Nc≤64 at depth 1, Nc≤16 at depth 2 (346K syllables)
+- [[SIS normalized by log2 of cluster count removes dependency on number of labels enabling cross-Nc comparisons]] -- SIS_norm = SIS / log2(Nc); flat across Nc=4-64 in Hertz 2020
+- [[Hertz 2020 quantitative benchmark iMSA achieves 0.22 bits depth-1 SIS versus iMUPET 0.13 and iVoICE 0.10 on C57BL-6 courtship data]] -- reference values; our 7-type Scattoni = 0.093 bits at lag 1
+- [[self-repetition is the dominant pairwise contributor to SIS in mouse courtship vocalizations]] -- same-label transitions dominate; pre-labeling duration autocorrelation r=0.44 confirms this
+- [[Syntax Information Maximization SIM algorithm iteratively perturbs cluster centroids to maximize SIS on training sequences]] -- multiplicative [0.9,1.1] perturbation; force-accept after 5 failures; ~24K iterations; surpasses iMSA
+
+## AMVOC Feature Pipeline & Comparison
+- [[AMVOC 4-stage feature pipeline reduces 1280 bottleneck features through variance thresholding StandardScaler and PCA to cluster-ready dimensions]] -- var threshold→scaler→PCA→t-SNE(viz only)
+- [[AMVOC deep autoencoder features scored 37 percent higher than 4-feature handcrafted baselines in blinded human evaluation]] -- learned > handcrafted, p<0.01
+- [[AMVOC SVM-smoothed frequency contour resampled to 90 dimensions is architecturally similar to peak-frequency vectorization]] -- AMVOC feature mode 3 ≈ Didi vectorization with SVM smoothing
+- [[AMVOC t-SNE plus user-specified k versus field-standard UMAP plus HDBSCAN for bioacoustic clustering]] -- tension: pre-2023 method still produced strong results
 
 ## Methodological Tensions
 

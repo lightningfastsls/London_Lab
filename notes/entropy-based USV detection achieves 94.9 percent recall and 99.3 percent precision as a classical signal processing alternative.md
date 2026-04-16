@@ -25,6 +25,7 @@ Relevant Notes:
 - [[peak energy mode detects narrow-band USVs better than mean energy across the frequency band]] -- entropy extends the "narrow-band detection" concept
 - [[energy threshold at negative 60 dB is deliberately low to maximize recall in the first stage]] -- our approach prioritizes recall; entropy-based could offer better precision
 - [[maximum bandwidth filter of 20 kHz rejects broadband noise in energy detection]] -- bandwidth filter is a simple approximation of what entropy captures rigorously
+- [[AMVOC dual-criterion dynamic spectral thresholding achieved Event F1 90.5 percent outperforming DeepSqueak and VocalMat on the same benchmark]] -- complementary classical detection approach: entropy measures spectral complexity (low=USV, high=noise) while AMVOC's dual criterion requires both energy above a dynamic threshold AND a clear spectral peak; both avoid neural networks but measure different signal properties
 
 Topics:
 - [[detection]]

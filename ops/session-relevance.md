@@ -1,5 +1,5 @@
 ﻿# Session Relevance Brief
-<!-- Generated: 2026-04-14 14:46 -->
+<!-- Generated: 2026-04-16 19:06 -->
 <!-- Method: topic-map-traversal + ripgrep -->
 
 ## USV Analysis Stage

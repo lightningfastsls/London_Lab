@@ -33,6 +33,9 @@ Relevant Notes:
 - [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- the SIS method developed in this paper
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the no one-to-one mapping finding supports the continuum view
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- operationalizes the "sequence statistics carry predictive information" finding as testable transition probability comparisons between populations
+- [[self-repetition is the dominant pairwise contributor to SIS in mouse courtship vocalizations]] -- the specific sequential pattern driving most of the SIS in this paper
+- [[Hertz et al 2020 dataset is 346K syllables across 385 sessions making our 8K dataset 43 times smaller]] -- the scale of evidence behind this finding
+- [[ISI threshold of 160ms defines sequence boundaries in Hertz 2020 mouse courtship vocalization analysis]] -- how "sequences" were defined for this analysis
 
 Topics:
 - [[classification-methodology]]

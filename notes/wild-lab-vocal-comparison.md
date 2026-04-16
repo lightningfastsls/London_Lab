@@ -23,6 +23,11 @@ The central biological question: did domestication alter mouse vocal repertoires
 - [[Zala et al 2020 showed wild-derived mice modulate USVs with social context producing 9 types during interaction versus 6 during introduction]] -- context-dependent repertoire modulation in wild mice
 - [[recording groups 5970 3452 2379 are all wild mouse dyads not different strains]] -- all current data is wild mice; numeric IDs are dyad identifiers
 
+## Cross-Species Precedents
+- [[random forest receiver-identity classification achieved AUC 0.798 across nine marmoset callers confirming vocalization-level social targeting]] -- marmoset identity encoding precedent (Oren 2024)
+- [[random forest proximity from leaf co-occurrence provides a nonlinear vocalization similarity measure sensitive to family-level vocal conventions]] -- nonlinear similarity measure for vocal comparison
+- [[leave-one-session-out cross-validation rules out session-specific artifacts in vocalization-based social identity classifiers]] -- LOSO validation design template
+
 ## Research Strategy
 - [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- immediate science: classify first, then model
 - [[VQ-VAE investigation of language-like sequential structure in USVs is a separate deeper question from courtship degradation]] -- two-tier strategy separates tractable from ambitious
@@ -34,6 +39,8 @@ The central biological question: did domestication alter mouse vocal repertoires
 - [[Shannon entropy quantifies USV repertoire diversity with higher values indicating more evenly distributed syllable usage]] -- diversity metric with wild > lab prediction
 - [[Jensen-Shannon divergence on categorical syllable proportions provides a symmetric bounded measure for comparing repertoire distributions between populations]] -- symmetric [0,1] distributional distance
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- sequential syntax comparison method
+- [[Hertz 2020 quantitative benchmark iMSA achieves 0.22 bits depth-1 SIS versus iMUPET 0.13 and iVoICE 0.10 on C57BL-6 courtship data]] -- C57BL/6 reference values for SIS; our wild-mice values expected lower
+- [[Hertz et al 2020 dataset is 346K syllables across 385 sessions making our 8K dataset 43 times smaller]] -- scale comparison that qualifies our ability to run depth-2 or SIM analyses
 
 ## Methodological Tensions
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- categorical comparison may miss continuous differences

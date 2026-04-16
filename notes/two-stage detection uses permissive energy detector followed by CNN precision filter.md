@@ -25,6 +25,7 @@ Relevant Notes:
 - [[DeepSqueak uses monolithic Faster R-CNN detection whereas our two-stage pipeline allows independent tuning of recall and precision]] -- competitive positioning vs the most widely used alternative
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- detection output feeds the representation learning pipeline; detection bias propagates into VQ-VAE codebook quality
 - [[DCASE class-dependent post-processing parameters improved F1 from 37 to 44 percent]] -- empirical evidence that post-processing optimization alone (without model changes) yields 7pp F1 gain, justifying our investment in hysteresis parameter tuning as the post-processing layer
+- [[AMVOC dual-criterion dynamic spectral thresholding achieved Event F1 90.5 percent outperforming DeepSqueak and VocalMat on the same benchmark]] -- alternative single-stage approach: AMVOC requires both time-based energy AND frequency-based peak-to-mean ratio to pass simultaneously, achieving highest event F1 (90.5%) but with less precise temporal boundaries than our two-stage pipeline
 
 Topics:
 - [[detection]]

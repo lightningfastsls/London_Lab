@@ -35,6 +35,11 @@ Relevant Notes:
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- SIS partially dissolves this tension by offering a principled criterion for evaluating any categorization
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- SIS could evaluate both the supervised (Scattoni categories) and unsupervised (HDBSCAN cluster labels) branches of the dual approach
 - [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- complementary evaluation axis: SIS measures sequential predictiveness of categories; EMD/JSD measures distributional separation in continuous space
+- [[SIS equals entropy rate at depth zero minus entropy rate at depth D giving information gained from sequential context]] -- the exact mathematical formula for SIS
+- [[Hertz 2020 quantitative benchmark iMSA achieves 0.22 bits depth-1 SIS versus iMUPET 0.13 and iVoICE 0.10 on C57BL-6 courtship data]] -- the numerical values for comparing schemes
+- [[SIS normalized by log2 of cluster count removes dependency on number of labels enabling cross-Nc comparisons]] -- how to compare across different Nc
+- [[Syntax Information Maximization SIM algorithm iteratively perturbs cluster centroids to maximize SIS on training sequences]] -- algorithm that builds on SIS to improve clustering
+- [[Omer lab 80-dimensional FM plus AM ridge vectorization embeds each vocalization call in a fixed-length feature space]] -- Omer vectorization could generate labels via k-means for SIS evaluation, benchmarking ridge-based features against iMUPET (0.13 bits) and iMSA (0.22 bits)
 
 Topics:
 - [[unsupervised-usv-discovery]]

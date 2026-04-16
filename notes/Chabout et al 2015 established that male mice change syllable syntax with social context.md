@@ -23,6 +23,7 @@ Relevant Notes:
 - [[entropy rate decreasing with context length indicates sequential predictability in USV code streams]] -- metric for measuring the structure Chabout identified
 - [[Hertz et al 2020 demonstrated that USV sequence statistics carry predictive information]] -- complementary evidence for sequential structure
 - [[row-stochastic transition matrices capture sequential structure in syllable sequences testable between populations via Frobenius norm with permutation test]] -- formalizes syllable syntax comparison between populations as transition probability matrices
+- [[random forest proximity from leaf co-occurrence provides a nonlinear vocalization similarity measure sensitive to family-level vocal conventions]] -- RF proximity could test whether mouse dyad partners show vocal convergence analogous to marmoset family conventions
 
 Topics:
 - [[classification-methodology]]

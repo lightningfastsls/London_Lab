@@ -38,6 +38,8 @@ Relevant Notes:
 - [[PERMANOVA on Bray-Curtis dissimilarity is the standard ecological method for testing whether syllable repertoire compositions differ between populations]] -- population-specific repertoire differences this finding predicts would need PERMANOVA to quantify
 - [[LoRA exploits low intrinsic rank of weight updates to match full fine-tuning with 10000x fewer trainable parameters]] -- enables population-specific adaptation of a shared base classifier with minimal wild mouse labels
 - [[dataset quality exceeds quantity for LoRA fine-tuning as curated 1K LIMA matches 50K Alpaca performance]] -- small amount of available wild mouse labeled data may suffice for LoRA adaptation
+- [[AMVOC trains for only 2 epochs deliberately because the undercomplete bottleneck acts as implicit regularizer]] -- AMVOC's 2-epoch training was validated on lab strains (B6D2F1/J + C57BL/6J); wild-mouse data with greater variability may require more training epochs since the bottleneck alone may be insufficient as regularizer for the broader feature space
+- [[AMVOC lacks batch normalization dropout validation monitoring and VAE variant — all high-value improvements for our wild-mouse pipeline]] -- each architectural gap matters more for wild mice precisely because of the generalization problem: batch norm and dropout become critical when data variability increases beyond what the lab-strain training distribution covers
 
 Topics:
 - [[classification-methodology]]

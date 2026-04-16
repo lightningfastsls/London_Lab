@@ -23,6 +23,7 @@ Relevant Notes:
 - [[frequency resolution of 586 Hz per bin suffices to distinguish USV subtypes in the 20-120 kHz range]] -- adequacy assessment
 - [[MUPET 2 ms frame duration with 80 percent overlap prioritizes temporal resolution for capturing rapid USV frequency modulations]] -- independent convergence on nearly identical parameters (512-point FFT, ~2 ms frames, ~500-600 Hz bins) validates this parameterization
 - [[MUPET operates at 250 kHz sample rate with minimum 90 kHz requirement covering the 25-125 kHz USV band]] -- cross-tool context: our 300 kHz vs MUPET's 250 kHz yields slightly different frequency resolution from the same FFT size
+- [[AMVOC uses 2ms non-overlapping spectrogram windows giving 0.5 kHz frequency resolution at the expense of temporal smoothness]] -- three-way STFT comparison: AMVOC's 2 ms/0% overlap, our 1.7 ms/75% overlap, DeepSqueak's 3.2 ms/88% overlap; AMVOC trades temporal smoothness for computational speed while achieving comparable frequency resolution (0.5 kHz vs our 586 Hz)
 
 Topics:
 - [[signal-processing]]

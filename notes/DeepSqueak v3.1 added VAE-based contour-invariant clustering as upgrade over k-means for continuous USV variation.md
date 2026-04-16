@@ -33,6 +33,7 @@ Relevant Notes:
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- our strategy that parallels this approach
 - [[MUPET uses gammatone filterbank and unsupervised k-means to discover 100-140 data-driven USV types]] -- another unsupervised approach using handcrafted features vs VAE learned features
 - [[DeepSqueak built-in classification enables pre-VQ-VAE repertoire comparison between wild and lab populations]] -- practical use of DeepSqueak clustering before custom VQ-VAE is ready
+- [[AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering]] -- parallel autoencoder-based unsupervised clustering tool: AMVOC uses a standard AE + k-means while DeepSqueak v3.1 uses VAE; same design space, different regularization strategies for the same continuum problem
 
 Topics:
 - [[unsupervised-usv-discovery]]

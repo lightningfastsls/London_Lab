@@ -36,6 +36,7 @@ Relevant Notes:
 - [[inbreeding and absence of courtship selection pressure in captivity caused lab mice to degrade courtship vocal competence]] -- the degradation hypothesis Zala's data can test
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- tension between type counts and continuous variation
 - [[Shannon entropy quantifies USV repertoire diversity with higher values indicating more evenly distributed syllable usage]] -- the 9 vs 6 type split during interaction vs introduction maps directly to entropy differences quantifiable by Shannon H
+- [[random forest receiver-identity classification achieved AUC 0.798 across nine marmoset callers confirming vocalization-level social targeting]] -- cross-species convergence: Zala showed mice modulate USVs by social context, Oren showed marmosets encode receiver identity; together they suggest social targeting is a shared mammalian vocal ability
 
 Topics:
 - [[experimental-methods]]

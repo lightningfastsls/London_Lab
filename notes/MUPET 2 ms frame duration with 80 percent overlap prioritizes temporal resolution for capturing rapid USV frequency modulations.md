@@ -25,6 +25,7 @@ Relevant Notes:
 - [[75 percent overlap with hop length 128 provides smooth temporal coverage for USV detection]] -- our 75% vs MUPET's 80%
 - [[Hann window provides good sidelobe suppression for spectral analysis of USVs]] -- Hann vs Hamming comparison
 - [[temporal resolution versus frequency resolution in STFT parameter selection]] -- the fundamental tradeoff both systems navigate
+- [[AMVOC uses 2ms non-overlapping spectrogram windows giving 0.5 kHz frequency resolution at the expense of temporal smoothness]] -- convergent 2 ms window duration but opposite overlap strategy: MUPET uses 80% overlap for smooth temporal coverage, AMVOC uses 0% overlap (independent frames) and compensates with a median filter; same frame size, fundamentally different temporal continuity approaches
 
 Topics:
 - [[signal-processing]]

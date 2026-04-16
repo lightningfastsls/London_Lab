@@ -23,6 +23,7 @@ Relevant Notes:
 - [[wild versus lab mouse USV comparison tests whether domestication altered vocal repertoires]] -- can wild/lab distinction be detected in spectrograms?
 - [[three convolutional blocks with global average pooling suffice for USV classification on small datasets]] -- our CNN architecture processes the same spectrogram features that Ivanenko showed encode identity
 - [[comparing VQ-VAE across transformer layers reveals which abstraction level yields the most interpretable codebook]] -- VQ-VAE codebook entries might capture emitter-level features at different abstraction levels
+- [[random forest receiver-identity classification achieved AUC 0.798 across nine marmoset callers confirming vocalization-level social targeting]] -- convergent cross-species evidence: Ivanenko showed emitter sex classifiable from mouse spectrograms, Oren showed receiver identity classifiable from marmoset calls
 
 Topics:
 - [[classification-methodology]]

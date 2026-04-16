@@ -23,4 +23,9 @@ An alternative normalization approach is [[PCEN normalization is more robust tha
 
 ---
 
+---
+
+Relevant Notes:
+- [[per-spectrogram max normalization is the simplest effective preprocessing for BCE-based spectrogram reconstruction]] -- contrasting normalization approach: per-frequency-bin z-score (ours) centers each frequency independently using training-set statistics, while per-spectrogram max (AMVOC) divides by the maximum pixel value per spectrogram; the choice is coupled to loss function (z-score for MSE-like losses, max-norm for BCE with sigmoid output)
+
 Source: [ROADMAP](../ROADMAP.md), Phase 2

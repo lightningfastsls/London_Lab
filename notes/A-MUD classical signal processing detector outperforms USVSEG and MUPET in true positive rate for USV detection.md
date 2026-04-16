@@ -26,6 +26,7 @@ Source:
 Relevant Notes:
 - [[energy threshold at negative 60 dB is deliberately low to maximize recall in the first stage]] — our approach uses similar energy-based detection principles
 - [[two-stage coarse-to-fine filtering is effective for imbalanced detection tasks]] — A-MUD is a single-stage approach, contrasting with our two-stage pipeline
+- [[AMVOC dual-criterion dynamic spectral thresholding achieved Event F1 90.5 percent outperforming DeepSqueak and VocalMat on the same benchmark]] -- AMVOC achieved Event F1 90.5% on a 245-syllable benchmark, while A-MUD achieved 90.6%/80.0% precision/recall on the Ivanenko benchmark; both are classical methods but use different detection strategies (dual time+frequency criterion vs energy-based) on different benchmarks, so direct comparison is approximate
 
 Topics:
 - [[detection]]

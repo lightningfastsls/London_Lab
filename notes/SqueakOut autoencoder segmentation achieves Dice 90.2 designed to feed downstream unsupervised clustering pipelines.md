@@ -25,6 +25,8 @@ Source: unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-
 Relevant Notes:
 - [[CNN baseline of 89.7 percent precision and 93.8 percent recall at threshold 0.05 validates the two-stage detection approach]] -- our detection feeds downstream analysis similarly
 - [[VocalMat provides 12954 labeled USV spectrograms freely available as training data]] -- same VocalMat dataset used as comparison baseline
+- [[AMVOC dual-criterion dynamic spectral thresholding achieved Event F1 90.5 percent outperforming DeepSqueak and VocalMat on the same benchmark]] -- comparable detection quality (Dice 90.2 vs Event F1 90.5) but different representation: SqueakOut produces pixel masks feeding downstream VAE/UMAP, AMVOC produces event boundaries feeding its own AE; the two tools occupy complementary slots in a detection-then-cluster pipeline
+- [[AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering]] -- the downstream "unsupervised methods" SqueakOut masks are designed to feed — AMVOC is the most obvious candidate, taking spectrogram patches that SqueakOut could provide cleaner versions of
 
 Topics:
 - [[unsupervised-usv-discovery]]

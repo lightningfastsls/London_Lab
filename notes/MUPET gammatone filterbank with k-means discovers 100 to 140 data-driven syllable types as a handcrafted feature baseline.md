@@ -18,6 +18,8 @@ The Gammatone filterbank is biologically inspired, mimicking the auditory periph
 
 The 100-140 syllable types discovered by k-means contrasts sharply with Goffinet's finding that since [[Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs]], suggesting k-means may be imposing discrete structure that doesn't exist in the data.
 
+⚠️ **MUPET vs iMUPET:** Hertz 2020 adapted MUPET as "iMUPET" using only **16 gammatone filters** (not 64) constrained to K=8. See [[iMUPET adapted for Hertz 2020 uses 16 gammatone filters producing 2016-dimensional feature vectors per syllable]].
+
 ---
 
 Source: unsupervised-clustering-bioacoustic-vocalizations-2025-research-2026-02-27 (archived to archive/inbox/), mupet-sample-rate-usv-analysis-research-2026-02-27 (archived to archive/inbox/)
@@ -26,6 +28,7 @@ Relevant Notes:
 - [[gammatone spectrograms outperform standard STFTs for USV classification according to BootSnap]] -- gammatone as alternative spectrogram representation
 - [[Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs]] -- k-means 100+ types vs GMM 2 types is a major tension
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- k-means forces discreteness onto a continuum
+- [[iMUPET adapted for Hertz 2020 uses 16 gammatone filters producing 2016-dimensional feature vectors per syllable]] -- adapted version with fewer filters and K=8
 
 Topics:
 - [[unsupervised-usv-discovery]]

@@ -18,6 +18,8 @@ DAS achieves the highest reported USV detection metrics (98% precision, 99% reca
 
 The convergence of multiple independent tools toward this same workflow pattern validates the approach as more than a convenience — it represents a fundamental insight about how human expertise and ML capability complement each other in bioacoustic research. The human provides domain judgment on ambiguous cases; the model provides consistent throughput on clear cases.
 
+AMVOC (Stoumpou et al. 2022) provides an earlier example of this pattern applied specifically to mouse USV classification: its semi-supervised retraining loop prioritizes the most uncertain USVs (lowest max-probability of cluster assignment) for human pairwise constraint annotation, then retrains the autoencoder with the constraints incorporated. Though not labeled "active learning," this implements the core loop. See [[AMVOC semi-supervised retraining combines reconstruction KL divergence and pairwise constraint losses with uncertainty-based annotation priority]].
+
 ---
 
 Source:

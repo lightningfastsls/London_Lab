@@ -27,6 +27,7 @@ Relevant Notes:
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- same pragmatic staging philosophy applies to loss function choice
 - [[staged transformer training catches issues early by incrementally scaling from one bout to full dataset]] -- predicted vs actual visualizations provide the diagnostic signal for upgrading
 - [[pre-norm transformer architecture improves training stability for spectrogram prediction]] -- training stability is a prerequisite before loss function complexity matters
+- [[BCE loss with sigmoid output treats spectrogram pixels as independent probabilities requiring input normalization to 0-1 range]] -- BCE is a fourth option in the loss design space (alongside MSE, GMM, and perceptual loss); BCE treats each pixel as an independent Bernoulli probability, which matches the sparse binary-ish structure of USV spectrograms better than MSE's Gaussian assumption, but ignores spatial structure and forces sigmoid output with 0-1 normalization
 
 Topics:
 - [[classification]]

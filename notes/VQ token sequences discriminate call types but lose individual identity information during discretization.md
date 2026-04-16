@@ -24,6 +24,7 @@ Relevant Notes:
 - [[post-hoc vector quantization substantially underperforms continuous representations motivating end-to-end VQ-VAE training]] -- this finding quantifies the underperformance (15-39% for types, 15-71% for identity)
 - [[single codebook with V=50 was insufficient for complex vocalization structure in discrete token experiments]] -- consistent: K=50 is too small
 - [[Sarkar and Magimai-Doss 2025 applied post-hoc VQ to frozen HuBERT embeddings for marmoset and dog vocalizations]] -- same research group, deeper findings
+- [[random forest receiver-identity classification achieved AUC 0.798 across nine marmoset callers confirming vocalization-level social targeting]] -- Oren showed identity is classifiable (AUC 0.798) from continuous 80D features; VQ discretization loses precisely this signal, sharpening the codebook size tradeoff
 
 Topics:
 - [[unsupervised-usv-discovery]]

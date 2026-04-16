@@ -34,6 +34,7 @@ Relevant Notes:
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- Holy & Guo's ~10-15 discrete types are directly contradicted by GMM finding k<=2
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the k<=2 result justifies the unsupervised branch as primary discovery tool, with supervised categories retained only for literature comparability
 - [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- if formal clustering finds k<=2, comparing distributions in the continuous space is more justified than comparing categorical proportions
+- [[AMVOC deep autoencoder features scored 37 percent higher than 4-feature handcrafted baselines in blinded human evaluation]] -- despite GMM finding k<=2, AMVOC's blinded evaluation showed learned-feature clusters are meaningfully better than handcrafted-feature clusters at k=6; the point-level agreement was not significant (p=0.18), which aligns with the ambiguity this k<=2 finding predicts at category boundaries
 
 Topics:
 - [[unsupervised-usv-discovery]]

@@ -27,6 +27,7 @@ Relevant Notes:
 - [[transformer-first then VQ-VAE avoids forcing premature discretization]] -- the architecture consuming bout data
 - [[75 percent overlap with hop length 128 provides smooth temporal coverage for USV detection]] -- determines frame rate within bouts
 - [[segment continuity bridges brief amplitude dips that fragment single USVs]] -- operates within individual USVs while bouts group between USVs, two complementary levels of temporal structure
+- [[symmetric zero-padding for short USVs and center-cropping for long ones standardizes variable-duration inputs to fixed dimensions]] -- contrasting windowing strategy: AMVOC processes individual USVs padded/cropped to 64 frames (128 ms), losing inter-USV context; our bout-level approach preserves temporal relationships between USVs at the cost of variable-length inputs requiring chunking
 
 Topics:
 - [[detection]]

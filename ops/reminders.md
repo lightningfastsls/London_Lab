@@ -14,3 +14,4 @@
 - [ ] 2026-04-18: Analysis Phase B2 — Cross-animal comparison: repertoire proportions (chi-squared, JSD), Shannon entropy, transition matrix differences, UMAP space overlap. Note: N=2 individuals, use descriptive not inferential stats.
 - [ ] 2026-04-25: Analysis Phase C — LMT behavioral correlation: PETH analysis (event_triggered.py), type-specific PETHs, USV-behavior temporal coupling. Prerequisite: locate .sqlite behavioral database.
 - [ ] 2026-04-25: Open questions to investigate — (1) density ridges within the UMAP manifold? (2) bout-onset signatures (3) frequency drift over hours/days (4) are Short calls real USVs? (5) Flat as default state vs communicative signal (6) sinuosity as arousal marker. See docs/analysis-roadmap.md §Open Questions.
+- [ ] 2026-04-29: Check in with Mickey — lab strain recording data status. When it arrives, follow `HANDOFF_05_LAB_DATA_PIPELINE.md` run order. Prerequisite: Phases A+B should be complete first.

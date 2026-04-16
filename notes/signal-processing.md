@@ -27,8 +27,18 @@ The DSP foundation for everything else. All audio is recorded at 300 kHz (Nyquis
 - [[transient cage noises produce broadband vertical smears rejected by the minimum duration filter]] -- broadband vertical artifacts from cage impacts
 - [[shared lab space without sound attenuation explains why noise robustness is a primary design constraint]] -- the recording environment that produces both artifact types
 
+## Ridge-Based Feature Extraction
+- [[ridge extraction finds the dominant frequency bin with maximum energy at each time step creating a pitch contour trajectory]] -- argmax per spectrogram column with optional continuity constraints (Oren 2024 / MATLAB `tfridge`)
+- [[time-axis resampling to a fixed number of steps normalizes variable-duration vocalizations without discarding frequency information]] -- 2D interpolation to fixed time steps; contrasts with zero-pad/center-crop
+
 ## Acoustic Property Extraction
 - [[acoustic property extraction from spectrogram data produces ground truth targets for probing experiments]] -- seven properties computed directly from spectrogram columns (170 bins, 20-120 kHz) as probe labels
+
+## Autoencoder Preprocessing
+- [[BCE loss with sigmoid output treats spectrogram pixels as independent probabilities requiring input normalization to 0-1 range]] -- loss function choice cascades to normalization and output activation
+- [[per-spectrogram max normalization is the simplest effective preprocessing for BCE-based spectrogram reconstruction]] -- divide by max; no fitted parameters; discards absolute amplitude
+- [[symmetric zero-padding for short USVs and center-cropping for long ones standardizes variable-duration inputs to fixed dimensions]] -- AMVOC pads/crops to 64 frames (128ms); generalizable method
+- [[AMVOC uses 2ms non-overlapping spectrogram windows giving 0.5 kHz frequency resolution at the expense of temporal smoothness]] -- contrast with our 75% overlap; independent frames vs smooth coverage
 
 ## Cross-Tool STFT Comparisons
 - [[MUPET operates at 250 kHz sample rate with minimum 90 kHz requirement covering the 25-125 kHz USV band]] -- 250 kHz standard; 8th-order Chebyshev at 25 kHz; Nyquist 125 kHz vs our 150 kHz

@@ -21,4 +21,9 @@ An alternative to scaling up labels through active learning is using fewer label
 
 ---
 
+---
+
+Relevant Notes:
+- [[AMVOC semi-supervised retraining combines reconstruction KL divergence and pairwise constraint losses with uncertainty-based annotation priority]] -- AMVOC implements a parallel active learning loop for unsupervised clustering: prioritize most-uncertain USVs for human pairwise constraint annotation, then retrain autoencoder with constraints; our cycle mines hard negatives for the CNN detector while AMVOC mines uncertain cluster assignments for the autoencoder, but both follow the same principle of focusing human effort on model uncertainty
+
 Source: [ROADMAP](../ROADMAP.md), Phase 2

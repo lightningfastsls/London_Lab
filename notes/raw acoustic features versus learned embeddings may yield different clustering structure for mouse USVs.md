@@ -17,6 +17,8 @@ The question is whether learned representations would reveal meaningful sub-stru
 
 This doesn't undermine the core finding — [[Goffinet VAE found Gaussian mixture model clustering only supported k of 2 or fewer clusters for mouse USVs]] used 32-dim VAE latent space (learned embeddings) and still found k<=2, so the continuum likely holds regardless. But there may be *more* structure than raw features reveal, even if it falls short of 20-27 discrete categories.
 
+AMVOC provides the most direct quantitative evidence for this gap: since [[AMVOC deep autoencoder features scored 37 percent higher than 4-feature handcrafted baselines in blinded human evaluation]], learned autoencoder representations substantially outperform even the simplest handcrafted features (duration, normalized min/max frequency positions, normalized bandwidth). However, their baseline was only 4 features — our DeepSqueak features are 10-dimensional and richer, so the magnitude of improvement from learned representations may be smaller for us. The specific comparison AMVOC omits is the one we most need: how does their 90-dimensional SVM-smoothed contour (feature_mode 3, since [[AMVOC SVM-smoothed frequency contour resampled to 90 dimensions is architecturally similar to peak-frequency vectorization]]) compare to autoencoder features? That gap remains open.
+
 Resolution paths: (1) apply a pretrained bioacoustic encoder (BEATs, Perch 2.0, or HuBERT fine-tuned) to our spectrograms and re-run UMAP+HDBSCAN, (2) train our own autoencoder on the 5970 dataset and compare clustering outcomes, (3) compare cluster stability metrics across feature spaces.
 
 ---
@@ -32,6 +34,7 @@ Relevant Notes:
 - [[forcing USVs into discrete categories may obscure the continuous variation that distinguishes populations]] -- if learned embeddings reveal more structure, the "one big continuum" result from raw features may understate meaningful variation
 - [[distributional comparisons in VAE latent space using Earth Mover Distance or Jensen-Shannon divergence may be more biologically meaningful than categorical repertoire comparison]] -- the choice of feature space directly affects the quality of latent-space distributional comparisons
 - [[dual supervised plus unsupervised classification addresses the USV taxonomy problem from both directions]] -- the unsupervised branch's results depend critically on whether raw or learned features are used
+- [[Omer lab 80-dimensional FM plus AM ridge vectorization embeds each vocalization call in a fixed-length feature space]] -- a third feature category between DeepSqueak raw stats (10D) and AMVOC learned embeddings (1280D); mid-complexity handcrafted option that could triangulate whether the "one big cluster" result reflects feature limitations or genuine continuum
 
 Topics:
 - [[unsupervised-usv-discovery]]

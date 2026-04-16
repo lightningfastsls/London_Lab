@@ -28,6 +28,8 @@ Relevant Notes:
 - [[HMM surrogate null model tests whether USV sequences arise from hidden behavioral state switching]] — MI decay profiles against HMM surrogates test whether hidden-state switching fully explains temporal dependencies
 - [[renewal process null model fits inter-event interval distribution for temporal structure testing]] — MI significant against renewal surrogates confirms code-identity dependencies beyond temporal spacing
 - [[n-gram idiom detection identifies compositional phrases exceeding chance frequency in USV code sequences]] — detects specific over-represented patterns while MI rate measures aggregate dependency strength
+- [[SIS equals entropy rate at depth zero minus entropy rate at depth D giving information gained from sequential context]] — SIS at depth 1 is I(X_n; X_{n-1}) which is exactly MI at lag 1; our 0.093 bits is directly SIS depth-1 comparable to Hertz's 0.13-0.22 range
+- [[Hertz 2020 quantitative benchmark iMSA achieves 0.22 bits depth-1 SIS versus iMUPET 0.13 and iVoICE 0.10 on C57BL-6 courtship data]] — empirical reference: our 0.093 bits at lag 1 is below iMUPET's 0.13 on lab mice
 
 Topics:
 - [[representation-learning]]

@@ -40,6 +40,7 @@ Relevant Notes:
 - [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- even our own HDBSCAN result used raw features; learned embeddings might reveal more structure within the continuum
 - [[wild mice show more diverse USV repertoires than lab mice as preliminary evidence for courtship vocal degradation]] -- the diversity observation could be an artifact of categorical analysis if categories lose within-group variation
 - [[traditional Holy and Guo 2005 USV taxonomy defines discrete types but Goffinet 2021 showed USVs form a continuum]] -- the specific taxonomy most commonly imposed, and its empirical refutation
+- [[AMVOC t-SNE plus user-specified k versus field-standard UMAP plus HDBSCAN for bioacoustic clustering]] -- tension between old-paradigm k-means (which forces k clusters by definition) and modern HDBSCAN (which can discover that the data is a continuum); AMVOC's strong results with user-specified k=6 suggest embedding quality may matter more than whether clusters are forced, partially dissolving this concern
 
 Topics:
 - [[classification-methodology]]

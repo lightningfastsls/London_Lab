@@ -25,6 +25,8 @@ Relevant Notes:
 - [[Perch 2.0 trained on 14795 species achieves state of the art bioacoustic embeddings that transfer across taxa]] -- Perch's cross-taxa transfer validates this at much larger scale
 - [[speech pretrained SSL models transfer well to animal vocalizations with only marginal benefit from bioacoustic pretraining]] -- consistent cross-domain transfer pattern
 - [[LoRA adaptation amplifies existing underemphasized directions in pre-trained weights rather than learning entirely new features]] -- USV-specific features may already exist as underemphasized directions in generic models, explaining near-parity
+- [[GmSLM is a London-Omer collaboration applying self-supervised speech models to marmoset vocalizations]] -- GmSLM applies human speech SSL to marmosets; concrete evidence from our collaborators that cross-species transfer works in practice
+- [[AMVOC convolutional autoencoder provides the best open-source Python tool for unsupervised USV feature extraction and clustering]] -- species-specific counterpoint: AMVOC trained only on mouse USVs achieves strong clustering (37% over handcrafted), so a generic cross-species AE should at least match this baseline to be worth adopting over a species-specific tool
 
 Topics:
 - [[bioacoustic-ssl]]

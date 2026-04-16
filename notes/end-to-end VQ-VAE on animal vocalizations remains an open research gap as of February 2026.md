@@ -39,6 +39,7 @@ Relevant Notes:
 - [[Best et al 2023 showed learned audio embeddings match species-specific models for vocalization clustering across six species]] -- continuous embedding approach
 - [[whether flow matching could replace VQ-VAE for unsupervised USV representation learning]] -- continuous alternative to discrete VQ-VAE that avoids the codebook design problem entirely
 - [[FSQ eliminates codebook collapse by construction achieving 100 percent utilization through fixed scalar quantization]] -- end-to-end but not applied to animals
+- [[AMVOC lacks batch normalization dropout validation monitoring and VAE variant — all high-value improvements for our wild-mouse pipeline]] -- AMVOC's gap analysis maps directly to our VQ-VAE design decisions: each gap AMVOC identifies (no VAE variant, no batch norm, no dropout) is addressed by our planned architecture, and their deliberate omissions (2-epoch training, no augmentation) inform when these additions become necessary
 
 Topics:
 - [[unsupervised-usv-discovery]]

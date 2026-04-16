@@ -25,6 +25,7 @@ Relevant Notes:
 - [[MSE loss for next-column prediction may produce blurry spectrograms requiring a mixture density output head]] -- perceptual loss as alternative to MSE workarounds
 - [[MSE loss simplicity versus GMM output head expressiveness for spectrogram prediction]] -- perceptual loss is a third option in this tradeoff
 - [[diffusion models factorize generation into many small denoising steps each narrowing the possibility space]] -- diffusion/flow matching provides a fourth approach: sidestep mode-averaging by iterative refinement rather than changing the loss
+- [[BCE loss with sigmoid output treats spectrogram pixels as independent probabilities requiring input normalization to 0-1 range]] -- AMVOC's BCE loss is a third option in the loss function design space alongside MSE and perceptual loss; BCE treats pixels as independent probabilities (matching sparse USV spectrograms well) but ignores spatial structure, while perceptual loss captures structure at the cost of requiring a pretrained feature extractor
 
 Topics:
 - [[bioacoustic-ssl]]

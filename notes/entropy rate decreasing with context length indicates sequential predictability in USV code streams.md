@@ -28,6 +28,9 @@ Relevant Notes:
 - [[bigram productivity ratio measures compositionality of USV code sequences]] -- pairwise transition analysis in the same test battery
 - [[codebook size of 64 gives interpretable discrete vocabulary with headroom beyond traditional USV types]] -- K=64 determines the maximum entropy baseline for this analysis
 - [[Miller-Madow correction compensates for finite sample bias in entropy rate estimation]] -- the specific correction formula and when it matters most
+- [[SIS equals entropy rate at depth zero minus entropy rate at depth D giving information gained from sequential context]] -- SIS is exactly H_0 - H_D; our entropy rate computation at depth 1 gives SIS depth 1 directly
+- [[Hertz 2020 quantitative benchmark iMSA achieves 0.22 bits depth-1 SIS versus iMUPET 0.13 and iVoICE 0.10 on C57BL-6 courtship data]] -- empirical reference values for what entropy rate drop is expected
 
 Topics:
 - [[classification]]
+- [[classification-methodology]]

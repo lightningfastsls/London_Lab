@@ -37,6 +37,7 @@ Relevant Notes:
 - [[300 kHz sample rate provides comfortable Nyquist headroom for mouse USVs up to 120 kHz]] -- sample rate context for the conversion
 - [[chevron calls expose the STFT time-frequency tradeoff because they require simultaneous temporal and spectral precision]] -- the tradeoff DeepSqueak resolves toward frequency
 - [[DeepSqueak regenerates its own spectrograms from raw audio so exported bounding boxes serve as regions of interest not precise frequency boundaries]] -- these are the STFT parameters DeepSqueak applies when regenerating spectrograms from imported Raven selection tables
+- [[AMVOC uses 2ms non-overlapping spectrogram windows giving 0.5 kHz frequency resolution at the expense of temporal smoothness]] -- three-way STFT parameter comparison: DeepSqueak 3.2 ms/88% overlap prioritizes frequency resolution (312 Hz), AMVOC 2 ms/0% overlap prioritizes speed and independence, our pipeline 1.7 ms/75% overlap balances temporal precision with smoothness
 
 Topics:
 - [[signal-processing]]
