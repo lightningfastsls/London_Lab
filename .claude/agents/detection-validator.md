@@ -15,19 +15,38 @@ You validate changes to the USV candidate detection algorithms.
 
 ## Detection Systems
 
-### 1. Energy-Based Detection Pipeline (Primary)
-The main detection pipeline for candidate generation:
-- Energy thresholding with peak or mean mode
-- Duration filtering (min/max)
-- Bandwidth filtering for noise rejection
-- Segment merging
+### 1. CNN Sliding-Window Detection Pipeline (Production — PRIMARY)
+The canonical production pipeline orchestrated by `scripts/run_batch_detection.py`:
+- `AudioLoader` generates dB-scaled spectrograms via `ExtractionConfig` (locked to CNN training grid: 20-120 kHz, 256 px)
+- `SlidingInference` runs the trained CNN across the spectrogram
+- Temperature calibration + normalization scale the logits
+- `HysteresisDetection` converts per-frame probabilities into segments
+- `EventFeatures` + `FPFilter` score candidates for false-positive likelihood
+- `Triage` classifies each file into auto-accept / manual-review / reject tiers
+
+**Key Files:**
+- `scripts/run_batch_detection.py` - End-to-end orchestrator
+- `src/usv_spectrogram/app/core/audio_loader.py` - Spectrogram generation (ExtractionConfig)
+- `src/usv_spectrogram/app/core/sliding_inference.py` - CNN scoring
+- `src/usv_spectrogram/detection/extraction_config.py` - ExtractionConfig (FROZEN with model)
+- `src/usv_spectrogram/postprocessing/` - Hysteresis, event features, FP filter, triage
+- `models/hard_neg_retrain/best_model.pt` - Production CNN (see CLAUDE.md for lineage)
+
+**Key Parameters:**
+- Temperature (`models/hard_neg_retrain/temperature.json`)
+- FP filter threshold (`models/hard_neg_retrain/fp_filter.pkl`)
+- Hysteresis high/low thresholds (`hysteresis_optimization_v2.json`)
+- `min_sustained_prob` - Reject events with brief probability dips
+
+### 2. Energy-Based Detector (Legacy — tuning scripts + unit tests only)
+Used for parameter exploration, comparison baselines, and bootstrapping new datasets. NOT on the production path; do not use as a reference for production detection behavior.
 
 **Key Files:**
 - `src/usv_spectrogram/detection/config.py` - DetectionConfig dataclass
 - `src/usv_spectrogram/detection/energy_detector.py` - EnergyDetector class
 - `src/usv_spectrogram/detection/candidate.py` - Candidate dataclass
-- `tests/test_energy_detector.py` - Detection tests
-- `scripts/run_detection.py` - CLI for batch detection
+- `tests/test_energy_detector.py` - Unit tests for the energy detector
+- `scripts/run_detection.py` - Legacy single-pipeline CLI (not batch production)
 
 **Key Parameters:**
 - `energy_threshold_db` - Detection sensitivity (relative to max)
@@ -36,8 +55,8 @@ The main detection pipeline for candidate generation:
 - `min_duration_ms` / `max_duration_ms` - Duration filters
 - `merge_gap_ms` - Merge nearby detections
 
-### 2. Parameter Lab Heuristic Detection (Legacy)
-Used for interactive exploration in Parameter Lab:
+### 3. Parameter Lab Heuristic Detection (Deprecated)
+Used for interactive exploration in the obsolete Streamlit Parameter Lab:
 - `src/usv_spectrogram/param_lab/heuristic_detect.py`
 - `tests/test_param_lab_heuristic.py`
 
@@ -58,10 +77,16 @@ Before validating, check the vault for established detection findings and baseli
 
 ## Validation Steps
 
-1. **Run detection tests**
-   ```powershell
-   .\.venv\Scripts\python.exe -m pytest tests/test_energy_detector.py -v
-   ```
+1. **Run detection tests** (scope depends on which system you're validating)
+   - For the production CNN pipeline (post-processing stages):
+     ```
+     .venv/bin/python -m pytest tests/test_hysteresis.py tests/test_hysteresis_hardened.py tests/test_fp_filter.py tests/test_analyze_detection_confidence.py -v
+     ```
+     Note: `sliding_inference.py` and `batch_output.py` do not currently have dedicated unit tests — validate changes there with an end-to-end smoke run of `scripts/run_batch_detection.py` on a small WAV folder.
+   - For the legacy energy detector (tuning/test changes only):
+     ```
+     .venv/bin/python -m pytest tests/test_energy_detector.py -v
+     ```
 
 2. **Check algorithm correctness**
    - Energy computation (peak vs mean mode)

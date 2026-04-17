@@ -9,7 +9,8 @@ paths:
 | Task Type | Start With | Reference Doc |
 |-----------|-----------|---------------|
 | Spectrogram / STFT changes | `spectrogram.py`, `_stft_core.py`, `config.py` | `docs/reference/usv_signal_processing_reference.md` |
-| Detection pipeline | `detection/energy_detector.py`, `detection/config.py` | `docs/modules/energy-detector.md` |
+| Detection pipeline (production) | `scripts/run_batch_detection.py`, `app/core/sliding_inference.py`, `app/core/audio_loader.py`, `postprocessing/` | `docs/modules/cnn-classifier.md`, `docs/handoffs/v2-full-pipeline-results.md` |
+| Legacy energy detector (tuning/tests only) | `detection/energy_detector.py`, `detection/config.py` | `docs/modules/energy-detector.md` |
 | CNN training / evaluation | `models/cnn_classifier.py`, `models/trainer.py` | `docs/modules/cnn-classifier.md` |
 | Training data assembly | `dataset/assembler.py`, `scripts/assemble_training_data.py` | `docs/modules/dataset-assembler.md` |
 | PyQt6 desktop app | `app/main_window.py`, `app/core/`, `app/widgets/` | `docs/plans/USV_DETECTION_APP_IMPLEMENTATION.md` |

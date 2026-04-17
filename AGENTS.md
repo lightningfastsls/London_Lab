@@ -49,7 +49,7 @@ Treat Claude Code plus arscontexta as the owner of memory, workflow orchestratio
 - Always specify `sr=300000` explicitly when touching WAV loading, spectrogram generation, or DSP-related paths.
 - Do not change test expectations just to make tests pass. Fix the code or raise the mismatch.
 - Do not claim completion without validation.
-- Do not make casual changes to STFT parameters, dB scaling, detection thresholds, or `energy_detector.py` without first reading the relevant docs and explaining the impact.
+- Do not make casual changes to STFT parameters, dB scaling, detection thresholds, or the production CNN detection pipeline (`scripts/run_batch_detection.py`, `app/core/sliding_inference.py`, `postprocessing/`) without first reading the relevant docs and explaining the impact. `src/usv_spectrogram/detection/energy_detector.py` is a legacy/experimental path — changes there affect tuning scripts and tests only, not production.
 - Prefer code truth over stale docs. If docs and code disagree, inspect the codebase before deciding.
 - Never use bulk staging or destructive git commands casually. Review what changed and stage specific files.
 

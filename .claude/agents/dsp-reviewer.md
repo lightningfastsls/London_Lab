@@ -52,9 +52,16 @@ When reviewing code changes:
 - `src/usv_spectrogram/stft_stream.py` - Streaming API
 - `src/usv_spectrogram/config.py` - SpectrogramConfig parameters
 
-### Detection Pipeline (Energy-based)
-- `src/usv_spectrogram/detection/energy_detector.py` - STFT and energy computation
-- `src/usv_spectrogram/detection/config.py` - DetectionConfig (sample rate, n_fft, etc.)
+### Detection Pipeline (Production — CNN-based)
+- `scripts/run_batch_detection.py` - Orchestrator: AudioLoader → SlidingInference → Hysteresis → FP Filter → Triage
+- `src/usv_spectrogram/app/core/audio_loader.py` - Spectrogram generation via `ExtractionConfig` (LOCKED to CNN training grid)
+- `src/usv_spectrogram/app/core/sliding_inference.py` - CNN sliding-window scoring
+- `src/usv_spectrogram/postprocessing/` - Hysteresis detection, event features, FP filter, triage
+- `src/usv_spectrogram/detection/extraction_config.py` - ExtractionConfig (freq band + pixel grid frozen at CNN training values)
+
+### Legacy Energy Detector (tuning scripts + unit tests only — NOT production)
+- `src/usv_spectrogram/detection/energy_detector.py` - Simple energy-threshold detector
+- `src/usv_spectrogram/detection/config.py` - DetectionConfig (consumed by EnergyDetector + tuning scripts)
 
 ### Reference Documentation
 - `usv_signal_processing_reference.md` - Design rationale and trade-offs
