@@ -19,7 +19,20 @@ from usv_language.data.normalization import (
     normalize,
     save_normalization_stats,
 )
-from usv_language.data.spectrogram import BoutSpectrogramConfig, compute_bout_spectrogram
+
+
+def __getattr__(name: str):
+    """Lazy-load spectrogram symbols to avoid heavy deps (soundfile, scipy,
+    src.usv_spectrogram) when only the training/dataset path is needed."""
+    if name in ("BoutSpectrogramConfig", "compute_bout_spectrogram"):
+        from usv_language.data.spectrogram import (
+            BoutSpectrogramConfig,
+            compute_bout_spectrogram,
+        )
+        return {"BoutSpectrogramConfig": BoutSpectrogramConfig,
+                "compute_bout_spectrogram": compute_bout_spectrogram}[name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 
 __all__ = [
     "Bout",
