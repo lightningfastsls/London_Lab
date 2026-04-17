@@ -34,6 +34,11 @@ from .repertoire_stats import (
     analyze_repertoire,
 )
 
+from .sis_baselines import (
+    SISResult,
+    compute_sis_depth_1,
+)
+
 __all__ = [
     # Raven export
     "RavenExportConfig",
@@ -61,4 +66,7 @@ __all__ = [
     "plot_repertoire_comparison",
     "generate_report",
     "analyze_repertoire",
+    # SIS baselines
+    "SISResult",
+    "compute_sis_depth_1",
 ]

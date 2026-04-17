@@ -1,0 +1,71 @@
+{
+  "timestamp_utc": "2026-04-17T12:16:10+00:00",
+  "script": "run_sis_baselines.py",
+  "inputs": {
+    "classified_csv": "results/traditional_taxonomy/classified_traditional.csv",
+    "umap_csv": "results/recluster_umap_hdbscan/reclassified_detections.csv",
+    "output_dir": "results/sis_baselines"
+  },
+  "methodology": {
+    "mi_estimator": "usv_language.analysis.sequence_analysis.mutual_information_at_lag",
+    "lag": 1,
+    "sort_keys": [
+      "file",
+      "begin_time_s"
+    ],
+    "join_keys": [
+      "file",
+      "begin_time_s"
+    ],
+    "bout_detection": null,
+    "file_boundary_handling": null,
+    "labeling_columns_scanned": [
+      "syllable_type",
+      "label",
+      "hdbscan_label"
+    ]
+  },
+  "row_counts": {
+    "classified_raw": 7921,
+    "classified_after_dropna": 7864,
+    "classified_dup_dropped": 0,
+    "umap_raw": 7921,
+    "umap_after_dropna": 7864,
+    "umap_dup_dropped": 0,
+    "merged": 7864
+  },
+  "hertz_reference_bits": {
+    "iVoICE": 0.1,
+    "iMUPET": 0.13,
+    "iMSA": 0.22
+  },
+  "results": [
+    {
+      "name": "scattoni-7",
+      "n_calls": 7864,
+      "n_labels": 7,
+      "mi_at_lag_1": 0.07575191408625362,
+      "marginal_entropy": 2.5480948391444875,
+      "conditional_entropy": 2.472342925058234,
+      "entropy_reduction_pct": 2.972884404557211
+    },
+    {
+      "name": "deepsqueak-27",
+      "n_calls": 7864,
+      "n_labels": 27,
+      "mi_at_lag_1": 0.2813526822303811,
+      "marginal_entropy": 4.019100985806621,
+      "conditional_entropy": 3.73774830357624,
+      "entropy_reduction_pct": 7.000388475531539
+    },
+    {
+      "name": "hdbscan-3",
+      "n_calls": 7864,
+      "n_labels": 4,
+      "mi_at_lag_1": 0.029595874424085778,
+      "marginal_entropy": 0.2615896563006763,
+      "conditional_entropy": 0.23199378187659053,
+      "entropy_reduction_pct": 11.313855005821672
+    }
+  ]
+}
