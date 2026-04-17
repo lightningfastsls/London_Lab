@@ -1,7 +1,6 @@
 ---
 description: "Our HDBSCAN analysis used raw DeepSqueak features, not learned embeddings — encoder representations might reveal sub-structure within the main cluster that raw features miss"
 type: open-question
-confidence: uncertain
 created: 2026-04-06
 meta_state: current
 topics:

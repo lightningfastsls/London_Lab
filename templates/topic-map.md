@@ -1,15 +1,17 @@
 ---
 _schema:
   entity_type: "topic-map"
-  applies_to: "notes/*.md"
+  applies_to: "notes/*.md WITH type: moc (topic maps / navigation hubs; distinct from research-notes in templates/note.md)"
   required:
     - description
-    - type
+    - type         # must be "moc"
+    - topics       # self-referential (topic map links to itself) or links to parent topic map
   optional:
     - parent_map
+    - meta_state
   enums:
     type:
-      - moc
+      - moc        # only valid value for topic maps
 
 # Template fields
 description: ""

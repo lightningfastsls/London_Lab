@@ -1,7 +1,7 @@
 ---
 description: The numbered recording groups (5970, 3452, 2379) each represent a different pair of wild mice, not different strains or populations
 type: claim
-confidence: confirmed
+confidence: proven
 topics: "[[experimental-methods]], [[wild-lab-vocal-comparison]], [[training-methodology]]"
 ---
 

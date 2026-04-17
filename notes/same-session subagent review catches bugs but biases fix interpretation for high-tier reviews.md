@@ -1,7 +1,7 @@
 ---
 description: "Context isolation enables genuine bug detection, but the implementor controlling spawn timing, finding interpretation, and verdict creates an interpretation bias layer that undermines independence for critical modules"
 type: claim
-confidence: medium
+confidence: likely
 source: ops/observations/master-reviewer-bias-when-run-as-implementor-subagent.md
 topics: "[[code-review-governance]]"
 ---

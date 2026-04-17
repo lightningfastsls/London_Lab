@@ -1,7 +1,6 @@
 ---
 description: "AMVOC achieved strong results (37 percent over baseline) with PCA plus t-SNE plus k-means-6 before the UMAP plus HDBSCAN paradigm solidified — raises the question of whether embedding quality matters more than downstream clustering method"
 type: open-question
-confidence: uncertain
 created: 2026-04-15
 meta_state: current
 topics:
