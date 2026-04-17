@@ -94,7 +94,8 @@ try {
         [Environment]::Exit(1)
     }
 } catch {
-    Write-Host "[HOOK validate-note] $($_.Exception.Message)"
+    # Silent swallow — hook must never fail the Write call.
+    # Encoding / UNC-path / null-ref edge cases on WSL pwsh can crash Write-Host itself.
 }
 
 [Environment]::Exit(0)
