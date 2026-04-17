@@ -2,6 +2,15 @@
 
 This module defines parameters for converting candidate segments into
 standardized spectrogram PNG images for human labeling and CNN training.
+
+NOTE: freq_min_hz / freq_max_hz / sample_rate / n_fft / hop_length are
+INTENTIONALLY hardcoded here (not imported from ``corpus.py``). These
+values define the pixel grid of every CNN training image in
+``models/hard_neg_retrain/``. Changing them without retraining will
+silently corrupt inference (same pixel grid, different Hz-per-pixel).
+The module-level drift assertion at the bottom of this file fires if
+``corpus.py`` ever diverges — treat that failure as "retrain the CNN
+first, then update these literals," never the other way around.
 """
 
 from __future__ import annotations
@@ -122,3 +131,34 @@ class ExtractionConfig:
     def hop_ms(self) -> float:
         """Return hop length in milliseconds."""
         return (self.hop_length / self.sample_rate) * 1000.0
+
+
+# Drift assertion — fires at import time if the corpus has diverged from
+# the CNN training grid encoded above. If this fires, retrain the CNN
+# first; only then update the literals here to match the new corpus.
+from ..corpus import (  # noqa: E402 — intentional late import for drift check
+    SAMPLE_RATE_HZ as _CORPUS_SAMPLE_RATE_HZ,
+    STFT_HOP as _CORPUS_STFT_HOP,
+    STFT_N_FFT as _CORPUS_STFT_N_FFT,
+    USV_FREQ_MAX_HZ as _CORPUS_USV_FREQ_MAX_HZ,
+    USV_FREQ_MIN_HZ as _CORPUS_USV_FREQ_MIN_HZ,
+)
+
+_FIELDS = ExtractionConfig.__dataclass_fields__
+assert _FIELDS["freq_min_hz"].default == _CORPUS_USV_FREQ_MIN_HZ, (
+    "ExtractionConfig.freq_min_hz drifted from corpus.USV_FREQ_MIN_HZ. "
+    "If corpus changed, retrain the CNN before updating this literal."
+)
+assert _FIELDS["freq_max_hz"].default == _CORPUS_USV_FREQ_MAX_HZ, (
+    "ExtractionConfig.freq_max_hz drifted from corpus.USV_FREQ_MAX_HZ. "
+    "If corpus changed, retrain the CNN before updating this literal."
+)
+assert _FIELDS["sample_rate"].default == _CORPUS_SAMPLE_RATE_HZ, (
+    "ExtractionConfig.sample_rate drifted from corpus.SAMPLE_RATE_HZ."
+)
+assert _FIELDS["n_fft"].default == _CORPUS_STFT_N_FFT, (
+    "ExtractionConfig.n_fft drifted from corpus.STFT_N_FFT."
+)
+assert _FIELDS["hop_length"].default == _CORPUS_STFT_HOP, (
+    "ExtractionConfig.hop_length drifted from corpus.STFT_HOP."
+)

@@ -11,27 +11,37 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from ..corpus import (
+    SAMPLE_RATE_HZ,
+    STFT_HOP,
+    STFT_N_FFT,
+    USV_FREQ_MAX_HZ,
+    USV_FREQ_MIN_HZ,
+)
+
 
 @dataclass(frozen=True)
 class DetectionConfig:
     """Configuration for energy-based USV candidate detection.
 
-    Parameters are tuned for 250 kHz recordings of mouse USVs.
+    Parameters are tuned for 300 kHz recordings of mouse USVs.
+    Physical constants (sample rate, USV band, STFT params) come from
+    corpus.py so all pipelines stay aligned with the CNN training grid.
     See usv_signal_processing_reference.md Section 1.1 for parameter trade-offs.
     """
 
-    # STFT parameters - matched to existing SpectrogramConfig defaults
-    sample_rate: int = 300_000  # Must be >= 2 * max_freq (Nyquist)
-    n_fft: int = 512  # ~586 Hz freq resolution, ~1.7 ms time resolution at 300 kHz
-    hop_length: int = 128  # 75% overlap for smooth temporal coverage
+    # STFT parameters - sourced from corpus.py (CNN-aligned)
+    sample_rate: int = SAMPLE_RATE_HZ  # Must be >= 2 * max_freq (Nyquist)
+    n_fft: int = STFT_N_FFT  # ~586 Hz freq resolution, ~1.7 ms time resolution at 300 kHz
+    hop_length: int = STFT_HOP  # 75% overlap for smooth temporal coverage
 
     # Sample rate handling
     # If True, use the WAV file's sample rate during detection.
     auto_sample_rate: bool = True
 
     # Frequency band for USV detection
-    freq_min_hz: int = 25_000  # High-pass: remove sub-ultrasonic noise
-    freq_max_hz: int = 110_000  # Upper bound of mouse USV range
+    freq_min_hz: int = USV_FREQ_MIN_HZ  # High-pass: remove sub-ultrasonic noise
+    freq_max_hz: int = USV_FREQ_MAX_HZ  # Upper bound of mouse USV range
 
     # Energy threshold - deliberately LOW for high recall
     # See Section 3.2: threshold bias creates systematic blind spots

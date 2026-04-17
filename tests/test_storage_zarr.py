@@ -29,7 +29,7 @@ class TestStorageZarr(unittest.TestCase):
     def test_init_spectrogram_store_creates_store_with_correct_arrays(self) -> None:
         cfg = SpectrogramConfig()
         freqs_hz = np.linspace(30_000.0, 125_000.0, 100)
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store_path = Path(tmpdir) / "test.zarr"
@@ -64,7 +64,7 @@ class TestStorageZarr(unittest.TestCase):
     def test_append_spectrogram_chunk_writes_data(self) -> None:
         cfg = SpectrogramConfig()
         freqs_hz = np.linspace(30_000.0, 125_000.0, 100)
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store_path = Path(tmpdir) / "append_test.zarr"
@@ -86,7 +86,7 @@ class TestStorageZarr(unittest.TestCase):
     def test_append_spectrogram_chunk_multiple_writes(self) -> None:
         cfg = SpectrogramConfig()
         freqs_hz = np.linspace(30_000.0, 125_000.0, 80)
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store_path = Path(tmpdir) / "multi_append.zarr"
@@ -112,7 +112,7 @@ class TestStorageZarr(unittest.TestCase):
     def test_roundtrip_write_then_read_back(self) -> None:
         cfg = SpectrogramConfig()
         freqs_hz = np.linspace(30_000.0, 125_000.0, 120)
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
 
         # Original data
         n_freq_bins = 120
@@ -146,7 +146,7 @@ class TestStorageZarr(unittest.TestCase):
     def test_append_empty_chunk_does_nothing(self) -> None:
         cfg = SpectrogramConfig()
         freqs_hz = np.linspace(30_000.0, 125_000.0, 60)
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store_path = Path(tmpdir) / "empty_chunk.zarr"
@@ -164,7 +164,7 @@ class TestStorageZarr(unittest.TestCase):
     def test_append_mismatched_freq_axis_raises(self) -> None:
         cfg = SpectrogramConfig()
         freqs_hz = np.linspace(30_000.0, 125_000.0, 100)
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store_path = Path(tmpdir) / "mismatch.zarr"
@@ -181,7 +181,7 @@ class TestStorageZarr(unittest.TestCase):
     def test_append_mismatched_times_raises(self) -> None:
         cfg = SpectrogramConfig()
         freqs_hz = np.linspace(30_000.0, 125_000.0, 100)
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store_path = Path(tmpdir) / "time_mismatch.zarr"
@@ -197,7 +197,7 @@ class TestStorageZarr(unittest.TestCase):
     def test_append_non_2d_spectrogram_raises(self) -> None:
         cfg = SpectrogramConfig()
         freqs_hz = np.linspace(30_000.0, 125_000.0, 100)
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store_path = Path(tmpdir) / "non_2d.zarr"

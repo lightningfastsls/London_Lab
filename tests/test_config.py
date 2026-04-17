@@ -17,12 +17,12 @@ from usv_spectrogram.config import SpectrogramConfig
 class TestConfig(unittest.TestCase):
     def test_default_config_creation(self) -> None:
         cfg = SpectrogramConfig()
-        self.assertEqual(cfg.expected_sample_rate_hz, 250_000)
+        self.assertEqual(cfg.expected_sample_rate_hz, 300_000)
         self.assertEqual(cfg.window_length, 2048)
         self.assertEqual(cfg.zero_padding_factor, 2)
         self.assertEqual(cfg.hop_ms, 0.5)
-        self.assertEqual(cfg.f_min_hz, 30_000.0)
-        self.assertEqual(cfg.f_max_hz, 125_000.0)
+        self.assertEqual(cfg.f_min_hz, 20_000.0)
+        self.assertEqual(cfg.f_max_hz, 120_000.0)
         self.assertTrue(cfg.enforce_sample_rate)
 
     def test_n_fft_returns_correct_value(self) -> None:

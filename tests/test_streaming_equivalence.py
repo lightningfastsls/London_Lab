@@ -23,7 +23,7 @@ from usv_spectrogram.stft_stream import stream_wav_spectrogram_db
 
 class TestStreamingEquivalence(unittest.TestCase):
     def test_streaming_matches_in_memory(self) -> None:
-        sample_rate_hz = 250_000
+        sample_rate_hz = 300_000
         duration_s = 0.05
         t = np.linspace(0, duration_s, int(sample_rate_hz * duration_s), endpoint=False)
         samples = (

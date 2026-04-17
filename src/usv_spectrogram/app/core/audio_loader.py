@@ -27,6 +27,11 @@ class SonicConfig:
     This avoids IIR anti-aliasing filter smear from scipy.signal.decimate()
     AND keeps the analysis window short (3.4ms) for temporal sharpness.
     hop_length=128 matches the USV view for natural scroll sync.
+
+    NOTE: freq_min_hz / freq_max_hz are INTENTIONALLY 0-30 kHz (NOT the
+    corpus USV band from ``corpus.py``). This config drives the sonic-range
+    preview pane, which shows audible-range energy for context — it is not
+    part of the USV analysis pipeline. Do not "fix" these to 20-120 kHz.
     """
 
     sample_rate: int = 300_000     # Raw sample rate — no decimation

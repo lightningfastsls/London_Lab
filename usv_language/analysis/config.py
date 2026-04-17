@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from usv_spectrogram.corpus import USV_FREQ_MAX_HZ, USV_FREQ_MIN_HZ
+
 
 @dataclass(frozen=True)
 class AnalysisConfig:
@@ -47,8 +49,8 @@ class AnalysisConfig:
     zipf_min_count: int = 5
     max_ngram_order: int = 8
     manipulation_n_future_steps: int = 50
-    freq_min_hz: int = 20_000
-    freq_max_hz: int = 120_000
+    freq_min_hz: int = USV_FREQ_MIN_HZ
+    freq_max_hz: int = USV_FREQ_MAX_HZ
     n_freq: int = 170
     source_layer: int = 4
     tsne_perplexity: float = 5.0

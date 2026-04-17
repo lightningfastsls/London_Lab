@@ -4,30 +4,33 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from .corpus import SAMPLE_RATE_HZ, USV_FREQ_MAX_HZ, USV_FREQ_MIN_HZ
+
 
 @dataclass(frozen=True)
 class SpectrogramConfig:
     """Configures STFT and rendering defaults for USV spectrograms.
 
-    Parameters are tuned for 250 kHz WAVs and USV band visualization.
+    Parameters are tuned for 300 kHz LMT WAVs and USV band visualization.
+    Physical constants (sample rate, USV band) are sourced from corpus.py.
     """
 
     # Expected sample rate for USV recordings; set enforce_sample_rate to False to allow others.
-    expected_sample_rate_hz: int = 250_000
+    expected_sample_rate_hz: int = SAMPLE_RATE_HZ
     enforce_sample_rate: bool = True
 
-    # STFT window length in samples; 2048 at 250 kHz is ~8.2 ms.
+    # STFT window length in samples; 2048 at 300 kHz is ~6.8 ms.
     window_length: int = 2048
     # Zero-padding factor for the FFT length; 2 => n_fft=4096 for smoother spectra.
     zero_padding_factor: int = 2
-    # Hop size in milliseconds; 0.5 ms at 250 kHz is 125 samples.
+    # Hop size in milliseconds; 0.5 ms at 300 kHz is 150 samples.
     hop_ms: float = 0.5
     # Window function name passed to scipy.signal.get_window.
     window: str = "hann"
 
     # Frequency band of interest (USV band) in Hz.
-    f_min_hz: float = 30_000.0
-    f_max_hz: float = 125_000.0
+    f_min_hz: float = float(USV_FREQ_MIN_HZ)
+    f_max_hz: float = float(USV_FREQ_MAX_HZ)
 
     # Display gain and range for dB-scaled spectrograms.
     gain_db: float = 20.0
@@ -36,7 +39,7 @@ class SpectrogramConfig:
     # Numerical floor to avoid log(0) when computing dB.
     eps: float = 1e-12
 
-    # Streaming block size in samples; 250k ~= 1 second at 250 kHz.
+    # Streaming block size in samples; 250k ~= 0.83 seconds at 300 kHz.
     stream_block_size_samples: int = 250_000
 
     # Zarr chunk size along time axis in frames for incremental writes.

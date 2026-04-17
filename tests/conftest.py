@@ -28,7 +28,7 @@ def sample_wav_path() -> Path:
     Returns a 250 kHz mono WAV with a 60 kHz tone embedded in noise,
     lasting 0.1 seconds (25000 samples).
     """
-    sample_rate_hz = 250_000
+    sample_rate_hz = 300_000
     duration_s = 0.1
     n_samples = int(sample_rate_hz * duration_s)
 
@@ -64,7 +64,7 @@ def sample_spectrogram(sample_config: SpectrogramConfig) -> Tuple[np.ndarray, np
 
     Returns (spec_db, freqs_hz, times_s) from a synthetic signal.
     """
-    sample_rate_hz = 250_000
+    sample_rate_hz = 300_000
     duration_s = 0.05
     n_samples = int(sample_rate_hz * duration_s)
 
@@ -103,7 +103,7 @@ def create_tone_wav():
         freq_hz: float,
         duration_ms: float,
         amplitude: float = 0.5,
-        sample_rate: int = 250_000,
+        sample_rate: int = 300_000,
         noise_level: float = 0.01,
         start_offset_ms: float = 50.0,
     ) -> Path:
@@ -164,7 +164,7 @@ def create_multi_tone_wav():
 
     def _create(
         tones: list[dict],
-        sample_rate: int = 250_000,
+        sample_rate: int = 300_000,
         total_duration_ms: float = 500.0,
         noise_level: float = 0.01,
     ) -> Path:
