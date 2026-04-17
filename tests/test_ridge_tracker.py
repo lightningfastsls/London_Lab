@@ -33,7 +33,7 @@ Additional coverage (recurring gap patterns):
   - NaN propagation: fm and am are NaN on the SAME columns
      -> test_nan_columns_are_consistent_between_fm_and_am
 
-Total: 13 tests (9 from ROADMAP, 4 additional)
+Total: 14 tests (10 from ROADMAP, 4 additional)
 
 Will pass after src/usv_spectrogram/features/ridge_tracker.py is implemented.
 """
@@ -555,3 +555,699 @@ def test_nan_columns_are_consistent_between_fm_and_am() -> None:
         am_nan,
         err_msg="NaN mask for FM and AM must be identical column-by-column",
     )
+
+# ---------------------------------------------------------------------------
+# Hardener additions
+# ---------------------------------------------------------------------------
+
+# H1 — Output dtype is float64 regardless of float32 input
+# ---------------------------------------------------------------------------
+
+def test_output_dtype_is_float64_for_float32_input() -> None:
+    """Reviewer gap #1: float32 magnitude input must still produce float64 outputs.
+
+    track_ridge initialises fm_hz and am via np.full(n_cols, np.nan, dtype=float).
+    Python's ``float`` keyword maps to np.float64, so the outputs are always
+    float64 regardless of input dtype.  This test anchors that contract so a
+    future refactor that changes the dtype keyword would be caught immediately.
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 20
+    target_bin = _freq_to_bin(60_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    # Deliberately use float32 input
+    mag = _build_magnitude(n_bins, n_cols, center_bins).astype(np.float32)
+    assert mag.dtype == np.float32, "Precondition: input must be float32"
+
+    cfg = RidgeConfig()
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    assert fm_hz.dtype == np.float64, (
+        f"fm_hz must be float64 regardless of input dtype; got {fm_hz.dtype}"
+    )
+    assert am.dtype == np.float64, (
+        f"am must be float64 regardless of input dtype; got {am.dtype}"
+    )
+
+
+# H2 — Two consecutive interior silent columns produce two independent runs
+# ---------------------------------------------------------------------------
+
+def test_two_consecutive_interior_silent_columns() -> None:
+    """Reviewer gap #2: two adjacent silent columns in the interior.
+
+    Layout: [active×10, silent×2, active×10]
+    Expected run segmentation: [(0,10), (12,22)] — two independent runs.
+    Each active segment must have valid (non-NaN) FM and AM; the two silent
+    columns must be NaN.  Also verifies that each single-column run adjacent
+    to the gap uses the argmax seed path (run_len==1 path for cols 9 and 12
+    if they are isolated; here they are in runs of length 10 each, confirming
+    that the gap truly produces two independent runs rather than one merged run
+    with internal NaN placeholders).
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 22
+    silent_cols = [10, 11]
+    target_bin = _freq_to_bin(65_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1.0)
+    for c in silent_cols:
+        mag[:, c] = 0.0
+
+    cfg = RidgeConfig(silence_threshold=1e-6)
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    # Silent columns must be NaN
+    for c in silent_cols:
+        assert np.isnan(fm_hz[c]), f"col {c} is silent → fm_hz must be NaN"
+        assert np.isnan(am[c]),    f"col {c} is silent → am must be NaN"
+
+    # Active columns on both sides of the gap must be valid
+    active_cols = [c for c in range(n_cols) if c not in silent_cols]
+    for c in active_cols:
+        assert not np.isnan(fm_hz[c]), f"col {c} is active → fm_hz must not be NaN"
+        assert not np.isnan(am[c]),    f"col {c} is active → am must not be NaN"
+
+    # Frequency values in each segment should be near the target
+    for c in active_cols:
+        assert abs(fm_hz[c] - _FREQS_HZ[target_bin]) <= _BIN_WIDTH_HZ, (
+            f"col {c}: FM {fm_hz[c]/1000:.2f} kHz deviates > 1 bin from target "
+            f"{_FREQS_HZ[target_bin]/1000:.2f} kHz"
+        )
+
+
+# H2b — Three consecutive interior silent columns (single-col runs on both sides)
+# ---------------------------------------------------------------------------
+
+def test_three_consecutive_silent_columns_produces_single_col_runs() -> None:
+    """Extended gap #2: three silent columns isolate single-active-column runs.
+
+    Layout: [active×1, silent×3, active×1] — 5 columns total.
+    Both active runs have run_len == 1, exercising the argmax-seed early return
+    path in _track_run for both sides of the gap simultaneously.
+    """
+    n_bins = len(_FREQS_HZ)
+
+    # Place peaks at different bins on each side so we can verify independently
+    left_bin  = _freq_to_bin(60_000.0)
+    right_bin = _freq_to_bin(80_000.0)
+
+    mag = np.zeros((n_bins, 5), dtype=float)
+    mag[:, 0] = _gaussian_bump(n_bins, left_bin,  sigma_bins=1.5)
+    # cols 1, 2, 3 are silent (all-zero)
+    mag[:, 4] = _gaussian_bump(n_bins, right_bin, sigma_bins=1.5)
+
+    cfg = RidgeConfig(silence_threshold=1e-6)
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    # Silent columns
+    for c in (1, 2, 3):
+        assert np.isnan(fm_hz[c]), f"col {c} should be NaN"
+        assert np.isnan(am[c]),    f"col {c} AM should be NaN"
+
+    # Left single-col run: argmax of col 0 → left_bin
+    assert not np.isnan(fm_hz[0]), "col 0 must be non-NaN"
+    assert abs(fm_hz[0] - _FREQS_HZ[left_bin]) <= _BIN_WIDTH_HZ, (
+        f"col 0 FM {fm_hz[0]/1000:.2f} kHz should be near left peak "
+        f"{_FREQS_HZ[left_bin]/1000:.2f} kHz"
+    )
+
+    # Right single-col run: argmax of col 4 → right_bin
+    assert not np.isnan(fm_hz[4]), "col 4 must be non-NaN"
+    assert abs(fm_hz[4] - _FREQS_HZ[right_bin]) <= _BIN_WIDTH_HZ, (
+        f"col 4 FM {fm_hz[4]/1000:.2f} kHz should be near right peak "
+        f"{_FREQS_HZ[right_bin]/1000:.2f} kHz"
+    )
+
+
+# H3 — max_jump_bins = 1 (tightest legal constraint)
+# ---------------------------------------------------------------------------
+
+def test_max_jump_bins_1_tracks_1bin_sweep_rejects_2bin_jumps() -> None:
+    """Reviewer gap #3: max_jump_bins=1 is the tightest legal constraint.
+
+    Part A — trackable: a sweep rising by exactly 1 bin per column should be
+    followed perfectly.
+
+    Part B — untrackable: a sweep rising by 2 bins per column cannot be
+    followed.  The tracker must not crash, must stay within [freq_min, freq_max],
+    and must produce no NaN on active columns.  The exact output bin is
+    intentionally not asserted (documented unspecified behavior when the path
+    cannot follow the true peak).
+    """
+    n_bins = len(_FREQS_HZ)
+
+    # Part A: 1 bin/col sweep — should track
+    n_cols_a = 20
+    start_bin = _freq_to_bin(60_000.0)
+    # Build center_bins: step exactly 1 bin each column
+    center_bins_a = np.arange(start_bin, start_bin + n_cols_a, dtype=float)
+    # Clamp to valid range
+    center_bins_a = np.clip(center_bins_a, 0, n_bins - 1)
+    mag_a = _build_magnitude(n_bins, n_cols_a, center_bins_a,
+                             amplitude=1.0, sigma=0.8)
+
+    cfg_tight = RidgeConfig(transition_penalty=0.0, max_jump_bins=1)
+    fm_a, am_a = track_ridge(mag_a, _FREQS_HZ, cfg_tight)
+
+    assert not np.any(np.isnan(fm_a)), "1-bin/col sweep: no NaN expected"
+    expected_hz_a = _FREQS_HZ[center_bins_a.astype(int)]
+    np.testing.assert_allclose(
+        fm_a, expected_hz_a, atol=_BIN_WIDTH_HZ,
+        err_msg="max_jump_bins=1: 1-bin/col sweep should be tracked exactly"
+    )
+
+    # Part B: 2 bins/col sweep — tracker cannot follow, but must not crash
+    n_cols_b = 10
+    center_bins_b = np.arange(start_bin, start_bin + 2 * n_cols_b, 2, dtype=float)
+    center_bins_b = np.clip(center_bins_b, 0, n_bins - 1)
+    mag_b = _build_magnitude(n_bins, n_cols_b, center_bins_b,
+                             amplitude=1.0, sigma=0.8)
+
+    fm_b, am_b = track_ridge(mag_b, _FREQS_HZ, cfg_tight)
+
+    assert not np.any(np.isnan(fm_b)), "2-bin/col with max_jump=1: no NaN on active"
+    assert np.all(fm_b >= _FREQS_HZ[0]), "FM must stay in valid range"
+    assert np.all(fm_b <= _FREQS_HZ[-1]), "FM must stay in valid range"
+
+
+# H4 — transition_penalty=0, max_jump_bins >= n_bins → true per-column argmax
+# ---------------------------------------------------------------------------
+
+def test_zero_penalty_unconstrained_window_equals_per_column_argmax() -> None:
+    """Reviewer gap #4: degenerate mode documented in W1 fix.
+
+    With transition_penalty=0 AND max_jump_bins >= n_bins, the DP objective
+    collapses to per-column argmax (no penalty for any jump, window large enough
+    that every bin is reachable from every bin).
+
+    Construct a magnitude array with deliberately DIFFERENT peak bins on each
+    column to make this assertion non-trivial.  The DP output must match
+    np.argmax(magnitude[:, t]) on every active column.
+    """
+    n_bins = len(_FREQS_HZ)
+    rng = np.random.default_rng(42)
+    n_cols = 30
+
+    # Each column has its peak at a random bin to ensure variety
+    peak_bins = rng.integers(0, n_bins, size=n_cols)
+    mag = np.zeros((n_bins, n_cols), dtype=float)
+    for t, pb in enumerate(peak_bins):
+        # Tight Gaussian so the peak is unambiguous
+        mag[:, t] = _gaussian_bump(n_bins, int(pb), sigma_bins=0.5)
+        # Ensure every column is above silence_threshold
+        mag[:, t] += 1e-4
+
+    # Use max_jump_bins = n_bins to guarantee all bins reachable from all bins
+    cfg = RidgeConfig(transition_penalty=0.0, max_jump_bins=n_bins)
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    # Ground truth: per-column argmax
+    expected_bins = np.argmax(mag, axis=0)
+    expected_hz = _FREQS_HZ[expected_bins]
+
+    assert not np.any(np.isnan(fm_hz)), "No silent columns → no NaN expected"
+    np.testing.assert_array_equal(
+        fm_hz, expected_hz,
+        err_msg=(
+            "With penalty=0 and max_jump_bins=n_bins, DP must produce "
+            "exactly per-column argmax on every column"
+        ),
+    )
+
+
+# H5 — Non-monotonic freqs_hz array
+# ---------------------------------------------------------------------------
+
+def test_non_monotonic_freqs_hz_does_not_crash() -> None:
+    """Reviewer gap #5: DP logic is bin-index-based, not frequency-order-based.
+
+    The module docstring does not require freqs_hz to be monotonic.  A reversed
+    or shuffled freqs_hz must not crash and must still return valid shapes.
+    The fm_hz values will be scrambled (mapping bin indices through the reversed
+    array), but the tracker must not raise.
+
+    This documents the interface: callers are responsible for passing the
+    correct freqs_hz; the module makes no order guarantees.
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 20
+    target_bin = _freq_to_bin(60_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1.0)
+
+    # Reverse the frequency array — non-monotonic
+    freqs_reversed = _FREQS_HZ[::-1].copy()
+    assert freqs_reversed[0] > freqs_reversed[-1], "Precondition: reversed is descending"
+
+    cfg = RidgeConfig()
+    fm_hz, am = track_ridge(mag, freqs_reversed, cfg)
+
+    assert fm_hz.shape == (n_cols,), "Shape must be (n_cols,) with reversed freqs"
+    assert am.shape == (n_cols,), "AM shape must be (n_cols,) with reversed freqs"
+    # Active columns must have valid (non-NaN) output
+    assert not np.any(np.isnan(fm_hz)), "No silent columns → no NaN"
+    # FM values must still be drawn from the (reversed) freqs array
+    valid_freqs = set(freqs_reversed.tolist())
+    for t in range(n_cols):
+        assert fm_hz[t] in valid_freqs, (
+            f"col {t}: fm_hz={fm_hz[t]} not found in freqs_reversed"
+        )
+
+
+# H5b — Repeated-value freqs_hz array
+# ---------------------------------------------------------------------------
+
+def test_repeated_value_freqs_hz_does_not_crash() -> None:
+    """Gap #5 extension: freqs_hz with all-identical values must not crash.
+
+    The DP is purely bin-index-based; identical frequency labels are fine.
+    The output fm_hz values will all be that repeated frequency, but no
+    exception must be raised.
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 10
+    target_bin = _freq_to_bin(60_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1.0)
+
+    freqs_const = np.full(n_bins, 50_000.0)  # all same value
+
+    cfg = RidgeConfig()
+    fm_hz, am = track_ridge(mag, freqs_const, cfg)
+
+    assert fm_hz.shape == (n_cols,)
+    assert am.shape == (n_cols,)
+    assert not np.any(np.isnan(fm_hz)), "No silent columns → no NaN"
+    np.testing.assert_array_equal(
+        fm_hz,
+        np.full(n_cols, 50_000.0),
+        err_msg="All-identical freqs_hz: every output FM must equal that frequency",
+    )
+
+
+# H6 — run_len == 2: smallest run exercising full forward-pass + back-trace
+# ---------------------------------------------------------------------------
+
+def test_run_length_two_forward_pass_and_backtrace() -> None:
+    """Reviewer gap #6: run_len=2 regression anchor.
+
+    The smallest run that exercises the full forward-pass and back-trace path
+    (local_t=1 only, then immediate back-trace).  Constructed with a known
+    analytically-correct answer to serve as a regression anchor.
+
+    Setup (small 5-bin spectrogram for clarity):
+      col 0: peak at bin 2
+      col 1: peak at bin 3 (1-bin shift right)
+      penalty=0, max_jump_bins=5 → should follow the peaks exactly.
+    """
+    n_bins = 5
+    freqs_small = np.arange(5, dtype=float)  # [0, 1, 2, 3, 4]
+
+    mag = np.zeros((n_bins, 2), dtype=float)
+    mag[2, 0] = 1.0   # col 0 peak at bin 2
+    mag[3, 1] = 1.0   # col 1 peak at bin 3
+
+    cfg = RidgeConfig(transition_penalty=0.0, max_jump_bins=5,
+                      silence_threshold=1e-9)
+    fm_hz, am = track_ridge(mag, freqs_small, cfg)
+
+    assert not np.any(np.isnan(fm_hz)), "Both columns active — no NaN expected"
+    assert fm_hz[0] == pytest.approx(2.0), (
+        f"col 0: expected FM=2.0, got {fm_hz[0]}"
+    )
+    assert fm_hz[1] == pytest.approx(3.0), (
+        f"col 1: expected FM=3.0, got {fm_hz[1]}"
+    )
+    assert am[0] == pytest.approx(1.0), "col 0 AM must be 1.0"
+    assert am[1] == pytest.approx(1.0), "col 1 AM must be 1.0"
+
+
+# H7 — Consumer invariant: am[t] == magnitude[ridge_bin[t], t] on active cols
+# ---------------------------------------------------------------------------
+
+def test_am_equals_magnitude_at_ridge_bin() -> None:
+    """Consumer invariant: AM is always the magnitude at the chosen ridge bin.
+
+    am[t] must equal magnitude[ridge_bin[t], t] exactly for every active column.
+    This tests the correctness of the final assembly step:
+        am[active_cols] = magnitude[active_bins, active_cols]
+
+    We verify this by computing it independently from fm_hz: look up which
+    bin in freqs_hz matches fm_hz[t], then compare magnitude[that_bin, t] with am[t].
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 40
+    rng = np.random.default_rng(7)
+
+    # Random per-column peaks for a non-trivial test
+    peak_bins = rng.integers(10, n_bins - 10, size=n_cols)
+    mag = np.zeros((n_bins, n_cols), dtype=float)
+    for t, pb in enumerate(peak_bins):
+        mag[:, t] = _gaussian_bump(n_bins, int(pb), sigma_bins=2.0)
+
+    cfg = RidgeConfig()
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    active = ~np.isnan(fm_hz)
+    assert np.any(active), "Expected at least some active columns"
+
+    for t in np.nonzero(active)[0]:
+        # Recover the ridge bin from the returned fm_hz value
+        ridge_bin = int(np.argmin(np.abs(_FREQS_HZ - fm_hz[t])))
+        expected_am = float(mag[ridge_bin, t])
+        assert am[t] == pytest.approx(expected_am, abs=1e-10), (
+            f"col {t}: am={am[t]:.8f} != magnitude[{ridge_bin},{t}]={expected_am:.8f}; "
+            f"consumer invariant violated"
+        )
+
+
+# H8 — MAP objective invariant: DP score >= naive per-column argmax score
+# ---------------------------------------------------------------------------
+
+def test_dp_score_dominates_naive_argmax_score() -> None:
+    """MAP objective invariant: the DP path score must be >= per-column argmax score.
+
+    The DP solves: argmax over paths of  sum(magnitude[f_t, t]) - lambda*sum(|Δf|).
+    The naive per-column argmax path achieves score = sum(magnitude[argmax, t]) - lambda*sum(|Δf|).
+    For any non-trivial transition_penalty > 0, the per-column argmax path may
+    have high |Δf|, making its penalised score <= the smooth DP path.
+
+    Invariant: penalised_score(DP path) >= penalised_score(naive argmax path).
+
+    Construct a multi-peak spectrogram where naive argmax jumps wildly, giving
+    a high penalty cost, while the smooth DP path stays near one peak.
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 30
+    rng = np.random.default_rng(13)
+
+    # Alternating peaks: even columns at bin A, odd columns at bin B (far away)
+    bin_a = _freq_to_bin(40_000.0)   # ~68
+    bin_b = _freq_to_bin(100_000.0)  # ~171  (gap >> max_jump_bins=10)
+    center_bins = np.where(np.arange(n_cols) % 2 == 0, bin_a, bin_b).astype(float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1.0)
+
+    cfg = RidgeConfig(transition_penalty=0.1, max_jump_bins=10)
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    # Compute DP path score
+    dp_bins = np.array([int(np.argmin(np.abs(_FREQS_HZ - f))) for f in fm_hz])
+    dp_am_sum = float(np.sum(mag[dp_bins, np.arange(n_cols)]))
+    dp_jump_penalty = float(cfg.transition_penalty * np.sum(np.abs(np.diff(dp_bins))))
+    dp_score = dp_am_sum - dp_jump_penalty
+
+    # Compute naive per-column argmax path score
+    naive_bins = np.argmax(mag, axis=0)
+    naive_am_sum = float(np.sum(mag[naive_bins, np.arange(n_cols)]))
+    naive_jump_penalty = float(cfg.transition_penalty * np.sum(np.abs(np.diff(naive_bins))))
+    naive_score = naive_am_sum - naive_jump_penalty
+
+    assert dp_score >= naive_score - 1e-9, (
+        f"DP penalised score {dp_score:.6f} must be >= naive argmax score "
+        f"{naive_score:.6f} (diff = {dp_score - naive_score:.6f})"
+    )
+
+
+# H9 — silence_threshold = 0: strict-less-than semantics at the zero boundary
+# ---------------------------------------------------------------------------
+
+def test_silence_threshold_zero_strict_semantics() -> None:
+    """Boundary: silence_threshold=0 documents the strict-less-than semantics.
+
+    The silence condition is ``col_max < silence_threshold`` (strict).
+    With silence_threshold=0.0, a column with col_max=0.0 satisfies
+    ``0.0 < 0.0 == False``, so it is NOT treated as silent.
+    This means silence_threshold=0 effectively disables silence detection
+    for any spectrogram with non-negative values.
+
+    This test documents this counter-intuitive behavior as a regression anchor.
+    If a caller wants to silence only truly-zero columns, they should use a very
+    small positive threshold (e.g., 1e-300) rather than threshold=0.
+
+    Part A: tiny nonzero column → active (not NaN) — same as any threshold.
+    Part B: all-zero column WITH threshold=0 → unexpectedly ACTIVE (not NaN),
+            because 0.0 < 0.0 is False.  This is the documented behavior.
+    Part C: all-zero column with threshold=1e-300 → silent (NaN) as expected.
+    """
+    n_bins = len(_FREQS_HZ)
+    target_bin = _freq_to_bin(60_000.0)
+
+    mag = np.zeros((n_bins, 3), dtype=float)
+    mag[target_bin, 0] = 1e-10   # tiny but nonzero
+    # col 1: all-zero
+    mag[target_bin, 2] = 1.0     # normal
+
+    # Part A + B: with threshold=0, no column is silenced (0.0 < 0.0 is False)
+    cfg_zero = RidgeConfig(silence_threshold=0.0)
+    fm_zero, _ = track_ridge(mag, _FREQS_HZ, cfg_zero)
+
+    assert not np.isnan(fm_zero[0]), (
+        "silence_threshold=0: tiny-nonzero column must be active"
+    )
+    # Part B: zero column is NOT silenced because 0.0 < 0.0 is False
+    assert not np.isnan(fm_zero[1]), (
+        "silence_threshold=0: all-zero column is NOT silenced "
+        "(0.0 < 0.0 is False — this is the documented strict-lt behavior)"
+    )
+    assert not np.isnan(fm_zero[2]), (
+        "silence_threshold=0: normal column must be active"
+    )
+
+    # Part C: with threshold=1e-300, the all-zero column IS silenced
+    cfg_tiny = RidgeConfig(silence_threshold=1e-300)
+    fm_tiny, _ = track_ridge(mag, _FREQS_HZ, cfg_tiny)
+
+    assert not np.isnan(fm_tiny[0]), (
+        "silence_threshold=1e-300: tiny-nonzero column must still be active"
+    )
+    assert np.isnan(fm_tiny[1]), (
+        "silence_threshold=1e-300: all-zero column must be silent "
+        "(0.0 < 1e-300 is True)"
+    )
+    assert not np.isnan(fm_tiny[2]), (
+        "silence_threshold=1e-300: normal column must be active"
+    )
+
+
+# H10 — silence_threshold = inf: every column is silent regardless of magnitude
+# ---------------------------------------------------------------------------
+
+def test_silence_threshold_infinity_makes_all_columns_silent() -> None:
+    """Boundary: silence_threshold=inf treats every column as silent.
+
+    Even a column with magnitude=1e30 is strictly below infinity, so all
+    outputs must be NaN.
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 10
+    target_bin = _freq_to_bin(60_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1e6)
+
+    cfg = RidgeConfig(silence_threshold=float("inf"))
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    assert np.all(np.isnan(fm_hz)), (
+        "silence_threshold=inf: every column should be treated as silent"
+    )
+    assert np.all(np.isnan(am)), (
+        "silence_threshold=inf: every AM should be NaN"
+    )
+
+
+# H11 — Integer-typed magnitude input
+# ---------------------------------------------------------------------------
+
+def test_integer_magnitude_input_does_not_crash() -> None:
+    """Pathological input: integer-typed magnitude array.
+
+    Real spectrograms are always float, but a caller might accidentally pass
+    an integer array (e.g., from an integer image).  The tracker must not
+    crash and must return float64 outputs with the correct shape.
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 15
+    target_bin = _freq_to_bin(65_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    mag_float = _build_magnitude(n_bins, n_cols, center_bins, amplitude=100.0)
+    # Quantise to uint16 (mimics image-derived spectrogram)
+    mag_int = mag_float.astype(np.uint16)
+
+    cfg = RidgeConfig(silence_threshold=0.5)
+    fm_hz, am = track_ridge(mag_int, _FREQS_HZ, cfg)
+
+    assert fm_hz.shape == (n_cols,), "Shape must be (n_cols,) for integer input"
+    assert am.shape == (n_cols,), "AM shape must be (n_cols,) for integer input"
+    assert fm_hz.dtype == np.float64, "fm_hz must be float64 even for integer input"
+    assert am.dtype == np.float64, "am must be float64 even for integer input"
+
+
+# H12 — max_jump_bins = n_bins - 1 (one below full unconstrained)
+# ---------------------------------------------------------------------------
+
+def test_max_jump_bins_n_bins_minus_one_tracks_global_sweep() -> None:
+    """Boundary: max_jump_bins = n_bins - 1.
+
+    This is the largest window that does NOT trigger the f_lo >= f_hi guard
+    for any shift in [-W, +W].  A sweep from bin 0 to bin n_bins-1 over
+    n_bins columns (1 bin/col) must be tracked with zero error.
+    """
+    n_bins = len(_FREQS_HZ)  # 257
+    n_cols = n_bins           # one column per bin
+
+    center_bins = np.arange(n_bins, dtype=float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1.0, sigma=0.8)
+
+    cfg = RidgeConfig(
+        transition_penalty=0.0,
+        max_jump_bins=n_bins - 1,
+        silence_threshold=1e-9,
+    )
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    assert not np.any(np.isnan(fm_hz)), "No silent columns expected"
+    expected_hz = _FREQS_HZ[np.arange(n_bins)]
+    np.testing.assert_allclose(
+        fm_hz, expected_hz, atol=_BIN_WIDTH_HZ,
+        err_msg="max_jump_bins=n_bins-1: full-range sweep must be tracked bin-by-bin"
+    )
+
+
+# H13 — max_jump_bins > n_bins (f_lo >= f_hi guard exercised for large shifts)
+# ---------------------------------------------------------------------------
+
+def test_max_jump_bins_larger_than_n_bins_does_not_crash() -> None:
+    """Pathological parameter: max_jump_bins larger than the frequency dimension.
+
+    When max_jump_bins >= n_bins, some shifts in the inner loop produce
+    f_lo >= f_hi and trigger the ``continue`` guard (line 175).  The tracker
+    must not crash, and the result must be equivalent to the unconstrained case
+    (same as penalty=0, max_jump_bins=n_bins for a pure tone).
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 20
+    target_bin = _freq_to_bin(60_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1.0)
+
+    # max_jump_bins = 10 × n_bins — massively oversized
+    cfg = RidgeConfig(
+        transition_penalty=0.0,
+        max_jump_bins=10 * n_bins,
+        silence_threshold=1e-9,
+    )
+    fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+
+    assert fm_hz.shape == (n_cols,), "Shape must be correct even with oversized window"
+    assert not np.any(np.isnan(fm_hz)), "No NaN expected for oversized window"
+    # Must still track the single peak
+    np.testing.assert_allclose(
+        fm_hz, _FREQS_HZ[target_bin], atol=_BIN_WIDTH_HZ,
+        err_msg="Oversized max_jump_bins: pure tone must still be tracked correctly"
+    )
+
+
+# H14 — Non-contiguous (strided) numpy view as input
+# ---------------------------------------------------------------------------
+
+def test_strided_numpy_view_input_produces_correct_result() -> None:
+    """Robustness: non-contiguous strided numpy view as magnitude input.
+
+    Real callers may pass a slice of a larger spectrogram (e.g.,
+    ``magnitude[lo:hi, start:end]``), which produces a non-contiguous array.
+    The tracker must handle this without assuming C-contiguity.
+    """
+    n_bins = len(_FREQS_HZ)
+    target_bin = _freq_to_bin(65_000.0)
+
+    # Build a larger array and extract a non-contiguous slice
+    n_cols_big = 60
+    center_bins = np.full(n_cols_big, target_bin, dtype=float)
+    mag_big = _build_magnitude(n_bins, n_cols_big, center_bins, amplitude=1.0)
+
+    # Take every other column → non-contiguous view
+    mag_strided = mag_big[:, ::2]   # shape (n_bins, 30), non-contiguous
+    assert not mag_strided.flags["C_CONTIGUOUS"], (
+        "Precondition: strided view must be non-contiguous"
+    )
+    n_cols = mag_strided.shape[1]
+
+    cfg = RidgeConfig()
+    fm_hz, am = track_ridge(mag_strided, _FREQS_HZ, cfg)
+
+    assert fm_hz.shape == (n_cols,), "Output shape must match strided input"
+    assert not np.any(np.isnan(fm_hz)), "No NaN expected on fully active strided input"
+    np.testing.assert_allclose(
+        fm_hz, _FREQS_HZ[target_bin], atol=_BIN_WIDTH_HZ,
+        err_msg="Strided input: pure tone should still be tracked correctly"
+    )
+
+
+# H15 — NaN in magnitude input (pathological)
+# ---------------------------------------------------------------------------
+
+def test_nan_in_magnitude_input_does_not_crash() -> None:
+    """Pathological input: NaN values in the magnitude spectrogram.
+
+    Real pre-filtered spectrograms should never contain NaN, but a defensive
+    test documents the behavior: the tracker must not raise an exception.
+    Output behavior (NaN propagation) is intentionally permissive — we only
+    assert no crash and correct output shape.
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 10
+    target_bin = _freq_to_bin(60_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1.0)
+
+    # Inject NaN into a few interior cells (not entire columns)
+    mag[5, 3] = np.nan
+    mag[10, 7] = np.nan
+
+    cfg = RidgeConfig()
+    # Must not raise
+    try:
+        fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+    except Exception as exc:  # noqa: BLE001
+        pytest.fail(f"track_ridge raised {type(exc).__name__} on NaN-containing input: {exc}")
+
+    assert fm_hz.shape == (n_cols,), "Shape must be correct even with NaN input"
+    assert am.shape == (n_cols,), "AM shape must be correct even with NaN input"
+
+
+# H16 — Negative magnitude values (pathological)
+# ---------------------------------------------------------------------------
+
+def test_negative_magnitude_values_do_not_crash() -> None:
+    """Pathological input: negative values in the magnitude spectrogram.
+
+    Physical magnitudes are non-negative, but a caller using a signed
+    difference-spectrogram or a poorly normalised array might pass negatives.
+    The tracker must not raise; output behavior is intentionally unspecified
+    (we only assert no crash and correct shapes).
+    """
+    n_bins = len(_FREQS_HZ)
+    n_cols = 10
+    target_bin = _freq_to_bin(60_000.0)
+
+    center_bins = np.full(n_cols, target_bin, dtype=float)
+    mag = _build_magnitude(n_bins, n_cols, center_bins, amplitude=1.0)
+    mag -= 0.5   # shift so lower-energy bins go negative
+
+    cfg = RidgeConfig(silence_threshold=-1.0)  # allow negative-valued columns through
+    try:
+        fm_hz, am = track_ridge(mag, _FREQS_HZ, cfg)
+    except Exception as exc:  # noqa: BLE001
+        pytest.fail(f"track_ridge raised {type(exc).__name__} on negative-valued input: {exc}")
+
+    assert fm_hz.shape == (n_cols,)
+    assert am.shape == (n_cols,)

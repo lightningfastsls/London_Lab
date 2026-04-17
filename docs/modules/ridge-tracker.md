@@ -46,7 +46,7 @@ Frozen dataclass with validated defaults:
 
 | Field | Default | Units | Notes |
 |---|---|---|---|
-| `transition_penalty` | 0.1 | per-bin cost | Must be `>= 0`. 0 reduces tracker to per-column argmax. |
+| `transition_penalty` | 0.1 | per-bin cost | Must be `>= 0`. 0 reduces tracker to windowed-argmax — true per-column argmax also requires `max_jump_bins >= n_bins`. |
 | `max_jump_bins` | 10 | bins | Must be `>= 1`. Hard Viterbi window radius. |
 | `silence_threshold` | 1e-6 | linear mag | Columns with `max < threshold` → NaN output. |
 
@@ -116,7 +116,7 @@ from usv_spectrogram.features import (
 )
 
 sample_rate = 300_000
-f, t, Zxx = stft(audio, fs=sample_rate, nperseg=512, noverlap=384)
+f, t, Zxx = stft(audio, fs=sample_rate, window="hann", nperseg=512, noverlap=384)
 magnitude = np.abs(Zxx)
 
 cleaned, _ = prefilter_spectrogram(magnitude, f, FilterConfig())
@@ -178,7 +178,7 @@ layering DSP opinions that belong elsewhere.
       (`test_regression_fm_rmse_within_2khz`)
 - [x] Harmonic-suppression test passes
       (`test_harmonic_suppression_stays_on_fundamental`)
-- [x] All 14 tests pass (13 from ROADMAP spec + 1 additional from
+- [x] All 14 tests pass (10 from ROADMAP spec + 4 additional from
       test-architect)
 - [x] `py_compile` passes
 

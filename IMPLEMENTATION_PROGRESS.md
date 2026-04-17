@@ -247,6 +247,58 @@ hardener.
 
 ---
 
+## 2026-04-17 — Phase 17.3 Review + Hardener Complete
+
+**Status:** APPROVED (master-reviewer Tier 3) + HARDENED (test-hardener)
+**Review file:** `docs/reviews/ridge-tracker-review.md`
+
+**Review (Tier 3):** APPROVED on first pass. Findings: 2 WARNINGs + 2
+SUGGESTIONs, all documentation-only or dead-code — no behavioral bugs. DP
+forward pass, back-trace indexing, silent-run segmentation, and boundary
+guards all verified by hand-trace + concrete 3-column MAP-reproducibility
+check.
+
+**Fixes applied:**
+- **W1** — Corrected `RidgeConfig.transition_penalty` docstring in both
+  `ridge_tracker.py` and `docs/modules/ridge-tracker.md`: `penalty=0`
+  reduces to *windowed-argmax*, not true per-column argmax (the latter
+  also requires `max_jump_bins >= n_bins`).
+- **W2** — Test count corrected in `tests/test_ridge_tracker.py` docstring
+  (line 36) and `docs/modules/ridge-tracker.md` exit criterion: 14 = 10
+  ROADMAP + 4 additional (was 9+4 and 13+1 respectively).
+- **S1** — Removed redundant `best[f_lo:f_hi] = slice_best` write in
+  `_track_run` hot loop; added view-mutation comment.
+- **S2** — Usage example in module doc explicitly passes `window="hann"`
+  to `scipy.signal.stft` per ADR-002.
+
+**Test-hardener pass:**
+- Tests added: 18 (total 32 — 14 pre-existing + 18 adversarial).
+- Bugs found: 0.
+- New coverage: float32-input / float64-output dtype preservation;
+  consecutive silent columns (2×, 3×); `max_jump_bins=1` tight constraint;
+  `penalty=0, max_jump_bins>=n_bins` = true argmax regression anchor;
+  non-monotonic / repeated-value `freqs_hz`; `run_len==2` forward+backtrace
+  anchor; consumer invariant `am[t] == magnitude[ridge_idx[t], t]`;
+  MAP-objective dominance over naive argmax; `silence_threshold=inf`
+  full-silent semantics; integer-typed magnitude; `max_jump_bins=n_bins-1`;
+  `max_jump_bins >> n_bins` (f_lo>=f_hi guard); strided non-contiguous
+  view; NaN and negative values in magnitude ("no-crash" only).
+- **Latent design surprise (not a bug):** `silence_threshold=0.0` uses
+  strict `<`, so zero-magnitude columns are NOT silenced with `threshold=0`.
+  Callers who expect `threshold=0` to act as a "no-signal" detector must
+  use a tiny positive value (e.g. `1e-300`) instead. The hardener's
+  `test_silence_threshold_zero_strict_semantics` documents this behavior
+  as a regression anchor. Docstring already says "strictly below" —
+  behavior matches spec; only callers' intuition is at risk.
+- Residual non-blocking concern: NaN-in-input behavior is only asserted
+  "no crash" — output values when NaN propagates through Viterbi scores
+  are undefined. Acceptable in practice since upstream
+  `prefilter_spectrogram` guarantees NaN-free output.
+
+**Final test count: 32/32 passing, 0.91 s wall-clock. No regressions.**
+
+---
+
 ## 2026-04-17 — Corpus Constants Unification + Empirical Data Registry
 
 **Status:** IMPLEMENTED (master-reviewer approved; 1 SERIOUS + 4 NITs fixed in same session)

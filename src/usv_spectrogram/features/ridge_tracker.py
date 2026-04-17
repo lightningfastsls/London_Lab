@@ -28,7 +28,10 @@ class RidgeConfig:
     ----------
     transition_penalty:
         ``lambda`` — cost added per bin of frequency jump between columns.
-        Must be >= 0. A value of 0 reduces the tracker to per-column argmax.
+        Must be >= 0. A value of 0 reduces the tracker to windowed-argmax
+        (per-column argmax subject to the ``max_jump_bins`` hard
+        constraint). True per-column argmax requires ``penalty = 0`` AND
+        ``max_jump_bins >= n_bins``.
     max_jump_bins:
         ``W`` — hard window radius on the Viterbi transition. The path at
         column t can only come from bins ``[f - W, f + W]`` at column t-1.
@@ -172,11 +175,10 @@ def _track_run(
             if f_lo >= f_hi:
                 continue
             candidate = cur_cost[f_lo + shift : f_hi + shift] - penalty * abs(shift)
-            slice_best = best[f_lo:f_hi]
+            slice_best = best[f_lo:f_hi]  # view into best — mutations propagate
             improved = candidate > slice_best
             if improved.any():
                 slice_best[improved] = candidate[improved]
-                best[f_lo:f_hi] = slice_best
                 best_src[f_lo:f_hi] = np.where(
                     improved,
                     bin_indices[f_lo:f_hi] + shift,
