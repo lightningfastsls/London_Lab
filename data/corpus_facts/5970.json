@@ -1,0 +1,63 @@
+{
+  "dataset": "5970",
+  "generated_at_utc": "2026-04-17T15:01:09+00:00",
+  "generator": "scripts/audit_corpus.py",
+  "sources": {
+    "classified_csv": "results/traditional_taxonomy/classified_traditional.csv",
+    "hdbscan_csv": "results/recluster_umap_hdbscan/reclassified_detections.csv",
+    "detection_csv": "results/batch_5970/manual_review_all_detections.csv",
+    "ici_gap_npy": "results/sequential_structure/ici_gap.npy",
+    "ici_onset_npy": "results/sequential_structure/ici_onset.npy",
+    "sequential_summary_csv": "results/sequential_structure/sequential_structure_summary.csv"
+  },
+  "counts": {
+    "n_calls_raw": 7921,
+    "n_calls_after_dropna_file": 7864,
+    "n_files": 1338,
+    "n_sessions": 2
+  },
+  "timing": {
+    "median_ici_gap_ms": 86.6833,
+    "median_ioi_ms": 192.9865,
+    "median_call_duration_ms": 60.12,
+    "q25_ici_gap_ms": 65.1449,
+    "q75_ici_gap_ms": 209.1082,
+    "n_cross_file_pairs_over_10s": 829,
+    "n_negative_gaps": 10,
+    "n_ici_samples": 7863
+  },
+  "bout_detection_a2": {
+    "threshold_s": 0.6,
+    "derivation": "3 \u00d7 median(IOI) via scripts/analyze_temporal_dynamics.py",
+    "n_bouts": 1238,
+    "n_within_bout_pairs": 6350,
+    "n_cross_bout_pairs_excluded": 1513
+  },
+  "labeling_distributions": {
+    "scattoni_7": {
+      "Flat": 2520,
+      "Down": 1385,
+      "Chevron": 1312,
+      "Short": 1113,
+      "Complex": 687,
+      "Frequency_Jump": 579,
+      "Up": 268
+    },
+    "hdbscan": {
+      "2": 7598,
+      "1": 131,
+      "0": 98,
+      "-1": 37
+    }
+  },
+  "references": {
+    "median_within_bout_silent_gap_ms": 90,
+    "inter_bout_threshold_ms_range": [
+      250,
+      500
+    ],
+    "hertz_2020_imsa_sis_bits": 0.22,
+    "hertz_2020_ivoice_sis_bits": 0.1,
+    "hertz_2020_imupet_sis_bits": 0.13
+  }
+}
