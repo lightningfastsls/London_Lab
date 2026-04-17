@@ -37,6 +37,13 @@ Methods for determining what USV types exist, comparing repertoires across popul
 - [[self-repetition is the dominant pairwise contributor to SIS in mouse courtship vocalizations]] -- same-label transitions dominate; pre-labeling duration autocorrelation r=0.44 confirms this
 - [[Syntax Information Maximization SIM algorithm iteratively perturbs cluster centroids to maximize SIS on training sequences]] -- multiplicative [0.9,1.1] perturbation; force-accept after 5 failures; ~24K iterations; surpasses iMSA
 
+## SIS Benchmark Methodology
+
+- [[decision-gate methodology requires computing free SIS baselines before committing to feature engineering]] -- gate-first principle: cheap baselines on existing labelings determine whether multi-day feature engineering can move the ceiling
+- [[four-hypothesis framing organizes SIS maximization into rules plus handcrafted features plus learned features plus direct optimization]] -- benchmark structure that frames methods as falsifiable mechanism tests rather than competing implementations
+- [[SIM optimization is structurally feature-independent so if it wins the finding is that labels matter more than features for sequential prediction]] -- interpretation rule: a SIM win redirects investment from representation learning to label-space search
+- [[DSP modules need Tier 3 review because tests can pass on synthetic inputs while failing on real recordings for specific call types]] -- review-process discipline for DSP code in the SIS benchmark pipeline (ridge tracker, pre-filter stack, autoencoder)
+
 ## AMVOC Feature Pipeline & Comparison
 - [[AMVOC 4-stage feature pipeline reduces 1280 bottleneck features through variance thresholding StandardScaler and PCA to cluster-ready dimensions]] -- var threshold→scaler→PCA→t-SNE(viz only)
 - [[AMVOC deep autoencoder features scored 37 percent higher than 4-feature handcrafted baselines in blinded human evaluation]] -- learned > handcrafted, p<0.01

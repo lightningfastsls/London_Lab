@@ -30,6 +30,8 @@ The DSP foundation for everything else. All audio is recorded at 300 kHz (Nyquis
 ## Ridge-Based Feature Extraction
 - [[ridge extraction finds the dominant frequency bin with maximum energy at each time step creating a pitch contour trajectory]] -- argmax per spectrogram column with optional continuity constraints (Oren 2024 / MATLAB `tfridge`)
 - [[time-axis resampling to a fixed number of steps normalizes variable-duration vocalizations without discarding frequency information]] -- 2D interpolation to fixed time steps; contrasts with zero-pad/center-crop
+- [[pre-filtering layers each address a distinct ridge-extraction failure mode so removing any one layer likely reintroduces the failure it was blocking]] -- 1-to-1 mapping between defenses and failures: amplitude threshold (silent columns), median filter (broadband transients), band mask (out-of-band noise), DP tracking (harmonic jumps)
+- [[Oren marmoset ridge vectorization requires re-engineering not parameter tuning when adapted to mouse USVs because duration frequency band harmonics SNR and absolute-pitch relevance all differ]] -- five domain mismatches (duration, frequency band, harmonics, SNR, absolute pitch) each change pipeline structure rather than thresholds
 
 ## Acoustic Property Extraction
 - [[acoustic property extraction from spectrogram data produces ground truth targets for probing experiments]] -- seven properties computed directly from spectrogram columns (170 bins, 20-120 kHz) as probe labels

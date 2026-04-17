@@ -27,6 +27,8 @@ No vectorization or clustering is needed. It is the only algorithm that is entir
 
 **Per-pair contribution:** Self-repetition (same label following same label) is the dominant SIS contributor for all algorithms. Within iMSA, the same-duration sub-pairs (Simple-long→Simple-long, Simple-short→Simple-short) show above-independence joint probability; cross-duration pairs are below independence.
 
+**Phase 17 promotes iMSA to first-implementation priority** for two reasons: it is the *published* top SIS scorer for mouse USVs (0.22 bits on Hertz 2020 C57BL/6 data), and it represents continuity with Mickey London's own lab methodology. Combined with its rule-based simplicity (no training, minimal hyperparameters beyond the pitch-jump threshold), iMSA is both the highest expected reward per hour of implementation and a natural target-to-beat that anchors the benchmark against published prior art. See [[four-hypothesis framing organizes SIS maximization into rules plus handcrafted features plus learned features plus direct optimization]] for how iMSA fits into the four-method benchmark.
+
 ---
 
 Source:

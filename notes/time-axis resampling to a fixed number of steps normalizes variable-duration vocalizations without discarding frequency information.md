@@ -31,6 +31,8 @@ This contrasts with other approaches to variable-length normalization:
 
 The loss of absolute duration is acceptable because duration can be stored as a separate scalar feature if needed. The advantage is that the FM and AM trajectories extracted after resampling are always exactly n_steps long, enabling direct concatenation into a fixed-length vector for classification.
 
+**For mouse USV type classification, duration is not optional — it is primary.** Scattoni's taxonomy distinguishes Short calls from longer Chevron and Complex types using absolute duration. Hertz 2020's ISI analysis treats duration as one of the primary distinguishing features driving iMSA's median-duration split (Simple-long / Simple-short). Time-resampling discards this information by construction. **Resolution:** After the 2 × n_steps trajectory features, append the original call duration as an explicit scalar — making the full vector 2×n_steps + 1 (e.g., 81 or 121 dimensions). This lets the clustering discover whether duration-based structure matters without forcing the choice upstream. The cost of omitting it is losing a primary axis of the Scattoni taxonomy.
+
 For mouse USVs (typically 10-100 ms), the target step count may need adjustment from 40. Very short calls (10 ms) at our STFT parameters (hop ~0.4 ms) produce only ~25 time columns, so 40 steps would involve upsampling. A sweep over [20, 30, 40, 50] steps would determine the optimal resolution for the USV duration distribution.
 
 ---

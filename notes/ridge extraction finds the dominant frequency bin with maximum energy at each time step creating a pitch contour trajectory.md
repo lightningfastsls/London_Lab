@@ -31,6 +31,17 @@ This is exactly what Mickey described: "find in each pixel column what is the hi
 
 **Continuity constraints matter** for harmonic calls where energy may briefly shift between harmonics or noise spikes. Without constraints, the ridge can jump to noise or harmonics. MATLAB's `tfridge` uses penalty-based tracking; a Python equivalent could use dynamic programming on the magnitude matrix or `scipy.signal` peak tracking.
 
+**Four named failure modes of naive argmax on mouse USVs, each addressed by a distinct defensive layer:**
+
+| Failure mode | Defense |
+|--------------|---------|
+| Silent columns in fragmented calls → random-frequency ridges | Amplitude threshold by local noise floor (mask bins below 3× rolling-median magnitude per column) |
+| Harmonic jumps (~30% of mouse USVs have harmonics) → ridge alternates between fundamental and 2nd harmonic | Dynamic-programming (Viterbi) continuity constraint with transition penalty |
+| Broadband transients (cage clicks, scratching) → ridge spikes to outlier frequencies | 3×3 median filter — removes isolated spikes without blurring smooth trajectories |
+| Low-amplitude onset/offset columns → unreliable ridge at call edges | Frequency band mask (25-120 kHz for mouse USVs) combined with local amplitude threshold |
+
+Each layer maps 1-to-1 to one failure mode: ablating a layer reintroduces the failure it was blocking, which makes the layer set *diagnostic* rather than decorative. See [[pre-filtering layers each address a distinct ridge-extraction failure mode so removing any one layer likely reintroduces the failure it was blocking]].
+
 The extracted ridge is then resampled to a fixed number of time steps: [[time-axis resampling to a fixed number of steps normalizes variable-duration vocalizations without discarding frequency information]].
 
 ---

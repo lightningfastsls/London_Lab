@@ -35,6 +35,15 @@ The normalization scope is a design decision with direct implications for mouse 
 
 For our wild mouse USV analysis, **per-recording** normalization is the natural analog — each WAV file represents one recording session, and mic placement or distance may vary between sessions. Per-animal normalization is also viable since our dyad design means each animal's calls come from multiple sessions.
 
+**Caveat: per-caller (or per-recording) normalization may be actively wrong for mouse USV *type* classification.** Oren's marmoset use case is receiver-identity classification — removing caller-specific acoustic baselines is appropriate because they *want* callers to be comparable. But Scattoni's mouse USV taxonomy uses *absolute* frequency ranges to distinguish syllable types (50 kHz Flat vs 90 kHz Up/Chevron/Complex). Normalizing absolute frequency away destroys exactly the information a type classifier needs. The two use cases have opposite absolute-frequency preferences:
+
+| Goal | Absolute frequency | Relative shape |
+|------|--------------------|----------------|
+| Identity classification (Oren marmoset) | Throw out (callers differ) | Keep |
+| Type classification (Scattoni mouse) | **Keep** (types differ by absolute band) | Keep |
+
+**Implication for mouse USV pipelines:** The vectorizer should output both raw and per-caller-normalized versions and let downstream clustering choose — or run the benchmark with both and compare. Defaulting to per-caller normalization because Oren did bakes in an assumption that actively conflicts with the Scattoni-style downstream task.
+
 ---
 
 Source:

@@ -54,6 +54,10 @@ Tools and interoperability for USV classification. DeepSqueak remains the domina
 
 - [[scikit-maad implements double-threshold hysteresis binarization for ecological acoustics]] -- Ulloa et al 2021 open-source Python library for soundscape analysis; provides reference hysteresis implementation on spectrogram masks (2D) vs our CNN probability stream (1D)
 
+## Pipeline Architecture Principles
+
+- [[separating deterministic vectorization from stochastic clustering into distinct modules lowers iteration cost when two stages have different costs or randomness properties]] -- module boundaries should follow iteration cost gradients; vectorization caches across clustering parameter sweeps and lets one clustering implementation run over multiple vectorizers (Oren, AMVOC)
+
 ## Open Questions
 
 - Whether BootSnap source code is obtainable for integration testing

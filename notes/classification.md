@@ -37,6 +37,11 @@ The operational classification system. A small CNN (~101K params) classifies ene
 - [[low-amplitude and short-duration USVs are the primary source of false negatives and training bias]] -- key failure mode and bias source
 - [[CNN false positives cluster in noisy regions where energy patterns superficially resemble USV structure]] -- noise structural mimicry as FP source
 
+## Learned-Feature Methodology
+
+- [[autoencoder bottleneck plus PCA extracts concepts because reconstruction forces the model to preserve axes of variation that matter]] -- mechanism: reconstruction pressure preserves reconstruction-relevant axes, PCA extracts the dominant ones
+- [[low-dimensional intrinsic manifold argues for learned features rather than against them because bottleneck compression is how you find low-dim structure]] -- epistemic guard: low-dim findings were *produced by* autoencoders, so they cannot be used to reject autoencoders
+
 ## Key Literature (Cross-Domain Bridges)
 
 - [[Goffinet et al 2021 showed USVs form a continuum rather than discrete clusters motivating VQ-VAE discretization]] -- the paradigm-setting finding that challenged discrete taxonomies and motivated VQ-VAE

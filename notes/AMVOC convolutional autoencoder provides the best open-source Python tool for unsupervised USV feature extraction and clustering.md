@@ -52,6 +52,9 @@ Relevant Notes:
 - [[AMVOC dual-criterion dynamic spectral thresholding achieved Event F1 90.5 percent outperforming DeepSqueak and VocalMat on the same benchmark]] -- AMVOC's detection module (separate from feature extraction above)
 - [[AMVOC t-SNE plus user-specified k versus field-standard UMAP plus HDBSCAN for bioacoustic clustering]] -- tension: AMVOC's pre-UMAP clustering still works but is paradigm-dated
 - [[AMVOC lacks batch normalization dropout validation monitoring and VAE variant — all high-value improvements for our wild-mouse pipeline]] -- gap analysis for our design
+- [[four-hypothesis framing organizes SIS maximization into rules plus handcrafted features plus learned features plus direct optimization]] -- AMVOC is the learned-features hypothesis (branch 3): testing whether sequential structure lives in reconstruction-relevant axes the autoencoder discovers
+- [[autoencoder bottleneck plus PCA extracts concepts because reconstruction forces the model to preserve axes of variation that matter]] -- the mechanistic claim for why AMVOC's bottleneck + PCA pipeline actually discovers concepts rather than arbitrary compression
+- [[low-dimensional intrinsic manifold argues for learned features rather than against them because bottleneck compression is how you find low-dim structure]] -- defends AMVOC's relevance against the inverted-evidence-chain rejection that uses our own HDBSCAN low-dim finding against autoencoder methods
 
 Topics:
 - [[unsupervised-usv-discovery]]

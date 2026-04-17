@@ -44,6 +44,12 @@ Methods and evidence for discovering USV type categories without human-defined l
 - [[ridge extraction finds the dominant frequency bin with maximum energy at each time step creating a pitch contour trajectory]] -- core algorithmic step: argmax per spectrogram column
 - [[time-axis resampling to a fixed number of steps normalizes variable-duration vocalizations without discarding frequency information]] -- 2D interpolation to fixed time steps solves variable-length problem
 - [[whether Omer-style ridge vectorization applied to mouse USVs produces meaningfully different clustering than AMVOC autoencoder embeddings]] -- open question: does AM component reveal substructure that FM-only misses?
+- [[Oren marmoset ridge vectorization requires re-engineering not parameter tuning when adapted to mouse USVs because duration frequency band harmonics SNR and absolute-pitch relevance all differ]] -- mouse adaptation is structural: harmonic DP, noise-floor pre-filter, raw-pitch retention all change the design rather than thresholds
+
+## Benchmark Framing for Unsupervised Discovery
+- [[four-hypothesis framing organizes SIS maximization into rules plus handcrafted features plus learned features plus direct optimization]] -- frames Omer ridge, AMVOC autoencoder, iMSA rules, and SIM as four distinct mechanisms each testing a separate axis of where sequential structure lives
+- [[autoencoder bottleneck plus PCA extracts concepts because reconstruction forces the model to preserve axes of variation that matter]] -- mechanistic justification for why AMVOC bottleneck + PCA discovers learned concepts rather than arbitrary compression
+- [[low-dimensional intrinsic manifold argues for learned features rather than against them because bottleneck compression is how you find low-dim structure]] -- defends learned-feature methods against the inverted-evidence-chain rejection that uses Goffinet/HDBSCAN low-dim findings as if they argued against autoencoders
 
 ## Adjacent Approaches (Not End-to-End VQ-VAE)
 - [[Sarkar and Magimai-Doss 2025 applied post-hoc VQ to frozen HuBERT embeddings for marmoset and dog vocalizations]] -- first discrete tokens in bioacoustics, post-hoc not end-to-end

@@ -49,6 +49,8 @@ Relevant Notes:
 - [[iMUPET adapted for Hertz 2020 uses 16 gammatone filters producing 2016-dimensional feature vectors per syllable]] -- the feature space SIM perturbs centroids in
 - [[suffix trees store empirical transition counts for Markov models and require less than 10 percent zero-probability tuples for reliable SIS estimation]] -- the data structure SIM rebuilds each iteration
 - [[Hertz et al 2020 dataset is 346K syllables across 385 sessions making our 8K dataset 43 times smaller]] -- SIM may not be viable on 8K calls; data size constraint
+- [[four-hypothesis framing organizes SIS maximization into rules plus handcrafted features plus learned features plus direct optimization]] -- SIM is hypothesis 4 (direct optimization): the only branch that searches label-space rather than engineering features
+- [[SIM optimization is structurally feature-independent so if it wins the finding is that labels matter more than features for sequential prediction]] -- interpretation rule for what a SIM win means in the four-hypothesis benchmark
 
 Topics:
 - [[classification-methodology]]

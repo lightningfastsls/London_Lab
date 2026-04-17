@@ -44,6 +44,8 @@ Relevant Notes:
 - [[Hertz et al 2020 Syntax Information Score ranks classification schemes by how well syllable labels predict next syllable]] -- SIS could benchmark Omer-derived labels against iMUPET (0.13 bits) and iMSA (0.22 bits)
 - [[raw acoustic features versus learned embeddings may yield different clustering structure for mouse USVs]] -- Omer vectorization is a mid-complexity third option for resolving this open question
 - [[AMVOC SVM-smoothed frequency contour resampled to 90 dimensions is architecturally similar to peak-frequency vectorization]] -- AMVOC mode 3 (90D resampled FM contour with SVM smoothing) is architecturally similar to Omer's FM component (40D); the key difference is Omer's additional 40D AM trajectory, making it a strict superset that captures both shape and loudness dynamics
+- [[four-hypothesis framing organizes SIS maximization into rules plus handcrafted features plus learned features plus direct optimization]] -- Omer vectorization is the handcrafted-features hypothesis (branch 2): testing whether sequential structure lives in continuous pitch-contour shape
+- [[Oren marmoset ridge vectorization requires re-engineering not parameter tuning when adapted to mouse USVs because duration frequency band harmonics SNR and absolute-pitch relevance all differ]] -- concretizes what porting this method to mouse USVs actually requires before it can test hypothesis 2 honestly
 
 Topics:
 - [[unsupervised-usv-discovery]]
