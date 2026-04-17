@@ -22,14 +22,14 @@ All configurable modules use frozen dataclasses with defaults and `__post_init__
 class DetectionConfig:
     """Configuration for energy-based USV candidate detection."""
 
-    # STFT parameters
-    sample_rate: int = 300_000  # Must be >= 2 * max_freq (Nyquist)
-    n_fft: int = 512            # ~586 Hz freq resolution at 300 kHz
-    hop_length: int = 128       # 75% overlap
+    # STFT parameters — sourced from corpus.py in production
+    sample_rate: int = SAMPLE_RATE_HZ   # 300_000 — Must be >= 2 * max_freq (Nyquist)
+    n_fft: int = STFT_N_FFT             # 512 — ~586 Hz freq resolution at 300 kHz
+    hop_length: int = STFT_HOP          # 128 — 75% overlap
 
-    # Frequency band
-    freq_min_hz: int = 25_000
-    freq_max_hz: int = 110_000
+    # Frequency band — locked to CNN training grid via corpus.py
+    freq_min_hz: int = USV_FREQ_MIN_HZ  # 20_000
+    freq_max_hz: int = USV_FREQ_MAX_HZ  # 120_000
 
     # Energy threshold — deliberately LOW for high recall
     energy_threshold_db: float = -60.0
@@ -94,7 +94,7 @@ Tests use synthetic WAV data (never real recordings), `yield` for cleanup, and f
 @pytest.fixture
 def sample_wav_path() -> Path:
     """Create a temporary WAV with a synthetic USV-like signal."""
-    sample_rate_hz = 250_000
+    sample_rate_hz = 300_000  # Matches corpus.SAMPLE_RATE_HZ (LMT hardware)
     duration_s = 0.1
     n_samples = int(sample_rate_hz * duration_s)
 

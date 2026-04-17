@@ -244,3 +244,102 @@ hardener.
 - Vectorization inside the `for shift in range(-W, +W)` loop uses bounded
   slice views with in-place `where` updates — avoids allocating a full
   `(F, 2W+1)` tensor per column.
+
+---
+
+## 2026-04-17 — Corpus Constants Unification + Empirical Data Registry
+
+**Status:** IMPLEMENTED (master-reviewer approved; 1 SERIOUS + 4 NITs fixed in same session)
+**Handoff:** `docs/handoffs/corpus-constants-unification-2026-04-17.md`
+**Plan:** `~/.claude/plans/lucky-noodling-alpaca.md`
+**Review:** `docs/reviews/corpus-constants-review.md`
+**Review tier:** 2
+
+**Motivation:** Four config modules (`SpectrogramConfig`, `DetectionConfig`,
+`ExtractionConfig`, `AnalysisConfig`) declared the same physical constants
+with *different* values — `SpectrogramConfig` said 250 kHz and 30–125 kHz,
+contradicting CLAUDE.md ADR-001. The latent bug would surface the first
+time any caller used `SpectrogramConfig()` defaults on a real 300 kHz WAV.
+The production CNN is frozen on `ExtractionConfig`'s 20–120 kHz pixel
+grid, so all other modules converge onto that band (never the reverse).
+
+**Files created:**
+- `src/usv_spectrogram/corpus.py` — new single-source-of-truth for
+  `SAMPLE_RATE_HZ=300_000`, `USV_FREQ_MIN_HZ=20_000`, `USV_FREQ_MAX_HZ=120_000`,
+  `STFT_N_FFT=512`, `STFT_HOP=128` + derived helper functions.
+- `scripts/audit_corpus.py` — per-dataset empirical-data JSON generator;
+  mirrors the `run_sis_baselines.py` parameters-sidecar pattern. CLI supports
+  `--dataset {5970,3452,9252}` and `--all` (warns-and-skips missing inputs).
+- `data/corpus_facts/5970.json` — committed artifact. All 11 sanity-check
+  anchors reproduce exactly (n_calls_raw=7921, n_calls_after_dropna_file=7864,
+  median_ici_gap_ms≈86.68, median_ioi_ms≈192.99, q25/q75 match, n_negative_gaps=10,
+  n_cross_file_pairs_over_10s=829, n_bouts=1238, n_within_bout_pairs=6350,
+  hdbscan={2:7598, 1:131, 0:98, -1:37}).
+- `tests/test_corpus.py` — 12 tests: constant values, derived-helper returns,
+  ExtractionConfig drift smoke test, downstream-config import smoke tests.
+- `tests/test_audit_corpus.py` — 10 tests: subprocess runs real script against
+  real 5970 artifacts, asserts every anchor, asserts parameters-block
+  headings appear in stdout, asserts 3452 graceful-skip exit code 1.
+- `docs/modules/corpus-constants.md` — module doc: three-layer architecture
+  (physical facts / empirical data / analysis params), CNN-freeze rationale,
+  usage examples, add-a-new-dataset flow.
+
+**Files modified:**
+- `src/usv_spectrogram/config.py` — `SpectrogramConfig` imports
+  `SAMPLE_RATE_HZ`, `USV_FREQ_MIN_HZ`, `USV_FREQ_MAX_HZ` from corpus; defaults
+  change 250k→300k sr, 30k→20k freq_min, 125k→120k freq_max.
+- `src/usv_spectrogram/detection/config.py` — `DetectionConfig` imports
+  `SAMPLE_RATE_HZ`, `STFT_N_FFT`, `STFT_HOP`, `USV_FREQ_MIN_HZ`, `USV_FREQ_MAX_HZ`
+  from corpus; defaults widen 25–110 → 20–120 kHz freq band (no effect on
+  production CNN; only `EnergyDetector` legacy path sees this).
+- `src/usv_spectrogram/detection/extraction_config.py` — values **unchanged**
+  (CNN pixel-grid frozen). Added file-level NOTE comment and module-level
+  drift assertion that fires at import time if any of 5 dataclass field
+  defaults diverge from corpus values.
+- `usv_language/analysis/config.py` — `AnalysisConfig` imports
+  `USV_FREQ_MIN_HZ`, `USV_FREQ_MAX_HZ` from corpus (no value change).
+- `src/usv_spectrogram/app/core/audio_loader.py` — one-line comment on
+  `SonicConfig` explaining its intentional 0–30 kHz band (NOT the corpus band).
+- `tests/conftest.py` — synthetic WAV fixtures regenerate at 300 kHz
+  (was 250 kHz; 4 locations: `sample_wav_path`, `sample_spectrogram`,
+  `create_tone_wav`, `create_multi_tone_wav`).
+- `tests/test_config.py` — updated 3 expected values to new canonicals.
+- `tests/test_storage_zarr.py` — local `sample_rate_hz = 250_000` → `300_000`
+  (8 locations).
+- `tests/test_streaming_equivalence.py` — same, 1 location.
+
+**Post-review fixes (same session):**
+- `src/usv_spectrogram/config.py:42` — SERIOUS: corrected stale streaming-block
+  comment ("1 second at 250 kHz" → "0.83 seconds at 300 kHz"). Value (250k) is
+  a streaming IO granularity knob, unchanged.
+- `docs/architecture/patterns.md` — Pattern 1 DetectionConfig example updated
+  to show corpus imports; Pattern 3 fixture updated to 300 kHz.
+- `CLAUDE.md:193-198` — §"Signal Processing Conventions" now references
+  `corpus.py` as the code-level enforcement point and
+  `docs/modules/corpus-constants.md` as the module doc.
+
+**Test counts:**
+- Baseline (pre-refactor): **1189 passed, 72 failed, 22 skipped** (72 failures
+  are pre-existing Phase A3/A4 + Phase 17 in-flight, unrelated to configs).
+- Post-refactor: **1211 passed, 72 failed, 22 skipped** (+22 new tests from
+  corpus + audit_corpus; same failure list — `diff` shows zero new failures).
+- CNN regression risk: **none.** Verified `run_batch_detection.py` and
+  `sliding_inference.py` do NOT import `DetectionConfig` — production CNN
+  inference uses `ExtractionConfig` only, whose values are unchanged.
+
+**Key architectural decision:**
+`ExtractionConfig` literals are INTENTIONALLY hardcoded (not imported from
+corpus). The drift assertion at the bottom of `extraction_config.py` is the
+safety net — if `corpus.py` is ever edited to new values, the assertion
+fires at import time with a clear "retrain the CNN before updating this
+literal" message. Values only diverge by deliberate, ordered action: retrain
+CNN → update ExtractionConfig → update corpus.
+
+**Out of scope (deferred):**
+- `DetectionConfig` band widening (25–110 → 20–120 kHz) may shift candidate
+  count for `EnergyDetector` callers by up to ~5 %. Verify on a known-good
+  WAV before relying on tuned thresholds. The production CNN path is
+  unaffected (verified above).
+- Phase 17 (`sis_baselines.py`, `run_sis_baselines.py`, `test_sis_*.py`)
+  not touched per handoff "keep surface area small." Follow-up handoff
+  can migrate those after 17.9 ships.

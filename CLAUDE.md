@@ -40,7 +40,7 @@ IDLE -> ANALYSIS -> APPROVAL_PENDING -> EXECUTION -> VALIDATION -> DONE
 
 **Stop when:** Assumption count >=3 on critical path | Same approach tried twice without new rationale | Evidence contradicts hypothesis | Uncertain whether code or test expectation is wrong
 
-**USV Red Flags:** STFT parameter changes without explaining frequency resolution impact | Detection threshold changes without baseline comparison | Modifying test expected values to pass | Any change to `energy_detector.py` without DSP review
+**USV Red Flags:** STFT parameter changes without explaining frequency resolution impact | Detection threshold changes without baseline comparison | Modifying test expected values to pass | Any change to the production detection pipeline (`scripts/run_batch_detection.py`, `app/core/sliding_inference.py`, `postprocessing/`) without DSP/CNN review | Any change to `ExtractionConfig` values (locked to CNN training grid — would silently corrupt inference)
 
 ### Core Rules
 
@@ -193,8 +193,12 @@ See `AGENTS.md` for the full agent table and testing workflow sequence. **Using 
 ## Signal Processing Conventions
 
 See `DECISIONS.md` ADR-001 (sample rate) and ADR-002 (STFT parameters) for full details.
+The canonical values are **enforced in code** at `src/usv_spectrogram/corpus.py` — do
+not redeclare `sample_rate`, `freq_min_hz`, `freq_max_hz`, `n_fft`, or `hop_length` in
+new modules; import from `corpus` instead. See `docs/modules/corpus-constants.md`.
 
-**Key rule:** Always specify `sr=300000` explicitly. Never rely on library defaults. See ADR-001 for why.
+**Key rule:** Always specify `sr=300000` explicitly (or import `corpus.SAMPLE_RATE_HZ`).
+Never rely on library defaults. See ADR-001 for why.
 
 ---
 
