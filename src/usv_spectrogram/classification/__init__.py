@@ -39,6 +39,27 @@ from .sis_baselines import (
     compute_sis_depth_1,
 )
 
+from .cross_population import (
+    CrossPopulationComparison,
+    ComparisonReport,
+    ComparisonMetadata,
+    TypeProportionResult,
+    JSDResult,
+    EntropyResult,
+    TransitionResult,
+    MILag1Result,
+    ZipfPopResult,
+    ZipfComparisonResult,
+    BurstinessResult,
+    IOIDistributionResult,
+    FeatureComparison,
+    FeatureComparisonResult,
+    UMAPOverlapResult,
+    SCHEMA_VERSION as CROSS_POPULATION_SCHEMA_VERSION,
+    CANONICAL_BOUT_THRESHOLD_S,
+    DEFAULT_FEATURE_COLUMNS,
+)
+
 __all__ = [
     # Raven export
     "RavenExportConfig",
@@ -69,4 +90,23 @@ __all__ = [
     # SIS baselines
     "SISResult",
     "compute_sis_depth_1",
+    # Cross-population comparison
+    "CrossPopulationComparison",
+    "ComparisonReport",
+    "ComparisonMetadata",
+    "TypeProportionResult",
+    "JSDResult",
+    "EntropyResult",
+    "TransitionResult",
+    "MILag1Result",
+    "ZipfPopResult",
+    "ZipfComparisonResult",
+    "BurstinessResult",
+    "IOIDistributionResult",
+    "FeatureComparison",
+    "FeatureComparisonResult",
+    "UMAPOverlapResult",
+    "CROSS_POPULATION_SCHEMA_VERSION",
+    "CANONICAL_BOUT_THRESHOLD_S",
+    "DEFAULT_FEATURE_COLUMNS",
 ]

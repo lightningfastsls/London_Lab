@@ -35,6 +35,9 @@ from usv_language.analysis.information_theory import (
     zipf_exponent_mle,
     ngram_idioms,
 )
+from usv_language.analysis.sequence_analysis import (
+    mutual_information_from_sequences,
+)
 
 
 # ── Constants ───────────────────────────────────────────────────────────────
@@ -217,27 +220,14 @@ def conditional_entropy_from_bouts(bout_sequences: list[np.ndarray], n_labels: i
 
 
 def mi_at_lag_from_bouts(bout_sequences: list[np.ndarray], n_labels: int, lag: int) -> float:
-    """MI(T, T+lag) counting only within-bout pairs at given lag."""
-    joint = np.zeros((n_labels, n_labels), dtype=np.float64)
-    for seq in bout_sequences:
-        if len(seq) <= lag:
-            continue
-        for i in range(len(seq) - lag):
-            joint[seq[i], seq[i + lag]] += 1
+    """MI(T, T+lag) counting only within-bout pairs at given lag.
 
-    total = joint.sum()
-    if total == 0:
-        return 0.0
-
-    joint /= total
-    marginal_x = joint.sum(axis=1)
-    marginal_y = joint.sum(axis=0)
-
-    mi = 0.0
-    for i in range(n_labels):
-        for j in range(n_labels):
-            if joint[i, j] > 0 and marginal_x[i] > 0 and marginal_y[j] > 0:
-                mi += joint[i, j] * np.log2(joint[i, j] / (marginal_x[i] * marginal_y[j]))
+    Thin wrapper over the shared primitive in
+    ``usv_language.analysis.sequence_analysis`` — kept here so callers of
+    the A2 script's internal API see no churn, but the MI math lives in
+    exactly one place (also used by SIS 17.1).
+    """
+    mi, _ = mutual_information_from_sequences(bout_sequences, n_labels, lag=lag)
     return mi
 
 

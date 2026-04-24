@@ -149,6 +149,169 @@ def mutual_information_at_lag(
     return mi
 
 
+def segment_into_bouts(
+    codes: np.ndarray,
+    ici_gap_s: np.ndarray,
+    bout_threshold_s: float,
+) -> list[np.ndarray]:
+    """Split a flat code sequence into per-bout subsequences.
+
+    A "bout" is a silence-bounded run of calls: two consecutive calls belong
+    to the same bout iff the silent gap between them (``ici_gap_s[i]``, the
+    end-to-start interval) is strictly less than ``bout_threshold_s``.
+    Matches Phase A2 (``scripts/analyze_sequential_structure.py``): the
+    threshold is an **upper bound** on within-bout gaps — a gap of exactly
+    ``bout_threshold_s`` starts a new bout, a gap smaller than it does not.
+
+    Parameters
+    ----------
+    codes:
+        1D length-N array of integer codes.
+    ici_gap_s:
+        1D length-(N-1) array of silent gaps in seconds. Element ``i`` is
+        the gap between call ``i`` and call ``i+1``.
+    bout_threshold_s:
+        Silent-gap threshold in seconds. Must be finite and non-negative.
+
+    Returns
+    -------
+    list[np.ndarray]
+        One array per bout. Includes singleton bouts (length 1) — the
+        caller is responsible for dropping them when only pairs are needed
+        (e.g. ``seq for seq in bouts if len(seq) >= 2``).
+
+    Raises
+    ------
+    ValueError
+        If ``len(ici_gap_s) != len(codes) - 1`` or ``bout_threshold_s`` is
+        not finite / not non-negative.
+    """
+    codes = np.asarray(codes)
+    gaps = np.asarray(ici_gap_s)
+    n = int(codes.shape[0])
+    if n == 0:
+        return []
+    if gaps.shape[0] != n - 1:
+        raise ValueError(
+            f"ici_gap_s length ({gaps.shape[0]}) must equal "
+            f"len(codes) - 1 = {n - 1}"
+        )
+    if not np.isfinite(bout_threshold_s) or bout_threshold_s < 0:
+        raise ValueError(
+            f"bout_threshold_s must be finite and non-negative, "
+            f"got {bout_threshold_s!r}"
+        )
+    if n == 1:
+        return [codes.copy()]
+
+    # Boundary indices (start of each new bout, after the first) are the
+    # positions i+1 where gaps[i] > threshold. Strict '>' matches Phase
+    # A2's detect_bouts (``if ici > threshold_s: bout_id += 1``) — a gap
+    # equal to the threshold stays within the current bout.
+    boundaries = np.where(gaps > bout_threshold_s)[0] + 1
+    boundaries = np.concatenate([[0], boundaries, [n]])
+    return [codes[boundaries[k]:boundaries[k + 1]] for k in range(len(boundaries) - 1)]
+
+
+def mutual_information_from_sequences(
+    sequences: list[np.ndarray],
+    codebook_size: int,
+    lag: int = 1,
+) -> tuple[float, int]:
+    """MI at lag ``lag`` counting only within-sequence pairs.
+
+    Ignores cross-sequence transitions entirely. Intended as the shared
+    primitive behind bout-aware analyses: callers first segment a flat
+    sequence into bouts (e.g. via :func:`segment_into_bouts`) then pass
+    the bout list here.
+
+    Parameters
+    ----------
+    sequences:
+        List of 1D integer code arrays. Singletons (length < 2) contribute
+        no pairs and are skipped; they do not raise.
+    codebook_size:
+        Number of codes (K). The joint-count matrix is K×K.
+    lag:
+        Temporal lag between the two variables. Default 1.
+
+    Returns
+    -------
+    tuple[float, int]
+        (MI in bits, number of (T, T+lag) pairs counted).
+        Returns (0.0, 0) when no pairs are available.
+    """
+    joint = np.zeros((codebook_size, codebook_size), dtype=np.float64)
+    n_pairs = 0
+    for seq in sequences:
+        if len(seq) <= lag:
+            continue
+        for i in range(len(seq) - lag):
+            joint[seq[i], seq[i + lag]] += 1
+        n_pairs += len(seq) - lag
+
+    total = joint.sum()
+    if total == 0:
+        return 0.0, 0
+
+    joint /= total
+    marginal_x = joint.sum(axis=1)
+    marginal_y = joint.sum(axis=0)
+
+    mi = 0.0
+    for i in range(codebook_size):
+        for j in range(codebook_size):
+            if joint[i, j] > 0 and marginal_x[i] > 0 and marginal_y[j] > 0:
+                mi += joint[i, j] * np.log2(
+                    joint[i, j] / (marginal_x[i] * marginal_y[j])
+                )
+    return float(mi), int(n_pairs)
+
+
+def mutual_information_within_bouts(
+    codes: np.ndarray,
+    ici_gap_s: np.ndarray,
+    bout_threshold_s: float,
+    codebook_size: int,
+    lag: int = 1,
+) -> tuple[float, int, int]:
+    """Bout-filtered MI at ``lag`` on a flat code sequence.
+
+    Convenience wrapper: segments ``codes`` by ``ici_gap_s`` at the given
+    threshold, then computes MI on within-bout pairs only. Used by both
+    Phase A2 (``scripts/analyze_sequential_structure.py``) and SIS 17.1
+    (``scripts/run_sis_baselines.py``) — any refinement of bout filtering
+    should happen here, so both consumers update together.
+
+    Parameters
+    ----------
+    codes:
+        1D length-N integer code array (already chronologically sorted).
+    ici_gap_s:
+        1D length-(N-1) silent-gap array (seconds, end-to-start).
+    bout_threshold_s:
+        Silent-gap threshold; pairs with gap ``>=`` threshold are treated
+        as cross-bout (excluded). Matches Phase A2's convention.
+    codebook_size:
+        Number of codes (K) in the alphabet.
+    lag:
+        Temporal lag between the two variables. Default 1.
+
+    Returns
+    -------
+    tuple[float, int, int]
+        (MI in bits, n_within_pairs, n_excluded_pairs). The two counts sum
+        to ``len(codes) - lag`` when ``lag`` == 1 and every cross-bout
+        transition contributes one excluded pair; at higher lags a pair is
+        excluded if its two endpoints are in different bouts.
+    """
+    bouts = segment_into_bouts(codes, ici_gap_s, bout_threshold_s)
+    mi, n_within = mutual_information_from_sequences(bouts, codebook_size, lag=lag)
+    n_total_pairs = max(0, len(codes) - lag)
+    n_excluded = n_total_pairs - n_within
+    return mi, n_within, n_excluded
+
+
 def entropy_rate(codes: np.ndarray, max_order: int = 5) -> list[float]:
     """Compute entropy rate at different n-gram orders.
 

@@ -21,7 +21,10 @@ import pandas as pd
 
 # Canonical source: sequence_analysis. information_theory.py re-exports the
 # same function, so either import path resolves to the same callable.
-from usv_language.analysis.sequence_analysis import mutual_information_at_lag
+from usv_language.analysis.sequence_analysis import (
+    mutual_information_at_lag,
+    mutual_information_within_bouts,
+)
 
 
 @dataclass(frozen=True)
@@ -101,3 +104,84 @@ def compute_sis_depth_1(
     pct = (mi / marginal_h * 100.0) if marginal_h > 0.0 else 0.0
 
     return SISResult(name, n_calls, k, mi, marginal_h, conditional_h, pct)
+
+
+def compute_sis_depth_1_bout_aware(
+    labels: np.ndarray,
+    ici_gap_s: np.ndarray,
+    bout_threshold_s: float,
+    name: str,
+) -> tuple[SISResult, int, int]:
+    """Bout-aware depth-1 SIS for a chronologically-sorted label sequence.
+
+    Identical contract to :func:`compute_sis_depth_1` (returns the same
+    7-field :class:`SISResult`), except the MI is computed only over
+    within-bout pairs: pairs whose silent gap exceeds ``bout_threshold_s``
+    are excluded from the joint-count matrix. This matches Phase A2's
+    methodology (``scripts/analyze_sequential_structure.py``) and Hertz
+    2020's *family* of methods (Hertz uses 160 ms ISI; we use the
+    data-derived 600 ms threshold registered in ``data/corpus_facts``).
+
+    Parameters
+    ----------
+    labels:
+        1D array of already-chronologically-sorted labels. Strings or
+        integers — factorized internally. Do NOT supply ``sort_by_time``
+        here; the caller must sort both ``labels`` and ``ici_gap_s`` into
+        the same order before calling.
+    ici_gap_s:
+        1D length ``len(labels) - 1`` array of per-pair silent gaps in
+        seconds (end-to-start). Must be in the same order as ``labels``.
+    bout_threshold_s:
+        Silent-gap threshold. Pairs with gap ``>=`` threshold are treated
+        as cross-bout and excluded.
+    name:
+        Stored verbatim on the returned :class:`SISResult`.
+
+    Returns
+    -------
+    tuple[SISResult, int, int]
+        ``(result, n_within_pairs, n_excluded_pairs)``. The SISResult uses
+        the *within-bout* transitions for ``mi_at_lag_1``, but
+        ``marginal_entropy`` is still computed on the **full** label
+        marginal (the marginal distribution over syllable types isn't
+        bout-dependent). ``conditional_entropy`` and
+        ``entropy_reduction_pct`` follow from ``H - MI`` as usual.
+    """
+    labels_arr = np.asarray(labels)
+    ici_arr = np.asarray(ici_gap_s)
+    n_calls = int(labels_arr.shape[0])
+
+    if n_calls == 0:
+        return SISResult(name, 0, 0, 0.0, 0.0, 0.0, 0.0), 0, 0
+
+    if ici_arr.shape[0] != max(0, n_calls - 1):
+        raise ValueError(
+            f"ici_gap_s length ({ici_arr.shape[0]}) must equal "
+            f"len(labels) - 1 = {n_calls - 1}"
+        )
+
+    codes, unique = pd.factorize(labels_arr, sort=True)
+    codes = np.ascontiguousarray(codes, dtype=np.intp)
+    k = int(len(unique))
+
+    if k <= 1 or n_calls < 2:
+        return SISResult(name, n_calls, k, 0.0, 0.0, 0.0, 0.0), 0, 0
+
+    counts = np.bincount(codes, minlength=k).astype(np.float64)
+    probs = counts / counts.sum()
+    nonzero = probs > 0.0
+    marginal_h = float(-np.sum(probs[nonzero] * np.log2(probs[nonzero])))
+
+    mi, n_within, n_excluded = mutual_information_within_bouts(
+        codes, ici_arr, bout_threshold_s, k, lag=1
+    )
+
+    conditional_h = marginal_h - mi
+    pct = (mi / marginal_h * 100.0) if marginal_h > 0.0 else 0.0
+
+    return (
+        SISResult(name, n_calls, k, mi, marginal_h, conditional_h, pct),
+        n_within,
+        n_excluded,
+    )

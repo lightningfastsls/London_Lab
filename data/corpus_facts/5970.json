@@ -1,6 +1,6 @@
 {
   "dataset": "5970",
-  "generated_at_utc": "2026-04-17T15:01:09+00:00",
+  "generated_at_utc": "2026-04-19T10:56:21+00:00",
   "generator": "scripts/audit_corpus.py",
   "sources": {
     "classified_csv": "results/traditional_taxonomy/classified_traditional.csv",
@@ -8,7 +8,8 @@
     "detection_csv": "results/batch_5970/manual_review_all_detections.csv",
     "ici_gap_npy": "results/sequential_structure/ici_gap.npy",
     "ici_onset_npy": "results/sequential_structure/ici_onset.npy",
-    "sequential_summary_csv": "results/sequential_structure/sequential_structure_summary.csv"
+    "sequential_summary_csv": "results/sequential_structure/sequential_structure_summary.csv",
+    "sis_baselines_csv": "results/sis_baselines/baselines.csv"
   },
   "counts": {
     "n_calls_raw": 7921,
@@ -32,6 +33,28 @@
     "n_bouts": 1238,
     "n_within_bout_pairs": 6350,
     "n_cross_bout_pairs_excluded": 1513
+  },
+  "sequential_structure_mi": {
+    "scattoni_7_bout_aware": {
+      "mi_lag1_bits": 0.0921,
+      "marginal_entropy_bits": 2.5436,
+      "conditional_entropy_bits": 2.4499,
+      "n_pairs": 6350,
+      "method": "bout_detection_a2 (0.6 s threshold, cross-bout pairs excluded) \u2014 matches Hertz 2020 methodology family (they use 160 ms ISI threshold)",
+      "source": "results/sequential_structure/sequential_structure_summary.csv",
+      "canonical_for_downstream": true
+    },
+    "scattoni_7_sis_17_1": {
+      "mi_lag1_bits": 0.0921,
+      "marginal_entropy_bits": 2.5481,
+      "conditional_entropy_bits": 2.456,
+      "n_pairs": 7863,
+      "method": "SIS 17.1 with bout filter (2026-04-19 rerun) \u2014 uses Phase A2's ici_gap.npy and 0.6 s threshold; reproduces scattoni_7_bout_aware via the shared helper mutual_information_within_bouts",
+      "source": "results/sis_baselines/baselines.csv",
+      "canonical_for_downstream": false,
+      "deprecated": true,
+      "deprecation_reason": "Redundant with scattoni_7_bout_aware now that SIS 17.1 uses bout filtering (prior entry scattoni_7_raw_consecutive = 0.0758 bits is superseded). Kept as a drift-detection check: the two entries MUST remain within 1e-3 bits; if they diverge, one of the pipelines has silently changed."
+    }
   },
   "labeling_distributions": {
     "scattoni_7": {

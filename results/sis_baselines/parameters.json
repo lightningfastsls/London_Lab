@@ -1,10 +1,11 @@
 {
-  "timestamp_utc": "2026-04-17T12:16:10+00:00",
+  "timestamp_utc": "2026-04-19T10:54:29+00:00",
   "script": "run_sis_baselines.py",
   "inputs": {
     "classified_csv": "results/traditional_taxonomy/classified_traditional.csv",
     "umap_csv": "results/recluster_umap_hdbscan/reclassified_detections.csv",
-    "output_dir": "results/sis_baselines"
+    "output_dir": "results/sis_baselines",
+    "dataset_key": "5970"
   },
   "methodology": {
     "mi_estimator": "usv_language.analysis.sequence_analysis.mutual_information_at_lag",
@@ -17,8 +18,15 @@
       "file",
       "begin_time_s"
     ],
-    "bout_detection": null,
-    "file_boundary_handling": null,
+    "bout_detection": {
+      "threshold_s": 0.6,
+      "threshold_source": "corpus_facts",
+      "ici_gap_available": true,
+      "ici_gap_source": "corpus_auto",
+      "applied": true,
+      "semantics": "pairs with ici_gap_s >= threshold_s excluded from MI joint counts (matches Phase A2 convention; strict '>' inside segment_into_bouts)"
+    },
+    "file_boundary_handling": "cross-file pairs receive gap=+inf and are thus excluded",
     "labeling_columns_scanned": [
       "syllable_type",
       "label",
@@ -34,6 +42,29 @@
     "umap_dup_dropped": 0,
     "merged": 7864
   },
+  "per_labeling_pair_counts": [
+    {
+      "name": "scattoni-7",
+      "column": "syllable_type",
+      "n_within_bout_pairs": 6350,
+      "n_excluded_pairs": 1513,
+      "bout_filter_applied": true
+    },
+    {
+      "name": "deepsqueak-27",
+      "column": "label",
+      "n_within_bout_pairs": 6350,
+      "n_excluded_pairs": 1513,
+      "bout_filter_applied": true
+    },
+    {
+      "name": "hdbscan-3",
+      "column": "hdbscan_label",
+      "n_within_bout_pairs": 6350,
+      "n_excluded_pairs": 1513,
+      "bout_filter_applied": true
+    }
+  ],
   "hertz_reference_bits": {
     "iVoICE": 0.1,
     "iMUPET": 0.13,
@@ -44,28 +75,28 @@
       "name": "scattoni-7",
       "n_calls": 7864,
       "n_labels": 7,
-      "mi_at_lag_1": 0.07575191408625362,
+      "mi_at_lag_1": 0.09205136092961919,
       "marginal_entropy": 2.5480948391444875,
-      "conditional_entropy": 2.472342925058234,
-      "entropy_reduction_pct": 2.972884404557211
+      "conditional_entropy": 2.4560434782148683,
+      "entropy_reduction_pct": 3.6125563113076695
     },
     {
       "name": "deepsqueak-27",
       "n_calls": 7864,
       "n_labels": 27,
-      "mi_at_lag_1": 0.2813526822303811,
+      "mi_at_lag_1": 0.351802340093204,
       "marginal_entropy": 4.019100985806621,
-      "conditional_entropy": 3.73774830357624,
-      "entropy_reduction_pct": 7.000388475531539
+      "conditional_entropy": 3.667298645713417,
+      "entropy_reduction_pct": 8.753259530815157
     },
     {
       "name": "hdbscan-3",
       "n_calls": 7864,
       "n_labels": 4,
-      "mi_at_lag_1": 0.029595874424085778,
+      "mi_at_lag_1": 0.037020587639143315,
       "marginal_entropy": 0.2615896563006763,
-      "conditional_entropy": 0.23199378187659053,
-      "entropy_reduction_pct": 11.313855005821672
+      "conditional_entropy": 0.224569068661533,
+      "entropy_reduction_pct": 14.15216035782054
     }
   ]
 }

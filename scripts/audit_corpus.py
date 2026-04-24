@@ -17,12 +17,14 @@ Usage
     python scripts/audit_corpus.py --dataset 5970 --output data/corpus_facts/5970.json
     python scripts/audit_corpus.py --all      # processes 5970, warns for 3452/9252 if inputs missing
 
-Known sanity-check anchors for 5970 (verified 2026-04-17):
+Known sanity-check anchors for 5970 (verified 2026-04-17, MI added 2026-04-18):
     n_calls_raw = 7921, n_calls_after_dropna_file = 7864
     median_ici_gap_ms ≈ 86.68, median_ioi_ms ≈ 192.99
     q25_ici_gap_ms ≈ 65.14, q75_ici_gap_ms ≈ 209.11
     n_negative_gaps = 10, n_cross_file_pairs_over_10s = 829
     n_bouts = 1238, n_within_bout_pairs = 6350
+    scattoni-7 MI (bout-aware) = 0.0921 bits,
+    scattoni-7 MI (raw-consec) = 0.0758 bits  [canonical for 17.8/17.9]
 """
 
 from __future__ import annotations
@@ -60,15 +62,17 @@ DATASET_REGISTRY: dict[str, dict[str, Path]] = {
         "ici_gap_npy": REPO_ROOT / "results/sequential_structure/ici_gap.npy",
         "ici_onset_npy": REPO_ROOT / "results/sequential_structure/ici_onset.npy",
         "sequential_summary_csv": REPO_ROOT / "results/sequential_structure/sequential_structure_summary.csv",
+        "sis_baselines_csv": REPO_ROOT / "results/sis_baselines/baselines.csv",
     },
     # Phase B1 is scheduled to produce these; the script warns-and-skips until they exist.
     "3452": {
-        "classified_csv": REPO_ROOT / "results/traditional_taxonomy/classified_traditional_3452.csv",
-        "hdbscan_csv": REPO_ROOT / "results/recluster_umap_hdbscan/reclassified_detections_3452.csv",
-        "detection_csv": REPO_ROOT / "results/batch_3452_reviewed/manual_review_all_detections.csv",
+        "classified_csv": REPO_ROOT / "results/traditional_taxonomy_3452/classified_traditional.csv",
+        "hdbscan_csv": REPO_ROOT / "results/recluster_umap_hdbscan_3452/reclassified_detections.csv",
+        "detection_csv": REPO_ROOT / "results/batch_3452_reviewed/summary.parquet",
         "ici_gap_npy": REPO_ROOT / "results/sequential_structure_3452/ici_gap.npy",
         "ici_onset_npy": REPO_ROOT / "results/sequential_structure_3452/ici_onset.npy",
         "sequential_summary_csv": REPO_ROOT / "results/sequential_structure_3452/sequential_structure_summary.csv",
+        "sis_baselines_csv": REPO_ROOT / "results/sis_baselines_3452/baselines.csv",
     },
     "9252": {
         "classified_csv": REPO_ROOT / "results/traditional_taxonomy/classified_traditional_9252.csv",
@@ -77,12 +81,14 @@ DATASET_REGISTRY: dict[str, dict[str, Path]] = {
         "ici_gap_npy": REPO_ROOT / "results/sequential_structure_9252/ici_gap.npy",
         "ici_onset_npy": REPO_ROOT / "results/sequential_structure_9252/ici_onset.npy",
         "sequential_summary_csv": REPO_ROOT / "results/sequential_structure_9252/sequential_structure_summary.csv",
+        "sis_baselines_csv": REPO_ROOT / "results/sis_baselines_9252/baselines.csv",
     },
 }
 
 
-# Required inputs (missing any → skip the dataset). hdbscan_csv is optional —
-# analyses older than Phase B can run without it.
+# Required inputs (missing any → skip the dataset). hdbscan_csv and
+# sis_baselines_csv are optional — analyses older than Phase B / 17.1
+# can run without them (the corresponding JSON sections degrade gracefully).
 REQUIRED_INPUTS = ("classified_csv", "ici_gap_npy", "ici_onset_npy", "sequential_summary_csv")
 
 
@@ -198,6 +204,105 @@ def _compute_bout_stats(seq_summary_csv: Path) -> dict[str, Any]:
     }
 
 
+def _compute_sequential_structure_mi(
+    seq_summary_csv: Path, sis_baselines_csv: Path | None
+) -> dict[str, Any]:
+    """Promote scattered Scattoni-7 MI values into the canonical registry.
+
+    The bout-aware value comes from Phase A2
+    (``results/sequential_structure/sequential_structure_summary.csv`` —
+    6,350 within-bout pairs, 0.6 s threshold). The raw-consecutive value
+    comes from Phase 17.1's SIS baselines CSV
+    (``results/sis_baselines/baselines.csv`` — 7,863 consecutive pairs,
+    no bout filter). Both are computed with the same estimator
+    (``mutual_information_at_lag``) on the same source labels; the 18 %
+    gap is the bout-filter methodology difference.
+
+    The bout-aware value is flagged ``canonical_for_downstream: true``
+    because it matches Hertz et al. 2020's methodology. Hertz segments
+    syllables into sequences using a 160 ms ISI threshold and computes
+    MI only within sequences (quote from Methods: "An ISI of more than
+    160 ms represented the end of the current sequence"). Our 600 ms
+    threshold is data-derived (3× median IOI) — different value, same
+    family of methods. The no-filter value cannot be directly compared
+    to Hertz's benchmark (iVoICE 0.10, iMUPET 0.13, iMSA 0.22 bits), so
+    it is retained for transparency but NOT canonical.
+    """
+    result: dict[str, Any] = {}
+
+    seq = pd.read_csv(seq_summary_csv)
+    if len(seq) != 1:
+        raise ValueError(
+            f"Expected 1-row summary in {seq_summary_csv}, got {len(seq)} rows"
+        )
+    r = seq.iloc[0]
+    result["scattoni_7_bout_aware"] = {
+        "mi_lag1_bits": round(float(r["mi_lag1_bits"]), 4),
+        "marginal_entropy_bits": round(float(r["marginal_entropy_bits"]), 4),
+        "conditional_entropy_bits": round(float(r["conditional_entropy_bits"]), 4),
+        "n_pairs": int(r["n_within_bout_pairs"]),
+        "method": "bout_detection_a2 (0.6 s threshold, cross-bout pairs excluded) — matches Hertz 2020 methodology family (they use 160 ms ISI threshold)",
+        "source": str(seq_summary_csv.relative_to(REPO_ROOT)),
+        "canonical_for_downstream": True,
+    }
+
+    if sis_baselines_csv is not None and sis_baselines_csv.exists():
+        sis = pd.read_csv(sis_baselines_csv)
+        scattoni = sis[sis["name"] == "scattoni-7"]
+        if len(scattoni) == 1:
+            s = scattoni.iloc[0]
+            sis_mi = round(float(s["mi_at_lag_1"]), 4)
+            # As of 2026-04-19, SIS 17.1 applies the same bout filter as
+            # Phase A2 (see docs/handoffs/sis-baselines-17.1-bout-filter-rerun.md).
+            # The raw-consecutive variant is preserved only as a historical
+            # audit trail — compare ``sis_mi`` to ``bout_aware.mi_lag1_bits``
+            # to detect any future drift between the two pipelines.
+            bout_mi = result["scattoni_7_bout_aware"]["mi_lag1_bits"]
+            deprecated = abs(sis_mi - bout_mi) < 1e-3
+            result["scattoni_7_sis_17_1"] = {
+                "mi_lag1_bits": sis_mi,
+                "marginal_entropy_bits": round(float(s["marginal_entropy"]), 4),
+                "conditional_entropy_bits": round(float(s["conditional_entropy"]), 4),
+                "n_pairs": int(s["n_calls"]) - 1,
+                "method": (
+                    "SIS 17.1 with bout filter (2026-04-19 rerun) — uses "
+                    "Phase A2's ici_gap.npy and 0.6 s threshold; reproduces "
+                    "scattoni_7_bout_aware via the shared helper "
+                    "mutual_information_within_bouts"
+                ),
+                "source": str(sis_baselines_csv.relative_to(REPO_ROOT)),
+                "canonical_for_downstream": False,
+                "deprecated": deprecated,
+                "deprecation_reason": (
+                    "Redundant with scattoni_7_bout_aware now that SIS 17.1 "
+                    "uses bout filtering (prior entry "
+                    "scattoni_7_raw_consecutive = 0.0758 bits is superseded). "
+                    "Kept as a drift-detection check: the two entries MUST "
+                    "remain within 1e-3 bits; if they diverge, one of the "
+                    "pipelines has silently changed."
+                ) if deprecated else (
+                    "Unexpected drift: SIS 17.1 and Phase A2 disagree "
+                    f"({sis_mi} vs {bout_mi} bits). Investigate before "
+                    "promoting either value."
+                ),
+            }
+        else:
+            print(
+                f"[warn] sis_baselines_csv {sis_baselines_csv} has "
+                f"{len(scattoni)} 'scattoni-7' rows, expected 1 — "
+                f"skipping SIS 17.1 MI entry",
+                file=sys.stderr,
+            )
+    else:
+        print(
+            f"[warn] sis_baselines_csv not available — "
+            f"SIS 17.1 MI entry will be absent from output",
+            file=sys.stderr,
+        )
+
+    return result
+
+
 def _compute_labeling_distributions(
     classified: pd.DataFrame, hdbscan_csv: Path | None
 ) -> dict[str, dict[str, int]]:
@@ -239,6 +344,9 @@ def _build_payload(dataset: str, paths: dict[str, Path]) -> dict[str, Any]:
     counts = _compute_counts(classified)
     timing = _compute_timing(classified, ici_gap, ici_onset)
     bout_stats = _compute_bout_stats(paths["sequential_summary_csv"])
+    mi_values = _compute_sequential_structure_mi(
+        paths["sequential_summary_csv"], paths.get("sis_baselines_csv")
+    )
     distributions = _compute_labeling_distributions(classified, paths.get("hdbscan_csv"))
 
     return {
@@ -249,6 +357,7 @@ def _build_payload(dataset: str, paths: dict[str, Path]) -> dict[str, Any]:
         "counts": counts,
         "timing": timing,
         "bout_detection_a2": bout_stats,
+        "sequential_structure_mi": mi_values,
         "labeling_distributions": distributions,
         "references": LITERATURE_REFERENCES,
     }
@@ -274,6 +383,9 @@ def _print_parameters(dataset: str, paths: dict[str, Path], output_path: Path) -
     print(f"  ICI gap source         : {paths['ici_gap_npy'].relative_to(REPO_ROOT)} (end-to-start, seconds)")
     print(f"  ICI onset source       : {paths['ici_onset_npy'].relative_to(REPO_ROOT)} (onset-to-onset, seconds)")
     print(f"  bout detection         : Phase A2 threshold = 0.6 s (3× median IOI)")
+    sis_path = paths.get("sis_baselines_csv")
+    sis_status = "OK" if sis_path is not None and sis_path.exists() else "MISSING (raw-consec MI skipped)"
+    print(f"  sis_baselines_csv      : {sis_path.relative_to(REPO_ROOT) if sis_path else '—'}  [{sis_status}]")
     print(f"  hdbscan join keys      : (file, begin_time_s), drop duplicates keep='first'")
     print()
     print("  [literature references]")

@@ -17,7 +17,7 @@
 ### 17.1 SIS Baselines on Existing Labels
 
 **What:** Compute MI at lag 1 for the three existing labelings (Scattoni-7, DeepSqueak-27, HDBSCAN-3) and report results in a single table. Serves as the decision gate for the rest of the phase.
-**Status:** READY
+**Status:** DONE — **RERUN COMPLETE 2026-04-19** with a bout filter aligned to Phase A2 (0.6 s threshold, silence-gap segmentation). Results: Scattoni-7 = 0.0921 bits (exact match with Phase A2), DeepSqueak-27 = 0.3518 bits, HDBSCAN-3 = 0.0370 bits. The shared primitive `usv_language.analysis.sequence_analysis.mutual_information_within_bouts` is now called by both Phase A2 and SIS 17.1, and the registry enforces drift detection between the two via `scattoni_7_sis_17_1.deprecated`. The earlier `scattoni_7_raw_consecutive = 0.0758 bits` entry is superseded. See `docs/modules/sis-baselines.md` §Reproducibility Check, `docs/handoffs/sis-baselines-17.1-bout-filter-rerun.md`, `docs/handoffs/sis-baselines-mi-reconciliation.md`.
 **Review Tier:** 2
 **Depends on:** None
 

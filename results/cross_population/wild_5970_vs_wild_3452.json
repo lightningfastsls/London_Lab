@@ -1,0 +1,436 @@
+{
+  "metadata": {
+    "schema_version": "1.0",
+    "pop_a_label": "wild_5970",
+    "pop_b_label": "wild_3452",
+    "pop_a_n_calls": 7864,
+    "pop_b_n_calls": 401,
+    "pop_a_n_files": 1338,
+    "pop_b_n_files": 110,
+    "bout_threshold_s": 0.6,
+    "type_column": "syllable_type",
+    "confidence_column": "classification_confidence",
+    "random_state": 42,
+    "n_bootstrap": 1000,
+    "caveats": [
+      "wild_5970: dropped 57 rows with NaN file/type",
+      "Zipf: one or both populations have <10 unique types \u2014 alpha estimate is undefined (sentinel 0.0)."
+    ]
+  },
+  "type_proportions": {
+    "chi2_statistic": 381.89800067715623,
+    "chi2_p_value": 2.1739839265714362e-79,
+    "chi2_dof": 6,
+    "cramers_v": 0.214957332160091,
+    "per_type_cohens_h": {
+      "Chevron": 0.14267897113872585,
+      "Complex": 0.045998388659711065,
+      "Down": 0.46394674837349825,
+      "Flat": 0.3154333952741285,
+      "Frequency_Jump": 0.24881682641491543,
+      "Short": -0.6567722923350164,
+      "Up": -0.3728127559240516
+    },
+    "max_abs_cohens_h": 0.6567722923350164,
+    "max_abs_cohens_h_type": "Short",
+    "pop_a_counts": {
+      "Chevron": 1312,
+      "Complex": 687,
+      "Down": 1385,
+      "Flat": 2520,
+      "Frequency_Jump": 579,
+      "Short": 1113,
+      "Up": 268
+    },
+    "pop_b_counts": {
+      "Chevron": 47,
+      "Complex": 30,
+      "Down": 16,
+      "Flat": 74,
+      "Frequency_Jump": 9,
+      "Short": 172,
+      "Up": 53
+    },
+    "interpretation": "chi2=381.90 p=2.174e-79 Cramer's V=0.215; largest per-type Cohen's h = 0.657 on 'Short'"
+  },
+  "jsd": {
+    "jsd_bits": 0.13765389981135467,
+    "bootstrap_ci_95": [
+      0.11207733908691364,
+      0.1713567348648344
+    ],
+    "n_bootstrap": 1000,
+    "interpretation": "JSD = 0.1377 bits [95% CI 0.1121, 0.1714] (higher = more divergent; 0 = identical distributions)"
+  },
+  "entropy": {
+    "pop_a_entropy_bits": 2.5480948391444875,
+    "pop_b_entropy_bits": 2.310304835763554,
+    "difference_bits": 0.2377900033809337,
+    "pop_a_ci_95": [
+      2.529364032519633,
+      2.5658142716955252
+    ],
+    "pop_b_ci_95": [
+      2.181494260060117,
+      2.40090573788618
+    ],
+    "permutation_p_value": 0.000999000999000999,
+    "n_bootstrap": 1000,
+    "n_permutations": 1000,
+    "interpretation": "H(A)=2.548 bits, H(B)=2.310 bits, diff=+0.238, permutation p=0.000999 (max uniform entropy for K=7 types = 2.807 bits)"
+  },
+  "transitions": {
+    "labels": [
+      "Chevron",
+      "Complex",
+      "Down",
+      "Flat",
+      "Frequency_Jump",
+      "Short",
+      "Up"
+    ],
+    "pop_a_matrix": [
+      [
+        0.21883920076117983,
+        0.08277830637488107,
+        0.12940057088487156,
+        0.31588962892483347,
+        0.07611798287345385,
+        0.13986679352997144,
+        0.037107516650808754
+      ],
+      [
+        0.17764471057884232,
+        0.25149700598802394,
+        0.11976047904191617,
+        0.20359281437125748,
+        0.05389221556886228,
+        0.15169660678642716,
+        0.041916167664670656
+      ],
+      [
+        0.1526530612244898,
+        0.06612244897959184,
+        0.2914285714285714,
+        0.3053061224489796,
+        0.07918367346938776,
+        0.07428571428571429,
+        0.031020408163265307
+      ],
+      [
+        0.170363378952336,
+        0.06229353468617272,
+        0.12411514865502596,
+        0.43983010854176496,
+        0.08352996696554979,
+        0.08494572911750826,
+        0.034922133081642284
+      ],
+      [
+        0.16326530612244897,
+        0.08163265306122448,
+        0.11688311688311688,
+        0.3784786641929499,
+        0.18181818181818182,
+        0.03896103896103896,
+        0.03896103896103896
+      ],
+      [
+        0.15820029027576196,
+        0.0841799709724238,
+        0.16545718432510886,
+        0.20029027576197386,
+        0.033381712626995644,
+        0.31204644412191584,
+        0.04644412191582003
+      ],
+      [
+        0.08287292817679558,
+        0.06629834254143646,
+        0.1270718232044199,
+        0.3370165745856354,
+        0.049723756906077346,
+        0.23204419889502761,
+        0.10497237569060773
+      ]
+    ],
+    "pop_b_matrix": [
+      [
+        0.12121212121212122,
+        0.18181818181818182,
+        0.0,
+        0.30303030303030304,
+        0.0,
+        0.2727272727272727,
+        0.12121212121212122
+      ],
+      [
+        0.3,
+        0.05,
+        0.05,
+        0.1,
+        0.0,
+        0.35,
+        0.15
+      ],
+      [
+        0.2,
+        0.06666666666666667,
+        0.13333333333333333,
+        0.2,
+        0.0,
+        0.26666666666666666,
+        0.13333333333333333
+      ],
+      [
+        0.06818181818181818,
+        0.09090909090909091,
+        0.06818181818181818,
+        0.38636363636363635,
+        0.0,
+        0.2727272727272727,
+        0.11363636363636363
+      ],
+      [
+        0.0,
+        0.14285714285714285,
+        0.0,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.42857142857142855,
+        0.14285714285714285
+      ],
+      [
+        0.06382978723404255,
+        0.02127659574468085,
+        0.010638297872340425,
+        0.1276595744680851,
+        0.02127659574468085,
+        0.5425531914893617,
+        0.2127659574468085
+      ],
+      [
+        0.1794871794871795,
+        0.07692307692307693,
+        0.0,
+        0.05128205128205128,
+        0.05128205128205128,
+        0.4358974358974359,
+        0.20512820512820512
+      ]
+    ],
+    "pop_a_n_within_pairs": 6305,
+    "pop_b_n_within_pairs": 252,
+    "frobenius_distance": 0.946137286467497,
+    "per_row_jsd_bits": {
+      "Chevron": 0.15949296880228167,
+      "Complex": 0.16743809456917866,
+      "Down": 0.1379071190679429,
+      "Flat": 0.12045881643100313,
+      "Frequency_Jump": 0.34749410283407267,
+      "Short": 0.15971542844841993,
+      "Up": 0.1964755585387169
+    },
+    "interpretation": "Frobenius distance = 0.9461 on bout-aware transition matrices (A: 6305 within-bout pairs, B: 252). Per-row JSD identifies types with the most divergent follow-on usage."
+  },
+  "mi_lag1": {
+    "pop_a_mi_bits": 0.09159330974054822,
+    "pop_b_mi_bits": 0.19663930523979667,
+    "pop_a_n_within_pairs": 6305,
+    "pop_b_n_within_pairs": 252,
+    "pop_a_n_excluded_pairs": 1558,
+    "pop_b_n_excluded_pairs": 148,
+    "pop_a_ci_95": [
+      0.07891696526575892,
+      0.1160453476490716
+    ],
+    "pop_b_ci_95": [
+      0.187562712836314,
+      0.4364125538575735
+    ],
+    "difference_bits": -0.10504599549924845,
+    "n_bootstrap": 1000,
+    "interpretation": "Bout-aware MI(lag=1): A=0.0916 bits [95% CI 0.0789, 0.1160], B=0.1966 bits [95% CI 0.1876, 0.4364]. Compare to canonical 5970 value 0.0921 bits in corpus_facts."
+  },
+  "zipf": {
+    "pop_a": {
+      "alpha": 0.0,
+      "rank_alpha": 0.0,
+      "xmin": 0.0,
+      "p_value": 1.0,
+      "n_tail": 7,
+      "log_likelihood_ratio": 0.0,
+      "insufficient_types": true
+    },
+    "pop_b": {
+      "alpha": 0.0,
+      "rank_alpha": 0.0,
+      "xmin": 0.0,
+      "p_value": 1.0,
+      "n_tail": 7,
+      "log_likelihood_ratio": 0.0,
+      "insufficient_types": true
+    },
+    "alpha_difference": 0.0,
+    "interpretation": "Zipf alpha (count distribution, Clauset MLE): A=0.000 B=0.000 diff=+0.000."
+  },
+  "burstiness": {
+    "pop_a_cv": 0.5255943368897492,
+    "pop_b_cv": 0.5506815725141402,
+    "pop_a_mean_ioi_s": 0.18914201744647105,
+    "pop_b_mean_ioi_s": 0.2357145634920635,
+    "pop_a_n_iois": 6305,
+    "pop_b_n_iois": 252,
+    "interpretation": "Within-bout IOI CV: A=0.526 (periodic), B=0.551 (periodic). CV<0.8 periodic, 0.8-1.2 Poisson, >1.2 bursty."
+  },
+  "ioi": {
+    "pop_a_median_s": 0.1594000000000002,
+    "pop_b_median_s": 0.1873016666666668,
+    "pop_a_iqr_s": [
+      0.1256733333333333,
+      0.23469666666666655
+    ],
+    "pop_b_iqr_s": [
+      0.14291916666666665,
+      0.2893883333333334
+    ],
+    "ks_statistic": 0.1901363241569427,
+    "ks_p_value": 3.816698792540112e-08,
+    "n_a": 6305,
+    "n_b": 252,
+    "interpretation": "Within-bout IOI median: A=159.4 ms (IQR 125.7-234.7), B=187.3 ms (IQR 142.9-289.4); KS D=0.190 p=3.817e-08."
+  },
+  "features": {
+    "per_feature": {
+      "principal_freq_hz": {
+        "feature": "principal_freq_hz",
+        "pop_a_mean": 66.30532135841075,
+        "pop_b_mean": 71.73529363048237,
+        "pop_a_std": 12.799252165432831,
+        "pop_b_std": 16.855205987834164,
+        "pop_a_median": 64.911224343491,
+        "pop_b_median": 69.75806451612902,
+        "cohens_d": -0.4168974679042693,
+        "ks_statistic": 0.20796971203730247,
+        "ks_p_value": 5.9900951112428694e-15,
+        "n_a": 7864,
+        "n_b": 401
+      },
+      "low_freq_hz": {
+        "feature": "low_freq_hz",
+        "pop_a_mean": 49.58972868543564,
+        "pop_b_mean": 60.920211554905705,
+        "pop_a_std": 17.869124744356245,
+        "pop_b_std": 19.491665595306618,
+        "pop_a_median": 49.34480787758493,
+        "pop_b_median": 61.36363636363637,
+        "cohens_d": -0.631187827128034,
+        "ks_statistic": 0.3073730982817625,
+        "ks_p_value": 1.8012792794053413e-32,
+        "n_a": 7864,
+        "n_b": 401
+      },
+      "high_freq_hz": {
+        "feature": "high_freq_hz",
+        "pop_a_mean": 86.12279318239943,
+        "pop_b_mean": 87.14749926928887,
+        "pop_a_std": 16.065158020373843,
+        "pop_b_std": 21.234188827834217,
+        "pop_a_median": 85.28158925272825,
+        "pop_b_median": 83.78378378378379,
+        "cohens_d": -0.0626614307323164,
+        "ks_statistic": 0.1369440082398277,
+        "ks_p_value": 1.0540633091602635e-06,
+        "n_a": 7864,
+        "n_b": 401
+      },
+      "bandwidth_hz": {
+        "feature": "bandwidth_hz",
+        "pop_a_mean": 36.53306449696379,
+        "pop_b_mean": 26.227287714383166,
+        "pop_a_std": 23.406182917203083,
+        "pop_b_std": 28.628672995529026,
+        "pop_a_median": 38.50106950406919,
+        "pop_b_median": 12.857142857142849,
+        "cohens_d": 0.4351084914394767,
+        "ks_statistic": 0.30601142109121904,
+        "ks_p_value": 3.496035557949415e-32,
+        "n_a": 7864,
+        "n_b": 401
+      },
+      "slope": {
+        "feature": "slope",
+        "pop_a_mean": -169.62550387930096,
+        "pop_b_mean": 62.7766545841168,
+        "pop_a_std": 967.6599357866579,
+        "pop_b_std": 1447.4430023287578,
+        "pop_a_median": -131.99909048810585,
+        "pop_b_median": 96.47584833846776,
+        "cohens_d": -0.2332835364167794,
+        "ks_statistic": 0.39770772712166685,
+        "ks_p_value": 7.467791889194614e-55,
+        "n_a": 7864,
+        "n_b": 401
+      },
+      "sinuosity": {
+        "feature": "sinuosity",
+        "pop_a_mean": 1.9470726640207052,
+        "pop_b_mean": 1.9052593811501772,
+        "pop_a_std": 1.53190377172597,
+        "pop_b_std": 1.6482703868992454,
+        "pop_a_median": 1.3851445211204743,
+        "pop_b_median": 1.1045973598613863,
+        "cohens_d": 0.02719139106235324,
+        "ks_statistic": 0.2946020630011949,
+        "ks_p_value": 8.131387591068502e-30,
+        "n_a": 7864,
+        "n_b": 401
+      },
+      "mean_power_db": {
+        "feature": "mean_power_db",
+        "pop_a_mean": -67.0199619645013,
+        "pop_b_mean": -71.83792529658359,
+        "pop_a_std": 5.632416174910489,
+        "pop_b_std": 4.684586899562514,
+        "pop_a_median": -67.35603442042637,
+        "pop_b_median": -71.12709627506116,
+        "cohens_d": 0.8618533284279546,
+        "ks_statistic": 0.4366182712090577,
+        "ks_p_value": 1.54440415330555e-66,
+        "n_a": 7864,
+        "n_b": 401
+      },
+      "tonality": {
+        "feature": "tonality",
+        "pop_a_mean": 0.2905631989543446,
+        "pop_b_mean": 0.23910537884215305,
+        "pop_a_std": 0.07453904483732783,
+        "pop_b_std": 0.05382050345211682,
+        "pop_a_median": 0.27399921654515846,
+        "pop_b_median": 0.2332570463699504,
+        "cohens_d": 0.6984868838594277,
+        "ks_statistic": 0.3767181106237458,
+        "ks_p_value": 4.501276355858168e-49,
+        "n_a": 7864,
+        "n_b": 401
+      },
+      "call_length_s": {
+        "feature": "call_length_s",
+        "pop_a_mean": 0.08231505467955236,
+        "pop_b_mean": 0.02673903574397335,
+        "pop_a_std": 0.07737768552943643,
+        "pop_b_std": 0.03877041356371142,
+        "pop_a_median": 0.06012,
+        "pop_b_median": 0.0171000000000001,
+        "cohens_d": 0.7316286544031171,
+        "ks_statistic": 0.467363191715523,
+        "ks_p_value": 1.0518344549164103e-76,
+        "n_a": 7864,
+        "n_b": 401
+      }
+    },
+    "max_abs_cohens_d_feature": "mean_power_db",
+    "max_abs_cohens_d": 0.8618533284279546
+  },
+  "figure_paths": []
+}

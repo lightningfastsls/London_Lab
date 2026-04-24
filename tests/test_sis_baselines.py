@@ -55,6 +55,7 @@ if str(SRC_ROOT) not in sys.path:
 from usv_spectrogram.classification.sis_baselines import (  # noqa: E402
     SISResult,
     compute_sis_depth_1,
+    compute_sis_depth_1_bout_aware,
 )
 
 # ---------------------------------------------------------------------------
@@ -1296,3 +1297,116 @@ def test_large_input_no_crash():
     assert result.n_calls == 100_000, (
         f"n_calls must equal input length, got {result.n_calls}"
     )
+
+
+# ---------------------------------------------------------------------------
+# Category H: Bout-aware MI (SIS 17.1 bout-filter rerun)
+# ---------------------------------------------------------------------------
+#
+# These tests cover the bout-filter variant added 2026-04-19 per
+# docs/handoffs/sis-baselines-17.1-bout-filter-rerun.md. They exercise
+# compute_sis_depth_1_bout_aware — a tuple-returning wrapper that applies
+# a silent-gap threshold before the MI joint-count accumulation. The
+# raw-consecutive compute_sis_depth_1 is unchanged (all 41 existing tests
+# still pass).
+
+
+def test_bout_filter_large_threshold_equals_no_filter():
+    """Hardener H1: a very large bout threshold → every pair is within-bout,
+    so bout-aware MI exactly equals raw-consecutive MI.
+
+    A 10 000 s threshold is well above any plausible ICI, so segmentation
+    produces a single bout covering all calls. The joint-count matrix is
+    therefore identical to the no-filter computation, and MI must match
+    to floating-point precision.
+    """
+    n = 500
+    seq = _make_periodic(n=n)
+    # Uniform small gaps — all within-bout under the huge threshold.
+    gaps = np.full(n - 1, 0.05, dtype=np.float64)
+
+    result_raw = compute_sis_depth_1(seq, name="raw")
+    result_bout, n_within, n_excluded = compute_sis_depth_1_bout_aware(
+        seq, gaps, bout_threshold_s=10_000.0, name="bout"
+    )
+
+    assert abs(result_bout.mi_at_lag_1 - result_raw.mi_at_lag_1) < 1e-12, (
+        f"Bout-aware MI with huge threshold should match raw MI exactly.\n"
+        f"raw={result_raw.mi_at_lag_1:.15f}, bout={result_bout.mi_at_lag_1:.15f}"
+    )
+    assert n_within == n - 1, (
+        f"With huge threshold all {n - 1} pairs should be within-bout, got {n_within}"
+    )
+    assert n_excluded == 0, (
+        f"With huge threshold no pairs should be excluded, got {n_excluded}"
+    )
+
+
+def test_bout_filter_tiny_threshold_excludes_all_pairs():
+    """Hardener H2: a threshold below the smallest gap → every pair is
+    cross-bout, so bout-aware MI = 0 and n_within = 0.
+
+    This covers the degenerate case where the filter rejects every
+    transition. The MI must be 0 (no pairs contribute to the joint
+    matrix) and the excluded count must equal N-1.
+    """
+    n = 200
+    seq = _make_periodic(n=n)
+    # Uniform 0.1 s gaps — threshold 0.01 s is below all of them.
+    gaps = np.full(n - 1, 0.1, dtype=np.float64)
+
+    result_bout, n_within, n_excluded = compute_sis_depth_1_bout_aware(
+        seq, gaps, bout_threshold_s=0.01, name="tiny-threshold"
+    )
+
+    assert result_bout.mi_at_lag_1 == 0.0, (
+        f"All-excluded bout-aware MI must be 0, got {result_bout.mi_at_lag_1}"
+    )
+    assert n_within == 0, (
+        f"All-excluded n_within must be 0, got {n_within}"
+    )
+    assert n_excluded == n - 1, (
+        f"All-excluded n_excluded must be {n - 1}, got {n_excluded}"
+    )
+    # The marginal entropy is unaffected by the filter — it is computed
+    # over the full label distribution, so a periodic [0,1,...] sequence
+    # still has H = 1 bit even when no pair is counted.
+    assert abs(result_bout.marginal_entropy - 1.0) < 1e-9, (
+        f"Marginal entropy should be 1 bit for balanced binary, "
+        f"got {result_bout.marginal_entropy}"
+    )
+
+
+def test_bout_filter_partitions_pairs_by_threshold():
+    """Hardener H3: with a crafted gap array, n_within / n_excluded match
+    a hand-computed partition.
+
+    We build a 10-symbol sequence with these gaps in seconds:
+      [0.1, 0.1, 5.0, 0.1, 0.1, 0.1, 5.0, 0.1, 0.1]
+    and apply a 1.0 s threshold. Gaps at indices 2 and 6 exceed the
+    threshold (new bouts), yielding 3 bouts of sizes 3, 4, 3 →
+    within-bout pairs = (3-1) + (4-1) + (3-1) = 2 + 3 + 2 = 7,
+    excluded pairs = 9 - 7 = 2. The MI itself should be positive and
+    finite (sequence has periodic structure within each bout).
+    """
+    # 3-symbol periodic sequence — MI is well-defined within each bout
+    seq = np.array([0, 1, 2, 0, 1, 2, 0, 1, 2, 0], dtype=np.intp)
+    gaps = np.array([0.1, 0.1, 5.0, 0.1, 0.1, 0.1, 5.0, 0.1, 0.1], dtype=np.float64)
+
+    result_bout, n_within, n_excluded = compute_sis_depth_1_bout_aware(
+        seq, gaps, bout_threshold_s=1.0, name="partition-test"
+    )
+
+    assert n_within == 7, f"Expected 7 within-bout pairs, got {n_within}"
+    assert n_excluded == 2, f"Expected 2 excluded pairs, got {n_excluded}"
+    assert n_within + n_excluded == len(seq) - 1, (
+        "n_within + n_excluded must equal len(seq) - 1"
+    )
+    assert result_bout.mi_at_lag_1 > 0.0, (
+        f"3-symbol periodic within-bout MI must be > 0, got {result_bout.mi_at_lag_1}"
+    )
+    assert np.isfinite(result_bout.mi_at_lag_1)
+    # Returned SISResult must still expose the standard 7 fields — this
+    # guards the contract that downstream CSV writers depend on.
+    assert result_bout.n_calls == len(seq)
+    assert result_bout.n_labels == 3
