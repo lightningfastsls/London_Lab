@@ -128,7 +128,7 @@ This must run end-to-end without error and print non-trivial numbers.
 ## Result section
 
 - **Status:** DONE (2026-04-24)
-- **Commit SHA:** see `git log` for `feat(cross-population)` commit on main
+- **Commit SHA:** `375d4bdc` — note: a parallel Stream 2 chat bulk-staged five streams' untracked files at 2026-04-24T23:48 and committed them under the misleading title `feat(9252-analysis): merge CSV + rate-anomaly investigation`. Stream 4 contributions (cross_population.py + tests + __init__.py + this handoff + JSON/MD outputs) are inside that commit. The four smoke-test PNGs are intentionally not versioned (`*.png` is gitignored project-wide, line 9) — they are regenerable from the committed JSON via `report.write_figures()`.
 - **Tests passing:** 16/16 in 3.72s (`pytest tests/test_cross_population.py -v`)
 - **Smoke test output (5970 vs 3452, skip umap_overlap, bootstrap=1000):**
   - N: A=7,864 calls / 1,338 files, B=401 calls / 110 files, K=7 types
