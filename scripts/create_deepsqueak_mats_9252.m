@@ -1,9 +1,9 @@
 % create_deepsqueak_mats_9252.m
 % Creates DeepSqueak-compatible .mat files from Raven selection tables for animal 9252.
 %
-% Mirrors create_deepsqueak_mats_3452.m. Inputs:
+% Same pipeline as create_deepsqueak_mats.m but pointing to 9252 data:
 %   - Raven tables: raven_tables_9252/ (318 selection tables, 597 events)
-%   - WAV files:    USV_9252/USV{1..8}/experiment 9252 USVs/usv_lmt_036/*.wav
+%   - WAV files:    USV_9252/USV{1-8}/experiment 9252 USVs/usv_lmt_036/
 %
 % Full headless pipeline (run in order):
 %   1. create_deepsqueak_mats_9252.m    (Raven TSV -> .mat)       <-- this file
@@ -17,13 +17,13 @@
 % --- Configuration ---
 ravenDir = '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\raven_tables_9252';
 wavDirs  = {'\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV1\experiment 9252 USVs\usv_lmt_036', ...
-            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV2\experiment 9252 USVs\usv_lmt_036', ...
-            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV3\experiment 9252 USVs\usv_lmt_036', ...
-            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV4\experiment 9252 USVs\usv_lmt_036', ...
-            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV5\experiment 9252 USVs\usv_lmt_036', ...
-            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV6\experiment 9252 USVs\usv_lmt_036', ...
-            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV7\experiment 9252 USVs\usv_lmt_036', ...
-            '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV8\experiment 9252 USVs\usv_lmt_036'};
+             '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV2\experiment 9252 USVs\usv_lmt_036', ...
+             '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV3\experiment 9252 USVs\usv_lmt_036', ...
+             '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV4\experiment 9252 USVs\usv_lmt_036', ...
+             '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV5\experiment 9252 USVs\usv_lmt_036', ...
+             '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV6\experiment 9252 USVs\usv_lmt_036', ...
+             '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV7\experiment 9252 USVs\usv_lmt_036', ...
+             '\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\USV_9252\USV8\experiment 9252 USVs\usv_lmt_036'};
 outDir   = fullfile(fileparts(which('DeepSqueak')), 'Detections');
 
 % Build WAV lookup: stem -> full path (recursive search across all wavDirs)
@@ -112,23 +112,46 @@ for i = 1:length(ravenFiles)
 
     verifyOK = true;
 
+    % Check 1: Calls exists and is a table
     if ~isfield(verify, 'Calls') || ~istable(verify.Calls)
         fprintf('  [VERIFY FAIL] Calls not a table after reload!\n');
         verifyOK = false;
     end
 
+    % Check 2: Correct number of calls survived save/load
     if verifyOK && height(verify.Calls) ~= nCalls
         fprintf('  [VERIFY FAIL] Expected %d calls, got %d after reload!\n', ...
             nCalls, height(verify.Calls));
         verifyOK = false;
     end
 
+    % Check 3: Variable names preserved
     if verifyOK
         actualVars = verify.Calls.Properties.VariableNames;
         expectedVars = {'Box', 'Score', 'Accept', 'Type', 'Power'};
         if ~isequal(actualVars, expectedVars)
             fprintf('  [VERIFY FAIL] VariableNames mismatch after reload!\n');
+            fprintf('    Expected: %s\n', strjoin(expectedVars, ', '));
+            fprintf('    Got:      %s\n', strjoin(actualVars, ', '));
             verifyOK = false;
+        end
+    end
+
+    % Check 4: audiodata.Filename resolves
+    if verifyOK && isfield(verify.audiodata, 'Filename')
+        if ~isfile(verify.audiodata.Filename)
+            fprintf('  [VERIFY WARN] audiodata.Filename does not resolve: %s\n', ...
+                verify.audiodata.Filename);
+            fprintf('    DeepSqueak may prompt for audio location.\n');
+        end
+    end
+
+    % Check 5: No zero-dimension boxes
+    if verifyOK && height(verify.Calls) > 0
+        zeroW = sum(verify.Calls.Box(:,3) == 0);
+        zeroH = sum(verify.Calls.Box(:,4) == 0);
+        if zeroW > 0 || zeroH > 0
+            fprintf('  [VERIFY WARN] %d zero-width + %d zero-height boxes\n', zeroW, zeroH);
         end
     end
 
@@ -139,6 +162,7 @@ for i = 1:length(ravenFiles)
         totalFailed = totalFailed + 1;
     end
 
+    % Print first call's Box for visual spot-check
     if nCalls > 0
         fprintf('  Sample Box[1]: Begin=%.4fs  LowFreq=%.1fkHz  Duration=%.4fs  BW=%.1fkHz\n', ...
             verify.Calls.Box(1,1), verify.Calls.Box(1,2), ...
@@ -148,6 +172,30 @@ for i = 1:length(ravenFiles)
     fprintf('\n');
 end
 
-fprintf('=== Done ===\n');
-fprintf('Saved: %d   Failed: %d   Total Raven files: %d\n', ...
-    totalSaved, totalFailed, length(ravenFiles));
+fprintf('=== Done: %d saved, %d failed ===\n', totalSaved, totalFailed);
+if totalFailed == 0
+    fprintf('Open DeepSqueak -> File -> Load Calls to test.\n');
+else
+    fprintf('Check VERIFY FAIL messages above before loading in DeepSqueak.\n');
+end
+fprintf('\n');
+
+% --- Next steps ---
+fprintf('Next steps (in MATLAB):\n');
+fprintf('  1. Run classification:\n');
+fprintf('     >> deepsqueak_batch_classify( ...\n');
+fprintf('            ''%s'', ...\n', outDir);
+fprintf('            fileparts(which(''DeepSqueak'')), ...\n');
+fprintf('            ''\\\\wsl.localhost\\Ubuntu\\home\\shachar\\projects\\mickey_london_lab\\deepsqueak_output_9252'', ...\n');
+fprintf('            ''kmeans'')\n\n');
+fprintf('  2. Validate the run (16 structural checks):\n');
+fprintf('     >> test_deepsqueak_batch( ...\n');
+fprintf('            ''%s'', ...\n', outDir);
+fprintf('            ''\\\\wsl.localhost\\Ubuntu\\home\\shachar\\projects\\mickey_london_lab\\deepsqueak_output_9252'')\n\n');
+fprintf('  3. Then in Python/WSL (NOTE: --tolerance-ms 75.0 is canonical, NOT the 5.0 default):\n');
+fprintf('     PYTHONPATH=src .venv/bin/python scripts/import_deepsqueak_results.py \\\n');
+fprintf('         --results-dir deepsqueak_output_9252 \\\n');
+fprintf('         --detections-dir results/batch_9252/detections \\\n');
+fprintf('         --batch-format \\\n');
+fprintf('         --output classified_detections_9252.csv \\\n');
+fprintf('         --tolerance-ms 75.0 -v\n\n');
