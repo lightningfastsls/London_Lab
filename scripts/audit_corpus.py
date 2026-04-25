@@ -75,9 +75,9 @@ DATASET_REGISTRY: dict[str, dict[str, Path]] = {
         "sis_baselines_csv": REPO_ROOT / "results/sis_baselines_3452/baselines.csv",
     },
     "9252": {
-        "classified_csv": REPO_ROOT / "results/traditional_taxonomy/classified_traditional_9252.csv",
-        "hdbscan_csv": REPO_ROOT / "results/recluster_umap_hdbscan/reclassified_detections_9252.csv",
-        "detection_csv": REPO_ROOT / "results/batch_9252/manual_review_all_detections.csv",
+        "classified_csv": REPO_ROOT / "results/traditional_taxonomy_9252/classified_traditional.csv",
+        "hdbscan_csv": REPO_ROOT / "results/recluster_umap_hdbscan_9252/reclassified_detections.csv",
+        "detection_csv": REPO_ROOT / "results/batch_9252/all_detections.csv",
         "ici_gap_npy": REPO_ROOT / "results/sequential_structure_9252/ici_gap.npy",
         "ici_onset_npy": REPO_ROOT / "results/sequential_structure_9252/ici_onset.npy",
         "sequential_summary_csv": REPO_ROOT / "results/sequential_structure_9252/sequential_structure_summary.csv",
