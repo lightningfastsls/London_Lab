@@ -2,7 +2,10 @@
 
 **Stream:** Lab-parallel Stream 2, Step 7 (rate-anomaly investigation)
 **Date:** 2026-04-24
-**Commit SHA:** _(recorded after commit)_
+**Commit SHAs:**
+- `020e31c2` — Stream-2 Python scripts + merged CSV + rate-anomaly outputs (this write-up)
+- `93b2020d` — Stream-2 MATLAB-side outputs (DeepSqueak round-trip → traditional taxonomy → UMAP+HDBSCAN → corpus_facts/9252.json → A3)
+- `375d4bdc` — earlier hybrid commit that captured the Stream-2 docs alongside other-stream sweeps; see `feedback_no_bulk_stage_in_parallel_chats` memory for the recovery context
 **Author:** Claude (Python-half work; MATLAB half pending)
 **Inputs:** `results/batch_9252/all_detections.csv`, `results/batch_9252/summary.parquet`, `results/batch_5970_v2_full/summary.parquet`
 **Outputs:** `results/rate_anomaly_9252/` — `rate_anomaly_stats.json`, `per_session_rates.csv`, 2 figures, 9 sanity-check PNGs

@@ -126,12 +126,12 @@ This is the *interesting* part of Stream 2. Write `docs/handoffs/lab_parallel/02
 ## Validation
 
 Done when:
-- [ ] `results/traditional_taxonomy_9252/classified_traditional.csv` exists with 271 rows (or fewer if some lacked extractable features — document attrition)
-- [ ] `results/recluster_umap_hdbscan_9252/reclassified_detections.csv` exists
-- [ ] `data/corpus_facts/9252.json` exists, schema matches 5970.json
-- [ ] `results/acoustic_feature_analysis_9252/` populated
-- [ ] `docs/handoffs/lab_parallel/02_RESULTS_9252_rate_anomaly.md` written with at least 3 hypothesis evaluations
-- [ ] Commit SHA recorded
+- [x] `results/traditional_taxonomy_9252/classified_traditional.csv` exists with **604 rows** (597 classified + 7 unclassified DeepSqueak-orphan rows — see attrition note in §"DeepSqueak round-trip" below)
+- [x] `results/recluster_umap_hdbscan_9252/reclassified_detections.csv` exists (2 clusters + 12 noise points at `min_cluster_size=15`)
+- [x] `data/corpus_facts/9252.json` exists, schema matches 5970.json
+- [x] `results/acoustic_feature_analysis_9252/` populated (10 files including `analysis_summary.md`)
+- [x] `docs/handoffs/lab_parallel/02_RESULTS_9252_rate_anomaly.md` written with **all 4** hypothesis evaluations (H3 falsified, H2 supported)
+- [x] Commit SHA recorded (see Result section below)
 
 ## Decision-needed signals
 
@@ -141,7 +141,21 @@ Done when:
 
 ## Result section
 
-- Commit SHA:
-- Events successfully classified:
-- Rate anomaly conclusion:
-- Decision-needed flags:
+**Stream 2 closed 2026-04-25.** Pipeline ran end-to-end; all eight handoff steps complete.
+
+- **Commit SHAs (chronological):**
+  - `020e31c2` — Python scripts + merged-detections CSV + rate-anomaly write-up + sanity-check renderer
+  - `e6ba0e61` → `3aec914b` — MATLAB Raven→.mat converter (initial + parity fix vs `create_deepsqueak_mats_3452.m`)
+  - `93b2020d` — full MATLAB-side pipeline outputs (DeepSqueak features → traditional taxonomy → UMAP/HDBSCAN → corpus_facts → A3) plus `scripts/audit_corpus.py` registry fix for 9252
+  - `375d4bdc` — earlier hybrid commit that captured Stream-2 docs alongside other-stream sweeps (recovery pattern documented in `feedback_no_bulk_stage_in_parallel_chats` memory)
+
+- **Events successfully classified:** 590 of 597 raw CNN events fully merged with DeepSqueak features (98.8% match rate at the canonical 75 ms tolerance). 7 events drift-orphaned on each side and appear in the merged CSV with `match_quality ∈ {'unmatched_ds','unmatched_det'}`. Net classifiable count after the 7 unclassified rows: **597** rows survive into the traditional taxonomy and HDBSCAN steps.
+
+- **Rate anomaly conclusion:** 9252 is a **genuinely quiet, structurally tight vocalizer**. H3 (noise floor) falsified — 9252's noise floor is 45% LOWER than 5970's, removing the suppression hypothesis. H4 (date/season) weak — only 5 days separate the datasets. H1 (recording length) weak — clips reach 1+ s and contain events. H2 (animal silence) is the surviving primary explanation, but **non-uniform**: USV3 carries 48% of all events (0.18 ev/file) while USV4 sits at 0.011 ev/file — a 16.6× inter-session ratio. The aggregate gap to 5970 is 7.6× lower file-yield and 23× lower events-per-file. The follow-on cross-population finding from corpus_facts: 9252 has **2.7× higher MI lag-1** (0.247 vs 0.092 bits) and **shorter calls** (median duration 22.94 ms vs 60.12 ms), suggesting a phenotype of "few but tightly-patterned" calls.
+
+- **Decision-needed flags:**
+  - **[P0 — open]** `results/batch_9252/summary.parquet` covers only 6,905 of 11,580 WAVs (USV1–USV3 plus most of USV4 absent from triage). Tier-level statistics are unsafe until this gap is closed by rerunning the FP-filter/triage stage. Until then, downstream code MUST source events from `results/batch_9252/all_detections.csv`, not summary.parquet.
+  - **[P1 — open]** Manual eyeball review of the 9 sanity-check spectrograms at `results/rate_anomaly_9252/sanity_check/` is still pending. If any reveal CNN-missed USVs (especially in USV1 / USV4 files), model generalization to lab data becomes a real concern.
+  - **[P2 — partial]** N=3 cross-animal comparison is now data-ready (5970 / 3452 / 9252 all have corpus_facts.json), but the small-N caveat is severe: 9252's 597 events vs 5970's 7,864 means inferential statistics need bootstrap CIs; the cross-population module (Stream 4) is the right place to do this.
+  - **[P3 — partial]** The DeepSqueak `Detections/` shared folder convention bit me mid-pipeline (113 contaminant .mat files from a prior 3452 run mixed with 9252's 318). Before the next animal runs, consider standardizing on per-animal subfolders (`Detections/<animal_id>/`) — non-recursive `dir()` in `deepsqueak_batch_classify.m` makes this safe with no script changes.
+  - **[P3 — closed]** `scripts/audit_corpus.py` 9252 registry was stale (pointed at `results/traditional_taxonomy/classified_traditional_9252.csv` instead of the dataset-suffixed-directory paths actually produced). Fixed in `93b2020d` to mirror the 3452 entry's working pattern.
