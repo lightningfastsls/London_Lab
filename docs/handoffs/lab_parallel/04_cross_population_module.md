@@ -25,7 +25,9 @@ comparison = CrossPopulationComparison(
     pop_a_label="wild_5970",
     pop_b_csv="results/traditional_taxonomy_lab_131204/classified_traditional.csv",
     pop_b_label="lab_131204",
-    bout_threshold_s=0.6,                 # canonical, from corpus_facts
+    strata_note="wild-vs-lab-strain",       # required (schema 1.1+); see
+                                            # feedback_cross_animal_population_strata.md
+    bout_threshold_s=0.6,                   # canonical, from corpus_facts
     type_column="syllable_type",
     confidence_column="classification_confidence",
 )
@@ -116,6 +118,7 @@ cmp = CrossPopulationComparison(
     pop_a_label='wild_5970',
     pop_b_csv='results/traditional_taxonomy_3452/classified_traditional.csv',
     pop_b_label='wild_3452',
+    strata_note='wild-vs-wild between-couple',
     bout_threshold_s=0.6,
 )
 report = cmp.run_all()

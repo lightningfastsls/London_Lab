@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "pop_a_label": "wild_5970",
     "pop_b_label": "wild_3452",
     "pop_a_n_calls": 7864,
@@ -15,7 +15,9 @@
     "caveats": [
       "wild_5970: dropped 57 rows with NaN file/type",
       "Zipf: one or both populations have <10 unique types \u2014 alpha estimate is undefined (sentinel 0.0)."
-    ]
+    ],
+    "strata_note": "wild-vs-wild between-couple",
+    "strata_note_extra": "Both cohorts are single wild-mouse couples (male+female; male vocalizes); these numbers are between-couple variability within the wild stratum, not the wild-vs-lab signal the project is ultimately after. See project_wild_mice.md and feedback_cross_animal_population_strata.md."
   },
   "type_proportions": {
     "chi2_statistic": 381.89800067715623,

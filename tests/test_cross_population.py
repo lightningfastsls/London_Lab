@@ -192,6 +192,7 @@ def test_synthetic_identical_chi2_not_significant(identical_populations):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=100, n_permutations=200, random_state=7,
     )
     r = cmp.compare_type_proportions()
@@ -208,6 +209,7 @@ def test_synthetic_identical_jsd_near_zero(identical_populations):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=50, random_state=7,
     )
     r = cmp.compare_repertoires_jsd()
@@ -219,6 +221,7 @@ def test_synthetic_identical_entropy_close(identical_populations):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=50, n_permutations=100, random_state=7,
     )
     r = cmp.compare_entropy()
@@ -232,6 +235,7 @@ def test_synthetic_different_chi2_significant(different_populations):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=50, n_permutations=100, random_state=13,
     )
     r = cmp.compare_type_proportions()
@@ -248,6 +252,7 @@ def test_single_type_no_crash(single_type_population):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=30, n_permutations=50, random_state=1,
     )
     # Should not crash and should produce a sensible structured result.
@@ -264,6 +269,7 @@ def test_bootstrap_reproducibility(identical_populations):
     args = dict(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=50, random_state=99,
     )
     c1 = CrossPopulationComparison(**args)
@@ -280,6 +286,7 @@ def test_json_round_trip(different_populations, tmp_path: Path):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=20, n_permutations=30, random_state=2,
     )
     report = cmp.run_all(skip=["umap_overlap"])
@@ -300,6 +307,7 @@ def test_markdown_writer_produces_nonempty(different_populations, tmp_path: Path
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=10, n_permutations=20, random_state=3,
     )
     report = cmp.run_all(skip=["umap_overlap"])
@@ -320,6 +328,7 @@ def test_transitions_bout_aware_counts_match_expectation(tmp_path: Path):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=10, random_state=5,
     )
     r = cmp.compare_transitions()
@@ -343,6 +352,7 @@ def test_mismatched_labels_raise(tmp_path: Path):
         CrossPopulationComparison(
             pop_a_csv=p_a, pop_a_label="same",
             pop_b_csv=p_b, pop_b_label="same",
+            strata_note="synthetic-test",
         )
 
 
@@ -351,7 +361,59 @@ def test_missing_file_raises(tmp_path: Path):
         CrossPopulationComparison(
             pop_a_csv=tmp_path / "nope.csv", pop_a_label="a",
             pop_b_csv=tmp_path / "also_nope.csv", pop_b_label="b",
+            strata_note="synthetic-test",
         )
+
+
+def test_missing_strata_note_raises(tmp_path: Path):
+    """Schema 1.1 makes strata_note required. Omitting it should TypeError
+    (Python's missing-arg) before any other validation runs."""
+    probs = {"Flat": 1.0}
+    p_a = tmp_path / "a.csv"
+    p_b = tmp_path / "b.csv"
+    _make_synthetic_csv(p_a, n_calls=20, type_probs=probs, seed=1, file_prefix="a")
+    _make_synthetic_csv(p_b, n_calls=20, type_probs=probs, seed=2, file_prefix="b")
+    with pytest.raises(TypeError, match="strata_note"):
+        CrossPopulationComparison(
+            pop_a_csv=p_a, pop_a_label="a",
+            pop_b_csv=p_b, pop_b_label="b",
+        )
+
+
+def test_empty_strata_note_raises(tmp_path: Path):
+    """Empty / whitespace-only strata_note must be rejected with a clear message
+    pointing the caller at the project framing docs."""
+    probs = {"Flat": 1.0}
+    p_a = tmp_path / "a.csv"
+    p_b = tmp_path / "b.csv"
+    _make_synthetic_csv(p_a, n_calls=20, type_probs=probs, seed=1, file_prefix="a")
+    _make_synthetic_csv(p_b, n_calls=20, type_probs=probs, seed=2, file_prefix="b")
+    for bad in ("", "   ", "\n\t"):
+        with pytest.raises(ValueError, match="strata_note is required"):
+            CrossPopulationComparison(
+                pop_a_csv=p_a, pop_a_label="a",
+                pop_b_csv=p_b, pop_b_label="b",
+                strata_note=bad,
+            )
+
+
+def test_strata_note_flows_into_metadata(different_populations):
+    """strata_note + strata_note_extra should appear in metadata, JSON, and
+    the rendered markdown header."""
+    p_a, p_b = different_populations
+    cmp = CrossPopulationComparison(
+        pop_a_csv=p_a, pop_a_label="a",
+        pop_b_csv=p_b, pop_b_label="b",
+        strata_note="wild-vs-wild between-couple",
+        strata_note_extra="N=1 couple per cohort, both wild-caught.",
+        n_bootstrap=10, n_permutations=20, random_state=1,
+    )
+    report = cmp.run_all(skip=["umap_overlap"])
+    assert report.metadata.strata_note == "wild-vs-wild between-couple"
+    assert "N=1 couple per cohort" in report.metadata.strata_note_extra
+    summary = report.summary()
+    assert "wild-vs-wild between-couple" in summary
+    assert "STRATA" in summary
 
 
 def test_feature_comparison_detects_shift(different_populations):
@@ -359,6 +421,7 @@ def test_feature_comparison_detects_shift(different_populations):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=10, random_state=17,
     )
     r = cmp.compare_features()
@@ -375,6 +438,7 @@ def test_ioi_distributions_kstest(different_populations):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=10, random_state=19,
     )
     r = cmp.compare_ioi_distributions()
@@ -389,6 +453,7 @@ def test_mi_lag1_reproduces_known_canary(identical_populations):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=10, random_state=23,
     )
     r = cmp.compare_mi_lag1()
@@ -408,6 +473,7 @@ def test_zipf_on_uniform_flags_insufficient(tmp_path: Path):
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=5, random_state=29,
     )
     r = cmp.compare_zipf()
@@ -421,6 +487,7 @@ def test_run_all_with_umap_skipped_produces_all_other_metrics(different_populati
     cmp = CrossPopulationComparison(
         pop_a_csv=p_a, pop_a_label="a",
         pop_b_csv=p_b, pop_b_label="b",
+        strata_note="synthetic-test",
         n_bootstrap=10, n_permutations=20, random_state=31,
     )
     report = cmp.run_all(skip=["umap_overlap"])

@@ -16,6 +16,7 @@ Minimal usage::
         pop_a_label="wild_5970",
         pop_b_csv="results/traditional_taxonomy_3452/classified_traditional.csv",
         pop_b_label="wild_3452",
+        strata_note="wild-vs-wild between-couple",
         bout_threshold_s=0.6,
     )
     report = cmp.run_all()
@@ -67,7 +68,7 @@ from usv_spectrogram.corpus import SAMPLE_RATE_HZ  # noqa: F401 (canary: importe
 logger = logging.getLogger(__name__)
 
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"  # 1.1 adds required ComparisonMetadata.strata_note
 CANONICAL_BOUT_THRESHOLD_S = 0.6
 DEFAULT_FEATURE_COLUMNS: tuple[str, ...] = (
     "principal_freq_hz",
@@ -241,6 +242,8 @@ class ComparisonMetadata:
     random_state: int
     n_bootstrap: int
     caveats: list[str]
+    strata_note: str
+    strata_note_extra: Optional[str]
 
 
 @dataclass
@@ -263,6 +266,8 @@ class ComparisonReport:
         m = self.metadata
         lines = [
             f"CrossPopulationComparison report (schema {m.schema_version})",
+            f"  STRATA: {m.strata_note}"
+            + (f" — {m.strata_note_extra}" if m.strata_note_extra else ""),
             f"  A = {m.pop_a_label}  N_calls={m.pop_a_n_calls}  N_files={m.pop_a_n_files}",
             f"  B = {m.pop_b_label}  N_calls={m.pop_b_n_calls}  N_files={m.pop_b_n_files}",
             f"  bout_threshold_s = {m.bout_threshold_s}",
@@ -405,6 +410,7 @@ class CrossPopulationComparison:
         pop_a_label: str,
         pop_b_csv: str | Path,
         pop_b_label: str,
+        strata_note: str,
         bout_threshold_s: float = CANONICAL_BOUT_THRESHOLD_S,
         type_column: str = "syllable_type",
         confidence_column: str = "classification_confidence",
@@ -416,6 +422,7 @@ class CrossPopulationComparison:
         n_permutations: int = 1000,
         random_state: int = 42,
         confidence_min: Optional[float] = None,
+        strata_note_extra: Optional[str] = None,
     ) -> None:
         if pop_a_label == pop_b_label:
             raise ValueError(
@@ -425,9 +432,21 @@ class CrossPopulationComparison:
             raise ValueError(
                 f"bout_threshold_s must be > 0, got {bout_threshold_s!r}"
             )
+        if not isinstance(strata_note, str) or not strata_note.strip():
+            raise ValueError(
+                "strata_note is required and must be a non-empty string. "
+                "It states which population strata are being compared "
+                "(e.g. 'wild-vs-wild', 'wild-vs-lab', 'lab-vs-lab-different-timepoint'). "
+                "See feedback_cross_animal_population_strata.md and "
+                "project_wild_mice.md for project-specific framing."
+            )
 
         self.pop_a_label = pop_a_label
         self.pop_b_label = pop_b_label
+        self.strata_note = strata_note.strip()
+        self.strata_note_extra = (
+            strata_note_extra.strip() if strata_note_extra and strata_note_extra.strip() else None
+        )
         self.bout_threshold_s = float(bout_threshold_s)
         self.type_column = type_column
         self.confidence_column = confidence_column
@@ -1210,10 +1229,15 @@ class CrossPopulationComparison:
             random_state=self.random_state,
             n_bootstrap=self.n_bootstrap,
             caveats=list(self._caveats),
+            strata_note=self.strata_note,
+            strata_note_extra=self.strata_note_extra,
         )
 
     def _print_params(self) -> None:
         print(f"[cross_population] schema={SCHEMA_VERSION}")
+        print(f"[cross_population] strata_note={self.strata_note!r}")
+        if self.strata_note_extra:
+            print(f"[cross_population] strata_note_extra={self.strata_note_extra!r}")
         print(
             f"[cross_population] A={self.pop_a_label} "
             f"N_calls={len(self.pop_a_df)} "
@@ -1290,6 +1314,21 @@ def _render_markdown(report: ComparisonReport) -> str:
         f"- B: {m.pop_b_label}  —  {m.pop_b_n_calls} calls, {m.pop_b_n_files} files",
         f"- Bout threshold: {m.bout_threshold_s} s (canonical)",
         f"- Random state: {m.random_state}, bootstrap N: {m.n_bootstrap}",
+        "",
+        "## Population strata — read before any number below",
+        "",
+        f"**Strata:** {m.strata_note}",
+        "",
+    ]
+    if m.strata_note_extra:
+        lines += [m.strata_note_extra, ""]
+    lines += [
+        "Every divergence number reported below is interpretable only "
+        "relative to this stratum framing — see "
+        "`feedback_cross_animal_population_strata.md` and "
+        "`project_wild_mice.md` for the project-specific reading rules.",
+        "",
+        "---",
         "",
     ]
     if m.caveats:
