@@ -175,7 +175,7 @@ Combining **parameter sensitivity** (threshold choice) + **bootstrap CI** (sampl
 
 ## Result section
 
-- Commit SHA: (to be filled at commit)
+- Commit SHA: **916f4ace** (script + CSVs); memo previously committed inadvertently in 375d4bdc by a parallel chat's bulk-stage; this update fills the SHA placeholder
 - Recommended threshold: **0.25 s**
 - Recommended logic: **file-aware (YES)**
 - MI sensitivity range across reasonable thresholds: **±0.02 bits** on 5970 (combined parameter + bootstrap); bias-dominated on 3452
