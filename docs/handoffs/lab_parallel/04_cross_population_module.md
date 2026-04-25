@@ -127,6 +127,28 @@ This must run end-to-end without error and print non-trivial numbers.
 
 ## Result section
 
+### Population strata — read before any number below
+
+Both `wild_5970` and `wild_3452` are **wild-mouse couples** (male + female
+pairs of wild-caught animals; the male is the vocalizer). N = **1 couple**
+per cohort, NOT N = 1 animal. Same species in both cohorts. This smoke
+test is therefore a **wild-vs-wild between-couple** comparison.
+
+The actual research-goal axis is **wild-vs-lab-strain**, blocked pending
+lab-strain data (see `docs/handoffs/HANDOFF_05_LAB_DATA_PIPELINE.md`).
+Every divergence number reported below (JSD = 0.1377 bits, MI 0.092 vs
+0.197 bits, max|h| = 0.657 on `Short`, etc.) is therefore the **noise floor**
+that a future wild-vs-lab signal must exceed to count as a strain effect
+rather than between-couple variability within the wild stratum. These are
+baseline-estimation numbers, not headline findings.
+
+Terminology choice: this memo uses "couple" (matching `project_wild_mice.md`
+and Stream 1's `01_RESULTS_3452_vs_5970.md`). Project-wide vocabulary
+("couple" vs "cohort" vs "dyad") is still open — the user has deferred
+standardization. See `feedback_cross_animal_population_strata.md`.
+
+---
+
 - **Status:** DONE (2026-04-24)
 - **Commit SHA:** `375d4bdc` — note: a parallel Stream 2 chat bulk-staged five streams' untracked files at 2026-04-24T23:48 and committed them under the misleading title `feat(9252-analysis): merge CSV + rate-anomaly investigation`. Stream 4 contributions (cross_population.py + tests + __init__.py + this handoff + JSON/MD outputs) are inside that commit. The four smoke-test PNGs are intentionally not versioned (`*.png` is gitignored project-wide, line 9) — they are regenerable from the committed JSON via `report.write_figures()`.
 - **Tests passing:** 16/16 in 3.72s (`pytest tests/test_cross_population.py -v`)
@@ -145,7 +167,7 @@ This must run end-to-end without error and print non-trivial numbers.
 - **MI canary against `corpus_facts/5970.json`:** observed 0.0916 bits vs canonical `scattoni_7_bout_aware = 0.0921 bits` — difference 5e-4 bits, 6,305 vs 6,350 within-bout pairs. Methodologically aligned but not byte-identical due to per-file vs sorted-global bout segmentation (see Decision D1).
 - **Decisions surfaced:**
   - **D1 (bout helper extraction):** chosen option (c) — reused `sequence_analysis.segment_into_bouts` directly, added a private `_bout_pairs_per_file` helper that groups by WAV file. Per-file grouping is stricter than the canonical sorted-global segmentation (explains the 45-pair / 5e-4 bit MI gap) and is arguably more correct for cross-population work where recording protocols may differ. Stream 5 can formalize the bout module once its threshold sensitivity conclusions land.
-  - **D2 (N<2 animals):** chosen option (c) — no animal-level PERMANOVA required because the pooled-over-calls approach works directly on both wild cohorts (3452 and 9252 are N=1 animal each). PERMANOVA/per-animal tests from `repertoire_stats` are NOT invoked; this module operates on pooled per-pop proportions.
+  - **D2 (per-animal partitioning not available):** chosen option (c) — each wild cohort is one couple (male + female; the male vocalizes), not one individual. We can't reliably split calls per animal from the audio, so animal-level PERMANOVA from `repertoire_stats` doesn't apply; the module operates on pooled per-cohort proportions. The lab cohort `131204` (6 couples × 2 timepoints → 12 sessions) is where between-couple inference becomes statistically possible. Wild side will always be limited until more couples are recorded.
   - **D3 (Cohen's h):** chosen as-written — Cohen's h = 2·(arcsin√p_a − arcsin√p_b) computed per type, returned as a dict plus `max_abs_cohens_h` summary. Largest effect on wild cohorts was `Short` with |h|=0.657 (medium-large effect).
 - **Non-obvious findings worth a note:**
   1. 3452 shows substantially higher sequential structure than 5970 (MI 0.197 vs 0.092 bits, >2× difference) despite smaller sample. If real, this is a cross-animal signal worth adding to `data/corpus_facts/3452.json` once audit_corpus runs.
