@@ -1,0 +1,87 @@
+{
+  "generated_at_utc": "2026-04-24T20:43:27+00:00",
+  "generator": "scripts/analyze_rate_anomaly_9252.py",
+  "inputs": {
+    "events_9252": "results/batch_9252/all_detections.csv",
+    "summary_9252": "results/batch_9252/summary.parquet",
+    "summary_5970": "results/batch_5970_v2_full/summary.parquet",
+    "wav_root_9252": "USV_9252"
+  },
+  "headline": {
+    "5970": {
+      "n_wavs": 6400,
+      "n_files_with_events": 1328,
+      "n_events": 7575,
+      "file_yield_pct": 20.75,
+      "events_per_file_mean": 1.18359375,
+      "events_per_file_ci_95": [
+        1.10748828125,
+        1.25406640625
+      ]
+    },
+    "9252": {
+      "n_wavs": 11580,
+      "n_files_with_events": 318,
+      "n_events": 597,
+      "file_yield_pct": 2.7461139896373057,
+      "events_per_file_mean": 0.05155440414507772,
+      "events_per_file_ci_95": [
+        0.044298359240069085,
+        0.05984887737478411
+      ]
+    },
+    "ratios": {
+      "file_yield_ratio_5970_over_9252": 7.556132075471698,
+      "events_per_file_ratio_5970_over_9252": 22.95815012562814
+    }
+  },
+  "hypotheses": {
+    "h1_recording_length": {
+      "max_end_time_s_9252": {
+        "median": 1.08032,
+        "q10": 0.8046933333333334,
+        "q90": 2.309546666666667,
+        "n": 318
+      },
+      "total_usv_duration_ms_summary": {
+        "5970_median": 486.4,
+        "9252_median": 51.20000000000013,
+        "5970_mean": 719.0522088353415,
+        "9252_mean": 97.51676300578033
+      },
+      "verdict": "H1 is weak. 9252 WAVs clearly contain events up to ~1+ s so clips are not trivially short. Direct audio-duration comparison would need WAV header reads (not done here)."
+    },
+    "h2_animal_silence": {
+      "per_session_csv": "results/rate_anomaly_9252/per_session_rates.csv",
+      "figure": "results/rate_anomaly_9252/fig_h2_per_session_rate.png",
+      "session_max": "USV3",
+      "session_min": "USV4",
+      "max_mean_events_per_file": 0.1797752808988764,
+      "min_mean_events_per_file": 0.010810810810810811,
+      "session_dispersion_max_over_min": 16.629213483146067,
+      "verdict": "H2 is supported but non-uniform. USV3 at 0.18 ev/file dominates; USV4 at 0.011 ev/file is 17\u00d7 lower. Even USV3 \u2014 the most vocal session \u2014 remains ~7\u00d7 below 5970's 1.18 ev/file. The animal is genuinely quiet, but not monotonically so: whatever drives vocalization (time-of-day? social trigger?) cycles on and off."
+    },
+    "h3_noise_floor": {
+      "5970_median_nf": 0.035936550423502925,
+      "9252_median_nf": 0.01993827093392619,
+      "5970_mean_nf": 0.21541062714566583,
+      "9252_mean_nf": 0.059785830892604266,
+      "5970_q90_nf": 0.9929918628931045,
+      "9252_q90_nf": 0.14002393305301672,
+      "ks_statistic": 0.2042471488052136,
+      "ks_p_value": 1.0593066426447172e-121,
+      "figure": "results/rate_anomaly_9252/fig_h3_noise_floor.png",
+      "verdict": "H3 is FALSIFIED. 9252's median noise floor (0.020) is ~45 % LOWER than 5970's (0.036). If noise-floor magnitude affected detection, the effect would go the opposite direction: 9252 should yield MORE, not fewer, detections. KS test confirms the distributions differ, but in the direction that removes H3 as a candidate."
+    },
+    "h4_date_season": {
+      "5970_date_min": "2024-09-30",
+      "5970_date_max": "2024-10-01",
+      "5970_n_unique_dates": 2,
+      "9252_date_min": "2024-10-06",
+      "9252_date_max": "2024-10-10",
+      "9252_n_unique_dates": 5,
+      "gap_days_between_datasets": 5,
+      "verdict": "H4 is WEAK. 9252 starts 2024-10-06; 5970 ends 2024-10-01. Only ~5 days separate them \u2014 same season, same calendar month, near-identical daylight/temperature. Seasonal effects this close are implausible for lab housing unless a specific environmental disturbance occurred in between (no evidence of one)."
+    }
+  }
+}
