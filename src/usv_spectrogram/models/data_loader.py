@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 from pathlib import Path
 from PIL import Image
 from typing import Tuple, Dict, Optional
@@ -58,6 +58,15 @@ class USVDataset(Dataset):
 
         # Compute class counts
         self.class_counts = self.df['label'].value_counts().to_dict()
+
+        # Optional per-row sample weights for WeightedRandomSampler. Default
+        # 1.0 (uniform). Used by lab fine-tune to upweight lab rows vs. wild
+        # rows in batch sampling. Independent of class_weights, which act on
+        # the loss, not the sampler.
+        if 'sample_weight' in self.df.columns:
+            self.sample_weights = self.df['sample_weight'].astype(float).to_numpy()
+        else:
+            self.sample_weights = np.ones(len(self.df), dtype=float)
 
     def __len__(self) -> int:
         return len(self.df)
@@ -195,15 +204,41 @@ def create_data_loaders(
         class_weights = train_dataset.get_class_weights()
         print(f"Class weights: {class_weights}")
 
-    # Create data loaders with custom collate function for padding
-    train_loader = DataLoader(
-        train_dataset,
-        batch_size=batch_size,
-        shuffle=True,
-        num_workers=num_workers,
-        pin_memory=True,
-        collate_fn=pad_collate_fn
-    )
+    # If the training CSV provided per-row sample_weight, route through a
+    # WeightedRandomSampler. Otherwise stay on the uniform-shuffle path so
+    # production training behavior is unchanged.
+    train_weights = train_dataset.sample_weights
+    use_weighted_sampler = not np.allclose(train_weights, train_weights[0])
+
+    if use_weighted_sampler:
+        sampler = WeightedRandomSampler(
+            weights=torch.as_tensor(train_weights, dtype=torch.double),
+            num_samples=len(train_dataset),
+            replacement=True,
+        )
+        train_loader = DataLoader(
+            train_dataset,
+            batch_size=batch_size,
+            sampler=sampler,
+            num_workers=num_workers,
+            pin_memory=True,
+            collate_fn=pad_collate_fn,
+        )
+        n_unique_weights = len(np.unique(train_weights))
+        print(
+            f"Using WeightedRandomSampler: "
+            f"{n_unique_weights} distinct sample weights "
+            f"(min={train_weights.min():.3f}, max={train_weights.max():.3f})"
+        )
+    else:
+        train_loader = DataLoader(
+            train_dataset,
+            batch_size=batch_size,
+            shuffle=True,
+            num_workers=num_workers,
+            pin_memory=True,
+            collate_fn=pad_collate_fn,
+        )
 
     val_loader = DataLoader(
         val_dataset,
