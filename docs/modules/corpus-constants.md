@@ -142,6 +142,123 @@ Schema (abbreviated — see `data/corpus_facts/5970.json` for the full form):
 3. Run `python scripts/audit_corpus.py --dataset <NAME> --output data/corpus_facts/<NAME>.json`
 4. Commit the JSON as a versioned artifact
 
+## Layer-2 fact: `data/lab_tonal_lines/<rig_id>.json`
+
+**Status:** Live (landed 2026-05-11)
+**Schema source of truth:** `usv_spectrogram.app.core.notch.TonalLibrary`
+**Generator:** `scripts/calibrate_lab_tonal_lines.py`
+**Consumer:** `scripts/run_batch_detection.py --soft-notch <path>` (and the
+PyQt6 app, if the flag is later wired into the GUI loader)
+
+### What it contains
+
+Per-rig calibrated equipment-tonal libraries. A library entry is a deliberate,
+empirical statement: "rig X always emits a stationary tonal at center `c_hz`,
+with width `w_hz`, that sits roughly `mean_above_median_db` above the local PSD
+median." At batch detection time, `--soft-notch <library>` applies a
+finite-depth Butterworth soft-notch at each library frequency; the cut depth is
+**measured per-chunk** from the local PSD, while frequency and width come from
+the library (fast deterministic path).
+
+The library is also the reference for the **drift audit**: each chunk's
+discovered tonals are reconciled against the library, and unmatched detections
+fire a "library may be stale" warning when the unmatched rate exceeds 10% of
+chunks (see `scripts/run_batch_detection.py:_UNMATCHED_RATE_WARNING_THRESHOLD`).
+
+### Schema (one JSON per rig)
+
+```json
+{
+  "rig_id": "lab_131204",
+  "calibrated_at": "2026-05-11T11:59:51+00:00",
+  "n_chunks_sampled": 98,
+  "sample_files": ["131204_1400_m3fm3_chunk_243.wav", "..."],
+  "entries": [
+    {
+      "center_hz": 50709.56,
+      "width_hz": 41.28,
+      "mean_above_median_db": 12.20,
+      "stdev_above_median_db": 2.24,
+      "n_chunks_seen": 52,
+      "detection_rate": 0.531
+    }
+  ]
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `rig_id` | Stable identifier. Derived heuristic: strip `USV_` prefix and `_chunked_*` suffix from the WAV dir name (override with `--rig-id`). |
+| `calibrated_at` | ISO-8601 UTC timestamp. |
+| `n_chunks_sampled` | Number of WAVs the calibration ran on (after the `_notch`/`_filtered` artefact filter). |
+| `sample_files` | Filenames sampled — for reproducibility / audit. |
+| `entries[].center_hz` | Mean of detected centers across chunks (Hz). |
+| `entries[].width_hz` | Mean of measured -3 dB widths across chunks (Hz). |
+| `entries[].mean_above_median_db` | Average PSD elevation above the local-median baseline. Used as the **drift reference** at runtime (not the cut depth). |
+| `entries[].stdev_above_median_db` | Stdev of the elevation. Combined with `mean_above_median_db`, forms the intensity-drift z-score detector. |
+| `entries[].n_chunks_seen` | Count of chunks where this tonal was discovered. |
+| `entries[].detection_rate` | `n_chunks_seen / n_chunks_sampled`. |
+
+### How to regenerate
+
+```bash
+python scripts/calibrate_lab_tonal_lines.py \
+    --wav-dir USV_lab_131204_chunked_2s_hot/ \
+    --rig-id lab_131204 \
+    --output data/lab_tonal_lines/lab_131204.json \
+    # Optional rig-tuning overrides — see the spec handoff for empirical
+    # defaults observed on the 131204 'hot' chunk subset:
+    --sample-size 100 \
+    --cluster-tolerance-hz 400 \
+    --discovery-threshold-db 8
+```
+
+The script samples `--sample-size` WAVs (uniformly at random, seeded by
+`--random-seed=0` for reproducibility), runs `notch.discover_tonals` on each,
+clusters detections across chunks by center-frequency proximity, and promotes
+clusters above `--min-detection-rate` to library entries.
+
+### When to regenerate
+
+- **Equipment change** — new microphone, new amplifier gain, new rig.
+- **New recording session after maintenance** — anything that could shift the
+  equipment-tonal frequency.
+- **Stale-library warning fired** — `run_batch_detection.py` reports
+  `stale_library_warning_fired: true` in `soft_notch_summary.json` (default
+  trigger: unmatched-detection rate > 10% of chunks).
+- **Audit warning** — `scripts/audit_corpus.py --lab-tonal-lines` reports a
+  file older than 365 days.
+
+### Audit-script wiring
+
+```bash
+python scripts/audit_corpus.py --lab-tonal-lines
+```
+
+Validates every JSON in `data/lab_tonal_lines/`:
+- Parse against the `TonalLibrary` schema (via `TonalLibrary.load`).
+- All entries have `center_hz` inside `[USV_FREQ_MIN_HZ, USV_FREQ_MAX_HZ]`.
+- All entries have `width_hz` in `[20, 5000]` Hz.
+- All entries have `detection_rate` in `[0, 1]`.
+- Warns if file mtime exceeds 365 days.
+
+Failures return non-zero exit.
+
+### Why this is Layer 2 (not Layer 1)
+
+Tonal libraries are **empirical** — they describe what a specific rig
+physically emits in a specific room at a specific time. A different rig
+(e.g., the 5970 wild-mouse rig vs. the 131204 lab rig) has a different
+library; the same rig before and after equipment maintenance may also
+differ. This is the same pattern as `data/corpus_facts/<dataset>.json`
+(median ICI, bout counts, MI values): per-dataset measurements that change
+as the dataset evolves.
+
+The runtime-tuning parameters (`discovery_threshold_db`, `min_width_hz`,
+`freq_tolerance_hz`, the stale-library warning rate) are **NOT** corpus
+facts — they live in CLI args / function defaults and may evolve as the
+algorithm is empirically tuned.
+
 ## Related
 
 - `DECISIONS.md` ADR-001 (sample rate rationale)

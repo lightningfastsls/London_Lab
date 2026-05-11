@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -45,6 +46,16 @@ SRC_ROOT = REPO_ROOT / "src"
 for _p in (SRC_ROOT, REPO_ROOT):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
+
+# Layer-2 fact: lab_tonal_lines (rig-specific equipment-tonal libraries).
+# See docs/modules/corpus-constants.md and
+# docs/handoffs/2026-05-11_adaptive-soft-notch.md for the schema.
+from usv_spectrogram.app.core.notch import TonalLibrary  # noqa: E402
+from usv_spectrogram.corpus import USV_FREQ_MAX_HZ, USV_FREQ_MIN_HZ  # noqa: E402
+
+LAB_TONAL_LINES_DIR = REPO_ROOT / "data" / "lab_tonal_lines"
+LAB_TONAL_LINES_STALE_DAYS = 365
+LAB_TONAL_LINES_WIDTH_BOUNDS_HZ = (20.0, 5_000.0)
 
 
 # ── Dataset registry ───────────────────────────────────────────────────────
@@ -125,6 +136,16 @@ def parse_args() -> argparse.Namespace:
         "--all",
         action="store_true",
         help="Process every registered dataset; warns and skips any with missing inputs.",
+    )
+    group.add_argument(
+        "--lab-tonal-lines",
+        action="store_true",
+        help=(
+            "Audit every JSON in data/lab_tonal_lines/ against the TonalLibrary "
+            "schema. Validates: parse, center_hz inside [USV_FREQ_MIN_HZ, "
+            "USV_FREQ_MAX_HZ], width_hz in [20, 5000] Hz, detection_rate in [0, 1]; "
+            "warns if file mtime exceeds 365 days (calibration may be stale)."
+        ),
     )
     parser.add_argument(
         "--output",
@@ -435,8 +456,102 @@ def process_one(
     return True
 
 
+def audit_lab_tonal_lines(libraries_dir: Path = LAB_TONAL_LINES_DIR) -> tuple[int, int]:
+    """Validate every TonalLibrary JSON under ``libraries_dir``.
+
+    Returns ``(n_valid, n_invalid)``. Per-file results print to stdout.
+    A file is INVALID if any of these fail:
+      - Cannot parse against the TonalLibrary schema.
+      - Any entry has ``center_hz`` outside ``[USV_FREQ_MIN_HZ, USV_FREQ_MAX_HZ]``.
+      - Any entry has ``width_hz`` outside the sanity bounds (default 20-5000 Hz).
+      - Any entry has ``detection_rate`` outside ``[0, 1]``.
+    File mtime exceeding 365 days emits a WARN but does NOT mark invalid.
+    """
+    print("=" * 66)
+    print("audit_corpus.py — Layer-2 fact: lab_tonal_lines/")
+    print("=" * 66)
+    print(f"  directory: {libraries_dir}")
+    print(f"  band:      [{USV_FREQ_MIN_HZ}, {USV_FREQ_MAX_HZ}] Hz")
+    print(f"  width:     [{LAB_TONAL_LINES_WIDTH_BOUNDS_HZ[0]}, "
+          f"{LAB_TONAL_LINES_WIDTH_BOUNDS_HZ[1]}] Hz")
+    print(f"  staleness: {LAB_TONAL_LINES_STALE_DAYS} days")
+    print()
+
+    if not libraries_dir.exists():
+        print(f"[skip] {libraries_dir} does not exist — no libraries calibrated yet.")
+        return (0, 0)
+
+    json_files = sorted(libraries_dir.glob("*.json"))
+    if not json_files:
+        print(f"[skip] no .json files in {libraries_dir}.")
+        return (0, 0)
+
+    width_lo, width_hi = LAB_TONAL_LINES_WIDTH_BOUNDS_HZ
+    now_s = time.time()
+    n_valid = 0
+    n_invalid = 0
+
+    for path in json_files:
+        errors: list[str] = []
+        warns: list[str] = []
+        rel = path.relative_to(REPO_ROOT)
+
+        try:
+            library = TonalLibrary.load(path)
+        except Exception as exc:  # noqa: BLE001
+            print(f"[FAIL] {rel}: schema error: {exc}")
+            n_invalid += 1
+            continue
+
+        for i, entry in enumerate(library.entries):
+            if not (USV_FREQ_MIN_HZ <= entry.center_hz <= USV_FREQ_MAX_HZ):
+                errors.append(
+                    f"entry {i} center_hz={entry.center_hz} outside "
+                    f"[{USV_FREQ_MIN_HZ}, {USV_FREQ_MAX_HZ}]"
+                )
+            if not (width_lo <= entry.width_hz <= width_hi):
+                errors.append(
+                    f"entry {i} width_hz={entry.width_hz} outside "
+                    f"[{width_lo}, {width_hi}]"
+                )
+            if not (0.0 <= entry.detection_rate <= 1.0):
+                errors.append(
+                    f"entry {i} detection_rate={entry.detection_rate} outside [0, 1]"
+                )
+
+        mtime_s = path.stat().st_mtime
+        age_days = (now_s - mtime_s) / 86400.0
+        if age_days > LAB_TONAL_LINES_STALE_DAYS:
+            warns.append(
+                f"mtime is {age_days:.0f} days old (> {LAB_TONAL_LINES_STALE_DAYS} d); "
+                "consider recalibrating"
+            )
+
+        if errors:
+            print(f"[FAIL] {rel} (rig={library.rig_id}, {len(library.entries)} entries):")
+            for e in errors:
+                print(f"       {e}")
+            n_invalid += 1
+        else:
+            tag = "WARN" if warns else " OK "
+            print(f"[{tag}] {rel}  rig={library.rig_id}  "
+                  f"entries={len(library.entries)}  "
+                  f"calibrated={library.calibrated_at}")
+            for w in warns:
+                print(f"       {w}")
+            n_valid += 1
+
+    print()
+    print(f"summary: {n_valid} valid, {n_invalid} invalid, {len(json_files)} total")
+    return (n_valid, n_invalid)
+
+
 def main() -> int:
     args = parse_args()
+
+    if args.lab_tonal_lines:
+        _, n_invalid = audit_lab_tonal_lines()
+        return 0 if n_invalid == 0 else 1
 
     if args.dataset:
         if args.output is None:
