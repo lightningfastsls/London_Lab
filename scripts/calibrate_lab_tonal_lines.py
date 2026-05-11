@@ -35,8 +35,12 @@ from __future__ import annotations
 
 import argparse
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
+
+import numpy as np
+import soundfile as sf
 
 # ---------------------------------------------------------------------------
 # Path bootstrap so notch.py is importable when running as a script
@@ -46,7 +50,12 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from usv_spectrogram.app.core.notch import TonalLibrary  # noqa: E402
+from usv_spectrogram.app.core.notch import (  # noqa: E402
+    DetectedTonal,
+    LibraryEntry,
+    TonalLibrary,
+    discover_tonals,
+)
 
 
 def derive_rig_id(wav_dir: Path) -> str:
@@ -61,6 +70,58 @@ def derive_rig_id(wav_dir: Path) -> str:
     if idx >= 0:
         name = name[:idx]
     return name
+
+
+def _load_audio_mono(path: Path) -> tuple[np.ndarray, float]:
+    """Return ``(audio_1d, fs_hz)``. Multi-channel files are channel-0'd."""
+    audio, fs = sf.read(str(path), dtype="float64", always_2d=False)
+    if audio.ndim == 2:
+        audio = audio[:, 0]
+    return audio, float(fs)
+
+
+def _cluster_detections(
+    per_chunk_tonals: list[list[DetectedTonal]],
+    cluster_tolerance_hz: float,
+) -> list[dict]:
+    """Cluster per-chunk detections by center-frequency proximity.
+
+    Each cluster tracks the detection records (for mean/stdev computation)
+    and the distinct set of chunk indices in which the cluster was seen
+    (for ``detection_rate``). At most one detection from a given chunk can
+    contribute to a single cluster — duplicate-frequency detections within
+    the same chunk are silently merged into the closest existing cluster
+    or, failing that, start a new cluster.
+
+    Cluster anchor uses the running mean center, so the cluster center is
+    not pinned to the first detection's frequency.
+    """
+    clusters: list[dict] = []
+    for chunk_idx, tonals in enumerate(per_chunk_tonals):
+        for t in tonals:
+            # Find the closest existing cluster within tolerance.
+            best = -1
+            best_dist = cluster_tolerance_hz + 1
+            for i, c in enumerate(clusters):
+                mean_center = sum(c["centers"]) / len(c["centers"])
+                dist = abs(t.center_hz - mean_center)
+                if dist <= cluster_tolerance_hz and dist < best_dist:
+                    best_dist = dist
+                    best = i
+            if best >= 0:
+                c = clusters[best]
+                c["centers"].append(t.center_hz)
+                c["widths"].append(t.width_hz)
+                c["aboves"].append(t.above_median_db)
+                c["chunks_seen"].add(chunk_idx)
+            else:
+                clusters.append({
+                    "centers": [t.center_hz],
+                    "widths": [t.width_hz],
+                    "aboves": [t.above_median_db],
+                    "chunks_seen": {chunk_idx},
+                })
+    return clusters
 
 
 def calibrate(
@@ -83,7 +144,96 @@ def calibrate(
 
     Returns the calibrated :class:`TonalLibrary` (not yet written to disk).
     """
-    raise NotImplementedError("calibrate not yet implemented")
+    wav_dir = Path(wav_dir)
+    if not wav_dir.is_dir():
+        raise ValueError(f"--wav-dir is not a directory: {wav_dir}")
+
+    wav_paths = sorted(wav_dir.glob("*.wav"))
+    if not wav_paths:
+        raise ValueError(f"No .wav files found in {wav_dir}")
+
+    rng = np.random.default_rng(random_seed)
+    n_to_sample = min(int(sample_size), len(wav_paths))
+    sampled_indices = sorted(rng.choice(len(wav_paths), size=n_to_sample, replace=False))
+    sampled_paths = [wav_paths[i] for i in sampled_indices]
+
+    per_chunk_tonals: list[list[DetectedTonal]] = []
+    successfully_loaded: list[Path] = []
+    for path in sampled_paths:
+        try:
+            audio, fs = _load_audio_mono(path)
+        except Exception as exc:  # noqa: BLE001 — tolerate any soundfile error
+            print(f"[warn] failed to load {path}: {exc}", file=sys.stderr)
+            continue
+        tonals = discover_tonals(
+            audio, fs,
+            discovery_threshold_db=discovery_threshold_db,
+            median_window_hz=median_window_hz,
+            nperseg=nperseg,
+        )
+        per_chunk_tonals.append(tonals)
+        successfully_loaded.append(path)
+
+    n_effective = len(successfully_loaded)
+    if n_effective == 0:
+        raise RuntimeError(
+            f"None of the {n_to_sample} sampled WAVs could be loaded from {wav_dir}"
+        )
+
+    clusters = _cluster_detections(per_chunk_tonals, cluster_tolerance_hz)
+
+    entries: list[LibraryEntry] = []
+    for c in clusters:
+        n_chunks_seen = len(c["chunks_seen"])
+        detection_rate = n_chunks_seen / n_effective
+        if detection_rate < min_detection_rate:
+            continue
+        centers = np.asarray(c["centers"], dtype=np.float64)
+        widths = np.asarray(c["widths"], dtype=np.float64)
+        aboves = np.asarray(c["aboves"], dtype=np.float64)
+        entries.append(LibraryEntry(
+            center_hz=float(centers.mean()),
+            width_hz=float(widths.mean()),
+            mean_above_median_db=float(aboves.mean()),
+            stdev_above_median_db=float(aboves.std(ddof=0)),
+            n_chunks_seen=int(n_chunks_seen),
+            detection_rate=float(detection_rate),
+        ))
+
+    entries.sort(key=lambda e: e.center_hz)
+
+    return TonalLibrary(
+        rig_id=rig_id,
+        calibrated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        n_chunks_sampled=n_effective,
+        sample_files=[p.name for p in successfully_loaded],
+        entries=entries,
+    )
+
+
+def _print_summary(library: TonalLibrary, wav_dir: Path) -> None:
+    print("=" * 66)
+    print(f"calibrate_lab_tonal_lines — rig={library.rig_id}")
+    print("=" * 66)
+    print(f"  wav_dir            : {wav_dir}")
+    print(f"  calibrated_at (UTC): {library.calibrated_at}")
+    print(f"  n_chunks_sampled   : {library.n_chunks_sampled}")
+    print(f"  n_entries          : {len(library.entries)}")
+    if library.entries:
+        print()
+        print(f"  {'center_hz':>12}  {'width_hz':>10}  {'mean_above':>11}  "
+              f"{'stdev_above':>12}  {'n_chunks':>9}  {'rate':>6}")
+        # Top 5 by detection_rate (then by mean_above_median_db as tiebreaker)
+        ranked = sorted(
+            library.entries,
+            key=lambda e: (-e.detection_rate, -e.mean_above_median_db),
+        )
+        for e in ranked[:5]:
+            print(f"  {e.center_hz:>12.2f}  {e.width_hz:>10.2f}  "
+                  f"{e.mean_above_median_db:>11.2f}  "
+                  f"{e.stdev_above_median_db:>12.2f}  "
+                  f"{e.n_chunks_seen:>9d}  {e.detection_rate:>6.3f}")
+    print("=" * 66)
 
 
 def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
@@ -115,7 +265,27 @@ def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
 
 
 def main(argv: Optional[list[str]] = None) -> int:
-    raise NotImplementedError("main not yet implemented")
+    args = _parse_args(argv)
+    rig_id = args.rig_id or derive_rig_id(args.wav_dir)
+
+    library = calibrate(
+        wav_dir=args.wav_dir,
+        rig_id=rig_id,
+        sample_size=args.sample_size,
+        min_detection_rate=args.min_detection_rate,
+        cluster_tolerance_hz=args.cluster_tolerance_hz,
+        random_seed=args.random_seed,
+        discovery_threshold_db=args.discovery_threshold_db,
+        median_window_hz=args.median_window_hz,
+        nperseg=args.nperseg,
+    )
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    library.save(args.output)
+
+    _print_summary(library, args.wav_dir)
+    print(f"[ok] wrote {args.output}")
+    return 0
 
 
 if __name__ == "__main__":
