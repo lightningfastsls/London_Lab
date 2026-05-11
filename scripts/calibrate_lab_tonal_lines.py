@@ -148,7 +148,13 @@ def calibrate(
     if not wav_dir.is_dir():
         raise ValueError(f"--wav-dir is not a directory: {wav_dir}")
 
-    wav_paths = sorted(wav_dir.glob("*.wav"))
+    # Exclude artefacts of prior soft-notch / band-stop experiments — a WAV
+    # that has already been filtered is not representative of the raw rig
+    # signal and would bias the library stats.
+    wav_paths = sorted(
+        p for p in wav_dir.glob("*.wav")
+        if "_notch" not in p.stem and "_filtered" not in p.stem
+    )
     if not wav_paths:
         raise ValueError(f"No .wav files found in {wav_dir}")
 
