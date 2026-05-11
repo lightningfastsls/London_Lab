@@ -46,6 +46,10 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from usv_spectrogram.app.core.audio_loader import AudioLoader  # noqa: E402
+from usv_spectrogram.app.core.notch import (  # noqa: E402
+    ReconciliationResult,
+    TonalLibrary,
+)
 from usv_spectrogram.app.core.sliding_inference import SlidingInference  # noqa: E402
 from usv_spectrogram.postprocessing.batch_output import write_batch_results  # noqa: E402
 from usv_spectrogram.postprocessing.hysteresis import (  # noqa: E402
@@ -58,6 +62,10 @@ from usv_spectrogram.postprocessing.triage import (  # noqa: E402
     TriageConfig,
     triage_recording,
 )
+
+# Spec parameter: fraction of chunks with unmatched audit detections above
+# which we fire the stale-library warning. Tunable; currently fixed at 10%.
+_UNMATCHED_RATE_WARNING_THRESHOLD = 0.10
 
 log = logging.getLogger(__name__)
 
@@ -88,6 +96,7 @@ def _load_hysteresis_config(path: Path) -> HysteresisConfig:
         sustain_threshold=params["sustain_threshold"],
         gap_fill_windows=params["gap_fill_windows"],
         min_duration_windows=params["min_duration_windows"],
+        max_duration_ms=params.get("max_duration_ms", 600.0),
     )
 
 
@@ -104,10 +113,11 @@ def process_one_recording(
     normalize_fn=None,
     fp_filter=None,
     spectrogram_for_features: bool = False,
-) -> tuple[List[USVEvent], np.ndarray]:
+) -> tuple[List[USVEvent], np.ndarray, ReconciliationResult | None]:
     """Run the detection pipeline on a single WAV file.
 
-    Returns (events, probabilities).
+    Returns ``(events, probabilities, soft_notch_reconciliation)``. The
+    third element is ``None`` unless the loader has ``auto_soft_notch=True``.
     """
     # 1. Load audio + compute spectrogram
     audio_data = loader.load(wav_path)
@@ -143,7 +153,66 @@ def process_one_recording(
         keep = fp_filter.predict(features)
         events = [e for e, k in zip(events, keep) if k]
 
-    return events, probabilities
+    return events, probabilities, audio_data.soft_notch_reconciliation
+
+
+def _build_soft_notch_rows(
+    wav_path: Path, recon: ReconciliationResult,
+) -> list[dict]:
+    """Flatten a ReconciliationResult into one parquet row per applied / audit event.
+
+    Schema (matches spec ``soft_notch_applied.parquet``):
+      recording_path, chunk_idx, center_hz, width_hz, peak_db, local_median_db,
+      cut_depth_db, source ("library"/"audit"), is_drift, intensity_drift_sigma.
+    chunk_idx is always 0 — one filter application per WAV.
+    """
+    drift_lookup = {id(entry): sigma for entry, sigma in recon.intensity_drifts}
+    rows: list[dict] = []
+    for entry, det in recon.matched:
+        rows.append({
+            "recording_path": str(wav_path),
+            "chunk_idx": 0,
+            "center_hz": float(entry.center_hz),
+            "width_hz": float(entry.width_hz),
+            "peak_db": float(det.peak_db),
+            "local_median_db": float(det.local_median_db),
+            "cut_depth_db": float(det.above_median_db),
+            "source": "library",
+            "is_drift": False,
+            "intensity_drift_sigma": float(drift_lookup.get(id(entry), float("nan"))),
+        })
+    for entry in recon.unmatched_library_entries:
+        # Library entry's filter still ran, but the per-chunk PSD measurement
+        # did not find a peak above threshold. The actual cut depth applied is
+        # unknown to us here (auto_soft_notch internalized it) — record 0 as a
+        # safe sentinel; the row exists so downstream joins see every library
+        # frequency for every chunk.
+        rows.append({
+            "recording_path": str(wav_path),
+            "chunk_idx": 0,
+            "center_hz": float(entry.center_hz),
+            "width_hz": float(entry.width_hz),
+            "peak_db": float("nan"),
+            "local_median_db": float("nan"),
+            "cut_depth_db": 0.0,
+            "source": "library",
+            "is_drift": False,
+            "intensity_drift_sigma": float("nan"),
+        })
+    for det in recon.unmatched_detections:
+        rows.append({
+            "recording_path": str(wav_path),
+            "chunk_idx": 0,
+            "center_hz": float(det.center_hz),
+            "width_hz": float(det.width_hz),
+            "peak_db": float(det.peak_db),
+            "local_median_db": float(det.local_median_db),
+            "cut_depth_db": 0.0,  # audit-only — library is source of truth
+            "source": "audit",
+            "is_drift": True,
+            "intensity_drift_sigma": float("nan"),
+        })
+    return rows
 
 
 # ---------------------------------------------------------------------------
@@ -159,9 +228,9 @@ def _process_and_save_one(
     triage_config: TriageConfig,
     temperature_scaler,
     fp_filter,
-) -> Optional[RecordingResult]:
-    """Process one recording, write its JSON, return result for summary."""
-    events, probabilities = process_one_recording(
+) -> tuple[Optional[RecordingResult], list[dict]]:
+    """Process one recording, write its JSON, return (result, soft_notch_rows)."""
+    events, probabilities, recon = process_one_recording(
         wav_path,
         loader,
         inference,
@@ -182,7 +251,9 @@ def _process_and_save_one(
     json_path = detections_dir / f"{stem}.json"
     with open(json_path, "w") as f:
         json.dump(detections, f, indent=2)
-    return result
+
+    soft_notch_rows = _build_soft_notch_rows(wav_path, recon) if recon is not None else []
+    return result, soft_notch_rows
 
 
 # ---------------------------------------------------------------------------
@@ -200,9 +271,23 @@ def _worker_init(
     temperature_path: Optional[Path],
     fp_filter_path: Optional[Path],
     detections_dir: Path,
+    subtract_baseline: bool = False,
+    subtraction_method: str = "percentile",
+    soft_notch_enabled: bool = False,
+    soft_notch_library_path: Optional[Path] = None,
 ):
     """Initialize per-worker pipeline components (called once per process)."""
-    _worker_state["loader"] = AudioLoader()
+    soft_notch_library = (
+        TonalLibrary.load(soft_notch_library_path)
+        if soft_notch_enabled and soft_notch_library_path is not None
+        else None
+    )
+    _worker_state["loader"] = AudioLoader(
+        subtract_baseline=subtract_baseline,
+        subtraction_method=subtraction_method,
+        auto_soft_notch=soft_notch_enabled,
+        soft_notch_library=soft_notch_library,
+    )
     _worker_state["inference"] = SlidingInference(model_path=model_path)
     _worker_state["hysteresis_config"] = hysteresis_config
     _worker_state["triage_config"] = triage_config
@@ -221,7 +306,7 @@ def _worker_process_file(wav_path: Path) -> Optional[dict]:
     Returns a serializable dict (not RecordingResult, to avoid pickling issues).
     """
     try:
-        result = _process_and_save_one(
+        result, soft_notch_rows = _process_and_save_one(
             wav_path,
             _worker_state["detections_dir"],
             _worker_state["loader"],
@@ -241,6 +326,7 @@ def _worker_process_file(wav_path: Path) -> Optional[dict]:
             "noise_floor_p90": result.noise_floor_p90,
             "confidence_score": result.confidence_score,
             "qc_flags": result.qc_flags,
+            "soft_notch_rows": soft_notch_rows,
         }
     except Exception as e:
         log.error("Failed to process %s: %s", wav_path.name, e)
@@ -261,6 +347,10 @@ def run_batch(
     triage_config: Optional[TriageConfig] = None,
     n_workers: int = 1,
     resume: bool = True,
+    subtract_baseline: bool = False,
+    subtraction_method: str = "percentile",
+    soft_notch_enabled: bool = False,
+    soft_notch_library_path: Optional[Path] = None,
 ) -> List[dict]:
     """Run the full pipeline on all WAV files in a directory.
 
@@ -317,6 +407,10 @@ def run_batch(
                 temperature_path,
                 fp_filter_path,
                 detections_dir,
+                subtract_baseline,
+                subtraction_method,
+                soft_notch_enabled,
+                soft_notch_library_path,
             ),
         ) as pool:
             raw_results = []
@@ -335,7 +429,17 @@ def run_batch(
                     )
     else:
         # --------------- Serial execution ---------------
-        loader = AudioLoader()
+        soft_notch_library_serial = (
+            TonalLibrary.load(soft_notch_library_path)
+            if soft_notch_enabled and soft_notch_library_path is not None
+            else None
+        )
+        loader = AudioLoader(
+            subtract_baseline=subtract_baseline,
+            subtraction_method=subtraction_method,
+            auto_soft_notch=soft_notch_enabled,
+            soft_notch_library=soft_notch_library_serial,
+        )
         inference = SlidingInference(model_path=model_path)
         temperature_scaler = (
             _load_temperature_scaler(temperature_path) if temperature_path else None
@@ -347,7 +451,7 @@ def run_batch(
             if i % 50 == 0:
                 log.info("[%d/%d] Processing %s", i, len(wav_files), wav_path.name)
             try:
-                result = _process_and_save_one(
+                result, soft_notch_rows = _process_and_save_one(
                     wav_path, detections_dir,
                     loader, inference, hysteresis_config, triage_config,
                     temperature_scaler, fp_filter,
@@ -362,6 +466,7 @@ def run_batch(
                     "noise_floor_p90": result.noise_floor_p90,
                     "confidence_score": result.confidence_score,
                     "qc_flags": result.qc_flags,
+                    "soft_notch_rows": soft_notch_rows,
                 })
             except Exception:
                 log.exception("Failed to process %s", wav_path)
@@ -381,6 +486,13 @@ def run_batch(
 
     # Write summary parquet (includes resumed files if any)
     _write_summary_parquet(raw_results, detections_dir, output_dir)
+
+    # Soft-notch sidecars (only when --soft-notch is active)
+    if soft_notch_enabled:
+        _write_soft_notch_sidecars(
+            raw_results, output_dir,
+            soft_notch_library_path=soft_notch_library_path,
+        )
 
     # Summary
     tiers = {"auto_accept": 0, "auto_reject": 0, "manual_review": 0}
@@ -405,6 +517,88 @@ def _write_summary_parquet(
     df = pd.DataFrame(new_results, columns=_PARQUET_COLUMNS)
     df.to_parquet(output_dir / "summary.parquet", index=False)
     log.info("Wrote summary.parquet (%d rows)", len(df))
+
+
+def _write_soft_notch_sidecars(
+    raw_results: List[dict],
+    output_dir: Path,
+    *,
+    soft_notch_library_path: Optional[Path],
+) -> None:
+    """Write soft_notch_applied.parquet + soft_notch_summary.json.
+
+    See ``docs/handoffs/2026-05-11_adaptive-soft-notch.md`` §1f for schema.
+    """
+    import pandas as pd
+
+    all_rows: list[dict] = []
+    n_chunks_with_unmatched = 0
+    for r in raw_results:
+        rows = r.get("soft_notch_rows") or []
+        all_rows.extend(rows)
+        if any(row.get("is_drift") for row in rows):
+            n_chunks_with_unmatched += 1
+
+    batch_n_chunks = len(raw_results)
+    columns = [
+        "recording_path", "chunk_idx", "center_hz", "width_hz",
+        "peak_db", "local_median_db", "cut_depth_db", "source",
+        "is_drift", "intensity_drift_sigma",
+    ]
+    df = pd.DataFrame(all_rows, columns=columns)
+    parquet_path = output_dir / "soft_notch_applied.parquet"
+    df.to_parquet(parquet_path, index=False)
+    log.info("Wrote soft_notch_applied.parquet (%d rows)", len(df))
+
+    # Summary JSON
+    unmatched_rate = (
+        n_chunks_with_unmatched / batch_n_chunks if batch_n_chunks > 0 else 0.0
+    )
+    stale_warning_fired = unmatched_rate > _UNMATCHED_RATE_WARNING_THRESHOLD
+    stale_reason = (
+        f"unmatched_rate {unmatched_rate:.3f} > {_UNMATCHED_RATE_WARNING_THRESHOLD} "
+        "— library may be stale; consider recalibrating"
+    ) if stale_warning_fired else None
+
+    library_metadata: dict = {}
+    if soft_notch_library_path is not None:
+        try:
+            library = TonalLibrary.load(soft_notch_library_path)
+            library_metadata = {
+                "library_path": str(soft_notch_library_path),
+                "library_rig_id": library.rig_id,
+                "library_calibrated_at": library.calibrated_at,
+                "library_n_entries": len(library.entries),
+            }
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Could not re-load library for summary: %s", exc)
+            library_metadata = {
+                "library_path": str(soft_notch_library_path),
+                "library_rig_id": None,
+                "library_calibrated_at": None,
+                "library_n_entries": 0,
+            }
+    else:
+        library_metadata = {
+            "library_path": None,
+            "library_rig_id": None,
+            "library_calibrated_at": None,
+            "library_n_entries": 0,
+        }
+
+    summary = {
+        **library_metadata,
+        "batch_n_chunks": batch_n_chunks,
+        "n_chunks_with_unmatched": n_chunks_with_unmatched,
+        "unmatched_rate": unmatched_rate,
+        "stale_library_warning_fired": stale_warning_fired,
+        "stale_library_warning_reason": stale_reason,
+    }
+    summary_path = output_dir / "soft_notch_summary.json"
+    with open(summary_path, "w") as f:
+        json.dump(summary, f, indent=2)
+    log.info("Wrote soft_notch_summary.json (unmatched_rate=%.3f, stale=%s)",
+             unmatched_rate, stale_warning_fired)
 
 
 # Module-level timestamp for ETA calculation in parallel mode
@@ -453,6 +647,39 @@ def main() -> int:
         "--no-resume", action="store_true",
         help="Don't skip already-processed files (reprocess everything).",
     )
+    parser.add_argument(
+        "--subtract-baseline", action="store_true",
+        help=(
+            "Apply per-frequency-bin temporal-baseline subtraction to the "
+            "spectrogram BEFORE the CNN sees it. Lab-only opt-in: targets "
+            "stationary equipment harmonics that the wild-trained CNN was "
+            "never exposed to. Default off — wild-mouse runs (5970/3452/9252) "
+            "must omit this flag for byte-identical results. See "
+            "docs/handoffs/2026-05-08_pre-cnn-spectral-subtraction-lab.md."
+        ),
+    )
+    parser.add_argument(
+        "--subtraction-method", default="percentile",
+        choices=["percentile", "median_envelope"],
+        help=(
+            "Statistic used for the per-bin baseline (only consulted with "
+            "--subtract-baseline). 'percentile' = Boll 1979 floor subtraction "
+            "(p10 default). 'median_envelope' = sliding-median per bin "
+            "(captures slow band amplitude modulation; ~0.5 s kernel)."
+        ),
+    )
+    parser.add_argument(
+        "--soft-notch", type=str, default=None, metavar="PATH|auto",
+        help=(
+            "Apply the adaptive pre-CNN soft-notch filter to every WAV BEFORE "
+            "STFT. Lab-only opt-in: removes rig-specific equipment tonals so "
+            "the wild-trained CNN sees a cleaner signal. Pass a TonalLibrary "
+            "JSON path (preferred — library mode) or the literal 'auto' "
+            "(pure per-chunk auto-detect; no library). Default off — wild-mouse "
+            "runs (5970/3452/9252) must omit this flag for byte-identical "
+            "results. See docs/handoffs/2026-05-11_adaptive-soft-notch.md."
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -464,6 +691,26 @@ def main() -> int:
     _batch_t0 = time.time()
     t0 = time.perf_counter()
 
+    if args.subtract_baseline:
+        log.info(
+            "Pre-CNN spectral subtraction ENABLED  method=%s",
+            args.subtraction_method,
+        )
+
+    soft_notch_enabled = args.soft_notch is not None
+    soft_notch_library_path: Optional[Path] = None
+    if soft_notch_enabled:
+        if args.soft_notch != "auto":
+            soft_notch_library_path = Path(args.soft_notch)
+            if not soft_notch_library_path.exists():
+                log.error("Soft-notch library not found: %s", soft_notch_library_path)
+                return 2
+            log.info(
+                "Adaptive soft-notch ENABLED  library=%s", soft_notch_library_path,
+            )
+        else:
+            log.info("Adaptive soft-notch ENABLED  mode=auto (no library; per-chunk detect)")
+
     results = run_batch(
         wav_dir=args.wav_dir,
         model_path=args.model,
@@ -473,6 +720,10 @@ def main() -> int:
         hysteresis_config_path=args.hysteresis_config,
         n_workers=args.workers,
         resume=not args.no_resume,
+        subtract_baseline=args.subtract_baseline,
+        subtraction_method=args.subtraction_method,
+        soft_notch_enabled=soft_notch_enabled,
+        soft_notch_library_path=soft_notch_library_path,
     )
 
     elapsed = time.perf_counter() - t0

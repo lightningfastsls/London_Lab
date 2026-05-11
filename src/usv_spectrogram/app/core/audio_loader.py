@@ -16,6 +16,12 @@ import numpy as np
 from ...detection.extraction_config import ExtractionConfig
 from ...io_wav import load_wav_mono
 from ..._stft_core import compute_stft_frames_db, extract_frames
+from .denoise import (
+    DEFAULT_BASELINE_PERCENTILE,
+    DEFAULT_ENVELOPE_KERNEL_FRAMES,
+    subtract_temporal_baseline,
+)
+from .notch import ReconciliationResult, TonalLibrary, auto_soft_notch as _auto_soft_notch
 from scipy import signal
 
 
@@ -62,6 +68,11 @@ class AudioData:
     playback_audio: np.ndarray | None = None
     playback_sr: int = 48_000
 
+    # Soft-notch audit (None when auto_soft_notch=False; the default).
+    # When set, holds the per-chunk reconciliation result: matched library
+    # entries, unmatched detections (drift), intensity drifts, etc.
+    soft_notch_reconciliation: ReconciliationResult | None = None
+
 
 class AudioLoader:
     """Loads WAV files and computes spectrograms for detection.
@@ -74,15 +85,50 @@ class AudioLoader:
         self,
         config: ExtractionConfig | None = None,
         sonic_config: SonicConfig | None = None,
+        subtract_baseline: bool = False,
+        subtraction_method: str = "percentile",
+        baseline_percentile: float = DEFAULT_BASELINE_PERCENTILE,
+        envelope_kernel_frames: int = DEFAULT_ENVELOPE_KERNEL_FRAMES,
+        auto_soft_notch: bool = False,
+        soft_notch_library: TonalLibrary | None = None,
     ):
         """Initialize audio loader.
 
         Args:
             config: Extraction config for USV spectrogram (default: ExtractionConfig())
             sonic_config: Config for sonic-range spectrogram (default: SonicConfig())
+            subtract_baseline: If True, apply per-frequency-bin temporal-baseline
+                subtraction to the USV spectrogram before returning. Lab-only opt-in;
+                default off so wild-mouse runs are byte-identical. See
+                ``denoise.subtract_temporal_baseline`` and
+                ``docs/handoffs/2026-05-08_pre-cnn-spectral-subtraction-lab.md``.
+            subtraction_method: ``"percentile"`` (Boll 1979 floor subtraction) or
+                ``"median_envelope"`` (sliding-median envelope subtraction, captures
+                slow band amplitude modulation). Only consulted when
+                ``subtract_baseline`` is True.
+            baseline_percentile: Temporal percentile per bin used as the noise floor
+                (default 10). Only consulted with ``subtraction_method="percentile"``.
+            envelope_kernel_frames: Width of the per-bin temporal median filter, in
+                frames (default ~0.5 s, derived from corpus SAMPLE_RATE_HZ / STFT_HOP).
+                Only consulted with ``subtraction_method="median_envelope"``.
+            auto_soft_notch: If True, apply adaptive soft-notch filtering to the
+                audio sample buffer BEFORE STFT (and BEFORE both spectrograms /
+                playback so they all see the cleaned signal). Lab-only opt-in;
+                default off so wild-mouse runs are byte-identical. See
+                ``notch.auto_soft_notch`` and
+                ``docs/handoffs/2026-05-11_adaptive-soft-notch.md``.
+            soft_notch_library: Optional :class:`TonalLibrary` for library-mode
+                filtering. ``None`` runs pure auto-detect mode (every discovered
+                tonal is filtered). Only consulted when ``auto_soft_notch=True``.
         """
         self.config = config if config is not None else ExtractionConfig()
         self.sonic_config = sonic_config if sonic_config is not None else SonicConfig()
+        self.subtract_baseline = subtract_baseline
+        self.subtraction_method = subtraction_method
+        self.baseline_percentile = baseline_percentile
+        self.envelope_kernel_frames = envelope_kernel_frames
+        self.auto_soft_notch = auto_soft_notch
+        self.soft_notch_library = soft_notch_library
 
     def load(self, wav_path: str | Path) -> AudioData:
         """Load WAV file and compute spectrogram.
@@ -111,6 +157,17 @@ class AudioLoader:
                 f"got {sample_rate} Hz. File: {wav_path}"
             )
 
+        # Optional adaptive soft-notch (lab equipment-tonal removal).
+        # Runs in the audio domain BEFORE STFT, so BOTH the USV-band
+        # spectrogram and the sonic-range spectrogram (and any subsequent
+        # playback) reflect the cleaned signal. Default-off — wild-mouse
+        # runs must be byte-identical.
+        soft_notch_recon: ReconciliationResult | None = None
+        if self.auto_soft_notch:
+            audio, soft_notch_recon = _auto_soft_notch(
+                audio, float(sample_rate), library=self.soft_notch_library,
+            )
+
         # Compute spectrogram using extraction config parameters
         spec_db, freqs_hz, times_s = self._compute_spectrogram(audio, sample_rate)
 
@@ -133,6 +190,7 @@ class AudioLoader:
             sonic_frequencies=sonic_freqs,
             sonic_times=sonic_times,
             playback_audio=playback_audio,
+            soft_notch_reconciliation=soft_notch_recon,
         )
 
     def _compute_spectrogram(
@@ -179,6 +237,23 @@ class AudioLoader:
             frames, window, self.config.n_fft, band_mask, eps,
             normalize_magnitude=True
         )
+
+        # Optional pre-CNN spectral subtraction (lab equipment-line removal).
+        # Round-trip dB↔linear so the textbook subtraction-in-magnitude
+        # formulation in denoise.subtract_temporal_baseline applies.
+        # Mathematically equivalent to subtracting on raw |STFT| up to the
+        # global-max scaling already applied above; the CNN's downstream
+        # MAD normalization removes any residual global-level offset.
+        if self.subtract_baseline and spec_db.size > 0:
+            spec_linear = np.power(10.0, spec_db / 20.0)
+            spec_linear = subtract_temporal_baseline(
+                spec_linear,
+                method=self.subtraction_method,
+                percentile=self.baseline_percentile,
+                envelope_kernel_frames=self.envelope_kernel_frames,
+                epsilon=eps,
+            )
+            spec_db = 20.0 * np.log10(spec_linear)
 
         # Compute time bins (center of each frame)
         n_frames = frames.shape[0]
