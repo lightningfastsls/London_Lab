@@ -92,3 +92,11 @@ models/contour_vae_*/last.pt
 results/contour_vae_*/latents.parquet
 # Phase 5 cross-cohort diagnostic figures — small and analytically valuable.
 !results/phase5_cross_cohort/*.png
+
+# Security — rig SSH-coordinate leakage protection (added 2026-05-20 after audit).
+# These paths contain plaintext Tailscale IP / SSH-user / hostname for the rig.
+# To version-control any of them: sanitize first (replace literals with <RIG_*>
+# placeholders), then `git add` by exact path.
+/handoff_to_rig/
+/docs/handoffs/*rig*.md
+/docs/handoffs/2026-05-10_lab-finetune-experiment-matrix*.md
