@@ -78,3 +78,17 @@ graphify-pilot/
 *.Zone.Identifier
 *:Zone.Identifier
 .claude/hooks/*.bak
+
+# Contour-VAE pipeline (per docs/handoffs/2026-05-20_path-c-cleanup.md §4)
+# Backup files left by in-place patch workflow.
+*.prefix_bak
+*.broken_bak
+*.duplicate_patch_idx_bak
+# Heavy regeneratable artifacts — kept on disk for downstream analysis,
+# excluded from git. Regenerate from best.pt + patches if needed.
+**/patches.npz
+models/contour_vae_*/best.pt
+models/contour_vae_*/last.pt
+results/contour_vae_*/latents.parquet
+# Phase 5 cross-cohort diagnostic figures — small and analytically valuable.
+!results/phase5_cross_cohort/*.png

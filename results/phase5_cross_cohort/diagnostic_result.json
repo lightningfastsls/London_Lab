@@ -1,0 +1,14 @@
+{
+  "verdict": "CLEAN",
+  "flagged_dims": [],
+  "d_threshold": 1.5,
+  "r_threshold": 0.4,
+  "n_samples": 69293,
+  "n_latent_cols": 32,
+  "per_cohort_counts": {
+    "lab_131204": 55863,
+    "5970": 12440,
+    "9252": 584,
+    "3452": 406
+  }
+}
