@@ -395,3 +395,104 @@ CNN → update ExtractionConfig → update corpus.
 - Phase 17 (`sis_baselines.py`, `run_sis_baselines.py`, `test_sis_*.py`)
   not touched per handoff "keep surface area small." Follow-up handoff
   can migrate those after 17.9 ships.
+
+---
+
+## 2026-05-21 — Module 18.1 CNN Cleaning Validation Gate
+
+**Status:** IMPLEMENTED + REVIEWED + FIXES APPLIED (10-item batch)
+**ROADMAP reference:** `ROADMAP_lab_cnn_classifier.md` §18.1
+**Review tier:** 3 (DSP + statistical methodology)
+**Worktree:** `.claude/worktrees/lab-cnn-classifier-plan/`
+
+**Files created:**
+- `src/usv_spectrogram/classifier/__init__.py` — package init; exports
+  `CleaningConfig`, `clean_spectrogram`, `DiagnosticResult`, and the
+  four diagnostic functions for downstream Module 18.2 use; holds
+  `TARGET_SAMPLE_RATE_HZ=250_000` (VocalMat-aligned, NOT corpus default).
+- `src/usv_spectrogram/classifier/cleaning_pipeline.py` (387 LOC) —
+  `CleaningConfig` (namedtuple subclass for adversarial-immutability
+  test contract) + `clean_spectrogram` 4-layer stack (soft-notch →
+  baseline subtraction → global MAD → per-recording Z-score). Wraps
+  existing implementations where possible; reproduces global MAD
+  byte-for-byte from `app/core/sliding_inference.py`.
+- `src/usv_spectrogram/classifier/diagnostics.py` (773 LOC) — four
+  falsifiable diagnostics (`notch_injection_test`, `per_band_cohens_d`,
+  `knn_same_cohort_rate`, `raw_pixel_pca_d`) with hardcoded pass
+  thresholds (0.30, 0.30, 0.85, 1.50) + small CPU-runnable diagnostic
+  VAE (`train_diagnostic_vae`).
+- `scripts/cnn_cleaning_validation.py` (465 LOC) — Pattern 4 CLI;
+  6-ablation matrix (raw, baseline_only, mad_only, zscore_only,
+  soft_notch_only, all_layers); Markdown report renderer with go/no-go
+  decision footer.
+- `docs/modules/cnn-cleaning-validation.md` (213 LOC) — module doc with
+  methodology lock (2026-05-21), amendment record, cross-phase
+  constraints C1–C6.
+
+**Test counts:**
+- Pre-existing tests from `test-architect`: 31 (14 cleaning_pipeline +
+  17 diagnostics).
+- Tests modified during implementation: 0 (3 amendments to expected
+  thresholds / fixture band alignment, all user-approved and recorded
+  in module doc under "Test-spec amendments (2026-05-21)").
+- Additional tests added: 0.
+- **Result: 31/31 passing in 5.93 s** after the 10-item fix batch.
+
+**Exit criteria status (ROADMAP §18.1):**
+- [x] Four diagnostics implemented with the spec thresholds
+- [x] Ablation matrix runs the 6 documented configurations
+- [x] CLI follows Pattern 4 (separate `parse_args`, exit codes 0/1/2,
+  epilog usage examples)
+- [x] All 31 tests pass
+- [x] py_compile passes on all 4 new modules
+- [ ] **Deferred to Module 18.2:** real-data run via
+  `python scripts/cnn_cleaning_validation.py --vocalmat-sample <path>`
+  (CLI currently always falls back to synthetic data — requires
+  VocalMat dataset download in 18.2).
+- [ ] **Deferred to Module 18.2:** `docs/handoffs/cleaning-validation-report.md`
+  (the real-data go/no-go report; cannot exist until exit criterion
+  above is met).
+
+**Reviews completed:**
+- dsp-reviewer: SHIP with 1 MEDIUM (cage-tone injection scaling) + 2
+  LOW (per-recording Z-score docstring caveat, fallback baseline
+  kernel + epsilon alignment).
+- master-reviewer (Tier 3): CHANGES NEEDED — 2 blockers + 5 warnings
+  + 3 suggestions. Full review at
+  `docs/reviews/cnn-cleaning-validation-review.md`.
+
+**Fixes applied (10-item batch, 2026-05-21):**
+1. `diagnostics.py` module + function docstrings: "cohort A" → "combined
+   (A + B)" to match code at line 436. (BLOCKER 1)
+2. This IMPLEMENTATION_PROGRESS.md entry. (BLOCKER 2)
+3. `_inject_cage_tone` scaling: fixed +20 dB → `INJECTION_SIGMA * local_std`
+   (σ=2.0) with `_INJECTION_FALLBACK=0.1` for constant-input bands.
+   Preserves migration semantics on all 6 ablations including
+   normalised inputs (mad_only, zscore_only, all_layers). (MEDIUM)
+4. `test_cleaning_pipeline.py:51` `parents[3]` → `parents[2]` to match
+   the corrected `test_diagnostics.py:58`. (WARNING 1)
+5. `per_band_cohens_d` docstring corrected to describe per-pixel
+   pooling, not per-sample mean. (WARNING 2)
+6. `classifier/__init__.py` exports `CleaningConfig`,
+   `clean_spectrogram`, `DiagnosticResult` and the four diagnostic
+   functions. (WARNING 4)
+7. `docs/architecture/patterns.md` Pattern 1: added "Variant: namedtuple
+   subclasses when immutability must withstand `object.__setattr__`"
+   sub-section. (WARNING 3)
+8. `docs/reviews/cnn-cleaning-validation-handoff.md` created.
+   (WARNING 5)
+9. `_apply_per_recording_zscore` docstring: dense-USV-regime caveat
+   noting divergence from upstream 1D `normalize_scores_per_recording`.
+   (LOW)
+10. `_local_baseline_subtract` fallback: kernel rule aligned to
+    upstream's 0.5 s rule (`int(0.5 * sample_rate_hz / STFT_HOP) | 1`),
+    epsilon aligned 1e-30 → 1e-10. (LOW)
+
+**Notes:**
+- Real-data path and cleaning-validation-report.md formally deferred to
+  Module 18.2 — both require the VocalMat dataset which 18.2 owns.
+- Re-review required per the review file's "Re-review rule": BLOCKER 1
+  (docstring corrections), BLOCKER 2 (this entry), and the MEDIUM
+  (cage-tone scaling) must be independently verified. The
+  cage-tone-scaling fix did NOT break the existing 31 tests; the
+  injected-tone-raises-migration test continues to pass.
