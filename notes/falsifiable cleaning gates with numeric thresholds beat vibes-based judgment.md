@@ -26,6 +26,7 @@ Relevant Notes:
 - [[cage acoustics drive between-cohort spectrogram separation more than biology]] — the problem the gate is calibrated against
 - [[notch-injection migration measures cleaning quality better than passive cohort sampling]] — the gate's primary diagnostic
 - [[adversarial builder-critic separation catches silent performance risks that pass all tests]] — related pattern: building escape hatches before they're needed
+- [[diagnostic VAE epoch budget must scale with input feature count or migration measurements are spurious]] — the threshold stays falsifiable only when the measurement underneath it is trustworthy, which requires latent convergence
 
 Topics:
 - [[classification-methodology]]

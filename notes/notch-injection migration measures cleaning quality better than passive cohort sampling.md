@@ -28,6 +28,7 @@ Relevant Notes:
 - [[falsifiable cleaning gates with numeric thresholds beat vibes-based judgment]] — the broader pattern this fits into
 - [[cage acoustics drive between-cohort spectrogram separation more than biology]] — the confound the test targets
 - [[adversarial builder-critic separation catches silent performance risks that pass all tests]] — same "active probe beats passive test" insight in a different domain
+- [[diagnostic VAE epoch budget must scale with input feature count or migration measurements are spurious]] — the encoder this test depends on must be converged or the migration number is noise, not signal
 
 Topics:
 - [[classification-methodology]]
