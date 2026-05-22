@@ -496,3 +496,115 @@ CNN → update ExtractionConfig → update corpus.
   (cage-tone scaling) must be independently verified. The
   cage-tone-scaling fix did NOT break the existing 31 tests; the
   injected-tone-raises-migration test continues to pass.
+
+---
+
+## 2026-05-22 — Module 18.2a VocalMat Sample + Real-Data Gate (GO verdict)
+
+**Status:** IMPLEMENTED + REAL-DATA RUN COMPLETE (pending master-reviewer)
+**ROADMAP reference:** `ROADMAP_lab_cnn_classifier.md` §18.2a
+**Review tier:** 2 (download + loader plumbing; no novel statistical methodology)
+**Worktree:** `.claude/worktrees/lab-cnn-classifier-plan/`
+
+**Outcome.** Module 18.1's deferred real-data exit criteria are met. The
+cleaning-validation gate's binding GO/NO-GO verdict is **GO** — all 4
+diagnostics pass under the full cleaning stack on real VocalMat (227×227
+PNG luminance) + lab 131204 (250 kHz-resampled STFT) + wild 5970
+(250 kHz-resampled STFT). Module 18.2b (full data preparation) is
+unlocked.
+
+**Files created:**
+- `scripts/cnn_download_vocalmat_sample.py` (~520 LOC) — OSF v2 REST
+  downloader (stdlib urllib, no new dependencies). Stable seed=1729,
+  `page_size=100`, exponential backoff on 429, 4-worker parallel
+  download. Outputs `data/vocalmat_sample/<class>/*.png` + manifest CSV.
+- `data/vocalmat_sample/.gitignore` (2 lines) — `*\n!.gitignore` so
+  ~113 MB of PNGs stays out of git.
+- `tests/test_cnn_download_vocalmat_sample.py` (~220 LOC, 11 tests) —
+  dependency-injected `FakeVocalMatSource` so tests never touch OSF.
+  Covers the 3 ROADMAP §18.2a items (dry-run, manifest balance,
+  idempotency) plus filename-parsing edge cases.
+- `tests/classifier/test_cleaning_real_data_loader.py` (~230 LOC, 12
+  tests) — sibling file to the spec tests (existing `tests/classifier/
+  test_*.py` from 18.1 are NOT modified). Covers `_resize_2d`,
+  `_png_to_luminance`, `_wav_to_spectrograms`, full
+  `_load_real_cohorts` integration, missing-input error paths,
+  determinism under seed.
+- `docs/modules/cnn-download-vocalmat-sample.md` — module doc.
+- `docs/handoffs/cleaning-validation-report.md` — the GO real-data
+  verdict (n_epochs=32 re-run).
+- `docs/handoffs/cleaning-validation-report.n4-NOGO.md` — audit trail
+  for the first NO-GO run; preserved to document the under-training
+  finding.
+
+**Files modified:**
+- `scripts/cnn_cleaning_validation.py` — added `_load_real_cohorts()`,
+  `_png_to_luminance()`, `_wav_to_spectrograms()`, `_resize_2d()` (~220
+  new LOC). Replaced the synthetic-fallback branch in `main()` with a
+  real call to the loader when all 3 `--*-sample` args are supplied.
+  Imports `corpus.STFT_N_FFT`, `corpus.STFT_HOP`,
+  `classifier.TARGET_SAMPLE_RATE_HZ` — no constants redeclared per
+  CLAUDE.md corpus protocol.
+- `requirements.txt` — unchanged at conclusion. Briefly added
+  `osfclient` and reverted after pivoting to stdlib urllib.
+
+**Test counts:**
+- New tests: 11 (download script) + 12 (loader) = 23.
+- Existing 18.1 tests: 62, all still passing (no spec-test
+  modification).
+- **Total: 85 passing** in 20.4s.
+
+**Sample download:**
+- 2,196 / 2,210 PNGs (99.4%), 113 MB. The 14 failures (4 in `complex`,
+  8 in `rev_chevron`, 2 in `noise`) are transient OSF 30-s timeouts /
+  one 403. The loader samples by filesystem glob, so missing files
+  don't cascade; we have an over-sufficient pool for the 200-per-cohort
+  gate run.
+
+**Real-data gate run (GO):**
+
+| Ablation | notch_injection | per_band_d | knn_same_cohort | pca_d |
+|---|---|---|---|---|
+| raw | 1.0000 FAIL | 26.02 FAIL | 0.3333 PASS | 52.16 FAIL |
+| soft_notch_only | 1.0000 FAIL | 26.02 FAIL | 0.3333 PASS | 52.16 FAIL |
+| baseline_only | 0.0250 PASS | 0.319 FAIL | 0.3333 PASS | 15.87 FAIL |
+| mad_only | 0.0000 PASS | 0.536 FAIL | 0.9473 FAIL | -10.22 FAIL |
+| zscore_only | 0.0050 PASS | 0.503 FAIL | 0.9310 FAIL | -9.15 FAIL |
+| **all_layers** | **0.0000 PASS** | **0.070 PASS** | **0.3333 PASS** | **0.0000 PASS** |
+
+**Diagnostic-VAE under-training discovered (and resolved within run):**
+
+The first real-data run used the script's default `--n-epochs 4` and
+emitted NO-GO with `notch_injection_migration = 1.0` on `all_layers`.
+The smoke-test default was calibrated on synthetic 32×32 data; real
+data is 227×227 = 51,529 features, ~50× the smoke regime, and 4 epochs
+is insufficient for VAE convergence. The re-run with `--n-epochs 32`
+dropped `all_layers` migration from 1.0 → 0.0 with no other changes.
+
+Implication for Module 18.1: the default `--n-epochs` should either
+auto-scale with input feature count or default to ~32. This is **not**
+in scope for 18.2a (would touch the frozen 18.1 cleaning module); it
+is flagged in the cleaning-validation report's Interpretation section
+for a successor 18.1.x patch.
+
+**Exit criteria status (ROADMAP §18.2a):**
+- [x] Download script downloads ≥200 × 10 + minority-class totals into
+  `data/vocalmat_sample/` (2,196/2,210, 99.4% — sufficient).
+- [x] Module 18.1 CLI accepts `--vocalmat-sample data/vocalmat_sample/`
+  and produces a non-synthetic report.
+- [x] Module 18.1 GO/NO-GO verdict captured in
+  `docs/handoffs/cleaning-validation-report.md`. Verdict: **GO**.
+- [x] Gate passed → 18.2b unlocks.
+
+**Notes:**
+- No files in the do-not-touch list were modified: `corpus.py`,
+  `sliding_inference.py`, `notch.py`, `denoise.py`,
+  `normalization.py`, `run_batch_detection.py`,
+  `classifier/cleaning_pipeline.py`, `classifier/diagnostics.py`,
+  `classifier/__init__.py`, and the existing
+  `tests/classifier/test_*.py` spec files are all unchanged.
+- `git status --short -- src/ tests/classifier/test_cleaning_pipeline.py
+  tests/classifier/test_diagnostics.py
+  tests/classifier/test_cleaning_pipeline_adversarial.py
+  tests/classifier/test_diagnostics_adversarial.py` shows nothing —
+  the spec contract is preserved.
