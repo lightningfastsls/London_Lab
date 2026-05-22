@@ -31,6 +31,7 @@ Relevant Notes:
 - [[notch-injection migration measures cleaning quality better than passive cohort sampling]] — the diagnostic that answers this question
 - [[falsifiable cleaning gates with numeric thresholds beat vibes-based judgment]] — why the question is yes/no
 - [[cage acoustics drive between-cohort spectrogram separation more than biology]] — the underlying problem this test is calibrated against
+- [[diagnostic VAE epoch budget must scale with input feature count or migration measurements are spurious]] — Module 18.2a observed the gate flip from NO-GO to GO purely on epoch count, qualifying any "yes" answer to this question with an epoch-budget caveat
 
 Topics:
 - [[classification-methodology]]
