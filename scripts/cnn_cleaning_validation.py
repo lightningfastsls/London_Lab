@@ -45,6 +45,7 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from usv_spectrogram.classifier import TARGET_SAMPLE_RATE_HZ
 from usv_spectrogram.classifier.cleaning_pipeline import (
     CleaningConfig,
     clean_spectrogram,
@@ -57,6 +58,7 @@ from usv_spectrogram.classifier.diagnostics import (
     raw_pixel_pca_d,
     train_diagnostic_vae,
 )
+from usv_spectrogram.corpus import STFT_HOP, STFT_N_FFT
 
 
 # ---------------------------------------------------------------------------
@@ -218,6 +220,248 @@ def _make_smoke_cohorts(
         "vocalmat": rng.normal(-40.0, 8.0, (sample_size, n_freq, n_time)).astype(np.float32),
         "lab_131204": rng.normal(-38.0, 9.0, (sample_size, n_freq, n_time)).astype(np.float32),
         "wild_5970": rng.normal(-42.0, 7.0, (sample_size, n_freq, n_time)).astype(np.float32),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Real-data loader (Module 18.2a) — VocalMat PNGs + lab/wild WAV STFTs
+# ---------------------------------------------------------------------------
+
+# Common target shape across the 3 cohorts. VocalMat ships 227×227 RGB
+# PNGs (AlexNet input convention from their CNN pipeline); we resize the
+# WAV-derived STFTs to match so K-NN / PCA / VAE can compare apples-to-
+# apples. The per_band_cohens_d diagnostic re-bins by Hz inside each
+# cohort, so per-bin frequency alignment is not required, but shape
+# alignment IS — concat/stack steps elsewhere assume uniform shape.
+# 227 is a VocalMat-pipeline convention, NOT a corpus invariant.
+_REAL_TARGET_SHAPE: tuple[int, int] = (227, 227)
+
+# Lab/wild STFT n_fft / hop are imported from `corpus.STFT_N_FFT` and
+# `corpus.STFT_HOP` (canonical, ADR-002) — do NOT redeclare them here.
+# At 250 kHz target SR, n_fft=512 gives 257 frequency bins covering
+# 0..125 kHz; the bilinear resize to 227 is a mild downsample.
+# Target sample rate is `classifier.TARGET_SAMPLE_RATE_HZ` (250 kHz,
+# VocalMat-aligned, NOT corpus.SAMPLE_RATE_HZ which is 300 kHz for
+# the detection pipeline — see CleaningConfig cross-phase constraint C1).
+#
+# Window duration per sampled spectrogram, in seconds. 0.22s matches
+# Module 18.2b's planned patch size (ROADMAP D1) so the gate's
+# diagnostic windows live in the same time scale as eventual training
+# patches. This is a classifier-pipeline analysis parameter, not a
+# corpus invariant.
+_REAL_WINDOW_DURATION_S: float = 0.22
+
+
+def _resize_2d(spec: np.ndarray, target_shape: tuple[int, int]) -> np.ndarray:
+    """Resize a 2-D array to ``target_shape`` using bilinear interp.
+
+    Implemented with two passes of ``np.interp`` (one per axis) to avoid
+    a heavy scipy.ndimage dependency. For modest size changes (257→227
+    on freq, ~430→227 on time at 0.22s windows) the result is visually
+    indistinguishable from scipy.ndimage.zoom.
+    """
+    h, w = spec.shape
+    th, tw = target_shape
+    if (h, w) == (th, tw):
+        return spec.astype(np.float32, copy=False)
+    # Resample along axis 1 (time) first.
+    src_t = np.linspace(0.0, 1.0, w, dtype=np.float64)
+    dst_t = np.linspace(0.0, 1.0, tw, dtype=np.float64)
+    along_time = np.empty((h, tw), dtype=np.float32)
+    for i in range(h):
+        along_time[i] = np.interp(dst_t, src_t, spec[i]).astype(np.float32)
+    # Then resample along axis 0 (frequency).
+    src_f = np.linspace(0.0, 1.0, h, dtype=np.float64)
+    dst_f = np.linspace(0.0, 1.0, th, dtype=np.float64)
+    out = np.empty((th, tw), dtype=np.float32)
+    for j in range(tw):
+        out[:, j] = np.interp(dst_f, src_f, along_time[:, j]).astype(np.float32)
+    return out
+
+
+def _png_to_luminance(png_path: Path, target_shape: tuple[int, int]) -> np.ndarray:
+    """Load a VocalMat PNG, convert RGB→luminance, resize to target_shape.
+
+    VocalMat PNGs are 227×227 RGB renderings (likely a perceptual
+    colormap such as parula). For the cleaning gate's pixel-distribution
+    diagnostics we just need a scalar per pixel — PIL's ``L`` conversion
+    applies the standard 0.299/0.587/0.114 luminance weights, which is
+    a defensible scalar surrogate for "intensity". Returned array is
+    float32, range [0, 1] (divided by 255).
+    """
+    from PIL import Image
+
+    with Image.open(png_path) as im:
+        gray = np.array(im.convert("L"), dtype=np.float32) / 255.0
+    if gray.shape != target_shape:
+        gray = _resize_2d(gray, target_shape)
+    return gray
+
+
+def _wav_to_spectrograms(
+    wav_paths: list[Path],
+    n_windows: int,
+    target_sr: int,
+    target_shape: tuple[int, int],
+    window_seconds: float,
+    n_fft: int,
+    hop: int,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    """Compute ``n_windows`` STFT spectrograms sampled across ``wav_paths``.
+
+    For each window: pick a random WAV, pick a random start sample, slice
+    a ``window_seconds``-long chunk, resample 300 → target_sr if needed,
+    STFT, convert magnitude to dB, resize to ``target_shape``. Return a
+    stack of shape ``(n_windows, *target_shape)`` float32.
+
+    The lab/wild source recordings on disk are 300 kHz (corpus canonical).
+    We resample with ``scipy.signal.resample_poly`` (rational 5/6) to
+    250 kHz before STFT so the freq axis spans 0..125 kHz, matching
+    VocalMat's 250 kHz Nyquist.
+    """
+    import soundfile as sf
+    from scipy import signal as scisig
+
+    if not wav_paths:
+        raise RuntimeError("_wav_to_spectrograms: no WAV files supplied")
+
+    n_window_samples_target = int(round(window_seconds * target_sr))
+    # We resample after slicing, so the source-domain sample count is
+    # window_seconds * source_sr. Source sr known per file.
+    out = np.empty((n_windows, *target_shape), dtype=np.float32)
+    failures = 0
+    i = 0
+    attempts = 0
+    max_attempts = n_windows * 5  # guard against pathological short WAVs
+
+    while i < n_windows and attempts < max_attempts:
+        attempts += 1
+        wav_path = wav_paths[int(rng.integers(len(wav_paths)))]
+        try:
+            samples, src_sr = sf.read(str(wav_path), dtype="float32",
+                                       always_2d=False)
+        except Exception:
+            failures += 1
+            continue
+        if samples.ndim > 1:
+            samples = samples[:, 0]  # take first channel
+        n_src_window = int(round(window_seconds * src_sr))
+        if samples.size < n_src_window:
+            failures += 1
+            continue
+        start = int(rng.integers(samples.size - n_src_window + 1))
+        chunk = samples[start:start + n_src_window]
+
+        # Resample 300 → target_sr (skip if already at target).
+        if src_sr != target_sr:
+            from math import gcd
+            g = gcd(int(src_sr), int(target_sr))
+            up = target_sr // g
+            down = src_sr // g
+            chunk = scisig.resample_poly(chunk, up=up, down=down).astype(np.float32)
+
+        if chunk.size < n_fft:
+            failures += 1
+            continue
+
+        # STFT → magnitude → dB.
+        f, t, Z = scisig.stft(
+            chunk, fs=target_sr, nperseg=n_fft, noverlap=n_fft - hop,
+            boundary=None, padded=False,
+        )
+        mag = np.abs(Z).astype(np.float32)
+        # Avoid log(0). The 1e-10 floor is consistent with the
+        # cleaning pipeline's eps elsewhere (we don't import the
+        # exact constant to avoid coupling to classifier internals).
+        spec_db = 20.0 * np.log10(mag + 1e-10).astype(np.float32)
+
+        out[i] = _resize_2d(spec_db, target_shape)
+        i += 1
+
+    if i < n_windows:
+        raise RuntimeError(
+            f"Failed to produce {n_windows} spectrograms after "
+            f"{attempts} attempts ({failures} WAV read/length failures). "
+            "Check that the WAV directory contains usable recordings."
+        )
+    return out
+
+
+def _load_real_cohorts(
+    vocalmat_dir: Path,
+    lab_wav_dir: Path,
+    wild_wav_dir: Path,
+    sample_size: int,
+    seed: int = 1729,
+    target_shape: tuple[int, int] = _REAL_TARGET_SHAPE,
+    target_sample_rate_hz: int = TARGET_SAMPLE_RATE_HZ,
+) -> dict[str, np.ndarray]:
+    """Load real-data 3-cohort spectrogram dict for the gate.
+
+    Returned dict:
+
+    - ``vocalmat``: ``(sample_size, *target_shape)`` from random PNGs in
+      ``vocalmat_dir/*/*.png`` (any class). PNGs are RGB-rendered
+      colormap spectrograms; we use the luminance channel as a scalar
+      surrogate.
+    - ``lab_131204``: ``(sample_size, *target_shape)`` STFT slices from
+      WAVs in ``lab_wav_dir``, resampled 300→250 kHz.
+    - ``wild_5970``: same as ``lab_131204`` but from ``wild_wav_dir``.
+
+    Raises ``FileNotFoundError`` / ``RuntimeError`` if any cohort has
+    insufficient usable input. The cleaning pipeline is shape-uniform
+    across cohorts after this loader, which is required by ``knn_*``,
+    ``raw_pixel_pca_d``, and the diagnostic VAE.
+    """
+    rng = np.random.default_rng(seed)
+
+    # --- VocalMat: scan PNGs, filter to ones that actually exist on disk
+    vocalmat_pngs = sorted(vocalmat_dir.rglob("*.png"))
+    if not vocalmat_pngs:
+        raise FileNotFoundError(
+            f"VocalMat directory {vocalmat_dir} has no PNG files. Run "
+            "scripts/cnn_download_vocalmat_sample.py first."
+        )
+    chosen_pngs = list(rng.choice(np.array(vocalmat_pngs, dtype=object),
+                                  size=min(sample_size, len(vocalmat_pngs)),
+                                  replace=False))
+    if len(chosen_pngs) < sample_size:
+        raise RuntimeError(
+            f"VocalMat sample dir has only {len(chosen_pngs)} PNGs; "
+            f"requested {sample_size}. Re-run the download script."
+        )
+    vocalmat = np.stack(
+        [_png_to_luminance(p, target_shape) for p in chosen_pngs], axis=0,
+    ).astype(np.float32)
+
+    # --- Lab + wild: gather WAV paths. Recursive so directories that
+    # nest recordings under per-session subfolders still work; flat
+    # directories (current `USV_lab_131204/` and `5970 USV/`) are also fine.
+    lab_wavs = sorted(lab_wav_dir.rglob("*.wav"))
+    wild_wavs = sorted(wild_wav_dir.rglob("*.wav"))
+    if not lab_wavs:
+        raise FileNotFoundError(f"No .wav in {lab_wav_dir}")
+    if not wild_wavs:
+        raise FileNotFoundError(f"No .wav in {wild_wav_dir}")
+
+    lab_specs = _wav_to_spectrograms(
+        lab_wavs, n_windows=sample_size,
+        target_sr=target_sample_rate_hz, target_shape=target_shape,
+        window_seconds=_REAL_WINDOW_DURATION_S,
+        n_fft=STFT_N_FFT, hop=STFT_HOP, rng=rng,
+    )
+    wild_specs = _wav_to_spectrograms(
+        wild_wavs, n_windows=sample_size,
+        target_sr=target_sample_rate_hz, target_shape=target_shape,
+        window_seconds=_REAL_WINDOW_DURATION_S,
+        n_fft=STFT_N_FFT, hop=STFT_HOP, rng=rng,
+    )
+
+    return {
+        "vocalmat": vocalmat,
+        "lab_131204": lab_specs,
+        "wild_5970": wild_specs,
     }
 
 
@@ -397,18 +641,30 @@ def main() -> int:
             sample_size=max(4, min(args.sample_size, 64)),
         )
     else:
-        # Real-data path is out of scope for Module 18.1's reference
-        # implementation (the user supervises this step). We still
-        # support it via the same synthetic fallback so the CLI is
-        # never useless; the message is the only difference.
+        # Real-data path (Module 18.2a): VocalMat PNGs from `vocalmat-sample`
+        # dir, lab + wild STFTs computed from WAVs in their respective
+        # `--*-sample` directories. All three cohorts standardised to 227×227
+        # float32 spectrograms so K-NN / PCA / VAE can run uniformly.
         print(
-            "[info] Real-data loading is provided by Module 18.2. "
-            "Module 18.1 reports on the cleaning stack itself; populate "
-            "spectrograms via library-style usage of run_ablation() for now.",
+            f"[info] Real-data run: vocalmat={args.vocalmat_sample}, "
+            f"lab={args.lab_131204_sample}, wild={args.wild_5970_sample}, "
+            f"sample_size={args.sample_size}",
             file=sys.stderr,
+            flush=True,
         )
-        cohort_specs = _make_smoke_cohorts(
-            sample_size=max(4, min(args.sample_size, 64)),
+        t_load = time.monotonic()
+        cohort_specs = _load_real_cohorts(
+            vocalmat_dir=args.vocalmat_sample,
+            lab_wav_dir=args.lab_131204_sample,
+            wild_wav_dir=args.wild_5970_sample,
+            sample_size=args.sample_size,
+        )
+        print(
+            f"[info] Real-data load complete in "
+            f"{time.monotonic() - t_load:.1f}s — cohort shapes: "
+            + ", ".join(f"{cid}={v.shape}" for cid, v in cohort_specs.items()),
+            file=sys.stderr,
+            flush=True,
         )
 
     # --- Step 2: apply each layer config to every cohort -----------------
