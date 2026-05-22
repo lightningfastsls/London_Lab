@@ -51,6 +51,12 @@ class DetectionConfig:
 - `__post_init__` validates interdependent constraints
 - Convenience methods for derived values (e.g. `hop_ms()`, `freq_resolution_hz()`)
 
+**Variant: namedtuple subclasses when immutability must withstand `object.__setattr__`**
+
+`@dataclass(frozen=True)` does NOT protect against `object.__setattr__` — the C-level path bypasses Python's slot descriptors and successfully mutates the instance. For configs that must satisfy adversarial immutability tests (e.g., tests using `object.__setattr__` to probe the contract), use a `namedtuple` subclass with `__slots__ = ()` and a custom `__new__` for validation and defaults. The namedtuple's read-only property descriptors raise `AttributeError` on any assignment path. See `src/usv_spectrogram/classifier/cleaning_pipeline.py:CleaningConfig` for an example.
+
+The frozen dataclass form remains the default for normal configs. Reserve the namedtuple variant for cases where the immutability contract must be defended against bypass attempts.
+
 ---
 
 ## 2. Candidate Data Flow
