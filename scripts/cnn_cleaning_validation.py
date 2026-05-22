@@ -603,7 +603,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--n-epochs", type=int, default=4,
-        help="Epochs for diagnostic VAE training (4-8 recommended).",
+        help=(
+            "Epochs for diagnostic VAE training. Default 4 is for "
+            "smoke-test 32x32 synthetic data only. REAL 227x227 data "
+            "requires --n-epochs 32 or higher; lower values silently "
+            "under-train the VAE and produce degenerate notch_injection "
+            "scores on all_layers (false NO-GO). See "
+            "docs/handoffs/cleaning-validation-report.md Interpretation."
+        ),
     )
     parser.add_argument(
         "--knn-k", type=int, default=5,

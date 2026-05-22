@@ -608,3 +608,65 @@ for a successor 18.1.x patch.
   tests/classifier/test_cleaning_pipeline_adversarial.py
   tests/classifier/test_diagnostics_adversarial.py` shows nothing —
   the spec contract is preserved.
+
+---
+
+## 2026-05-22 (follow-up) — Module 18.1.x carve-out patch (docstring + DeprecationWarning)
+
+**Status:** IMPLEMENTED (deferred reviewer findings from 18.2a applied)
+**ROADMAP reference:** Module 18.1.x patch — no new ROADMAP entry; addresses
+the WARNING 2 + NIT 1 findings from
+`docs/reviews/cnn-download-vocalmat-sample-review.md` that were
+out-of-scope for 18.2a (the 18.1 do-not-touch list excluded
+modifications to `classifier/diagnostics.py`).
+**Review tier:** 1 (docstring + DeprecationWarning emission only — no
+behavior change for any caller passing the legacy default).
+**Worktree:** `.claude/worktrees/lab-cnn-classifier-plan/`.
+
+**Files modified:**
+- `src/usv_spectrogram/classifier/diagnostics.py` — module docstring
+  (lines 23-32) rewritten to lead with the input-feature-count epoch
+  scaling rule; `train_diagnostic_vae` docstring (lines 348-368)
+  rewritten to spell out the smoke-vs-real distinction and warn
+  callers using real data must override `n_epochs`. Added
+  `_NOTCH_DEPTH_DB_LEGACY_DEFAULT = 20.0` sentinel constant + emit
+  `DeprecationWarning` from `_inject_cage_tone` when a caller passes a
+  non-default `notch_depth_db` value. Removed the `del notch_depth_db`
+  workaround.
+- `scripts/cnn_cleaning_validation.py` — `--n-epochs` CLI help text
+  expanded to state explicitly that the default 4 is smoke-test-only
+  and real data requires ≥32.
+
+**Behavior changes:**
+- For existing callers passing `notch_depth_db=20.0` (the only callers
+  in-tree): no behavior change. Test suite continues at 85/85.
+- For future callers passing a non-default `notch_depth_db`: emits
+  `DeprecationWarning` at stacklevel=2 (visible at caller's frame).
+- For users running `cnn_cleaning_validation.py` against real data
+  with the default `--n-epochs 4`: behavior is unchanged but the CLI
+  help now warns them explicitly. The Module 18.2a Interpretation
+  section already documents why this matters.
+
+**Test counts:**
+- 85/85 still passing in 20.97s. No spec test expectations modified.
+- DeprecationWarning path is not yet exercised by tests; existing
+  callers all use the legacy default, so this is a forward-only
+  safety net.
+
+**Notes:**
+- The patch is intentionally narrow: docstrings + one `warnings.warn`
+  call. It does NOT change any computational behavior, threshold, or
+  diagnostic semantics. The cleaning gate's GO verdict from 18.2a
+  remains valid.
+- The DeprecationWarning was chosen over removing the parameter
+  because the 18.1 handoff explicitly retained `notch_depth_db` "for
+  backward compatibility with callers from the locked methodology
+  (2026-05-21)". Removing the parameter would break that promise; the
+  warning preserves the call signature while signalling the dead
+  semantics.
+- These changes touch the previously-frozen `classifier/diagnostics.py`.
+  That module is no longer fully frozen — future 18.1.x patches with
+  similarly narrow scope are acceptable, but any change to
+  computational behavior (thresholds, diagnostic algorithms, layer
+  order, etc.) should go through master-reviewer Tier 3 (DSP +
+  statistical methodology) per the original 18.1 review.

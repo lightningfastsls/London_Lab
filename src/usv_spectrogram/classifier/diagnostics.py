@@ -21,9 +21,15 @@ Diagnostics
   Pass: ``|d|`` < 1.5.
 
 A small CPU-runnable VAE (``train_diagnostic_vae``) backs the K-NN-based
-diagnostics. The architecture is intentionally tiny — 4-8 epochs, 32-dim
-latent, 2-layer encoder/decoder — so the end-to-end smoke test completes
-in under 60 s on CPU.
+diagnostics. The architecture is intentionally tiny — 32-dim latent,
+2-layer encoder/decoder. **Epoch budget scales with input feature count.**
+For the 32×32 smoke-test cohorts 4-8 epochs suffices; for real 227×227
+data (51,529 input features, ~50× the smoke regime) use ≥32 epochs.
+Under-training on real data produces degenerate K-NN measurements — in
+the Module 18.2a real-data run, 4 epochs caused
+``notch_injection_migration = 1.0`` on the ``all_layers`` ablation
+(false NO-GO); 32 epochs gave the correct 0.0. See
+``docs/handoffs/cleaning-validation-report.md`` Interpretation section.
 
 Cohen's d formula::
 
@@ -32,10 +38,20 @@ Cohen's d formula::
 from __future__ import annotations
 
 import math
+import warnings
 from collections import namedtuple
 from typing import Callable, Optional
 
 import numpy as np
+
+# Sentinel default for `_inject_cage_tone.notch_depth_db`. The parameter
+# is preserved for backward compatibility (2026-05-21 locked methodology)
+# but its value is no longer consumed by the function body — the
+# injection magnitude scales to INJECTION_SIGMA * local_std instead.
+# Passing any non-default value triggers a DeprecationWarning so callers
+# relying on the legacy fixed-dB semantics get a clear signal that those
+# semantics are gone.
+_NOTCH_DEPTH_DB_LEGACY_DEFAULT: float = 20.0
 
 
 # ---------------------------------------------------------------------------
@@ -348,8 +364,16 @@ def train_diagnostic_vae(
     """Train a small diagnostic VAE and return latent embeddings.
 
     A 2-layer MLP encoder/decoder over flattened spectrograms with a
-    32-dim Gaussian latent (mean+logvar). Tiny on purpose: 4-8 epochs is
-    enough for diagnostic K-NN measurements per PLAN §"Phase 1.0".
+    32-dim Gaussian latent (mean+logvar).
+
+    **Critical: ``n_epochs`` must scale with input feature count.**
+    The smoke-test data (32×32 = 1,024 features) converges in 4-8
+    epochs. Real-data spectrograms (227×227 = 51,529 features) need
+    ≥32 epochs; the Module 18.2a real-data run found that 4 epochs
+    silently produced ``notch_injection_migration = 1.0`` on the
+    ``all_layers`` ablation — a false NO-GO. 32 epochs gave 0.0. The
+    default value below is the smoke-test default; callers using
+    real data MUST override it.
 
     Parameters
     ----------
@@ -358,7 +382,9 @@ def train_diagnostic_vae(
     latent_dim:
         Latent dimensionality. Defaults to 32 (spec).
     n_epochs:
-        Number of training epochs. Spec recommends 4-8; tests use 1-2.
+        Number of training epochs. Smoke-test default (synthetic 32×32):
+        4-8. Real 227×227 data: ≥32 (under-training produces degenerate
+        diagnostic outputs — see module docstring + Module 18.2a report).
     device:
         ``"cuda"`` or ``"cpu"``. Falls back to CPU when CUDA unavailable.
 
@@ -395,14 +421,15 @@ def _inject_cage_tone(
     ``all_layers`` — input in ~[0, 1]) and under-perturb the dB-scale
     ablations (``raw``, ``baseline_only`` — input in dB).
 
-    The ``notch_depth_db`` parameter is retained in the function
-    signature for backward compatibility with callers from the locked
-    methodology (2026-05-21), but is **no longer used** as a direct
-    offset: scaling to the local distribution preserves the migration
+    **DEPRECATED parameter: ``notch_depth_db``.** Retained in the
+    function signature for backward compatibility with callers from the
+    locked methodology (2026-05-21), but its value is **not consumed**:
+    scaling to the local distribution preserves the migration
     measurement semantics on every ablation. The original fixed-dB
     behaviour was the source of false-FAIL migration on the
     ``all_layers`` configuration — the gate's most important
-    measurement.
+    measurement. Passing any non-default value emits a
+    ``DeprecationWarning``.
 
     When ``local_std`` is below ``_INJECTION_STD_EPS`` (constant input
     over the notch band), the function falls back to a small fixed
@@ -410,6 +437,17 @@ def _inject_cage_tone(
     cell, small relative to the legacy +20 dB shift, and safe on both
     domains.
     """
+    if notch_depth_db != _NOTCH_DEPTH_DB_LEGACY_DEFAULT:
+        warnings.warn(
+            "_inject_cage_tone: `notch_depth_db` is deprecated and has no "
+            f"effect (received {notch_depth_db!r}; legacy default was "
+            f"{_NOTCH_DEPTH_DB_LEGACY_DEFAULT}). The injection magnitude "
+            "is now INJECTION_SIGMA * local_std for consistency across "
+            "ablations — see function docstring.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
     n, n_freq, n_time = spectrograms.shape
     lo, hi = notch_band_khz
     lo_bin, hi_bin = _khz_to_bin_range(lo, hi, n_freq, sample_rate_hz=sample_rate_hz)
@@ -423,9 +461,6 @@ def _inject_cage_tone(
         injection_offset = _INJECTION_FALLBACK
     else:
         injection_offset = INJECTION_SIGMA * local_std
-    # ``notch_depth_db`` is intentionally not consumed here — see
-    # docstring. Kept in the signature for caller backward-compat.
-    del notch_depth_db
     injected[:, lo_bin:hi_bin + 1, :] = band_slice + injection_offset
     return injected
 
