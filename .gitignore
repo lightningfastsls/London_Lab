@@ -62,6 +62,10 @@ tmp/
 data/training/hard_noises/
 data/training/matched_windows/
 
+# Module 18.2b prep outputs (regeneratable from the prep script, too large for git)
+data/lab_cnn_training/
+data/vocalmat_full/
+
 # Caches and intermediate results
 models/hard_neg_retrain/hysteresis_cache/
 models/hard_neg_retrain/hysteresis_cache_v2/

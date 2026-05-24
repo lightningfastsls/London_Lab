@@ -6,6 +6,7 @@ type: moc
 # goals
 
 ## Active Threads
+- **Lab CNN Classifier** -- ACTIVE (2026-05-24). Module 18.2b CLOSED: real-data prep complete. Outputs in `data/lab_cnn_training/` on `worktree-lab-cnn-classifier-plan`: 12,178 VocalMat supervised rows (12 classes, stratified 80/10/10) + 235,726 lab+wild domain-unlabeled patches (for Module 18.4 DANN). Plan: `PLAN_lab_cnn_classifier.md`. Two Tier-2 tickets opened: cleaning_pipeline.py degenerate output on long lab WAVs + cnn_prepare_training_data.py non-recursive glob. Next: Module 18.3 (ResNet-18 supervised baseline). Successor handoff: `docs/handoffs/2026-05-24_module-18.3-resnet-supervised-baseline.md`.
 - **USV Analysis Stage** -- ACTIVE (2026-04-06). Detection + classification complete for 5970 (lmt_034). Two classification schemes: traditional taxonomy (7 types) + UMAP/HDBSCAN (continuum confirmed). Phase A1 (temporal dynamics) DONE. Phase A2 (sequential structure) DONE. Roadmap: `docs/analysis-roadmap.md`. Next: A3 (acoustic feature deep-dive), B1 (classify 3452), 9252 detection/classification.
 - **Dataset 9252** -- NEW (2026-04-06). Third animal (usv_lmt_???), 8 USV sessions in `USV_9252/`. Batch detection started (`results/batch_9252/`). Enables N=3 cross-animal comparison.
 - **DeepSqueak Classification Bridge** -- COMPLETE (2026-04-03). Full 5970 dataset: 7,518 USV calls classified into 27 clusters, merged with CNN detection metadata. Output: `classified_detections_full.csv`. Handoff: `docs/handoffs/deepsqueak-full-pipeline-results.md`.
