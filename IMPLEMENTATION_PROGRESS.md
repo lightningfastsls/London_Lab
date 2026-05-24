@@ -395,3 +395,278 @@ CNN → update ExtractionConfig → update corpus.
 - Phase 17 (`sis_baselines.py`, `run_sis_baselines.py`, `test_sis_*.py`)
   not touched per handoff "keep surface area small." Follow-up handoff
   can migrate those after 17.9 ships.
+
+---
+
+## 2026-05-21 — Module 18.1 CNN Cleaning Validation Gate
+
+**Status:** IMPLEMENTED + REVIEWED + FIXES APPLIED (10-item batch)
+**ROADMAP reference:** `ROADMAP_lab_cnn_classifier.md` §18.1
+**Review tier:** 3 (DSP + statistical methodology)
+**Worktree:** `.claude/worktrees/lab-cnn-classifier-plan/`
+
+**Files created:**
+- `src/usv_spectrogram/classifier/__init__.py` — package init; exports
+  `CleaningConfig`, `clean_spectrogram`, `DiagnosticResult`, and the
+  four diagnostic functions for downstream Module 18.2 use; holds
+  `TARGET_SAMPLE_RATE_HZ=250_000` (VocalMat-aligned, NOT corpus default).
+- `src/usv_spectrogram/classifier/cleaning_pipeline.py` (387 LOC) —
+  `CleaningConfig` (namedtuple subclass for adversarial-immutability
+  test contract) + `clean_spectrogram` 4-layer stack (soft-notch →
+  baseline subtraction → global MAD → per-recording Z-score). Wraps
+  existing implementations where possible; reproduces global MAD
+  byte-for-byte from `app/core/sliding_inference.py`.
+- `src/usv_spectrogram/classifier/diagnostics.py` (773 LOC) — four
+  falsifiable diagnostics (`notch_injection_test`, `per_band_cohens_d`,
+  `knn_same_cohort_rate`, `raw_pixel_pca_d`) with hardcoded pass
+  thresholds (0.30, 0.30, 0.85, 1.50) + small CPU-runnable diagnostic
+  VAE (`train_diagnostic_vae`).
+- `scripts/cnn_cleaning_validation.py` (465 LOC) — Pattern 4 CLI;
+  6-ablation matrix (raw, baseline_only, mad_only, zscore_only,
+  soft_notch_only, all_layers); Markdown report renderer with go/no-go
+  decision footer.
+- `docs/modules/cnn-cleaning-validation.md` (213 LOC) — module doc with
+  methodology lock (2026-05-21), amendment record, cross-phase
+  constraints C1–C6.
+
+**Test counts:**
+- Pre-existing tests from `test-architect`: 31 (14 cleaning_pipeline +
+  17 diagnostics).
+- Tests modified during implementation: 0 (3 amendments to expected
+  thresholds / fixture band alignment, all user-approved and recorded
+  in module doc under "Test-spec amendments (2026-05-21)").
+- Additional tests added: 0.
+- **Result: 31/31 passing in 5.93 s** after the 10-item fix batch.
+
+**Exit criteria status (ROADMAP §18.1):**
+- [x] Four diagnostics implemented with the spec thresholds
+- [x] Ablation matrix runs the 6 documented configurations
+- [x] CLI follows Pattern 4 (separate `parse_args`, exit codes 0/1/2,
+  epilog usage examples)
+- [x] All 31 tests pass
+- [x] py_compile passes on all 4 new modules
+- [ ] **Deferred to Module 18.2:** real-data run via
+  `python scripts/cnn_cleaning_validation.py --vocalmat-sample <path>`
+  (CLI currently always falls back to synthetic data — requires
+  VocalMat dataset download in 18.2).
+- [ ] **Deferred to Module 18.2:** `docs/handoffs/cleaning-validation-report.md`
+  (the real-data go/no-go report; cannot exist until exit criterion
+  above is met).
+
+**Reviews completed:**
+- dsp-reviewer: SHIP with 1 MEDIUM (cage-tone injection scaling) + 2
+  LOW (per-recording Z-score docstring caveat, fallback baseline
+  kernel + epsilon alignment).
+- master-reviewer (Tier 3): CHANGES NEEDED — 2 blockers + 5 warnings
+  + 3 suggestions. Full review at
+  `docs/reviews/cnn-cleaning-validation-review.md`.
+
+**Fixes applied (10-item batch, 2026-05-21):**
+1. `diagnostics.py` module + function docstrings: "cohort A" → "combined
+   (A + B)" to match code at line 436. (BLOCKER 1)
+2. This IMPLEMENTATION_PROGRESS.md entry. (BLOCKER 2)
+3. `_inject_cage_tone` scaling: fixed +20 dB → `INJECTION_SIGMA * local_std`
+   (σ=2.0) with `_INJECTION_FALLBACK=0.1` for constant-input bands.
+   Preserves migration semantics on all 6 ablations including
+   normalised inputs (mad_only, zscore_only, all_layers). (MEDIUM)
+4. `test_cleaning_pipeline.py:51` `parents[3]` → `parents[2]` to match
+   the corrected `test_diagnostics.py:58`. (WARNING 1)
+5. `per_band_cohens_d` docstring corrected to describe per-pixel
+   pooling, not per-sample mean. (WARNING 2)
+6. `classifier/__init__.py` exports `CleaningConfig`,
+   `clean_spectrogram`, `DiagnosticResult` and the four diagnostic
+   functions. (WARNING 4)
+7. `docs/architecture/patterns.md` Pattern 1: added "Variant: namedtuple
+   subclasses when immutability must withstand `object.__setattr__`"
+   sub-section. (WARNING 3)
+8. `docs/reviews/cnn-cleaning-validation-handoff.md` created.
+   (WARNING 5)
+9. `_apply_per_recording_zscore` docstring: dense-USV-regime caveat
+   noting divergence from upstream 1D `normalize_scores_per_recording`.
+   (LOW)
+10. `_local_baseline_subtract` fallback: kernel rule aligned to
+    upstream's 0.5 s rule (`int(0.5 * sample_rate_hz / STFT_HOP) | 1`),
+    epsilon aligned 1e-30 → 1e-10. (LOW)
+
+**Notes:**
+- Real-data path and cleaning-validation-report.md formally deferred to
+  Module 18.2 — both require the VocalMat dataset which 18.2 owns.
+- Re-review required per the review file's "Re-review rule": BLOCKER 1
+  (docstring corrections), BLOCKER 2 (this entry), and the MEDIUM
+  (cage-tone scaling) must be independently verified. The
+  cage-tone-scaling fix did NOT break the existing 31 tests; the
+  injected-tone-raises-migration test continues to pass.
+
+---
+
+## 2026-05-22 — Module 18.2a VocalMat Sample + Real-Data Gate (GO verdict)
+
+**Status:** IMPLEMENTED + REAL-DATA RUN COMPLETE (pending master-reviewer)
+**ROADMAP reference:** `ROADMAP_lab_cnn_classifier.md` §18.2a
+**Review tier:** 2 (download + loader plumbing; no novel statistical methodology)
+**Worktree:** `.claude/worktrees/lab-cnn-classifier-plan/`
+
+**Outcome.** Module 18.1's deferred real-data exit criteria are met. The
+cleaning-validation gate's binding GO/NO-GO verdict is **GO** — all 4
+diagnostics pass under the full cleaning stack on real VocalMat (227×227
+PNG luminance) + lab 131204 (250 kHz-resampled STFT) + wild 5970
+(250 kHz-resampled STFT). Module 18.2b (full data preparation) is
+unlocked.
+
+**Files created:**
+- `scripts/cnn_download_vocalmat_sample.py` (~520 LOC) — OSF v2 REST
+  downloader (stdlib urllib, no new dependencies). Stable seed=1729,
+  `page_size=100`, exponential backoff on 429, 4-worker parallel
+  download. Outputs `data/vocalmat_sample/<class>/*.png` + manifest CSV.
+- `data/vocalmat_sample/.gitignore` (2 lines) — `*\n!.gitignore` so
+  ~113 MB of PNGs stays out of git.
+- `tests/test_cnn_download_vocalmat_sample.py` (~220 LOC, 11 tests) —
+  dependency-injected `FakeVocalMatSource` so tests never touch OSF.
+  Covers the 3 ROADMAP §18.2a items (dry-run, manifest balance,
+  idempotency) plus filename-parsing edge cases.
+- `tests/classifier/test_cleaning_real_data_loader.py` (~230 LOC, 12
+  tests) — sibling file to the spec tests (existing `tests/classifier/
+  test_*.py` from 18.1 are NOT modified). Covers `_resize_2d`,
+  `_png_to_luminance`, `_wav_to_spectrograms`, full
+  `_load_real_cohorts` integration, missing-input error paths,
+  determinism under seed.
+- `docs/modules/cnn-download-vocalmat-sample.md` — module doc.
+- `docs/handoffs/cleaning-validation-report.md` — the GO real-data
+  verdict (n_epochs=32 re-run).
+- `docs/handoffs/cleaning-validation-report.n4-NOGO.md` — audit trail
+  for the first NO-GO run; preserved to document the under-training
+  finding.
+
+**Files modified:**
+- `scripts/cnn_cleaning_validation.py` — added `_load_real_cohorts()`,
+  `_png_to_luminance()`, `_wav_to_spectrograms()`, `_resize_2d()` (~220
+  new LOC). Replaced the synthetic-fallback branch in `main()` with a
+  real call to the loader when all 3 `--*-sample` args are supplied.
+  Imports `corpus.STFT_N_FFT`, `corpus.STFT_HOP`,
+  `classifier.TARGET_SAMPLE_RATE_HZ` — no constants redeclared per
+  CLAUDE.md corpus protocol.
+- `requirements.txt` — unchanged at conclusion. Briefly added
+  `osfclient` and reverted after pivoting to stdlib urllib.
+
+**Test counts:**
+- New tests: 11 (download script) + 12 (loader) = 23.
+- Existing 18.1 tests: 62, all still passing (no spec-test
+  modification).
+- **Total: 85 passing** in 20.4s.
+
+**Sample download:**
+- 2,196 / 2,210 PNGs (99.4%), 113 MB. The 14 failures (4 in `complex`,
+  8 in `rev_chevron`, 2 in `noise`) are transient OSF 30-s timeouts /
+  one 403. The loader samples by filesystem glob, so missing files
+  don't cascade; we have an over-sufficient pool for the 200-per-cohort
+  gate run.
+
+**Real-data gate run (GO):**
+
+| Ablation | notch_injection | per_band_d | knn_same_cohort | pca_d |
+|---|---|---|---|---|
+| raw | 1.0000 FAIL | 26.02 FAIL | 0.3333 PASS | 52.16 FAIL |
+| soft_notch_only | 1.0000 FAIL | 26.02 FAIL | 0.3333 PASS | 52.16 FAIL |
+| baseline_only | 0.0250 PASS | 0.319 FAIL | 0.3333 PASS | 15.87 FAIL |
+| mad_only | 0.0000 PASS | 0.536 FAIL | 0.9473 FAIL | -10.22 FAIL |
+| zscore_only | 0.0050 PASS | 0.503 FAIL | 0.9310 FAIL | -9.15 FAIL |
+| **all_layers** | **0.0000 PASS** | **0.070 PASS** | **0.3333 PASS** | **0.0000 PASS** |
+
+**Diagnostic-VAE under-training discovered (and resolved within run):**
+
+The first real-data run used the script's default `--n-epochs 4` and
+emitted NO-GO with `notch_injection_migration = 1.0` on `all_layers`.
+The smoke-test default was calibrated on synthetic 32×32 data; real
+data is 227×227 = 51,529 features, ~50× the smoke regime, and 4 epochs
+is insufficient for VAE convergence. The re-run with `--n-epochs 32`
+dropped `all_layers` migration from 1.0 → 0.0 with no other changes.
+
+Implication for Module 18.1: the default `--n-epochs` should either
+auto-scale with input feature count or default to ~32. This is **not**
+in scope for 18.2a (would touch the frozen 18.1 cleaning module); it
+is flagged in the cleaning-validation report's Interpretation section
+for a successor 18.1.x patch.
+
+**Exit criteria status (ROADMAP §18.2a):**
+- [x] Download script downloads ≥200 × 10 + minority-class totals into
+  `data/vocalmat_sample/` (2,196/2,210, 99.4% — sufficient).
+- [x] Module 18.1 CLI accepts `--vocalmat-sample data/vocalmat_sample/`
+  and produces a non-synthetic report.
+- [x] Module 18.1 GO/NO-GO verdict captured in
+  `docs/handoffs/cleaning-validation-report.md`. Verdict: **GO**.
+- [x] Gate passed → 18.2b unlocks.
+
+**Notes:**
+- No files in the do-not-touch list were modified: `corpus.py`,
+  `sliding_inference.py`, `notch.py`, `denoise.py`,
+  `normalization.py`, `run_batch_detection.py`,
+  `classifier/cleaning_pipeline.py`, `classifier/diagnostics.py`,
+  `classifier/__init__.py`, and the existing
+  `tests/classifier/test_*.py` spec files are all unchanged.
+- `git status --short -- src/ tests/classifier/test_cleaning_pipeline.py
+  tests/classifier/test_diagnostics.py
+  tests/classifier/test_cleaning_pipeline_adversarial.py
+  tests/classifier/test_diagnostics_adversarial.py` shows nothing —
+  the spec contract is preserved.
+
+---
+
+## 2026-05-22 (follow-up) — Module 18.1.x carve-out patch (docstring + DeprecationWarning)
+
+**Status:** IMPLEMENTED (deferred reviewer findings from 18.2a applied)
+**ROADMAP reference:** Module 18.1.x patch — no new ROADMAP entry; addresses
+the WARNING 2 + NIT 1 findings from
+`docs/reviews/cnn-download-vocalmat-sample-review.md` that were
+out-of-scope for 18.2a (the 18.1 do-not-touch list excluded
+modifications to `classifier/diagnostics.py`).
+**Review tier:** 1 (docstring + DeprecationWarning emission only — no
+behavior change for any caller passing the legacy default).
+**Worktree:** `.claude/worktrees/lab-cnn-classifier-plan/`.
+
+**Files modified:**
+- `src/usv_spectrogram/classifier/diagnostics.py` — module docstring
+  (lines 23-32) rewritten to lead with the input-feature-count epoch
+  scaling rule; `train_diagnostic_vae` docstring (lines 348-368)
+  rewritten to spell out the smoke-vs-real distinction and warn
+  callers using real data must override `n_epochs`. Added
+  `_NOTCH_DEPTH_DB_LEGACY_DEFAULT = 20.0` sentinel constant + emit
+  `DeprecationWarning` from `_inject_cage_tone` when a caller passes a
+  non-default `notch_depth_db` value. Removed the `del notch_depth_db`
+  workaround.
+- `scripts/cnn_cleaning_validation.py` — `--n-epochs` CLI help text
+  expanded to state explicitly that the default 4 is smoke-test-only
+  and real data requires ≥32.
+
+**Behavior changes:**
+- For existing callers passing `notch_depth_db=20.0` (the only callers
+  in-tree): no behavior change. Test suite continues at 85/85.
+- For future callers passing a non-default `notch_depth_db`: emits
+  `DeprecationWarning` at stacklevel=2 (visible at caller's frame).
+- For users running `cnn_cleaning_validation.py` against real data
+  with the default `--n-epochs 4`: behavior is unchanged but the CLI
+  help now warns them explicitly. The Module 18.2a Interpretation
+  section already documents why this matters.
+
+**Test counts:**
+- 85/85 still passing in 20.97s. No spec test expectations modified.
+- DeprecationWarning path is not yet exercised by tests; existing
+  callers all use the legacy default, so this is a forward-only
+  safety net.
+
+**Notes:**
+- The patch is intentionally narrow: docstrings + one `warnings.warn`
+  call. It does NOT change any computational behavior, threshold, or
+  diagnostic semantics. The cleaning gate's GO verdict from 18.2a
+  remains valid.
+- The DeprecationWarning was chosen over removing the parameter
+  because the 18.1 handoff explicitly retained `notch_depth_db` "for
+  backward compatibility with callers from the locked methodology
+  (2026-05-21)". Removing the parameter would break that promise; the
+  warning preserves the call signature while signalling the dead
+  semantics.
+- These changes touch the previously-frozen `classifier/diagnostics.py`.
+  That module is no longer fully frozen — future 18.1.x patches with
+  similarly narrow scope are acceptable, but any change to
+  computational behavior (thresholds, diagnostic algorithms, layer
+  order, etc.) should go through master-reviewer Tier 3 (DSP +
+  statistical methodology) per the original 18.1 review.

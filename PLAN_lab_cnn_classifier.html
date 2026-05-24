@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PLAN — Lab USV CNN Classifier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 6rem;
+  color: #1d2129;
+  background: #fafbfc;
+}
+h1 {
+  font-size: 2.1rem;
+  margin-top: 0;
+  border-bottom: 3px solid #0366d6;
+  padding-bottom: 0.5rem;
+  color: #24292e;
+}
+h2 {
+  font-size: 1.55rem;
+  margin-top: 2.5rem;
+  border-bottom: 1px solid #e1e4e8;
+  padding-bottom: 0.3rem;
+  color: #24292e;
+}
+h3 {
+  font-size: 1.2rem;
+  margin-top: 1.8rem;
+  color: #24292e;
+}
+h4 { color: #444; }
+p, li { font-size: 0.98rem; }
+hr {
+  border: 0;
+  border-top: 1px solid #e1e4e8;
+  margin: 2.5rem 0;
+}
+code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  color: #d73a49;
+}
+pre {
+  background: #1f2328;
+  color: #e6edf3;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.86em;
+}
+pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+  font-size: 0.92rem;
+  background: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+th, td {
+  border: 1px solid #e1e4e8;
+  padding: 0.55rem 0.8rem;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: #f1f3f5;
+  font-weight: 600;
+  color: #24292e;
+}
+tr:nth-child(even) td { background: #fafbfc; }
+blockquote {
+  border-left: 4px solid #0366d6;
+  margin: 1rem 0;
+  padding: 0.3rem 1rem;
+  color: #586069;
+  background: #f6f8fa;
+}
+a { color: #0366d6; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul, ol { padding-left: 1.6rem; }
+li { margin: 0.2rem 0; }
+
+/* TOC styling */
+.toc {
+  background: white;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0 2.5rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.toc .toctitle {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #24292e;
+  margin-bottom: 0.5rem;
+}
+.toc ul { padding-left: 1.2rem; }
+.toc li { font-size: 0.92rem; }
+
+/* Emphasis colours */
+strong { color: #24292e; }
+
+/* Phase / risk severity tints in tables */
+td:has(> strong) { font-weight: 500; }
+
+/* Banner */
+.meta-banner {
+  background: #fffbea;
+  border: 1px solid #f1e05a;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  margin: 0 0 1.5rem;
+  font-size: 0.88rem;
+  color: #735c0f;
+}
+.meta-banner code { background: #fff5b7; color: #735c0f; }
+</style>
+</head>
+<body>
+<div class="meta-banner">
+  <strong>Source:</strong> <code>PLAN_lab_cnn_classifier.md</code> &nbsp;|&nbsp;
+  <strong>Worktree:</strong> <code>worktree-lab-cnn-classifier-plan</code> &nbsp;|&nbsp;
+  <strong>Status:</strong> Scope locked, awaiting Phase 1.0 /implement
+</div>
+<h1 id="plan-lab-cleaned-usv-syllable-classifier-cnn-vocalmat-anchored"><a class="toclink" href="#plan-lab-cleaned-usv-syllable-classifier-cnn-vocalmat-anchored">Plan: Lab-Cleaned USV Syllable Classifier (CNN, VocalMat-anchored)</a></h1>
+<h2 id="goal"><a class="toclink" href="#goal">Goal</a></h2>
+<p>Train a 12-class syllable-type CNN on <strong>lab-recorded</strong> mouse USVs using:
+- VocalMat's published 12,954-spectrogram labeled dataset (Grimsley 2011 taxonomy) as the training base,
+- Our existing cleaning pipeline (soft-notch + Boll 1979 baseline subtraction + global MAD normalization + per-recording Z-score) to suppress recording-environment confound,
+- A small amount of user-curated wild-mouse labels (Phase 1.4) to test domain transfer.</p>
+<p>Output: a published model artifact + evaluation report demonstrating that the classifier learns syllable structure rather than recording-environment artifacts.</p>
+<h2 id="why"><a class="toclink" href="#why">Why</a></h2>
+<ol>
+<li><strong>The VAE comparison showed cohort separation was cage-driven, not biological</strong> (memo: <code>docs/handoffs/2026-05-18_vae_comparison_memo.md</code>). Any classifier trained on raw spectrograms inherits this risk.</li>
+<li><strong>The κ=0.13 VocalMat transfer test failed mechanistically because of wild-mouse call durations in a lab-trained model</strong> (<code>PLAN_test_vocalmat_classifier.md</code>). The natural first cut is lab-to-lab: train and deploy on lab data where the call-duration distribution matches the model's design assumption.</li>
+<li><strong>VocalMat data is Apache 2.0</strong> — usable for derived models with attribution. Our 845 hand-curated lab 131204 verdicts are also lab data. Soft-notch is calibrated only for lab 131204. Three independent constraints point lab-first.</li>
+</ol>
+<h2 id="decisions-already-made"><a class="toclink" href="#decisions-already-made">Decisions Already Made</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Decision</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>License: Apache 2.0</strong> — go ahead</td>
+<td>Verified at <code>github.com/ahof1704/VocalMat/LICENSE</code>; permits derived works incl. commercial</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Taxonomy: VocalMat's 12 classes</strong> (Grimsley 2011)</td>
+<td>12,954 labeled examples vs 0 human-labeled syllable types on our side. Map to Holy &amp; Guo 7 at inference time if needed.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Architecture: ResNet-18 ImageNet-pretrained</strong> (primary)</td>
+<td>Right capacity for ~13k examples; SOTA evidence for bioacoustics at this scale; abundant transfer-learning support via <code>timm</code>. Fallback: EfficientNet-B0 (5.3M params, lower overfit risk).</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Domain adaptation: DANN head</strong> (gradient-reversal cage discriminator)</td>
+<td>Cheapest cage-invariance method; near-zero engineering cost; well-documented since 2015.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Augmentation: SpecAugment + cage-noise injection + pitch/time</strong></td>
+<td>Industry-standard for audio CNN training; cage-noise injection from our 845 verdict negatives is novel and directly targets confound.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Wild data: opt-in Phase 1.4</strong></td>
+<td>User will hand-label a small wild set; used for OOD evaluation, not training (Phase 1).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="existing-infrastructure-do-not-rebuild"><a class="toclink" href="#existing-infrastructure-do-not-rebuild">Existing Infrastructure (DO NOT REBUILD)</a></h2>
+<p>Audit found we already have most of the cleaning pipeline needed:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Location</th>
+<th>Status</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Soft-notch tonal removal</td>
+<td><code>src/usv_spectrogram/app/core/notch.py</code></td>
+<td>Production, 15/15 tests pass</td>
+<td>Suppresses cage equipment tonals (51 kHz, 46.58 kHz on lab 131204)</td>
+</tr>
+<tr>
+<td>Boll 1979 baseline subtraction</td>
+<td><code>src/usv_spectrogram/app/core/denoise.py</code></td>
+<td>Production, opt-in via <code>--subtract-baseline</code></td>
+<td>Per-bin temporal noise-floor subtraction in linear magnitude. Two modes: <code>percentile</code>, <code>median_envelope</code></td>
+</tr>
+<tr>
+<td>Global MAD normalization</td>
+<td><code>src/usv_spectrogram/app/core/sliding_inference.py:389–424</code></td>
+<td>Always-on in CNN inference</td>
+<td>Normalizes whole spectrogram once before window cropping</td>
+</tr>
+<tr>
+<td>Per-recording Z-score</td>
+<td><code>src/usv_spectrogram/postprocessing/normalization.py</code></td>
+<td><strong>Implemented but dormant</strong></td>
+<td>Wire into batch detection for additional cage-invariance</td>
+</tr>
+<tr>
+<td>Tonal libraries</td>
+<td><code>data/lab_tonal_lines/lab_131204.json</code></td>
+<td>Calibrated for lab 131204 only</td>
+<td>Empirical facts; new cages require <code>scripts/calibrate_lab_tonal_lines.py</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Net new code required for cleaning: probably zero.</strong> We need to <em>enable</em> and <em>wire</em> existing components and verify against the falsifiable cage-confound test.</p>
+<hr />
+<h2 id="vocalmat-dataset-characteristics-verified-2026-05-20"><a class="toclink" href="#vocalmat-dataset-characteristics-verified-2026-05-20">VocalMat Dataset Characteristics (verified 2026-05-20)</a></h2>
+<p><strong>Labeling protocol</strong> (Fonseca et al. 2021, eLife Methods):
+- Training set (12,954 images): <strong>labeled by one "experienced experimenter"</strong> — single-rater. No inter-rater agreement reported. No quantified label-noise rate.
+- Test set (4,441 USVs across 7 recordings): <strong>≥ 2 investigators with consensus arbitration</strong> by a third investigator — gold-standard. Not part of the 12,954 training images.
+- Implication: Expect 5–15% label noise in minority classes. Training-set labels are <em>better than auto-clustering</em>, but <em>not equivalent to</em> multi-rater consensus.</p>
+<p><strong>Source recordings:</strong> 5 mouse strains (C57Bl6/J, NZO/HlLtJ, 129S1/SvImJ, NOD/ShiLtJ, PWK/PhJ) × 3 ages (P5, P10, P15) × both sexes. ~30 sub-cohorts represented — <strong>good for cage-invariance</strong>: the model sees diverse recording conditions during training, not a monoculture.</p>
+<p><strong>Class counts (stratification must respect this):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Count</th>
+<th>%</th>
+<th>Risk tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Noise</td>
+<td>2,083</td>
+<td>16.1%</td>
+<td></td>
+</tr>
+<tr>
+<td>Step up</td>
+<td>1,814</td>
+<td>14.0%</td>
+<td></td>
+</tr>
+<tr>
+<td>Down-FM</td>
+<td>1,775</td>
+<td>13.7%</td>
+<td></td>
+</tr>
+<tr>
+<td>Short</td>
+<td>1,713</td>
+<td>13.2%</td>
+<td></td>
+</tr>
+<tr>
+<td>Chevron</td>
+<td>1,594</td>
+<td>12.3%</td>
+<td></td>
+</tr>
+<tr>
+<td>Up-FM</td>
+<td>1,191</td>
+<td>9.2%</td>
+<td></td>
+</tr>
+<tr>
+<td>Flat</td>
+<td>1,134</td>
+<td>8.8%</td>
+<td></td>
+</tr>
+<tr>
+<td>Two steps</td>
+<td>701</td>
+<td>5.4%</td>
+<td></td>
+</tr>
+<tr>
+<td>Step down</td>
+<td>389</td>
+<td>3.0%</td>
+<td></td>
+</tr>
+<tr>
+<td>Complex</td>
+<td>350</td>
+<td>2.7%</td>
+<td></td>
+</tr>
+<tr>
+<td>Reverse Chevron</td>
+<td>136</td>
+<td>1.1%</td>
+<td>⚠ Borderline trainable</td>
+</tr>
+<tr>
+<td>Multi-steps</td>
+<td>74</td>
+<td>0.6%</td>
+<td>⚠ Borderline trainable</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Imbalance ratio: Step-up vs Multi-steps = 24.5×.</strong> With 80/10/10 split, Multi-steps gets ~59 training examples — close to ResNet-18's reasonable lower bound. Open question 5 (below) asks how to handle.</p>
+<hr />
+<h2 id="phase-10-cleaning-validation-gate-blocking"><a class="toclink" href="#phase-10-cleaning-validation-gate-blocking">Phase 1.0 — Cleaning Validation Gate (BLOCKING)</a></h2>
+<h3 id="goal_1"><a class="toclink" href="#goal_1">Goal</a></h3>
+<p>Verify that enabling our existing cleaning stack (soft-notch + baseline subtraction + global MAD + per-recording Z-score) suppresses cage-confound enough to make a syllable classifier honest.</p>
+<h3 id="the-falsifiable-test"><a class="toclink" href="#the-falsifiable-test">The Falsifiable Test</a></h3>
+<p>Re-run the VAE diagnostic from <code>vae-pytorch-pivot</code> worktree on <strong>cleaned</strong> spectrograms across (a) VocalMat's lab data, (b) our lab 131204, (c) our wild 5970.</p>
+<p>Pass criteria (all four must hold):</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Current (raw)</th>
+<th>Pass threshold (cleaned)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Notch-injection migration</td>
+<td>91.7% (ours) / 58.5% (DS)</td>
+<td><strong>&lt; 30%</strong></td>
+</tr>
+<tr>
+<td>Per-10kHz sub-band max Cohen's d</td>
+<td>0.4–2.0</td>
+<td><strong>&lt; 0.3</strong></td>
+</tr>
+<tr>
+<td>K-NN same-cohort rate</td>
+<td>0.98–1.0</td>
+<td><strong>&lt; 0.85</strong></td>
+</tr>
+<tr>
+<td>Raw-pixel PCA PC1 Cohen's d</td>
+<td>+5.83 (ours)</td>
+<td><strong>&lt; 1.5</strong></td>
+</tr>
+</tbody>
+</table>
+<p>If any criterion fails → stop, iterate on cleaning before proceeding to Phase 1.1.</p>
+<h3 id="steps"><a class="toclink" href="#steps">Steps</a></h3>
+<ol>
+<li>Build a small script <code>scripts/cnn_cleaning_validation.py</code> that:
+   - Loads a sample of VocalMat + lab 131204 + 5970 spectrograms
+   - Applies the full cleaning stack with each component toggleable (ablation matrix)
+   - Re-runs the synthetic-notch injection test (from VAE adversarial review)
+   - Re-runs per-band Cohen's d on cleaned spectrograms
+   - Trains a quick 32-dim VAE (4–8 epochs is enough for diagnostic) and runs K-NN + PC1 tests</li>
+<li>Output: <code>docs/handoffs/cleaning-validation-report.md</code> with pass/fail per criterion and ablation table.</li>
+</ol>
+<h3 id="deliverables"><a class="toclink" href="#deliverables">Deliverables</a></h3>
+<ul>
+<li><code>scripts/cnn_cleaning_validation.py</code></li>
+<li><code>docs/handoffs/cleaning-validation-report.md</code></li>
+<li>Go/no-go decision: proceed to Phase 1.1 or iterate</li>
+</ul>
+<h3 id="estimated-effort"><a class="toclink" href="#estimated-effort">Estimated effort</a></h3>
+<p>3–5 focused days. No new cleaning code expected; this is plumbing existing components and running diagnostics.</p>
+<hr />
+<h2 id="phase-11-data-preparation"><a class="toclink" href="#phase-11-data-preparation">Phase 1.1 — Data Preparation</a></h2>
+<h3 id="steps_1"><a class="toclink" href="#steps_1">Steps</a></h3>
+<ol>
+<li><strong>Download VocalMat dataset</strong> from OSF (<code>https://osf.io/bk2uj/</code>) into <code>data/vocalmat/</code> (gitignored).</li>
+<li><strong>Verify class counts and balance.</strong> Save manifest to <code>data/vocalmat/manifest.csv</code> with columns: <code>path, class, source_recording, duration_ms</code>.</li>
+<li><strong>Resample our lab 131204 + 5970 from 300 kHz → 250 kHz</strong> via <code>scipy.signal.resample_poly(up=5, down=6)</code> to match VocalMat's pipeline. Output: parallel chunked WAVs.</li>
+<li><strong>Apply cleaning stack uniformly</strong> to all training/validation data:
+   - Soft-notch (where library exists — lab 131204 only at first)
+   - <code>--subtract-baseline median_envelope</code> (works on any recording)
+   - Global MAD normalization (always-on)
+   - Per-recording Z-score (newly wired)</li>
+<li><strong>Generate spectrograms</strong> using VocalMat's exact STFT params (Hamming 256, hop 128, NFFT 1024 at 250 kHz, 227×227 RGB patches, 0.22s duration). Store as PNGs alongside class label.</li>
+<li><strong>Build train/val/test splits</strong> stratified by class (80/10/10), with <strong>recording-level grouping</strong> to prevent leakage (no call from the same source recording appears in both train and val).</li>
+</ol>
+<h3 id="deliverables_1"><a class="toclink" href="#deliverables_1">Deliverables</a></h3>
+<ul>
+<li><code>data/vocalmat/</code> populated, manifest CSV</li>
+<li><code>scripts/cnn_prepare_training_data.py</code></li>
+<li><code>data/lab_cnn_training/{train,val,test}/</code> with PNG patches + CSV manifests</li>
+</ul>
+<h3 id="risk"><a class="toclink" href="#risk">Risk</a></h3>
+<p><strong>Class imbalance is more severe than first assumed.</strong> Multi-steps (74 total) and Reverse-Chevron (136 total) sit 13–25× smaller than the top classes. Phase 1.1 must use stratified 80/10/10 split AND class-weighted CE / focal loss / oversampling. The minority-class strategy decision (open question 5) is binding before Phase 1.2 starts.</p>
+<hr />
+<h2 id="phase-12-baseline-resnet-18-training"><a class="toclink" href="#phase-12-baseline-resnet-18-training">Phase 1.2 — Baseline ResNet-18 Training</a></h2>
+<h3 id="steps_2"><a class="toclink" href="#steps_2">Steps</a></h3>
+<ol>
+<li><strong>Implement training loop</strong> in <code>scripts/train_lab_classifier.py</code>:
+   - <code>timm.create_model('resnet18', pretrained=True, num_classes=12)</code>
+   - AdamW, cosine LR schedule, ~50 epochs to convergence
+   - Class-weighted cross-entropy
+   - SpecAugment augmentation (time + frequency masking)
+   - Standard image augmentation: pitch shift ±10%, time stretch ±20%, random crop ±5%
+   - Track per-class precision/recall + confusion matrix every 5 epochs</li>
+<li><strong>Train on cleaned VocalMat data only</strong> (Phase 1.1 output, excluding our 845 lab 131204 verdicts which are held out).</li>
+<li><strong>Log to <code>results/lab_classifier_v1/</code></strong> — training curves, best checkpoint, val confusion matrix.</li>
+</ol>
+<h3 id="validation-criteria"><a class="toclink" href="#validation-criteria">Validation criteria</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Pass threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Macro F1 on VocalMat val split</td>
+<td>&gt; 0.65 (VocalMat reports 0.92+ on their original)</td>
+</tr>
+<tr>
+<td>Per-class precision</td>
+<td>All ≥ 0.40 (no class completely fails)</td>
+</tr>
+<tr>
+<td>Held-out 845 USV/noise accuracy</td>
+<td>&gt; 0.80</td>
+</tr>
+<tr>
+<td>Held-out 845 syllable-type entropy</td>
+<td>Mean ≤ log(6) (≈ peaky predictions, not "everything is Flat")</td>
+</tr>
+</tbody>
+</table>
+<h3 id="deliverables_2"><a class="toclink" href="#deliverables_2">Deliverables</a></h3>
+<ul>
+<li><code>models/lab_classifier_v1/best.pt</code>, training config, metric tables</li>
+<li><code>results/lab_classifier_v1/confusion_matrix.png</code> + <code>eval_report.md</code></li>
+</ul>
+<h3 id="estimated-effort_1"><a class="toclink" href="#estimated-effort_1">Estimated effort</a></h3>
+<p>1 week including dataset bring-up, training, and analysis.</p>
+<hr />
+<h2 id="phase-13-cage-confound-aware-training-dann"><a class="toclink" href="#phase-13-cage-confound-aware-training-dann">Phase 1.3 — Cage-Confound-Aware Training (DANN)</a></h2>
+<h3 id="steps_3"><a class="toclink" href="#steps_3">Steps</a></h3>
+<ol>
+<li><strong>Extend training loop</strong> with a domain discriminator head:
+   - Encoder: shared ResNet-18 trunk
+   - Class head: 12-way syllable classifier (cross-entropy)
+   - Domain head: N-way cage discriminator (VocalMat / lab 131204; eventually 5970 if Phase 1.4 lands)
+   - Gradient-reversal layer between trunk and domain head, with λ schedule from 0 → 1 over training</li>
+<li><strong>Train</strong> with same hyperparameters as 1.2, plus λ schedule per Ganin et al. 2015.</li>
+<li><strong>Re-run all Phase 1.2 evals</strong> + the cage-invariance probe:
+   - Freeze encoder, train a linear classifier on encoder features to predict cage. Accuracy near chance = success.
+   - Run VAE falsifiable test on encoder features (not raw spectrograms).</li>
+</ol>
+<h3 id="validation-criteria-in-addition-to-phase-12"><a class="toclink" href="#validation-criteria-in-addition-to-phase-12">Validation criteria (in addition to Phase 1.2)</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Pass threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linear cage probe accuracy on encoder features</td>
+<td>&lt; 65% (vs random ~50% for 2 cages)</td>
+</tr>
+<tr>
+<td>Syllable F1 vs 1.2 baseline</td>
+<td>No worse than -0.05 (small drop OK; large drop = encoder collapsed under adversarial loss)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="deliverables_3"><a class="toclink" href="#deliverables_3">Deliverables</a></h3>
+<ul>
+<li><code>models/lab_classifier_v2/best.pt</code> + comparison report vs v1</li>
+<li><code>results/lab_classifier_v2/cage_invariance_probe.md</code></li>
+</ul>
+<h3 id="estimated-effort_2"><a class="toclink" href="#estimated-effort_2">Estimated effort</a></h3>
+<p>3–5 days. The DANN head is ~50 lines of new code on top of v1.</p>
+<hr />
+<h2 id="phase-14-wild-transfer-evaluation-user-enabled"><a class="toclink" href="#phase-14-wild-transfer-evaluation-user-enabled">Phase 1.4 — Wild Transfer Evaluation (USER-ENABLED)</a></h2>
+<h3 id="domain-gap-reality-check"><a class="toclink" href="#domain-gap-reality-check">Domain-gap reality check</a></h3>
+<p>VocalMat's training data spans 5 mouse strains × 3 neonatal ages — already heterogeneous. So if wild transfer fails, the cause is <strong>NOT strain monoculture</strong>. The two real candidates are:
+1. <strong>Cage acoustics</strong> (mitigated by DANN in Phase 1.3 + our cleaning stack)
+2. <strong>Call-duration distribution</strong> (wild 30–50 ms median vs lab 30–200 ms range — same mechanism that killed κ=0.13 transfer)</p>
+<p>Optional probe (1 day cost): re-train with <strong>short-patch (0.08s) variant</strong> to address (2). Open question 1 below.</p>
+<h3 id="pre-requisite"><a class="toclink" href="#pre-requisite">Pre-requisite</a></h3>
+<p><strong>User labels a small wild syllable-type set.</strong> Recommended: ~200 calls from 5970, balanced across the 12 Grimsley classes as best the data allows. Workflow follows <code>feedback_labeling_queue_folder.md</code>: PNGs copied to a flat folder with stable-ID prefixes (<code>typ01_*.png</code>, <code>typ02_*.png</code>, ...).</p>
+<p><strong>Labeling protocol:</strong> Single-rater is acceptable for OOD eval (matches VocalMat's training-set protocol). If you want stronger evidence, dual-label a subset (~50 calls) yourself or have a second labeler — flag disagreements for special discussion.</p>
+<h3 id="steps_4"><a class="toclink" href="#steps_4">Steps</a></h3>
+<ol>
+<li><strong>User-provided wild labels</strong> stored at <code>data/wild_labels/5970_human_verified.csv</code> (columns: <code>wav_stem, det_start_s, det_end_s, syllable_type_grimsley</code>).</li>
+<li><strong>Run inference</strong> on these calls with v1 (baseline) and v2 (DANN) classifiers.</li>
+<li><strong>Report:</strong>
+   - Per-class precision/recall on wild data (lab → wild generalization)
+   - Confusion matrix comparing wild vs lab patterns
+   - Confidence distribution: are wild predictions less confident?</li>
+<li><strong>Decision point:</strong> Does v2 generalize meaningfully better than v1?
+   - <strong>Yes</strong> → ship v2 as the production lab+wild classifier
+   - <strong>No</strong> → stop and document. Phase 2 (wild-specific training or stronger DA) needed before wild deployment.</li>
+</ol>
+<h3 id="deliverables_4"><a class="toclink" href="#deliverables_4">Deliverables</a></h3>
+<ul>
+<li><code>data/wild_labels/5970_human_verified.csv</code> (user-produced)</li>
+<li><code>results/wild_transfer_eval/{v1,v2}_eval.md</code> with confusion matrices</li>
+<li>Decision memo: ready-for-production or Phase 2-required</li>
+</ul>
+<h3 id="estimated-effort_3"><a class="toclink" href="#estimated-effort_3">Estimated effort</a></h3>
+<p>1–2 days assuming user labeling is done. Labeling itself: depends on user pace; 200 calls at ~30s/call ≈ 100 minutes.</p>
+<hr />
+<h2 id="risk-register"><a class="toclink" href="#risk-register">Risk Register</a></h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Severity</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cleaning stack fails Phase 1.0 gate</td>
+<td>High</td>
+<td>Iterate cleaning before training. May require new component (broadband whitening, per-band z-score).</td>
+</tr>
+<tr>
+<td>Minority classes borderline trainable (Multi-steps n=74, Reverse-Chevron n=136)</td>
+<td><strong>High</strong></td>
+<td>Resolve open question 5 before Phase 1.2 (keep-all / collapse / drop). Class-weighted CE + oversampling + focal loss regardless. Monitor per-class precision/recall, not just macro F1.</td>
+</tr>
+<tr>
+<td>Single-rater training labels (5–15% noise expected in minority classes)</td>
+<td>Medium</td>
+<td>Don't treat as gold-standard. When our 845 dual-rater-quality lab 131204 verdicts disagree with model predictions on minority classes, trust the verdicts. Consider active-learning relabeling in Phase 2 if minority-class precision is too poor.</td>
+</tr>
+<tr>
+<td>Wild transfer remains poor despite DANN</td>
+<td>Medium</td>
+<td>This is Phase 2 — document and stop, don't force production. NOTE: strain monoculture is NOT the issue (VocalMat already spans 5 strains); cage acoustics + call-duration distribution are the real domain gaps.</td>
+</tr>
+<tr>
+<td><code>--subtract-baseline</code> interacts badly with VocalMat's spectrogram conventions</td>
+<td>Medium</td>
+<td>Validate output PNGs visually in Phase 1.1 ablation.</td>
+</tr>
+<tr>
+<td>User-labeled wild set is too small for statistical inference</td>
+<td>Low</td>
+<td>200 calls gives ~17/class on average — descriptive only, not inferential. Be honest in reporting.</td>
+</tr>
+<tr>
+<td><code>corpus.py</code> constants override conflict</td>
+<td>Low</td>
+<td>Keep Phase 1 pipeline in its own module (<code>src/usv_spectrogram/classifier/</code>); document the 250 kHz override; do NOT modify <code>corpus.py</code>.</td>
+</tr>
+<tr>
+<td>Lab tonal library only exists for one rig</td>
+<td>Medium (limits Phase 2)</td>
+<td>Lab 131204 is the only lab data we have. New lab data requires <code>calibrate_lab_tonal_lines.py</code> run.</td>
+</tr>
+<tr>
+<td>VocalMat training data includes neonatal mice (P5–P15); our adult wild + lab mice may have different acoustic features</td>
+<td>Medium</td>
+<td>Test-time domain gap. If wild transfer fails in Phase 1.4, this is the second most likely cause after cage acoustics. Mitigation: filter VocalMat data to older ages (P15) if available in metadata, or accept the gap and document.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="whats-not-in-this-plan"><a class="toclink" href="#whats-not-in-this-plan">What's NOT in this plan</a></h2>
+<ul>
+<li><strong>A new cleaning component.</strong> Audit found <code>--subtract-baseline</code> + per-recording Z-score already exist; we need to wire and validate, not build.</li>
+<li><strong>Modifications to the detection CNN.</strong> This is a downstream classifier. Detection model (<code>hard_neg_retrain/best_model.pt</code>) is unchanged.</li>
+<li><strong>DeepSqueak replacement.</strong> This complements DeepSqueak, doesn't replace it. We may compare downstream.</li>
+<li><strong>Wild-mouse training (Phase 2).</strong> Explicitly deferred until Phase 1.4 reveals whether the lab classifier transfers.</li>
+<li><strong>Modifications to <code>corpus.py</code>.</strong> This pipeline uses VocalMat's 250 kHz convention internally; the canonical 300 kHz invariant remains intact for the rest of the project.</li>
+</ul>
+<hr />
+<h2 id="open-questions-for-user-before-implement"><a class="toclink" href="#open-questions-for-user-before-implement">Open Questions (for user before /implement)</a></h2>
+<ol>
+<li><strong>Patch size in seconds:</strong> VocalMat's 0.22s patch was the wild-mouse killer (82% silence around 30–50ms calls). For <em>lab</em> data (30–200ms calls), 0.22s is appropriate. But: do we want to extend Phase 1.4 with a <strong>shorter patch (e.g., 0.08s)</strong> variant trained on the same data, in case wild generalization improves? +1 day cost.</li>
+<li><strong>Wild labels priority:</strong> Once Phase 1.0 passes, do you want to start labeling in parallel with Phase 1.1–1.3 (the model is the bottleneck) or wait for Phase 1.3 to complete (gives you v2 confidence scores to bootstrap your labeling)?</li>
+<li><strong>Perch 2.0 sidequest:</strong> Should we burn ~1 day in Phase 1.2 to also test Perch 2.0 audio-pretrained embeddings + linear probe? Recent (2025) evidence says bioacoustic-pretrained embeddings often beat ImageNet-pretrained CNNs on cross-domain bioacoustic tasks. Cheap to test. Recommend yes.</li>
+<li><strong>Domain head granularity:</strong> DANN can discriminate (a) just <code>lab_131204</code> vs <code>vocalmat</code> (2 cages — minimum), or (b) per-recording-session (~50–100 cages — much finer, more aggressive invariance). I'd start with (a). Confirm or override.</li>
+<li><strong>Minority-class strategy:</strong> Multi-steps (74 examples) and Reverse-Chevron (136 examples) sit 13–25× smaller than top classes. Three options:
+   - <strong>(a) Keep all 12 classes</strong> with oversampling + focal loss — most faithful to VocalMat's taxonomy. Risk: poor minority-class precision; may produce "everything-becomes-Step-up" failure mode on rare types.
+   - <strong>(b) Collapse step-family</strong> — merge Multi-steps + Two-steps + Step-up + Step-down → single "Multi-step family" class → 9-class model. Risk: loses biological granularity Grimsley taxonomy was designed for.
+   - <strong>(c) Drop Multi-steps + Reverse-Chevron entirely</strong> → 10-class model. Risk: ignores rare-but-real syllable types; downstream consumers expecting 12-class won't match.
+   Recommendation: start with <strong>(a)</strong> for Phase 1.2 baseline. Inspect v1 confusion matrix. If minority classes have precision &lt; 0.20, revisit (b) or (c) before Phase 1.3.</li>
+</ol>
+<hr />
+<h2 id="success-definition"><a class="toclink" href="#success-definition">Success Definition</a></h2>
+<p>This plan succeeds if, after Phase 1.4:
+- We have a 12-class lab USV classifier with macro F1 &gt; 0.65 on held-out VocalMat val data,
+- The encoder is provably cage-invariant (linear probe &lt; 65% accuracy),
+- Wild transfer eval (~200 calls) shows either meaningful generalization (then we ship) or honest failure (then we scope Phase 2),
+- All decisions are documented and reproducible from this plan + the Phase deliverable handoffs.</p>
+<p>The plan <strong>fails honestly</strong> (not silently) if Phase 1.0 cleaning gate doesn't pass — that's the explicit purpose of the gate.</p>
+<hr />
+<h2 id="references"><a class="toclink" href="#references">References</a></h2>
+<ul>
+<li>Memory: <code>project_vae_comparison_complete</code>, <code>project_vocalmat_transfer_test</code>, <code>project_clustering_analysis_lab</code>, <code>feedback_cnn_inference_global_mad</code>, <code>feedback_cage_not_rig_terminology</code></li>
+<li>VAE adversarial review: <code>docs/handoffs/2026-05-18_vae_comparison_memo.md</code></li>
+<li>Soft-notch design: <code>docs/handoffs/2026-05-11_adaptive-soft-notch.md</code></li>
+<li>Pre-CNN baseline subtraction: <code>docs/handoffs/2026-05-08_pre-cnn-spectral-subtraction-lab.md</code></li>
+<li>VocalMat paper: Fonseca et al. 2021, eLife 10:e59161 — <code>https://elifesciences.org/articles/59161</code></li>
+<li>VocalMat code/data: <code>https://github.com/ahof1704/VocalMat</code> (Apache 2.0), data at <code>https://osf.io/bk2uj/</code></li>
+<li>Grimsley taxonomy: Grimsley, Hazlett, Wenstrup 2013, <em>PLOS One</em> 8(3):e59428</li>
+<li>DANN: Ganin &amp; Lempitsky 2015, ICML — <code>arXiv:1409.7495</code></li>
+<li>SpecAugment: Park et al. 2019 — <code>arXiv:1904.08779</code></li>
+<li>Perch 2.0: 2025 — <code>arXiv:2512.03219</code></li>
+</ul>
+</body>
+</html>
