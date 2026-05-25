@@ -10,11 +10,13 @@ type: moc
 - **Dataset 9252** -- NEW (2026-04-06). Third animal (usv_lmt_???), 8 USV sessions in `USV_9252/`. Batch detection started (`results/batch_9252/`). Enables N=3 cross-animal comparison.
 - **DeepSqueak Classification Bridge** -- COMPLETE (2026-04-03). Full 5970 dataset: 7,518 USV calls classified into 27 clusters, merged with CNN detection metadata. Output: `classified_detections_full.csv`. Handoff: `docs/handoffs/deepsqueak-full-pipeline-results.md`.
 - Phase 5.3 -- Validation checkpoint COMPLETE (2026-03-21). Scored 19/25 (up from 18/25). Maintenance overhead improved (score 3→4). /rethink threshold lowered to 7. Next review: organic (triggered by 7 observations or 14-day staleness). Report: ops/health/phase-5.3-validation-2026-03-21.md
+- **Shape-representation v2** -- ACTIVE (2026-05-25). Contour-VAE → registered-shape pipeline. Finding: the shape alphabet has LOWER transition MI than the latent alphabet (−72% combined) → registration→shape η²=0.75; building a 2-D navigable shape-map over the hard K=20 alphabet. Production clustering: `scripts/experiments/rig_R2_shape_alphabet.py` / `models/shape_kmeans/k20.joblib` (box; see `docs/DATA_LOCATIONS.md`). Next: `PLAN_shape_representation_v2.md` Track 0/B (denoised retrain — drop the hard contour mask, use `prefilter_spectrogram`).
 
 ## Waiting
 - CC weekly routine first execution -- deferred to a session in D:\we_do_this\tevel-erp
 
 ## Recently Completed
+- **Post-merge reconciliation** (2026-05-25): Collapsed scattered state into `main` as the single source of truth. R-A: 5 rig contour/shape scripts → `scripts/experiments/`. R-B: `latent-analysis-b-a-c` keepers merged into main (16 files, 0 deletions, 46 tests pass). R-C: `.gitignore` shape-v2 excludes + `docs/DATA_LOCATIONS.md` (canonical rig paths, 32G). Pending: rig rsync mirror + R-D worktree retirement (gated on relocating the box-only kmeans models). Handoff: `docs/handoffs/2026-05-25_post-merge-reconciliation.md`.
 - **Phase 15 Post-Processing Pipeline** (2026-03-29): 7 modules (hysteresis, event scoring, calibration, event features, FP filter, normalization, triage+batch output). 346 tests, 7 module docs. Hysteresis F2=0.885, FP filter F2=0.850, T=0.905. Batch run on 198 labeled + 5970 dataset. Gate: 9/9. ROADMAP_POST_PROCESSING.md.
 - **Vault Retrieval Overhaul** (2026-03-25): Replaced broken qmd with vault-search.mjs (topic-map traversal + ripgrep + wiki-link following). All hooks migrated (ps1 fixed 2026-03-29), 11 skills migrated off qmd. Plan: PLAN_fix-session-orient-knowledge-activation.md
 
