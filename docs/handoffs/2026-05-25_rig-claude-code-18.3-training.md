@@ -1,5 +1,16 @@
 # Module 18.3 Stream V — GPU rig execution (Claude Code entry point)
 
+> **⚠ ERRATA (2026-05-25) — Step 6 is RESOLVED: DEFER it.** See
+> `docs/handoffs/2026-05-25_ERRATA_held-out-845.md`. The held-out-845 set is
+> the 844-row `results/lab_*_review/review_index_annotated.csv` (usv/noise
+> verdicts only), NOT `classified_detections_lab_131204_clean.csv`. The
+> "Held-out 845 macro F1 > 0.80" Grimsley gate is **removed** (unbuildable —
+> lab data has no Grimsley labels). The held-out eval is **DEFERRED** (only
+> annotated review figures exist; clean patches need re-extraction). **Do NOT
+> run `_evaluate_held_out_845` on the 40,787-row file** (its fallback computes
+> nonsense). Ship Steps 5/7/8 on the passing VocalMat val/test gates; mark
+> held-out DEFERRED in IMPLEMENTATION_PROGRESS. Do not write new Step-6 code.
+
 **Date:** 2026-05-25
 **You are:** Claude Code running on the GPU rig (`cloudyclaude`, 3× RTX 3060 Ti 8 GB). This is your entry point.
 **Working dir:** `/data/mickey_london_lab` — a **non-git file copy** (the rig has
@@ -231,9 +242,10 @@ Stream V is SHIP-eligible when ALL hold:
 - [ ] `pytest tests/classifier/ -q -k "not auto_device_resolves_cpu"` → 179 passed, 4 skipped (+ any new held-out tests), 0 failed
 - [ ] Macro F1 > 0.65 on VocalMat test split
 - [ ] Per-class precision ≥ 0.40 on every class
-- [ ] Held-out 845 lab verdict: macro F1 > 0.80
-- [ ] Held-out 845 USV/noise accuracy > 0.80
 - [ ] Confusion matrix: no class collapses into another with > 0.40 mass
+- [ ] Held-out lab gates — **DEFERRED, not a blocker** (see ERRATA): USV/noise
+      accuracy > 0.80 AND entropy ≤ log(6) on the 844-row `results/lab_*_review/`
+      set, after re-extracting clean patches. NO Grimsley-macro-F1 gate.
 - [ ] `models/lab_classifier_v1/best.pt` (or under `--output-dir`) loads via `torch.load(...)["state_dict"]`
 - [ ] `results/lab_classifier_v1/eval_report.md` + `confusion_matrix.png` exist
 - [ ] (Conditional) Perch probe macro F1 reported (no gate)

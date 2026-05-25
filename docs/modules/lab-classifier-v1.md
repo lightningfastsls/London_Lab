@@ -167,20 +167,25 @@ from usv_spectrogram.classifier.training import (
 }
 ```
 
-### Held-out 845 evaluation
+### Held-out 845 evaluation — DEFERRED (see ERRATA)
 
-The smoke / unit-test path computes label-distribution statistics from
-the CSV alone (`call_label` + `usv_verdict` columns):
+> **CORRECTION (2026-05-25):** see
+> `docs/handoffs/2026-05-25_ERRATA_held-out-845.md`. Two errors were found
+> when the rig tried to run this: (1) the verdict set is NOT
+> `classified_detections_lab_131204_clean.csv` (that's the 40,787-row
+> clustering working set) — it's 844 rows across
+> `results/lab_{cluster0,cluster1,cluster2,noise}_review/review_index_annotated.csv`,
+> with only a `usv`/`noise` `verdict`, no Grimsley labels; (2) there is **no
+> Grimsley macro-F1 held-out gate** — lab data was never Grimsley-labeled, so
+> that gate is unbuildable and is removed.
 
-- `usv_noise_acc` = agreement rate of `(label != "Noise") == (verdict == "usv")`
-- `syllable_entropy_mean` = empirical entropy of the `call_label` distribution
-  (nats, clamped to ≤ log(12))
-
-This is sufficient to satisfy the test contract (`usv_noise_acc` and
-`syllable_entropy_mean` keys present). **Stream V (GPU real-data run)
-must extend `_evaluate_held_out_845` to actually load patches matching
-the CSV rows and run model inference** — only then can the ROADMAP exit
-criterion "Held-out 845 lab verdict: macro F1 > 0.80" be evaluated.
+The smoke / unit-test path computes label-distribution statistics from a
+stub CSV and is fine for the test contract. The **real** held-out lab eval
+(the two PLAN gates below) is **DEFERRED** — the 844 verdict calls have only
+annotated review figures on disk, not clean 227×227 model patches, so they
+must be re-extracted from `USV_lab_131204_chunked_2s_full/` first (prep task
+in the ERRATA). The two evaluable gates are **USV/noise accuracy > 0.80** and
+**syllable-type entropy mean ≤ log(6)** — NOT a Grimsley macro F1.
 
 ### `device='auto'` resolution
 
@@ -246,15 +251,19 @@ fix options for the test.
 
 ## Validation criteria (PLAN §"Validation criteria")
 
-The training run is SHIP-eligible when:
+The training run is SHIP-eligible when (corrected per
+`docs/handoffs/2026-05-25_ERRATA_held-out-845.md`):
 
-- Macro F1 > 0.65 on test split
+- Macro F1 > 0.65 on VocalMat test split
 - Per-class precision ≥ 0.40 on every class
-- Held-out 845 lab verdict: macro F1 > 0.80
 - Confusion matrix shows no class collapsing into a different class with
   > 0.40 mass
+- Held-out lab gates — **DEFERRED** (not a 18.3 blocker): USV/noise
+  accuracy > 0.80 AND syllable-type entropy ≤ log(6), on the 844-row
+  `results/lab_*_review/` verdict set, once clean patches are re-extracted.
+  (There is **no** Grimsley-macro-F1 held-out gate — see ERRATA.)
 - Perch 2.0 linear probe macro F1 reported (D3 deliverable; comparison
-  only, no gate) — **deferred to Stream V pending test repair**
+  only, no gate) — **deferred pending test repair**
 
 If any criterion fails, do NOT collapse the taxonomy or modify the
 validation thresholds — re-investigate per D5's "revisit only if

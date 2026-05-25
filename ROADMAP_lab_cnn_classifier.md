@@ -815,7 +815,7 @@ Reference: PLAN §"Phase 1.4". Cross-phase constraints C5, C6 apply.
 
 - [ ] 18.1 gate passed (4 cleaning-validation criteria) — recorded in `cleaning-validation-report.md`
 - [ ] 18.2 data prep produces train/val/test splits + sanity patches user-approved
-- [ ] 18.3 v1 baseline meets PLAN validation criteria (macro F1 > 0.65, per-class ≥ 0.40, held-out 845 > 0.80)
+- [ ] 18.3 v1 baseline meets PLAN validation criteria (macro F1 > 0.65, per-class ≥ 0.40). Held-out lab gates (USV/noise acc > 0.80, entropy ≤ log(6)) DEFERRED; NO Grimsley-macro-F1 held-out gate — see `docs/handoffs/2026-05-25_ERRATA_held-out-845.md`
 - [ ] 18.3 Perch 2.0 sidequest evaluated; comparison written
 - [ ] 18.4 v2 DANN meets cage-invariance threshold (linear probe < 0.65) AND no syllable F1 regression > 0.05
 - [ ] 18.4 VAE falsifiable test re-run on v2 encoder features passes all 4 criteria
