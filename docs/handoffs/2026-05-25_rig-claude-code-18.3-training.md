@@ -1,12 +1,11 @@
 # Module 18.3 Stream V — GPU rig execution (Claude Code entry point)
 
 **Date:** 2026-05-25
-**You are:** Claude Code running on the GPU rig. This is your entry point.
-**Repo:** `git@github.com:lightningfastsls/London_Lab.git`
-**Branch:** `worktree-lab-cnn-classifier-plan`
-**Predecessor (CPU box):** Module 18.3 code shipment — COMPLETE. Code +
-tests are pushed; this handoff is the operational guide for running the
-real GPU training the CPU box couldn't.
+**You are:** Claude Code running on the GPU rig (`cloudyclaude`, 3× RTX 3060 Ti 8 GB). This is your entry point.
+**Working dir:** `/data/mickey_london_lab` — a **non-git file copy** (the rig has
+no GitHub auth, so this was deployed by rsync from the CPU box, NOT cloned).
+**Predecessor (CPU box):** Module 18.3 code shipment — COMPLETE, committed at
+`6f7256e8` on branch `worktree-lab-cnn-classifier-plan`, pushed to GitHub.
 **Deeper spec:** `docs/handoffs/2026-05-24_module-18.3-stream-v-gpu-training.md`
 (full exit criteria + the held-out-845 code addition) and
 `docs/modules/lab-classifier-v1.md` (architecture). Read both before training.
@@ -16,52 +15,73 @@ real GPU training the CPU box couldn't.
 ## TL;DR of what you're doing
 
 The classifier code is written, reviewed, hardened, and green on CPU
-(180 passed, 4 skipped). It has never been trained on a GPU. Your job:
-get the code, place the data, set up a CUDA env, run the 50-epoch
-training, and report whether it clears the ROADMAP §18.3 SHIP gate.
-**You should NOT need to write much new code** — only the held-out-845
-real-inference path (see Step 6).
+(180 passed, 4 skipped). It has been **pre-deployed to this rig** along with
+the training data and a CUDA venv. It has never been *trained* on a GPU.
+Your job: verify the deployment, run the 50-epoch training, and report
+whether it clears the ROADMAP §18.3 SHIP gate. **You should NOT need to
+write much new code** — only the held-out-845 real-inference path (Step 6).
+
+> IMPORTANT — this is a **non-git working copy**. You cannot `git pull`,
+> `git checkout`, or `git commit` here (no `.git`, no GitHub auth on the
+> rig). To get updated code, re-rsync from the CPU box. To get results
+> back into version control, rsync them to the CPU box and commit there.
 
 ---
 
-## Step 1 — Get the code
+## Step 1 — Code (already deployed)
+
+The current code (commit `6f7256e8`: all of Module 18.2b + the 18.3
+shipment) was rsync'd to `/data/mickey_london_lab/`. Verify:
 
 ```bash
-git clone git@github.com:lightningfastsls/London_Lab.git
-cd London_Lab
-git checkout worktree-lab-cnn-classifier-plan
-git log --oneline -1   # should show the "Module 18.3 ResNet-18 baseline" commit
+cd /data/mickey_london_lab
+ls src/usv_spectrogram/classifier/{model,augmentation,losses,training,dataset,__init__}.py
+ls scripts/train_lab_classifier.py conftest.py tests/conftest.py
 ```
 
-If the repo is already cloned: `git fetch origin && git checkout worktree-lab-cnn-classifier-plan && git pull`.
+All should exist. If the code is stale relative to the CPU box, re-run the
+rsync FROM the CPU box (the rig cannot fetch from GitHub):
+`rsync -aR src scripts tests docs ... shachar@<rig>:/data/mickey_london_lab/`
 
-> NOTE: the project's working code lives under the worktree layout on the
-> CPU box, but on the rig you can just check out the branch directly into
-> a normal clone. All paths below are **relative to the repo root**, so
-> they resolve identically in a plain checkout.
+## Step 2 — CUDA environment (already built)
 
-## Step 2 — Set up the CUDA environment
+A fresh venv was built at `/data/mickey_london_lab/.venv` with the
+**training-relevant subset** (NOT the full requirements.txt — the GUI/audio
+deps PyQt6/sounddevice/streamlit/notion-client are omitted; they aren't
+needed for training and sounddevice can fail to build headless). Installed:
+torch, torchvision, timm, numpy, scipy, pandas, pyarrow, pillow,
+scikit-learn, matplotlib, tqdm, pytest, soundfile.
+
+(`soundfile` is required by the root `tests/conftest.py` import — it ships
+libsndfile in its wheel so it installs clean headless, unlike `sounddevice`.
+Verified deploy-time: torch 2.12.0+cu130, cuda True, timm 1.0.27.)
+
+**Deploy-time test gate (already run on this rig):**
+`pytest tests/classifier/ -k "not auto_device_resolves_cpu"` →
+**178 passed, 5 skipped, 1 deselected, 0 failed** (~108 s). vs the CPU
+box's 180/4: the 1 deselected is the CPU-only precondition test; the 1
+extra skip is `test_cli_device_cuda_on_cpu_host` (its premise is a CPU-only
+host, so it auto-skips on this GPU box). Both are expected host-dependent
+behavior, NOT regressions. Zero failures = code + venv verified working.
+
+Verify:
 
 ```bash
-python -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/pip install timm==1.0.27          # required by classifier/model.py; not in requirements.txt
-# Ensure a CUDA build of torch is installed (the CPU box used torch 2.10.0+cu128).
-.venv/bin/python -c "import torch, timm; print('torch', torch.__version__, 'cuda', torch.cuda.is_available()); print('timm', timm.__version__)"
+.venv/bin/python -c "import torch, timm, sklearn, pandas, PIL, scipy, matplotlib; print('torch', torch.__version__, 'cuda', torch.cuda.is_available()); print('timm', timm.__version__)"
 ```
 
-**Gate:** `torch.cuda.is_available()` MUST print `True`. If it prints
-`False`, stop and fix the torch/CUDA install before training — the whole
-point of the rig is the GPU.
+**Gate:** `torch.cuda.is_available()` MUST print `True`. (Verified at
+deploy time on this rig.) If you later need an omitted dep, just
+`.venv/bin/pip install <pkg>`.
 
-## Step 3 — Place + verify the training data
+## Step 3 — Training data (already deployed)
 
-The data is **gitignored** (too large for git) and arrives via a separate
-transfer from the CPU box (rsync/scp). Stream V (this training) needs only
-**~650 MB**, NOT the full 18 GB — the 18 GB lab/wild patch pool is Module
-18.4 (DANN) input and is not consumed here.
+Deployed by rsync to `/data/mickey_london_lab/`. Stream V (this training)
+needs only **~650 MB**, NOT the full 18 GB — the 18 GB lab/wild patch pool
+is Module 18.4 (DANN) input and is not consumed here. (Note: `/data` has
+~1.6 TB free, so the 18 GB for 18.4 belongs here too when that time comes.)
 
-Expected on disk after transfer (paths relative to repo root):
+Expected on disk (paths relative to `/data/mickey_london_lab`):
 
 | Path | Size | What |
 |---|---|---|
