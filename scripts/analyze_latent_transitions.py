@@ -574,6 +574,12 @@ def _decode_centroid_examples(vae, latents_path: str, kmeans,
         with torch.no_grad():
             recon = vae.decode(z_batch).cpu().numpy()  # (n, 1, H, W)
 
+        # Sigmoid decoder undershoots on sparse contour data — actual recon max
+        # is ~0.03, not 1.0. Autoscale per-tile via 99.5th percentile so the
+        # structural content is visible. Floor prevents divide-by-zero on a
+        # blank panel.
+        vmax = max(float(np.percentile(recon, 99.5)), 1e-4)
+
         fig, axes = plt.subplots(grid_n, grid_n, figsize=(grid_n * 1.8, grid_n * 1.8))
         if grid_n == 1:
             axes = np.array([[axes]])
@@ -583,7 +589,7 @@ def _decode_centroid_examples(vae, latents_path: str, kmeans,
             if i < n_take:
                 img = recon[i, 0]
                 ax.imshow(img, origin="lower", cmap="magma", aspect="auto",
-                          vmin=0.0, vmax=1.0)
+                          vmin=0.0, vmax=vmax)
             ax.set_xticks([])
             ax.set_yticks([])
             if r == 0 and c == 0 and i < n_take:
