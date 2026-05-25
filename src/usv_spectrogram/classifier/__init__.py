@@ -42,6 +42,12 @@ from .diagnostics import (
 )
 from .resample import SOURCE_SAMPLE_RATE_HZ, resample_to_vocalmat
 
+# Module 18.3 public API — model factory, augmentation, loss, training loop.
+from .model import NUM_CLASSES, build_resnet18_classifier
+from .augmentation import AugmentationConfig, inject_cage_noise, specaugment
+from .losses import focal_loss
+from .training import TrainingConfig, train_classifier
+
 __all__ = [
     "TARGET_SAMPLE_RATE_HZ",
     "SOURCE_SAMPLE_RATE_HZ",
@@ -59,4 +65,13 @@ __all__ = [
     "GRIMSLEY_12_CLASSES",
     "DatasetSplit",
     "build_stratified_split",
+    # Module 18.3
+    "NUM_CLASSES",
+    "build_resnet18_classifier",
+    "AugmentationConfig",
+    "inject_cage_noise",
+    "specaugment",
+    "focal_loss",
+    "TrainingConfig",
+    "train_classifier",
 ]

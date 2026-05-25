@@ -979,3 +979,110 @@ handoff): `src/usv_spectrogram/corpus.py`, `app/core/sliding_inference.py`,
 Module 18.3 (ResNet-18 supervised baseline) UNLOCKED — see successor
 handoff.
 
+---
+
+## 2026-05-24 — Module 18.3 code shipment (Streams T + R; Streams P + V deferred)
+
+**Handoff executed:** `docs/handoffs/2026-05-24_module-18.3-resnet-supervised-baseline.md`
+
+**Goal:** Ship the 12-class supervised baseline classifier (model factory,
+augmentation, focal loss, training loop, CLI, module doc + tests) without
+running the 50-epoch real-data training (no GPU on this WSL host).
+
+**What landed:**
+
+| File | Status | LOC |
+|---|---|---|
+| `src/usv_spectrogram/classifier/model.py` | NEW | 47 |
+| `src/usv_spectrogram/classifier/augmentation.py` | NEW | 182 |
+| `src/usv_spectrogram/classifier/losses.py` | NEW | 75 |
+| `src/usv_spectrogram/classifier/training.py` | NEW | 234 |
+| `scripts/train_lab_classifier.py` | NEW | 195 |
+| `docs/modules/lab-classifier-v1.md` | NEW | 230 |
+| `tests/classifier/test_model.py` | NEW (test-architect) | 8 tests |
+| `tests/classifier/test_augmentation.py` | NEW (test-architect) | 13 tests |
+| `tests/classifier/test_losses.py` | NEW (test-architect) | 7 tests |
+| `tests/classifier/test_training.py` | NEW (test-architect) | 10 tests |
+| `tests/classifier/test_train_lab_classifier.py` | NEW (test-architect) | 5 tests |
+| `tests/classifier/test_train_perch2_probe.py` | NEW (test-architect) | 4 tests (skipped) |
+| `src/usv_spectrogram/classifier/__init__.py` | MODIFIED (re-export 18.3 symbols) | +9 |
+| `IMPLEMENTATION_PROGRESS.md` | this entry | -- |
+
+**Test counts (post-shipment):**
+
+- 43 new tests pass (8 + 13 + 7 + 10 + 5)
+- 4 new tests skip (Perch 2.0 probe — deferred)
+- 100 baseline 18.2a/b tests still pass — zero regressions
+- **143 passed, 4 skipped, 0 failed** in 62.5s (full classifier suite)
+- CPU smoke test (test #9, 2-epoch ResNet-18 on 120 synthetic samples)
+  completed in ~24 s, well under the 90 s budget.
+
+**Two intentional, documented modifications during this session:**
+
+1. **`tests/classifier/test_losses.py::test_focal_loss_gamma0_equals_weighted_ce`**
+   — reference reduction changed from `F.cross_entropy(weight=w)` (PyTorch
+   default weighted-mean) to `F.cross_entropy(weight=w, reduction='sum') / B`
+   (plain-mean). **User explicitly approved (Option 1).** Under PyTorch's
+   default weighted-mean, the per-sample weight `w[t]` cancels in
+   numerator and denominator in single-sample batches, defeating the D5
+   strategy ("class weights amplify minority gradients"). The plain-mean
+   reduction preserves the intended scaling and is consistent with
+   torchvision's focal-loss idiom. Documented in both the test docstring
+   and `losses.py` module docstring.
+
+2. **`TrainingConfig.warmup_epochs` default: 3 → 0** (implementation-only;
+   no test expectations modified). The ROADMAP code stub showed 3 but the
+   test contract requires `TrainingConfig(epochs=1)` to construct
+   successfully, which is impossible with `warmup_epochs=3` and the
+   `warmup ≤ epochs` validator. Real training scripts pass
+   `--warmup-epochs 3` via the CLI flag (default in argparse).
+
+**Streams P (Perch 2.0 probe) and V (real-data GPU training) deferred:**
+
+- **Stream P (D3 sidequest, Perch 2.0 linear probe):** the test contract
+  (`tests/classifier/test_train_perch2_probe.py`) specifies macro F1 > 0.30
+  on a synthetic dataset of IID Gaussian noise with permuted labels —
+  structurally unfulfillable (mutual information `I(features; labels) = 0`
+  by construction). The 4 tests skip cleanly via an ImportError-driven
+  `skipif` guard until the test is amended. See `docs/modules/lab-classifier-v1.md`
+  §"Perch 2.0 linear probe" for the technical rationale.
+
+- **Stream V (real-data GPU training):** no GPU on this WSL host
+  (`torch.cuda.is_available() == False`, no `/dev/nvidia*`, no
+  `nvidia-smi`). The full 50-epoch run on 9,741 training patches needs a
+  GPU to finish in reasonable wall time. All code is CPU-runnable (proven
+  by the smoke test) but the SHIP-eligible exit criteria (macro F1 > 0.65
+  on val, per-class precision ≥ 0.40, held-out 845 macro F1 > 0.80) are
+  gated by the GPU run. A successor handoff documents the inputs, the
+  training command, and the validation criteria.
+
+**Files NOT touched** (matches the do-not-touch list from the predecessor
+handoff): `src/usv_spectrogram/corpus.py`, `app/core/sliding_inference.py`,
+`app/core/notch.py`, `app/core/denoise.py`, `postprocessing/normalization.py`,
+`scripts/run_batch_detection.py`, `src/usv_spectrogram/classifier/cleaning_pipeline.py`,
+`src/usv_spectrogram/classifier/diagnostics.py`,
+`src/usv_spectrogram/classifier/resample.py`,
+`src/usv_spectrogram/classifier/dataset.py`,
+`scripts/cnn_prepare_training_data.py`, and the pre-existing
+`tests/classifier/test_{cleaning_pipeline,diagnostics,resample,dataset,cnn_prepare_training_data}.py`.
+
+**Master-reviewer result (Step 5):** APPROVE WITH NOTES. No blockers. Three
+non-blocking warnings (stale `test_model.py` header comment, missing
+`__init__.py` re-exports for 18.3 symbols, missing IMPLEMENTATION_PROGRESS
+entry) all addressed in this same session before this entry was finalised.
+
+**Inherited Tier-2 tickets (NOT addressed in 18.3, blocking for 18.4):**
+
+1. `cleaning_pipeline.py` produces all-zero output on long lab WAVs when
+   `baseline_mode='median_envelope'` chains with `_apply_global_mad`.
+   Workaround at `scripts/cnn_prepare_training_data.py:376`
+   (`baseline_mode='percentile'`).
+2. `scripts/cnn_prepare_training_data.py:_collect_wav_rows` uses
+   non-recursive `glob`. Worked around by `scripts/cnn_wild_topup.py`.
+
+Both must be resolved before Module 18.4 (DANN).
+
+**Verdict:** PARTIAL CLOSE. The Module 18.3 code shipment is complete and
+green; Streams P (Perch) and V (real-data GPU training) are deferred to
+the successor handoff. Module 18.4 (DANN) is BLOCKED on Stream V.
+
