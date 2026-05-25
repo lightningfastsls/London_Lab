@@ -292,3 +292,10 @@ Do NOT collapse the taxonomy or move the thresholds. Revisit D5 first
    skipped 853 wild WAVs; worked around by `cnn_wild_topup.py`.
 
 Resolve both before Module 18.4.
+
+---
+
+**CLOSED by `docs/handoffs/2026-05-25_rig-stream-v-closeout.md` (2026-05-25).**
+Rig executed this handoff: training DONE (val 0.7693 / test 0.7669), Step 6
+deferred per ERRATA, Step 8 renderer shipped. Artifacts rsync'd to the
+worktree and committed on the CPU box.

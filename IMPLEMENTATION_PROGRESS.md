@@ -1086,3 +1086,64 @@ Both must be resolved before Module 18.4 (DANN).
 green; Streams P (Perch) and V (real-data GPU training) are deferred to
 the successor handoff. Module 18.4 (DANN) is BLOCKED on Stream V.
 
+---
+
+### 2026-05-25 — Module 18.3 Stream V (GPU real-data results)
+
+SHIP on VocalMat gates. Held-out lab eval deferred to Module 18.4 prep.
+Executed on the GPU rig (`cloudyclaude`, `/data/mickey_london_lab` non-git
+deployment); artifacts rsync'd back to the worktree. Full rig closeout:
+`docs/handoffs/2026-05-25_rig-stream-v-closeout.md`.
+
+Training: 50 epochs, batch 64, AdamW lr=1e-3, warmup=3, focal γ=2.0, ResNet-18
++ ImageNet pretrained. Single RTX 3060 Ti (co-tenanted), ~16 min wall-clock.
+
+VocalMat val/test (PASS):
+  - macro_f1_val  = 0.7693
+  - macro_f1_test = 0.7669
+
+Per-class precision (test split; gate ≥ 0.40 on every class — PASS):
+  Noise 0.9837 | Step up 0.8146 | Down-FM 0.8021 | Short 0.8010
+  Chevron 0.9051 | Up-FM 0.8051 | Flat 0.8438 | Two steps 0.7027
+  Step down 0.7179 | Complex 0.5957 | Reverse Chevron 0.6471 | Multi-steps 0.6000
+
+Per-class recall (test split):
+  Noise 0.8963 | Step up 0.8056 | Down-FM 0.8701 | Short 0.8947
+  Chevron 0.7799 | Up-FM 0.8051 | Flat 0.7168 | Two steps 0.7429
+  Step down 0.7179 | Complex 0.8000 | Reverse Chevron 0.8462 | Multi-steps 0.4286
+
+Confusion-matrix interpretation: largest off-diagonal mass is Two-steps →
+Step-up at 15.7% (well under the 40% collapse threshold). Step-up → Two-steps
+6.1%, Chevron → Complex 5.7% — all taxonomically adjacent, not class collapse.
+
+Held-out lab eval: DEFERRED to Module 18.4 prep. Two errors corrected (see
+`docs/handoffs/2026-05-25_ERRATA_held-out-845.md`):
+  1. held_out_845_macro_f1 > 0.80 gate WITHDRAWN — lab data never Grimsley-
+     labeled, so Grimsley macro F1 on lab is unbuildable.
+  2. Real verdict file is results/lab_{cluster0,cluster1,cluster2,noise}_
+     review/review_index_annotated.csv (844 usv/noise verdicts), NOT
+     classified_detections_lab_131204_clean.csv. Even the right file needs
+     clean 227×227 patches re-extracted from USV_lab_131204_chunked_2s_full/
+     — owner: CPU box / Module 18.4.
+
+Perch 2.0 probe: DEFERRED (Option B). No new code, no gate.
+
+Code shipment (rsync rig → CPU box):
+  - scripts/train_lab_classifier.py — added numpy import, inline confusion-
+    matrix render call, _render_confusion_matrix_png helper.
+  - scripts/render_confusion_matrix.py — NEW standalone back-fill helper.
+  - tests/classifier/test_render_confusion_matrix.py — NEW. 8 tests.
+
+Test suite (rig, CUDA host): 186 passed, 5 skipped, 0 failed (+8 from Step 8
+vs the 178/4 deploy-time baseline). Re-verified on the CPU box after rsync.
+
+Artifacts in `results/lab_classifier_v1/`: best.pt (44.8 MB), metrics.json
+(NOTE: held-out fields are stale garbage — 0.0 / 2.4849 — from the label-
+distribution fallback firing on the wrong CSV; IGNORE those, val/test/
+per-class data is valid), confusion_matrix.png (1275×1125), eval_report.md.
+
+**Verdict:** CLOSE. Module 18.3 SHIP on the VocalMat result. Module 18.4
+(DANN) UNLOCKED — entry: `docs/handoffs/2026-05-25_module-18.4-dann-orchestrator.md`.
+Tier-2 prep (re-extract 844 clean lab patches for the held-out eval) can run
+standalone, independent of 18.4 training kickoff.
+

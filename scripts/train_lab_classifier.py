@@ -26,6 +26,7 @@ _SRC = REPO_ROOT / "src"
 if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
 
+import numpy as np
 import pandas as pd
 import torch
 from PIL import Image
@@ -103,6 +104,60 @@ class ManifestDataset(Dataset):
         with Image.open(path) as im:
             tensor = self._transform(im.convert("L"))
         return tensor, int(row["class_idx"])
+
+
+def _render_confusion_matrix_png(
+    confusion_matrix: list[list[int]] | np.ndarray,
+    class_names: tuple[str, ...] | list[str],
+    output_path: Path,
+    title: str = "Lab classifier — test confusion matrix",
+) -> None:
+    """Render a confusion matrix as an annotated heatmap PNG.
+
+    Headless `matplotlib` (Agg backend); writes ``output_path`` and closes the
+    figure. Inputs may be a Python list-of-lists (as serialised in
+    ``metrics.json``) or a numpy 2-D array.
+
+    The cell text-colour flips at half the matrix's max value for legibility
+    against the Blues colormap.
+    """
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    cm = np.asarray(confusion_matrix, dtype=np.int64)
+    n = len(class_names)
+    if cm.shape != (n, n):
+        raise ValueError(
+            f"confusion_matrix shape {cm.shape} does not match "
+            f"len(class_names)={n}"
+        )
+
+    fig, ax = plt.subplots(figsize=(8.5, 7.5))
+    im = ax.imshow(cm, cmap="Blues", aspect="equal")
+    ax.set_xticks(range(n))
+    ax.set_yticks(range(n))
+    ax.set_xticklabels(class_names, rotation=45, ha="right", fontsize=9)
+    ax.set_yticklabels(class_names, fontsize=9)
+    ax.set_xlabel("Predicted")
+    ax.set_ylabel("True")
+    ax.set_title(title)
+
+    threshold = cm.max() / 2.0 if cm.max() > 0 else 0
+    for i in range(n):
+        for j in range(n):
+            ax.text(
+                j, i, str(int(cm[i, j])),
+                ha="center", va="center",
+                color="white" if cm[i, j] > threshold else "black",
+                fontsize=8,
+            )
+    fig.colorbar(im, ax=ax)
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=150)
+    plt.close(fig)
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -203,6 +258,12 @@ def main(argv: list[str] | None = None) -> int:
         output_dir=args.output_dir,
         held_out_845_csv=args.held_out_845,
     )
+    _render_confusion_matrix_png(
+        metrics["confusion_matrix"],
+        GRIMSLEY_12_CLASSES,
+        args.output_dir / "confusion_matrix.png",
+    )
+
     print(
         "Training complete. "
         f"macro_f1_val={metrics['macro_f1_val']:.4f} "
