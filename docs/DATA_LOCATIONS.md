@@ -33,17 +33,18 @@ are NOT canonical for this work; `/data/mickey_london_lab` holds the older
 > **NEVER full-scan `combined_all_cohorts/patches.npz` (16 G) on the box** — it
 > OOM-crashed WSL once. Stream/slice on the rig.
 
-## On the box (⚠️ NOT yet on the rig — relocate before retiring the worktree)
+## Clustering models — now on the rig (relocated 2026-05-26 during R-D)
 
-These small but valuable clustering models currently live **only** in the
-`latent-analysis-b-a-c` worktree and are git-ignored. They MUST be copied to the
-rig (or otherwise preserved) before that worktree is retired (reconciliation R-D):
+These small but valuable clustering models originally lived **only** in the
+`latent-analysis-b-a-c` worktree (git-ignored). They were rsynced to the rig
+before that worktree was retired, so they are now under the canonical root:
 
-| Artifact | Box path (in `latent-analysis-b-a-c` worktree) | Size |
+| Artifact | Rig path (under `/data/shachar/contour_vae/`) | Size |
 |---|---|---|
 | Shape K=20 alphabet (registration→shape, η²=0.75) | `models/shape_kmeans/k20.joblib` | 268 K |
 | Latent K=20 model | `models/latent_kmeans/k20.joblib` | 276 K |
 | Latent K=20 labels | `models/latent_kmeans/k20_labels.npy` | 544 K |
+| Latent dispersion / repertoire / 3452-vs-9252 outputs | `results/{latent_dispersion,latent_repertoire,compare_3452_9252}/` | ~0.8 M |
 
 ## Code (in git, mirrored to rig)
 
