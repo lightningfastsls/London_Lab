@@ -93,6 +93,19 @@ results/contour_vae_*/latents.parquet
 # Phase 5 cross-cohort diagnostic figures — small and analytically valuable.
 !results/phase5_cross_cohort/*.png
 
+# Shape-representation v2 artifacts (2026-05-25 post-merge reconciliation, R-C).
+# Rig-local + regeneratable; canonical paths in docs/DATA_LOCATIONS.md.
+# Intentionally PATH-SPECIFIC, not blanket *.npz/*.parquet/*.joblib — the repo
+# tracks production .pt CNN models and results/batch_*/summary.parquet (keepers).
+models/shape_kmeans/
+models/latent_kmeans/
+**/true_registered_ridges*.npz
+results/latent_dispersion/
+results/latent_repertoire/
+results/latent_transitions/
+results/compare_3452_9252/
+results/contour_vae_combined/reconstructions/
+
 # Security — rig SSH-coordinate leakage protection (added 2026-05-20 after audit).
 # These paths contain plaintext Tailscale IP / SSH-user / hostname for the rig.
 # To version-control any of them: sanitize first (replace literals with <RIG_*>
