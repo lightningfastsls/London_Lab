@@ -1,0 +1,30 @@
+{
+  "dataset": "lab_131204",
+  "generated_at_utc": "2026-04-27T00:00:00+00:00",
+  "generator": "manual (initial creation for noise_filter section)",
+  "rig": "lab_strain_dyad_chamber",
+  "wav_dir": "USV_lab_131204_chunked_2s_full",
+  "sources": {
+    "events_input": "results/batch_lab_131204_full/merged_events_full.parquet",
+    "summary_input": "results/batch_lab_131204_full/merged_summary_full.parquet",
+    "chunks_dir": "USV_lab_131204_chunked_2s_full"
+  },
+  "noise_filter": {
+    "algorithm": "v2_per_bin_floor_excess",
+    "algorithm_description": "A frequency bin is 'stationary' iff its temporal 10th percentile (the bin's noise floor) sits more than contrast_db above the spectrum-wide reference floor (median across bins of bin_floor_db). Implemented in scripts/apply_stationary_band_filter.py find_stationary_bands().",
+    "contrast_db": 3.0,
+    "reject_fraction": 0.5,
+    "rationale": "Lab rig has chronic but quantitatively modest tonal noise lines (~3 dB above reference floor on validation chunks). Algorithm v1 used a global-median reference and required >+6 dB across >50% of frames; on chunk 194 the visible 65 kHz line was only +1.6 dB above global median and active 14.6% of frames, so v1 flagged 0 bands. v2 with contrast_db=3.0 catches the visible noise lines while leaving real-USV chunks effectively untouched.",
+    "validated_chunks": {
+      "noise_dominated": "131204_1400_m4fm4_chunk_194",
+      "real_usvs_present": "131205_1800_m6fm6_chunk_165"
+    },
+    "validation_observed_2026_04_27": {
+      "chunk_194_flagged_bins_khz": [50.4, 51.0, 63.3, 63.9],
+      "chunk_165_flagged_bins_khz": [51.0],
+      "chunk_165_n_bins_total": 170,
+      "comment": "chunk_165 has 1 stationary bin out of 170 — minimal collateral on real-USV recordings"
+    },
+    "validated_at_utc": "2026-04-27"
+  }
+}
