@@ -29,12 +29,15 @@ class HysteresisConfig:
         sustain_threshold: Probability threshold to extend an event (low gate).
         gap_fill_windows: Merge events separated by <= this many windows.
         min_duration_windows: Drop events shorter than this many windows.
+        max_duration_ms: Drop events longer than this center-to-center duration.
+            Set to None to disable the long-event gate.
     """
 
     onset_threshold: float = 0.75
     sustain_threshold: float = 0.40
     gap_fill_windows: int = 3
     min_duration_windows: int = 5
+    max_duration_ms: float | None = 600.0
 
     def __post_init__(self) -> None:
         if not (0 < self.sustain_threshold <= self.onset_threshold <= 1.0):
@@ -46,6 +49,8 @@ class HysteresisConfig:
             raise ValueError(f"gap_fill_windows must be >= 0, got {self.gap_fill_windows}")
         if self.min_duration_windows < 1:
             raise ValueError(f"min_duration_windows must be >= 1, got {self.min_duration_windows}")
+        if self.max_duration_ms is not None and self.max_duration_ms <= 0:
+            raise ValueError(f"max_duration_ms must be > 0 or None, got {self.max_duration_ms}")
 
 
 @dataclass(frozen=True)
@@ -80,7 +85,7 @@ def hysteresis_detect(
         2. Extend: from each seed, grow bidirectionally while prob >= sustain_threshold
         3. Extract: find contiguous marked regions
         4. Gap-fill: merge events separated by <= gap_fill_windows
-        5. Min-duration filter: drop short events
+        5. Duration filters: drop events that are too short or too long
         6. Build USVEvent for each surviving region
 
     Args:
@@ -138,8 +143,14 @@ def hysteresis_detect(
     # Step 4 — Gap-fill: merge regions separated by <= gap_fill_windows
     regions = _gap_fill(regions, config.gap_fill_windows)
 
-    # Step 5 — Min-duration filter
+    # Step 5 — Duration filters
     regions = [(s, e) for s, e in regions if (e - s + 1) >= config.min_duration_windows]
+    if config.max_duration_ms is not None:
+        regions = [
+            (s, e)
+            for s, e in regions
+            if (float(times[e]) - float(times[s])) * 1000.0 <= config.max_duration_ms
+        ]
 
     # Step 6 — Build USVEvent objects
     events: List[USVEvent] = []

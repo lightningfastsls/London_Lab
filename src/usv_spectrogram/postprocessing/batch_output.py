@@ -25,6 +25,7 @@ _PARQUET_COLUMNS = [
     "total_usv_duration_ms",
     "noise_floor_p90",
     "confidence_score",
+    "qc_flags",
 ]
 
 
@@ -93,6 +94,7 @@ def _write_parquet(results: List[RecordingResult], output_dir: Path) -> None:
                 "total_usv_duration_ms": r.total_usv_duration_ms,
                 "noise_floor_p90": r.noise_floor_p90,
                 "confidence_score": r.confidence_score,
+                "qc_flags": r.qc_flags,
             }
             for r in results
         ]

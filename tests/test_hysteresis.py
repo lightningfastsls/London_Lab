@@ -31,6 +31,7 @@ def _default_config(**overrides) -> HysteresisConfig:
         sustain_threshold=overrides.get("sustain_threshold", 0.40),
         gap_fill_windows=overrides.get("gap_fill_windows", 3),
         min_duration_windows=overrides.get("min_duration_windows", 5),
+        max_duration_ms=overrides.get("max_duration_ms", 600.0),
     )
 
 
@@ -111,6 +112,29 @@ def test_short_spike_filtered():
 # ---------------------------------------------------------------------------
 # 5. Peak with sustain-level shoulders → extends through shoulders
 # ---------------------------------------------------------------------------
+
+def test_long_event_filtered_by_default_max_duration():
+    # 160 windows at 4.27 ms center spacing spans ~679 ms, above the
+    # default 600 ms long-event gate.
+    probs = np.array([0.1] * 5 + [0.9] * 160 + [0.1] * 5)
+    times = _make_times(len(probs))
+    cfg = _default_config()
+
+    events = hysteresis_detect(probs, times, cfg)
+
+    assert events == []
+
+
+def test_long_event_kept_when_max_duration_disabled():
+    probs = np.array([0.1] * 5 + [0.9] * 160 + [0.1] * 5)
+    times = _make_times(len(probs))
+    cfg = _default_config(max_duration_ms=None)
+
+    events = hysteresis_detect(probs, times, cfg)
+
+    assert len(events) == 1
+    assert events[0].duration_ms > 600.0
+
 
 def test_sustain_shoulder_extension():
     # Shoulders at 0.5 (above sustain=0.40) around an onset peak
@@ -194,6 +218,11 @@ def test_config_zero_min_duration_raises():
 # ---------------------------------------------------------------------------
 # 9. Times array → correct start_time_s / end_time_s
 # ---------------------------------------------------------------------------
+
+def test_config_invalid_max_duration_raises():
+    with pytest.raises(ValueError, match="max_duration_ms"):
+        HysteresisConfig(max_duration_ms=0.0)
+
 
 def test_times_mapping():
     probs = np.array([0.1] * 5 + [0.9] * 6 + [0.1] * 5)

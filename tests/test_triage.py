@@ -678,3 +678,103 @@ def test_tier_is_one_of_three_valid_values():
         assert result.tier in valid_tiers, (
             f"Scenario {i}: tier '{result.tier}' is not one of {valid_tiers}"
         )
+
+
+def test_long_event_flagged_and_manual_review():
+    """Events longer than the biological duration gate should not auto-accept."""
+    RecordingResult, TriageConfig, triage_recording = _import_triage()
+
+    event = _make_event(0.0, 0.650, peak_prob=0.95, mean_prob=0.92, n_windows=152)
+    probs = _make_probs_high_confidence(200)
+    config = TriageConfig(max_event_duration_ms=600.0)
+
+    result = triage_recording(
+        filepath="/data/long_event.wav",
+        events=[event],
+        probabilities=probs,
+        config=config,
+        batch_stats=None,
+    )
+
+    assert "long_event_duration" in result.qc_flags
+    assert result.tier == "manual_review"
+
+
+def test_high_total_duration_flagged_and_manual_review():
+    """A chunk with too much cumulative detected duration needs review."""
+    RecordingResult, TriageConfig, triage_recording = _import_triage()
+
+    events = [
+        _make_event(0.0, 0.250, peak_prob=0.95, mean_prob=0.92, n_windows=58),
+        _make_event(0.5, 0.760, peak_prob=0.95, mean_prob=0.92, n_windows=61),
+        _make_event(1.0, 1.200, peak_prob=0.95, mean_prob=0.92, n_windows=47),
+    ]
+    probs = _make_probs_high_confidence(300)
+    config = TriageConfig(total_duration_review_ms=600.0)
+
+    result = triage_recording(
+        filepath="/data/high_total_duration.wav",
+        events=events,
+        probabilities=probs,
+        config=config,
+        batch_stats=None,
+    )
+
+    assert "high_total_usv_duration" in result.qc_flags
+    assert result.tier == "auto_accept"
+
+
+def test_high_event_count_flagged_and_manual_review():
+    """Many high-confidence events in one chunk should not auto-accept."""
+    RecordingResult, TriageConfig, triage_recording = _import_triage()
+
+    events = _make_high_confidence_events(n=11)
+    probs = np.concatenate(
+        [np.full(5, 0.95) for _ in range(11)] + [np.full(200, 0.05)]
+    )
+    config = TriageConfig(high_event_count_threshold=10)
+
+    result = triage_recording(
+        filepath="/data/high_event_count.wav",
+        events=events,
+        probabilities=probs,
+        config=config,
+        batch_stats=None,
+    )
+
+    assert "high_event_count" in result.qc_flags
+    assert result.tier == "auto_accept"
+
+
+def test_event_spanning_most_recording_flagged_and_manual_review():
+    """A near-full-chunk event is a stationary-band signature."""
+    RecordingResult, TriageConfig, triage_recording = _import_triage()
+
+    event = _make_event(0.0, 1.7, peak_prob=0.95, mean_prob=0.92, n_windows=170)
+    probs = np.full(200, 0.95)
+    config = TriageConfig(max_event_duration_ms=2_000.0)
+
+    result = triage_recording(
+        filepath="/data/spanning_event.wav",
+        events=[event],
+        probabilities=probs,
+        config=config,
+        batch_stats=None,
+    )
+
+    assert "event_spans_most_of_recording" in result.qc_flags
+    assert result.tier == "manual_review"
+
+
+def test_triage_config_rejects_invalid_qc_thresholds():
+    """QC thresholds must be physically meaningful."""
+    RecordingResult, TriageConfig, triage_recording = _import_triage()
+
+    with pytest.raises(ValueError, match="max_event_duration_ms"):
+        TriageConfig(max_event_duration_ms=0.0)
+    with pytest.raises(ValueError, match="total_duration_review_ms"):
+        TriageConfig(total_duration_review_ms=0.0)
+    with pytest.raises(ValueError, match="high_event_count_threshold"):
+        TriageConfig(high_event_count_threshold=0)
+    with pytest.raises(ValueError, match="max_event_fraction_of_recording"):
+        TriageConfig(max_event_fraction_of_recording=0.0)

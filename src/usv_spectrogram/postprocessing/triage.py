@@ -37,12 +37,24 @@ class TriageConfig:
     outlier_count_zscore : float
         When batch statistics are available, recordings whose event count
         exceeds ``mean + zscore * std`` are flagged as outliers.
+    max_event_duration_ms : float
+        Any event longer than this is flagged for manual review.
+    total_duration_review_ms : float
+        Recordings whose summed detected duration exceeds this are flagged.
+    high_event_count_threshold : int
+        Recordings with more events than this are flagged.
+    max_event_fraction_of_recording : float
+        Events spanning at least this fraction of the probability timeline are flagged.
     """
 
     auto_accept_min_peak: float = 0.90
     auto_reject_max_window: float = 0.10
     noise_floor_p90_threshold: float = 0.4
     outlier_count_zscore: float = 2.0
+    max_event_duration_ms: float = 600.0
+    total_duration_review_ms: float = 600.0
+    high_event_count_threshold: int = 10
+    max_event_fraction_of_recording: float = 0.8
 
     def __post_init__(self) -> None:
         if self.auto_accept_min_peak <= 0.0:
@@ -57,6 +69,23 @@ class TriageConfig:
             raise ValueError(
                 f"auto_reject_max_window ({self.auto_reject_max_window}) must be "
                 f"strictly less than auto_accept_min_peak ({self.auto_accept_min_peak})"
+            )
+        if self.max_event_duration_ms <= 0.0:
+            raise ValueError(
+                f"max_event_duration_ms must be > 0, got {self.max_event_duration_ms}"
+            )
+        if self.total_duration_review_ms <= 0.0:
+            raise ValueError(
+                f"total_duration_review_ms must be > 0, got {self.total_duration_review_ms}"
+            )
+        if self.high_event_count_threshold < 1:
+            raise ValueError(
+                f"high_event_count_threshold must be >= 1, got {self.high_event_count_threshold}"
+            )
+        if not (0.0 < self.max_event_fraction_of_recording <= 1.0):
+            raise ValueError(
+                "max_event_fraction_of_recording must be in (0, 1], "
+                f"got {self.max_event_fraction_of_recording}"
             )
 
 
@@ -170,6 +199,20 @@ def triage_recording(
     if noise_floor_p90 > config.noise_floor_p90_threshold:
         qc_flags.append("high_noise_floor")
 
+    if n_events > config.high_event_count_threshold:
+        qc_flags.append("high_event_count")
+
+    if any(e.duration_ms > config.max_event_duration_ms for e in events):
+        qc_flags.append("long_event_duration")
+
+    if total_usv_duration_ms > config.total_duration_review_ms:
+        qc_flags.append("high_total_usv_duration")
+
+    if probabilities.size > 0 and events:
+        max_fraction = max(e.window_count / probabilities.size for e in events)
+        if max_fraction >= config.max_event_fraction_of_recording:
+            qc_flags.append("event_spans_most_of_recording")
+
     # -- Tier assignment (order matters) -------------------------------------
     prob_max = float(np.max(probabilities)) if probabilities.size > 0 else 0.0
 
@@ -178,6 +221,8 @@ def triage_recording(
         tier = "auto_reject"
     elif prob_max <= config.auto_reject_max_window:
         tier = "auto_reject"
+    elif {"long_event_duration", "event_spans_most_of_recording"} & set(qc_flags):
+        tier = "manual_review"
     elif all(e.peak_probability >= config.auto_accept_min_peak for e in events):
         tier = "auto_accept"
     else:

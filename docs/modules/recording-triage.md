@@ -2,7 +2,7 @@
 
 **Module:** `src/usv_spectrogram/postprocessing/triage.py`
 **Package:** `usv_spectrogram.postprocessing`
-**Tests:** `tests/test_triage.py` (19 tests)
+**Tests:** `tests/test_triage.py`
 
 ## Purpose
 
@@ -22,6 +22,10 @@ Assigns each recording to a triage tier after detection, enabling batch processi
 | `auto_reject_max_window` | float | 0.10 | Max window probability to auto-reject |
 | `noise_floor_p90_threshold` | float | 0.4 | p90 threshold for noise QC flag |
 | `outlier_count_zscore` | float | 2.0 | Z-score threshold for outlier event count |
+| `max_event_duration_ms` | float | 600.0 | Flag any event longer than this |
+| `total_duration_review_ms` | float | 600.0 | Flag recordings/chunks whose summed detected duration exceeds this |
+| `high_event_count_threshold` | int | 10 | Flag recordings/chunks with more events than this |
+| `max_event_fraction_of_recording` | float | 0.8 | Flag any event spanning at least this fraction of the probability timeline |
 
 Validation: `auto_accept_min_peak > 0`, `auto_reject_max_window >= 0`, `reject < accept`.
 
@@ -59,9 +63,14 @@ def triage_recording(
 3. Check QC flags:
    - Outlier event count (if batch_stats provided): z = (n - mean) / std > threshold
    - High noise floor: p90 > noise_floor_p90_threshold
+   - High event count: n_events > high_event_count_threshold
+   - Long event duration: any event > max_event_duration_ms
+   - High total USV duration: sum(event.duration_ms) > total_duration_review_ms
+   - Event spans most recording/chunk: event window count / probability count >= max_event_fraction_of_recording
 4. Tier assignment (order matters):
    - **auto_reject**: max(probabilities) <= auto_reject_max_window
-   - **auto_accept**: events exist AND all peak_probability >= auto_accept_min_peak
+   - **manual_review**: events exist and a structural artifact flag was raised (`long_event_duration` or `event_spans_most_of_recording`)
+   - **auto_accept**: events exist, no structural artifact flags, and all peak_probability >= auto_accept_min_peak
    - **manual_review**: fallback
 
 ## Integration Points
@@ -90,7 +99,7 @@ print(f"{result.tier}: {result.n_events} events, flags={result.qc_flags}")
 **Module:** `src/usv_spectrogram/postprocessing/batch_output.py`
 
 `write_batch_results()` produces:
-- `summary.parquet` — 8-column DataFrame (filepath, tier, n_events, max_confidence, mean_event_confidence, total_usv_duration_ms, noise_floor_p90, confidence_score)
+- `summary.parquet` — DataFrame with filepath, tier, event/confidence metrics, duration/noise metrics, and qc_flags
 - `detections/<stem>.json` — list of ADR-010 dicts per recording
 
 ## Key Decisions

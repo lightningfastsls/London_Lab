@@ -41,7 +41,7 @@ from .widgets.sonic_view import SonicSpectrogramView
 
 # App version for settings migration
 # Increment when default settings change
-APP_VERSION = "1.1.0"  # Bumped for threshold changes (2026-02-06)
+APP_VERSION = "1.2.0"  # Bumped for production-aligned thresholds + zeroed excludes (2026-05-11)
 
 
 class InferenceWorker(QThread):
@@ -108,9 +108,11 @@ class MainWindow(QMainWindow):
             print("[Settings Migration] Resetting detection parameters...")
 
             # Reset detection thresholds to new defaults
-            self.settings.remove("high_threshold")      # Forces reload: 0.04
-            self.settings.remove("low_threshold")       # Forces reload: 0.03
+            self.settings.remove("high_threshold")      # Forces reload: 0.60 (production onset)
+            self.settings.remove("low_threshold")       # Forces reload: 0.40 (production sustain)
             self.settings.remove("min_sustained_prob")  # Forces reload: 0.0
+            self.settings.remove("exclude_start_sec")   # Forces reload: 0.0
+            self.settings.remove("exclude_end_sec")     # Forces reload: 0.0
 
             # Reset output directory to project folder
             self.settings.remove("detection_output_dir")
@@ -138,13 +140,15 @@ class MainWindow(QMainWindow):
         self.output_dir = Path(self.settings.value("detection_output_dir", default_output))
 
         # Detection parameters (load from settings)
-        # Updated defaults per user request (2026-02-06)
-        # Lower thresholds to catch more USVs, continuity disabled
-        self.high_threshold = self.settings.value("high_threshold", 0.04, type=float)
-        self.low_threshold = self.settings.value("low_threshold", 0.03, type=float)
+        # Updated defaults per user request (2026-05-11):
+        # Aligned to production batch-detection hysteresis (onset 0.60, sustain 0.40)
+        # so the app's live view matches run_batch_detection.py output.
+        # Excludes zeroed so all detections within the file are visible.
+        self.high_threshold = self.settings.value("high_threshold", 0.60, type=float)
+        self.low_threshold = self.settings.value("low_threshold", 0.40, type=float)
         self.min_sustained_prob = self.settings.value("min_sustained_prob", 0.0, type=float)  # Continuity disabled
-        self.exclude_start_sec = self.settings.value("exclude_start_sec", 0.5, type=float)
-        self.exclude_end_sec = self.settings.value("exclude_end_sec", 0.5, type=float)
+        self.exclude_start_sec = self.settings.value("exclude_start_sec", 0.0, type=float)
+        self.exclude_end_sec = self.settings.value("exclude_end_sec", 0.0, type=float)
 
         self._init_ui()
         self._load_window_geometry()
