@@ -1,5 +1,14 @@
 # Plan: Lab-Cleaned USV Syllable Classifier (CNN, VocalMat-anchored)
 
+> **⚠ ERRATA (2026-05-25):** the references below to "845 hand-curated lab
+> 131204 verdicts" in `classified_detections_lab_131204_clean.csv` are wrong.
+> That file is the 40,787-row clustering working set. The real verdicts are
+> 844 rows in `results/lab_*_review/review_index_annotated.csv` (usv/noise
+> only — NO Grimsley labels). The held-out validation criteria (USV/noise
+> accuracy + entropy) still stand but are DEFERRED; there is no
+> Grimsley-macro-F1 held-out gate. See
+> `docs/handoffs/2026-05-25_ERRATA_held-out-845.md`.
+
 ## Goal
 
 Train a 12-class syllable-type CNN on **lab-recorded** mouse USVs using:

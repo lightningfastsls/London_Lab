@@ -27,10 +27,11 @@ TARGET_SAMPLE_RATE_HZ: int = 250_000
 RESAMPLE_UP: int = 5
 RESAMPLE_DOWN: int = 6
 
-# Module 18.1 public API. Re-exported so external callers (and Module
-# 18.2 downstream) can ``from usv_spectrogram.classifier import ...``
+# Module 18.1 + 18.2b public API. Re-exported so external callers (Modules
+# 18.3+ downstream) can ``from usv_spectrogram.classifier import ...``
 # without knowing the submodule layout.
 from .cleaning_pipeline import CleaningConfig, clean_spectrogram
+from .dataset import GRIMSLEY_12_CLASSES, DatasetSplit, build_stratified_split
 from .diagnostics import (
     DiagnosticResult,
     notch_injection_test,
@@ -39,9 +40,17 @@ from .diagnostics import (
     raw_pixel_pca_d,
     train_diagnostic_vae,
 )
+from .resample import SOURCE_SAMPLE_RATE_HZ, resample_to_vocalmat
+
+# Module 18.3 public API — model factory, augmentation, loss, training loop.
+from .model import NUM_CLASSES, build_resnet18_classifier
+from .augmentation import AugmentationConfig, inject_cage_noise, specaugment
+from .losses import focal_loss
+from .training import TrainingConfig, train_classifier
 
 __all__ = [
     "TARGET_SAMPLE_RATE_HZ",
+    "SOURCE_SAMPLE_RATE_HZ",
     "RESAMPLE_UP",
     "RESAMPLE_DOWN",
     "CleaningConfig",
@@ -52,4 +61,17 @@ __all__ = [
     "knn_same_cohort_rate",
     "raw_pixel_pca_d",
     "train_diagnostic_vae",
+    "resample_to_vocalmat",
+    "GRIMSLEY_12_CLASSES",
+    "DatasetSplit",
+    "build_stratified_split",
+    # Module 18.3
+    "NUM_CLASSES",
+    "build_resnet18_classifier",
+    "AugmentationConfig",
+    "inject_cage_noise",
+    "specaugment",
+    "focal_loss",
+    "TrainingConfig",
+    "train_classifier",
 ]

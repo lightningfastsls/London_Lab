@@ -412,7 +412,7 @@ Reference: PLAN §"VocalMat Dataset Characteristics", §"Phase 1.1". `[[project-
 
 Train ResNet-18 v1 baseline and produce per-class metrics + held-out 845 verdict evaluation. Also run Perch 2.0 embeddings + linear probe as parallel comparator (1-day sidequest, D3 approved).
 
-**Context:** PLAN §"Phase 1.2 — Baseline ResNet-18 Training". ResNet-18 is right capacity for ~13k examples; abundant transfer-learning support via `timm`. EfficientNet-B0 is the documented fallback if overfitting appears. The 845 hand-curated lab 131204 verdicts (`classified_detections_lab_131204_clean.csv`) are held out from training and used as an independent acceptance test — these were dual-rater-quality (better than VocalMat's single-rater training labels). Perch 2.0 (arXiv:2512.03219, 2025) is a bioacoustic-pretrained audio embedding model; recent evidence shows bioacoustic-pretrained embeddings often beat ImageNet-pretrained CNNs cross-domain.
+**Context:** PLAN §"Phase 1.2 — Baseline ResNet-18 Training". ResNet-18 is right capacity for ~13k examples; abundant transfer-learning support via `timm`. EfficientNet-B0 is the documented fallback if overfitting appears. The lab 131204 held-out verdicts are used as an independent USV/noise acceptance test. **ERRATA (2026-05-25):** they are NOT in `classified_detections_lab_131204_clean.csv` (that is the 40,787-row clustering working set); the real set is 844 usv/noise verdicts across `results/lab_{cluster0,cluster1,cluster2,noise}_review/review_index_annotated.csv`, and it carries **no Grimsley class labels** (so there is no held-out Grimsley macro-F1 gate). The held-out eval is DEFERRED — clean patches must be re-extracted from `USV_lab_131204_chunked_2s_full/`. See `docs/handoffs/2026-05-25_ERRATA_held-out-845.md`. Perch 2.0 (arXiv:2512.03219, 2025) is a bioacoustic-pretrained audio embedding model; recent evidence shows bioacoustic-pretrained embeddings often beat ImageNet-pretrained CNNs cross-domain.
 
 Reference: PLAN §"Phase 1.2", §"Validation criteria". Cross-phase constraints C5, C6 apply. D3 (Perch sidequest), D5 (minority class strategy) baked in.
 
@@ -815,7 +815,7 @@ Reference: PLAN §"Phase 1.4". Cross-phase constraints C5, C6 apply.
 
 - [ ] 18.1 gate passed (4 cleaning-validation criteria) — recorded in `cleaning-validation-report.md`
 - [ ] 18.2 data prep produces train/val/test splits + sanity patches user-approved
-- [ ] 18.3 v1 baseline meets PLAN validation criteria (macro F1 > 0.65, per-class ≥ 0.40, held-out 845 > 0.80)
+- [ ] 18.3 v1 baseline meets PLAN validation criteria (macro F1 > 0.65, per-class ≥ 0.40). Held-out lab gates (USV/noise acc > 0.80, entropy ≤ log(6)) DEFERRED; NO Grimsley-macro-F1 held-out gate — see `docs/handoffs/2026-05-25_ERRATA_held-out-845.md`
 - [ ] 18.3 Perch 2.0 sidequest evaluated; comparison written
 - [ ] 18.4 v2 DANN meets cage-invariance threshold (linear probe < 0.65) AND no syllable F1 regression > 0.05
 - [ ] 18.4 VAE falsifiable test re-run on v2 encoder features passes all 4 criteria
