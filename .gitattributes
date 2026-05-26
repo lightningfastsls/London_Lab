@@ -1,0 +1,42 @@
+# Line-ending policy — this repo is edited from both Windows and WSL, which
+# produced CRLF/LF churn (e.g. hysteresis.py flipped to CRLF, validate-note.ps1
+# showed 190-line diffs that were 90% line-ending noise). Added 2026-05-26.
+#
+# NOTE: adding this file does NOT retroactively renormalize existing files —
+# it governs future check-ins. To normalize the whole tree deliberately, run
+# `git add --renormalize .` in a dedicated commit (do not bundle with feature work).
+
+# Default: detect text vs binary, normalize text to LF in the repo.
+* text=auto eol=lf
+
+# Source and docs — always LF.
+*.py    text eol=lf
+*.md    text eol=lf
+*.json  text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.sh    text eol=lf
+*.csv   text eol=lf
+*.toml  text eol=lf
+
+# Windows scripts — keep CRLF (executed by powershell.exe / cmd.exe).
+*.ps1   text eol=crlf
+*.cmd   text eol=crlf
+*.bat   text eol=crlf
+
+# Binary / data — never touch line endings, never diff as text.
+*.png   binary
+*.jpg   binary
+*.wav   binary
+*.pdf   binary
+*.xlsx  binary
+*.zip   binary
+*.gz    binary
+*.tar   binary
+*.parquet binary
+*.npz   binary
+*.npy   binary
+*.joblib binary
+*.pkl   binary
+*.pt    binary
+*.zarr  binary

@@ -110,6 +110,30 @@ results/latent_transitions/
 results/compare_3452_9252/
 results/contour_vae_combined/reconstructions/
 
+# Lab 131204 raw audio + chunked patch dirs (raw/regeneratable, 80+ GB — must never
+# enter git). Added 2026-05-26 (housekeeping): these were untracked but UN-ignored, so
+# a stray `git add -A` could have swallowed all of them — the exact failure mode behind
+# the USV_Detections deletion incident (commit 78d1c70). See CLAUDE.md "Git Data Safety".
+/USV_lab_131204/
+/USV_lab_131204_chunked_2s_full/
+/USV_lab_131204_chunked_2s_hot/
+/USV_lab_131204_chunked_2s_test/
+/USV_lab_131204_chunked_300k_test/
+/USV_2379_sample/
+/deepsqueak_output_lab_131204/
+/data/lab_finetune_v1/
+/data/training/lab_finetune_v1/
+/generated_spectrograms/
+/logs/
+# Generated lab-131204 classification CSVs (regeneratable from the pipeline; ~70 MB).
+/classified_detections_lab_131204*.csv
+
+# Git worktrees live INSIDE the repo dir but must NEVER be tracked by the parent repo.
+# `.claude/worktrees/goofy-elbakyan` leaked in as a committed gitlink (commit 5993c5e3);
+# untracked via `git rm --cached` and ignored here on 2026-05-26.
+.claude/worktrees/
+.claire/worktrees/
+
 # Security — rig SSH-coordinate leakage protection (added 2026-05-20 after audit).
 # These paths contain plaintext Tailscale IP / SSH-user / hostname for the rig.
 # To version-control any of them: sanitize first (replace literals with <RIG_*>
