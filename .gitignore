@@ -141,3 +141,58 @@ results/contour_vae_combined/reconstructions/
 /handoff_to_rig/
 /docs/handoffs/*rig*.md
 /docs/handoffs/2026-05-10_lab-finetune-experiment-matrix*.md
+
+# === 2026-05-27 housekeeping (docs/handoffs/2026-05-27_repo-housekeeping.md, H4/H5/H6) ===
+# Untracked reproducible results/ outputs — batch/analysis/review/comparison artifacts
+# regeneratable from run_batch_detection.py + the analysis scripts. PATH-SPECIFIC by house
+# style (see note ~line 102); chosen to never shadow tracked dirs (batch_5970, batch_3452_*,
+# batch_9252, traditional_taxonomy{,_3452,_9252}, recluster_umap_hdbscan{,_3452,_9252},
+# sequential_structure*, acoustic_feature_analysis{,_3452,_9252}).
+results/batch_2379/
+results/batch_5970_finetune_v1_regression/
+results/batch_9252_rerun_*/
+results/batch_lab_*/
+results/acoustic_feature_analysis_lab_131204/
+results/q1_*/
+results/q2_*/
+results/q3_*/
+results/notch_*/
+results/codex_detection_compare_*/
+results/lab_cluster*_review*/
+results/lab_noise_review*/
+results/cnn_iteration_review/
+results/couple_vs_wild/
+results/dashboard/
+results/deepsqueak_bridge_test_22/
+results/fp_filter_correct_eval/
+results/long_detection_audit/
+results/recluster_umap_hdbscan_lab_131204*/
+results/repertoire_lab_131204*/
+results/traditional_taxonomy_5970/
+results/traditional_taxonomy_lab_131204/
+results/cnn_feature_extraction_viewer.html
+results/feature_extraction_viewer.html
+# VAE checkpoints + image caches. NOTE: the *.pt under these dirs are IRREPLACEABLE (no rig
+# copy as of 2026-05-27) — gitignored to keep binaries out of git, but MUST be rsync-backed-up
+# to the rig. See docs/handoffs/2026-05-27_repo-housekeeping-triage.md (H5).
+results/vae_5970_lab/
+results/vae_ds_5970_lab/
+results/vae_analysis/
+results/vae_ds_analysis/
+# Deliberately NOT ignored: results/lab_classifier_v2/ (DANN eval artifacts — tracked as the
+# negative-result record) and results/syllable_split/ (REVIEW — no reproducer found yet).
+
+# Loose presentation/teaching bundles at repo root (~95 MB) + presentation/ figures (160 MB).
+# Regeneratable / deliverables; the extracted dirs just duplicate the tarballs.
+/mickey_meeting_20260427*
+/usv_teaching_20260427*
+/presentation/
+
+# Codex tooling: machine-local glue only (config.toml hardcodes /home/light/…; hooks.json
+# hardcodes this host's WSL UNC + powershell.exe) + caches. The portable .codex/hooks/
+# scripts, .codex/agents/, and .codex/skills/ ARE tracked.
+.codex/config.toml
+.codex/hooks.json
+.codex/hooks/__pycache__/
+.codex/hooks/*.bak
+.claude/scheduled_tasks.lock
