@@ -1,0 +1,167 @@
+[
+  {
+    "start_time_s": 1.04192,
+    "end_time_s": 1.0888533333333332,
+    "save_timestamp": "2026-05-11T13:12:40.809136",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/rejected_detections/131204_1400_m3fm3_chunk_170/detection_008_1.042s-1.089s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": "deleted_by_user"
+  },
+  {
+    "start_time_s": 0.022186666666666667,
+    "end_time_s": 0.09472,
+    "save_timestamp": "2026-05-11T13:12:48.491947",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_000_0.022s-0.095s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.10325333333333334,
+    "end_time_s": 0.16725333333333334,
+    "save_timestamp": "2026-05-11T13:12:48.769585",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_001_0.103s-0.167s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.20565333333333333,
+    "end_time_s": 0.33365333333333336,
+    "save_timestamp": "2026-05-11T13:12:49.102595",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_002_0.206s-0.334s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.3549866666666667,
+    "end_time_s": 0.43178666666666665,
+    "save_timestamp": "2026-05-11T13:12:49.434074",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_003_0.355s-0.432s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.46165333333333336,
+    "end_time_s": 0.5384533333333333,
+    "save_timestamp": "2026-05-11T13:12:49.838318",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_004_0.462s-0.538s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.5725866666666667,
+    "end_time_s": 0.65792,
+    "save_timestamp": "2026-05-11T13:12:50.120116",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_005_0.573s-0.658s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.6877866666666667,
+    "end_time_s": 0.7517866666666667,
+    "save_timestamp": "2026-05-11T13:12:50.398327",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_006_0.688s-0.752s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 0.7816533333333333,
+    "end_time_s": 0.84992,
+    "save_timestamp": "2026-05-11T13:12:50.626351",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_007_0.782s-0.850s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 1.2680533333333333,
+    "end_time_s": 1.32352,
+    "save_timestamp": "2026-05-11T13:12:50.896449",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_008_1.268s-1.324s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 1.3533866666666667,
+    "end_time_s": 1.40032,
+    "save_timestamp": "2026-05-11T13:12:51.171739",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_009_1.353s-1.400s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 1.5325866666666668,
+    "end_time_s": 1.6008533333333332,
+    "save_timestamp": "2026-05-11T13:12:51.440475",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_010_1.533s-1.601s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 1.6392533333333332,
+    "end_time_s": 1.69472,
+    "save_timestamp": "2026-05-11T13:12:51.687391",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_011_1.639s-1.695s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 1.7416533333333333,
+    "end_time_s": 1.82272,
+    "save_timestamp": "2026-05-11T13:12:51.924986",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_012_1.742s-1.823s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  },
+  {
+    "start_time_s": 1.8653866666666667,
+    "end_time_s": 1.93792,
+    "save_timestamp": "2026-05-11T13:12:52.165081",
+    "output_path": "/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/detection_013_1.865s-1.938s.png",
+    "threshold_preset": null,
+    "threshold_high": 0.6,
+    "threshold_low": 0.4,
+    "session_id": "e2ef4bb0-5651-464d-9e2c-7fe6380bfa6e",
+    "user_action": null
+  }
+]
