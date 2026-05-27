@@ -48,16 +48,6 @@ from .augmentation import AugmentationConfig, inject_cage_noise, specaugment
 from .losses import focal_loss
 from .training import TrainingConfig, train_classifier
 
-# Module 18.4 public API — DANN cage-adversarial components + cage probe.
-from .dann import (
-    DomainHead,
-    GradientReversal,
-    LambdaSchedule,
-    ResNet18DANN,
-    grad_reverse,
-)
-from .cage_probe import linear_cage_probe
-
 __all__ = [
     "TARGET_SAMPLE_RATE_HZ",
     "SOURCE_SAMPLE_RATE_HZ",
@@ -84,11 +74,4 @@ __all__ = [
     "focal_loss",
     "TrainingConfig",
     "train_classifier",
-    # Module 18.4
-    "GradientReversal",
-    "grad_reverse",
-    "DomainHead",
-    "LambdaSchedule",
-    "ResNet18DANN",
-    "linear_cage_probe",
 ]
