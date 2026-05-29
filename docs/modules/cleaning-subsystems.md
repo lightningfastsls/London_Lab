@@ -1,10 +1,18 @@
 # Spectrogram Cleaning Subsystems
 
-There are **four independent spectrogram/audio "cleaning" implementations** in this
-repo. They look similar but operate on different data representations, serve different
-pipelines, and use different sample-rate conventions. **They are genuinely distinct and
-must not be force-merged** (verified 2026-05-27; ref memory note
-`project_cleaning_stacks_three_distinct`). This page names each, its call sites, and
+> **CANONICAL (2026-05-28):** "Our cleaning pipeline" means **Stack 4 — the DeepSqueak
+> focus-STFT port** (`scripts/deepsqueak_focus_stft.py` + `scripts/contour_mask_utils.py`).
+> When any document, conversation, agent prompt, or experiment plan refers to "our
+> cleaning pipeline", "our cleaning", or "the canonical cleaning", it means **Stack 4
+> and only Stack 4**. Stacks 2a and 2b are *production-detection cleaning* (not "our
+> cleaning"); Stacks 1 and 3 were **archived to `archive/cleaning_legacy/`** the same
+> day because their analysis families hit dead ends.
+
+There are **two live spectrogram/audio cleaning implementations** on main as of
+2026-05-28: Stack 2a/2b (production detection) and Stack 4 (the canonical). Two more
+(Stack 1 and Stack 3) are preserved in `archive/cleaning_legacy/` for history. They
+look similar but operate on different data representations, serve different pipelines,
+and use different sample-rate conventions. This page names each, its call sites, and
 which pipeline it is canonical for.
 
 > **Why this doc exists:** the cleaning sprawl was the load-bearing "this doesn't make
@@ -14,13 +22,13 @@ which pipeline it is canonical for.
 
 ## At a glance
 
-| Stack | File | Operates on | Canonical for | Lineage |
-|-------|------|-------------|---------------|---------|
-| **1. Classifier 4-layer** | `src/usv_spectrogram/classifier/cleaning_pipeline.py` | dB spectrogram | **Pre-CNN cleaning for Module 18.x** (lab VocalMat classifier train/eval) | New (18.x). Wraps/reproduces our own production stack. Default `sample_rate_hz=250_000` (VocalMat-aligned). |
-| **2a. Production app — notch** | `src/usv_spectrogram/app/core/notch.py` | **time-domain audio** | **Live PyQt6 + `run_batch_detection.py`** equipment-tonal removal | Adaptive soft-notch (`docs/handoffs/2026-05-11_adaptive-soft-notch.md`). 300 kHz. |
-| **2b. Production app — denoise** | `src/usv_spectrogram/app/core/denoise.py` | linear-magnitude spectrogram | **Live + batch detection** temporal baseline subtraction | Boll 1979. Kernel derived from `corpus.STFT_HOP`/`SAMPLE_RATE_HZ` (300 kHz). |
-| **3. SIS prefilter** | `src/usv_spectrogram/features/spectrogram_filter.py` | linear-magnitude spectrogram | **SIS-benchmark** (ridge / Oren / AMVOC), modules 17.3/17.5/17.6 | Separate; `ROADMAP_SIS_BENCHMARK §17.2`. 300 kHz. Returns `(cleaned, mask)`. |
-| **4. DeepSqueak contour port** | `scripts/deepsqueak_focus_stft.py` + `scripts/contour_mask_utils.py` | per-call focus STFT → power-spectrogram mask | **Contour-masked VAE** patch generation | Line-by-line port of DeepSqueak `CreateFocusSpectrogram.m` + `CalculateStats.m`. **Tracked on `main` at HEAD** (earlier handoff/memory said worktree-only — that is now stale; verified `git ls-files` 2026-05-27). |
+| Stack | Status | File | Operates on | Canonical for | Lineage |
+|-------|--------|------|-------------|---------------|---------|
+| **1. Classifier 4-layer** | **ARCHIVED 2026-05-28** | `archive/cleaning_legacy/stack1/src/classifier/cleaning_pipeline.py` (was `src/usv_spectrogram/classifier/cleaning_pipeline.py`) | dB spectrogram | (Was) pre-CNN cleaning for Module 18.x lab VocalMat classifier train/eval | New (18.x). Wraps/reproduces our own production stack. Default `sample_rate_hz=250_000` (VocalMat-aligned). Family retired because Module 18.4 DANN dead-ended and VocalMat re-render verified dead. |
+| **2a. Production app — notch** | LIVE | `src/usv_spectrogram/app/core/notch.py` | **time-domain audio** | **Live PyQt6 + `run_batch_detection.py`** equipment-tonal removal | Adaptive soft-notch (`docs/handoffs/2026-05-11_adaptive-soft-notch.md`). 300 kHz. |
+| **2b. Production app — denoise** | LIVE | `src/usv_spectrogram/app/core/denoise.py` | linear-magnitude spectrogram | **Live + batch detection** temporal baseline subtraction | Boll 1979. Kernel derived from `corpus.STFT_HOP`/`SAMPLE_RATE_HZ` (300 kHz). |
+| **3. SIS prefilter** | **ARCHIVED 2026-05-28** | `archive/cleaning_legacy/stack3/src/features/spectrogram_filter.py` (was `src/usv_spectrogram/features/spectrogram_filter.py`) | linear-magnitude spectrogram | (Was) SIS-benchmark (ridge / Oren / AMVOC), modules 17.3/17.5/17.6 + 6 shape-VAE experiments | Separate; `ROADMAP_SIS_BENCHMARK §17.2`. 300 kHz. Returns `(cleaned, mask)`. Family retired because all 6 shape-VAE attempts on this stack failed (η² 0.009–0.105 vs registration 0.58–0.75); VAE family CLOSED 2026-05-28. |
+| **4. DeepSqueak contour port — CANONICAL "our cleaning pipeline"** | **LIVE (canonical)** | `scripts/deepsqueak_focus_stft.py` + `scripts/contour_mask_utils.py` | per-call focus STFT → power-spectrogram mask | **Contour-masked VAE** patch generation; **the canonical "our cleaning pipeline" in any future conversation** | Line-by-line port of DeepSqueak `CreateFocusSpectrogram.m` + `CalculateStats.m`. **Designated canonical 2026-05-28 by user directive.** |
 
 ## Call-site map
 

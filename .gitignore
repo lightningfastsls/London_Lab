@@ -66,6 +66,9 @@ data/training/matched_windows/
 data/lab_cnn_training/
 data/vocalmat_full/
 
+# VocalMat AlexNet .mat (212 MB MATLAB v7.0 MCOS opaque artifact; provenance only, undecodable in pure Python)
+data/vocalmat/
+
 # Caches and intermediate results
 models/hard_neg_retrain/hysteresis_cache/
 models/hard_neg_retrain/hysteresis_cache_v2/

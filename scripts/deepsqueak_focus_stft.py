@@ -1,3 +1,16 @@
+# =============================================================================
+# CANONICAL CLEANING PIPELINE — DESIGNATED 2026-05-28
+#
+# This file (with scripts/contour_mask_utils.py) IS "our cleaning pipeline".
+# Any document, conversation, agent prompt, or experiment plan that refers to
+# "our cleaning pipeline", "our cleaning", or "the canonical cleaning" means
+# THIS code path. Stacks 1 and 3 from the prior 4-stack inventory were
+# archived to archive/cleaning_legacy/ on the same day. Stacks 2a/2b
+# (app/core/notch.py + denoise.py) remain LIVE as the *production-detection*
+# cleaning but are NOT "our cleaning pipeline" in conversation.
+# See docs/modules/cleaning-subsystems.md for the full inventory + rationale.
+# =============================================================================
+
 """Faithful Python port of DeepSqueak's CreateFocusSpectrogram + CalculateStats.
 
 Source files (snapshots in reference/deepsqueak_source/):
