@@ -1,0 +1,183 @@
+{
+  "params": {
+    "meta": "/home/shachar/.claude/jobs/9a954f32/tmp/shape_data/true_registered_ridges_meta.npz",
+    "human": "data/manual_shape_labels.csv",
+    "out_html": "results/shape_retrospective/peel_easy_classes_probe.html",
+    "out_json": "results/shape_retrospective/peel_easy_classes_probe.json",
+    "k": 10,
+    "n_boot": 1000,
+    "seed": 42,
+    "gamma": 1.0
+  },
+  "easy": [
+    "chevron",
+    "flat",
+    "FM",
+    "Short"
+  ],
+  "hard": [
+    "jump",
+    "complex"
+  ],
+  "results": {
+    "knn": {
+      "euclidean(registration)": {
+        "FULL (all families present)": {
+          "jump": {
+            "n": 63,
+            "base": 0.34615384615384615,
+            "raw": 0.326984126984127,
+            "adj": -0.029318394024276356,
+            "adj_lo": -0.10463585434173674,
+            "adj_hi": 0.05322128851540614
+          },
+          "complex": {
+            "n": 12,
+            "base": 0.06593406593406594,
+            "raw": 0.11666666666666668,
+            "adj": 0.05431372549019609,
+            "adj_lo": -0.02598039215686275,
+            "adj_hi": 0.14352941176470585
+          }
+        },
+        "RESIDUAL shape {jump,complex}": {
+          "jump": {
+            "n": 63,
+            "base": 0.84,
+            "raw": 0.8063492063492061,
+            "adj": -0.21031746031746135,
+            "adj_lo": -0.3888888888888886,
+            "adj_hi": -0.05158730158730251
+          },
+          "complex": {
+            "n": 12,
+            "base": 0.16,
+            "raw": 0.23333333333333336,
+            "adj": 0.08730158730158734,
+            "adj_lo": -0.001984126984126964,
+            "adj_hi": 0.18650793650793648
+          }
+        },
+        "RESIDUAL+Noise {jump,complex,Noise}": {
+          "jump": {
+            "n": 63,
+            "base": 0.6237623762376238,
+            "raw": 0.6047619047619046,
+            "adj": -0.05050125313283248,
+            "adj_lo": -0.19826754385964898,
+            "adj_hi": 0.09294068504594791
+          },
+          "complex": {
+            "n": 12,
+            "base": 0.1188118811881188,
+            "raw": 0.16666666666666666,
+            "adj": 0.05430711610486891,
+            "adj_lo": -0.040262172284644196,
+            "adj_hi": 0.1583333333333333
+          }
+        }
+      },
+      "softdtw(elastic)": {
+        "FULL (all families present)": {
+          "jump": {
+            "n": 63,
+            "base": 0.34615384615384615,
+            "raw": 0.4523809523809523,
+            "adj": 0.1624649859943976,
+            "adj_lo": 0.07258169934640506,
+            "adj_hi": 0.2595704948646126
+          },
+          "complex": {
+            "n": 12,
+            "base": 0.06593406593406594,
+            "raw": 0.18333333333333335,
+            "adj": 0.12568627450980394,
+            "adj_lo": 0.02754901960784314,
+            "adj_hi": 0.22382352941176473
+          }
+        },
+        "RESIDUAL shape {jump,complex}": {
+          "jump": {
+            "n": 63,
+            "base": 0.84,
+            "raw": 0.7777777777777779,
+            "adj": -0.38888888888888784,
+            "adj_lo": -0.6369047619047606,
+            "adj_hi": -0.1706349206349211
+          },
+          "complex": {
+            "n": 12,
+            "base": 0.16,
+            "raw": 0.2833333333333334,
+            "adj": 0.1468253968253969,
+            "adj_lo": 0.05753968253968255,
+            "adj_hi": 0.24603174603174602
+          }
+        },
+        "RESIDUAL+Noise {jump,complex,Noise}": {
+          "jump": {
+            "n": 63,
+            "base": 0.6237623762376238,
+            "raw": 0.6904761904761904,
+            "adj": 0.17731829573934804,
+            "adj_lo": 0.050751879699248534,
+            "adj_hi": 0.30820906432748535
+          },
+          "complex": {
+            "n": 12,
+            "base": 0.1188118811881188,
+            "raw": 0.25000000000000006,
+            "adj": 0.14887640449438208,
+            "adj_lo": 0.05430711610486891,
+            "adj_hi": 0.24344569288389512
+          }
+        }
+      }
+    },
+    "centroid": {
+      "FULL set, K=7 (all families)": {
+        "n_scored": 100,
+        "euclidean": {
+          "nmi": 0.10424311415247964,
+          "ari": -0.012252481462263362
+        },
+        "softdtw": {
+          "nmi": 0.10998062361532689,
+          "ari": -0.1126328515930028
+        }
+      },
+      "RESIDUAL {jump,complex,chevron}, K=3": {
+        "n_scored": 100,
+        "euclidean": {
+          "nmi": 0.020421941030757354,
+          "ari": -0.008745664314777876
+        },
+        "softdtw": {
+          "nmi": 0.04983804224544004,
+          "ari": -0.06322031024401273
+        }
+      }
+    }
+  },
+  "verdict": {
+    "lines": [
+      "euclidean(registration)    jump    : full ADJ=-0.029  ->  residual ADJ=-0.210 [-0.389,-0.052]  => HURTS",
+      "euclidean(registration)    complex : full ADJ=+0.054  ->  residual ADJ=+0.087 [-0.002,+0.187]  => no-change (CI overlaps point)",
+      "softdtw(elastic)           jump    : full ADJ=+0.162  ->  residual ADJ=-0.389 [-0.637,-0.171]  => HURTS",
+      "softdtw(elastic)           complex : full ADJ=+0.126  ->  residual ADJ=+0.147 [+0.058,+0.246]  => no-change (CI overlaps point)",
+      "",
+      "[contamination guardrail]",
+      "euclidean(registration)    jump    : adding Noise to the bin shifts ADJ by +0.160",
+      "euclidean(registration)    complex : adding Noise to the bin shifts ADJ by -0.033",
+      "softdtw(elastic)           jump    : adding Noise to the bin shifts ADJ by +0.566",
+      "softdtw(elastic)           complex : adding Noise to the bin shifts ADJ by +0.002"
+    ],
+    "headline": "Peeling HURTS adjusted separation \u2014 the residual is the structureless continuum middle; the easy classes were carrying the local structure.",
+    "helped": {
+      "euclidean(registration)|jump": "HURTS",
+      "euclidean(registration)|complex": "no-change (CI overlaps point)",
+      "softdtw(elastic)|jump": "HURTS",
+      "softdtw(elastic)|complex": "no-change (CI overlaps point)"
+    }
+  }
+}
