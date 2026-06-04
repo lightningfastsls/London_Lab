@@ -248,6 +248,10 @@ def main():
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--softdtw-gamma", type=float, default=1.0)
     ap.add_argument("--no-softdtw", action="store_true", help="skip the elastic metric (debug)")
+    ap.add_argument("--fpca-lambda", type=float, default=0.0,
+                    help="elasticity penalty lam for the SRVF elastic-FPCA amplitude distance")
+    ap.add_argument("--no-elasticfpca", action="store_true",
+                    help="skip the SRVF elastic-FPCA (warp-aligned) amplitude-distance method")
     args = ap.parse_args()
 
     print("=" * 96)
@@ -321,6 +325,22 @@ def main():
         for f in FAMILIES:
             sd_row[f] = bootstrap_purity_ci_from_distance(D_sdtw, yf, f, k=args.k, n_boot=args.n_boot, seed=args.seed)
         results["soft_dtw(ELASTIC)"] = sd_row
+
+    # ---- elastic FPCA (SRVF + warp alignment) via pairwise amplitude-distance matrix ----
+    # The principled generalization of soft-DTW: Fisher-Rao elastic metric with the
+    # `min over gamma` warp step (the active ingredient our pointwise SRVF lacked).
+    if not args.no_elasticfpca:
+        import os as _os, sys as _sys
+        if _os.path.dirname(__file__) not in _sys.path:
+            _sys.path.insert(0, _os.path.dirname(__file__))
+        from build_elastic_fpca import elastic_amplitude_distance_matrix as _elastic_amplitude_distance_matrix
+        print(f"\n  [elasticFPCA] computing SRVF elastic (amplitude) distance matrix on "
+              f"labeled ridges (lam={args.fpca_lambda})...")
+        D_efpca = _elastic_amplitude_distance_matrix(X_reg, lam=args.fpca_lambda)   # (n_labeled, n_labeled)
+        ef_row = {f: bootstrap_purity_ci_from_distance(D_efpca, yf, f,
+                                                       k=args.k, n_boot=args.n_boot, seed=args.seed)
+                  for f in FAMILIES}
+        results["elastic_fpca(SRVF-WARP)"] = ef_row
 
     # ---- random-label control (= base rate) ----
     rng = np.random.default_rng(args.seed)

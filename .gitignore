@@ -105,6 +105,7 @@ results/contour_vae_*/latents.parquet
 # Intentionally PATH-SPECIFIC, not blanket *.npz/*.parquet/*.joblib — the repo
 # tracks production .pt CNN models and results/batch_*/summary.parquet (keepers).
 models/shape_kmeans/
+models/shape_fpca/       # WS-A elastic-FPCA: regenerable via scripts/experiments/build_elastic_fpca.py --lam 0.05
 models/latent_kmeans/
 **/true_registered_ridges*.npz
 results/latent_dispersion/
