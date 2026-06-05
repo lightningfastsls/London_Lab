@@ -1,0 +1,157 @@
+{
+  "raw_rows": 67337,
+  "raw_cohort_counts": {
+    "lab_131204": 54399,
+    "5970": 12098,
+    "9252": 506,
+    "3452": 334
+  },
+  "kept_cohort_counts": {
+    "lab_131204": 54399,
+    "5970": 12098
+  },
+  "kept_rows": 66497,
+  "n_duplicate_rows_dropped": 1283,
+  "n_unique_points": 65214,
+  "X_shape": [
+    65214,
+    5
+  ],
+  "id_results": {
+    "lPCA": 5.0,
+    "MLE": 4.749474101341751,
+    "TwoNN": 4.80139742308917,
+    "FisherS": 4.406460822077769,
+    "MOM": 4.741721135110033,
+    "CorrInt": 4.208440485060025
+  },
+  "id_range": [
+    4.208440485060025,
+    5.0
+  ],
+  "id_median": 4.745597618225892,
+  "coh_counts": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "coh_mode": 0,
+  "ph_summary": [
+    {
+      "seed": 0,
+      "scale": 2.156043291091919,
+      "gap_loc": 1.9301440715789795,
+      "n_sig_h0": 3,
+      "n_sig_h1": 0,
+      "max_h1": 0.5063176155090332,
+      "h1_thr": 0.5390108227729797,
+      "comp_sizes_sec": [
+        1,
+        1,
+        1
+      ],
+      "n_coherent": 0
+    },
+    {
+      "seed": 1,
+      "scale": 2.9928598403930664,
+      "gap_loc": 2.486595630645752,
+      "n_sig_h0": 2,
+      "n_sig_h1": 0,
+      "max_h1": 0.6127017736434937,
+      "h1_thr": 0.7482149600982666,
+      "comp_sizes_sec": [
+        1
+      ],
+      "n_coherent": 0
+    },
+    {
+      "seed": 2,
+      "scale": 2.4150543212890625,
+      "gap_loc": 1.938482642173767,
+      "n_sig_h0": 3,
+      "n_sig_h1": 0,
+      "max_h1": 0.5381913185119629,
+      "h1_thr": 0.6037635803222656,
+      "comp_sizes_sec": [
+        1,
+        1
+      ],
+      "n_coherent": 0
+    },
+    {
+      "seed": 3,
+      "scale": 2.4781107902526855,
+      "gap_loc": 2.0599164962768555,
+      "n_sig_h0": 3,
+      "n_sig_h1": 0,
+      "max_h1": 0.49557459354400635,
+      "h1_thr": 0.6195276975631714,
+      "comp_sizes_sec": [
+        1,
+        1
+      ],
+      "n_coherent": 0
+    },
+    {
+      "seed": 4,
+      "scale": 2.4070322513580322,
+      "gap_loc": 1.9972326755523682,
+      "n_sig_h0": 5,
+      "n_sig_h1": 0,
+      "max_h1": 0.5477942228317261,
+      "h1_thr": 0.6017580628395081,
+      "comp_sizes_sec": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "n_coherent": 0
+    }
+  ],
+  "h0_counts": [
+    3,
+    2,
+    3,
+    3,
+    5
+  ],
+  "h1_counts": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "h0_mode": 3,
+  "h1_mode": 0,
+  "knn_n_components": 1,
+  "knn_comp_sizes_top": [
+    6000
+  ],
+  "knn_largest_frac": 1.0,
+  "mst_frac_leaf": 0.3448333333333333,
+  "mst_frac_path": 0.38416666666666666,
+  "mst_frac_branch": 0.271,
+  "pca_evr": [
+    0.20084757833686032,
+    0.20070409890583468,
+    0.20010247123555394,
+    0.19954218099191634,
+    0.1988036705298347
+  ],
+  "pca_cum": [
+    0.20084757833686032,
+    0.401551677242695,
+    0.6016541484782489,
+    0.8011963294701653,
+    1.0
+  ],
+  "struct_verdict": "filled blob (single dense component, high branchiness)",
+  "phate_status": "ok",
+  "pocket_persistent_h0": "no",
+  "verdict": "Shape manifold is statistically blob; intrinsic dim ~ 5 (consensus range [4.2, 5.0]); the oscillatory pocket is a persistent H0 component no."
+}
