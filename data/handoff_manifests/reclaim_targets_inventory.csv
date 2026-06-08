@@ -1,0 +1,14 @@
+dir,size,file_count,tracked_files
+USV_lab_131204_chunked_2s_full,58G,25771,0
+USV_lab_131204_2chunk_test,138M,2,0
+USV_lab_131204_10chunk_test,23M,10,0
+USV_lab_131204_100chunk_test,229M,100,0
+USV_lab_131204_chunked_300k_test,695M,12,0
+USV_lab_131204_chunked_2s_test,726M,318,0
+USV_lab_131204_chunked_2s_hot,227M,101,0
+usv_language/prepared_data,3.0G,1663,0
+data/lab_finetune_v1,2.1G,1078,0
+data/alpha3_oracle_patches,3.0G,40788,0
+data/alpha3_patches,168M,40788,0
+data/alpha3_a6,54M,8,0
+data/alpha3_human_patches,3.1G,40788,0
