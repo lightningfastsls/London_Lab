@@ -105,7 +105,9 @@ results/contour_vae_*/latents.parquet
 # Intentionally PATH-SPECIFIC, not blanket *.npz/*.parquet/*.joblib — the repo
 # tracks production .pt CNN models and results/batch_*/summary.parquet (keepers).
 models/shape_kmeans/
-models/shape_fpca/       # WS-A elastic-FPCA: regenerable via scripts/experiments/build_elastic_fpca.py --lam 0.05
+# WS-A elastic-FPCA: regenerable via scripts/experiments/build_elastic_fpca.py --lam 0.05
+# (inline comments are NOT valid in .gitignore — keep the pattern on its own line)
+models/shape_fpca/
 models/latent_kmeans/
 **/true_registered_ridges*.npz
 results/latent_dispersion/
@@ -200,3 +202,25 @@ results/vae_ds_analysis/
 .codex/hooks/__pycache__/
 .codex/hooks/*.bak
 .claude/scheduled_tasks.lock
+
+# ── Handoff cleanup 2026-06-08 (see docs/REPO_CLEANUP_PLAN_2026-06-08.html) ──
+# Regenerable render/patch caches (~6.5 GB). The *manifest*.csv label indices are
+# small and ARE tracked (committed separately) — only the patch image dirs are ignored.
+data/alpha3_patches/
+data/alpha3_human_patches/
+data/alpha3_human_patches_wild/
+data/alpha3_human_patches_5970_topup/
+data/alpha3_oracle_patches/
+data/alpha3_a6/
+data/alpha3_gamma_relabel/
+# Model-inference output, regenerable (open question — kept local, not tracked)
+data/labels_vocalmat_v1_on_131204.csv
+# Regenerable feature cache
+features/
+# Image-heavy regenerable result galleries / verification renders
+results/label_audit_gallery/
+results/twodpca_verify/
+results/twodpca_vocalmat/
+results/vocalmat_gt_sample/
+# Zone.Identifier (Windows mark-of-the-web) — belt-and-suspenders alongside lines 85-86
+*:Zone.Identifier
