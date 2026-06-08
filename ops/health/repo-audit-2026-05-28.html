@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repo Audit — 2026-05-28</title>
+<style>
+  :root{--bg:#0f1419;--panel:#1a2129;--ink:#e6e9ee;--muted:#9aa6b2;--line:#2b3641;
+        --good:#3fb950;--warn:#d29922;--bad:#f85149;--accent:#58a6ff;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 22px 80px;}
+  h1{font-size:28px;margin:0 0 4px;}
+  h2{font-size:21px;margin:38px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line);}
+  h3{font-size:16px;margin:22px 0 8px;color:var(--accent);}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:24px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0;}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+  th{background:#222c36;color:var(--ink);font-weight:600;}
+  td code,p code,li code{background:#222c36;padding:1px 5px;border-radius:4px;font-size:12.5px;}
+  .good{color:var(--good);font-weight:600}.warn{color:var(--warn);font-weight:600}.bad{color:var(--bad);font-weight:600}
+  .pill{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11.5px;font-weight:600}
+  .pill.good{background:rgba(63,185,80,.15)}.pill.warn{background:rgba(210,153,34,.15)}.pill.bad{background:rgba(248,81,73,.15)}
+  ul{margin:8px 0 8px 0;padding-left:20px}li{margin:5px 0}
+  blockquote{margin:8px 0;padding:6px 14px;border-left:3px solid var(--accent);color:var(--muted);font-style:italic;}
+  .lead{font-size:16px;color:var(--ink);}
+  .key{background:rgba(88,166,255,.08);border-left:3px solid var(--accent);}
+  .num{color:var(--accent);font-weight:700}
+  footer{margin-top:50px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Repo &amp; Workflow Audit</h1>
+  <div class="sub">mickey_london_lab &nbsp;·&nbsp; 2026-05-28 &nbsp;·&nbsp; orchestrated across 3 parallel agents (session retrospective · skill+hook forensics · prompt-vocabulary profile) &nbsp;·&nbsp; evidence base: 102 session transcripts + 1,329 capture records + git history</div>
+
+  <div class="card key">
+    <p class="lead"><strong>The finding that explains most of the doubt:</strong> your hooks run in two different runtimes. The <code>python3</code> hook (<code>corpus_canary</code>) <span class="good">fired 1,224 times</span> across every session. The hooks that shell out to <code>powershell.exe</code> <strong>cannot read POSIX paths</strong> (<code>Test-Path '/home/...'</code> → False) and <strong>throw on git over the <code>\\wsl.localhost</code> UNC mount</strong> — so <code>check_agents_tag</code>, <code>validate-note</code>, and <code>auto-commit</code> have been <span class="bad">silently dead since the WSL migration</span>. The bake didn't fail; the plumbing did. The concept is sound — corpus_canary proves it.</p>
+  </div>
+
+  <!-- ============ SECTION 1 ============ -->
+  <h2>1 · Last-session retrospective</h2>
+  <p>Last session = transcript <code>947a79c8</code> (shape-invariant VAE roadmap → cleaning-stack archive → OSF/MATLAB port). A productive <em>de-scoping</em> session — it correctly converged on "the literal idea is already-killed / impossible" rather than building dead code. But three recurring patterns surfaced.</p>
+
+  <h3>Top friction points</h3>
+  <ul>
+    <li><strong>Circular eval metric</strong> — two roadmap drafts were spent before you exposed the flaw in one sentence:
+      <blockquote>"you have no idea what is a chevron... because I haven't classified anything."</blockquote>
+      The eval's "chevron vs valley" labels were a deterministic function of the same registered ridge feeding the model. The adversarial subagent was spawned to catch exactly this and only partially did.</li>
+    <li><strong>"Cleaning pipeline" ambiguity round-trip</strong> — "make sure it goes through our cleaning pipeline" needed a correction turn; three stacks share that name (and the agent then found there were actually <em>four</em>, not the three memory claimed).</li>
+    <li><strong>Four-way scope pivot in one session</strong> (VAE → archive → OSF → MATLAB) across ~7h with multi-hour idle gaps; the closing "give me a handoff" landed at a dead-end moment rather than a checkpoint.</li>
+  </ul>
+
+  <h3>What <span class="warn">you</span> could have done better</h3>
+  <ul>
+    <li><strong>Front-load the eval definition.</strong> Stating "I have zero hand-labels; any eval must not assume a taxonomy" in turn 1 would have killed the bad roadmap before v1.</li>
+    <li><strong>Name the referent on first mention</strong> — "the DeepSqueak-ported contour cleaning (not features/Viterbi, not cage-DSP)".</li>
+    <li><strong>Split the session / checkpoint per workstream</strong> instead of pivoting four times, so the handoff is a formality, not a cliff.</li>
+  </ul>
+
+  <h3>What <span class="bad">the agent (me)</span> could have done better</h3>
+  <ul>
+    <li><strong>No approval gate before a 50-file destructive archive.</strong> Zero "Proceed?" gates in the entire session, despite CLAUDE.md mandating one and flagging cleanup commits specifically (the 656-file deletion in commit 78d1c70 is why that rule exists). <span class="bad">Highest-severity miss.</span></li>
+    <li><strong>Over-trusted stale memory twice</strong> ("three stacks" → four; "64 recordings" → 44), correcting only reactively. "Code is truth" should have driven primary-source checks <em>before</em> reasoning.</li>
+    <li><strong>Adversarial subagent under-delivered</strong> — a stronger prompt ("trace every eval label back to its data source and prove independence from model input") would have caught the circular eval.</li>
+    <li>Used system <code>python</code> instead of <code>.venv</code> for one verification step (self-caught); inconsistent <code>**Agents:**</code> footer.</li>
+  </ul>
+
+  <!-- ============ SECTION 2 ============ -->
+  <h2>2 · Skills — used well vs. dormant</h2>
+  <p>The library is <strong>~6× larger than its actual use</strong>. 30+ skills defined; real usage concentrates in 5.</p>
+  <table>
+    <tr><th>Tier</th><th>Skills (with invocation counts)</th></tr>
+    <tr><td><span class="pill good">Used well</span></td><td><code>wrap-session</code> (28×) · <code>execute</code> (~17×) · <code>kcheck</code> (3×) · <code>graphify</code> · <code>corpus</code> (the skill is invoked once, but its <em>hook</em> is the single highest-value mechanism in the repo)</td></tr>
+    <tr><td><span class="pill warn">Dormant</span></td><td>The entire arscontexta KG-maintenance family — <code>reflect, reweave, rethink, health, stats, verify, validate</code> — shows <strong>zero genuine runs in the last month</strong>. <code>architect</code> has <strong>zero hits ever</strong>. <code>seed</code>/<code>reduce</code> only 1 each.</td></tr>
+    <tr><td><span class="pill bad">Failed</span></td><td>None cleanly attributable — no skill invocation crashed or was abandoned.</td></tr>
+  </table>
+  <p class="sub">Your own orient banner agrees: <em>"OVERDUE (46 days): Weekly maintenance routine — /health, /reflect, /reweave, /stats."</em> You advertise 25+ skills in every session banner and run ~6.</p>
+
+  <!-- ============ SECTION 3 ============ -->
+  <h2>3 · Hooks &amp; the "bake-time" verdict</h2>
+  <p>The 2026-03-08 rethink explicitly tagged the guardrails <em>"DONE (not yet validated)"</em> and deferred judgment to Phase 5.3 — that is the "let them work and get results" you remember. Two months of bake produced this:</p>
+  <table>
+    <tr><th>Hook</th><th>Runtime</th><th>Fired?</th><th>Verdict</th><th>Recommendation</th></tr>
+    <tr><td><code>corpus_canary</code> (session + edit)</td><td>python3 (Linux)</td><td class="good">1,224× / 102 sessions</td><td class="good">PAID OFF</td><td>Keep untouched — highest-value hook</td></tr>
+    <tr><td><code>session-orient</code></td><td>powershell (<code>$PSScriptRoot</code>, survives)</td><td class="good">102/102</td><td class="good">PAID OFF</td><td>Keep</td></tr>
+    <tr><td><code>check_plan_mode</code></td><td>powershell (string match, survives)</td><td class="warn">65×</td><td class="warn">WEAK</td><td>Advisory-only, no decision changed — keep (cheap) or fold into CLAUDE.md</td></tr>
+    <tr><td><code>check_agents_tag</code></td><td>powershell (reads POSIX <code>transcript_path</code>)</td><td class="bad">0/102</td><td class="bad">SILENTLY DEAD</td><td>Retire, or port to python3</td></tr>
+    <tr><td><code>validate-note</code></td><td>powershell (<code>Test-Path</code> POSIX)</td><td class="bad">0 recent</td><td class="bad">SILENTLY DEAD</td><td>Retire (<code>/validate</code> covers on demand) or port</td></tr>
+    <tr><td><code>auto-commit</code></td><td>powershell (git over UNC)</td><td class="bad">dead since WSL cutover</td><td class="bad">NEGATIVE→dead</td><td>Retire — you commit via <code>/sync</code>; CLAUDE.md forbids its bulk staging</td></tr>
+    <tr><td><code>session-capture</code></td><td>powershell</td><td class="warn">over-fires 6.9×</td><td class="warn">NEGATIVE (noise)</td><td>Fix dedup on conversation-ID; GC the 1,329→192 backlog</td></tr>
+  </table>
+  <p class="sub">Quantified: <code>ops/sessions/</code> holds <span class="num">1,329</span> JSON files mapping to only <span class="num">192</span> distinct transcripts — one transcript was captured 90 times. The capture fires on every <code>Stop</code> event, not per session.</p>
+
+  <!-- ============ SECTION 4 ============ -->
+  <h2>4 · Mechanisms to build (ranked, awaiting your approval)</h2>
+  <table>
+    <tr><th>#</th><th>Mechanism</th><th>Fixes</th><th>Effort</th></tr>
+    <tr><td>1</td><td><strong>Port dead hooks to python3 or retire.</strong> <code>corpus_canary</code> proves Linux hooks work. Port <code>check_agents_tag</code> &amp; <code>validate-note</code>; retire <code>auto-commit</code>.</td><td>3 silently-dead guardrails</td><td>~30 min/hook</td></tr>
+    <tr><td>2</td><td><strong>Destructive-op gate hook</strong> — PreToolUse on Bash matching <code>git mv</code>/<code>rm</code>/<code>git add -A</code>/<code>git add .</code>, forcing a dry-run manifest before execution.</td><td>Last session's #1 miss + the 656-file deletion that's the reason the rule exists</td><td>~1 hr</td></tr>
+    <tr><td>3</td><td><strong>Fix <code>session-capture</code></strong> — dedup on conversation-ID; garbage-collect the 1,329-file backlog.</td><td>6.9× file noise</td><td>~30 min</td></tr>
+    <tr><td>4</td><td><strong>Prune the orient banner</strong> — stop advertising 25 dormant skills. Either commit to a real weekly KG-maintenance pass or trim the menu.</td><td>Banner advertises 6× more than is used</td><td>~20 min</td></tr>
+    <tr><td>5</td><td><strong>Bake the top vocabulary into CLAUDE.md Quick Commands</strong> so the terms below become muscle memory.</td><td>The constraint-specification gap (§5)</td><td>~15 min</td></tr>
+  </table>
+
+  <!-- ============ SECTION 5 ============ -->
+  <h2>5 · AI-literacy profile &amp; prompt cheat-sheet</h2>
+  <p class="lead"><strong>Level: advanced operator</strong> — strong on session/agent orchestration and empirical grounding; the gap is <strong>pre-emptive constraint specification</strong>. (Corpus: 254 genuine human prompts across 42 sessions.)</p>
+
+  <h3>What you already do well — keep doing</h3>
+  <ul>
+    <li><strong>Context as a finite budget</strong> — proactive handoffs ("give me a handoff for a new chat" ×12) before context rot.</li>
+    <li><strong>Agents as dispatchable workers</strong> — "orchestrate / spawn / launch an agent" ×8.</li>
+    <li><strong>Adversarial verification</strong> — "spawn a chat that would be adversarial... really try to grill" (the most sophisticated single prompt in the corpus).</li>
+    <li><strong>Empirical discipline</strong> — insists on the right eval (whole-file ROC over curated plateau), dense <code>Y/N/U</code> hand-labels, rejects suspicious numbers ("No way FP filter drops that many USVs you are doing something wrong").</li>
+  </ul>
+
+  <h3>The 3 gaps that would most improve results</h3>
+  <ul>
+    <li><strong>Front-load constraints instead of correcting after.</strong> You <em>react</em> well but rarely <em>fence</em> up front. Highest ROI — converts ~1 rework round-trip per ambiguous task into zero.</li>
+    <li><strong>Name the referent on first mention</strong> in a repo with 3 "cleaning pipelines", 2 deprecated CNN models, 2 duration columns.</li>
+    <li><strong>Ask for verifiable form</strong> — tables, <code>file:line</code> citations, regression guards — turning your manual after-the-fact verification into something the agent produces checkably.</li>
+  </ul>
+
+  <h3>Your prompt-vocabulary cheat-sheet <span class="sub">(prioritized to what's missing)</span></h3>
+  <table>
+    <tr><th>Term</th><th>What it makes the agent do</th><th>Example for this repo</th></tr>
+    <tr><td><strong>do not touch / out of scope</strong></td><td>Hard-fence files that must not change; stop-and-ask if the task seems to need them</td><td>"Add per-file notch calc. <strong>Do not touch</strong> <code>ExtractionConfig</code>, <code>corpus.py</code>, or <code>run_batch_detection.py</code>."</td></tr>
+    <tr><td><strong>definition of done</strong></td><td>State a checkable finish line up front</td><td>"Housekeeping. <strong>Done when</strong> every move is listed old→new, no data dirs in the diff, tests green."</td></tr>
+    <tr><td><strong>dry run</strong></td><td>Print commands / file list, execute nothing until confirmed</td><td>"Archive the dead-end scripts — <strong>dry run</strong> first, show me the <code>git mv</code> list."</td></tr>
+    <tr><td><strong>regression test</strong></td><td>Lock current correct behavior before changing code</td><td>"Before touching soft-notch, write a <strong>regression test</strong> pinning detection count on <code>0004954</code>."</td></tr>
+    <tr><td><strong>cite file:line</strong></td><td>Tie every claim to an exact, verifiable location</td><td>"Show the notch dB threshold and <strong>cite the file:line</strong>."</td></tr>
+    <tr><td><strong>as a table / structured output</strong></td><td>Return scannable fixed-shape results, no prose</td><td>"Compare the 3 CNNs <strong>as a table</strong>: model | ROC-AUC | PR-AUC | noise files killed."</td></tr>
+    <tr><td><strong>steelman</strong></td><td>Argue the strongest case <em>for</em> an idea before killing it (complement to your "grill")</td><td>"Before dropping pathway C, <strong>steelman</strong> it, then tell me if it survives."</td></tr>
+    <tr><td><strong>smoke test</strong></td><td>Tiny end-to-end check that the thing runs at all before full launch</td><td>"<strong>Smoke test</strong> the batch pipeline on 5 WAVs before the full 100." (you already gravitate to this with "start with 100 to see if it works")</td></tr>
+    <tr><td><strong>minimal repro</strong></td><td>Isolate the smallest failing case</td><td>"FP filter dropping USVs — give me a <strong>minimal repro</strong> on one file."</td></tr>
+    <tr><td><strong>numbered priority</strong></td><td>Split run-on asks and rank them</td><td>"Three things, in priority: 1) audit, 2) skill triage, 3) AI-literacy. Do 1 first, stop, show me."</td></tr>
+    <tr><td><strong>checkpoint</strong></td><td>Snapshot a known-good state before a risky change</td><td>"<strong>Checkpoint</strong> the current model results before the retrain so we can compare."</td></tr>
+    <tr><td><strong>rollback / revert plan</strong></td><td>State how to undo before doing</td><td>"If the notch hurts recall, what's the <strong>rollback</strong>? Tell me before you run it."</td></tr>
+    <tr><td><strong>hunch — verify</strong></td><td>Flag a guess so the agent checks rather than absorbs</td><td>"<strong>Hunch, please verify against the WAVs:</strong> I don't think these bands are in every file."</td></tr>
+    <tr><td><strong>name the referent</strong></td><td>Disambiguate overloaded nouns on first mention</td><td>"the <strong>DeepSqueak-ported contour</strong> cleaning (not features/Viterbi, not cage-DSP)"</td></tr>
+    <tr><td><strong>fresh eyes</strong></td><td>Re-derive from evidence, ignore prior framing (lighter than a full handoff)</td><td>"<strong>Fresh eyes</strong> on the FP-filter recall claim — re-derive from the labels, ignore last session's number."</td></tr>
+  </table>
+
+  <footer>
+    Generated by an orchestrated 3-agent audit (general-purpose ×3) · synthesized in main session · 2026-05-28.<br>
+    Source agents: session-retrospective (57k tok) · skill+hook forensics (85k tok) · prompt-vocabulary profile (61k tok).
+  </footer>
+</div>
+</body>
+</html>
