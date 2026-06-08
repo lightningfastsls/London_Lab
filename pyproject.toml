@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "usv-spectrogram"
+version = "0.1.0"
+description = "Tools for analyzing ultrasonic vocalization (USV) recordings from mice at 300 kHz"
+readme = "README.md"
+requires-python = ">=3.12"
+# Runtime deps are pinned in requirements_frozen.txt (the reproducible set used to
+# train the production model). This list is intentionally minimal; install via
+#   pip install -r requirements_frozen.txt && pip install -e .
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
+# usv_spectrogram is the importable package. usv_language/ is a second, separate
+# package at the repo root (not src-layout) and is NOT installed by this config —
+# see docs/SUCCESSOR_ONBOARDING.md.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# tests/archive/ holds dead-collection tests excluded via its own conftest
+# (collect_ignore_glob); norecursedirs is belt-and-suspenders.
+norecursedirs = ["tests/archive", ".venv", ".git", "*.egg-info", "build", "dist"]
+addopts = "-q"
