@@ -1,0 +1,55 @@
+{
+  "metrics": {
+    "n_total": 844,
+    "n_usv": 705,
+    "n_noise": 139,
+    "frac_usv": 0.8353080568720379,
+    "confusion": {
+      "true_noise_pred_noise": 22,
+      "true_noise_pred_usv": 117,
+      "true_usv_pred_noise": 5,
+      "true_usv_pred_usv": 700
+    },
+    "noise_recall_specificity": 0.15827338129496402,
+    "noise_precision": 0.8148148148148148,
+    "noise_f1": 0.2650602409638554,
+    "usv_recall_sensitivity": 0.9929078014184397,
+    "usv_precision": 0.8567931456548348,
+    "usv_f1": 0.9198423127463864,
+    "balanced_accuracy": 0.5755905913567019,
+    "macro_f1_binary": 0.5924512768551209,
+    "pooled_accuracy_MISLEADING": 0.8554502369668247,
+    "always_usv_baseline_pooled": 0.8353080568720379
+  },
+  "twelve_class_breakdown": {
+    "true_usv": {
+      "Noise": 5,
+      "Step up": 160,
+      "Down-FM": 72,
+      "Short": 66,
+      "Chevron": 9,
+      "Up-FM": 62,
+      "Flat": 89,
+      "Two steps": 11,
+      "Step down": 112,
+      "Complex": 17,
+      "Reverse Chevron": 22,
+      "Multi-steps": 80
+    },
+    "true_noise": {
+      "Noise": 22,
+      "Step up": 11,
+      "Down-FM": 4,
+      "Short": 41,
+      "Chevron": 4,
+      "Up-FM": 5,
+      "Flat": 39,
+      "Two steps": 2,
+      "Step down": 5,
+      "Complex": 1,
+      "Reverse Chevron": 4,
+      "Multi-steps": 1
+    }
+  },
+  "checkpoint": "results/lab_classifier_v2/best.pt"
+}

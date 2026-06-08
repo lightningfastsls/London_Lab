@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Human-anchored shape eval (Phase 1, GATE 1)</title>
+<style>
+body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:1100px;margin:2rem auto;color:#1a1a1a;padding:0 1rem}
+h1{font-size:1.5rem} h2{font-size:1.1rem;margin-top:2rem;border-bottom:1px solid #ddd;padding-bottom:.3rem}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem}
+th,td{border:1px solid #ddd;padding:.4rem .6rem;text-align:right} th{text-align:left;background:#f6f6f6}
+.ci{color:#888;font-size:.8em} tr.ident th{background:#eef4ff} tr.elastic th{background:#fff4e6}
+.verdict{padding:1rem;border-radius:8px;font-weight:600;margin:1rem 0}
+.proceed{background:#e6f7ed;border:1px solid #34a853} .kill{background:#fdeeee;border:1px solid #d33}
+.mixed{background:#fff8e1;border:1px solid #f4b400}
+.muted{color:#666;font-size:.88rem} code{background:#f2f2f2;padding:.1rem .3rem;border-radius:3px}
+</style></head><body>
+<h1>Human-anchored shape-representation eval — Phase 1 / GATE 1</h1>
+<p class="muted">Generated 2026-06-04T10:54:19 · <code>PLAN_elastic_shape_clustering.md</code> ·
+de-circularized: scored against 551 human labels, not the <code>chevron_valley</code> heuristic.</p>
+
+<div class="verdict proceed">PROCEED to Phase 2 — elastic beats identity on jump/complex; chevron/flat hold.</div>
+
+<h2>Decision metric — LOO kNN purity (k=10), point [95% bootstrap CI, 1000×]</h2>
+<table><tr><th>representation</th><th>chevron</th><th>jump</th><th>flat</th><th>complex</th></tr>
+<tr><th>BASE RATE</th><td>0.076</td><td>0.316</td><td>0.207</td><td>0.105</td></tr>
+<tr class='ident'><th>registration_euclidean(IDENTITY)</th><td>0.210<span class='ci'> [0.164, 0.252]</span></td><td>0.373<span class='ci'> [0.337, 0.411]</span></td><td>0.399<span class='ci'> [0.360, 0.437]</span></td><td>0.162<span class='ci'> [0.126, 0.200]</span></td></tr><tr><th>srvf</th><td>0.243<span class='ci'> [0.193, 0.295]</span></td><td>0.206<span class='ci'> [0.182, 0.228]</span></td><td>0.411<span class='ci'> [0.373, 0.449]</span></td><td>0.103<span class='ci'> [0.078, 0.133]</span></td></tr><tr><th>derivative</th><td>0.233<span class='ci'> [0.183, 0.286]</span></td><td>0.305<span class='ci'> [0.272, 0.339]</span></td><td>0.407<span class='ci'> [0.368, 0.444]</span></td><td>0.105<span class='ci'> [0.079, 0.133]</span></td></tr><tr class='elastic'><th>soft_dtw(ELASTIC)</th><td>0.240<span class='ci'> [0.193, 0.290]</span></td><td>0.463<span class='ci'> [0.418, 0.507]</span></td><td>0.379<span class='ci'> [0.339, 0.418]</span></td><td>0.214<span class='ci'> [0.174, 0.257]</span></td></tr><tr><th>random_control(BASE RATE)</th><td>0.076<span class='ci'> [0.055, 0.098]</span></td><td>0.313<span class='ci'> [0.292, 0.335]</span></td><td>0.227<span class='ci'> [0.203, 0.250]</span></td><td>0.098<span class='ci'> [0.076, 0.119]</span></td></tr></table>
+<p class="muted">Blue = incumbent (registration-Euclidean, IDENTITY control). Orange = elastic candidate (soft-DTW).
+Decisions are made on <b>non-overlapping CIs</b>, never point estimates.</p>
+
+<h2>GATE 1 read (per family)</h2>
+<p>chevron   elastic 0.240[0.193,0.290]  vs  identity 0.210[0.164,0.252]  -> ties (CIs overlap)<br>jump      elastic 0.463[0.418,0.507]  vs  identity 0.373[0.337,0.411]  -> BEATS (non-overlapping)<br>flat      elastic 0.379[0.339,0.418]  vs  identity 0.399[0.360,0.437]  -> ties (CIs overlap)<br>complex   elastic 0.214[0.174,0.257]  vs  identity 0.162[0.126,0.200]  -> ties (CIs overlap)</p>
+
+<h2>Secondary &amp; controls</h2>
+<ul>
+<li><b>NMI</b>(incumbent K=20 alphabet <code>lab_shape</code> vs human family) = 0.170</li>
+<li><b>chevron_valley proxy audit</b> (the retired circular metric): precision=0.163,
+recall=0.667 (tp=28 fp=144 fn=14) — low values confirm it was a poor proxy.</li>
+</ul>
+
+<h2>Provenance &amp; caveats</h2>
+<ul>
+<li>Labels: <code>data/manual_shape_labels.csv</code> · families: jump=174, flat=114, Noise=66, complex=58, Down-FM=51, chevron=42, Up-FM=23, Short=23</li>
+<li>Cohort stratum in labeled set: 3452=85, 5970=144, 9252=140, lab_131204=182 — <b>all lab cohort 131204; wild cohorts UNLABELED</b>
+(per <code>feedback_cross_animal_population_strata</code>). A production decision (Phase 3) requires the expanded, wild-covering gold set.</li>
+<li>All 204 human labels are lab cohort 131204; wild cohorts UNLABELED. Per-class N tiny (esp. chevron ~25) — read CIs, not point estimates.</li>
+<li><code>shape η²</code> deliberately NOT computed — it is the circular metric this harness retires.</li>
+</ul>
+</body></html>

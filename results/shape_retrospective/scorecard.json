@@ -1,0 +1,68 @@
+{
+  "n": 67337,
+  "chevron_rate": 0.2443678809569776,
+  "rows": {
+    "lab_shape": {
+      "shape_eta2": 0.5767968016951753,
+      "pitch_eta2": 0.10400037694052555,
+      "dur_eta2": 0.17663793057143373,
+      "chev_nmi": 0.17020976332984095,
+      "n_clusters": 20
+    },
+    "lab_deriv": {
+      "shape_eta2": 0.12918497831306341,
+      "pitch_eta2": 0.05211684722469079,
+      "dur_eta2": 0.0939011821467649,
+      "chev_nmi": 0.06912856708164883,
+      "n_clusters": 20
+    },
+    "lab_curv": {
+      "shape_eta2": 0.014591810926752102,
+      "pitch_eta2": 0.021409768313160882,
+      "dur_eta2": 0.0576313959873761,
+      "chev_nmi": 0.010042700622410328,
+      "n_clusters": 20
+    },
+    "lab_combined": {
+      "shape_eta2": 0.5569960331760819,
+      "pitch_eta2": 0.11902435667649325,
+      "dur_eta2": 0.18237451042361452,
+      "chev_nmi": 0.16084128801497408,
+      "n_clusters": 20
+    },
+    "lab_shape_scalenorm": {
+      "shape_eta2": 0.4675185769794964,
+      "pitch_eta2": 0.09345704263904364,
+      "dur_eta2": 0.1608265155894354,
+      "chev_nmi": 0.21290570407118264,
+      "n_clusters": 20
+    },
+    "lab_srvf": {
+      "shape_eta2": 0.2858039362873731,
+      "pitch_eta2": 0.11482518635353989,
+      "dur_eta2": 0.26822232169830795,
+      "chev_nmi": 0.17834579752465424,
+      "n_clusters": 20
+    },
+    "rep::registered_shape": {
+      "nbr_same": 0.8479583333333334,
+      "chev_balacc": 0.8423805273201337,
+      "chev_retr_prec": 0.685424416638485
+    },
+    "rep::derivative_dFdt": {
+      "nbr_same": 0.7995666666666666,
+      "chev_balacc": 0.7676097848511642,
+      "chev_retr_prec": 0.5561314363143631
+    },
+    "rep::curvature_d2": {
+      "nbr_same": 0.691225,
+      "chev_balacc": 0.5544339263192546,
+      "chev_retr_prec": 0.2756495669553631
+    },
+    "rep::srvf": {
+      "nbr_same": 0.8327583333333334,
+      "chev_balacc": 0.8050240145319416,
+      "chev_retr_prec": 0.6106060606060606
+    }
+  }
+}

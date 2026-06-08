@@ -1,0 +1,484 @@
+{
+  "method": "m2b_jtfs",
+  "status": "complete",
+  "arm": "VAE-diagnostic (exploratory); spectrogram substrate, NOT a contour method",
+  "feature_path": "features/shape_invariance/m2b_jtfs_dir__c61cff76.npy",
+  "feature_path_invariant_only": "features/shape_invariance/m2b_jtfs__b960c61d.npy",
+  "params": {
+    "method": "m2b_jtfs",
+    "substitute": "Scattering2D (kymatio 0.3.0 lacks JTFS)",
+    "res": 64,
+    "J": 3,
+    "L": 8,
+    "n_comp": 50,
+    "pad_s": 0.015,
+    "log_magnitude": true,
+    "spectrogram_source": "WAV re-render",
+    "stft": {
+      "sr": 300000,
+      "n_fft": 512,
+      "hop": 128,
+      "fmin": 20000.0,
+      "fmax": 120000.0
+    },
+    "k": 10,
+    "n_boot": 1000,
+    "seed": 42,
+    "head_to_head_descriptor": "scatter_pca+net_slope",
+    "slope_weight": 14.019294738769533,
+    "best_config_primary_mean": 0.35648674807779285
+  },
+  "d": 51,
+  "library_note": "kymatio 0.3.0 has NO TimeFrequencyScattering1D; used Scattering2D on the spectrogram as a fixed time+frequency-translation-invariant substitute. Lacks the separable frequential wavelet of true JTFS and ties the time/freq invariance scale (isotropic J). Diagnostic conclusion carries this caveat.",
+  "spectrogram_source_note": "path (a) PREFERRED: re-rendered raw magnitude spectrogram from LOCAL source WAV (611/611 covered) with canonical STFT; cropped via abs_time_start_s+duration (+/-15ms). PNG fallback (data/alpha3_human_patches) covers only lab_131204 (182/611) so was NOT used. Rendered at ABSOLUTE frequency (not pitch-subtracted) so scattering must supply transposition invariance natively.",
+  "reversal": {
+    "passed": false,
+    "self_reverse_median": 62.20484274819506,
+    "decile_threshold": 208.48119853041953,
+    "direction_feature_appended": true,
+    "passed_after_direction": false,
+    "self_reverse_median_after_direction": 67.69891635500365,
+    "decile_threshold_after_direction": 209.46038254129445,
+    "note": "FAIL: 2-D scattering is ~time-reversal-blind -> append signed net slope and re-test. | after appending signed net slope (flips under time reversal): still FAIL (FAIL: 2-D scattering is ~time-reversal-blind -> append signed net slope and re-test.) | NB reversal is spectrogram-native (time-axis flip), faithful analogue of shape_invariance.reversal (which is contour-only). | CONSISTENT WITH THE M5 REFERENCE, which ALSO records passed_after_direction=False: the strict test (self-reverse >= 90th-pctile pairwise) is unflippable by ANY single signed scalar, since 2*median|slope| < p90(|slope_i-slope_j|) for the slope distribution -- a known harness property, NOT a method defect. The handoff rule is 'record the verdict either way'; the net-slope axis is still carried into the head-to-head so up/down sweeps are separable in retrieval."
+  },
+  "purity": {
+    "pooled_invariant": {
+      "chevron": [
+        0.2045454545454545,
+        0.15221590909090907,
+        0.2590909090909091
+      ],
+      "jump": [
+        0.5867647058823531,
+        0.5480269607843137,
+        0.6294240196078431
+      ],
+      "flat": [
+        0.41519999999999996,
+        0.38239999999999996,
+        0.448
+      ],
+      "complex": [
+        0.23880597014925373,
+        0.19402985074626866,
+        0.28361940298507465
+      ],
+      "Noise": [
+        0.41060606060606064,
+        0.346969696969697,
+        0.47878787878787876
+      ],
+      "Down-FM": [
+        0.2814814814814815,
+        0.2221759259259259,
+        0.33708333333333335
+      ],
+      "Up-FM": [
+        0.08148148148148149,
+        0.055555555555555566,
+        0.10740740740740744
+      ],
+      "Short": [
+        0.1875,
+        0.09583333333333333,
+        0.2916666666666667
+      ]
+    },
+    "pooled_sidechannel": {
+      "chevron": [
+        0.2045454545454545,
+        0.15221590909090907,
+        0.2590909090909091
+      ],
+      "jump": [
+        0.5887254901960784,
+        0.5499877450980392,
+        0.6308946078431372
+      ],
+      "flat": [
+        0.41439999999999994,
+        0.3823799999999999,
+        0.4472
+      ],
+      "complex": [
+        0.23880597014925373,
+        0.19402985074626866,
+        0.28361940298507465
+      ],
+      "Noise": [
+        0.41060606060606064,
+        0.346969696969697,
+        0.47878787878787876
+      ],
+      "Down-FM": [
+        0.2814814814814815,
+        0.2221759259259259,
+        0.33708333333333335
+      ],
+      "Up-FM": [
+        0.08148148148148149,
+        0.055555555555555566,
+        0.10740740740740744
+      ],
+      "Short": [
+        0.1875,
+        0.09583333333333333,
+        0.2916666666666667
+      ]
+    },
+    "withinstratum_invariant": {
+      "chevron": [
+        0.2227272727272727,
+        0.17045454545454544,
+        0.2772727272727273
+      ],
+      "jump": [
+        0.5980392156862745,
+        0.5598039215686275,
+        0.6357843137254902
+      ],
+      "flat": [
+        0.4496,
+        0.4096,
+        0.488
+      ],
+      "complex": [
+        0.22835820895522385,
+        0.18656716417910452,
+        0.2701492537313433
+      ],
+      "Noise": [
+        0.5060606060606061,
+        0.4348484848484848,
+        0.5818181818181818
+      ],
+      "Down-FM": [
+        0.2629629629629629,
+        0.2037037037037037,
+        0.32407407407407407
+      ],
+      "Up-FM": [
+        0.08888888888888889,
+        0.06296296296296297,
+        0.11851851851851854
+      ],
+      "Short": [
+        0.1791666666666667,
+        0.08749999999999998,
+        0.2875
+      ]
+    },
+    "withinstratum_sidechannel": {
+      "chevron": [
+        0.2227272727272727,
+        0.17045454545454544,
+        0.2772727272727273
+      ],
+      "jump": [
+        0.6,
+        0.5617524509803922,
+        0.6377450980392156
+      ],
+      "flat": [
+        0.4496,
+        0.4096,
+        0.488
+      ],
+      "complex": [
+        0.22835820895522385,
+        0.18656716417910452,
+        0.2701492537313433
+      ],
+      "Noise": [
+        0.5075757575757576,
+        0.4363636363636364,
+        0.5833333333333333
+      ],
+      "Down-FM": [
+        0.2629629629629629,
+        0.2037037037037037,
+        0.32407407407407407
+      ],
+      "Up-FM": [
+        0.08888888888888889,
+        0.06296296296296297,
+        0.11851851851851854
+      ],
+      "Short": [
+        0.1791666666666667,
+        0.08749999999999998,
+        0.2875
+      ]
+    }
+  },
+  "purity_invariant_only_no_direction": {
+    "pooled_invariant": {
+      "chevron": [
+        0.19318181818181815,
+        0.1409090909090909,
+        0.24545454545454548
+      ],
+      "jump": [
+        0.5916666666666668,
+        0.5524264705882352,
+        0.6338357843137256
+      ],
+      "flat": [
+        0.40079999999999993,
+        0.36957999999999996,
+        0.43363999999999997
+      ],
+      "complex": [
+        0.24029850746268652,
+        0.1985074626865672,
+        0.28507462686567164
+      ],
+      "Noise": [
+        0.4348484848484848,
+        0.3711742424242424,
+        0.5015530303030303
+      ],
+      "Down-FM": [
+        0.2611111111111111,
+        0.20370370370370366,
+        0.3185185185185185
+      ],
+      "Up-FM": [
+        0.07407407407407408,
+        0.04814814814814815,
+        0.1037037037037037
+      ],
+      "Short": [
+        0.1708333333333333,
+        0.07489583333333334,
+        0.28333333333333327
+      ]
+    },
+    "pooled_sidechannel": {
+      "chevron": [
+        0.19318181818181815,
+        0.1409090909090909,
+        0.24545454545454548
+      ],
+      "jump": [
+        0.592156862745098,
+        0.552904411764706,
+        0.6343259803921567
+      ],
+      "flat": [
+        0.4024,
+        0.37039999999999995,
+        0.43442
+      ],
+      "complex": [
+        0.24029850746268652,
+        0.1985074626865672,
+        0.28507462686567164
+      ],
+      "Noise": [
+        0.4363636363636364,
+        0.37272727272727274,
+        0.5045454545454545
+      ],
+      "Down-FM": [
+        0.2611111111111111,
+        0.20370370370370366,
+        0.3185185185185185
+      ],
+      "Up-FM": [
+        0.07407407407407408,
+        0.04814814814814815,
+        0.1037037037037037
+      ],
+      "Short": [
+        0.1708333333333333,
+        0.07489583333333334,
+        0.28333333333333327
+      ]
+    },
+    "withinstratum_invariant": {
+      "chevron": [
+        0.20681818181818182,
+        0.15227272727272728,
+        0.2590909090909091
+      ],
+      "jump": [
+        0.6024509803921569,
+        0.5646446078431373,
+        0.6387254901960785
+      ],
+      "flat": [
+        0.43200000000000005,
+        0.39360000000000006,
+        0.4688199999999999
+      ],
+      "complex": [
+        0.22537313432835823,
+        0.18358208955223881,
+        0.2656716417910448
+      ],
+      "Noise": [
+        0.509090909090909,
+        0.44087121212121205,
+        0.5833712121212122
+      ],
+      "Down-FM": [
+        0.23703703703703702,
+        0.18518518518518515,
+        0.2944444444444444
+      ],
+      "Up-FM": [
+        0.08148148148148149,
+        0.05555555555555557,
+        0.11111111111111113
+      ],
+      "Short": [
+        0.18333333333333335,
+        0.09166666666666666,
+        0.2875
+      ]
+    },
+    "withinstratum_sidechannel": {
+      "chevron": [
+        0.20681818181818182,
+        0.15227272727272728,
+        0.2590909090909091
+      ],
+      "jump": [
+        0.6024509803921569,
+        0.5646446078431373,
+        0.6387254901960785
+      ],
+      "flat": [
+        0.43200000000000005,
+        0.39360000000000006,
+        0.4688199999999999
+      ],
+      "complex": [
+        0.22537313432835823,
+        0.18358208955223881,
+        0.2656716417910448
+      ],
+      "Noise": [
+        0.5106060606060605,
+        0.4423863636363636,
+        0.5848863636363636
+      ],
+      "Down-FM": [
+        0.23703703703703702,
+        0.18518518518518515,
+        0.2944444444444444
+      ],
+      "Up-FM": [
+        0.08148148148148149,
+        0.05555555555555557,
+        0.11111111111111113
+      ],
+      "Short": [
+        0.18333333333333335,
+        0.09166666666666666,
+        0.2875
+      ]
+    }
+  },
+  "k_sweep": {
+    "1": {
+      "chevron": 0.2727272727272727,
+      "jump": 0.6715686274509803,
+      "flat": 0.456,
+      "complex": 0.3283582089552239,
+      "Noise": 0.5606060606060606,
+      "Down-FM": 0.42592592592592593,
+      "Up-FM": 0.14814814814814814,
+      "Short": 0.3333333333333333
+    },
+    "5": {
+      "chevron": 0.21818181818181817,
+      "jump": 0.6019607843137255,
+      "flat": 0.4096000000000001,
+      "complex": 0.2746268656716418,
+      "Noise": 0.5000000000000001,
+      "Down-FM": 0.34074074074074073,
+      "Up-FM": 0.0888888888888889,
+      "Short": 0.26666666666666666
+    },
+    "15": {
+      "chevron": 0.18484848484848485,
+      "jump": 0.5722222222222222,
+      "flat": 0.40053333333333335,
+      "complex": 0.21393034825870647,
+      "Noise": 0.3595959595959596,
+      "Down-FM": 0.237037037037037,
+      "Up-FM": 0.07160493827160494,
+      "Short": 0.13333333333333333
+    }
+  },
+  "param_sweep": [
+    {
+      "res": 64,
+      "J": 2,
+      "d_flat": 20736,
+      "d_pca": 50,
+      "purity": {
+        "chevron": 0.17272727272727273,
+        "jump": 0.5799019607843138,
+        "flat": 0.3728000000000001,
+        "complex": 0.208955223880597
+      },
+      "primary_mean": 0.33359611434804587
+    },
+    {
+      "res": 64,
+      "J": 3,
+      "d_flat": 13888,
+      "d_pca": 50,
+      "purity": {
+        "chevron": 0.19318181818181815,
+        "jump": 0.5916666666666668,
+        "flat": 0.40079999999999993,
+        "complex": 0.24029850746268652
+      },
+      "primary_mean": 0.35648674807779285
+    },
+    {
+      "res": 128,
+      "J": 2,
+      "d_flat": 82944,
+      "d_pca": 50,
+      "purity": {
+        "chevron": 0.17500000000000002,
+        "jump": 0.6078431372549019,
+        "flat": 0.3576000000000001,
+        "complex": 0.19552238805970149
+      },
+      "primary_mean": 0.33399138132865086
+    },
+    {
+      "res": 128,
+      "J": 3,
+      "d_flat": 55552,
+      "d_pca": 50,
+      "purity": {
+        "chevron": 0.1818181818181818,
+        "jump": 0.5892156862745097,
+        "flat": 0.41519999999999996,
+        "complex": 0.2358208955223881
+      },
+      "primary_mean": 0.3555136909037699
+    }
+  ],
+  "vs_softdtw_pooled_invariant": {
+    "chevron": "ties",
+    "jump": "ties",
+    "flat": "ties",
+    "complex": "ties"
+  },
+  "vs_identity_pooled_invariant": {
+    "chevron": "ties",
+    "jump": "beats",
+    "flat": "ties",
+    "complex": "ties"
+  },
+  "prediction_held": "PARTIALLY HELD: fixed scattering TIES soft-DTW on most families (no clean win); spectrograms are not the blocker, but a fixed transform is not clearly superior either.",
+  "notes": "M2b is the VAE-DIAGNOSTIC arm: a FIXED scattering front-end on the per-call spectrogram. Pipeline = WAV re-render -> band-limited |STFT| -> log1p+peaknorm -> resize (res,res) -> Scattering2D(J,L=8) -> z-score -> PCA(<=50) -> kNN. Reversal handled via time-axis flip + net-slope. within-stratum field = cohort (4 levels; the label set spans 4 cohorts, handoff's lab-only claim is stale). Decision on NON-overlapping CIs vs soft-DTW (THE BAR) and registration (IDENTITY)."
+}

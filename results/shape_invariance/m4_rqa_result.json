@@ -1,0 +1,1187 @@
+{
+  "method": "m4_rqa",
+  "status": "complete",
+  "feature_path": "features/shape_invariance/m4_rqa_dir__621344b7.npy",
+  "feature_path_invariant_only": "features/shape_invariance/m4_rqa__dc368816.npy",
+  "params": {
+    "method": "m4_rqa",
+    "descriptor": "rqa_scalars",
+    "input_len": 128,
+    "rr_target": 0.1,
+    "embed_m": 1,
+    "embed_tau": 1,
+    "pool": null,
+    "scale_invariant": false,
+    "l_min": 2,
+    "v_min": 2,
+    "standardize_columns": true,
+    "k": 10,
+    "n_boot": 1000,
+    "seed": 42,
+    "rqa_feature_order": [
+      "RR",
+      "DET",
+      "LAM",
+      "L_mean",
+      "L_max",
+      "TT",
+      "DIV",
+      "ENTR"
+    ],
+    "head_to_head_descriptor": "rqa_scalars+direction",
+    "dir_weight_rms_matched": 1.0000000000000009,
+    "dir_weight_passing_reversal": null
+  },
+  "d": 10,
+  "reversal": {
+    "passed": false,
+    "self_reverse_median": 0.0,
+    "decile_threshold": 5.317551907034352,
+    "direction_feature_appended": true,
+    "passed_after_direction": false,
+    "self_reverse_median_after_direction": 1.3046200973300024,
+    "decile_threshold_after_direction": 5.898935010435734,
+    "dir_weight_rms_matched": 1.0000000000000009,
+    "dir_weight_passing_reversal": null,
+    "note": "Pure RQA is EXACTLY reversal-invariant (reversing f flips both matrix axes -> identical line statistics) -> FAILS natively (self_rev_median=0). Appended signed direction block [net_slope, first_temporal_moment]. At RMS-matched weight (1.000) it still FAILS the strict top-decile bar (a single antisymmetric block: reversing only flips its sign, distance 2|v|, which is < the pairwise spread of v across distinct calls \u2014 the same structural limit that made M5 fail). No tested weight up to 64x cleared the bar."
+  },
+  "purity": {
+    "pooled_invariant": {
+      "chevron": [
+        0.175,
+        0.13863636363636364,
+        0.21363636363636365
+      ],
+      "jump": [
+        0.5044117647058823,
+        0.46714460784313727,
+        0.5446323529411765
+      ],
+      "flat": [
+        0.332,
+        0.296,
+        0.3736
+      ],
+      "complex": [
+        0.21343283582089553,
+        0.1791044776119403,
+        0.25074626865671645
+      ],
+      "Noise": [
+        0.23787878787878786,
+        0.17571969696969697,
+        0.29848484848484846
+      ],
+      "Down-FM": [
+        0.2740740740740741,
+        0.23143518518518516,
+        0.31296296296296294
+      ],
+      "Up-FM": [
+        0.13703703703703707,
+        0.0887962962962963,
+        0.19259259259259257
+      ],
+      "Short": [
+        0.1708333333333333,
+        0.075,
+        0.28760416666666655
+      ]
+    },
+    "pooled_sidechannel": {
+      "chevron": [
+        0.19772727272727272,
+        0.15681818181818183,
+        0.2409090909090909
+      ],
+      "jump": [
+        0.6171568627450981,
+        0.5735171568627451,
+        0.6661764705882354
+      ],
+      "flat": [
+        0.3528,
+        0.31679999999999997,
+        0.3912
+      ],
+      "complex": [
+        0.2656716417910448,
+        0.22686567164179103,
+        0.30451492537313435
+      ],
+      "Noise": [
+        0.2727272727272727,
+        0.20757575757575755,
+        0.3363636363636364
+      ],
+      "Down-FM": [
+        0.3222222222222222,
+        0.2777777777777778,
+        0.36481481481481476
+      ],
+      "Up-FM": [
+        0.14074074074074075,
+        0.0887962962962963,
+        0.1962962962962963
+      ],
+      "Short": [
+        0.16666666666666666,
+        0.09583333333333333,
+        0.2583333333333333
+      ]
+    },
+    "withinstratum_invariant": {
+      "chevron": [
+        0.22954545454545458,
+        0.17727272727272728,
+        0.28863636363636364
+      ],
+      "jump": [
+        0.5323529411764706,
+        0.4950980392156863,
+        0.5715808823529411
+      ],
+      "flat": [
+        0.3152,
+        0.28318000000000004,
+        0.34640000000000004
+      ],
+      "complex": [
+        0.2,
+        0.16567164179104477,
+        0.2328731343283582
+      ],
+      "Noise": [
+        0.34393939393939393,
+        0.2742424242424243,
+        0.41821969696969696
+      ],
+      "Down-FM": [
+        0.20185185185185187,
+        0.16666666666666666,
+        0.23888888888888887
+      ],
+      "Up-FM": [
+        0.07777777777777778,
+        0.040740740740740744,
+        0.11851851851851852
+      ],
+      "Short": [
+        0.22083333333333333,
+        0.12083333333333335,
+        0.3333333333333333
+      ]
+    },
+    "withinstratum_sidechannel": {
+      "chevron": [
+        0.27954545454545454,
+        0.21818181818181817,
+        0.34323863636363633
+      ],
+      "jump": [
+        0.6289215686274509,
+        0.5872549019607843,
+        0.6750122549019608
+      ],
+      "flat": [
+        0.3576,
+        0.3248000000000001,
+        0.3912
+      ],
+      "complex": [
+        0.2761194029850747,
+        0.22089552238805968,
+        0.32988805970149254
+      ],
+      "Noise": [
+        0.34848484848484856,
+        0.27727272727272734,
+        0.42124999999999996
+      ],
+      "Down-FM": [
+        0.23148148148148145,
+        0.1888888888888889,
+        0.2740740740740741
+      ],
+      "Up-FM": [
+        0.10740740740740742,
+        0.07037037037037039,
+        0.14814814814814814
+      ],
+      "Short": [
+        0.2041666666666667,
+        0.11249999999999999,
+        0.31249999999999994
+      ]
+    }
+  },
+  "purity_invariant_only_no_direction": {
+    "pooled_invariant": {
+      "chevron": [
+        0.16363636363636364,
+        0.12954545454545455,
+        0.19999999999999998
+      ],
+      "jump": [
+        0.5132352941176471,
+        0.4813602941176471,
+        0.5470710784313725
+      ],
+      "flat": [
+        0.28720000000000007,
+        0.25120000000000003,
+        0.3256
+      ],
+      "complex": [
+        0.18059701492537317,
+        0.14776119402985075,
+        0.21194029850746265
+      ],
+      "Noise": [
+        0.24393939393939396,
+        0.1878787878787879,
+        0.30151515151515157
+      ],
+      "Down-FM": [
+        0.20740740740740743,
+        0.1685185185185185,
+        0.24814814814814815
+      ],
+      "Up-FM": [
+        0.0962962962962963,
+        0.055555555555555566,
+        0.13703703703703707
+      ],
+      "Short": [
+        0.1791666666666666,
+        0.08333333333333333,
+        0.2876041666666666
+      ]
+    },
+    "pooled_sidechannel": {
+      "chevron": [
+        0.18863636363636366,
+        0.14772727272727273,
+        0.23409090909090907
+      ],
+      "jump": [
+        0.6269607843137255,
+        0.5867524509803922,
+        0.6706004901960785
+      ],
+      "flat": [
+        0.3544,
+        0.3224,
+        0.3903999999999999
+      ],
+      "complex": [
+        0.23880597014925378,
+        0.1985074626865672,
+        0.27611940298507465
+      ],
+      "Noise": [
+        0.27424242424242423,
+        0.21352272727272728,
+        0.3409469696969697
+      ],
+      "Down-FM": [
+        0.2574074074074074,
+        0.21111111111111114,
+        0.30185185185185187
+      ],
+      "Up-FM": [
+        0.1,
+        0.06657407407407408,
+        0.13703703703703704
+      ],
+      "Short": [
+        0.21666666666666667,
+        0.125,
+        0.325
+      ]
+    },
+    "withinstratum_invariant": {
+      "chevron": [
+        0.20227272727272724,
+        0.1545454545454545,
+        0.2568181818181818
+      ],
+      "jump": [
+        0.5161764705882352,
+        0.4833210784313725,
+        0.5495343137254902
+      ],
+      "flat": [
+        0.29919999999999997,
+        0.2664000000000001,
+        0.33124000000000003
+      ],
+      "complex": [
+        0.16865671641791047,
+        0.14175373134328356,
+        0.19406716417910447
+      ],
+      "Noise": [
+        0.3651515151515152,
+        0.29693181818181813,
+        0.4379166666666667
+      ],
+      "Down-FM": [
+        0.15,
+        0.11662037037037035,
+        0.18333333333333335
+      ],
+      "Up-FM": [
+        0.055555555555555566,
+        0.02592592592592593,
+        0.0851851851851852
+      ],
+      "Short": [
+        0.21666666666666665,
+        0.12489583333333334,
+        0.3251041666666666
+      ]
+    },
+    "withinstratum_sidechannel": {
+      "chevron": [
+        0.25227272727272726,
+        0.19539772727272725,
+        0.3090909090909091
+      ],
+      "jump": [
+        0.6352941176470587,
+        0.5941176470588235,
+        0.6779411764705883
+      ],
+      "flat": [
+        0.35919999999999996,
+        0.3272000000000001,
+        0.3920199999999999
+      ],
+      "complex": [
+        0.23283582089552238,
+        0.1895522388059702,
+        0.27462686567164174
+      ],
+      "Noise": [
+        0.3590909090909092,
+        0.28636363636363643,
+        0.4348484848484848
+      ],
+      "Down-FM": [
+        0.20185185185185187,
+        0.1685185185185185,
+        0.23703703703703702
+      ],
+      "Up-FM": [
+        0.0851851851851852,
+        0.05555555555555555,
+        0.11851851851851852
+      ],
+      "Short": [
+        0.1958333333333333,
+        0.12083333333333333,
+        0.2833333333333333
+      ]
+    }
+  },
+  "k_sweep": {
+    "1": {
+      "chevron": 0.25,
+      "jump": 0.5490196078431373,
+      "flat": 0.328,
+      "complex": 0.26865671641791045,
+      "Noise": 0.25757575757575757,
+      "Down-FM": 0.4074074074074074,
+      "Up-FM": 0.18518518518518517,
+      "Short": 0.25
+    },
+    "5": {
+      "chevron": 0.18636363636363634,
+      "jump": 0.5333333333333333,
+      "flat": 0.33440000000000003,
+      "complex": 0.2328358208955224,
+      "Noise": 0.28181818181818186,
+      "Down-FM": 0.35185185185185186,
+      "Up-FM": 0.14814814814814814,
+      "Short": 0.25
+    },
+    "15": {
+      "chevron": 0.16363636363636364,
+      "jump": 0.4993464052287581,
+      "flat": 0.336,
+      "complex": 0.19402985074626863,
+      "Noise": 0.2414141414141414,
+      "Down-FM": 0.26049382716049385,
+      "Up-FM": 0.1234567901234568,
+      "Short": 0.13333333333333333
+    }
+  },
+  "param_sweep": [
+    {
+      "input": 50,
+      "rr_target": 0.05,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.09090909090909091,
+        "jump": 0.4470588235294118,
+        "flat": 0.2792,
+        "complex": 0.16268656716417912
+      },
+      "mean_primary": 0.24496362040067043
+    },
+    {
+      "input": 50,
+      "rr_target": 0.05,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.10681818181818183,
+        "jump": 0.44264705882352945,
+        "flat": 0.2824,
+        "complex": 0.16865671641791047
+      },
+      "mean_primary": 0.25013048926490544
+    },
+    {
+      "input": 50,
+      "rr_target": 0.05,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.045454545454545456,
+        "jump": 0.511764705882353,
+        "flat": 0.2024,
+        "complex": 0.13582089552238807
+      },
+      "mean_primary": 0.22386003671482163
+    },
+    {
+      "input": 50,
+      "rr_target": 0.05,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.04318181818181819,
+        "jump": 0.4936274509803922,
+        "flat": 0.20320000000000002,
+        "complex": 0.13880597014925375
+      },
+      "mean_primary": 0.21970380982786605
+    },
+    {
+      "input": 50,
+      "rr_target": 0.05,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.09545454545454546,
+        "jump": 0.47058823529411764,
+        "flat": 0.26800000000000007,
+        "complex": 0.12835820895522385
+      },
+      "mean_primary": 0.24060024742597177
+    },
+    {
+      "input": 50,
+      "rr_target": 0.05,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.09318181818181817,
+        "jump": 0.46715686274509804,
+        "flat": 0.2656,
+        "complex": 0.12686567164179102
+      },
+      "mean_primary": 0.23820108814217683
+    },
+    {
+      "input": 50,
+      "rr_target": 0.05,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.06363636363636364,
+        "jump": 0.4794117647058823,
+        "flat": 0.18800000000000006,
+        "complex": 0.1373134328358209
+      },
+      "mean_primary": 0.2170903902945167
+    },
+    {
+      "input": 50,
+      "rr_target": 0.05,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.06363636363636364,
+        "jump": 0.4818627450980392,
+        "flat": 0.18800000000000006,
+        "complex": 0.1373134328358209
+      },
+      "mean_primary": 0.21770313539255595
+    },
+    {
+      "input": 50,
+      "rr_target": 0.1,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.08863636363636364,
+        "jump": 0.4676470588235294,
+        "flat": 0.27120000000000005,
+        "complex": 0.11492537313432837
+      },
+      "mean_primary": 0.23560219889855535
+    },
+    {
+      "input": 50,
+      "rr_target": 0.1,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.08863636363636364,
+        "jump": 0.46568627450980393,
+        "flat": 0.28240000000000004,
+        "complex": 0.11940298507462685
+      },
+      "mean_primary": 0.23903140580519863
+    },
+    {
+      "input": 50,
+      "rr_target": 0.1,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.1159090909090909,
+        "jump": 0.4666666666666667,
+        "flat": 0.18080000000000007,
+        "complex": 0.13582089552238807
+      },
+      "mean_primary": 0.22479916327453642
+    },
+    {
+      "input": 50,
+      "rr_target": 0.1,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.11818181818181818,
+        "jump": 0.46960784313725495,
+        "flat": 0.18560000000000007,
+        "complex": 0.13134328358208955
+      },
+      "mean_primary": 0.2261832362252907
+    },
+    {
+      "input": 50,
+      "rr_target": 0.1,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.09772727272727272,
+        "jump": 0.46470588235294114,
+        "flat": 0.28719999999999996,
+        "complex": 0.13432835820895525
+      },
+      "mean_primary": 0.24599037832229229
+    },
+    {
+      "input": 50,
+      "rr_target": 0.1,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.09545454545454546,
+        "jump": 0.46617647058823525,
+        "flat": 0.2864,
+        "complex": 0.13283582089552243
+      },
+      "mean_primary": 0.24521670923457578
+    },
+    {
+      "input": 50,
+      "rr_target": 0.1,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.09545454545454546,
+        "jump": 0.4382352941176471,
+        "flat": 0.19680000000000003,
+        "complex": 0.14029850746268657
+      },
+      "mean_primary": 0.2176970867587198
+    },
+    {
+      "input": 50,
+      "rr_target": 0.1,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.0931818181818182,
+        "jump": 0.4387254901960784,
+        "flat": 0.19760000000000005,
+        "complex": 0.1373134328358209
+      },
+      "mean_primary": 0.2167051853034294
+    },
+    {
+      "input": 50,
+      "rr_target": 0.2,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.1,
+        "jump": 0.42892156862745096,
+        "flat": 0.20960000000000004,
+        "complex": 0.12686567164179102
+      },
+      "mean_primary": 0.2163468100673105
+    },
+    {
+      "input": 50,
+      "rr_target": 0.2,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.1,
+        "jump": 0.43235294117647055,
+        "flat": 0.20960000000000004,
+        "complex": 0.12835820895522385
+      },
+      "mean_primary": 0.21757778753292362
+    },
+    {
+      "input": 50,
+      "rr_target": 0.2,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.13863636363636364,
+        "jump": 0.42843137254901964,
+        "flat": 0.21040000000000003,
+        "complex": 0.12537313432835823
+      },
+      "mean_primary": 0.2257102176284354
+    },
+    {
+      "input": 50,
+      "rr_target": 0.2,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.13863636363636364,
+        "jump": 0.43235294117647055,
+        "flat": 0.21120000000000003,
+        "complex": 0.12537313432835823
+      },
+      "mean_primary": 0.22689060978529813
+    },
+    {
+      "input": 50,
+      "rr_target": 0.2,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.14772727272727273,
+        "jump": 0.4480392156862745,
+        "flat": 0.22000000000000006,
+        "complex": 0.1582089552238806
+      },
+      "mean_primary": 0.24349386090935696
+    },
+    {
+      "input": 50,
+      "rr_target": 0.2,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.14545454545454545,
+        "jump": 0.4485294117647059,
+        "flat": 0.22400000000000003,
+        "complex": 0.1582089552238806
+      },
+      "mean_primary": 0.24404822811078297
+    },
+    {
+      "input": 50,
+      "rr_target": 0.2,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.1431818181818182,
+        "jump": 0.4063725490196079,
+        "flat": 0.20800000000000002,
+        "complex": 0.13283582089552237
+      },
+      "mean_primary": 0.2225975470242371
+    },
+    {
+      "input": 50,
+      "rr_target": 0.2,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.1431818181818182,
+        "jump": 0.403921568627451,
+        "flat": 0.21200000000000005,
+        "complex": 0.13134328358208952
+      },
+      "mean_primary": 0.22261166759783968
+    },
+    {
+      "input": 128,
+      "rr_target": 0.05,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.08636363636363636,
+        "jump": 0.4808823529411764,
+        "flat": 0.27919999999999995,
+        "complex": 0.13283582089552237
+      },
+      "mean_primary": 0.24482045255008375
+    },
+    {
+      "input": 128,
+      "rr_target": 0.05,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.08863636363636364,
+        "jump": 0.4808823529411764,
+        "flat": 0.2784,
+        "complex": 0.13283582089552237
+      },
+      "mean_primary": 0.2451886343682656
+    },
+    {
+      "input": 128,
+      "rr_target": 0.05,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.08636363636363636,
+        "jump": 0.5318627450980392,
+        "flat": 0.20000000000000004,
+        "complex": 0.12388059701492536
+      },
+      "mean_primary": 0.23552674461915024
+    },
+    {
+      "input": 128,
+      "rr_target": 0.05,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.08636363636363636,
+        "jump": 0.5313725490196078,
+        "flat": 0.1984,
+        "complex": 0.12388059701492536
+      },
+      "mean_primary": 0.2350041955995424
+    },
+    {
+      "input": 128,
+      "rr_target": 0.05,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.09318181818181817,
+        "jump": 0.4955882352941176,
+        "flat": 0.27679999999999993,
+        "complex": 0.1955223880597015
+      },
+      "mean_primary": 0.2652731103839093
+    },
+    {
+      "input": 128,
+      "rr_target": 0.05,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.09545454545454546,
+        "jump": 0.496078431372549,
+        "flat": 0.2752,
+        "complex": 0.1955223880597015
+      },
+      "mean_primary": 0.265563841221699
+    },
+    {
+      "input": 128,
+      "rr_target": 0.05,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.07500000000000001,
+        "jump": 0.46568627450980393,
+        "flat": 0.19840000000000002,
+        "complex": 0.16119402985074627
+      },
+      "mean_primary": 0.22507007609013757
+    },
+    {
+      "input": 128,
+      "rr_target": 0.05,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.07500000000000001,
+        "jump": 0.46568627450980393,
+        "flat": 0.19840000000000002,
+        "complex": 0.16119402985074627
+      },
+      "mean_primary": 0.22507007609013757
+    },
+    {
+      "input": 128,
+      "rr_target": 0.1,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.16363636363636364,
+        "jump": 0.5132352941176471,
+        "flat": 0.28720000000000007,
+        "complex": 0.18059701492537317
+      },
+      "mean_primary": 0.286167168169846
+    },
+    {
+      "input": 128,
+      "rr_target": 0.1,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.16363636363636364,
+        "jump": 0.5132352941176471,
+        "flat": 0.28640000000000004,
+        "complex": 0.18059701492537317
+      },
+      "mean_primary": 0.285967168169846
+    },
+    {
+      "input": 128,
+      "rr_target": 0.1,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.1159090909090909,
+        "jump": 0.4803921568627451,
+        "flat": 0.20560000000000003,
+        "complex": 0.13283582089552237
+      },
+      "mean_primary": 0.2336842671668396
+    },
+    {
+      "input": 128,
+      "rr_target": 0.1,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.1159090909090909,
+        "jump": 0.47990196078431374,
+        "flat": 0.20560000000000003,
+        "complex": 0.13283582089552237
+      },
+      "mean_primary": 0.23356171814723176
+    },
+    {
+      "input": 128,
+      "rr_target": 0.1,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.12727272727272723,
+        "jump": 0.4544117647058823,
+        "flat": 0.2808,
+        "complex": 0.15970149253731344
+      },
+      "mean_primary": 0.2555464961289807
+    },
+    {
+      "input": 128,
+      "rr_target": 0.1,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.12727272727272723,
+        "jump": 0.4544117647058823,
+        "flat": 0.284,
+        "complex": 0.15970149253731344
+      },
+      "mean_primary": 0.25634649612898075
+    },
+    {
+      "input": 128,
+      "rr_target": 0.1,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.12045454545454545,
+        "jump": 0.457843137254902,
+        "flat": 0.1984,
+        "complex": 0.13283582089552237
+      },
+      "mean_primary": 0.22738337590124247
+    },
+    {
+      "input": 128,
+      "rr_target": 0.1,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.12045454545454545,
+        "jump": 0.457843137254902,
+        "flat": 0.1984,
+        "complex": 0.13283582089552237
+      },
+      "mean_primary": 0.22738337590124247
+    },
+    {
+      "input": 128,
+      "rr_target": 0.2,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.12499999999999999,
+        "jump": 0.5186274509803921,
+        "flat": 0.23120000000000002,
+        "complex": 0.18208955223880596
+      },
+      "mean_primary": 0.26422925080479953
+    },
+    {
+      "input": 128,
+      "rr_target": 0.2,
+      "m": 1,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.12499999999999999,
+        "jump": 0.5186274509803921,
+        "flat": 0.23120000000000002,
+        "complex": 0.18208955223880596
+      },
+      "mean_primary": 0.26422925080479953
+    },
+    {
+      "input": 128,
+      "rr_target": 0.2,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.14772727272727273,
+        "jump": 0.4338235294117647,
+        "flat": 0.21440000000000003,
+        "complex": 0.1328358208955224
+      },
+      "mean_primary": 0.23219665575863996
+    },
+    {
+      "input": 128,
+      "rr_target": 0.2,
+      "m": 1,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.14772727272727273,
+        "jump": 0.4338235294117647,
+        "flat": 0.21440000000000003,
+        "complex": 0.1328358208955224
+      },
+      "mean_primary": 0.23219665575863996
+    },
+    {
+      "input": 128,
+      "rr_target": 0.2,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.1568181818181818,
+        "jump": 0.5333333333333333,
+        "flat": 0.22400000000000006,
+        "complex": 0.1791044776119403
+      },
+      "mean_primary": 0.2733139981908639
+    },
+    {
+      "input": 128,
+      "rr_target": 0.2,
+      "m": 2,
+      "tau": 1,
+      "pool": null,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.1568181818181818,
+        "jump": 0.5333333333333333,
+        "flat": 0.22400000000000006,
+        "complex": 0.1791044776119403
+      },
+      "mean_primary": 0.2733139981908639
+    },
+    {
+      "input": 128,
+      "rr_target": 0.2,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": false,
+      "purity": {
+        "chevron": 0.14545454545454545,
+        "jump": 0.42499999999999993,
+        "flat": 0.2104000000000001,
+        "complex": 0.13582089552238805
+      },
+      "mean_primary": 0.22916886024423339
+    },
+    {
+      "input": 128,
+      "rr_target": 0.2,
+      "m": 2,
+      "tau": 1,
+      "pool": 8,
+      "scale_invariant": true,
+      "purity": {
+        "chevron": 0.14545454545454545,
+        "jump": 0.42499999999999993,
+        "flat": 0.2104000000000001,
+        "complex": 0.13582089552238805
+      },
+      "mean_primary": 0.22916886024423339
+    }
+  ],
+  "best_config": {
+    "input": 128,
+    "rr_target": 0.1,
+    "m": 1,
+    "tau": 1,
+    "pool": null,
+    "scale_invariant": false,
+    "mean_primary": 0.286167168169846
+  },
+  "vs_softdtw_pooled_invariant": {
+    "chevron": "ties",
+    "jump": "ties",
+    "flat": "ties",
+    "complex": "ties"
+  },
+  "vs_identity_pooled_invariant": {
+    "chevron": "ties",
+    "jump": "beats",
+    "flat": "loses",
+    "complex": "ties"
+  },
+  "softdtw_bar_pooled_invariant": {
+    "chevron": [
+      0.21363636363636365,
+      0.168125,
+      0.26136363636363635
+    ],
+    "jump": [
+      0.5220588235294118,
+      0.47988970588235297,
+      0.5696200980392158
+    ],
+    "flat": [
+      0.39599999999999996,
+      0.36158,
+      0.4328
+    ],
+    "complex": [
+      0.24328358208955225,
+      0.1985074626865672,
+      0.2835820895522388
+    ]
+  },
+  "prediction_held": "HELD: M4 RQA was predicted to TRACK soft-DTW on relational structure (complex/flat/chevron) at a fraction of the cost. vs soft-DTW={'chevron': 'ties', 'jump': 'ties', 'flat': 'ties', 'complex': 'ties'}; vs identity={'chevron': 'ties', 'jump': 'beats', 'flat': 'loses', 'complex': 'ties'}. Tracks soft-DTW (ties/beats) on ['complex', 'flat', 'chevron']; loses on none. Beats incumbent identity on ['jump'].",
+  "notes": "Within-call recurrence matrix R[i,j]=||x_i-x_j|| (additive-pitch invariant automatically), thresholded at FIXED recurrence rate (per-call quantile of off-diagonal distances) for cross-call comparability. Feature = 8 RQA scalars ['RR', 'DET', 'LAM', 'L_mean', 'L_max', 'TT', 'DIV', 'ENTR'], z-scored across the batch (heterogeneous scalar scales). Reversal-invariant by construction -> head-to-head appends a signed direction block. within-stratum field = cohort (4 levels), per the live data deviation (labels span 4 cohorts, not lab-only). RR is ~constant by the fixed-rate design (kept for completeness)."
+}

@@ -1,0 +1,1004 @@
+{
+  "method": "m2a_scatter1d",
+  "status": "complete",
+  "feature_path": "features/shape_invariance/m2a_scatter1d_dir__95db8888.npy",
+  "feature_path_invariant_only": "features/shape_invariance/m2a_scatter1d__dd43df7d.npy",
+  "params": {
+    "method": "m2a_scatter1d",
+    "front_end": "kymatio.Scattering1D(torch-cpu)",
+    "input_len": 50,
+    "upsample_len": 256,
+    "J": 6,
+    "Q": 1,
+    "T": 32,
+    "drop_order0": true,
+    "scale_invariant": false,
+    "log_transform": true,
+    "n_pca": 40,
+    "k": 10,
+    "n_boot": 1000,
+    "seed": 42,
+    "best_by": "sum(primary purity) over J x Q x T x drop_order0 sweep"
+  },
+  "d": 41,
+  "reversal": {
+    "passed": false,
+    "self_reverse_median": 0.33688004570967517,
+    "decile_threshold": 2.7038584804886665,
+    "ratio_self_over_p90": 0.12459233652228391,
+    "direction_feature_appended": true,
+    "identity_calibration": {
+      "passed": false,
+      "self_reverse_median": 52.47166360268099,
+      "decile_threshold": 139.36743423395373,
+      "ratio_self_over_p90": 0.37649874155391067,
+      "note": "raw-contour IDENTITY is maximally direction-sensitive (reversing flips the whole curve) yet ALSO fails the decile bar (ratio 0.376<1): the bar is structurally unreachable on mean-subtracted contours because the antisymmetric/direction component is a minority of total variation."
+    },
+    "note": "FALSIFIES the handoff sub-prediction that M2a 'passes rule 1 natively'. Scattering at the purity-optimal T is strongly reversal-near-blind (ratio 0.125, vs identity 0.376) -> it discards MORE direction than the raw contour, as expected from modulus+low-pass first-order dominance. Remedy: appended signed net slope (rule-1) for the head-to-head purity run, making the encode direction-SENSITIVE (up/down sweeps now differ); this does NOT clear the strict decile bar for a documented GEOMETRIC reason that also defeats the antisymmetric-contour remedy AND even the raw-contour identity: a curve and its mirror are separated by 2||v|| while the 90th-pct inter-call separation exceeds 2*median||v|| whenever the direction-feature population has spread. So reversal is HANDLED+CHARACTERIZED, not unhandled.",
+    "passed_after_direction": false,
+    "self_reverse_median_after_direction": 2.04205421944396,
+    "decile_threshold_after_direction": 5.652576697498182
+  },
+  "purity": {
+    "pooled_invariant": {
+      "chevron": [
+        0.23636363636363636,
+        0.18636363636363634,
+        0.2840909090909091
+      ],
+      "jump": [
+        0.5950980392156863,
+        0.5544117647058824,
+        0.6411887254901961
+      ],
+      "flat": [
+        0.37279999999999996,
+        0.3360000000000001,
+        0.41040000000000004
+      ],
+      "complex": [
+        0.30895522388059693,
+        0.26119402985074625,
+        0.35376865671641794
+      ],
+      "Noise": [
+        0.14242424242424245,
+        0.10905303030303029,
+        0.1787878787878788
+      ],
+      "Down-FM": [
+        0.2703703703703703,
+        0.22037037037037038,
+        0.31856481481481486
+      ],
+      "Up-FM": [
+        0.24814814814814812,
+        0.17027777777777778,
+        0.3333333333333333
+      ],
+      "Short": [
+        0.1791666666666666,
+        0.08749999999999998,
+        0.2916666666666667
+      ]
+    },
+    "pooled_sidechannel": {
+      "chevron": [
+        0.2431818181818182,
+        0.18863636363636366,
+        0.2909659090909091
+      ],
+      "jump": [
+        0.6078431372549019,
+        0.5671568627450981,
+        0.652450980392157
+      ],
+      "flat": [
+        0.3832,
+        0.3432,
+        0.42242
+      ],
+      "complex": [
+        0.3044776119402985,
+        0.2507462686567165,
+        0.3567164179104478
+      ],
+      "Noise": [
+        0.14393939393939398,
+        0.11060606060606061,
+        0.17727272727272728
+      ],
+      "Down-FM": [
+        0.287037037037037,
+        0.2388888888888889,
+        0.3388888888888889
+      ],
+      "Up-FM": [
+        0.21111111111111108,
+        0.14074074074074072,
+        0.2851851851851852
+      ],
+      "Short": [
+        0.19166666666666665,
+        0.09583333333333333,
+        0.2959374999999999
+      ]
+    },
+    "withinstratum_invariant": {
+      "chevron": [
+        0.3227272727272728,
+        0.23863636363636367,
+        0.4090909090909091
+      ],
+      "jump": [
+        0.6053921568627451,
+        0.5583210784313726,
+        0.6573529411764706
+      ],
+      "flat": [
+        0.42319999999999997,
+        0.37998,
+        0.46479999999999994
+      ],
+      "complex": [
+        0.3164179104477612,
+        0.2536940298507463,
+        0.3806343283582089
+      ],
+      "Noise": [
+        0.30606060606060603,
+        0.24393939393939396,
+        0.374280303030303
+      ],
+      "Down-FM": [
+        0.2351851851851852,
+        0.19259259259259257,
+        0.2796296296296296
+      ],
+      "Up-FM": [
+        0.20370370370370375,
+        0.13694444444444445,
+        0.27037037037037037
+      ],
+      "Short": [
+        0.18333333333333332,
+        0.10833333333333334,
+        0.2708333333333333
+      ]
+    },
+    "withinstratum_sidechannel": {
+      "chevron": [
+        0.3340909090909091,
+        0.24767045454545455,
+        0.425
+      ],
+      "jump": [
+        0.6161764705882352,
+        0.570575980392157,
+        0.665686274509804
+      ],
+      "flat": [
+        0.43040000000000006,
+        0.38797999999999994,
+        0.47441999999999995
+      ],
+      "complex": [
+        0.3164179104477612,
+        0.25070895522388065,
+        0.382089552238806
+      ],
+      "Noise": [
+        0.3,
+        0.23787878787878788,
+        0.3667045454545454
+      ],
+      "Down-FM": [
+        0.24259259259259258,
+        0.20185185185185184,
+        0.2851851851851852
+      ],
+      "Up-FM": [
+        0.1703703703703704,
+        0.11481481481481483,
+        0.22962962962962963
+      ],
+      "Short": [
+        0.1708333333333333,
+        0.09583333333333333,
+        0.25833333333333336
+      ]
+    }
+  },
+  "k_sweep": {
+    "1": {
+      "chevron": 0.20454545454545456,
+      "jump": 0.6568627450980392,
+      "flat": 0.376,
+      "complex": 0.22388059701492538,
+      "Noise": 0.18181818181818182,
+      "Down-FM": 0.2777777777777778,
+      "Up-FM": 0.3333333333333333,
+      "Short": 0.25
+    },
+    "5": {
+      "chevron": 0.24545454545454543,
+      "jump": 0.6000000000000001,
+      "flat": 0.4048,
+      "complex": 0.28955223880597014,
+      "Noise": 0.17272727272727273,
+      "Down-FM": 0.2740740740740741,
+      "Up-FM": 0.2814814814814815,
+      "Short": 0.26666666666666666
+    },
+    "15": {
+      "chevron": 0.2212121212121212,
+      "jump": 0.5807189542483661,
+      "flat": 0.3616000000000001,
+      "complex": 0.2925373134328358,
+      "Noise": 0.13131313131313133,
+      "Down-FM": 0.2641975308641975,
+      "Up-FM": 0.24197530864197533,
+      "Short": 0.14166666666666666
+    }
+  },
+  "param_sweep": [
+    {
+      "J": 4,
+      "Q": 1,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.15227272727272725,
+        "jump": 0.5568627450980392,
+        "flat": 0.35359999999999997,
+        "complex": 0.33432835820895523
+      }
+    },
+    {
+      "J": 4,
+      "Q": 1,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.20681818181818182,
+        "jump": 0.5549019607843138,
+        "flat": 0.36719999999999997,
+        "complex": 0.24776119402985078
+      }
+    },
+    {
+      "J": 4,
+      "Q": 1,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1340909090909091,
+        "jump": 0.5725490196078431,
+        "flat": 0.34559999999999996,
+        "complex": 0.3537313432835821
+      }
+    },
+    {
+      "J": 4,
+      "Q": 1,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.17045454545454544,
+        "jump": 0.5651960784313724,
+        "flat": 0.3752,
+        "complex": 0.2791044776119403
+      }
+    },
+    {
+      "J": 4,
+      "Q": 1,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.15227272727272725,
+        "jump": 0.5568627450980392,
+        "flat": 0.35359999999999997,
+        "complex": 0.33432835820895523
+      }
+    },
+    {
+      "J": 4,
+      "Q": 1,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.20681818181818182,
+        "jump": 0.5549019607843138,
+        "flat": 0.36719999999999997,
+        "complex": 0.24776119402985078
+      }
+    },
+    {
+      "J": 4,
+      "Q": 2,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.15227272727272728,
+        "jump": 0.5352941176470588,
+        "flat": 0.36319999999999997,
+        "complex": 0.3328358208955224
+      }
+    },
+    {
+      "J": 4,
+      "Q": 2,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2159090909090909,
+        "jump": 0.5411764705882354,
+        "flat": 0.36879999999999996,
+        "complex": 0.24477611940298505
+      }
+    },
+    {
+      "J": 4,
+      "Q": 2,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.14772727272727273,
+        "jump": 0.5607843137254902,
+        "flat": 0.36319999999999997,
+        "complex": 0.31343283582089554
+      }
+    },
+    {
+      "J": 4,
+      "Q": 2,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.21363636363636365,
+        "jump": 0.55,
+        "flat": 0.36079999999999995,
+        "complex": 0.24477611940298505
+      }
+    },
+    {
+      "J": 4,
+      "Q": 2,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.15227272727272728,
+        "jump": 0.5352941176470588,
+        "flat": 0.36319999999999997,
+        "complex": 0.3328358208955224
+      }
+    },
+    {
+      "J": 4,
+      "Q": 2,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2159090909090909,
+        "jump": 0.5411764705882354,
+        "flat": 0.36879999999999996,
+        "complex": 0.24477611940298505
+      }
+    },
+    {
+      "J": 4,
+      "Q": 3,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1477272727272727,
+        "jump": 0.5259803921568628,
+        "flat": 0.3608,
+        "complex": 0.2985074626865672
+      }
+    },
+    {
+      "J": 4,
+      "Q": 3,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.20909090909090908,
+        "jump": 0.5338235294117647,
+        "flat": 0.36479999999999996,
+        "complex": 0.22985074626865673
+      }
+    },
+    {
+      "J": 4,
+      "Q": 3,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1477272727272727,
+        "jump": 0.5362745098039216,
+        "flat": 0.35600000000000004,
+        "complex": 0.291044776119403
+      }
+    },
+    {
+      "J": 4,
+      "Q": 3,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.20227272727272727,
+        "jump": 0.5470588235294118,
+        "flat": 0.36479999999999996,
+        "complex": 0.23432835820895526
+      }
+    },
+    {
+      "J": 4,
+      "Q": 3,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1477272727272727,
+        "jump": 0.5259803921568628,
+        "flat": 0.3608,
+        "complex": 0.2985074626865672
+      }
+    },
+    {
+      "J": 4,
+      "Q": 3,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.20909090909090908,
+        "jump": 0.5338235294117647,
+        "flat": 0.36479999999999996,
+        "complex": 0.22985074626865673
+      }
+    },
+    {
+      "J": 5,
+      "Q": 1,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.16363636363636364,
+        "jump": 0.5676470588235294,
+        "flat": 0.3408,
+        "complex": 0.3208955223880597
+      }
+    },
+    {
+      "J": 5,
+      "Q": 1,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1909090909090909,
+        "jump": 0.5720588235294117,
+        "flat": 0.3751999999999999,
+        "complex": 0.2761194029850746
+      }
+    },
+    {
+      "J": 5,
+      "Q": 1,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.16363636363636364,
+        "jump": 0.5676470588235294,
+        "flat": 0.3408,
+        "complex": 0.3208955223880597
+      }
+    },
+    {
+      "J": 5,
+      "Q": 1,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1909090909090909,
+        "jump": 0.5720588235294117,
+        "flat": 0.3751999999999999,
+        "complex": 0.2761194029850746
+      }
+    },
+    {
+      "J": 5,
+      "Q": 1,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1636363636363636,
+        "jump": 0.5583333333333333,
+        "flat": 0.3584,
+        "complex": 0.29253731343283584
+      }
+    },
+    {
+      "J": 5,
+      "Q": 1,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.24318181818181814,
+        "jump": 0.571078431372549,
+        "flat": 0.37520000000000003,
+        "complex": 0.2507462686567164
+      }
+    },
+    {
+      "J": 5,
+      "Q": 2,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2,
+        "jump": 0.5602941176470588,
+        "flat": 0.3551999999999999,
+        "complex": 0.291044776119403
+      }
+    },
+    {
+      "J": 5,
+      "Q": 2,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.225,
+        "jump": 0.5568627450980393,
+        "flat": 0.35760000000000003,
+        "complex": 0.24776119402985072
+      }
+    },
+    {
+      "J": 5,
+      "Q": 2,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2,
+        "jump": 0.5602941176470588,
+        "flat": 0.3551999999999999,
+        "complex": 0.291044776119403
+      }
+    },
+    {
+      "J": 5,
+      "Q": 2,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.225,
+        "jump": 0.5568627450980393,
+        "flat": 0.35760000000000003,
+        "complex": 0.24776119402985072
+      }
+    },
+    {
+      "J": 5,
+      "Q": 2,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2113636363636364,
+        "jump": 0.5455882352941176,
+        "flat": 0.3656,
+        "complex": 0.26716417910447765
+      }
+    },
+    {
+      "J": 5,
+      "Q": 2,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2295454545454545,
+        "jump": 0.5544117647058824,
+        "flat": 0.3655999999999999,
+        "complex": 0.23283582089552238
+      }
+    },
+    {
+      "J": 5,
+      "Q": 3,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.16136363636363635,
+        "jump": 0.5509803921568627,
+        "flat": 0.36000000000000004,
+        "complex": 0.2522388059701493
+      }
+    },
+    {
+      "J": 5,
+      "Q": 3,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.21136363636363634,
+        "jump": 0.5602941176470588,
+        "flat": 0.3624,
+        "complex": 0.24776119402985078
+      }
+    },
+    {
+      "J": 5,
+      "Q": 3,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.16136363636363635,
+        "jump": 0.5509803921568627,
+        "flat": 0.36000000000000004,
+        "complex": 0.2522388059701493
+      }
+    },
+    {
+      "J": 5,
+      "Q": 3,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.21136363636363634,
+        "jump": 0.5602941176470588,
+        "flat": 0.3624,
+        "complex": 0.24776119402985078
+      }
+    },
+    {
+      "J": 5,
+      "Q": 3,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.15,
+        "jump": 0.5392156862745098,
+        "flat": 0.3544,
+        "complex": 0.264179104477612
+      }
+    },
+    {
+      "J": 5,
+      "Q": 3,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.24545454545454543,
+        "jump": 0.553921568627451,
+        "flat": 0.3736,
+        "complex": 0.2343283582089552
+      }
+    },
+    {
+      "J": 6,
+      "Q": 1,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.19772727272727275,
+        "jump": 0.5936274509803922,
+        "flat": 0.3528,
+        "complex": 0.3029850746268657
+      }
+    },
+    {
+      "J": 6,
+      "Q": 1,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2113636363636364,
+        "jump": 0.5872549019607843,
+        "flat": 0.36319999999999997,
+        "complex": 0.2417910447761194
+      }
+    },
+    {
+      "J": 6,
+      "Q": 1,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2340909090909091,
+        "jump": 0.5799019607843137,
+        "flat": 0.3528,
+        "complex": 0.3059701492537314
+      }
+    },
+    {
+      "J": 6,
+      "Q": 1,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2113636363636364,
+        "jump": 0.5789215686274509,
+        "flat": 0.3808,
+        "complex": 0.2686567164179105
+      }
+    },
+    {
+      "J": 6,
+      "Q": 1,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2136363636363636,
+        "jump": 0.5607843137254902,
+        "flat": 0.36319999999999986,
+        "complex": 0.291044776119403
+      }
+    },
+    {
+      "J": 6,
+      "Q": 1,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.22954545454545458,
+        "jump": 0.5686274509803922,
+        "flat": 0.38320000000000004,
+        "complex": 0.24477611940298505
+      }
+    },
+    {
+      "J": 6,
+      "Q": 2,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1909090909090909,
+        "jump": 0.5872549019607843,
+        "flat": 0.3728,
+        "complex": 0.23731343283582096
+      }
+    },
+    {
+      "J": 6,
+      "Q": 2,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.22727272727272732,
+        "jump": 0.5936274509803923,
+        "flat": 0.3664,
+        "complex": 0.2283582089552239
+      }
+    },
+    {
+      "J": 6,
+      "Q": 2,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2318181818181818,
+        "jump": 0.5681372549019609,
+        "flat": 0.3768,
+        "complex": 0.23134328358208958
+      }
+    },
+    {
+      "J": 6,
+      "Q": 2,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.22954545454545452,
+        "jump": 0.5833333333333334,
+        "flat": 0.372,
+        "complex": 0.21492537313432836
+      }
+    },
+    {
+      "J": 6,
+      "Q": 2,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2295454545454545,
+        "jump": 0.553921568627451,
+        "flat": 0.38079999999999997,
+        "complex": 0.22686567164179106
+      }
+    },
+    {
+      "J": 6,
+      "Q": 2,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.24318181818181817,
+        "jump": 0.5656862745098039,
+        "flat": 0.3696,
+        "complex": 0.21044776119402986
+      }
+    },
+    {
+      "J": 6,
+      "Q": 3,
+      "T": null,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.1886363636363636,
+        "jump": 0.5740196078431373,
+        "flat": 0.3624,
+        "complex": 0.22388059701492535
+      }
+    },
+    {
+      "J": 6,
+      "Q": 3,
+      "T": null,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.22727272727272727,
+        "jump": 0.5848039215686275,
+        "flat": 0.37679999999999997,
+        "complex": 0.20298507462686569
+      }
+    },
+    {
+      "J": 6,
+      "Q": 3,
+      "T": 32,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2113636363636364,
+        "jump": 0.5632352941176471,
+        "flat": 0.38159999999999994,
+        "complex": 0.21791044776119403
+      }
+    },
+    {
+      "J": 6,
+      "Q": 3,
+      "T": 32,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.23863636363636365,
+        "jump": 0.573529411764706,
+        "flat": 0.37839999999999996,
+        "complex": 0.20895522388059704
+      }
+    },
+    {
+      "J": 6,
+      "Q": 3,
+      "T": 16,
+      "drop_order0": true,
+      "d": 40,
+      "purity": {
+        "chevron": 0.21363636363636365,
+        "jump": 0.5485294117647058,
+        "flat": 0.37679999999999997,
+        "complex": 0.2328358208955224
+      }
+    },
+    {
+      "J": 6,
+      "Q": 3,
+      "T": 16,
+      "drop_order0": false,
+      "d": 40,
+      "purity": {
+        "chevron": 0.2659090909090909,
+        "jump": 0.5583333333333333,
+        "flat": 0.37599999999999995,
+        "complex": 0.20746268656716418
+      }
+    }
+  ],
+  "best_config": {
+    "J": 6,
+    "Q": 1,
+    "T": 32,
+    "drop_order0": true,
+    "d": 40,
+    "purity": {
+      "chevron": 0.2340909090909091,
+      "jump": 0.5799019607843137,
+      "flat": 0.3528,
+      "complex": 0.3059701492537314
+    }
+  },
+  "vs_softdtw_pooled_invariant": {
+    "chevron": "ties",
+    "jump": "ties",
+    "flat": "ties",
+    "complex": "ties",
+    "Noise": "ties"
+  },
+  "vs_identity_pooled_invariant": {
+    "chevron": "ties",
+    "jump": "beats",
+    "flat": "ties",
+    "complex": "beats",
+    "Noise": "ties"
+  },
+  "soft_dtw_bar_pooled_invariant": {
+    "chevron": [
+      0.21363636363636365,
+      0.168125,
+      0.26136363636363635
+    ],
+    "jump": [
+      0.5220588235294118,
+      0.47988970588235297,
+      0.5696200980392158
+    ],
+    "flat": [
+      0.39599999999999996,
+      0.36158,
+      0.4328
+    ],
+    "complex": [
+      0.24328358208955225,
+      0.1985074626865672,
+      0.2835820895522388
+    ],
+    "Noise": [
+      0.1893939393939394,
+      0.14541666666666667,
+      0.2333712121212121
+    ]
+  },
+  "prediction_held": "PARTIALLY HELD: competitive with soft-DTW overall (0/4 primaries lose, non-overlapping); BEATS the registration incumbent on ['jump', 'complex'] (non-overlapping); does NOT win soft-DTW on Noise (only ties); does NOT win soft-DTW on jump (only ties). vs soft-DTW(pooled_inv)={'chevron': 'ties', 'jump': 'ties', 'flat': 'ties', 'complex': 'ties', 'Noise': 'ties'}; vs identity={'chevron': 'ties', 'jump': 'beats', 'flat': 'ties', 'complex': 'beats', 'Noise': 'ties'}.",
+  "notes": "Scattering1D (kymatio torch-CPU) on the pitch-normalized registered ridge, cubic-spline upsampled 50->256. RESOLUTION CAVEAT: the 256 support is spline interpolation of 50 knots -> adds NO information, only scale-ladder support. Pipeline: scatter -> drop order-0 (re-encodes windowed mean) -> log1p -> per-feature z-score -> PCA(40) -> kNN. scale_invariant=False (modulation depth kept). Reversal: scattering is translation- but NOT reversal-invariant when T<length (T_out>1 time bins retained), so it PASSES natively. within-stratum field = cohort (4 levels), matching the loader (handoff's lab-only claim is stale). PCA features are O(1)-scale so the z-scored side-channels meaningfully participate in the sidechannel settings."
+}

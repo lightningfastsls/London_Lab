@@ -1,0 +1,90 @@
+{
+  "title": "Module 18.4 — DANN Cage-Invariance: Rig Execution & Evaluation",
+  "subtitle": "2026-05-26 · executed docs/handoffs/2026-05-26_module-18.4-dann-rig.md (rsync → GPU train → 3 gates + 844 eval)",
+  "status": "complete",
+  "headline": {
+    "lead": "The DANN v2 classifier failed all three ship gates plus the real-world 844 check. The adversary never learned to discriminate cage, so cage information was fully retained while syllable accuracy collapsed — the worst-of-both-worlds outcome.",
+    "verdict": "DO_NOT_SHIP",
+    "summary": "Cage probe 1.00 (need <0.65), syllable macro-F1 0.636 test (−0.131 vs v1, tripwire 0.05), VAE re-run FAIL on 3/4 criteria, and the held-out 844 set shows 15.8% noise recall (degenerate, near 'always-usv'). This is a STOP per ROADMAP §18.4 exit criteria, not a ship.",
+    "tone": "bad"
+  },
+  "sections": [
+    {
+      "id": "verdict",
+      "title": "Ship gates — all FAILED",
+      "body": "All three ROADMAP §18.4 gates must pass to ship. None did. The training script wrote its own `DO NOT SHIP` verdict to `comparison_v1_vs_v2.md`.",
+      "table": {
+        "columns": ["Gate", "v1 (18.3)", "v2 (DANN)", "Threshold", "Result"],
+        "rows": [
+          {"Gate": "Linear cage probe", "v1 (18.3)": "—", "v2 (DANN)": "1.0000", "Threshold": "< 0.65", "Result": "FAIL"},
+          {"Gate": "Syllable macro-F1 (test)", "v1 (18.3)": "0.7669", "v2 (DANN)": "0.6359", "Threshold": "≥ v1−0.05 (0.7169)", "Result": "FAIL (−0.131)"},
+          {"Gate": "Syllable macro-F1 (val)", "v1 (18.3)": "0.7693", "v2 (DANN)": "0.6649", "Threshold": "—", "Result": "—"},
+          {"Gate": "VAE re-run (encoder features)", "v1 (18.3)": "—", "v2 (DANN)": "FAIL 3/4", "Threshold": "all 4 pass", "Result": "FAIL"}
+        ],
+        "align": {"v1 (18.3)": "right", "v2 (DANN)": "right"}
+      }
+    },
+    {
+      "id": "rootcause",
+      "title": "Root cause — the adversary never learned",
+      "body": "The failure signature is diagnostic and rules out the ROADMAP's first-suggested fix.\n\n- **Worst-of-both-worlds:** syllable F1 dropped 0.13 **and** cage stayed perfectly decodable (probe = 1.00). A *too-aggressive* λ would push the cage probe **down** (encoder over-erasing); instead the cage was fully retained — so the adversary didn't over-work, it **didn't work at all**.\n- **Smoking gun:** `domain_loss` sat flat at ~1.39 the entire run and never declined — ≈ chance for the 2-cage discriminator. The in-loop domain head never learned to separate lab from vocalmat **even though the features are perfectly separable** (the post-hoc linear probe nails them at 1.00, and the VAE re-run shows knn 0.98 / PC1 d=1.87 / per-dim d=3.31).\n- **Implication:** an adversary stuck at chance sends the encoder no useful gradient, so cage info is never removed; the F1 loss is collateral perturbation from the noisy domain term at `lr=1e-3`. Therefore *slower ramp / lower γ* (ROADMAP's levers) would make an already-ineffective adversary **weaker** — wrong direction. The real lever is getting the domain head to actually train (its own optimizer / LR, domain-loss weight, per-batch domain balance).",
+      "image": "results/lab_classifier_v2/confusion_matrix.png"
+    },
+    {
+      "id": "vae",
+      "title": "VAE falsifiable re-run on encoder features",
+      "body": "The strongest cage gate: tests invariance of the *learned* features after adversarial training. Cage structure is overwhelming.",
+      "table": {
+        "columns": ["Test", "Value", "Threshold", "Pass"],
+        "rows": [
+          {"Test": "knn_same_cohort_rate", "Value": "0.9817", "Threshold": "< 0.85", "Pass": "FAIL"},
+          {"Test": "pca_pc1_cohens_d", "Value": "1.8710", "Threshold": "< 1.50", "Pass": "FAIL"},
+          {"Test": "per_dimension_max_cohens_d", "Value": "3.3068", "Threshold": "< 0.30", "Pass": "FAIL"},
+          {"Test": "notch_injection_migration", "Value": "0.0190", "Threshold": "< 0.30", "Pass": "PASS"}
+        ],
+        "align": {"Value": "right"}
+      }
+    },
+    {
+      "id": "heldout",
+      "title": "Held-out 844 — real-world usv/noise (bonus, new evaluator)",
+      "body": "Built a real patch-loading evaluator (`scripts/evaluate_held_out_844.py`, new — the `training.py` placeholder is on the do-not-touch list). The model is effectively **noise-blind**: it labels 817 of 844 patches 'usv'. Pooled accuracy (0.856) sits barely above the trivial 'always-usv' baseline (0.835) — exactly why per-class reporting was mandated.",
+      "table": {
+        "columns": ["Class", "Recall", "Precision", "F1"],
+        "rows": [
+          {"Class": "noise (recall = specificity)", "Recall": "0.1583", "Precision": "0.8148", "F1": "0.2651"},
+          {"Class": "usv (recall = sensitivity)", "Recall": "0.9929", "Precision": "0.8568", "F1": "0.9198"},
+          {"Class": "Balanced accuracy", "Recall": "0.5756", "Precision": "—", "F1": "—"},
+          {"Class": "Macro-F1 (binary)", "Recall": "0.5925", "Precision": "—", "F1": "—"}
+        ],
+        "align": {"Recall": "right", "Precision": "right", "F1": "right"}
+      }
+    },
+    {
+      "id": "datapath",
+      "title": "How we got the data onto the rig (the link saga)",
+      "body": "The source domain (VocalMat, 633 MB) + manifests + `domain_unlabeled.csv` were already on the rig; only the 17 GB / 225K lab target patches were missing.\n\n- **box→rig link is ~0.5–0.74 MB/s** (Tailscale relay; a restart didn't establish a direct path — NAT traversal failed). Full push would have been ~6.6 hr.\n- **Decision (user):** subsample the DANN target to **20,000 lab patches** (seed=42, all 83 lab recordings represented) — ~1.5 GB, ~34 min. Defensible: the script supports `--max-target-samples`, and 20K richly characterizes the lab cage vs the ~12K VocalMat source. The probe=1.00 failure is not a sample-size artifact.\n- **GPU contention:** the rig's 4× 3060 Ti were saturated by `docker` llama-server containers (root-owned; a bare `kill` respawned them). Freed GPUs 2 & 3 via `docker stop llama-large` (worked as `shachar`, no sudo). Left the user's contour-VAE (GPU 0, detached) and the embedding service untouched. Trained on GPU 2.\n- **Warm-start verified faithful:** v1→ResNet18DANN reproduced VocalMat val F1 = 0.7693 exactly (no head-mapping bug)."
+    }
+  ],
+  "deferred": [
+    {"title": "Debug the domain-head optimization (next experiment)", "body": "The `domain_loss`-flat-at-chance signature points at the adversary's optimization, not the λ schedule. Inspect the adversarial loop in `train_lab_classifier_v2.py`: give the domain head its own optimizer / higher LR or a domain-loss weight; verify per-batch domain balance (source+target both present each step); confirm gradient actually flows into the domain head. See successor handoff."},
+    {"title": "Alternative levers if debug doesn't fix it", "body": "Per-recording domain granularity (richer adversarial signal than 2-cage); or pivot to CDAN/DSAN; or accept that labeled lab data is required (prior VocalMat→ours κ=0.13 is also a duration/repertoire gap DANN cannot close)."},
+    {"title": "Full 225K target re-run (optional)", "body": "If a working adversary is achieved on the 20K subset, optionally re-run on the full 225K target for the canonical result — but only worth the ~6.6 hr transfer once the method is shown to work."}
+  ],
+  "files": [
+    {"path": "results/lab_classifier_v2/metrics.json", "note": "v2 metrics: macro_f1_val 0.6649, test 0.6359, cage_probe_acc 1.0, per-class"},
+    {"path": "results/lab_classifier_v2/comparison_v1_vs_v2.md", "note": "auto verdict: DO NOT SHIP (collapse + cage gate fail)"},
+    {"path": "results/lab_classifier_v2/cage_invariance_probe.md", "note": "VAE re-run: FAIL 3/4 (knn 0.98, PC1 d=1.87, per-dim d=3.31)"},
+    {"path": "results/lab_classifier_v2/held_out_844_eval.md", "note": "844 per-class: noise recall 0.158, balanced acc 0.576"},
+    {"path": "results/lab_classifier_v2/held_out_844_eval.json", "note": "machine-readable 844 metrics + 12-class breakdown"},
+    {"path": "results/lab_classifier_v2/confusion_matrix.png", "note": "12-class confusion on VocalMat test"},
+    {"path": "scripts/evaluate_held_out_844.py", "note": "NEW evaluator (additive; per-class, not pooled). py_compile + metrics unit-tested"},
+    {"path": "logs/v2_train.log", "note": "50-epoch run log (early-stopped epoch 11); domain_loss flat ~1.39"},
+    {"path": "rig:/data/mickey_london_lab/results/lab_classifier_v2/best.pt", "note": "45 MB v2 checkpoint — left on rig (failed model; not pulled)"}
+  ],
+  "next_handoff": {
+    "title": "Successor: debug the DANN domain-head optimization",
+    "path": "docs/handoffs/2026-05-26_module-18.4-dann-debug-adversary.md",
+    "body": "PLACEHOLDER — replaced by the Write call in step 5."
+  }
+}

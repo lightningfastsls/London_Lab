@@ -1,0 +1,138 @@
+==============================================================================
+WS-D — Soft archetypes (archetypal analysis on elastic-FPCA shape coords)
+==============================================================================
+PARAMETERS
+  features (8)         : ['amp_pc1', 'amp_pc2', 'amp_pc3', 'amp_pc4', 'amp_pc5', 'phase_pc1', 'phase_pc2', 'phase_pc3']
+  K sweep              : [3, 4, 5, 6, 8, 10, 12]
+  delta (PCHA)         : 0.0  (0 = standard AA, hull archetypes)
+  PCHA maxiter         : 120
+  standardisation      : pooled z-score (per-feature mean/std)
+  archetype fit set    : 8000 calls (random subsample)
+  membership scoring   : full corpus projected onto fitted archetypes (NNLS, sum=1)
+  stability resamples  : 10 per K
+  stability subsample  : 5000 calls (no replacement)
+  bootstrap draws (CI) : 1000
+  CI alpha             : 0.05
+  seed                 : 0
+  pitch col            : principal_freq_hz   duration col: call_length_s
+  output dir           : /home/shachar/projects/mickey_london_lab/results/ws_d_archetypes
+
+DATA
+  total calls (deduped): 47026
+  per-cohort           : {'3452': 306, '5970': 7064, '9252': 497, 'lab_131204': 39159}
+  strata               : lab=('lab_131204',)  wild(noise floor)=('5970', '3452', '9252')
+  feature means (raw)  : {'amp_pc1': np.float64(1.57), 'amp_pc2': np.float64(0.3), 'amp_pc3': np.float64(-0.48), 'amp_pc4': np.float64(0.37), 'amp_pc5': np.float64(-1.21), 'phase_pc1': np.float64(-0.06), 'phase_pc2': np.float64(0.02), 'phase_pc3': np.float64(-0.06)}
+  feature std  (raw)   : {'amp_pc1': np.float64(17.64), 'amp_pc2': np.float64(12.15), 'amp_pc3': np.float64(12.04), 'amp_pc4': np.float64(10.67), 'amp_pc5': np.float64(11.07), 'phase_pc1': np.float64(1.09), 'phase_pc2': np.float64(1.0), 'phase_pc3': np.float64(0.78)}
+  fit subsample n      : 8000 (cohort mix: {'3452': 56, '5970': 1211, '9252': 89, 'lab_131204': 6644})
+
+K-SWEEP (archetypes fit on subsample; memberships projected onto FULL corpus)
+    K  varexpl_fit   R2_full  stability
+    3       0.3998    0.3999     0.9723
+    4       0.5424    0.5391     0.9544
+    5       0.6326    0.6293     0.7896
+    6       0.7127    0.7094     0.8919
+    8       0.7906    0.7873     0.7777
+   10       0.8336    0.8303     0.7515
+   12       0.8644    0.8615     0.7161
+
+  marginal R² gain per added archetype:
+    K  3-> 4: ΔR²=+0.1392  (per-K +0.1392)
+    K  4-> 5: ΔR²=+0.0902  (per-K +0.0902)
+    K  5-> 6: ΔR²=+0.0801  (per-K +0.0801)
+    K  6-> 8: ΔR²=+0.0779  (per-K +0.0389)
+    K  8->10: ΔR²=+0.0430  (per-K +0.0215)
+    K 10->12: ΔR²=+0.0312  (per-K +0.0156)
+
+ARCHETYPE PROFILES @ K=5 (z-space)
+  A0 (mean-membership 0.249): [near-centroid] amp_pc4=−1.8σ, amp_pc3=+1.6σ, amp_pc5=+1.5σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.628 lab_131204          69.285714       0.002773  Cluster_1
+      0.866 lab_131204          61.328125       0.043520 Cluster_25
+      0.966       5970          82.386364       0.027720 Cluster_23
+  A1 (mean-membership 0.239): [mid] phase_pc3=−2.6σ, amp_pc5=−2.6σ, amp_pc4=+1.4σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.660 lab_131204          86.428571       0.013173 Cluster_20
+      0.696 lab_131204          85.483871       0.028700 Cluster_20
+      0.871 lab_131204          82.352941       0.036973 Cluster_11
+  A2 (mean-membership 0.244): [near-centroid] amp_pc3=−2.3σ, phase_pc2=+2.1σ, amp_pc5=+1.3σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.539 lab_131204          81.756757       0.055370  Cluster_4
+      0.679       5970          80.454545       0.055000 Cluster_15
+      0.792 lab_131204          72.222222       0.062253  Cluster_2
+  A3 (mean-membership 0.173): [high-|amp1|] amp_pc1=−1.9σ, amp_pc2=+1.8σ, phase_pc1=−1.8σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.818 lab_131204          54.032258        0.06006 Cluster_23
+      0.936 lab_131204          51.123596        0.09676 Cluster_18
+      1.062 lab_131204          72.146063        0.11115 Cluster_18
+  A4 (mean-membership 0.096): [high-|amp1|] amp_pc4=+4.5σ, phase_pc1=+2.3σ, amp_pc5=+2.2σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.977 lab_131204          77.707631       0.156233 Cluster_18
+      1.347 lab_131204          65.714286       0.070467  Cluster_3
+      1.383 lab_131204          65.550239       0.135893  Cluster_2
+
+PER-COHORT SIMPLEX @ K=5 (mean membership ± bootstrap 95% CI)
+  lab_131204   [LAB              ] n= 39159: A0=0.24[0.24,0.24] A1=0.25[0.25,0.25] A2=0.24[0.24,0.24] A3=0.17[0.17,0.18] A4=0.10[0.09,0.10]
+  5970         [WILD(noise-floor)] n=  7064: A0=0.30[0.30,0.31] A1=0.17[0.16,0.17] A2=0.25[0.25,0.25] A3=0.18[0.18,0.18] A4=0.10[0.10,0.10]
+  3452         [WILD(noise-floor)] n=   306: A0=0.23[0.21,0.25] A1=0.35[0.32,0.38] A2=0.27[0.25,0.29] A3=0.10[0.09,0.12] A4=0.04[0.03,0.05]
+  9252         [WILD(noise-floor)] n=   497: A0=0.25[0.23,0.27] A1=0.31[0.29,0.33] A2=0.28[0.26,0.30] A3=0.10[0.09,0.11] A4=0.06[0.05,0.07]
+
+ARCHETYPE PROFILES @ K=8 (z-space)
+  A0 (mean-membership 0.082): [high-|amp1|] phase_pc2=+2.0σ, phase_pc1=−1.9σ, amp_pc1=−1.9σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      1.335 lab_131204          71.098098       0.069300 Cluster_21
+      1.385 lab_131204          74.218750       0.037547 Cluster_19
+      1.389 lab_131204          79.044118       0.025650 Cluster_23
+  A1 (mean-membership 0.070): [high-|amp1|] amp_pc4=+5.4σ, amp_pc5=+3.6σ, amp_pc1=−1.9σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.636 lab_131204          61.315718       0.153327  Cluster_8
+      1.293 lab_131204          79.611875       0.091060 Cluster_23
+      1.303 lab_131204          55.208333       0.048480 Cluster_19
+  A2 (mean-membership 0.098): [mid] amp_pc2=−2.9σ, amp_pc4=−2.0σ, amp_pc5=+1.8σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.315 lab_131204          69.087838       0.074480  Cluster_5
+      1.798       5970          77.665302       0.114917 Cluster_18
+      1.857 lab_131204          66.351203       0.188600 Cluster_22
+  A3 (mean-membership 0.191): [mid] phase_pc3=−2.2σ, amp_pc5=−2.1σ, amp_pc4=+1.4σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.578 lab_131204          99.347826       0.020900 Cluster_20
+      0.632 lab_131204          53.378378       0.016527  Cluster_5
+      0.746 lab_131204          91.806723       0.016127 Cluster_20
+  A4 (mean-membership 0.140): [near-centroid] phase_pc1=+2.2σ, amp_pc3=−2.0σ, phase_pc3=−1.3σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.644 lab_131204          68.548387       0.054927  Cluster_2
+      0.678 lab_131204          82.983193       0.025960 Cluster_24
+      0.753 lab_131204          70.220588       0.038987 Cluster_16
+  A5 (mean-membership 0.170): [near-centroid] amp_pc3=+2.6σ, phase_pc3=+1.6σ, amp_pc5=+1.2σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.618 lab_131204          71.296296       0.069767  Cluster_1
+      0.712 lab_131204          60.786734       0.141370  Cluster_2
+      0.780       5970          64.836920       0.114800 Cluster_25
+  A6 (mean-membership 0.075): [high-|amp1|] amp_pc5=−4.3σ, phase_pc2=−2.1σ, amp_pc1=−1.9σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.000 lab_131204          50.485437       0.079267  Cluster_1
+      2.319       5970          48.214286       0.064573 Cluster_16
+      2.336 lab_131204          71.607538       0.133320  Cluster_3
+  A7 (mean-membership 0.173): [near-centroid] amp_pc2=+2.8σ, phase_pc2=+1.8σ, amp_pc3=−1.4σ
+ dist     cohort  principal_freq_hz  call_length_s      label
+      0.638       5970          77.258065       0.057493  Cluster_9
+      0.760 lab_131204          89.453125       0.044373 Cluster_18
+      0.871 lab_131204          76.655629       0.058000  Cluster_5
+
+PER-COHORT SIMPLEX @ K=8 (mean membership ± bootstrap 95% CI)
+  lab_131204   [LAB              ] n= 39159: A0=0.08[0.08,0.08] A1=0.07[0.07,0.07] A2=0.10[0.10,0.10] A3=0.20[0.20,0.20] A4=0.14[0.14,0.14] A5=0.16[0.16,0.16] A6=0.08[0.08,0.08] A7=0.17[0.17,0.17]
+  5970         [WILD(noise-floor)] n=  7064: A0=0.09[0.09,0.09] A1=0.07[0.06,0.07] A2=0.09[0.09,0.09] A3=0.12[0.12,0.13] A4=0.14[0.13,0.14] A5=0.23[0.23,0.24] A6=0.07[0.06,0.07] A7=0.19[0.19,0.20]
+  3452         [WILD(noise-floor)] n=   306: A0=0.04[0.03,0.05] A1=0.03[0.02,0.04] A2=0.06[0.05,0.07] A3=0.33[0.30,0.36] A4=0.14[0.12,0.16] A5=0.18[0.16,0.20] A6=0.04[0.03,0.05] A7=0.18[0.16,0.20]
+  9252         [WILD(noise-floor)] n=   497: A0=0.05[0.04,0.06] A1=0.04[0.03,0.05] A2=0.07[0.06,0.08] A3=0.28[0.26,0.30] A4=0.15[0.13,0.16] A5=0.19[0.17,0.20] A6=0.04[0.03,0.05] A7=0.19[0.17,0.20]
+
+FEATURE STABILITY ACROSS K (max |z| reached by ANY archetype at each K)
+  feature    K 3 K 4 K 5 K 6 K 8 K10 K12
+  amp_pc1    0.8 0.7 1.9 2.1 1.9 2.0 3.8
+  amp_pc2    2.2 3.1 1.8 2.8 2.9 3.3 2.9
+  amp_pc3    1.6 2.0 2.3 2.2 2.6 2.4 2.6
+  amp_pc4    1.5 1.8 4.5 4.7 5.4 5.3 5.0
+  amp_pc5    2.6 2.9 2.6 2.9 4.3 4.3 3.7
+  phase_pc1  1.0 2.3 2.3 1.9 2.2 2.5 2.6
+  phase_pc2  2.4 2.2 2.1 2.2 2.1 2.1 2.2
+  phase_pc3  2.6 2.7 2.6 2.2 2.2 2.3 3.2
+
+DONE in 189.4s. Report: /home/shachar/projects/mickey_london_lab/results/ws_d_archetypes/report.html

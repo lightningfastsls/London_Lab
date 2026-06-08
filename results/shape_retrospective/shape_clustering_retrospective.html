@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retrospective — Unsupervised shape clustering of USVs (chevron vs flat)</title>
+<style>
+  :root{--bg:#0f1115;--card:#181b22;--ink:#e8eaed;--mut:#9aa3ad;--acc:#5fb3f3;--good:#5fd38b;--warn:#f0c560;--bad:#ef6f6f;--line:#2a2f38}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1000px;margin:0 auto;padding:32px 22px 80px}
+  h1{font-size:26px;line-height:1.25;margin:0 0 6px}
+  h2{font-size:20px;margin:34px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
+  h3{font-size:16px;margin:20px 0 6px;color:var(--acc)}
+  .sub{color:var(--mut);margin:0 0 18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .kpi{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+  .kpi div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;flex:1;min-width:155px}
+  .kpi b{display:block;font-size:22px} .kpi span{color:var(--mut);font-size:12px}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:#1f2530} tr:nth-child(even) td{background:#14171d}
+  code{background:#11141a;border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:13px}
+  .tag{display:inline-block;font-size:11px;font-weight:600;border-radius:20px;padding:2px 9px;margin-right:6px}
+  .t-good{background:rgba(95,211,139,.16);color:var(--good)}
+  .t-warn{background:rgba(240,197,96,.16);color:var(--warn)}
+  .t-bad{background:rgba(239,111,111,.16);color:var(--bad)}
+  .t-mut{background:rgba(154,163,173,.16);color:var(--mut)}
+  .good{color:var(--good)} .warn{color:var(--warn)} .bad{color:var(--bad)} .mut{color:var(--mut)}
+  ul{margin:8px 0 8px 0;padding-left:20px} li{margin:5px 0}
+  .lead{font-size:16px;border-left:3px solid var(--acc);padding-left:14px;margin:14px 0}
+  .retract{border-left:3px solid var(--bad);background:rgba(239,111,111,.07);padding:12px 14px;border-radius:8px;margin:14px 0}
+  .above{color:var(--good);font-weight:600} .at{color:var(--warn)} .below{color:var(--bad)}
+  footer{color:var(--mut);font-size:12px;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
+</style></head>
+<body><div class="wrap">
+
+<h1>What we could have done better: unsupervised shape clustering of USVs</h1>
+<p class="sub">Goal — <em>"finally get an unsupervised algorithm to cluster USVs that are geometrically close:
+chevron with chevron, jump with jump, flat with flat, invariant to absolute pitch and time."</em>
+&nbsp;·&nbsp; 2026-06-02 &nbsp;·&nbsp; doc review + 35-agent verification workflow + fresh empirical probes,
+scored against the <b>real 204-row human gold set</b> (not the heuristic).</p>
+
+<div class="lead">
+<b>Bottom line.</b> The single biggest thing we could have done better was <b>measure honestly</b>. The whole
+multi-month bake-off was graded by <code>shape η²</code> against the <code>chevron_valley</code> <em>heuristic</em>
+— a rule computed from the very ridge that registration's KMeans optimizes (doubly circular) — while a
+<b>204-row human-labeled gold set sat unused in the repo</b>. When you finally score against the humans, the
+celebrated registration "win" (η² 0.58–0.75) is far more modest: it groups <b>chevron and flat</b> at ~2–3× base
+rate, but <b>jump and complex sit at chance</b>, and the heuristic everyone optimized agrees with humans at only
+<b>precision 0.30 / recall 0.56</b>. The misses were a <em>measurement</em> failure and <em>one untried classical
+method family</em> — <span class="mut">not</span> "we should have trained the encoder harder" (that is genuinely dead).
+</div>
+
+<div class="retract">
+<b>⚠ Correction to this report's own first draft (kept for honesty).</b> An earlier version of this page claimed
+chevron is recoverable at <b>0.84</b> and that "~50 labels solves it." Those numbers were measured against the
+<code>chevron_valley</code> <em>heuristic</em> — the exact circular metric this report criticizes. Re-scored against
+the <b>human</b> labels, the real chevron kNN purity is <b>0.36</b> (vs 0.14 base), and the supervised "ceiling"
+claim is withdrawn (the heuristic is only a 0.30-precision proxy for human chevrons, so predicting it ≠ predicting
+shape). The verification workflow caught this; the corrected numbers are below.
+</div>
+
+<div class="kpi">
+  <div><b class="above">0.33 → 0.45</b><span>human <b>jump</b> purity, Euclidean(registration) → <b>elastic DTW</b> — the untried lever, now tested, works</span></div>
+  <div><b class="above">0.36 / 0.39</b><span>human chevron kNN purity — registration / SRVF (base 0.14) → ~2.6×, real but modest</span></div>
+  <div><b class="warn">0.30 / 0.56</b><span>precision / recall of the <code>chevron_valley</code> heuristic vs humans — a blurry target</span></div>
+  <div><b class="bad">+0.001</b><span>learned encoder vs random (Phase-0a) — 2-D VAE family is genuinely dead</span></div>
+</div>
+
+<h2>1 · The paradox — the goal was "met" by preprocessing, but only on a circular metric</h2>
+<div class="card">
+<p>The shipped winner is <b>registration → KMeans</b> (<code>models/shape_kmeans/k20.joblib</code>, rig): take the
+1-D peak-frequency ridge F(t), subtract its mean (kill pitch), resample the active span to 50 points (kill
+duration/position), KMeans(20). It is <b>pure DSP normalization</b> — the invariances the user asked for are
+hard-coded into preprocessing; KMeans does what a human could do with a ruler. It scores shape η² <b>0.58–0.75</b>
+and beat every learned encoder:</p>
+<table>
+<thead><tr><th>Attempt</th><th>Substrate</th><th>shape η²</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td>Registration → KMeans</td><td>1-D registered ridge</td><td>0.58–0.75</td><td><span class="tag t-good">SHIPPED</span></td></tr>
+<tr><td>M9 — 1-D contrastive (NT-Xent + elastic-warp aug)</td><td>registered ridge</td><td>0.34</td><td><span class="tag t-bad">best learned, lost</span></td></tr>
+<tr><td>Production contour-VAE K20</td><td>2-D image</td><td>0.12</td><td><span class="tag t-bad">pitch/dur sorter</span></td></tr>
+<tr><td>B+A hybrid · denoised retrain · Pathway-B · M10</td><td>2-D image</td><td>0.105 → 0.009</td><td><span class="tag t-bad">KILL ×4</span></td></tr>
+</tbody></table>
+<p><b>But shape η² is doubly circular.</b> It is defined as <code>1 − within_SS/total_SS</code> on the registered
+ridge — the <em>exact vectors registration's KMeans minimizes variance over</em> — and the chevron label it's
+checked against (<code>chevron_valley</code>) is itself a <code>&gt;2&nbsp;kHz</code> argmax/argmin rule on that
+same ridge. So the metric is "KMeans scored against a function of its own input." It structurally cannot credit any
+method that reorganizes the space, and it inflates registration's apparent dominance. <span class="mut">Sources:
+<code>archive/cleaning_legacy/stack3/scripts/shape_registered_clustering.py:129</code>;
+<code>docs/handoffs/2026-06-02_shape-vae-family-CLOSED.md</code>.</span></p>
+</div>
+
+<h2>2 · The honest test nobody ran: score against the 204 human labels</h2>
+<div class="card">
+<p><code>data/manual_shape_labels.csv</code> — <b>204 rows, 12-class human shape vocabulary</b> (Chevron, Reverse
+Chevron, Up-/Down-FM, Step up/down, Two-/Multi-steps, Flat, Complex, Short, Noise), built by
+<code>scripts/labeling/hand_label_200.py</code> — <b>existed and was never used to score registration.</b> The
+CLOSED handoff's "Probe B: N/A — no human labels exist" is stale and wrong. Joining it (200/204 matched) to the
+registered ridges and scoring leave-one-out kNN purity per human <em>family</em>:</p>
+<table>
+<thead><tr><th>Representation</th><th>chevron (base 0.14)</th><th>jump (base 0.35)</th><th>flat (base 0.13)</th><th>complex (base 0.07)</th></tr></thead>
+<tbody>
+<tr><td>registered_shape</td><td class="above">0.364</td><td class="at">0.327</td><td class="above">0.274</td><td>0.117</td></tr>
+<tr><td>srvf (crude q-transform)</td><td class="above">0.388</td><td class="below">0.189</td><td class="above">0.230</td><td>0.100</td></tr>
+<tr><td>derivative dF/dt</td><td>0.264</td><td class="below">0.252</td><td class="above">0.291</td><td>0.067</td></tr>
+<tr><td class="mut">learned encoder (alpha3, 2-D)</td><td class="mut">0.124</td><td class="mut">0.335</td><td class="mut">0.291</td><td class="mut">0.075</td></tr>
+<tr><td class="mut">random control (alpha3)</td><td class="mut">0.084</td><td class="mut">0.311</td><td class="mut">0.173</td><td class="mut">0.092</td></tr>
+</tbody></table>
+<p><b>Honest reading.</b> On real human labels, the registered ridge captures <span class="above">chevron (~2.6×)
+and flat (~2×)</span> above base rate — a real but modest signal. <span class="below">Jump and complex are at or
+below chance</span> for every representation, including the learned encoder. SRVF is marginally best for chevron
+(0.39). The "shape clustering solved" story is an artifact of the circular metric; against humans it is
+<b>partially solved (chevron/flat) and unsolved (jump/complex)</b>.</p>
+<p class="mut"><b>Uncertainty (important).</b> N is tiny and imbalanced — only 4 true "Chevron" (25 in the
+chevron family), all from lab cohort 131204 (wild cohorts unlabeled). These estimates are <em>directional</em>: the
+chevron number swung 0.16↔0.36 depending only on a det-index join offset, so treat ±0.1 as plausible. The robust
+claims are the <em>rank</em> (chevron/flat &gt; jump/complex) and the heuristic audit below — not any single decimal.</p>
+</div>
+
+<h2>3 · The metric the whole project optimized was a blurry proxy</h2>
+<div class="card">
+<p>Auditing <code>chevron_valley</code> (the bake-off's de-facto target) against the human chevron family:
+<b>precision 0.30, recall 0.56</b> (14 true / 32 false-positive / 11 missed). So roughly <b>two-thirds of what the
+heuristic called "chevron" the humans did not</b>, and it missed nearly half the real ones. Every η² number, every
+kill decision, every "learned encoder failed at chevron" verdict was computed against this. Optimizing it hard was
+optimizing a smeared target — which is exactly why a method could win η² (registration) without actually grouping
+human-recognizable chevrons much better than 2–3× chance.</p>
+</div>
+
+<h2>4 · What we could have done better — ranked (verification workflow, 22/26 levers survived)</h2>
+
+<h3>Tier A — high-confidence, genuinely untried, plausibly competitive</h3>
+<div class="card">
+<p><span class="tag t-good">A1 · lead lever</span><b>True elastic shape analysis (SRVF / Fisher-Rao geodesic with
+per-pair warp alignment), done correctly.</b> Registration removes only a <em>global</em> pitch shift and one
+<em>global</em> time-resample — it never aligns <em>internal landmarks</em>, so a chevron with its apex at t=0.3 and
+one at t=0.6 stay distant and KMeans splits the same shape. <code>fdasrsf.kmeans_align</code> (or a pairwise
+geodesic-distance matrix → k-medoids) optimizes a warping function per pair — the one operation registration lacks.
+The "SRVF" run so far (<code>rig_R1_true_ridges.py:111</code>) is just <code>sign(dF)·√|dF|</code> fed to
+<em>Euclidean</em> KMeans — no warp ever optimized. That crude version already edges registration on human chevron
+(0.39 vs 0.36), hinting at headroom.</p>
+<p><b>✅ Tested this session (DTW / soft-DTW on the 182 labeled ridges, human-anchored kNN purity):</b> elastic
+warp-alignment beats registration's Euclidean metric on <em>every</em> family — and most on the ones registration
+smears:</p>
+<table>
+<thead><tr><th>metric</th><th>chevron (base 0.14)</th><th>jump (base 0.35)</th><th>flat (base 0.13)</th><th>complex (base 0.07)</th></tr></thead>
+<tbody>
+<tr><td>euclidean (registration)</td><td>0.364</td><td class="at">0.327</td><td>0.274</td><td>0.117</td></tr>
+<tr><td><b>DTW (elastic)</b></td><td class="above">0.400</td><td class="above">0.449</td><td class="above">0.291</td><td class="above">0.183</td></tr>
+<tr><td><b>soft-DTW</b></td><td class="above">0.404</td><td class="above">0.452</td><td>0.287</td><td class="above">0.183</td></tr>
+</tbody></table>
+<p><b>Jump goes from at-chance (0.327, base 0.346) to clearly above it (0.45)</b> — a step/jump is a discontinuity
+at a variable internal position; DTW warps the axis to align it, Euclidean cannot. This is the high-value outcome:
+the one untried classical lever measurably improves human-anchored clustering, especially where registration fails.
+<span class="mut">Caveat: n=182, lab cohort only, ~25 chevrons — directional. Next: full-corpus soft-DTW
+k-means (tslearn, installed) or fdasrsf elastic alignment, scored on an expanded human set. Script:
+<code>results/shape_retrospective/a1_elastic_test.py</code>.</span></p>
+</div>
+
+<h3>Tier B — make the problem well-posed (cheap, high-leverage; value is honesty, not a higher score)</h3>
+<div class="card">
+<p><span class="tag t-good">B1</span><b>Wire the 204-row human gold set in as the PRIMARY eval target</b> (done in
+this report for the first time; should be the standing gate). Report NMI / ARI / kNN-purity vs humans + a
+heuristic-vs-human confusion matrix. <span class="mut">Caveat: extend labels to wild cohorts and to ≥20 chevrons
+before trusting decimals.</span></p>
+<p><span class="tag t-good">B2</span><b>Replace the η² gate with leave-one-out kNN retrieval purity vs humans</b>,
+with a random-init/identity control — exactly what <code>ROADMAP_SHAPE_INVARIANT_LATENT.md</code> specified before
+the closure memo reverted to circular η².</p>
+<p><span class="tag t-warn">B3</span><b>Reframe the deliverable from "K=20 letters" to a navigable continuum
+shape-map.</b> UMAP→HDBSCAN found a continuum (no crisp clusters); forcing 20 disjoint letters guarantees low
+recovery for every method. The map figure was specified (<code>2026-05-25_shape-map-and-alphabet-decision.md</code>)
+but never rendered. Value: honest reporting + a usable artifact.</p>
+</div>
+
+<h3>Tier C — speculative, cheap, mechanistically distinct (weak priors)</h3>
+<div class="card">
+<p><span class="tag t-mut">C1</span><b>Persistent homology / topological descriptors</b> (<code>ripser</code>/<code>gudhi</code>,
+absent) — a jump is a sharp critical pair; cheap and novel, but the 50-pt ridge already encodes the jump as a large
+delta (M8 added the explicit derivative and still lost), so likely a noise-robust re-encoding, not new signal.</p>
+<p><span class="tag t-mut">C2</span><b>Functional PCA / elastic-fPCA</b> (<code>skfda</code>, absent) — plain fPCA just
+re-bases the same Euclidean space (≈0.58–0.75); only the <em>elastic</em> variant raises the ceiling, and that
+collapses into A1. Fold it into A1.</p>
+</div>
+
+<h2>5 · What was correctly killed — do not relitigate</h2>
+<div class="card">
+<ul>
+<li><b>The 2-D image-VAE / learned-encoder family is genuinely dead</b> (M10 0.009 → B+A 0.105; Phase-0a frozen
+0.517 vs random-init 0.501 is a <em>sound</em> balanced-accuracy falsifier with a control). Shape does not live in
+the 2-D pixel grid; recon/BCE burns capacity on pitch/duration; shift-aug gives only local ±15 kHz invariance.</li>
+<li><b>1-D learned contrastive is also dead, not "untried":</b> M9 already ran on the registered ridge, no
+reconstruction, with elastic-warp augmentation — the exact "do it better" recipe — and scored 0.34.</li>
+<li><b>Scale-normalized ridge</b> (<code>lab_shape_scalenorm</code>) and <b>raising max_jump_bins / a discontinuity
+channel</b> were both tried; the jump bottleneck is label noise + class rarity, not the ridge cap.</li>
+</ul>
+</div>
+
+<h2>6 · Next experiment — the labeled-subset result is in; scale it up</h2>
+<div class="card">
+<p>The "less likely, high-value" outcome <b>actually happened</b> on the labeled subset (§4·A1): elastic warp-alignment
+separates jump/complex that registration smears. The remaining work is to confirm it at scale and on a better anchor:</p>
+<ol>
+<li><b>Full-corpus soft-DTW k-means</b> (tslearn, already installed; or <code>fdasrsf kmeans_align</code> for true SRVF
+geodesic) on the (67337, 50) ridges → produce a new shape alphabet, compare its human-anchored kNN-purity + NMI to
+<code>models/shape_kmeans/k20.joblib</code>, with a random-init control. If the jump/complex gain holds at scale, this
+becomes the new production preprocessor.</li>
+<li><b>Expand the human gold set FIRST</b> — to the wild cohorts (5970/3452/9252, currently zero labels) and to ≥20
+examples per shape family (only 4 true chevrons today). Every decimal here is throttled by that N.</li>
+<li><b>Make human-anchored kNN-purity (not η²) the standing gate</b>, exactly as <code>ROADMAP_SHAPE_INVARIANT_LATENT.md</code>
+originally specified.</li>
+</ol>
+<p class="mut">What is NOT worth re-running: anything in §5 (the 2-D VAE family, 1-D learned contrastive, scale-norm). Those are falsified.</p>
+</div>
+
+<footer>
+Artifacts: <code>results/shape_retrospective/{shape_clustering_retrospective.html, scorecard.json,
+human_anchored_scorecard.json, human_anchored_eval.py, score_existing_shape_labels.py, supervised_ceiling.py}</code><br>
+Human labels: <code>data/manual_shape_labels.csv</code> (204) · learned-encoder anchor: <code>data/alpha3_a6/a6_gamma_binding.json</code><br>
+Data (read-only, rig): <code>/data/shachar/contour_vae/results/latent_transitions/shape_alphabet/true_registered_ridges_meta.npz</code><br>
+Method: 4-lens × 26-lever adversarial verification workflow (35 agents) + human-anchored re-scoring. All probes CPU, OOM-safe, seed 42. Generated 2026-06-02.
+</footer>
+
+</div></body></html>

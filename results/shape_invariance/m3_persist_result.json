@@ -1,0 +1,1040 @@
+{
+  "method": "m3_persistence",
+  "status": "complete",
+  "feature_path": "features/shape_invariance/m3_persistence_dir__0bc1e2bd.npy",
+  "feature_path_pure_persistence": "features/shape_invariance/m3_persistence__6e5f6e9f.npy",
+  "params": {
+    "method": "m3_persistence",
+    "descriptor": "persistence_image+antisym_slope",
+    "input_len": 128,
+    "grid": 15,
+    "sigma": 0.15,
+    "superlevel": true,
+    "lifetime_weight": "linear_ramp",
+    "bounds_sub": [
+      -30.551777725219726,
+      27.93524536132814,
+      0.0,
+      55.89024097442632
+    ],
+    "bounds_super": [
+      -34.10474018096924,
+      23.45963478088379,
+      0.0,
+      55.965001735687196
+    ],
+    "k": 10,
+    "n_boot": 1000,
+    "seed": 42,
+    "dir_n_out": 8,
+    "dir_weight": 1.4152595432488844
+  },
+  "d": 458,
+  "reversal": {
+    "passed": false,
+    "self_reverse_median": 0.0,
+    "decile_threshold": 7.0832063878239,
+    "direction_feature_appended": true,
+    "direction_feature": "antisymmetric-slope vector (n_out=8); scalar net-slope also tested",
+    "passed_after_direction": false,
+    "self_reverse_median_after_direction": 1.7746833645110933,
+    "decile_threshold_after_direction": 12.314224430086913,
+    "scalar_slope_passed": false,
+    "scalar_slope_self_reverse_median": 0.07828238696922013,
+    "scalar_slope_decile_threshold": 7.1005675689490815,
+    "dir_weight": 1.4152595432488844,
+    "note": "PURE persistence is reversal-blind BY CONSTRUCTION: the diagram of f and f[::-1] are identical, so self-reverse distance is EXACTLY 0 -> FAIL (expected, a diagnostic). Remedy = append the antisymmetric part of the slope profile (a vector signed net slope that flips sign under reversal); after appending, passed=False. STRUCTURAL FINDING (weight scan 0.5..32x verified): NO additive direction feature on a reversal-blind base can pass THIS reversal test -- reversal moves a point by only 2*||dir|| while the bar is the 90th percentile of PAIRWISE distance (globally most-distant pairs), so the self/pairwise ratio stays ~0.1-0.2 at every weight (scalar net slope even at infinite weight maxes < 1). This is the SAME outcome as M5. The direction feature IS recovered though -- it is HANDLED, not absent -- shown by the Up-FM/Down-FM purity lift (see sweep_direction_lift). scalar net slope passed=False."
+  },
+  "purity": {
+    "pooled_invariant": {
+      "chevron": [
+        0.20227272727272727,
+        0.15909090909090912,
+        0.23869318181818178
+      ],
+      "jump": [
+        0.503921568627451,
+        0.4671323529411765,
+        0.5397181372549019
+      ],
+      "flat": [
+        0.37439999999999996,
+        0.336,
+        0.41442
+      ],
+      "complex": [
+        0.19253731343283584,
+        0.1582089552238806,
+        0.22242537313432834
+      ],
+      "Noise": [
+        0.12424242424242427,
+        0.09999999999999999,
+        0.14999999999999997
+      ],
+      "Down-FM": [
+        0.2759259259259259,
+        0.2277777777777778,
+        0.3277777777777778
+      ],
+      "Up-FM": [
+        0.14814814814814814,
+        0.09629629629629631,
+        0.2037037037037037
+      ],
+      "Short": [
+        0.15416666666666667,
+        0.07916666666666666,
+        0.24583333333333335
+      ]
+    },
+    "pooled_sidechannel": {
+      "chevron": [
+        0.19318181818181818,
+        0.15909090909090912,
+        0.22727272727272727
+      ],
+      "jump": [
+        0.5573529411764706,
+        0.5186029411764705,
+        0.5965808823529412
+      ],
+      "flat": [
+        0.4152,
+        0.3736,
+        0.4608
+      ],
+      "complex": [
+        0.2119402985074627,
+        0.1791044776119403,
+        0.2447761194029851
+      ],
+      "Noise": [
+        0.14090909090909093,
+        0.11515151515151514,
+        0.16818181818181818
+      ],
+      "Down-FM": [
+        0.30925925925925923,
+        0.26481481481481484,
+        0.3592592592592592
+      ],
+      "Up-FM": [
+        0.12222222222222225,
+        0.0851851851851852,
+        0.16296296296296295
+      ],
+      "Short": [
+        0.19583333333333333,
+        0.10822916666666667,
+        0.30416666666666664
+      ]
+    },
+    "withinstratum_invariant": {
+      "chevron": [
+        0.26590909090909093,
+        0.2135795454545454,
+        0.3204545454545454
+      ],
+      "jump": [
+        0.5299019607843137,
+        0.48725490196078436,
+        0.5765073529411764
+      ],
+      "flat": [
+        0.4536,
+        0.41038,
+        0.4992
+      ],
+      "complex": [
+        0.23134328358208955,
+        0.1805597014925373,
+        0.28208955223880594
+      ],
+      "Noise": [
+        0.2318181818181818,
+        0.18939393939393942,
+        0.2742424242424243
+      ],
+      "Down-FM": [
+        0.20925925925925928,
+        0.1759259259259259,
+        0.24444444444444444
+      ],
+      "Up-FM": [
+        0.11851851851851852,
+        0.07777777777777778,
+        0.15925925925925924
+      ],
+      "Short": [
+        0.18333333333333332,
+        0.10416666666666667,
+        0.2708333333333333
+      ]
+    },
+    "withinstratum_sidechannel": {
+      "chevron": [
+        0.27954545454545454,
+        0.22272727272727277,
+        0.3431818181818181
+      ],
+      "jump": [
+        0.5661764705882354,
+        0.5230392156862744,
+        0.6112990196078432
+      ],
+      "flat": [
+        0.43440000000000006,
+        0.38959999999999995,
+        0.4784400000000001
+      ],
+      "complex": [
+        0.24029850746268658,
+        0.18805970149253734,
+        0.291044776119403
+      ],
+      "Noise": [
+        0.2287878787878788,
+        0.18632575757575756,
+        0.2697348484848485
+      ],
+      "Down-FM": [
+        0.21851851851851853,
+        0.18333333333333326,
+        0.2555555555555556
+      ],
+      "Up-FM": [
+        0.09629629629629631,
+        0.07037037037037037,
+        0.12592592592592594
+      ],
+      "Short": [
+        0.1958333333333333,
+        0.125,
+        0.2791666666666667
+      ]
+    }
+  },
+  "purity_pure_persistence": {
+    "pooled_invariant": {
+      "chevron": [
+        0.22045454545454543,
+        0.1658522727272727,
+        0.2818181818181818
+      ],
+      "jump": [
+        0.5450980392156862,
+        0.508811274509804,
+        0.5848161764705883
+      ],
+      "flat": [
+        0.3479999999999999,
+        0.31198,
+        0.388
+      ],
+      "complex": [
+        0.1955223880597015,
+        0.15970149253731344,
+        0.22686567164179106
+      ],
+      "Noise": [
+        0.16515151515151516,
+        0.1333333333333333,
+        0.2
+      ],
+      "Down-FM": [
+        0.17592592592592593,
+        0.14259259259259258,
+        0.21111111111111114
+      ],
+      "Up-FM": [
+        0.0851851851851852,
+        0.05185185185185186,
+        0.11851851851851854
+      ],
+      "Short": [
+        0.19999999999999998,
+        0.1125,
+        0.3042708333333332
+      ]
+    },
+    "pooled_sidechannel": {
+      "chevron": [
+        0.17954545454545454,
+        0.13636363636363635,
+        0.22727272727272724
+      ],
+      "jump": [
+        0.6093137254901961,
+        0.568125,
+        0.6539338235294119
+      ],
+      "flat": [
+        0.41999999999999993,
+        0.37920000000000004,
+        0.46481999999999996
+      ],
+      "complex": [
+        0.2328358208955224,
+        0.1985074626865672,
+        0.27018656716417905
+      ],
+      "Noise": [
+        0.1696969696969697,
+        0.1318181818181818,
+        0.2106060606060606
+      ],
+      "Down-FM": [
+        0.22592592592592595,
+        0.19259259259259257,
+        0.2611574074074074
+      ],
+      "Up-FM": [
+        0.10000000000000002,
+        0.06296296296296297,
+        0.13333333333333336
+      ],
+      "Short": [
+        0.23749999999999996,
+        0.15,
+        0.3333333333333333
+      ]
+    },
+    "withinstratum_invariant": {
+      "chevron": [
+        0.275,
+        0.20448863636363632,
+        0.35
+      ],
+      "jump": [
+        0.5715686274509805,
+        0.525968137254902,
+        0.6166666666666667
+      ],
+      "flat": [
+        0.4216,
+        0.37679999999999997,
+        0.46559999999999996
+      ],
+      "complex": [
+        0.23582089552238805,
+        0.18656716417910446,
+        0.28955223880597014
+      ],
+      "Noise": [
+        0.2666666666666666,
+        0.2165909090909091,
+        0.31973484848484846
+      ],
+      "Down-FM": [
+        0.14444444444444443,
+        0.11666666666666664,
+        0.1722222222222222
+      ],
+      "Up-FM": [
+        0.10740740740740742,
+        0.07037037037037037,
+        0.1444444444444445
+      ],
+      "Short": [
+        0.20833333333333334,
+        0.13749999999999998,
+        0.28750000000000003
+      ]
+    },
+    "withinstratum_sidechannel": {
+      "chevron": [
+        0.29772727272727273,
+        0.23409090909090907,
+        0.3636931818181818
+      ],
+      "jump": [
+        0.609313725490196,
+        0.5661642156862744,
+        0.6549142156862746
+      ],
+      "flat": [
+        0.41600000000000004,
+        0.37358,
+        0.4584
+      ],
+      "complex": [
+        0.23880597014925373,
+        0.18507462686567164,
+        0.2865671641791045
+      ],
+      "Noise": [
+        0.2696969696969697,
+        0.2181818181818182,
+        0.32272727272727275
+      ],
+      "Down-FM": [
+        0.17777777777777778,
+        0.14629629629629629,
+        0.20745370370370367
+      ],
+      "Up-FM": [
+        0.10000000000000002,
+        0.07037037037037037,
+        0.12962962962962965
+      ],
+      "Short": [
+        0.22916666666666666,
+        0.15833333333333333,
+        0.30416666666666664
+      ]
+    }
+  },
+  "k_sweep": {
+    "1": {
+      "chevron": 0.22727272727272727,
+      "jump": 0.5784313725490197,
+      "flat": 0.376,
+      "complex": 0.16417910447761194,
+      "Noise": 0.16666666666666666,
+      "Down-FM": 0.3333333333333333,
+      "Up-FM": 0.2222222222222222,
+      "Short": 0.3333333333333333
+    },
+    "5": {
+      "chevron": 0.21363636363636365,
+      "jump": 0.5343137254901961,
+      "flat": 0.36640000000000006,
+      "complex": 0.20298507462686566,
+      "Noise": 0.15151515151515152,
+      "Down-FM": 0.2962962962962963,
+      "Up-FM": 0.14814814814814817,
+      "Short": 0.2833333333333333
+    },
+    "15": {
+      "chevron": 0.1863636363636364,
+      "jump": 0.4895424836601306,
+      "flat": 0.3674666666666668,
+      "complex": 0.1900497512437811,
+      "Noise": 0.11616161616161616,
+      "Down-FM": 0.26666666666666666,
+      "Up-FM": 0.13333333333333333,
+      "Short": 0.12777777777777777
+    }
+  },
+  "k_sweep_pure_persistence": {
+    "1": {
+      "chevron": 0.18181818181818182,
+      "jump": 0.5637254901960784,
+      "flat": 0.352,
+      "complex": 0.1044776119402985,
+      "Noise": 0.24242424242424243,
+      "Down-FM": 0.2777777777777778,
+      "Up-FM": 0.0,
+      "Short": 0.25
+    },
+    "5": {
+      "chevron": 0.2045454545454545,
+      "jump": 0.5676470588235293,
+      "flat": 0.3375999999999999,
+      "complex": 0.18208955223880596,
+      "Noise": 0.19393939393939394,
+      "Down-FM": 0.19259259259259257,
+      "Up-FM": 0.07407407407407407,
+      "Short": 0.2833333333333333
+    },
+    "15": {
+      "chevron": 0.20454545454545456,
+      "jump": 0.5369281045751633,
+      "flat": 0.34613333333333335,
+      "complex": 0.18507462686567167,
+      "Noise": 0.1383838383838384,
+      "Down-FM": 0.16049382716049385,
+      "Up-FM": 0.0938271604938272,
+      "Short": 0.1388888888888889
+    }
+  },
+  "param_sweep": [
+    {
+      "input": 50,
+      "grid": 15,
+      "sigma": 0.05,
+      "superlevel": false,
+      "d": 225,
+      "purity": {
+        "chevron": 0.12954545454545452,
+        "jump": 0.48431372549019597,
+        "flat": 0.37760000000000005,
+        "complex": 0.1671641791044776
+      }
+    },
+    {
+      "input": 50,
+      "grid": 15,
+      "sigma": 0.1,
+      "superlevel": false,
+      "d": 225,
+      "purity": {
+        "chevron": 0.1636363636363636,
+        "jump": 0.509313725490196,
+        "flat": 0.35679999999999995,
+        "complex": 0.1671641791044776
+      }
+    },
+    {
+      "input": 50,
+      "grid": 15,
+      "sigma": 0.15,
+      "superlevel": false,
+      "d": 225,
+      "purity": {
+        "chevron": 0.18636363636363634,
+        "jump": 0.5318627450980392,
+        "flat": 0.3616,
+        "complex": 0.16268656716417915
+      }
+    },
+    {
+      "input": 50,
+      "grid": 20,
+      "sigma": 0.05,
+      "superlevel": false,
+      "d": 400,
+      "purity": {
+        "chevron": 0.11363636363636362,
+        "jump": 0.47990196078431374,
+        "flat": 0.38000000000000006,
+        "complex": 0.1746268656716418
+      }
+    },
+    {
+      "input": 50,
+      "grid": 20,
+      "sigma": 0.1,
+      "superlevel": false,
+      "d": 400,
+      "purity": {
+        "chevron": 0.1636363636363636,
+        "jump": 0.5083333333333333,
+        "flat": 0.3559999999999999,
+        "complex": 0.16567164179104477
+      }
+    },
+    {
+      "input": 50,
+      "grid": 20,
+      "sigma": 0.15,
+      "superlevel": false,
+      "d": 400,
+      "purity": {
+        "chevron": 0.18409090909090908,
+        "jump": 0.5313725490196078,
+        "flat": 0.364,
+        "complex": 0.1611940298507463
+      }
+    },
+    {
+      "input": 50,
+      "grid": 25,
+      "sigma": 0.05,
+      "superlevel": false,
+      "d": 625,
+      "purity": {
+        "chevron": 0.11363636363636362,
+        "jump": 0.47892156862745094,
+        "flat": 0.38000000000000006,
+        "complex": 0.1746268656716418
+      }
+    },
+    {
+      "input": 50,
+      "grid": 25,
+      "sigma": 0.1,
+      "superlevel": false,
+      "d": 625,
+      "purity": {
+        "chevron": 0.1636363636363636,
+        "jump": 0.5098039215686274,
+        "flat": 0.3551999999999999,
+        "complex": 0.16567164179104477
+      }
+    },
+    {
+      "input": 50,
+      "grid": 25,
+      "sigma": 0.15,
+      "superlevel": false,
+      "d": 625,
+      "purity": {
+        "chevron": 0.18181818181818182,
+        "jump": 0.5284313725490195,
+        "flat": 0.36479999999999996,
+        "complex": 0.1611940298507463
+      }
+    },
+    {
+      "input": 50,
+      "grid": 15,
+      "sigma": 0.05,
+      "superlevel": true,
+      "d": 450,
+      "purity": {
+        "chevron": 0.1340909090909091,
+        "jump": 0.4598039215686274,
+        "flat": 0.36319999999999997,
+        "complex": 0.1701492537313433
+      }
+    },
+    {
+      "input": 50,
+      "grid": 15,
+      "sigma": 0.1,
+      "superlevel": true,
+      "d": 450,
+      "purity": {
+        "chevron": 0.1954545454545455,
+        "jump": 0.5171568627450981,
+        "flat": 0.33999999999999997,
+        "complex": 0.1835820895522388
+      }
+    },
+    {
+      "input": 50,
+      "grid": 15,
+      "sigma": 0.15,
+      "superlevel": true,
+      "d": 450,
+      "purity": {
+        "chevron": 0.19999999999999998,
+        "jump": 0.5529411764705883,
+        "flat": 0.33279999999999993,
+        "complex": 0.1940298507462687
+      }
+    },
+    {
+      "input": 50,
+      "grid": 20,
+      "sigma": 0.05,
+      "superlevel": true,
+      "d": 800,
+      "purity": {
+        "chevron": 0.1272727272727273,
+        "jump": 0.4524509803921569,
+        "flat": 0.3656,
+        "complex": 0.1656716417910448
+      }
+    },
+    {
+      "input": 50,
+      "grid": 20,
+      "sigma": 0.1,
+      "superlevel": true,
+      "d": 800,
+      "purity": {
+        "chevron": 0.19318181818181823,
+        "jump": 0.5147058823529411,
+        "flat": 0.3376,
+        "complex": 0.1835820895522388
+      }
+    },
+    {
+      "input": 50,
+      "grid": 20,
+      "sigma": 0.15,
+      "superlevel": true,
+      "d": 800,
+      "purity": {
+        "chevron": 0.19772727272727272,
+        "jump": 0.5544117647058824,
+        "flat": 0.3351999999999999,
+        "complex": 0.19552238805970154
+      }
+    },
+    {
+      "input": 50,
+      "grid": 25,
+      "sigma": 0.05,
+      "superlevel": true,
+      "d": 1250,
+      "purity": {
+        "chevron": 0.1272727272727273,
+        "jump": 0.4519607843137255,
+        "flat": 0.3616,
+        "complex": 0.1656716417910448
+      }
+    },
+    {
+      "input": 50,
+      "grid": 25,
+      "sigma": 0.1,
+      "superlevel": true,
+      "d": 1250,
+      "purity": {
+        "chevron": 0.19318181818181823,
+        "jump": 0.5147058823529411,
+        "flat": 0.34079999999999994,
+        "complex": 0.1835820895522388
+      }
+    },
+    {
+      "input": 50,
+      "grid": 25,
+      "sigma": 0.15,
+      "superlevel": true,
+      "d": 1250,
+      "purity": {
+        "chevron": 0.19772727272727272,
+        "jump": 0.5553921568627451,
+        "flat": 0.3335999999999999,
+        "complex": 0.19552238805970154
+      }
+    },
+    {
+      "input": 128,
+      "grid": 15,
+      "sigma": 0.05,
+      "superlevel": false,
+      "d": 225,
+      "purity": {
+        "chevron": 0.12045454545454545,
+        "jump": 0.471078431372549,
+        "flat": 0.3768,
+        "complex": 0.17014925373134332
+      }
+    },
+    {
+      "input": 128,
+      "grid": 15,
+      "sigma": 0.1,
+      "superlevel": false,
+      "d": 225,
+      "purity": {
+        "chevron": 0.16136363636363638,
+        "jump": 0.515686274509804,
+        "flat": 0.3512,
+        "complex": 0.16865671641791047
+      }
+    },
+    {
+      "input": 128,
+      "grid": 15,
+      "sigma": 0.15,
+      "superlevel": false,
+      "d": 225,
+      "purity": {
+        "chevron": 0.18181818181818182,
+        "jump": 0.5416666666666666,
+        "flat": 0.35439999999999994,
+        "complex": 0.16716417910447762
+      }
+    },
+    {
+      "input": 128,
+      "grid": 20,
+      "sigma": 0.05,
+      "superlevel": false,
+      "d": 400,
+      "purity": {
+        "chevron": 0.11818181818181817,
+        "jump": 0.4735294117647059,
+        "flat": 0.3688,
+        "complex": 0.17164179104477614
+      }
+    },
+    {
+      "input": 128,
+      "grid": 20,
+      "sigma": 0.1,
+      "superlevel": false,
+      "d": 400,
+      "purity": {
+        "chevron": 0.16136363636363638,
+        "jump": 0.5122549019607843,
+        "flat": 0.3512,
+        "complex": 0.1671641791044776
+      }
+    },
+    {
+      "input": 128,
+      "grid": 20,
+      "sigma": 0.15,
+      "superlevel": false,
+      "d": 400,
+      "purity": {
+        "chevron": 0.18181818181818182,
+        "jump": 0.5411764705882354,
+        "flat": 0.3551999999999999,
+        "complex": 0.16865671641791047
+      }
+    },
+    {
+      "input": 128,
+      "grid": 25,
+      "sigma": 0.05,
+      "superlevel": false,
+      "d": 625,
+      "purity": {
+        "chevron": 0.11590909090909088,
+        "jump": 0.46911764705882353,
+        "flat": 0.36640000000000006,
+        "complex": 0.17014925373134332
+      }
+    },
+    {
+      "input": 128,
+      "grid": 25,
+      "sigma": 0.1,
+      "superlevel": false,
+      "d": 625,
+      "purity": {
+        "chevron": 0.16136363636363638,
+        "jump": 0.5147058823529411,
+        "flat": 0.3519999999999999,
+        "complex": 0.1671641791044776
+      }
+    },
+    {
+      "input": 128,
+      "grid": 25,
+      "sigma": 0.15,
+      "superlevel": false,
+      "d": 625,
+      "purity": {
+        "chevron": 0.18409090909090908,
+        "jump": 0.542156862745098,
+        "flat": 0.3551999999999999,
+        "complex": 0.1701492537313433
+      }
+    },
+    {
+      "input": 128,
+      "grid": 15,
+      "sigma": 0.05,
+      "superlevel": true,
+      "d": 450,
+      "purity": {
+        "chevron": 0.1340909090909091,
+        "jump": 0.45980392156862737,
+        "flat": 0.36640000000000006,
+        "complex": 0.17164179104477614
+      }
+    },
+    {
+      "input": 128,
+      "grid": 15,
+      "sigma": 0.1,
+      "superlevel": true,
+      "d": 450,
+      "purity": {
+        "chevron": 0.19999999999999998,
+        "jump": 0.511764705882353,
+        "flat": 0.3384,
+        "complex": 0.1985074626865672
+      }
+    },
+    {
+      "input": 128,
+      "grid": 15,
+      "sigma": 0.15,
+      "superlevel": true,
+      "d": 450,
+      "purity": {
+        "chevron": 0.22045454545454543,
+        "jump": 0.5450980392156862,
+        "flat": 0.3479999999999999,
+        "complex": 0.1955223880597015
+      }
+    },
+    {
+      "input": 128,
+      "grid": 20,
+      "sigma": 0.05,
+      "superlevel": true,
+      "d": 800,
+      "purity": {
+        "chevron": 0.12954545454545457,
+        "jump": 0.46127450980392154,
+        "flat": 0.3608,
+        "complex": 0.17164179104477612
+      }
+    },
+    {
+      "input": 128,
+      "grid": 20,
+      "sigma": 0.1,
+      "superlevel": true,
+      "d": 800,
+      "purity": {
+        "chevron": 0.19772727272727272,
+        "jump": 0.5122549019607843,
+        "flat": 0.34,
+        "complex": 0.1985074626865672
+      }
+    },
+    {
+      "input": 128,
+      "grid": 20,
+      "sigma": 0.15,
+      "superlevel": true,
+      "d": 800,
+      "purity": {
+        "chevron": 0.21363636363636365,
+        "jump": 0.5460784313725491,
+        "flat": 0.34559999999999996,
+        "complex": 0.19701492537313434
+      }
+    },
+    {
+      "input": 128,
+      "grid": 25,
+      "sigma": 0.05,
+      "superlevel": true,
+      "d": 1250,
+      "purity": {
+        "chevron": 0.12954545454545457,
+        "jump": 0.4588235294117647,
+        "flat": 0.35760000000000003,
+        "complex": 0.17014925373134326
+      }
+    },
+    {
+      "input": 128,
+      "grid": 25,
+      "sigma": 0.1,
+      "superlevel": true,
+      "d": 1250,
+      "purity": {
+        "chevron": 0.19772727272727272,
+        "jump": 0.5093137254901962,
+        "flat": 0.33999999999999997,
+        "complex": 0.1985074626865672
+      }
+    },
+    {
+      "input": 128,
+      "grid": 25,
+      "sigma": 0.15,
+      "superlevel": true,
+      "d": 1250,
+      "purity": {
+        "chevron": 0.21363636363636365,
+        "jump": 0.5480392156862746,
+        "flat": 0.34319999999999995,
+        "complex": 0.19701492537313434
+      }
+    }
+  ],
+  "soft_dtw_bar_pooled_invariant": {
+    "chevron": [
+      0.21363636363636365,
+      0.168125,
+      0.26136363636363635
+    ],
+    "jump": [
+      0.5220588235294118,
+      0.47988970588235297,
+      0.5696200980392158
+    ],
+    "flat": [
+      0.39599999999999996,
+      0.36158,
+      0.4328
+    ],
+    "complex": [
+      0.24328358208955225,
+      0.1985074626865672,
+      0.2835820895522388
+    ]
+  },
+  "identity_pooled_invariant": {
+    "chevron": [
+      0.18636363636363634,
+      0.1431818181818182,
+      0.2318181818181818
+    ],
+    "jump": [
+      0.41519607843137263,
+      0.3774509803921569,
+      0.45344362745098044
+    ],
+    "flat": [
+      0.41919999999999996,
+      0.38397999999999993,
+      0.45602
+    ],
+    "complex": [
+      0.19402985074626866,
+      0.14776119402985075,
+      0.23582089552238808
+    ],
+    "Noise": [
+      0.1,
+      0.0712121212121212,
+      0.1303030303030303
+    ],
+    "Down-FM": [
+      0.29814814814814816,
+      0.25,
+      0.3574074074074074
+    ],
+    "Up-FM": [
+      0.21851851851851853,
+      0.15925925925925924,
+      0.2851851851851852
+    ],
+    "Short": [
+      0.18333333333333332,
+      0.08750000000000001,
+      0.2916666666666667
+    ]
+  },
+  "vs_softdtw_pooled_invariant_pure": {
+    "chevron": "ties",
+    "jump": "ties",
+    "flat": "ties",
+    "complex": "ties"
+  },
+  "vs_softdtw_pooled_invariant_dir": {
+    "chevron": "ties",
+    "jump": "ties",
+    "flat": "ties",
+    "complex": "ties"
+  },
+  "vs_identity_pooled_invariant_pure": {
+    "chevron": "ties",
+    "jump": "beats",
+    "flat": "ties",
+    "complex": "ties"
+  },
+  "sweep_direction_lift_dir_vs_pure": {
+    "families": [
+      "Up-FM",
+      "Down-FM"
+    ],
+    "verdict": {
+      "Up-FM": "ties",
+      "Down-FM": "beats"
+    },
+    "pure": {
+      "Up-FM": [
+        0.0851851851851852,
+        0.05185185185185186,
+        0.11851851851851854
+      ],
+      "Down-FM": [
+        0.17592592592592593,
+        0.14259259259259258,
+        0.21111111111111114
+      ]
+    },
+    "dir": {
+      "Up-FM": [
+        0.14814814814814814,
+        0.09629629629629631,
+        0.2037037037037037
+      ],
+      "Down-FM": [
+        0.2759259259259259,
+        0.2277777777777778,
+        0.3277777777777778
+      ]
+    }
+  },
+  "prediction_held": "HELD: pure persistence BEATS identity on jump (multi-extrema) and matches soft-DTW; weak on sweep-direction (pure ['Up-FM', 'Down-FM'] purity < 0.25, direction stripped); appending direction LIFTS sweep families ['Up-FM', 'Down-FM'] (extrema-config and direction separate as orthogonal factors). pure-vs-identity={'chevron': 'ties', 'jump': 'beats', 'flat': 'ties', 'complex': 'ties'}; pure-vs-bar={'chevron': 'ties', 'jump': 'ties', 'flat': 'ties', 'complex': 'ties'}; sweep-lift(+dir vs pure)={'Up-FM': 'ties', 'Down-FM': 'beats'}.",
+  "notes": "1-D sublevel-set persistence via pure-numpy union-find merge tree (== giotto CubicalPersistence on a 1-D array; no giotto/ripser dep). SUBLEVEL (valleys) + SUPERLEVEL (peaks, = sublevel of -f). Diagram -> (birth, lifetime) -> Gaussian persistence image on a batch-normalized [0,1]^2 grid, lifetime-ramp weighted, sub|super concatenated. Reversal-AND order-blind by construction (up-ramp == down-ramp) -> head-to-head appends the antisymmetric-slope direction vector (rule 1). within-stratum field = cohort (4 levels), per the loader's verified data deviation (labels span 4 cohorts, not lab-only). PRIMARY config chosen by jump+complex+chevron pooled purity in the sweep. NOTE persistence-image features are O(0.1-1) sparse-positive, so the z-scored side-channels participate meaningfully (unlike Hz-scale baselines)."
+}

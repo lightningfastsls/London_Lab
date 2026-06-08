@@ -1,0 +1,56 @@
+==============================================================================
+WS-E  harmonize_and_compare.py  —  confound-robust cohort comparison
+==============================================================================
+seed                 : 0
+features (8 shape)   : ['amp_pc1', 'amp_pc2', 'amp_pc3', 'amp_pc4', 'amp_pc5', 'phase_pc1', 'phase_pc2', 'phase_pc3']
+pitch / duration     : principal_freq_hz / call_length_s (metadata only, not corrected)
+batch / cage var     : 'cohort'  levels=['lab_131204', '5970', '3452', '9252']
+cohort row counts    : {'3452': 306, '5970': 7064, '9252': 497, 'lab_131204': 39159}  (total=47026)
+lab couples (17)     : n=17  sizes={'m6fm6': 8439, 'm5fm5': 5060, 'm2fm2': 4342, 'm4fm4': 3889, 'm3fm3': 3038, 'm2fm4': 2161, 'm1fm1': 2121, 'm4fm2': 1592, 'm3fm1': 1492, 'm1fm4': 1070, 'm3fm2': 1059, 'm2fm3': 1047, 'm4fm3': 1046, 'm2fm1': 961, 'm3fm4': 853, 'm4fm1': 738, 'm1fm2': 251}
+OT/MMD point est     : subsample=1200/group, repeats=15, ground=sq-euclid, exact emd2 (sinkhorn_reg=None)
+perm test            : subsample=400/group, n_perm=200, add-one p
+MMD gamma            : median heuristic on pooled (cap 1500)
+classifier           : LogisticRegression(maxiter=2000), 5-fold stratified CV, balanced_accuracy
+chance (cohort 4-way): balanced=0.2500  majority=0.8327
+chance (couple 17-way): balanced=0.0588
+ComBat               : neuroHarmonize, SITE=cohort, NO covariate protected
+CORAL                : per-batch whiten->pooled recolour (cross-check)
+==============================================================================
+
+[1/6] ComBat + CORAL correction ...
+      RBF gamma (median heuristic) = 0.03542
+
+[2/6] Cohort-pair Wasserstein / MMD  (before vs after ComBat) ...
+       lab_131204 vs 5970        [ lab-vs-wild] W2 1.589->1.443 (CORAL 1.405) | MMD 0.0175->0.0008
+       lab_131204 vs 3452        [ lab-vs-wild] W2 1.954->1.773 (CORAL 1.723) | MMD 0.0279->0.0012
+       lab_131204 vs 9252        [ lab-vs-wild] W2 1.738->1.637 (CORAL 1.619) | MMD 0.0173->0.0007
+             5970 vs 3452        [wild-vs-wild] W2 2.245->1.818 (CORAL 1.729) | MMD 0.0638->0.0021
+             5970 vs 9252        [wild-vs-wild] W2 1.958->1.669 (CORAL 1.616) | MMD 0.0425->0.0013
+             3452 vs 9252        [wild-vs-wild] W2 1.623->1.660 (CORAL 1.637) | MMD 0.0031->-0.0007
+
+[3/6] NEGATIVE control: decode cohort (4-way) before/after ...
+      cohort balanced-acc  BEFORE=0.378  AFTER(ComBat)=0.197  AFTER(CORAL)=0.199  chance=0.250
+
+[4/6] POSITIVE control: decode lab partner (17-way) before/after global ComBat ...
+      partner balanced-acc BEFORE=0.087  AFTER=0.087  chance=0.059
+
+[5/6] IDENTIFIABILITY: cohort==cage==biological-unit for wild groups
+      -> lab-vs-wild and wild-vs-wild contrasts are UNIDENTIFIABLE under cohort-ComBat.
+      -> only WITHIN-lab (constant cage) partner contrasts are identifiable.
+
+[6/6] SPURIOUS-REMOVAL: permute cohort labels, refit ComBat, check true structure ...
+      max |W2(true pair) change| after permuted-ComBat = 0.001 (should be ~0: permuted batches ≈ identity)
+
+[GATE E] within-lab partner contrasts vs wild-vs-wild noise floor ...
+      noise-floor 5970 vs 3452: W2=2.260 (perm p=0.0050)
+      noise-floor 5970 vs 9252: W2=1.992 (perm p=0.0050)
+      noise-floor 3452 vs 9252: W2=1.667 (perm p=0.0050)
+      cross-cage NOISE FLOOR (median wild-vs-wild W2) = 1.992
+      lab couples with >= 200 calls: 17 of 17
+      within-lab partner pairs tested: 136
+      pairs with perm p<0.05 AND W2 > noise floor: 0
+      largest: m1fm2 vs m6fm6  W2=1.971  p=0.0050  exceeds_floor=False
+
+[plots] rendering ...
+
+DONE in 304.5s. Report: /home/shachar/projects/mickey_london_lab/results/ws_e_harmonize/report.html

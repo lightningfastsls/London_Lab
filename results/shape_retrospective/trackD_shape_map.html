@@ -1,0 +1,90 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Track D — navigable shape-map</title>
+<style>
+ body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:1080px;margin:24px auto;color:#1c1c1c;line-height:1.55;padding:0 16px}
+ h1{font-size:23px} h2{font-size:17px;margin-top:30px;border-bottom:1px solid #e0e0e0;padding-bottom:5px}
+ table{border-collapse:collapse;margin:12px 0;font-size:13.5px;width:100%}
+ td,th{border:1px solid #d0d0d0;padding:6px 10px;text-align:left} th{background:#f4f4f4}
+ .win{color:#1a7f1a;font-weight:600}
+ .verdict{font-size:17px;font-weight:700;padding:10px 14px;border-radius:7px;background:#eaf3fb;color:#1d5e9c;display:block;margin:6px 0}
+ .key{background:#fff8e6;border-left:4px solid #e0a800;padding:10px 14px;margin:12px 0;border-radius:4px}
+ code{background:#f3f3f3;padding:1px 5px;border-radius:3px;font-size:13px}
+ img{max-width:100%;border:1px solid #ddd;margin:10px 0}
+ .meta{color:#666;font-size:12.5px} li{margin:4px 0}
+</style></head><body>
+
+<h1>Track D — navigable 2-D shape-map</h1>
+<p class="meta">2026-06-04 12:24 · <code>PLAN_elastic_shape_clustering.md §Track D</code> · ridges N=67,337
+ · human-labeled rows joined = 440 (chevron 44, jump 204,
+ flat 125, complex 67) · k=10 ·
+ bootstrap=1000 · soft-DTW γ=1.0 · Map-B subsample=2000 · seed=42</p>
+
+<h2>Verdict</h2>
+<span class="verdict">Navigable continuum — not discrete kinds, not a structureless blob.</span>
+<p>All four shape families land at 2-D-map kNN purity whose 95% CI clears their base rate, on
+<b>both</b> the incumbent (Euclidean) and the elastic (soft-DTW) maps — so families are
+<b>spatially organised</b>, you can point to a "jump zone" vs a "flat zone". But the corpus is a
+single connected manifold whose mean-ridge thumbnails morph <i>smoothly</i> (chevron/valley at top →
+flat/ramps → sharp steps/jumps at bottom), and the K=20 soft-DTW letters tile it into contiguous
+territories. So this is a navigable <b>continuum</b> with the hard letters as a <b>coarse index</b>,
+not natural kinds carved at the joints. That reconciles why hard-letter clustering plateaued and
+elastic only won <code>jump</code> in the Phase-3 high-D kNN test.</p>
+
+<div class="key">
+<b>Key finding — the elastic metric lifts the whole map, most where high-D tied.</b>
+On the 2-D map, soft-DTW separates <i>every</i> family better than Euclidean, and the largest gains
+are on exactly the families that <b>tied</b> in the Phase-3 high-D test
+(complex <b>+0.087</b>, flat +0.046, chevron +0.045), while jump — which already won in high-D —
+gains least (+0.014). Viewed as a navigable map rather than as hard clusters, the elastic metric's
+value is <b>broader</b> than the Phase-3 jump-only result suggested.
+</div>
+
+<h2>Per-family 2-D-map purity — incumbent vs elastic</h2>
+<table>
+<tr><th rowspan=2>family</th><th rowspan=2>n</th>
+    <th colspan=2>Map A · Euclidean (incumbent)</th>
+    <th colspan=2>Map B · soft-DTW (elastic)</th>
+    <th rowspan=2>Δ purity (B−A)</th><th rowspan=2>base rate</th></tr>
+<tr><th>purity [95% CI]</th><th>over chance</th><th>purity [95% CI]</th><th>over chance</th></tr>
+<tr><td>chevron</td><td>44</td><td>0.161 [0.116,0.207]</td><td>+0.061</td><td>0.207 [0.166,0.248]</td><td>+0.107</td><td class='win'>+0.045</td><td>0.100</td></tr>
+<tr><td>jump</td><td>204</td><td>0.602 [0.564,0.636]</td><td>+0.139</td><td>0.617 [0.575,0.656]</td><td>+0.153</td><td class='win'>+0.014</td><td>0.464</td></tr>
+<tr><td>flat</td><td>125</td><td>0.525 [0.468,0.582]</td><td>+0.241</td><td>0.570 [0.514,0.627]</td><td>+0.286</td><td class='win'>+0.046</td><td>0.284</td></tr>
+<tr><td>complex</td><td>67</td><td>0.228 [0.196,0.263]</td><td>+0.076</td><td>0.315 [0.272,0.363]</td><td>+0.163</td><td class='win'>+0.087</td><td>0.152</td></tr>
+</table>
+<p class="meta">"over chance" = purity − base rate. A family separates when its CI lower bound > base rate
+(all eight cells here do). Base rates are the family prevalence among the 440 labeled
+points; jump's high base (0.46) reflects deliberate jump oversampling during labeling.</p>
+
+<h2>Reference — Phase-3 high-D kNN (the standing gate)</h2>
+<p class="meta">Pooled jump, native ridge space: elastic <b>0.463</b> vs registration <b>0.373</b> (non-overlapping).
+The 2-D map preserves — and on the soft-DTW side modestly sharpens — this structure rather than
+destroying it on projection, so the map is a faithful navigable view, not a distortion artefact.
+Note: the 2-D map purities are <b>descriptive</b> (the embedding is fit on these ridges); the
+held-out decision gate remains <code>scripts/experiments/eval_shape_human_anchored.py</code>, untouched.</p>
+
+<h2>Figures</h2>
+<h3>Map A — Euclidean, full corpus (67,337): by cohort · by K=20 letter · human families</h3>
+<img src="trackD_mapA_euclidean.png">
+<h3>Map A — mean-ridge per spatial bin (browse the map as shape regions)</h3>
+<p class="meta">One connected manifold; shapes morph smoothly across it (chevron/valley top → flat/ramp
+middle → sharp step/jump bottom); a small detached oscillatory pocket at right = noise.</p>
+<img src="trackD_mapA_thumbnails.png">
+<h3>Map B — soft-DTW, subsample N=2000: families are visibly more zoned</h3>
+<img src="trackD_mapB_softdtw.png">
+
+<h2>What this means for the shape thread</h2>
+<ul>
+<li><b>The honest representation is the map, not the alphabet.</b> Adopt the 2-D shape-map (soft-DTW
+    preferred — it zones families best) as the repertoire representation; keep the K=20 letters as a
+    coarse index/label into it, documented as "coarse tiling of a continuum", not discrete syllables.</li>
+<li><b>Report shape as continuous axes / soft membership</b> (position on the map, distance to family
+    centroids) for the grammar &amp; repertoire analyses, rather than forcing hard letters — consistent
+    with the lower shape-vs-latent transition MI already on record.</li>
+<li><b>The elastic win generalises beyond jump when framed as a map.</b> This strengthens (does not
+    overturn) the Phase-3 "keep registration as the production hard alphabet for now" call: the
+    elastic metric's real payoff is a better <i>continuous</i> representation, not better hard clusters.</li>
+<li><b>Caveats:</b> complex/chevron N are small (67/44) and base rates are inflated by jump-heavy
+    labeling; Map-B background is a 2k subsample; 2-D purity is descriptive, not a held-out gate. The
+    falsified learned-encoder/VAE family stays closed.</li>
+</ul>
+</body></html>

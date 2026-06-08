@@ -1,0 +1,249 @@
+call_id,cohort,shape_label,labeled_at_index
+131204_1400_m1fm1_chunk_033__det9,m1fm1,Reverse Chevron,0
+131204_1400_m1fm1_chunk_040__det0,m1fm1,Noise,1
+131204_1400_m1fm1_chunk_061__det2,m1fm1,Up-FM,3
+131204_1400_m1fm1_chunk_064__det7,m1fm1,Up-FM,4
+131204_1400_m1fm1_chunk_074__det1,m1fm1,Up-FM,5
+131204_1400_m1fm1_chunk_074__det2,m1fm1,Up-FM,6
+131204_1800_m1fm1_chunk_024__det2,m1fm1,Flat,7
+131205_1000_m1fm1_chunk_019__det4,m1fm1,unclear,8
+131205_1400_m1fm1_chunk_206__det6,m1fm1,Flat,9
+131205_1800_m1fm1_chunk_016__det2,m1fm1,Reverse Chevron,10
+131208_1000_m1fm1_chunk_027__det1,m1fm1,Complex,11
+131212_1000_m1fm2_chunk_011__det3,m1fm2,Complex,12
+131212_1000_m1fm2_chunk_013__det0,m1fm2,Complex,13
+131212_1000_m1fm2_chunk_013__det7,m1fm2,Complex,14
+131212_1000_m1fm2_chunk_015__det2,m1fm2,Noise,15
+131212_1000_m1fm2_chunk_018__det1,m1fm2,Short,18
+131212_1000_m1fm2_chunk_067__det3,m1fm2,Reverse Chevron,20
+131212_1000_m1fm2_chunk_246__det0,m1fm2,Noise,21
+131212_1000_m1fm2_chunk_297__det0,m1fm2,Short,22
+131212_1000_m1fm2_chunk_297__det3,m1fm2,Noise,23
+131211_1000_m1fm4_chunk_040__det0,m1fm4,Noise,24
+131211_1000_m1fm4_chunk_044__det1,m1fm4,Noise,25
+131211_1000_m1fm4_chunk_138__det6,m1fm4,Complex,26
+131211_1800_m1fm4_chunk_094__det1,m1fm4,Noise,27
+131211_1800_m1fm4_chunk_127__det4,m1fm4,Up-FM,28
+131211_1800_m1fm4_chunk_135__det4,m1fm4,Noise,29
+131211_1800_m1fm4_chunk_138__det3,m1fm4,Noise,30
+131211_1800_m1fm4_chunk_143__det1,m1fm4,Noise,31
+131211_1800_m1fm4_chunk_228__det6,m1fm4,Noise,32
+131211_1800_m1fm4_chunk_290__det1,m1fm4,Noise,33
+131217_1400_m1fm4_chunk_181__det6,m1fm4,Flat,34
+131217_1400_m1fm4_chunk_185__det0,m1fm4,Up-FM,35
+131211_1000_m2fm1_chunk_013__det9,m2fm1,Complex,36
+131211_1000_m2fm1_chunk_025__det12,m2fm1,Step up,37
+131211_1000_m2fm1_chunk_027__det8,m2fm1,Step up,38
+131211_1000_m2fm1_chunk_054__det10,m2fm1,Two steps,41
+131211_1000_m2fm1_chunk_065__det3,m2fm1,Step down,44
+131211_1000_m2fm1_chunk_073__det3,m2fm1,Complex,45
+131211_1000_m2fm1_chunk_077__det3,m2fm1,Two steps,46
+131211_1000_m2fm1_chunk_177__det2,m2fm1,Complex,47
+131204_1400_m2fm2_chunk_121__det5,m2fm2,Step up,49
+131205_1000_m2fm2_chunk_116__det3,m2fm2,Reverse Chevron,51
+131205_1400_m2fm2_chunk_297__det11,m2fm2,Down-FM,53
+131208_1000_m2fm2_chunk_016__det1,m2fm2,Two steps,54
+131208_1000_m2fm2_chunk_050__det7,m2fm2,Step down,55
+131208_1000_m2fm2_chunk_215__det6,m2fm2,Two steps,56
+131209_1000_m2fm2_chunk_272__det0,m2fm2,Noise,57
+131218_1000_m2fm2_chunk_018__det6,m2fm2,Reverse Chevron,58
+131218_1000_m2fm2_chunk_023__det0,m2fm2,Down-FM,59
+131211_1800_m2fm3_chunk_014__det0,m2fm3,Step up,60
+131211_1800_m2fm3_chunk_019__det0,m2fm3,Flat,61
+131211_1800_m2fm3_chunk_059__det1,m2fm3,Noise,62
+131211_1800_m2fm3_chunk_089__det4,m2fm3,Noise,63
+131211_1800_m2fm3_chunk_099__det0,m2fm3,Noise,64
+131211_1800_m2fm3_chunk_137__det0,m2fm3,Noise,65
+131212_1000_m2fm3_chunk_010__det0,m2fm3,Down-FM,66
+131212_1000_m2fm3_chunk_028__det0,m2fm3,Two steps,67
+131212_1000_m2fm3_chunk_037__det2,m2fm3,Down-FM,68
+131212_1000_m2fm3_chunk_068__det9,m2fm3,Step up,69
+131210_1000_m2fm4_chunk_017__det6,m2fm4,Step down,72
+131210_1000_m2fm4_chunk_043__det10,m2fm4,Multi-steps,75
+131210_1000_m2fm4_chunk_096__det3,m2fm4,Down-FM,76
+131217_1400_m2fm4_chunk_039__det0,m2fm4,Multi-steps,78
+131217_1400_m2fm4_chunk_101__det1,m2fm4,Multi-steps,80
+131217_1400_m2fm4_chunk_150__det0,m2fm4,Noise,81
+131217_1400_m2fm4_chunk_198__det1,m2fm4,Chevron,82
+131217_1400_m2fm4_chunk_251__det1,m2fm4,Step up,83
+131211_1000_m3fm1_chunk_019__det8,m3fm1,Multi-steps,84
+131211_1000_m3fm1_chunk_070__det1,m3fm1,Step down,86
+131211_1000_m3fm1_chunk_092__det4,m3fm1,Down-FM,88
+131211_1000_m3fm1_chunk_117__det3,m3fm1,Up-FM,90
+131211_1800_m3fm1_chunk_014__det0,m3fm1,Step down,91
+131211_1800_m3fm1_chunk_030__det9,m3fm1,Step up,92
+131211_1800_m3fm1_chunk_155__det5,m3fm1,Flat,93
+131211_1800_m3fm1_chunk_248__det2,m3fm1,Step down,94
+131210_1000_m3fm2_chunk_015__det3,m3fm2,Flat,96
+131210_1000_m3fm2_chunk_029__det10,m3fm2,Down-FM,97
+131210_1000_m3fm2_chunk_030__det0,m3fm2,Up-FM,98
+131210_1000_m3fm2_chunk_073__det1,m3fm2,Two steps,100
+131217_1400_m3fm2_chunk_010__det1,m3fm2,Multi-steps,101
+131217_1400_m3fm2_chunk_021__det3,m3fm2,Down-FM,103
+131217_1400_m3fm2_chunk_077__det2,m3fm2,Down-FM,104
+131217_1400_m3fm2_chunk_239__det7,m3fm2,Down-FM,106
+131204_1400_m3fm3_chunk_039__det1,m3fm3,Down-FM,108
+131204_1400_m3fm3_chunk_051__det7,m3fm3,Reverse Chevron,109
+131204_1400_m3fm3_chunk_243__det10,m3fm3,Down-FM,112
+131205_1000_m3fm3_chunk_026__det11,m3fm3,Step up,114
+131205_1000_m3fm3_chunk_042__det6,m3fm3,Reverse Chevron,115
+131205_1800_m3fm3_chunk_015__det8,m3fm3,Flat,116
+131208_1000_m3fm3_chunk_038__det0,m3fm3,Flat,117
+131208_1000_m3fm3_chunk_085__det1,m3fm3,Flat,118
+131208_1000_m3fm3_chunk_278__det5,m3fm3,Step up,119
+131212_1000_m3fm4_chunk_016__det5,m3fm4,Down-FM,121
+131212_1000_m3fm4_chunk_127__det4,m3fm4,Step down,124
+131212_1000_m3fm4_chunk_131__det7,m3fm4,Multi-steps,125
+131212_1000_m3fm4_chunk_157__det1,m3fm4,Up-FM,127
+131212_1000_m3fm4_chunk_211__det3,m3fm4,Chevron,128
+131212_1000_m3fm4_chunk_255__det5,m3fm4,Flat,129
+131212_1000_m3fm4_chunk_287__det0,m3fm4,Noise,130
+131212_1000_m3fm4_chunk_299__det1,m3fm4,Noise,131
+131210_1000_m4fm1_chunk_017__det16,m4fm1,Flat,132
+131210_1000_m4fm1_chunk_034__det1,m4fm1,Down-FM,136
+131210_1000_m4fm1_chunk_039__det14,m4fm1,Flat,137
+131210_1000_m4fm1_chunk_054__det4,m4fm1,Flat,138
+131210_1000_m4fm1_chunk_065__det6,m4fm1,Multi-steps,141
+131210_1000_m4fm1_chunk_100__det1,m4fm1,Multi-steps,142
+131210_1000_m4fm1_chunk_109__det0,m4fm1,Multi-steps,143
+131211_1000_m4fm2_chunk_003__det5,m4fm2,Flat,144
+131211_1000_m4fm2_chunk_018__det12,m4fm2,Reverse Chevron,145
+131211_1000_m4fm2_chunk_068__det12,m4fm2,Flat,146
+131211_1000_m4fm2_chunk_075__det14,m4fm2,Reverse Chevron,147
+131211_1000_m4fm2_chunk_076__det5,m4fm2,Step up,148
+131211_1000_m4fm2_chunk_088__det2,m4fm2,Step down,149
+131211_1000_m4fm2_chunk_200__det1,m4fm2,Short,150
+131211_1800_m4fm2_chunk_074__det5,m4fm2,Step down,152
+131211_1800_m4fm2_chunk_280__det0,m4fm2,Noise,153
+131211_1800_m4fm2_chunk_314__det2,m4fm2,Noise,155
+131212_1000_m4fm3_chunk_030__det3,m4fm3,Reverse Chevron,156
+131212_1000_m4fm3_chunk_092__det6,m4fm3,Reverse Chevron,159
+131212_1000_m4fm3_chunk_110__det3,m4fm3,Reverse Chevron,160
+131212_1000_m4fm3_chunk_115__det3,m4fm3,Step up,161
+131212_1000_m4fm3_chunk_172__det2,m4fm3,Noise,163
+131212_1000_m4fm3_chunk_173__det0,m4fm3,Noise,164
+131212_1000_m4fm3_chunk_307__det1,m4fm3,Noise,165
+131217_1400_m4fm3_chunk_061__det2,m4fm3,Down-FM,167
+131204_1400_m4fm4_chunk_087__det0,m4fm4,Flat,168
+131204_1400_m4fm4_chunk_264__det0,m4fm4,Noise,169
+131204_1400_m4fm4_chunk_298__det1,m4fm4,Two steps,170
+131204_1800_m4fm4_chunk_075__det4,m4fm4,Reverse Chevron,171
+131205_1800_m4fm4_chunk_203__det3,m4fm4,Flat,172
+131208_1000_m4fm4_chunk_018__det4,m4fm4,Step up,173
+131208_1000_m4fm4_chunk_020__det1,m4fm4,Step up,174
+131208_1000_m4fm4_chunk_023__det0,m4fm4,Multi-steps,175
+131208_1000_m4fm4_chunk_027__det2,m4fm4,Down-FM,176
+131208_1000_m4fm4_chunk_235__det0,m4fm4,Up-FM,177
+131208_1400_m4fm4_chunk_224__det7,m4fm4,Flat,179
+131204_1400_m5fm5_chunk_114__det0,m5fm5,Two steps,180
+131205_1000_m5fm5_chunk_124__det3,m5fm5,Step up,182
+131205_1800_m5fm5_chunk_019__det1,m5fm5,Down-FM,183
+131208_1000_m5fm5_chunk_133__det2,m5fm5,Multi-steps,184
+131208_1400_m5fm5_chunk_012__det9,m5fm5,Step up,185
+131208_1400_m5fm5_chunk_176__det4,m5fm5,Down-FM,186
+131210_1000_m5fm5_chunk_103__det0,m5fm5,Step up,187
+131211_1000_m5fm5_chunk_033__det5,m5fm5,Chevron,188
+131212_1000_m5fm5_chunk_010__det0,m5fm5,Down-FM,190
+131205_1000_m6fm6_chunk_071__det4,m6fm6,Flat,193
+131205_1000_m6fm6_chunk_299__det1,m6fm6,Step up,195
+131205_1400_m6fm6_chunk_021__det7,m6fm6,Down-FM,196
+131205_1400_m6fm6_chunk_293__det2,m6fm6,Flat,197
+131205_1400_m6fm6_chunk_300__det8,m6fm6,Reverse Chevron,199
+131205_1800_m6fm6_chunk_011__det9,m6fm6,Down-FM,200
+131208_1000_m6fm6_chunk_108__det6,m6fm6,Step up,201
+131210_1000_m6fm6_chunk_091__det9,m6fm6,Flat,202
+131210_1000_m6fm6_chunk_240__det13,m6fm6,Reverse Chevron,203
+131204_1400_m1fm1_chunk_047__det9,m1fm1,Step up,0
+131212_1000_m1fm2_chunk_016__det1,m1fm2,unclear,1
+131212_1000_m1fm2_chunk_016__det8,m1fm2,Step down,2
+131212_1000_m1fm2_chunk_018__det3,m1fm2,unclear,3
+131211_1000_m2fm1_chunk_045__det0,m2fm1,Multi-steps,4
+131211_1000_m2fm1_chunk_049__det1,m2fm1,Multi-steps,5
+131211_1000_m2fm1_chunk_058__det5,m2fm1,Multi-steps,6
+131211_1000_m2fm1_chunk_064__det8,m2fm1,Multi-steps,7
+131204_1400_m2fm2_chunk_025__det1,m2fm2,Multi-steps,8
+131205_1000_m2fm2_chunk_011__det7,m2fm2,Multi-steps,9
+131205_1000_m2fm2_chunk_259__det7,m2fm2,Multi-steps,10
+131212_1000_m2fm3_chunk_071__det12,m2fm3,Flat,11
+131212_1000_m2fm3_chunk_170__det2,m2fm3,Complex,12
+131210_1000_m2fm4_chunk_029__det5,m2fm4,Multi-steps,13
+131210_1000_m2fm4_chunk_042__det4,m2fm4,Multi-steps,14
+131217_1400_m2fm4_chunk_009__det4,m2fm4,unclear,15
+131217_1400_m2fm4_chunk_097__det1,m2fm4,unclear,16
+131211_1000_m3fm1_chunk_025__det4,m3fm1,unclear,17
+131211_1000_m3fm1_chunk_090__det2,m3fm1,Multi-steps,18
+131211_1000_m3fm1_chunk_114__det2,m3fm1,unclear,19
+131211_1800_m3fm1_chunk_249__det1,m3fm1,Flat,20
+131210_1000_m3fm2_chunk_063__det5,m3fm2,Complex,21
+131217_1400_m3fm2_chunk_011__det0,m3fm2,unclear,22
+131217_1400_m3fm2_chunk_132__det1,m3fm2,unclear,23
+131217_1400_m3fm2_chunk_290__det8,m3fm2,Down-FM,24
+131204_1400_m3fm3_chunk_074__det5,m3fm3,Complex,25
+131204_1400_m3fm3_chunk_126__det6,m3fm3,Multi-steps,26
+131204_1400_m3fm3_chunk_281__det2,m3fm3,Multi-steps,27
+131212_1000_m3fm4_chunk_014__det3,m3fm4,unclear,28
+131212_1000_m3fm4_chunk_053__det12,m3fm4,Multi-steps,29
+131212_1000_m3fm4_chunk_097__det6,m3fm4,Multi-steps,30
+131212_1000_m3fm4_chunk_152__det3,m3fm4,unclear,31
+131210_1000_m4fm1_chunk_022__det6,m4fm1,Reverse Chevron,32
+131210_1000_m4fm1_chunk_023__det6,m4fm1,Reverse Chevron,33
+131210_1000_m4fm1_chunk_031__det1,m4fm1,Multi-steps,34
+131210_1000_m4fm1_chunk_062__det1,m4fm1,Reverse Chevron,35
+131210_1000_m4fm1_chunk_063__det4,m4fm1,unclear,36
+131211_1800_m4fm2_chunk_073__det5,m4fm2,unclear,37
+131211_1800_m4fm2_chunk_309__det4,m4fm2,Noise,38
+131212_1000_m4fm3_chunk_034__det3,m4fm3,Reverse Chevron,39
+131212_1000_m4fm3_chunk_035__det4,m4fm3,Reverse Chevron,40
+131212_1000_m4fm3_chunk_126__det2,m4fm3,unclear,41
+131217_1400_m4fm3_chunk_050__det0,m4fm3,unclear,42
+131208_1000_m4fm4_chunk_239__det1,m4fm4,Chevron,43
+131204_1800_m5fm5_chunk_048__det8,m5fm5,unclear,44
+131211_1800_m5fm5_chunk_239__det2,m5fm5,Reverse Chevron,45
+131217_1400_m5fm5_chunk_174__det2,m5fm5,Complex,46
+131204_1800_m6fm6_chunk_140__det1,m6fm6,Noise,47
+131205_1000_m6fm6_chunk_082__det1,m6fm6,unclear,48
+131205_1400_m6fm6_chunk_298__det7,m6fm6,unclear,49
+2024-10-04_10-30-53_0000317__det0,3452,Noise,0
+2024-10-04_11-04-53_0000479__det1,3452,Noise,1
+2024-10-04_11-50-44_0000558__det1,3452,Noise,2
+2024-10-04_11-51-21_0000560__det0,3452,Step down,3
+2024-10-04_11-51-24_0000561__det0,3452,Flat,4
+2024-10-04_11-53-21_0000573__det0,3452,Short,5
+2024-10-04_17-42-00_0001231__det0,3452,Flat,6
+2024-10-04_18-00-18_0001314__det0,3452,Noise,7
+2024-10-04_19-13-01_0001565__det1,3452,Flat,8
+2024-10-04_19-13-01_0001565__det2,3452,Flat,9
+2024-10-04_19-13-03_0001566__det10,3452,Step down,10
+2024-10-04_19-13-03_0001566__det4,3452,Flat,11
+2024-10-04_19-13-03_0001566__det6,3452,Flat,12
+2024-10-04_19-13-03_0001566__det7,3452,Down-FM,13
+2024-10-04_19-13-08_0001567__det2,3452,Step up,14
+2024-10-04_19-13-14_0001569__det0,3452,Flat,15
+2024-10-05_01-15-14_0002549__det0,3452,Multi-steps,16
+2024-10-05_02-08-02_0002747__det0,3452,Flat,17
+2024-10-05_02-08-02_0002747__det1,3452,Flat,18
+2024-10-05_14-23-10_0003517__det1,3452,Complex,19
+2024-10-05_16-05-44_0003687__det0,3452,Flat,20
+2024-10-05_16-05-44_0003687__det1,3452,Short,21
+2024-10-05_16-05-50_0003689__det13,3452,Down-FM,22
+2024-10-05_16-05-50_0003689__det15,3452,Step down,23
+2024-10-05_16-05-50_0003689__det3,3452,Flat,24
+2024-10-05_16-05-58_0003690__det0,3452,Flat,25
+2024-10-05_16-06-03_0003692__det1,3452,Down-FM,26
+2024-10-05_16-06-06_0003693__det0,3452,Flat,27
+2024-10-05_16-06-06_0003693__det5,3452,Flat,28
+2024-10-05_16-06-24_0003695__det1,3452,Complex,29
+2024-10-05_16-06-24_0003695__det4,3452,Flat,30
+2024-10-05_16-56-53_0003827__det2,3452,Down-FM,31
+2024-10-05_17-01-35_0003878__det0,3452,Flat,32
+2024-10-05_17-01-35_0003878__det3,3452,Step up,33
+2024-10-05_17-01-54_0003880__det1,3452,Flat,34
+2024-10-05_17-06-49_0003900__det0,3452,Flat,35
+2024-10-05_17-08-39_0003920__det0,3452,Complex,36
+2024-10-05_17-43-39_0004055__det0,3452,Step down,37
+2024-10-05_17-43-40_0004056__det0,3452,Step down,38
+2024-10-05_17-43-40_0004056__det11,3452,Flat,39
+2024-10-05_17-43-40_0004056__det12,3452,Two steps,40
+2024-10-05_17-43-40_0004056__det15,3452,Step down,41
+2024-10-05_17-43-45_0004057__det0,3452,Flat,42
+2024-10-05_17-43-45_0004057__det1,3452,Complex,43

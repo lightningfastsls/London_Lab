@@ -1,0 +1,16 @@
+<!doctype html><meta charset=utf-8>
+<title>M2b proper JTFS vs the bar</title>
+<style>body{font:14px/1.5 system-ui;margin:2rem;max-width:980px}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px 10px;text-align:left}
+th{background:#f4f4f4}.gate{padding:1rem;border-radius:8px;background:#eee;margin:1rem 0}</style>
+<h1>M2b — proper Joint Time-Frequency Scattering (VAE-diagnostic)</h1>
+<p><b>Transform:</b> kymatio TimeFrequencyScattering (joint time-frequency scattering) on the raw call waveform (N=131072,
+F-sweep, T=N). kymatio 0.4.0.dev0 (git main) installed isolated to a throwaway dir + shipped to rig; box .venv stays pinned at 0.3.0. JTFS on raw waveform (N=131072 @ canonical SR), torch backend, cuda:0.</p>
+<div class=gate><b>DECISION GATE = TIE.</b><br>JTFS only TIES soft-DTW (no non-overlapping win on jump or complex) -> consistent with the Scattering2D substitute; CLOSE M2b. Confirms a FIXED non-learned spectrotemporal transform matches (not beats) the elastic bar, so the 7 prior VAE failures were about the LEARNED PIXEL OBJECTIVE, not spectrograms or transposition invariance per se.</div>
+<h2>Pooled invariant kNN purity (k=10, 1000× bootstrap CI)</h2>
+<table><tr><th>family</th><th>identity (registration)</th><th>soft-DTW (THE BAR)</th>
+<th>M2b Scattering2D substitute</th><th>M2b proper JTFS</th></tr><tr><td><b>chevron</b></td><td>0.186 <span style='color:#888'>[0.143,0.232]</span></td><td style='background:#eef'>0.214 <span style='color:#888'>[0.168,0.261]</span></td><td>0.205 <span style='color:#888'>[0.152,0.259]</span></td><td style='background:#efe'>0.132 <span style='color:#888'>[0.095,0.168]</span></td></tr><tr><td><b>jump</b></td><td>0.415 <span style='color:#888'>[0.377,0.453]</span></td><td style='background:#eef'>0.522 <span style='color:#888'>[0.480,0.570]</span></td><td>0.587 <span style='color:#888'>[0.548,0.629]</span></td><td style='background:#efe'>0.583 <span style='color:#888'>[0.542,0.624]</span></td></tr><tr><td><b>flat</b></td><td>0.419 <span style='color:#888'>[0.384,0.456]</span></td><td style='background:#eef'>0.396 <span style='color:#888'>[0.362,0.433]</span></td><td>0.415 <span style='color:#888'>[0.382,0.448]</span></td><td style='background:#efe'>0.323 <span style='color:#888'>[0.291,0.358]</span></td></tr><tr><td><b>complex</b></td><td>0.194 <span style='color:#888'>[0.148,0.236]</span></td><td style='background:#eef'>0.243 <span style='color:#888'>[0.199,0.284]</span></td><td>0.239 <span style='color:#888'>[0.194,0.284]</span></td><td style='background:#efe'>0.167 <span style='color:#888'>[0.139,0.196]</span></td></tr></table>
+<p style='color:#666'>Best JTFS config: F2 (F=2,
+J=13, Q=8, J_fr=3);
+PCA d=50 of 2478. Reversal (invariant-only) passed=False;
++direction passed=False.</p>

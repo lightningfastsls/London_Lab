@@ -1,0 +1,12 @@
+{
+  "shape": 0.1045868877333932,
+  "pitch": 0.2620960506619041,
+  "duration": 0.17066600789183095,
+  "n_total": 12440,
+  "n_valid": 12440,
+  "k_clusters": 20,
+  "kill_threshold": 0.12,
+  "production_baseline": 0.12,
+  "registration_ceiling": 0.58,
+  "verdict": "KILL_PATHWAY"
+}

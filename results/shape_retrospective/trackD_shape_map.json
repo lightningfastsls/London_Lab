@@ -1,0 +1,112 @@
+{
+  "params": {
+    "k": 10,
+    "n_boot": 1000,
+    "gamma": 1.0,
+    "seed": 42,
+    "subsample": 2000
+  },
+  "n_total": 67337,
+  "n_labeled": 440,
+  "family_counts_labeled": {
+    "chevron": 44,
+    "jump": 204,
+    "flat": 125,
+    "complex": 67
+  },
+  "map_A_euclidean": {
+    "verdict": "NAVIGABLE REGIONS",
+    "separates": [
+      "chevron",
+      "jump",
+      "flat",
+      "complex"
+    ],
+    "purity": {
+      "chevron": {
+        "n": 44,
+        "purity": 0.16136363636363635,
+        "ci": [
+          0.1159090909090909,
+          0.20681818181818182
+        ],
+        "base_rate": 0.1
+      },
+      "jump": {
+        "n": 204,
+        "purity": 0.6024509803921568,
+        "ci": [
+          0.5637132352941177,
+          0.6357843137254903
+        ],
+        "base_rate": 0.4636363636363636
+      },
+      "flat": {
+        "n": 125,
+        "purity": 0.5247999999999999,
+        "ci": [
+          0.4680000000000001,
+          0.5816200000000001
+        ],
+        "base_rate": 0.2840909090909091
+      },
+      "complex": {
+        "n": 67,
+        "purity": 0.22835820895522388,
+        "ci": [
+          0.19552238805970146,
+          0.26268656716417915
+        ],
+        "base_rate": 0.15227272727272728
+      }
+    }
+  },
+  "map_B_softdtw": {
+    "verdict": "NAVIGABLE REGIONS",
+    "separates": [
+      "chevron",
+      "jump",
+      "flat",
+      "complex"
+    ],
+    "purity": {
+      "chevron": {
+        "n": 44,
+        "purity": 0.20681818181818185,
+        "ci": [
+          0.1658522727272727,
+          0.24772727272727277
+        ],
+        "base_rate": 0.1
+      },
+      "jump": {
+        "n": 204,
+        "purity": 0.6166666666666667,
+        "ci": [
+          0.5754656862745099,
+          0.6558946078431372
+        ],
+        "base_rate": 0.4636363636363636
+      },
+      "flat": {
+        "n": 125,
+        "purity": 0.5704000000000001,
+        "ci": [
+          0.51438,
+          0.6272000000000001
+        ],
+        "base_rate": 0.2840909090909091
+      },
+      "complex": {
+        "n": 67,
+        "purity": 0.3149253731343284,
+        "ci": [
+          0.27164179104477615,
+          0.362723880597015
+        ],
+        "base_rate": 0.15227272727272728
+      }
+    }
+  },
+  "interpretation": "At least one map shows families occupying coherent regions above chance \u2014 the shape-map is partially navigable. Jump (where soft-DTW won in Phase 3): Euclidean map purity 0.602 vs soft-DTW map purity 0.617 (base ~0.464)."
+}
