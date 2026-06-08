@@ -1,0 +1,435 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Repo Cleanup Plan — mickey_london_lab</title>
+<style>
+ body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:1000px;margin:0 auto;padding:2rem;color:#1a1a1a;line-height:1.5;background:#fafafa}
+ h1{font-size:1.7rem;margin-bottom:.2rem} h2{margin-top:2rem;border-bottom:2px solid #eee;padding-bottom:.3rem}
+ .sub{color:#666;margin-top:0}
+ .summary-box{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:1rem 1.3rem;margin:1rem 0}
+ .verdict{display:inline-block;padding:.3rem .8rem;border-radius:6px;color:#fff;font-weight:600;background:#ef6c00}
+ details.tier{background:#fff;border:1px solid #e0e0e0;border-radius:8px;margin:.7rem 0;padding:.4rem .9rem}
+ details.tier summary{cursor:pointer;font-size:1.05rem;padding:.4rem 0;list-style:none}
+ .tier-badge{color:#fff;padding:.15rem .55rem;border-radius:5px;font-weight:700;font-size:.85rem;margin-right:.5rem}
+ .tier-title{font-weight:600} .risk-tag{margin-left:.6rem;font-size:.85rem;font-weight:600}
+ .count{float:right;color:#888;font-size:.85rem}
+ .rationale{color:#555;font-style:italic;margin:.4rem 0 .8rem;border-left:3px solid #ddd;padding-left:.8rem}
+ .item{border-top:1px solid #f0f0f0;padding:.7rem 0}
+ .path{font-family:ui-monospace,Menlo,monospace;font-size:.82rem;color:#0a3d62;word-break:break-all;font-weight:600}
+ .action{margin:.3rem 0;font-size:.92rem} .why{color:#555;font-size:.88rem}
+ .meta{margin-top:.35rem} .chip{display:inline-block;color:#fff;padding:.1rem .5rem;border-radius:4px;font-size:.75rem;margin-right:.4rem}
+ .chip-light{background:#eee!important;color:#444!important}
+ .flag{background:#fff;border-left:4px solid #c62828;border-radius:6px;padding:.7rem 1rem;margin:.6rem 0}
+ .flag-head{font-family:ui-monospace,monospace;font-size:.82rem;font-weight:700;color:#c62828;margin-bottom:.3rem}
+ .fix{margin-top:.3rem;color:#1b5e20}
+ table{width:100%;border-collapse:collapse;background:#fff;font-size:.88rem}
+ th,td{text-align:left;padding:.5rem;border-bottom:1px solid #eee;vertical-align:top}
+ td.dim{font-weight:600;white-space:nowrap;color:#0a3d62} td.num{text-align:center}
+ ol{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:1rem 1rem 1rem 2.3rem}
+ ol li{margin:.45rem 0}
+ .footer{color:#999;font-size:.8rem;margin-top:2rem;text-align:center}
+</style></head><body>
+<h1>Repo Cleanup &amp; Handoff Plan</h1>
+<p class="sub">mickey_london_lab — generated 2026-06-08 · 9 read-only audits → tiered plan → safety critic</p>
+
+<div class="summary-box">
+<p><span class="verdict">Safety critic: safe-with-fixes</span></p>
+<p>**State of the repo.** This is a ~150 GB, 7.8 GB-git-history USV science repo that is fundamentally *sound at the core* but *cluttered at the edges*. The good news from the audits is consistent and verified: the `.gitignore` is sophisticated and already shields the dangerous classes (zero tracked `__pycache__`, `*.pyc`, `*.zip`, `.venv/`, Zone.Identifier); the production model `models/hard_neg_retrain/*` is intact; the test suite is large and the science-critical surface (corpus constants, detection, FP-filter, event features, labeling) is well-covered with 1,584 passing tests; and the raw recordings + tracked detection outputs are correctly preserved (the `!`-reinclude rules exist *because* of the documented 656-file loss incident). The repo is mostly *missing-commits and stray-clutter*, not garbage.
+
+**Cleanup strategy.** Approve safest-first. Tier 0 is pure cruft you can delete blind (note: the real Zone.Identifier count is **18,273**, not ~21 — almost all of them sit *inside* the irreplaceable `USV_9252/` and `5970/` raw-data dirs, so the delete must be scoped by name `find -name &#x27;*:Zone.Identifier&#x27; -delete`, never a recursive dir wipe). Tier 1 organizes the chaotic root (24 loose `.md`, 9 `classified_detections*.csv`, scattered PLAN/ROADMAP/HANDOFF docs) into `docs/` + creates `docs/archive/`, and hardens `.gitignore` against the one real future-bloat risk (the ~6.3 GB un-ignored `data/alpha3_*patches/`). Tier 2 is confirm-each consolidation: `git rm --cached` the embedded unrelated **parts-finder** project (111 tracked files) and 4 empty tracked root stubs (`lab`/`persist`/`quantity`/`search`), commit the 213 valuable untracked handoff/script/safety-hook artifacts by exact path, and triage 19 erroring tests. Tier 3 is additive handoff polish (successor README, INSTALL+RUN doc, packaging, tools index). Tier 4 lists only the irreplaceable-data candidates (chunked corpus, review cascades, git history) for explicit per-item sign-off — never auto-recommended for deletion.</p>
+</div>
+
+<h2>Cleanup tiers</h2>
+<p>Approve safest-first. Tier 0 = zero-risk cruft · Tier 1 = safe reorganization · Tier 2 = confirm-each git changes · Tier 3 = additive handoff polish · Tier 4 = irreplaceable-data candidates (per-item sign-off only).</p>
+
+    <details class="tier" open>
+      <summary><span class="tier-badge" style="background:#2e7d32">TIER 0</span>
+        <span class="tier-title">Zero-risk cruft deletion (regenerable, meaningless)</span>
+        <span class="risk-tag" style="color:#2e7d32">risk: none</span>
+        <span class="count">4 items</span></summary>
+      <p class="rationale">Bytecode caches and Windows download-metadata stubs only. All verified UNTRACKED (0 in git ls-files), so git is unaffected. CRITICAL CORRECTION over the per-audit findings: the Zone.Identifier population is 18,273 files, not ~21 — 11,586 live inside USV_9252/ and 6,596 inside 5970/ (both irreplaceable raw-data dirs). Delete them by NAME GLOB only (find -name &#x27;*:Zone.Identifier&#x27; -delete); never `rm -rf` the parent dirs.</p>
+      
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/**/*:Zone.Identifier (18,273 files; 11,586 in USV_9252/, 6,596 in 5970/, ~91 elsewhere incl. root)</div>
+          <div class="action"><b>Action:</b> Delete by name only: `find . -name &#x27;*:Zone.Identifier&#x27; -not -path &#x27;./.venv/*&#x27; -delete`. Then add `*:Zone.Identifier` to .gitignore. Do NOT touch the parent data dirs.</div>
+          <div class="why">Windows mark-of-the-web NTFS alternate-data-stream stubs (~53-61 bytes each), meaningless, never referenced, all untracked. The bulk sit inside raw-recording dirs so the delete must be scoped to the name pattern, not the directory.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">~1 MB total</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/**/__pycache__/ (non-.venv; root, scripts/, scripts/experiments/, scripts/labeling/, usv_language/*, tests/, results/*, etc.)</div>
+          <div class="action"><b>Action:</b> Delete all non-.venv __pycache__ dirs (`find . -type d -name __pycache__ -not -path &#x27;./.venv/*&#x27; -exec rm -rf {} +`). Already gitignored; confirm `parts-finder/**/__pycache__` etc. included.</div>
+          <div class="why">Python bytecode caches, fully regenerable. Verified 0 tracked in git. ~19.8 MB across the tree.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">~19.8 MB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/batch_results/ (empty)</div>
+          <div class="action"><b>Action:</b> Delete empty directory.</div>
+          <div class="why">0 files (verified). Stray leftover superseded by results/batch_*/.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">4 KB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/USV_lab_131204_pilot_chunked/ (empty of files)</div>
+          <div class="action"><b>Action:</b> Delete empty directory skeleton.</div>
+          <div class="why">0 files (verified) — only empty subdirs from an early pilot chunking run. Regenerable scaffold holding nothing.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">1.6 MB (empty dirs)</span>
+          </div>
+        </div>
+    </details>
+    <details class="tier" open>
+      <summary><span class="tier-badge" style="background:#558b2f">TIER 1</span>
+        <span class="tier-title">Safe organization (move stray root files into docs/data/, create archive, harden .gitignore)</span>
+        <span class="risk-tag" style="color:#558b2f">risk: low</span>
+        <span class="count">7 items</span></summary>
+      <p class="rationale">Declutters the 24-loose-.md / 9-loose-CSV root and prevents the one real future-bloat risk. All git-recoverable. Creates the docs/archive/ destination that every &#x27;move to archive&#x27; action below depends on. Does NOT delete anything in this tier — moves and one .gitignore addition only. The CSV moves are flagged because lab_131204_clean.csv is the documented live working set (40,787 rows) — relocate as a set, never drop.</p>
+      
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/docs/archive/ (and docs/archive/handoffs/) — CREATE</div>
+          <div class="action"><b>Action:</b> Create the directory. NOTE: docs/historical/ and docs/phases/ already exist — decide whether to consolidate to avoid a third overlapping bucket before mass-moving.</div>
+          <div class="why">No archive location currently exists, which is why DONE/KILLED roadmaps pile up in root. Precondition for all &#x27;move to archive&#x27; actions.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">0</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ROADMAP.md (94 KB), ROADMAP_POST_PROCESSING.md, ROADMAP_SIS_BENCHMARK.md, ROADMAP_KNOWLEDGE_ACTIVATION.md, ROADMAP_lab_cnn_classifier.md</div>
+          <div class="action"><b>Action:</b> Move USV roadmaps to docs/archive/ (those marked DONE/kill) or docs/roadmaps/ (any still-binding). ROADMAP_POST_PROCESSING and ROADMAP_SIS_BENCHMARK are headed Status: DONE; ROADMAP_KNOWLEDGE_ACTIVATION and ROADMAP_lab_cnn_classifier carry kill markers.</div>
+          <div class="why">Per feedback_roadmap_not_authoritative there is no master roadmap; each is binding for its scope. They are reference, not stale — but 5 large roadmaps in root is clutter. Confirm DONE/kill status before filing under archive vs roadmaps.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~243 KB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/PLAN_continuum_repertoire_program.md, PLAN_elastic_shape_clustering.md, PLAN_2dpca_usv_classifier.md (ACTIVE) — vs — PLAN_shape_representation_v2.md, PLAN_geometric_shape_clustering_vae.md, PLAN_test_vocalmat_classifier.md, PLAN_lab_cnn_classifier.md/.html (SUPERSEDED)</div>
+          <div class="action"><b>Action:</b> Move active plans (continuum, elastic_shape, 2dpca) to docs/plans/ alongside the 31 already there; move superseded ones (VAE-shape KILLED 2026-05-28, vocalmat DEFERRED, lab_cnn settled to v1) to docs/archive/. The PLAN_lab_cnn_classifier.html is an HTML render of its .md — archive or drop the duplicate.</div>
+          <div class="why">Scattered design docs; some current (heavily referenced in MEMORY), some on closed tracks. Relocate so root holds only README/CLAUDE/AGENTS + onboarding. Untracked ones are not git-recoverable, so move (don&#x27;t delete).</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~140 KB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/HANDOFF_TO_CLAUDE_CODE.md, HANDOFF_contour_masked_vae_orchestrator.md, usv_shape_invariance_handoff.md</div>
+          <div class="action"><b>Action:</b> Move to docs/handoffs/ (the established home; 155 files already there). usv_shape_invariance_handoff.md (2026-06-07) belongs next to its already-filed successor 2026-06-08_shape-invariance-thread2-label-expansion.md.</div>
+          <div class="why">Loose handoffs in root while the repo has a docs/handoffs/ convention. Untracked, so relocate rather than delete.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~32 KB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/classified_detections.csv, _3452.csv, _9252.csv, _full.csv, _lab_131204{,_clean,_clean_filtered,_downsampled_n7921}.csv (9 files)</div>
+          <div class="action"><b>Action:</b> Move the whole set to data/ (or results/). KEEP ALL — classified_detections_lab_131204_clean.csv is the documented live working set (40,787 rows) and the variants encode distinct cleaning stages.</div>
+          <div class="why">Derived detection tables that belong in a data dir, not root. Relocate as a set; do not delete — recompute is expensive and the lab variants are under active analysis.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~78 MB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/compass_artifact_wf-f1d56dc1-...-text_markdown.md, NOTION_NOTES_ROADMAP.md, IMPLEMENTATION_PROGRESS.md</div>
+          <div class="action"><b>Action:</b> compass_artifact: rename to a meaningful name and move to inbox/ (cited by PLAN_continuum + a tracked roadmap, so keep it). NOTION_NOTES_ROADMAP: move to the notion_notes/ subproject or docs/archive/. IMPLEMENTATION_PROGRESS.md (70 KB, last touched May-28): leave as provenance log but move to docs/ and point successors to docs/human/PROJECTS.md as the live dashboard.</div>
+          <div class="why">Opaque UUID-named research dump + legacy Notion plan + large append-only log clutter the root and risk being mistaken for current status.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~143 KB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/.gitignore — ADD data/alpha3_*patches*/ and *:Zone.Identifier and (optionally) *.tar</div>
+          <div class="action"><b>Action:</b> Add ignore rules: `data/alpha3_*patches*/`, `*:Zone.Identifier`, and consider `*.tar` (mirrors the existing *.zip rule). Do NOT ignore the alpha3 *manifest*.csv label-index files.</div>
+          <div class="why">The ~6.3 GB data/alpha3_human_patches + _oracle_patches + alpha3_patches are regenerable render outputs and are NOT currently ignored (verified) — a single `git add data/` would permanently bloat git. *.tar is also un-ignored, which is how the 84 MB _archive tarball slipped in. This is the single highest-value preventive hygiene change.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">prevents ~6.3 GB future bloat</span>
+          </div>
+        </div>
+    </details>
+    <details class="tier" >
+      <summary><span class="tier-badge" style="background:#ef6c00">TIER 2</span>
+        <span class="tier-title">Needs-confirmation consolidation (git-rm --cached, commit-by-path, dead-test triage)</span>
+        <span class="risk-tag" style="color:#ef6c00">risk: medium</span>
+        <span class="count">10 items</span></summary>
+      <p class="rationale">Each item changes git tracking or removes tracked content, so list explicitly and confirm individually. Honors the repo&#x27;s hard rule: NEVER `git add -A`/`.` — stage by exact path. The 213 untracked items split cleanly into &#x27;valuable handoff artifacts to commit by path&#x27; and &#x27;regenerable to gitignore&#x27;. The embedded parts-finder project and 4 empty stub files are the clearest &#x27;remove from tracking&#x27; wins.</p>
+      
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/parts-finder/ (111 tracked files, 3.2 MB) + root spillover: ROADMAP_PARTS_FINDER.md, oil-finder-free.jsx, parts_finder.db, parts-finder/parts_finder.db.bak</div>
+          <div class="action"><b>Action:</b> Confirm with user, then `git rm -r --cached parts-finder ROADMAP_PARTS_FINDER.md oil-finder-free.jsx parts_finder.db` (keeps local copies), relocate to its own repo, and add `parts-finder/` to .gitignore if kept on disk.</div>
+          <div class="why">An entirely separate commercial project (Israeli car-parts/oil lookup for client &#x27;Tevel Group&#x27;) committed inside the USV repo — verified 111 tracked files. A USV successor should not inherit it.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~3.3 MB tracked</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/{lab,persist,quantity,search} (4 zero-byte tracked root files)</div>
+          <div class="action"><b>Action:</b> Confirm no script references them (quick grep), then `git rm --cached lab persist quantity search` and delete.</div>
+          <div class="why">Verified zero-byte and TRACKED — accidental shell-redirect/touch artifacts (e.g. a stray `&gt;search`). Pure noise in a handoff tree.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">0 bytes</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170/ + chunk_243/ (64 untracked detection PNG/JSON/CSV files)</div>
+          <div class="action"><b>Action:</b> Confirm these are the intended human-review detections, then commit by EXACT path: `git add USV_Detections/131204_1400_m3fm3_chunk_170 USV_Detections/131204_1400_m3fm3_chunk_243`. NEVER `git add -A` here.</div>
+          <div class="why">Both chunk dirs already have _saved_tracking.json committed; USV_Detections/ is explicitly un-ignored. This is the exact dir from the 656-file loss incident — bulk-staging risk is real. New detection outputs are valuable.</div>
+          <div class="meta">
+            <span class="chip" style="background:#ef6c00">hard</span>
+            <span class="chip chip-light">~9.7 MB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/data/manual_shape_labels.csv (+ 2 dated backup CSVs), raven_tables_lab_131204/*.selections.txt, data/alpha3_*manifest*.csv, models/shape_fpca/ (already ignored)</div>
+          <div class="action"><b>Action:</b> Commit by path: `git add data/manual_shape_labels*.csv data/alpha3_*manifest*.csv`. Confirm raven tables&#x27; provenance (hand-curated vs deterministic export) before committing. shape_fpca already ignored (regenerable) — leave.</div>
+          <div class="why">manual_shape_labels.csv is the irreplaceable human supervision behind elastic-shape/2dpca work; manifests index human labels cheaply. Must be tracked, never deleted.</div>
+          <div class="meta">
+            <span class="chip" style="background:#c62828">irreversible</span>
+            <span class="chip chip-light">~75 KB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/.claude/hooks/guard_destructive.py, .agents/skills/{kcheck,sync}/SKILL.md, ops/scripts/{hook_health.py,vault_pulse.py}, ops/health/repo-audit-2026-05-28.html</div>
+          <div class="action"><b>Action:</b> Commit by path. Confirm guard_destructive.py is wired in settings before committing.</div>
+          <div class="why">Safety hook that hard-blocks `git add -A`/`reset --hard`/`rm -rf` (makes the data-safety rule executable), plus session-start beacons + skills CLAUDE.md references by name. High-value safety/automation assets currently untracked.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">tiny</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ ~40 new scripts/ + ~26 scripts/experiments/ + scripts/experiments/shape_invariance/*.py+CONTRACT.md + src/usv_spectrogram/classifier/twodpca.py + paired tests (test_twodpca.py, test_dist_stats.py, test_fpca_merge.py, test_shape_archetypes.py) + ~37 docs/handoffs/ + docs/modules/reviews/plans + inbox/*.md</div>
+          <div class="action"><b>Action:</b> Commit by path in coherent groups (`git add docs/handoffs/`, the experiment scripts + their tests together, etc.). Read-through the analysis scripts first. inbox/*.md: ideally /reduce into notes/, else commit in place — do NOT delete.</div>
+          <div class="why">These are the session-continuity chain and verified deliverables (2dpca module, elastic-FPCA producers, eval harnesses) a departing user must hand off. Tests-as-spec → committing locks behavior. Companion __pycache__ already ignored.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">small (code/docs)</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ untracked regenerable: data/alpha3_a6/, alpha3_human_patches_wild/, _5970_topup/, _gamma_relabel/ (~103 MB); features/ (~16 MB); results/ new dirs (alpha3/, twodpca_verify/, ws_d_archetypes/, ws_e_harmonize/, shape_invariance/, etc.)</div>
+          <div class="action"><b>Action:</b> Gitignore (mirror existing results/* and patch-dir ignore blocks). EXCEPTIONS to commit by path: results/lab_classifier_v2/ (kept as DANN negative-result record per .gitignore L186), small HTML reports (2dpca verification), and results/shape_retrospective/*.py reproducers. results/syllable_split/ flagged no-reproducer in .gitignore — KEEP, do not delete.</div>
+          <div class="why">Regenerable render/feature caches that would bloat git; only the negative-result records, reproducer scripts, and small HTML deliverables are worth tracking. Confirm none holds hand-edited state before ignoring.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~120 MB ignored vs committed split</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ 9 stale-import test files: test_amvoc_autoencoder.py, test_imsa_classifier.py, test_omer_vectorize.py, test_cluster_sweep.py, test_cnn_download_vocalmat_sample.py, test_analyze_latent_{dispersion,repertoire_jsd,transitions}.py, tests/classifier/test_cleaning_real_data_loader.py + test_cnn_prepare_training_data.py</div>
+          <div class="action"><b>Action:</b> Confirm the target modules/scripts are genuinely gone (audits verified missing), then delete or move to tests/archive/. Do NOT touch their expectations (test-as-spec rule) — only relocate/remove whole dead files.</div>
+          <div class="why">All ERROR at collection because they import deleted modules (usv_spectrogram.features, classification.cluster_sweep) or missing scripts. Dead in this checkout; 1,584 live tests collect cleanly despite them.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~170 KB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ 8 notion_notes optional-dep test files (test_atomize/atomizer/linker/notion_client/processor/tagger/migration/mover.py) + tests/classifier/test_render_confusion_matrix.py (import-path bug)</div>
+          <div class="action"><b>Action:</b> Do NOT delete — target code in notion_notes/ exists. Either gate with `pytest.importorskip(&#x27;anthropic&#x27;/&#x27;notion_client&#x27;)` or install the optional deps. Fix test_render_confusion_matrix.py&#x27;s unqualified `from train_lab_classifier import ...` to a package-qualified path (sibling test_train_lab_classifier.py collects fine).</div>
+          <div class="why">These error only because anthropic/notion_client aren&#x27;t installed — env-gated, not dead. Distinguishing them from the genuinely-stale group above prevents deleting live tests.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">n/a</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ data/labels_backup_20260122_175151.csv, data/labels_combined_backup_20260124_202724.csv; _archive/USV_Detections_pngs_before_mad_fix_20260319.tar (84 MB, #1 git-history blob)</div>
+          <div class="action"><b>Action:</b> Confirm the labels backups are superseded by data/labels.csv / labels_combined.csv (git history already preserves prior versions), then `git rm --cached`. For the .tar: confirm the post-MAD-fix PNGs supersede it AND back it up to the rig first, then `git rm --cached` to stop tracking the largest blob.</div>
+          <div class="why">Dated manual backups are redundant with git history; the pre-MAD-fix tarball is a superseded snapshot (the single biggest contributor to the 7.8 GB git bloat). All git-recoverable, but verify supersession before untracking.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~86 MB (mostly the .tar)</span>
+          </div>
+        </div>
+    </details>
+    <details class="tier" >
+      <summary><span class="tier-badge" style="background:#558b2f">TIER 3</span>
+        <span class="tier-title">Structural / handoff improvements (additive, low risk)</span>
+        <span class="risk-tag" style="color:#558b2f">risk: low</span>
+        <span class="count">8 items</span></summary>
+      <p class="rationale">Pure additions and doc fixes — no data touched, nothing deleted. These close the onboarding gaps a successor will hit on day one: every copy-pasteable README command currently fails (PowerShell vs the real WSL/POSIX venv), the production detection pipeline is documented only in agent-facing CLAUDE.md, and there is no install→first-run guide. Packaging removes the fragile sys.path hacks. Large-file splits are flagged for the successor, not auto-done (real refactors needing review).</p>
+      
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/README.md</div>
+          <div class="action"><b>Action:</b> Rewrite as the single canonical &#x27;start here&#x27;: WSL `.venv/bin/python` commands (verified Python 3.12.3), the 5-flag run_batch_detection.py production pipeline, PyQt6 app via `python scripts/run_app.py`, name models/hard_neg_retrain as production, REMOVE/mark-legacy the obsolete Streamlit section, reconcile DSP notes with corpus.py, and link DATA_LOCATIONS.md + scripts-index.md.</div>
+          <div class="why">Highest-leverage doc and currently the worst: every command uses `.\.venv\Scripts\python.exe` (Windows) but the env is POSIX — a successor copy-pasting hits &#x27;file not found&#x27; on the first command. README has 0 mentions of run_batch_detection/hard_neg_retrain/production.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">n/a</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/docs/SUCCESSOR_ONBOARDING.md — CREATE</div>
+          <div class="action"><b>Action:</b> Create a successor-facing INSTALL &amp; RUN doc: clone → venv → `pip install -r requirements_frozen.txt` (pinned) → smoke-test → launch app → run batch detection. State the WSL-box vs GPU-rig split up front, link DATA_LOCATIONS.md, and add a &#x27;which doc do I read&#x27; map (CLAUDE/AGENTS/codex_index are agent-facing; manual/ is the knowledge-graph system, not USV tools).</div>
+          <div class="why">No human onboarding doc exists; the only getting-started.md is the arscontexta vault tutorial. This is the user&#x27;s stated handoff goal.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">new</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/pyproject.toml — CREATE (minimal, src-layout)</div>
+          <div class="action"><b>Action:</b> Add a minimal pyproject.toml declaring package=src/usv_spectrogram so a successor can `pip install -e .` and import usv_spectrogram without path hacks. Pure addition, touches no locked files. Optionally add a [tool.pytest.ini_options] block (testpaths=tests, register markers, collect_ignore the optional-dep notion tests).</div>
+          <div class="why">No packaging metadata exists anywhere except inside .venv (verified) — the single biggest barrier to a clean handoff. ~dozens of scripts + tests/conftest.py rely on fragile sys.path.insert(&#x27;src&#x27;) hacks. No pytest config exists, so `pytest tests/` shows 19 collection errors by default.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">new</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/requirements.txt + .mcp.json</div>
+          <div class="action"><b>Action:</b> requirements.txt: pin versions or point onboarding at requirements_frozen.txt; flag torch/torchvision GPU vs CPU build for the rig split. .mcp.json: fix or document the hardcoded /home/light/ qmd paths (wrong user — current user is shachar).</div>
+          <div class="why">requirements.txt has ZERO version pins → a fresh install may pull torch/numpy incompatible with the trained production model. The MCP config points at a different user&#x27;s home and breaks silently on a fresh machine.</div>
+          <div class="meta">
+            <span class="chip" style="background:#2e7d32">trivial</span>
+            <span class="chip chip-light">n/a</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/docs/scripts-index.md + scripts/experiments/README.md</div>
+          <div class="action"><b>Action:</b> Regenerate scripts-index.md to cover all 161 scripts (or scope it explicitly as &#x27;core entry points&#x27;) and fix the &#x27;~76 entry points&#x27; claim in README/project-structure.md. Update scripts/experiments/README.md — it documents 5 rig_*.py keeper scripts of which only rig_extract_a6_baselines.py exists locally (the rest live on the rig).</div>
+          <div class="why">Indexes are stale: ~half the 161 scripts are undocumented, and the experiments README points a successor at files that aren&#x27;t in the repo. Code is truth — the docs are wrong.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">n/a</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/CLAUDE.md Large File Protocol list + src/usv_spectrogram/{app/main_window.py 1823 LOC, dataset/assembler.py 1490, classification/cross_population.py 1484, classification/repertoire_stats.py 1142}</div>
+          <div class="action"><b>Action:</b> Doc fix: information_theory.py lives in usv_language/ (not the package); test_fp_filter.py is in tests/; ADD cross_population.py (1484 LOC, in-package, currently missing from the list). FLAG the four &gt;1000-LOC modules for split as a successor refactor — propose, do not auto-do (real refactors needing review).</div>
+          <div class="why">The documented large-file list partly points outside the package and omits the package&#x27;s own 3rd-largest file, so a successor following CLAUDE.md navigates blind. Splits are maintainability wins but are code changes, not tidies.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">n/a</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/src/usv_spectrogram/param_lab/ (esp. app_legacy.py 662 LOC + REFACTORING_SUMMARY.md) and src/usv_spectrogram/labeling/README.md; scripts/{usv_labeling_tool.py, usv_parameter_lab.py, noise_review_tool.py, run_app_safe.py}</div>
+          <div class="action"><b>Action:</b> Confirm the retired Streamlit lab is fully obsolete (PyQt6 is canonical per MEMORY), then move param_lab/ to archive or delete app_legacy.py (salvage metrics.py/sweep.py/heuristic_detect.py into the PyQt app first if still wanted). Move the two in-package .md files to docs/modules/. Consolidate run_app_safe.py into run_app.py. Make the Streamlit tombstone launchers consistent (noise_review_tool still runs while the other two os._exit at import).</div>
+          <div class="why">Dead Streamlit subsystem inflates the package and confuses which lab is live; two app launchers + inconsistent tombstones are successor footguns. .md files shouldn&#x27;t ship inside the importable package tree.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">~120 KB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/docs/ (18 loose root files) + docs/handoffs/ (155) + docs/reviews/ (74) + docs/plans/ (31)</div>
+          <div class="action"><b>Action:</b> Add docs/handoffs/INDEX.md (+ reviews/plans indexes) listing only current/canonical entries; bulk-MOVE completed handoffs older than the active continuum program to docs/archive/handoffs/ (do NOT delete — provenance). Triage docs/ root: keep durable user guides (DATA_LOCATIONS, scripts-index, *_QUICKSTART/USER_GUIDE), archive point-in-time briefings (PI_PRESENTATION_SUMMARY, PROJECT_STATE_REPORT dated 2026-02-20, etc.). Verify docs/SESSION_MEMORY.md against the live MEMORY.md — likely a stale drift-hazard mirror.</div>
+          <div class="why">260+ undated/unindexed docs mean a successor cannot tell which handoff/review is live. An index + archiving makes the live set discoverable without losing history.</div>
+          <div class="meta">
+            <span class="chip" style="background:#558b2f">git-recoverable</span>
+            <span class="chip chip-light">n/a (reorganization)</span>
+          </div>
+        </div>
+    </details>
+    <details class="tier" >
+      <summary><span class="tier-badge" style="background:#c62828">TIER 4</span>
+        <span class="tier-title">HIGH RISK — irreplaceable-data candidates (per-item user sign-off ONLY, never auto-recommended)</span>
+        <span class="risk-tag" style="color:#c62828">risk: high</span>
+        <span class="count">6 items</span></summary>
+      <p class="rationale">Everything here is either unique scientific data, a curated human-review selection, or the git history that has already saved this repo once. NONE is auto-recommended for deletion. Each is listed only so the user can make an explicit, individual decision after confirming the regeneration path or provenance. The biggest space lever (the 58 GB chunked corpus) is regenerable but ONLY by re-running the chunker — gitignored, so not git-recoverable.</p>
+      
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/USV_lab_131204_chunked_2s_full/ (58 GB, 25,770 WAVs)</div>
+          <div class="action"><b>Action:</b> CANDIDATE for deletion ONLY after the user confirms all 131204 analysis is complete. Regenerable from USV_lab_131204/ (24 GB, 83 source WAVs) via scripts/chunk_and_resample_lab_to_300k.py. Gitignored → re-chunking is the only path back.</div>
+          <div class="why">Single largest space win (~58 GB), mechanically derived. But recompute is expensive and irreversible if the source were ever lost — requires explicit sign-off.</div>
+          <div class="meta">
+            <span class="chip" style="background:#ef6c00">hard</span>
+            <span class="chip chip-light">58 GB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ scratch chunk dirs: *_chunked_2s_test, _chunked_300k_test, _100chunk_test, _10chunk_test, _2chunk_test (~1.8 GB); the _hot / _hot_reviewed / _hot_reviewed_reviewed cascade (101→1→1, ~232 MB)</div>
+          <div class="action"><b>Action:</b> CANDIDATE for consolidation/deletion after confirming they are sampling experiments. Keep at most one as a smoke-test fixture; confirm the single _hot survivor&#x27;s purpose before dropping the chain.</div>
+          <div class="why">Iterative chunker dev experiments and a manual triage funnel, all regenerable from the chunked corpus — but verify nothing downstream pins these exact samples.</div>
+          <div class="meta">
+            <span class="chip" style="background:#ef6c00">hard</span>
+            <span class="chip chip-light">~2.0 GB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ review cascades: 5970_reviewed/ + 5970_manual_review/ + _reviewed (193/21/49, ~464 MB); USV_lab_131204_chunked_2s_full_reviewed/ (539 WAVs, 1.3 GB); USV_3452_sample_reviewed_reviewed/ (2 WAVs)</div>
+          <div class="action"><b>Action:</b> CANDIDATE for consolidation ONLY after confirming the human-review verdicts are captured in a CSV/labels artifact. If verdicts are preserved, the curated WAV copies are re-extractable from the parent cohort.</div>
+          <div class="why">Each level is a human-curated subset carrying review provenance — small but scientifically meaningful. Never touch until verdict capture is confirmed.</div>
+          <div class="meta">
+            <span class="chip" style="background:#ef6c00">hard</span>
+            <span class="chip chip-light">~1.8 GB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ raw cohorts + tracked outputs: USV_lab_131204/ (24 GB), USV_9252/ (15 GB), 5970/ (9.1 GB), USV_3452_sample/ (7.1 GB), USV_2379_sample/ (1.7 GB), USV_Detections/ (373 MB), noise_samples/ (110 MB), data/training/ (1.2 GB), results/batch_{9252,5970,3452_*}/ (24,643 tracked JSONs), models/* (incl. LOCKED hard_neg_retrain), USV*.zip + usv_lmt_031*.zip (~14 GB)</div>
+          <div class="action"><b>Action:</b> KEEP — DO NOT TOUCH. Listed only to mark as protected. The zips/tarballs (mickey_meeting/usv_teaching .tar.gz) MAY duplicate extracted dirs — confirm with the user whether they are canonical archives or redundant before any cold-storage move; never delete without confirmation.</div>
+          <div class="why">Irreplaceable raw recordings, human-confirmed noise anchors, curated training data, tracked detection outputs the .gitignore is engineered to protect (the 656-file incident), and the locked production model. Data-irreplaceable by definition.</div>
+          <div class="meta">
+            <span class="chip" style="background:#c62828">irreversible</span>
+            <span class="chip chip-light">~72 GB (keep)</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/.git (7.8 GB packed)</div>
+          <div class="action"><b>Action:</b> Do NOT history-rewrite for the handoff unless the successor explicitly asks for a slimmed clone. SAFE path if a lean clone is wanted: `git clone --depth 1` (shallow), leaving the full-history repo intact as the data-of-record on disk/rig. Avoid git-filter-repo/BFG (irreversible, severs the git-recoverability that restored USV_Detections).</div>
+          <div class="why">Verified fully packed (gc won&#x27;t help); the 7.8 GB is versioned WAV/PNG/PT/tar binaries — all data-irreplaceable or deliberately tracked. Rewriting is irreversible and breaks the data-loss audit trail. A user decision about handoff FORM, not a fix.</div>
+          <div class="meta">
+            <span class="chip" style="background:#c62828">irreversible</span>
+            <span class="chip chip-light">7.8 GB</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="path">/home/shachar/projects/mickey_london_lab/ regenerable training/analysis caches: usv_language/prepared_data/ (3.0 GB, 1,658 .npy), data/lab_finetune_v1/ (2.1 GB), data/alpha3_{oracle,human,plain}_patches/ (~6.3 GB), spectrograms_training/ (256 MB, 1379/1385 untracked), results/ dated pilots (softnotch 448M, subtracted_pilot 329M, codex_compare 230M, pipeline_comparison 251M)</div>
+          <div class="action"><b>Action:</b> CANDIDATE for archive/delete ONLY after the user confirms the consuming analysis/training is frozen AND conclusions are captured in docs/notes. Confirm which alpha3 patch set is canonical (alpha3_human_patches is the human-labeling substrate per MEMORY — likely keep) before consolidating the others.</div>
+          <div class="why">Derived caches regenerable from source WAVs/CSVs but recompute-expensive; several may still be inputs to active work. The largest reclaimable non-corpus space, but every item needs per-item confirmation of completion + provenance.</div>
+          <div class="meta">
+            <span class="chip" style="background:#ef6c00">hard</span>
+            <span class="chip chip-light">~12 GB</span>
+          </div>
+        </div>
+    </details>
+
+<h2>Safety critic — red flags &amp; guardrails</h2>
+<p>All refinements, not blockers. The critic independently verified every high-danger claim (no fabrications, no locked-file edits, every untrack uses <code>--cached</code>).</p>
+
+      <div class="flag">
+        <div class="flag-head">[Tier 0] /home/shachar/projects/mickey_london_lab/**/*:Zone.Identifier (find -delete)</div>
+        <div><b>Problem:</b> Action is genuinely safe (18,273 verified untracked; glob matches only the stub ADS files, no real data — confirmed by spot-check), BUT it is marked reversibility &#x27;trivial&#x27;. It is NOT trivially reversible: these are untracked, so once deleted there is no git copy. They are meaningless so loss is harmless, yet the bigger risk is OPERATIONAL: running a 18k-file `-delete` inside USV_9252/ and 5970/ (the irreplaceable dirs) one fat-fingered edit away from a recursive wipe. This is the same class of action (mass delete inside a raw-data dir) as the 656-file incident.</div>
+        <div class="fix"><b>Guardrail / fix:</b> Before deleting, DRY-RUN and capture the exact list: `find . -name &#x27;*:Zone.Identifier&#x27; -not -path &#x27;./.venv/*&#x27; -print &gt; /tmp/zone_ids.txt`, eyeball `wc -l` (expect 18273) and `grep -v &#x27;:Zone.Identifier$&#x27; /tmp/zone_ids.txt` (must be EMPTY), then delete by feeding that vetted list (`xargs -d&#x27;\n&#x27; rm --` from the file) rather than re-globbing with -delete. Never run -delete directly against the raw-data dirs without the printed manifest as a checkpoint.</div>
+      </div>
+      <div class="flag">
+        <div class="flag-head">[Tier 2] /home/shachar/projects/mickey_london_lab/USV_Detections/131204_1400_m3fm3_chunk_170 + chunk_243 (64 untracked detection PNG/JSON/CSV)</div>
+        <div><b>Problem:</b> Correctly handled in spirit (commit by exact path, never `git add -A`), but the item is marked reversibility &#x27;hard&#x27; while pairing it with a commit-by-path action whose stated risk is bulk-staging. The real residual danger is that this is THE exact directory of the 656-file loss, and the plan&#x27;s own Tier 1 .gitignore change adds rules near data/ — if any tool later runs `git add USV_Detections/` (directory form, not the two named subdirs) it would re-stage the whole tree. The action string `git add USV_Detections/131204_1400_m3fm3_chunk_170 USV_Detections/131204_1400_m3fm3_chunk_243` is correct; the hazard is anyone shortening it to the parent.</div>
+        <div class="fix"><b>Guardrail / fix:</b> Pin the stage to the two leaf dirs explicitly and verify before commit: after `git add` the two named paths, run `git diff --cached --stat` and confirm the file count is ~64 and the only paths are under chunk_170/chunk_243 — abort if any other USV_Detections path appears. Never use `git add USV_Detections` (parent). Confirm with the user these are intended human-review outputs first (plan already says so).</div>
+      </div>
+      <div class="flag">
+        <div class="flag-head">[Tier 2] /home/shachar/projects/mickey_london_lab/_archive/USV_Detections_pngs_before_mad_fix_20260319.tar (84 MB, tracked, #1 git blob)</div>
+        <div><b>Problem:</b> `git rm --cached` stops tracking but the 84 MB blob REMAINS in git history forever (the plan&#x27;s space-saving rationale of &#x27;biggest contributor to 7.8 GB bloat&#x27; is NOT achieved by --cached — only a history rewrite reclaims it, which Tier 4 correctly forbids). So the action is safe but the stated benefit is misleading; a successor expecting reclaimed space may be tempted to escalate to filter-repo, which would sever the data-loss audit trail.</div>
+        <div class="fix"><b>Guardrail / fix:</b> Keep `git rm --cached` ONLY (no history rewrite). Correct the rationale: --cached prevents the blob from being re-fetched on future checkouts of HEAD but does NOT shrink the 7.8 GB pack. Explicitly note that space reclaim requires a rewrite that the plan rules out, so the disk-space benefit here is ~0 and the real win is just removing it from the working-tree/HEAD. Confirm post-MAD-fix PNGs supersede it AND rsync the tar to the rig before untracking.</div>
+      </div>
+      <div class="flag">
+        <div class="flag-head">[Tier 2] /home/shachar/projects/mickey_london_lab/data/labels_backup_20260122_175151.csv, data/labels_combined_backup_20260124_202724.csv (tracked)</div>
+        <div><b>Problem:</b> Plan proposes `git rm --cached` on the rationale &#x27;redundant with git history&#x27;. These are LABEL backups (human-supervision-adjacent). `--cached` keeps the local file and history keeps the blob, so it is git-recoverable as claimed — acceptable — BUT &#x27;redundant with git history&#x27; is an assumption, not verified. If the backup captured a label state that was never itself committed as labels.csv (e.g. a mid-edit snapshot), git history does NOT contain it and untracking removes the only tracked copy.</div>
+        <div class="fix"><b>Guardrail / fix:</b> Before any `git rm --cached`, diff each backup against the current tracked labels file AND confirm an equivalent state exists in `git log -- data/labels.csv` / `labels_combined.csv`. Only untrack if a superseding committed version is proven to exist. Otherwise treat as data-irreplaceable and KEEP tracked. Leave local files on disk regardless (--cached does).</div>
+      </div>
+      <div class="flag">
+        <div class="flag-head">[Tier 2] /home/shachar/projects/mickey_london_lab/ 9 stale-import test files (delete or move to tests/archive/)</div>
+        <div><b>Problem:</b> Borderline rule-adjacent: CLAUDE.md treats pre-existing test files as spec and forbids modifying expectations. Deleting whole dead-import test files is permitted by the plan&#x27;s own caveat (&#x27;do NOT touch expectations, only relocate/remove&#x27;), and they ERROR at collection so they assert nothing live. Risk is low and git-recoverable. Flagged only because &#x27;confirm target modules are genuinely gone&#x27; is the load-bearing precondition and audits &#x27;verified missing&#x27; is hearsay within the plan.</div>
+        <div class="fix"><b>Guardrail / fix:</b> Prefer MOVE to tests/archive/ over delete (preserves spec intent, fully reversible). Before moving, for each test grep the repo for its imported module/script path to independently confirm absence (don&#x27;t rely on the upstream audit). Get explicit user opt-in given the tests-as-spec rule.</div>
+      </div>
+
+<h2>Decisions for you (15)</h2>
+<ol><li>parts-finder/ (111 tracked files), ROADMAP_PARTS_FINDER.md, oil-finder-free.jsx, parts_finder.db, parts_finder.db.bak — an unrelated Israeli car-parts/oil project for client &#x27;Tevel Group&#x27;. Confirm: extract to its own repo and git-rm --cached from this one?</li><li>video_assignment.docx, active-zero-balance-2026-05-13.xlsx — personal/coursework/finance files unrelated to USV (untracked, so not git-recoverable). Confirm: move out of the repo to personal storage?</li><li>notion_notes/ subsystem + its scripts (find_course_55008.py, find_exact_pages.py, tag_specific_pages.py, check_kb_projects_prop.py, explore_project_notes.py, upload_report_to_notion.py, batch_move_project.py) — personal Notion/university-KB plumbing with hardcoded personal DB IDs and &#x27;Miki London lab&#x27; relations, dead for any successor lacking the user&#x27;s Notion workspace. Confirm: remove from the handoff?</li><li>timeline.pdf (root, tracked) — is this a project Gantt/timeline (move to docs/) or a personal doc (move out)?</li><li>mickey_meeting_20260427.tar.gz + usv_teaching_20260427.tar.gz (~46 MB) — do these duplicate the existing unpacked sibling dirs? If so they are redundant snapshots; if not, they may be the only copy. Confirm before archiving/deleting.</li><li>USV*.zip / usv_lmt_031*.zip (~14 GB, gitignored) — are these canonical raw-recording archives, or redundant copies of the already-extracted 5970//USV_3452_*//etc. dirs? If redundant → cold storage; if canonical → document in DATA_LOCATIONS.md. Never delete without confirmation.</li><li>_archive/USV_Detections_pngs_before_mad_fix_20260319.tar (84 MB, #1 git blob) — are the post-MAD-fix PNGs a confirmed permanent supersession? If yes, back up to rig then git-rm --cached. If the pre-fix PNGs are the only such record, keep.</li><li>raven_tables_lab_131204/*.selections.txt — hand-curated (irreplaceable, commit) or a deterministic export of a committed detections CSV (regenerable)? Provenance needed before commit-vs-gitignore.</li><li>data/labels_vocalmat_v1_on_131204.csv (9.5 MB) — pure model-inference output (gitignore) or curated (commit)?</li><li>58 GB USV_lab_131204_chunked_2s_full/ — is all 131204 analysis complete so the regenerable chunked corpus can be deleted (recoverable only via re-chunking)?</li><li>The human-review cascades (5970_reviewed/manual_review, 131204_full_reviewed, _hot chain, *_reviewed_reviewed) — are the review VERDICTS captured in a CSV/labels file? Curated WAV copies are only safe to consolidate if the selection provenance is preserved elsewhere.</li><li>Which alpha3 patch set is canonical vs scratch (oracle 3.0G / human 3.1G / plain 168M)? MEMORY flags alpha3_human_patches as the human-labeling substrate (keep); confirm the others can be consolidated.</li><li>usv_language/ — a second tracked USV-related Python package (86 files, own models/+data/, no packaging) where information_theory.py actually lives. Decide for the handoff: document as part of this repo, or split into its own repo? Do not touch its data/models.</li><li>git history form for the successor: hand off the full 7.8 GB repo (data-of-record) as-is, or provide a shallow --depth 1 clone? (Do NOT filter-repo/BFG.)</li><li>Pre-existing FAILING test test_audit_corpus.py::test_3452_skip_is_graceful (asserts CLI returncode==1, got 0) — per CLAUDE.md anti-greenwashing this is Unknown/Fail → STOP &amp; discuss: is audit_corpus wrongly returning success on missing 3452 input, or is the test expectation stale? Successor must triage before trusting the corpus-audit tool. Do not modify the expectation without this decision.</li></ol>
+
+<h2>Audit coverage</h2>
+<table><tr><th>Dimension</th><th>Summary</th><th>Findings</th></tr><tr><td class='dim'>root-clutter</td><td>The repo root is heavily cluttered: ~24 loose .md files (mix of canonical onboarding, stale ROADMAPs, and scattered PLAN_/HANDOFF_ docs), 9 large *.zip archives (~14 GB, already gitignored — these are raw recording bundles = irreplaceable), 9 loose classified_detections*.csv files, 21 *.Zone.Identifier stubs (Windows download cruft), __pycache__, several empty zero-byte tracked files, and an ENTIRE SEPARATE PROJECT embedded in this USV repo (parts-finder/ + oil-finder-free.jsx + parts_finder.db + ROADMAP_PARTS_FINDER.md — an auto-parts/oil-finder app). Plus genuinely personal files (video_assignment.docx, active-zero-balance-*.xlsx, timeline.pdf). The canonical onboarding doc is README.md + CLAUDE.md + AGENTS.md; PROJECTS.md/DECISIONS.md are stubs redirecting to docs/human/. I capped at the 25 most significant findings; minor per-file Zone.Identifier entries are grouped into one glob finding.</td><td class='num'>26</td></tr><tr><td class='dim'>docs-sprawl</td><td>Documentation is heavily sprawled and there is NO single &quot;start here / how to run the tools&quot; doc a successor could follow. The de-facto entry point is CLAUDE.md (16 KB, agent-oriented, WSL `.venv/bin/python`), but the user-facing README.md is stale and contradicts it (PowerShell `.venv\Scripts`, promotes the obsolete Streamlit tools that memory says to never use, omits the canonical 5-flag batch-detection pipeline, and the DSP &quot;Window 2048 / hop 0.5ms&quot; notes do not match the corpus.py constants regime). The repo root holds 23 markdown files: 8 root ROADMAP_/PLAN_/HANDOFF_ files are explicitly DONE/KILLED/SUPERSEDED and belong in an archive; several PLANs are still active. docs/ has 16 subdirs and ~340 files, with large accreting piles (docs/handoffs/ 155, docs/reviews/ 74, docs/plans/ 31, docs/modules/ 32) and 18 loose files at docs/ root mixing canonical guides with point-in-time briefings. There is no docs/archive/ directory yet. Two root stubs (DECISIONS.md, PROJECTS.md) just redirect to docs/human/. methodology/ and reference/ are READ-ONLY arscontexta dirs (noted, not touched). Capped at the ~25 most significant findings; the per-file handoffs/reviews backlog is summarized in aggregate rather than enumerated.</td><td class='num'>25</td></tr><tr><td class='dim'>scripts-inventory</td><td>scripts/ holds 173 top-level files (~212 .py total across scripts/, scripts/experiments/, scripts/labeling/). It&#x27;s a working scratchpad: a small core of canonical tools a successor needs (run_batch_detection.py, run_app.py, unify_labels.py, the labeling/param-lab launchers, train_* and optimize_* model-building scripts), a large band of one-off analysis/diagnostic/slide-generation scripts dated Mar-Jun 2026, and several clearly-stale or off-project files. Notable cruft: ~2.6M of __pycache__ in scripts/ alone (plus more in subdirs) and 227 stray .pyc files — none committed, all regenerable. Notable off-project: 7 Notion/personal-KB scripts (university course DB, &quot;Miki London lab&quot; Notion sync) that depend on the unrelated notion_notes/ package. scripts/experiments/README.md is itself stale — it documents 5 rig_*.py keeper/archival scripts of which only rig_extract_a6_baselines.py exists. I inventoried structure, read the launcher scripts, grepped for deprecated-model/streamlit/notion references, and sampled git dates; I did NOT individually open all ~150 analysis scripts, so per-file classification of the analysis band is by name/date heuristic, not full read. Capped at the most significant findings; the long tail of one-off analyze_*/compare_*/generate_* scripts is summarized as a group rather than listed exhaustively.</td><td class='num'>24</td></tr><tr><td class='dim'>src-package</td><td>The core package src/usv_spectrogram/ is well-organized into clear submodules (detection, classifier, classification, dataset, app, labeling, postprocessing, etc.) with __init__.py in every package dir and __pycache__/*.pyc correctly gitignored — none are tracked. The biggest structural gap is packaging: there is NO pyproject.toml or setup.py, so the package is not installable and every entry point + ~all 161 scripts + tests rely on fragile sys.path.insert(..., &#x27;src&#x27;) hacks. The clearest cleanup wins are the retired Streamlit Parameter Lab (param_lab/, esp. app_legacy.py 662 LOC explicitly marked unreachable), two stray .md files inside the package tree, and the large files flagged in CLAUDE.md. Note: the information_theory.py cited in CLAUDE.md&#x27;s Large File Protocol is NOT in this package — it lives in the sibling usv_language/ sub-project (a separate tracked 86-file package, also no packaging), and parts-finder/ is an unrelated oil-inventory demo project sitting at repo root. All findings are AUDIT-ONLY; no locked files (corpus.py, sliding_inference.py, postprocessing/, run_batch_detection.py, hard_neg_retrain) are proposed for any change. Reported all significant findings (under the ~25 cap).</td><td class='num'>18</td></tr><tr><td class='dim'>tests-health</td><td>The suite is large and the CORE science tools are well-covered and healthy: 96 test files, 1584 tests collect cleanly, including strong coverage of corpus constants (test_corpus 12, test_audit_corpus 10, test_config 11), detection (test_energy_detector 42, test_hysteresis 24 + _hardened 78, test_fp_filter 39, test_calibration 11, test_triage 24, test_streaming_equivalence, test_cnn_model 37), event features (17 + 34 hardened) and labeling (test_label_storage, test_saved_detection_tracker 9). However, 19 test files ERROR at collection (1584 collected DESPITE these). The errors split into two clean buckets: (a) 9 STALE tests referencing deleted scripts/modules — genuinely dead, the targets no longer exist on disk; (b) 8 tests for the notion_notes/ subsystem that fail only because optional deps `anthropic`/`notion_client` are not installed in .venv (the code still exists, so these are env-gated, not dead); plus 1 import-path bug. One pre-existing runtime FAILURE found in test_audit_corpus (CLI exit-code expectation 0!=1) — flagged, NOT touched. No pytest config file exists (no pytest.ini/pyproject/setup.cfg). AUDIT ONLY — nothing modified. All 19 errors enumerated below; not truncated.</td><td class='num'>22</td></tr><tr><td class='dim'>data-dir-redundancy</td><td>The repo holds ~150GB of data dirs dominated by ONE regenerable artifact: USV_lab_131204_chunked_2s_full (58G, 25,770 WAVs) is mechanically derived by chunking the 83 source WAVs in USV_lab_131204 (24G) via scripts/chunk_and_resample_lab_to_300k.py, and is correctly gitignored as &quot;raw/regeneratable&quot;. The biggest TRUE redundancy/space-recovery lever is therefore the chunked tree plus a fleet of small scratch-test chunk dirs (*_test, *chunk_test, *_hot, pilot) that were sampling experiments. There is also a multi-level &quot;_reviewed&quot; cascade on every cohort (5970/3452/2379/lab) where each level is a human-curated SUBSET of the prior — these are small but carry review provenance, so they are needs-confirmation, NOT cruft. Raw cohort recordings (5970/, USV_9252/, USV_3452_sample/, USV_2379_sample/, USV_Detections/) are data-irreplaceable. Findings capped at ~24 clusters; per-cluster est space included. I modified nothing.</td><td class='num'>24</td></tr><tr><td class='dim'>untracked-triage</td><td>213 untracked files cluster into clear groups. GOOD NEWS: __pycache__/*.pyc and Zone.Identifier are already gitignored (0 untracked), so there is no classic build cruft. The repo is mostly missing-commits, not garbage. Three real risks: (1) ~6 GB of regenerable patch-tensor PNG dirs under data/alpha3_* are NOT gitignored and would bloat the repo if someone runs `git add data/` — they should be gitignored, NOT committed; (2) the 64 USV_Detections/* files are NEW detection PNGs/JSONs inside two chunk dirs whose _saved_tracking.json is ALREADY committed — given the 656-file deletion incident these are likely valuable regenerated detections and should be committed by exact path (never via `git add -A`); (3) ~40 new scripts/, ~37 docs/handoffs/, 4 tests/, the guard_destructive.py safety hook, and new .agents skills are all valuable handoff artifacts that SHOULD be committed. Irreplaceable human-label CSVs (data/manual_shape_labels*.csv) and Raven tables must be committed, never deleted. I reviewed all 18 clusters; findings capped at 25 (the per-file USV_Detections and per-handoff items are grouped as globs).</td><td class='num'>25</td></tr><tr><td class='dim'>gitignore-hygiene</td><td>The repo HAS a sophisticated, well-documented 203-line .gitignore that already covers the dangerous classes cleanly: no .venv/, no __pycache__/, no *.pyc, no *.Zone.Identifier, and no *.zip are tracked (verified — zero hits each). Large data dirs (alpha3_*, lab_finetune_v1, USV_lab_131204*, contour-VAE patches, lab_131204 CSVs) are correctly ignored. The 6,351 tracked *.wav and 2,144 tracked *.png are DELIBERATE: *.wav/*.png are globally ignored then re-included via `!USV_Detections/`, `!USV_3452_sample*/`, `!noise_samples/*.png` — these are irreplaceable scientific data, NOT a hygiene defect. The real findings are: (1) the .git history is 7.6 GB packed because WAV/PNG/model binaries are versioned — a known, deliberate trade-off, risky to rewrite; (2) an ENTIRELY UNRELATED second project, `parts-finder/` (Israeli car-parts/oil/brake-pads lookup for client &#x27;Tevel Group&#x27;), is committed inside this USV repo (111 files + root spillover); (3) a handful of empty root stub files and stale backup artifacts. ~16 findings below; not truncated. I modified nothing — all read-only.</td><td class='num'>16</td></tr><tr><td class='dim'>onboarding-readiness</td><td>A new lab member who clones this repo can technically install deps (requirements.txt exists, production model artifacts are present and intact) but will hit friction on every other axis. The single biggest gap: the README and CLAUDE.md give PowerShell commands (`.\.venv\Scripts\python.exe`) while the actual environment is WSL/POSIX (`.venv/bin/python`, Python 3.12.3) — every copy-pasteable command in the README fails as written. The README also omits the canonical production detection pipeline entirely (the 5-flag `run_batch_detection.py` command lives only in CLAUDE.md, an agent-facing file), undersells the script count (claims ~76, actual 161), and the only &quot;getting-started&quot; doc is the arscontexta knowledge-system manual, not a USV-tool guide. There is no successor-oriented onboarding doc, no tools index that maps task→script, and the critical WSL-box/GPU-rig split (docs/DATA_LOCATIONS.md) is not linked from any entry-point doc. Reported the ~16 most significant findings (capped; minor doc-staleness items omitted).</td><td class='num'>16</td></tr></table>
+
+<p class="footer">Read-only audit · no files were modified · 9/9 dimensions · 11 agents</p>
+</body></html>
