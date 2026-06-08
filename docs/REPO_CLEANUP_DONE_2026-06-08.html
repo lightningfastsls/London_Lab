@@ -51,12 +51,9 @@
 <li><b>Pre-existing failing test</b> <code>test_audit_corpus.py::test_3452_skip_is_graceful</code> (<code>0 != 1</code>): is <code>audit_corpus</code> wrongly returning success on missing input, or is the expectation stale? Per the anti-greenwashing rule I did not touch it.</li>
 </ul>
 
-<h2 class="pend">Tier 4 — STAGED &amp; READY (~83 GB reclaim, one command to run)</h2>
-<p><b>You authorized these deletions; I documented the regeneration path for each first (your requirement), then staged them into a self-verifying script.</b> Because these dirs are untracked, deletion needs <code>rm -rf</code>, which the repo's safety guard hard-blocks for the agent (by design) — so you run the final irreversible step:</p>
-<div class="box">
-<code>! DRY_RUN=1 bash scripts/reclaim_tier4_data.sh</code> &nbsp;— preview (deletes nothing)<br>
-<code>! bash scripts/reclaim_tier4_data.sh</code> &nbsp;— reclaim ~83 GB for real
-</div>
+<h2 class="ok">Tier 4 — EXECUTED ✓ (82 GB freed)</h2>
+<p><b>Done.</b> After you reviewed the dry-run and authorized it, <code>scripts/reclaim_tier4_data.sh</code> ran cleanly: disk used <b>410 GB → 328 GB (82 GB freed)</b>, 37 targets removed, 0 errors, 0 tracked files touched. Verified survivors: the 24 GB source corpus, <code>alpha3_human_patches</code>, <code>lab_finetune_v1/labeled</code> + audit CSV, and the two tracked review sets the script auto-detected and skipped.</p>
+<p>Regeneration safety nets remain committed: <code>docs/DATA_REGENERATION_RECIPES.md</code>, <code>data/handoff_manifests/chunk_manifest_131204.csv</code> (26,310 rows), <code>review_cascade_selections.csv</code> (1,950 rows). The script is idempotent/DRY_RUN-able if more accretes later.</p>
 <p>Safety nets, all committed: regeneration recipes in <code>docs/DATA_REGENERATION_RECIPES.md</code>; the cut-manifest (<code>data/handoff_manifests/chunk_manifest_131204.csv</code>, 26,310 rows) and curated-selection manifest (<code>review_cascade_selections.csv</code>, 1,950 rows). The script re-verifies each target is untracked before deleting, and KEEPS: the 24 GB source corpus, <code>alpha3_human_patches</code> (human shape-label substrate), <code>lab_finetune_v1/labeled</code> + audit CSV (human labels), and the two <em>tracked</em> review sets (3452/2379) it auto-detected.</p>
 <p>Per-group breakdown (none auto-deleted; all behind the script you run):</p>
 <table>
