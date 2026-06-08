@@ -1,4 +1,0 @@
-make,model,year_from,year_to,engine_code,fuel_type,oil_viscosity,oil_capacity_l,oil_spec,oil_oem_approval,oil_filter_oem,oil_drain_plug_torque_nm,oil_change_interval_km
-Toyota,Corolla,2019,2023,2ZR-FE,petrol,0W-20,4.2,API SP,Toyota TGMO,04152-YZZA1,25,15000
-Toyota,Corolla,2019,2023,1NR-FE,diesel,5W-30,4.5,ACEA C3,Toyota TGMO,04152-40060,30,10000
-Hyundai,i30,2017,2023,G4FJ,petrol,5W-30,4.0,API SP,Hyundai Approved,26300-35503,25,15000

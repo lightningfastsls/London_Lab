@@ -1,7 +1,0 @@
-fastapi
-uvicorn
-httpx
-anthropic
-openpyxl
-pytest
-pytest-asyncio
