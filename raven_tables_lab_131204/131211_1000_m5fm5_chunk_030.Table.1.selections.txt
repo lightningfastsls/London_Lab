@@ -1,0 +1,11 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)
+1	Spectrogram 1	1	0.4787	0.6067	25000	125000
+2	Spectrogram 1	1	0.6323	0.7731	25000	125000
+3	Spectrogram 1	1	0.7859	0.8883	25000	125000
+4	Spectrogram 1	1	0.9011	1.0291	25000	125000
+5	Spectrogram 1	1	1.0419	1.1913	25000	125000
+6	Spectrogram 1	1	1.2169	1.3662	25000	125000
+7	Spectrogram 1	1	1.3918	1.5625	25000	125000
+8	Spectrogram 1	1	1.5966	1.7502	25000	125000
+9	Spectrogram 1	1	1.7673	1.8867	25000	125000
+10	Spectrogram 1	1	1.9251	1.9763	25000	125000
