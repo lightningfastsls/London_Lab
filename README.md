@@ -4,12 +4,12 @@ Python tools for analyzing ultrasonic vocalization (USV) recordings from mice at
 
 ## 📖 Documentation
 
-**→ [USV Lab — Production Systems Reference (live docs site)](https://lightningfastsls.github.io/London_Lab/docs/production/00_INDEX.html)** — the hub for how every production system works: detection, labeling, classification, DeepSqueak/Raven bridge, clustering, and cleaning. **Start here.**
+**→ [USV Lab — Production Systems Reference (live docs site)](https://lightningfastsls.github.io/London_Lab/production/00_INDEX.html)** — the hub for how every production system works: detection, labeling, classification, DeepSqueak/Raven bridge, clustering, and cleaning. **Start here.**
 
 | I want to… | Open |
 |------------|------|
 | **Install & run the pipeline** for the first time | [`docs/SUCCESSOR_ONBOARDING.md`](docs/SUCCESSOR_ONBOARDING.md) — clone → install → run |
-| Understand **how a production system works** | [Production docs site](https://lightningfastsls.github.io/London_Lab/docs/production/00_INDEX.html) |
+| Understand **how a production system works** | [Production docs site](https://lightningfastsls.github.io/London_Lab/production/00_INDEX.html) |
 | Find **where the WAV files / data live** | [`docs/DATA_LOCATIONS.md`](docs/DATA_LOCATIONS.md) |
 | **Regenerate** a result or figure | [`docs/DATA_REGENERATION_RECIPES.md`](docs/DATA_REGENERATION_RECIPES.md) |
 | **Label detections** / use the desktop app | [`docs/LABELING_TOOL_QUICKSTART.md`](docs/LABELING_TOOL_QUICKSTART.md) · [app shortcuts](docs/USV_DETECTION_APP_SHORTCUTS.md) |
@@ -132,4 +132,4 @@ See `CLAUDE.md` for the full annotated structure. Key directories:
 - `usv_language/` — Transformer + VQ-VAE compositional analysis (separate package)
 - `scripts/` — 154 top-level entry points + `scripts/experiments/` ([index](docs/scripts-index.md))
 - `tests/` — pytest suite (`tests/archive/` = retired)
-- `docs/` — [production system docs](https://lightningfastsls.github.io/London_Lab/docs/production/00_INDEX.html) (HTML), module docs, user guides, onboarding
+- `docs/` — [production system docs](https://lightningfastsls.github.io/London_Lab/production/00_INDEX.html) (HTML), module docs, user guides, onboarding
