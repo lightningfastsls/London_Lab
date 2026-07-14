@@ -224,3 +224,46 @@ results/twodpca_vocalmat/
 results/vocalmat_gt_sample/
 # Zone.Identifier (Windows mark-of-the-web) — belt-and-suspenders alongside lines 85-86
 *:Zone.Identifier
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Product-repo hygiene (untracked 2026-07-14): personal planning, handoff, and
+# internal docs are kept on the maintainer's disk but out of the public product
+# repo for the Mickey London Lab. GitHub is a product, not a personal sync.
+# Use `git add -f <path>` if a specific file ever needs to ship.
+# ─────────────────────────────────────────────────────────────────────────────
+# Root plans / roadmaps / handoffs / dashboard stubs
+/PLAN_*.md
+/PLAN_*.html
+/ROADMAP.md
+/ROADMAP_*.md
+/HANDOFF_*.md
+/NOTION_NOTES_ROADMAP.md
+/usv_shape_invariance_handoff.md
+/IMPLEMENTATION_PROGRESS.md
+/PROJECTS.md
+/DECISIONS.md
+# Internal doc directories
+docs/plans/
+docs/handoffs/
+docs/reviews/
+docs/human/
+docs/historical/
+docs/phases/
+docs/workflow/
+docs/reports/
+# Individual internal docs at docs/ root
+docs/analysis-roadmap.md
+docs/SESSION_MEMORY.md
+docs/questions-for-mickey.md
+docs/pi-briefing-2026-04-27.md
+docs/PI_PRESENTATION_SUMMARY.md
+docs/PROJECT_STATE_REPORT.md
+docs/REPO_CLEANUP_*.html
+docs/CODE_DEADWEIGHT_AUDIT_*.html
+docs/workflow-migration-plan.md
+docs/testing-infrastructure-audit.md
+docs/claude-code-setup-plan.md
+docs/claude-code-guide.md
+docs/codex_index.md
+docs/VQVAE_SHAPE_RESULTS_*.html
+docs/VAE_VS_VQVAE_ASSESSMENT_*.html
