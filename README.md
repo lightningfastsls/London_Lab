@@ -2,7 +2,22 @@
 
 Python tools for analyzing ultrasonic vocalization (USV) recordings from mice at 300 kHz sample rate. Covers the full pipeline from raw WAV files through spectrogram generation, automated detection, CNN classification, repertoire clustering, and compositional analysis.
 
-> **New here?** Read **[`docs/SUCCESSOR_ONBOARDING.md`](docs/SUCCESSOR_ONBOARDING.md)** for a clone → install → run walkthrough.
+## 📖 Documentation
+
+**→ [USV Lab — Production Systems Reference (live docs site)](https://lightningfastsls.github.io/London_Lab/docs/production/00_INDEX.html)** — the hub for how every production system works: detection, labeling, classification, DeepSqueak/Raven bridge, clustering, and cleaning. **Start here.**
+
+| I want to… | Open |
+|------------|------|
+| **Install & run the pipeline** for the first time | [`docs/SUCCESSOR_ONBOARDING.md`](docs/SUCCESSOR_ONBOARDING.md) — clone → install → run |
+| Understand **how a production system works** | [Production docs site](https://lightningfastsls.github.io/London_Lab/docs/production/00_INDEX.html) |
+| Find **where the WAV files / data live** | [`docs/DATA_LOCATIONS.md`](docs/DATA_LOCATIONS.md) |
+| **Regenerate** a result or figure | [`docs/DATA_REGENERATION_RECIPES.md`](docs/DATA_REGENERATION_RECIPES.md) |
+| **Label detections** / use the desktop app | [`docs/LABELING_TOOL_QUICKSTART.md`](docs/LABELING_TOOL_QUICKSTART.md) · [app shortcuts](docs/USV_DETECTION_APP_SHORTCUTS.md) |
+| Look up **DSP constants** (sample rate, STFT) | [`docs/modules/corpus-constants.md`](docs/modules/corpus-constants.md) |
+| Read **module-level internals** | [`docs/modules/`](docs/modules/) |
+| Find any of **150+ scripts** | [`docs/scripts-index.md`](docs/scripts-index.md) |
+
+> **Why a docs site?** The system references are HTML, and GitHub shows `.html` files as *source code*, not rendered pages. So they're published as a rendered website via **GitHub Pages** (links above). To read them offline, clone the repo and open `docs/production/00_INDEX.html` in any browser.
 
 ## Setup
 
@@ -96,7 +111,7 @@ Event-triggered USV analysis synchronized with Live Mouse Tracker behavioral dat
 
 Canonical signal-processing constants (sample rate, USV band, STFT params) are
 **enforced in code** at `src/usv_spectrogram/corpus.py` — import them, never
-redeclare. Rationale in `DECISIONS.md` (ADR-001 sample rate, ADR-002 STFT).
+redeclare. Full reference: [`docs/modules/corpus-constants.md`](docs/modules/corpus-constants.md).
 Key rule: always pass `sr=300000` explicitly (or `corpus.SAMPLE_RATE_HZ`); never
 rely on library defaults.
 
@@ -117,4 +132,4 @@ See `CLAUDE.md` for the full annotated structure. Key directories:
 - `usv_language/` — Transformer + VQ-VAE compositional analysis (separate package)
 - `scripts/` — 154 top-level entry points + `scripts/experiments/` ([index](docs/scripts-index.md))
 - `tests/` — pytest suite (`tests/archive/` = retired)
-- `docs/` — handoffs, plans, module docs, onboarding
+- `docs/` — [production system docs](https://lightningfastsls.github.io/London_Lab/docs/production/00_INDEX.html) (HTML), module docs, user guides, onboarding
