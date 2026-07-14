@@ -631,7 +631,16 @@ def render_labeling_guide() -> None:
 
 
 def run() -> None:
-    """Run the USV labeling tool."""
+    """Run the USV labeling tool (DEPRECATED — use the PyQt6 desktop app)."""
+    import sys
+
+    sys.stderr.write(
+        "\n[DEPRECATED] The Streamlit USV labeling tool has been retired.\n"
+        "Use the PyQt6 desktop app instead:\n"
+        "    .venv/bin/python scripts/run_app.py\n\n"
+    )
+    sys.exit(1)
+    # --- unreachable: legacy Streamlit implementation preserved for reference ---
     st.set_page_config(page_title="USV Labeling Tool", layout="wide")
     st.title("USV Candidate Labeling Tool")
 

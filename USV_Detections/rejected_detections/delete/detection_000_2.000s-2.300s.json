@@ -21,10 +21,10 @@
   },
   "user_action": "deleted_by_user",
   "session": {
-    "session_id": "0c249820-a567-49d8-a746-0eb5fc3526f1",
+    "session_id": "3f76f18e-564a-4798-b32c-4c3ba98bfc12",
     "threshold_preset": null,
-    "threshold_high": 0.04,
-    "threshold_low": 0.03
+    "threshold_high": 0.6,
+    "threshold_low": 0.4
   },
-  "timestamp": "2026-04-17T15:21:12.728196"
+  "timestamp": "2026-06-08T14:51:10.814225"
 }

@@ -354,9 +354,21 @@ Per the adversarial review §2, all η²-based metrics on `register_one()`-deriv
 
 Expected wall-clock: if Phase 0a kills (~50%), roadmap ends at ~1 hour and registration ships. If Phase 0a passes, expect ~2 days for the full Phase 0b–2 run.
 
-## Status as of writing (2026-05-28)
+## Status — CLOSED (KILLED at Phase 0a, 2026-06-02)
 
-- v1 written → adversarially reviewed → v2 written (this file).
-- All 11 required revisions from `docs/reviews/ROADMAP_SHAPE_INVARIANT_LATENT-adversarial.md` addressed (see `[REVISED]` markers).
-- **PROPOSED** — awaiting user approval to begin Phase 0a.
-- No code written. No rig compute consumed.
+- v1 written → adversarially reviewed → v2 written → **Phase 0a executed 2026-06-02 → KILL.**
+- **Phase 0a verdict: KILL.** Frozen Pathway B encoder linear probe (chevron-vs-non-chevron, 5-fold CV)
+  scored acc 0.741 / **balanced acc 0.517**; random-init same-architecture control scored 0.740 / 0.501.
+  **Gap = +0.001** (gate KILLS at ≤ +0.05). The trained encoder is statistically indistinguishable from
+  random weights for shape — no substrate swap (0c) or retrain (1) on this architecture can rescue it.
+  Probe B (manual `syllable_type`) was N/A (no such labels exist).
+- **Phases 0b, 0c, 1, 2: NOT RUN** (gated behind the Phase 0a pass that did not occur).
+- **Canonical action taken:** ship `models/shape_kmeans/k20.joblib` permanently; VAE family CLOSED for
+  shape clustering. Memo: `docs/handoffs/2026-06-02_shape-vae-family-CLOSED.md`.
+- Compute consumed: ~2 min on rig GPU 0 (the cheap kill the roadmap budgeted ~50% probability for).
+- Script: `scripts/experiments/probe_shape_existing_encoder.py`. JSON:
+  `/data/shachar/contour_vae/results/latent_transitions/b_contrastive/score_phase0a_linear_probe.json` (rig).
+
+### Earlier status (pre-execution, 2026-05-28)
+- v1 written → adversarially reviewed → v2 written (this file). All 11 required revisions addressed.
+- PROPOSED — awaited user approval to begin Phase 0a.

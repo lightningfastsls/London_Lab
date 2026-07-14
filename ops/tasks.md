@@ -1,7 +1,7 @@
 # Tasks
 
 ## Pending
-(none)
+- [ ] **seed-014** `/reduce` — Lab CNN classifier plan (inbox/lab_cnn_classifier_plan_2026-05-20.md): 12-class VocalMat-anchored CNN, Phase 1.0 cleaning gate, DANN cage-invariance, minority-class strategy, wild transfer design. Created 2026-05-21.
 
 ## In Progress
 (none)

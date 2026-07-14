@@ -212,6 +212,17 @@ Never rely on library defaults. See ADR-001 for why.
 | "Let's figure this out" | Pairing mode |
 | "Fresh eyes" | Restart reasoning from evidence |
 | "5 Whys" | Root cause analysis before any fix |
+| "Smoke test [X]" | Tiny end-to-end run to prove it works before the full job (e.g. 5 WAVs before 100) |
+| "Dry run" | Print the exact commands / file list; execute nothing until confirmed |
+| "Do not touch X" / "out of scope" | Hard boundary — stop and ASK if the task seems to need X (pairs with the locked files in Red Flags) |
+| "Definition of done: ..." | Treat the stated condition as the acceptance gate; don't claim done until it's met |
+| "Regression test for X" | Lock current correct behavior in a test BEFORE changing code |
+| "Cite file:line" | Tie every claim to an exact, verifiable location (code is truth) |
+| "Steelman X" | Argue the strongest case FOR X before deciding to drop it (complement to adversarial review) |
+| "Hunch — verify: ..." | Treat what follows as a guess to check against code/data, not an established fact |
+
+> These phrases are a shared shorthand — using them in a prompt is the fastest way to pin the
+> behavior you want. Derivation: `ops/health/repo-audit-2026-05-28.html` §5.
 
 ---
 
@@ -293,6 +304,16 @@ Durable knowledge -> notes/. Temporal coordination -> ops/.
 | Unprocessed sessions | >= 5 | /remember --mine-sessions |
 
 Health checks: `/arscontexta:health` (quick | full | three-space).
+
+### Automated beacons (SessionStart, silent when healthy)
+Two local scripts run at session start and only speak when something is wrong —
+they make "let it bake" observable so dead automation can't hide (see the
+2026-05-28 audit, `ops/health/repo-audit-2026-05-28.html`):
+- `ops/scripts/hook_health.py` — `--quick` at SessionStart (wiring+syntax of every
+  hook); run `--full` for synthetic-payload self-tests + dormant-skill scan.
+- `ops/scripts/vault_pulse.py --if-stale 7` — when no `ops/health/` activity in 7
+  days, prints a worklist (inbox/orphans/stale/dormant skills) pointing at
+  `/health full`. After running maintenance: `vault_pulse.py --mark-done`.
 
 ## Guardrails
 

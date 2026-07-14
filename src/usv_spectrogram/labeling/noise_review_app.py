@@ -393,7 +393,16 @@ def render_guide() -> None:
 
 
 def run() -> None:
-    """Run the noise sample review tool."""
+    """Run the noise sample review tool (DEPRECATED — use the PyQt6 desktop app)."""
+    import sys
+
+    sys.stderr.write(
+        "\n[DEPRECATED] The Streamlit noise-sample review tool has been retired.\n"
+        "Use the PyQt6 desktop app instead:\n"
+        "    .venv/bin/python scripts/run_app.py\n\n"
+    )
+    sys.exit(1)
+    # --- unreachable: legacy Streamlit implementation preserved for reference ---
     st.set_page_config(page_title="Noise Sample Review", layout="wide")
     st.title("Noise Sample Review Tool")
 

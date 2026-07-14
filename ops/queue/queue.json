@@ -352,6 +352,43 @@
       ]
     }
   ],
+    {
+      "id": "seed-014",
+      "type": "extract",
+      "phase": "reduce",
+      "source": "inbox/lab_cnn_classifier_plan_2026-05-20.md",
+      "description": "Extract atomic notes from Lab-Cleaned USV Syllable Classifier plan — 12-class CNN using VocalMat Grimsley taxonomy, cleaning validation gate (Phase 1.0 falsifiable test), ResNet-18 + DANN architecture decisions, class imbalance strategy (Multi-steps n=74, Reverse-Chevron n=136), wild transfer evaluation design, and constraints on corpus.py/detection CNN",
+      "status": "pending",
+      "created": "2026-05-21",
+      "priority": "high",
+      "source_metadata": {
+        "source_type": "project-plan",
+        "date": "2026-05-20",
+        "topics": [
+          "CNN classification",
+          "domain adaptation",
+          "DANN",
+          "VocalMat",
+          "cage-confound",
+          "cleaning validation"
+        ]
+      },
+      "candidate_claims": [
+        "Phase 1.0 cleaning gate is blocking — four falsifiable thresholds: notch-injection migration < 30%, per-10kHz Cohen's d < 0.3, K-NN same-cohort rate < 0.85, PCA PC1 Cohen's d < 1.5",
+        "VocalMat training set is single-rater; expect 5-15% label noise in minority classes — do not treat as gold standard",
+        "ResNet-18 ImageNet-pretrained is the primary architecture for ~13k examples; EfficientNet-B0 is the fallback",
+        "DANN gradient-reversal cage discriminator is the cheapest cage-invariance method with near-zero engineering cost",
+        "Multi-steps class (n=74) gets ~59 training examples at 80/10/10 split — close to ResNet-18 reasonable lower bound",
+        "Wild transfer failure cause is NOT strain monoculture (VocalMat spans 5 strains) — real gaps are cage acoustics + call-duration distribution",
+        "Existing cleaning stack needs wiring, not building — per-recording Z-score in normalization.py is implemented but dormant",
+        "New classifier code must live in src/usv_spectrogram/classifier/ and must NOT modify corpus.py",
+        "Soft-notch calibration exists only for lab 131204 — new lab data requires calibrate_lab_tonal_lines.py",
+        "Perch 2.0 bioacoustic-pretrained embeddings are a recommended 1-day sidequest in Phase 1.2 (arXiv:2512.03219)",
+        "Linear cage probe < 65% on encoder features is the pass threshold for cage-invariance in Phase 1.3",
+        "Wild transfer eval uses ~200 hand-labeled calls from 5970 — descriptive only (17/class average), not inferential"
+      ]
+    }
+  ],
   "maintenance_conditions": {
     "orphan_threshold": 5,
     "inbox_threshold": 3,

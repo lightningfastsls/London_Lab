@@ -13,6 +13,18 @@ The other two rig roots (`/opt/mickey_london_lab`, `/data/mickey_london_lab`)
 are NOT canonical for this work; `/data/mickey_london_lab` holds the older
 `ridge_tracker`.
 
+> **⚠ CHECK THE RIG BEFORE RENDERING / "RE-CREATING" CLEANING-PIPELINE PATCHES.**
+> The Stack-4 contour-VAE cleaning pipeline has its **scripts on the box**
+> (`scripts/mass_apply_contour_mask.py` + `window_calls_to_patches.py` +
+> `deepsqueak_focus_stft.py` + `contour_mask_utils.py` + `sweep_contour_mask.py`)
+> but its **actual produced patches / VAE / latents live ONLY here on the rig**.
+> Do NOT reconstruct the render from memory — a chat did exactly that on
+> 2026-05-29 (`scripts/experiments/render_vocalmat_style_patches.py`) and silently
+> diverged on ~6 axes (event-crop vs fixed 234-bin window, adaptive Hamming
+> focus-STFT vs global Hann 512/128, 250 vs 300 kHz, dB→uint8 227×227 vs raw-power
+> 257×234, det_index vs DeepSqueak call_id). The real output usually already
+> exists below. See auto-memory `feedback_cleaning_pipeline_impl_on_rig`.
+
 ## On the rig — `/data/shachar/contour_vae/`
 
 | Artifact | Path (under canonical root) | Size |

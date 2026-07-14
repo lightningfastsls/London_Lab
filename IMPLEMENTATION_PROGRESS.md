@@ -1147,3 +1147,164 @@ per-class data is valid), confusion_matrix.png (1275×1125), eval_report.md.
 Tier-2 prep (re-extract 844 clean lab patches for the held-out eval) can run
 standalone, independent of 18.4 training kickoff.
 
+---
+
+## 2026-05-26 — Module 18.4 (DANN cage-invariance) — CPU implementation phase
+
+Implemented the ROADMAP §18.4 5-file set (additive on 18.3). GPU training +
+evaluation deferred to the rig (no local GPU). Spec: `ROADMAP_lab_cnn_classifier.md §18.4`;
+executed from `docs/handoffs/2026-05-26_module-18.4-dann-resume.md`.
+
+Files created (all NEW — 18.3 baseline untouched):
+  - src/usv_spectrogram/classifier/dann.py — GradientReversal (autograd.Function,
+    backward grad×−λ), grad_reverse, DomainHead, LambdaSchedule (Ganin
+    2/(1+e^−γp)−1), ResNet18DANN (timm num_classes=0 encoder + class_head + domain_head).
+  - src/usv_spectrogram/classifier/cage_probe.py — linear_cage_probe (frozen encoder,
+    cached features, weight-decay regularized linear head; <0.65 pass).
+  - scripts/train_lab_classifier_v2.py — DANN CLI: warm-start v1 fc→class_head /
+    backbone→encoder; source=vocalmat(labeled), target=lab(unlabeled, domain_unlabeled.csv);
+    adversarial loop; early-stop on val F1; cage probe (test split) + comparison_v1_vs_v2.md.
+  - scripts/run_vae_diagnostic_on_encoder.py — 4-criteria VAE re-run on encoder features
+    (knn<0.85, PC1 d<1.50, per-dim max d<0.30, notch migration<0.30) → cage_invariance_probe.md.
+  - docs/modules/lab-classifier-v2-dann.md — module doc.
+  - tests/classifier/test_dann.py (14) + test_cage_probe.py (7) — test-architect, pre-impl SPEC.
+  - src/usv_spectrogram/classifier/__init__.py — +17-line additive 18.4 export block.
+
+Verification: py_compile clean; new tests 23 passed; full tests/classifier/ = 211 passed,
+4 skipped (188 baseline + 23). VAE diagnostic verified end-to-end on synthetic fixtures
+(correctly FAILs on untrained encoder — sensitivity check). master-reviewer (Tier 3):
+APPROVED, no blockers. Fixes applied: MAJOR-1 (per-dim d small-n false-positive → ≥500
+sample warning + docs), NIT-1 (per_recording → NotImplementedError), MINOR-3 (cage probe on
+test split). Review: `docs/reviews/lab-classifier-v2-dann-review.md`.
+
+**Verdict:** CPU phase DONE. Rig phase (rsync 18 GB pool + held-out 844, GPU train, 3-gate
+eval, real held-out 844 evaluator) pending per-session auth — handoff:
+`docs/handoffs/2026-05-26_module-18.4-dann-rig.md`.
+
+## 2026-05-27 — Shape-VAE v3 Pathway B+A (hybrid contrastive + VAE + ridge-derivative) — CPU build phase
+
+Executed `docs/handoffs/2026-05-27_shape-vae-BA-hybrid.md` (canonical: `PLAN_geometric_shape_clustering_vae.md`
+§3 Option B+A). Goal: a learned latent where geometrically-similar USVs are neighbors, invariant to
+pitch/position, AND a navigable generative shape-map. The riskiest of three sibling pathways
+(A/B/B+A) — re-introduces the reconstruction objective the 2026-05-26 denoised retrain showed is a
+shape dead-end (η² 0.081 vs 0.75 registration ceiling), betting contrastive + shift-augmentation +
+latent-consistency dominate it.
+
+**User-locked design (2026-05-27):** contrastive-dominant staged anneal (λ_recon/β/λ_deriv ramp 0→full,
+λ_nt/λ_lc constant, β LOW); soft-argmax expected-frequency ridge proxy (differentiable; Viterbi
+`track_ridge` supplies the cached TARGET only); tuning budget = small 3–4 run sweep on 5970.
+
+**Files (new, untracked):**
+- `scripts/experiments/train_shape_vae_v3_hybrid.py` — model + 5-term loss + in-band pitch/time-shift
+  augmentation + anneal + train loop. Wraps the FROZEN `ImageVAE` (imported, not modified). Pure
+  functions: `ShapeVAEv3Config`, `soft_argmax_ridge`, `nt_xent`, `latent_consistency`,
+  `derivative_loss`, `augment_pitch_time_shift`, `annealed_weights`, `hybrid_loss`.
+- `tests/test_shape_vae_v3_hybrid.py` — 50 pre-implementation spec tests (test-architect, Step 0).
+- `tests/test_shape_vae_v3_hybrid_hardening.py` — 25 adversarial tests (test-hardener), 0 bugs found.
+- `docs/reviews/shape-vae-v3-hybrid-review.md` — master-reviewer (Tier 3): CHANGES NEEDED, no BLOCKERs;
+  2 SHOULD-FIX (hybrid_loss test-only assembly note + band-input guard; time_warp_range RESERVED label)
+  applied as documentation; all training math verified correct.
+- `docs/modules/shape-vae-v3-hybrid.md` — module doc.
+
+**Track-0 reuse (no duplicate compute):** consumes the SHARED `extract_ridge_targets_v3.py` cache
+(`dFdt_true`/`valid_mask`, kHz/frame ×1000→Hz) built by the parallel Pathway-A chat; augmentation
+in-band span derived from per-patch energy extent. Shared eval `eval_shape_vae_v3.py` DEFERRED
+(unbuilt, parallel-chat coordination; depends on a trained model).
+
+**Tests:** 75 passed (50 spec + 25 hardening). py_compile OK. Frozen `train_contour_vae_v2.py` clean.
+
+**Verdict:** CPU build phase DONE. Rig phase (Track-0 extraction if not already cached → small 3–4 run
+sweep on 5970 → shared eval) pending per-session auth — successor handoff:
+`docs/handoffs/2026-05-27_shape-vae-BA-hybrid-rig.md`.
+
+## 2026-05-28 — Shape-VAE Pathway B (2-D contrastive shape encoder) — KILL
+
+Executed `docs/handoffs/2026-05-27_shape-vae-B-contrastive-invariance.md` end-to-end on the rig. Goal:
+test whether an encoder-only 2-D contrastive objective with pitch/time/warp shift augmentation could
+cluster USVs by geometric shape — the one un-falsified VAE-family idea remaining ("M9 done right").
+
+**Files (new):**
+- `scripts/experiments/train_shape_encoder_contrastive.py` — 2-D conv encoder (reuses ImageVAE
+  `1→32→64→128→256` stack + AdaptiveAvgPool) + SimCLR projection head, NT-Xent identical to M9's
+  `ntxent`. Augmentation via one `grid_sample(zero-pad)`: integer pitch/time shifts + fractional warp;
+  per-patch in-band clamp using imported corpus `USV_FREQ_MIN/MAX_HZ` (verified 50×5 augmented real
+  patches stay in 20–120 kHz band rows [35,204]). Encoder-only — no decoder/KL/recon. `--ckpt-every N`
+  added after rig OOMs.
+- `scripts/eval_shape_encoder.py` — KMeans(20) on held-out embeddings; full gate panel (shape η²,
+  pitch/dur/curv η², CV-NMI, kNN purity); reuses cached `desc_denoised.npz` ridges (no re-extraction).
+- 53 tests across 3 files: `tests/test_shape_encoder_contrastive.py` (20 pre-impl, test-architect
+  caught a real `(B,) vs (B,H)` broadcast bug in the in-band clamp), `tests/test_eval_shape_encoder.py`
+  (15 pre-impl), `tests/test_shape_encoder_hardening.py` (18 adversarial; closed the wide-freq
+  band-clamp gap by forcing `src/` so the corpus import is non-vacuous; locked `chevron_valley`).
+- `docs/modules/shape-encoder-contrastive.md`; `docs/reviews/shape-encoder-contrastive-review.md`
+  (master-reviewer: CHANGES NEEDED, **no blockers** — NT-Xent ≡ M9 numerically, augmentation geometry
+  + clamp correct, row-alignment correct; WARNING-1/2 + NIT-1/2 applied).
+
+**Rig saga:** first run (80 ep) OOM-killed at ep20 by `llama-e4b` docker. Second run (40 ep, GPU 3)
+also OOM-killed at ep0 — RAM still tight even after stopping llama. Root cause discovered: sibling
+Pathway A (`train_shape_vae_v3_deriv.py`, ~17 GB RSS) was running concurrently; B's 16 GB patch corpus
++ A together exceed the rig's 31 GB. User chose "wait for A, auto-run B clean" — an autonomous watcher
+waited 110 min for A's RAM to free, then launched B clean.
+
+**Result (third run, 40 ep, ckpt every 8, GPU 3):** held-out (n=6,929) **shape η² = 0.044** (KILL
+threshold 0.12; registration ceiling 0.58–0.75). CV-NMI 0.019 (worse than production 0.04). Chevron
+kNN purity 0.293 — BELOW the 3-class base rate of ~0.33 (actively anti-clustering chevrons). Pitch η²
+0.306 (still leaks). Flat across every checkpoint (ep8=0.038 … final=0.044) while NT-Xent loss
+converged 3.26→1.78 — not undertrained, just learning the wrong thing.
+
+**Independent verification (fresh Explore agent):** recomputed all η² from raw artifacts; matched the
+scorecard to ~1e-8. Alignment, splits, KMeans convergence all clean. 0.044 is reproducible truth.
+
+**Verdict: KILL — SHIP REGISTRATION.** Per the handoff's exit criteria (shape η² < 0.12 AND purity not
+better than chance ⇒ KILL). The VAE-family is now closed for shape clustering. Production = `models/
+shape_kmeans/k20.joblib` (registration → KMeans, shape η² 0.58–0.75). Methodological lessons captured
+in successor `docs/handoffs/2026-05-28_pathway-B-kill-and-canonical.md` and vault note
+`[[project_shape_registration_clustering]]`: (1) shift augmentation creates LOCAL invariance only
+(±15 kHz << 100 kHz USV band — pitch centroid leaks); (2) 2-D image objective is the wrong substrate
+for shape regardless of loss family (5 falsified 2-D attempts vs successful 1-D-on-registered).
+Rig artifacts: `/data/shachar/contour_vae/results/latent_transitions/b_contrastive/` (embeddings.npy,
+encoder.pt, scorecards, train.log). HTML head-to-head: `$CLAUDE_JOB_DIR/session_report.html`.
+
+
+## 2026-05-28 — Shape-VAE Pathway B+A (hybrid) — KILL
+
+Executed `docs/handoffs/2026-05-27_shape-vae-BA-hybrid-rig.md` (gated rig launch). One run completed
+(of the locked 3-4 budget); kill criterion met after run 1 by user decision and confirmed by the
+sibling chat's parallel Pathway-B kill the same day.
+
+**Files (new):**
+- `scripts/experiments/eval_shape_kill_gate_v3.py` — minimal kill-gate scorecard (shape η² + pitch
+  + duration). Matches M9/M10/R1/R2 `eta2`/`register_one` definitions for direct bake-off
+  comparability. Not the full shared `eval_shape_vae_v3.py` (which stays deferred — no longer
+  needed for B+A now that the pathway is dead).
+- `docs/handoffs/2026-05-28_shape-vae-BA-hybrid-KILL.md` — verdict memo (scorecard + head-to-head
+  table + mechanism diagnosis + SHIP REGISTRATION conclusion).
+
+**Rig artifacts (kept for reproducibility):**
+- `/data/shachar/contour_vae/models/shape_vae_v3_hybrid/run1/{best.pt,last.pt,hyperparams.json}` (31 MB each).
+- `/data/shachar/contour_vae/results/shape_vae_v3_hybrid/run1/{training_log.csv,killgate.json}`
+  (also mirrored locally at `results/shape_vae_v3_hybrid/run1/`).
+- 5970 Track-0 ridge cache `/data/shachar/contour_vae/results/denoised_patches/5970/ridge_targets_v3.npz`
+  (shared with Pathway A — keep).
+
+**Result (run1, 80 ep, GPU 3 cuda:3, ~46 min):** shape η² **0.1046** (KILL threshold 0.12, registration
+ceiling 0.58–0.75). Pitch η² 0.262, duration η² 0.171 — latent still sorts by pitch/duration, exactly
+the failure mode the un-registered image-VAE objective was predicted to produce.
+
+**Mechanism (visible in `training_log.csv`):** epochs 0–9 (w_recon=0, pure contrastive + latent-
+consistency) — `nt` 2.91→1.48 and `lc` 2.28→0.65, the encoder *was* learning shift-invariant shape.
+Epochs 10+ (anneal): the instant reconstruction got nonzero weight, `nt` jumped 1.48→3.5 and `lc`
+exploded 0.65→200+ and both plateaued. The recon term overrode contrastive immediately and irrecoverably.
+
+**Joint verdict with sibling chat:** Pathway B (encoder-only, NO reconstruction) ALSO killed today at
+shape η² **0.044** — sharper than B+A's 0.105. So recon-as-saboteur explains *part* of B+A but the 2-D
+image substrate itself is the wrong place for shape regardless of loss family (five 2-D attempts now
+falsified vs one successful 1-D-on-registered). Sibling chat's sharper diagnosis: ±15 kHz shift
+augmentation creates LOCAL invariance only (small vs the 100 kHz USV band), so the pitch centroid
+leaks regardless of loss family. B+A inherited the same augmentation flaw.
+
+**Verdict: KILL — SHIP REGISTRATION.** Production = `models/shape_kmeans/k20.joblib` (registration →
+KMeans, shape η² 0.58–0.75). The VAE-family is closed for shape clustering. See
+`[[project_shape_registration_clustering]]` for the consolidated record. Runs 2–4 of the planned
+sweep cancelled (would not change the mechanism). Shared eval `eval_shape_vae_v3.py` deferred
+indefinitely (no learned model worth its full gate panel).
