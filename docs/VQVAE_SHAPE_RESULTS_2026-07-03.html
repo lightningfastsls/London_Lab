@@ -1,0 +1,107 @@
+<title>VQ-VAE Shape Clustering — Experiment Results</title>
+<style>
+  :root{--bg:#fff;--fg:#1a1c1e;--muted:#5b6169;--line:#e3e6ea;--card:#f7f8fa;--accent:#2f6fed;
+    --good:#1a7f5a;--warn:#b3541e;--bad:#c0392b;--codebg:#f0f2f5}
+  @media (prefers-color-scheme:dark){:root{--bg:#131518;--fg:#e7eaee;--muted:#9aa1ab;--line:#2a2e34;
+    --card:#1b1e23;--accent:#6f9dff;--good:#4cc79a;--warn:#e6934e;--bad:#e56b5c;--codebg:#20242a}}
+  :root[data-theme=dark]{--bg:#131518;--fg:#e7eaee;--muted:#9aa1ab;--line:#2a2e34;--card:#1b1e23;
+    --accent:#6f9dff;--good:#4cc79a;--warn:#e6934e;--bad:#e56b5c;--codebg:#20242a}
+  :root[data-theme=light]{--bg:#fff;--fg:#1a1c1e;--muted:#5b6169;--line:#e3e6ea;--card:#f7f8fa;
+    --accent:#2f6fed;--good:#1a7f5a;--warn:#b3541e;--bad:#c0392b;--codebg:#f0f2f5}
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    max-width:920px;margin:0 auto;padding:2.2rem 1.3rem 5rem}
+  h1{font-size:1.85rem;line-height:1.2;margin:.2rem 0 .3rem}
+  h2{font-size:1.32rem;margin:2.3rem 0 .7rem;padding-bottom:.35rem;border-bottom:2px solid var(--line)}
+  h3{font-size:1.05rem;margin:1.4rem 0 .4rem}
+  .sub{color:var(--muted);font-size:.95rem;margin-bottom:1.3rem}
+  p{margin:.6rem 0}
+  code{background:var(--codebg);padding:.1rem .35rem;border-radius:4px;font-size:.85em;
+    font-family:"SF Mono",Menlo,Consolas,monospace;word-break:break-word}
+  .verdict{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:8px;padding:1.1rem 1.2rem;margin:1.2rem 0}
+  .verdict h3{margin-top:0}
+  ul,ol{padding-left:1.3rem}li{margin:.32rem 0}
+  .scroll{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.88rem}
+  th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--card);font-weight:600}
+  td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+  .win{color:var(--good);font-weight:700}.lose{color:var(--bad);font-weight:600}.tie{color:var(--warn);font-weight:600}
+  .callout{border-radius:8px;padding:.85rem 1rem;margin:1rem 0;border:1px solid var(--line)}
+  .callout.key{background:color-mix(in srgb,var(--accent) 8%,transparent);border-left:4px solid var(--accent)}
+  .callout.warn{background:color-mix(in srgb,var(--warn) 9%,transparent);border-left:4px solid var(--warn)}
+  .callout.good{background:color-mix(in srgb,var(--good) 9%,transparent);border-left:4px solid var(--good)}
+  .muted{color:var(--muted)}
+  hr{border:none;border-top:1px solid var(--line);margin:2rem 0}
+  .foot{color:var(--muted);font-size:.85rem;margin-top:2.5rem}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+    padding:.16rem .5rem;border-radius:20px}
+  .pill.part{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+</style>
+
+<h1>Does a VQ-VAE fix USV shape clustering? <span class="pill part">Partly — a real refinement, not a breakthrough</span></h1>
+<div class="sub">Direct test of Mickey's hypothesis &middot; 2026-07-03 &middot; global-code VQ-VAE on the registered ridge, scored on the standing human-anchored harness</div>
+
+<div class="verdict">
+  <h3>One-paragraph result</h3>
+  <p>Trained on the <strong>correct substrate</strong> (the 1-D registered ridge), a global-code VQ-VAE reaches the <strong>registration tier</strong>: shape &eta;&sup2; = <strong>0.572</strong> at K=20, essentially tying registration's 0.577 and decisively beating every prior <em>learned</em> method — including the continuous 1-D VAE on the identical ridge (0.42&ndash;0.50) and the 2-D image-VAE (0.009). <strong>So Mickey is right that vector quantization helps relative to a plain VAE.</strong> But it does <em>not</em> beat the current production frontier (soft-DTW / elastic-FPCA), and on the human-anchored purity that measures alignment with perceived shape families it stays in the graded-continuum regime (NMI &asymp; 0.18). The discrete codebook recovered what the continuous VAE was smearing away — but it did not turn the continuum into separable classes.</p>
+</div>
+
+<h2>What was run</h2>
+<ul>
+  <li><strong>Model:</strong> global-code VQ-VAE — encoder &rarr; single latent vector &rarr; snap to nearest of K codebook entries (EMA updates, dead-code reset, straight-through) &rarr; decoder. One code per call, so the code index <em>is</em> the cluster. Code: <code>scripts/experiments/vqvae_shape/</code>.</li>
+  <li><strong>Substrate:</strong> the registered 50-point ridge (<code>data/shape_substrate/true_registered_ridges.npz</code>, 67,337 calls) — pitch subtracted, active span resampled, i.e. the representation prior work identified as where shape actually lives.</li>
+  <li><strong>Two configs:</strong> K=20 (matches the incumbent alphabet, apples-to-apples) and K=64 (matches the <code>usv_language</code> codebook default).</li>
+  <li><strong>Codebook health:</strong> both healthy — K=20 stabilized at perplexity 14.8/20, K=64 at 41.4/64, <strong>0 dead codes</strong>. No collapse, so results reflect the geometry, not a degenerate codebook.</li>
+  <li><strong>Scoring:</strong> the project's own <code>eval_shape_human_anchored.py</code> functions (same join, same bootstrap purity) + the verbatim bake-off &eta;&sup2; formula. Identical ruler to registration / soft-DTW / elastic-FPCA.</li>
+</ul>
+
+<h2>Scorecard</h2>
+<div class="scroll">
+<table>
+  <thead><tr>
+    <th>Metric</th><th class="num">K=20 VQ</th><th class="num">K=64 VQ</th>
+    <th class="num">Registration</th><th class="num">Soft-DTW (frontier)</th><th class="num">Prior learned</th>
+  </tr></thead>
+  <tbody>
+    <tr><td><strong>shape &eta;&sup2;</strong> (kill gate 0.12)</td>
+      <td class="num win">0.572</td><td class="num">0.674 *</td><td class="num">0.577</td><td class="num">&mdash;</td>
+      <td class="num">image-VAE 0.009 &middot; 1-D VAE 0.42&ndash;0.50</td></tr>
+    <tr><td><strong>NMI vs human families</strong></td>
+      <td class="num tie">0.181</td><td class="num">0.227 *</td><td class="num">0.178</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+    <tr><td>jump purity <span class="muted">(base .334)</span></td>
+      <td class="num">0.482 [.44,.53]</td><td class="num">0.458</td><td class="num">0.415 [.38,.45]</td>
+      <td class="num win">0.522 [.48,.57]</td><td class="num">&mdash;</td></tr>
+    <tr><td>flat purity <span class="muted">(base .205)</span></td>
+      <td class="num">0.399</td><td class="num">0.408</td><td class="num">0.419</td><td class="num">0.396</td><td class="num">&mdash;</td></tr>
+    <tr><td>complex purity <span class="muted">(base .110)</span></td>
+      <td class="num">0.190</td><td class="num">0.196</td><td class="num">0.194</td><td class="num win">0.243</td><td class="num">&mdash;</td></tr>
+    <tr><td>chevron purity <span class="muted">(base .072, n=44)</span></td>
+      <td class="num">0.157&ndash;0.195</td><td class="num tie">0.305 * [.23,.38]</td><td class="num">0.186</td><td class="num">0.214</td><td class="num">&mdash;</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="muted" style="font-size:.85rem">Purity = per-family leave-one-out kNN retrieval purity, k=10, 1000&times; bootstrap 95% CI. Decisions are made on <em>non-overlapping</em> CIs, not point estimates.</p>
+
+<h2>How to read it — three honest points</h2>
+
+<div class="callout good">
+  <strong>1. The quantizer genuinely helped vs a plain VAE.</strong> On the identical ridge substrate, the continuous 1-D VAE (M8) reached &eta;&sup2; 0.42&ndash;0.50; the VQ version reached 0.572. The discrete bottleneck stopped the continuous latent from smearing cluster structure (the Gaussian/KL prior spreads mass between clusters; the codebook forces commitment). This is the specific sense in which Mickey's mechanism is correct, and it's a clean, reportable finding.
+</div>
+
+<div class="callout warn">
+  <strong>2. But it only <em>reaches</em> registration — it didn't find anything new.</strong> Registration's &eta;&sup2; = 0.577 <em>is</em> plain KMeans-20 on the ridges. VQ-VAE at 0.572 is statistically indistinguishable from it, i.e. the learned codebook partitions ridge-space about as well as KMeans and no better. &eta;&sup2; also rises with K by construction, so K=64's 0.674 is <em>not</em> a like-for-like win over K=20 registration — the fair comparison is K=20 VQ (0.572) &asymp; K=20 registration (0.577). On the human-anchored purities, every apparent "win" (jump, chevron) has <strong>overlapping CIs</strong> with registration — none clears the non-overlapping bar the project uses for decisions.
+</div>
+
+<div class="callout warn">
+  <strong>3. It does not beat the production frontier, nor manufacture discrete classes.</strong> Soft-DTW still leads on jump (0.522 vs 0.482) and complex (0.243 vs 0.196) — the warp-aware metric remains the frontier. And NMI &asymp; 0.18&ndash;0.23 means the codes align only weakly with human shape families: a code is still largely a pitch/duration/rough-arc bin. The continuum did not become separable kinds. The one flicker of class-like structure — K=64 chevron one-hot purity 0.305 (&sim;4&times; base rate) — is on n=44 (mostly Reverse Chevron) with a CI that touches registration, so it's a lead to probe, not a result.
+</div>
+
+<h2>Verdict on the hypothesis</h2>
+<p><strong>Mickey was half right, in a precise and useful way.</strong> Vector quantization <em>is</em> a better bottleneck than a plain VAE for this problem — but only once you put it on the substrate that carries shape (the registered ridge), and even then it tops out at the registration/KMeans tier rather than discovering new categories. The result strengthens, rather than overturns, the standing conclusion: USV shape is a graded continuum, warp-alignment is the real lever, and no bottleneck yet turns it into crisp classes. What we gained is a clean positive data point — "a discrete codebook recovers the cluster-variance continuous VAEs lose" — and a small chevron-concentration lead worth chasing.</p>
+
+<h2>Still open — the literal test</h2>
+<p>This ran the <em>steelman</em> substrate (1-D ridge). The <strong>literal</strong> Mickey test — a VQ-VAE on the same 2-D contour-masked spectrogram patches the original plain VAE failed on — is still pending, because those patches live on the GPU rig and the run wants a GPU. Prediction, to be checked: it will beat the 2-D plain VAE (0.009) but still lose to the ridge-based methods, confirming that <em>substrate</em> dominates <em>bottleneck</em>. Worth running to close the loop.</p>
+
+<p class="foot">Artifacts: <code>results/vqvae_shape/{k20,k64}/</code> (codes.parquet, latents.npy, model.pt, eval.json). Code: <code>scripts/experiments/vqvae_shape/</code>. Substrate rescued from disposable job-scratch to <code>data/shape_substrate/</code>. Scored on <code>scripts/experiments/eval_shape_human_anchored.py</code>; &eta;&sup2; via the verbatim bake-off formula. Codebooks verified healthy (0 dead codes).</p>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>USV Labeling — Candidate Labeling &amp; Noise Review</title>
+<style>
+:root {
+  --bg:#0f1115; --panel:#181b22; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2a2f3a;
+  --accent:#6ea8fe; --accent2:#7ee0a8; --warn:#f0b86c; --code:#11141a;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.topbar {
+  position:sticky; top:0; z-index:10; background:rgba(15,17,21,.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); padding:10px 24px; font-size:13.5px;
+}
+.topbar a { color:var(--accent); text-decoration:none; }
+.topbar a:hover { text-decoration:underline; }
+.topbar .sep { color:var(--muted); margin:0 8px; }
+.wrap { max-width:900px; margin:0 auto; padding:34px 24px 90px; }
+h1,h2,h3,h4 { line-height:1.3; letter-spacing:-.2px; scroll-margin-top:60px; }
+h1 { font-size:30px; margin:.2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h2 { font-size:22px; margin:1.7em 0 .6em; color:#fff; }
+h3 { font-size:17px; margin:1.4em 0 .5em; color:var(--accent2); }
+h4 { font-size:15px; margin:1.2em 0 .4em; color:var(--ink); }
+a { color:var(--accent); }
+p,li { color:var(--ink); }
+hr { border:none; border-top:1px solid var(--line); margin:2em 0; }
+blockquote {
+  margin:1.2em 0; padding:.6em 1.1em; background:var(--panel);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0; color:var(--ink);
+}
+blockquote p { margin:.4em 0; }
+code {
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:.88em;
+  background:#222733; color:#cfe3ff; padding:.12em .4em; border-radius:5px;
+}
+pre {
+  background:var(--code); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; line-height:1.5;
+}
+pre code { background:none; color:#e7e9ee; padding:0; font-size:13px; }
+.codehilite { background:var(--code); border:1px solid var(--line); border-radius:10px; margin:1em 0; }
+.codehilite pre { background:none; border:none; margin:0; }
+table {
+  border-collapse:collapse; width:100%; margin:1.3em 0; font-size:14px; display:block; overflow-x:auto;
+}
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+th { background:var(--panel); color:#fff; font-weight:650; }
+tr:nth-child(even) td { background:rgba(255,255,255,.015); }
+ul,ol { padding-left:1.5em; }
+li { margin:.25em 0; }
+img { max-width:100%; border-radius:8px; }
+.toc {
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:10px 18px; margin:1.4em 0; font-size:14px;
+}
+.toc ul { margin:.3em 0; }
+::selection { background:#2d4a7a; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #404040 }
+.codehilite { background: #202020; color: #D0D0D0 }
+.codehilite .c { color: #ABABAB; font-style: italic } /* Comment */
+.codehilite .err { color: #A61717; background-color: #E3D2D2 } /* Error */
+.codehilite .esc { color: #D0D0D0 } /* Escape */
+.codehilite .g { color: #D0D0D0 } /* Generic */
+.codehilite .k { color: #6EBF26; font-weight: bold } /* Keyword */
+.codehilite .l { color: #D0D0D0 } /* Literal */
+.codehilite .n { color: #D0D0D0 } /* Name */
+.codehilite .o { color: #D0D0D0 } /* Operator */
+.codehilite .x { color: #D0D0D0 } /* Other */
+.codehilite .p { color: #D0D0D0 } /* Punctuation */
+.codehilite .ch { color: #ABABAB; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #ABABAB; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #FF3A3A; font-weight: bold } /* Comment.Preproc */
+.codehilite .cpf { color: #ABABAB; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #ABABAB; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #E50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.codehilite .gd { color: #FF3A3A } /* Generic.Deleted */
+.codehilite .ge { color: #D0D0D0; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #D0D0D0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF3A3A } /* Generic.Error */
+.codehilite .gh { color: #FFF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #589819 } /* Generic.Inserted */
+.codehilite .go { color: #CCC } /* Generic.Output */
+.codehilite .gp { color: #AAA } /* Generic.Prompt */
+.codehilite .gs { color: #D0D0D0; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #FFF; text-decoration: underline } /* Generic.Subheading */
+.codehilite .gt { color: #FF3A3A } /* Generic.Traceback */
+.codehilite .kc { color: #6EBF26; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #6EBF26; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #6EBF26; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #6EBF26 } /* Keyword.Pseudo */
+.codehilite .kr { color: #6EBF26; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #6EBF26; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #D0D0D0 } /* Literal.Date */
+.codehilite .m { color: #51B2FD } /* Literal.Number */
+.codehilite .s { color: #ED9D13 } /* Literal.String */
+.codehilite .na { color: #BBB } /* Name.Attribute */
+.codehilite .nb { color: #2FBCCD } /* Name.Builtin */
+.codehilite .nc { color: #71ADFF; text-decoration: underline } /* Name.Class */
+.codehilite .no { color: #40FFFF } /* Name.Constant */
+.codehilite .nd { color: #FFA500 } /* Name.Decorator */
+.codehilite .ni { color: #D0D0D0 } /* Name.Entity */
+.codehilite .ne { color: #BBB } /* Name.Exception */
+.codehilite .nf { color: #71ADFF } /* Name.Function */
+.codehilite .nl { color: #D0D0D0 } /* Name.Label */
+.codehilite .nn { color: #71ADFF; text-decoration: underline } /* Name.Namespace */
+.codehilite .nx { color: #D0D0D0 } /* Name.Other */
+.codehilite .py { color: #D0D0D0 } /* Name.Property */
+.codehilite .nt { color: #6EBF26; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #40FFFF } /* Name.Variable */
+.codehilite .ow { color: #6EBF26; font-weight: bold } /* Operator.Word */
+.codehilite .pm { color: #D0D0D0 } /* Punctuation.Marker */
+.codehilite .w { color: #666 } /* Text.Whitespace */
+.codehilite .mb { color: #51B2FD } /* Literal.Number.Bin */
+.codehilite .mf { color: #51B2FD } /* Literal.Number.Float */
+.codehilite .mh { color: #51B2FD } /* Literal.Number.Hex */
+.codehilite .mi { color: #51B2FD } /* Literal.Number.Integer */
+.codehilite .mo { color: #51B2FD } /* Literal.Number.Oct */
+.codehilite .sa { color: #ED9D13 } /* Literal.String.Affix */
+.codehilite .sb { color: #ED9D13 } /* Literal.String.Backtick */
+.codehilite .sc { color: #ED9D13 } /* Literal.String.Char */
+.codehilite .dl { color: #ED9D13 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #ED9D13 } /* Literal.String.Doc */
+.codehilite .s2 { color: #ED9D13 } /* Literal.String.Double */
+.codehilite .se { color: #ED9D13 } /* Literal.String.Escape */
+.codehilite .sh { color: #ED9D13 } /* Literal.String.Heredoc */
+.codehilite .si { color: #ED9D13 } /* Literal.String.Interpol */
+.codehilite .sx { color: #FFA500 } /* Literal.String.Other */
+.codehilite .sr { color: #ED9D13 } /* Literal.String.Regex */
+.codehilite .s1 { color: #ED9D13 } /* Literal.String.Single */
+.codehilite .ss { color: #ED9D13 } /* Literal.String.Symbol */
+.codehilite .bp { color: #2FBCCD } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #71ADFF } /* Name.Function.Magic */
+.codehilite .vc { color: #40FFFF } /* Name.Variable.Class */
+.codehilite .vg { color: #40FFFF } /* Name.Variable.Global */
+.codehilite .vi { color: #40FFFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #40FFFF } /* Name.Variable.Magic */
+.codehilite .il { color: #51B2FD } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="topbar"><a href="00_INDEX.html">&larr; Production docs index</a><span class="sep">/</span><span style="color:var(--muted)">USV Labeling — Candidate Labeling &amp; Noise Review</span></div>
+<div class="wrap">
+<h1 id="usv-labeling-candidate-labeling-noise-review">USV Labeling — Candidate Labeling &amp; Noise Review</h1>
+<blockquote>
+<p><strong>What this is:</strong> The tools a human uses to mark USV candidates as <em>USV / Not USV / Uncertain</em>
+and to triage whole recordings as <em>USV-bearing vs. noise</em>.
+<strong>Status (2026-06):</strong> The two Streamlit apps under <code>src/usv_spectrogram/labeling/</code>
+(<code>labeling_app.py</code>, <code>noise_review_app.py</code>) are <strong>DEPRECATED and retired</strong> — they
+<code>sys.exit(1)</code> on launch. <strong>All labeling now happens in the PyQt6 desktop app.</strong>
+<strong>Launch the live tool:</strong> <code>.venv/bin/python scripts/run_app.py</code>
+<strong>Labels are written as JSON</strong> (per-WAV) by <code>app/core/label_storage.py</code>.</p>
+</blockquote>
+<hr />
+<h2 id="tldr-which-tool-do-i-actually-run">TL;DR — which tool do I actually run?</h2>
+<table>
+<thead>
+<tr>
+<th>You want to…</th>
+<th>Use</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Review CNN detections on a WAV, adjust/add/delete them, mark USV vs noise, save labels</td>
+<td><strong>PyQt6 desktop app</strong></td>
+<td><code>.venv/bin/python scripts/run_app.py</code></td>
+</tr>
+<tr>
+<td>Bulk-label thousands of pre-rendered candidate PNGs (old workflow)</td>
+<td>~~Streamlit <code>labeling_app.py</code>~~</td>
+<td><strong>RETIRED — do not use</strong></td>
+</tr>
+<tr>
+<td>Triage noise-sample PNGs (Clean / Contains USV / Skip)</td>
+<td>~~Streamlit <code>noise_review_app.py</code>~~</td>
+<td><strong>RETIRED — do not use</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The Streamlit <code>run()</code> functions print a deprecation notice and exit
+(<code>labeling_app.py:633</code>, <code>noise_review_app.py:395</code>). The bodies below those lines are
+unreachable legacy code, kept only for reference. The launcher script the README points
+at, <code>scripts/usv_labeling_tool.py</code>, <strong>no longer exists</strong>. Do not try to revive these;
+the supported path is the desktop app.</p>
+<p>This document covers the <strong>live</strong> desktop-app labeling workflow first (§1, §2), then
+documents the retired Streamlit apps (§3) so you can read old code and old output files
+without confusion.</p>
+<p>Sibling docs: <a href="../modules/cnn-classifier.html">CNN detection pipeline</a> ·
+<a href="../handoffs/v2-full-pipeline-results.html">batch detection</a> ·
+<a href="../plans/USV_DETECTION_APP_IMPLEMENTATION.html">PyQt6 app implementation plan</a> ·
+keyboard shortcuts: <a href="../USV_DETECTION_APP_SHORTCUTS.html">USV_DETECTION_APP_SHORTCUTS.md</a>
+(note: that file's "default thresholds 0.40/0.28" is <strong>stale</strong> — see §1.4) ·
+labeling criteria: <a href="../labeling_guide.html">labeling_guide.md</a>.</p>
+<hr />
+<h2 id="1-operate">1. Operate</h2>
+<h3 id="11-launch">1.1 Launch</h3>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/run_app.py
+</code></pre></div>
+
+<p><code>scripts/run_app.py</code> imports <code>torch</code> <strong>before</strong> PyQt6 (a Windows DLL-ordering
+workaround, <code>scripts/run_app.py:10-13</code>), then calls
+<code>usv_spectrogram.app.main.main()</code>.</p>
+<p>There is <strong>no argparse</strong> and no positional arguments. Everything — WAV file, output
+folder, thresholds — is chosen interactively or restored from saved settings. The model
+is hard-wired:</p>
+<ul>
+<li><strong>Default CNN model:</strong> <code>models/hard_neg_retrain/best_model.pt</code>
+  (set at <code>src/usv_spectrogram/app/main.py:24-27</code>). This is the current production model
+  (precision 90.55%). The two older models
+  (<code>models/matched_windows/best_model.pt</code>, <code>models/production/best_model.pt</code>) are
+  deprecated and are <strong>not</strong> what the app loads.</li>
+</ul>
+<p><strong>Environment:</strong> the repo <code>.venv</code> with PyQt6, torch, librosa, soundfile, matplotlib.
+On WSL the app needs an X server / WSLg to display a window.</p>
+<h3 id="12-what-the-app-does-end-to-end">1.2 What the app does, end to end</h3>
+<ol>
+<li><strong>Open a WAV</strong> (<code>Ctrl+O</code> or the <em>Load</em> button). Audio loads via <code>AudioLoader</code>, a
+   spectrogram is computed and displayed. When you open a <em>new</em> file while one is already
+   open, the previous file is moved to a parallel <code>*_reviewed</code> folder — the first
+   path component containing <code>USV</code>/<code>usv</code> gets a <code>_reviewed</code> suffix, e.g.
+   <code>USV_1/usv_lmt_034/file.wav</code> → <code>USV_1_reviewed/usv_lmt_034/file.wav</code>
+   (<code>main_window.py:630-676</code>, <code>_move_reviewed_file</code>).</li>
+<li><strong>Run detection</strong> (<code>Space</code>). The CNN slides over the spectrogram producing a
+   probability curve; hysteresis thresholding turns that into detected USV intervals.</li>
+<li><strong>Review / edit</strong> each detection: adjust boundaries, add a manual detection, or delete
+   one (<code>Delete</code>). Edits are tracked with <code>user_adjusted</code> / <code>user_action</code> metadata.</li>
+<li><strong>Classify the whole file</strong> as noise if appropriate (<em>Label File as Noise</em> button) —
+   this auto-writes a JSON into <code>noise_labeled_files/</code>.</li>
+<li><strong>Save labels</strong> (<code>Ctrl+S</code>) to a per-WAV JSON, and/or <strong>export</strong> an annotated PNG
+   (<code>Ctrl+E</code>).</li>
+</ol>
+<blockquote>
+<p>This app's <em>Detect</em> is <strong>CNN + hysteresis only</strong> — it does <strong>not</strong> apply the
+FP-filter, temperature calibration, or soft-notch that the offline batch pipeline uses.
+Applying the FP-filter here would wrongly kill real detections. To reproduce the full
+production triage on a folder, use <code>scripts/run_batch_detection.py</code> (the 5-flag
+pipeline in <code>CLAUDE.md</code>), not this app.</p>
+</blockquote>
+<h3 id="13-keyboard-shortcuts-read-from-code">1.3 Keyboard shortcuts (read from code)</h3>
+<p>Menu accelerators are registered in <code>main_window.py:238-271</code>; the threshold/detection
+hotkeys in <code>_setup_keyboard_shortcuts</code> at <code>main_window.py:1448-1470</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+O</code></td>
+<td>Open WAV file</td>
+<td><code>main_window.py:239</code></td>
+</tr>
+<tr>
+<td><code>Ctrl+S</code></td>
+<td>Save labels to JSON</td>
+<td><code>main_window.py:244</code></td>
+</tr>
+<tr>
+<td><code>Ctrl+L</code></td>
+<td>Load labels from JSON</td>
+<td><code>main_window.py:250</code></td>
+</tr>
+<tr>
+<td><code>Ctrl+E</code></td>
+<td>Export annotated image (PNG)</td>
+<td><code>main_window.py:256</code></td>
+</tr>
+<tr>
+<td><code>Ctrl+Q</code></td>
+<td>Quit</td>
+<td><code>main_window.py:269</code></td>
+</tr>
+<tr>
+<td><code>Space</code></td>
+<td>Run detection (<code>_run_detection</code>)</td>
+<td><code>main_window.py:1465-1466</code></td>
+</tr>
+<tr>
+<td><code>↑</code> Up</td>
+<td>Increase <strong>high</strong> threshold by 0.01</td>
+<td><code>main_window.py:1451-1452</code>, <code>:1472</code></td>
+</tr>
+<tr>
+<td><code>↓</code> Down</td>
+<td>Decrease <strong>high</strong> threshold by 0.01</td>
+<td><code>main_window.py:1454-1455</code>, <code>:1479</code></td>
+</tr>
+<tr>
+<td><code>→</code> Right</td>
+<td>Increase <strong>low</strong> threshold by 0.01</td>
+<td><code>main_window.py:1461-1462</code>, <code>:1486</code></td>
+</tr>
+<tr>
+<td><code>←</code> Left</td>
+<td>Decrease <strong>low</strong> threshold by 0.01</td>
+<td><code>main_window.py:1458-1459</code>, <code>:1493</code></td>
+</tr>
+<tr>
+<td><code>Delete</code></td>
+<td>Remove the selected detection</td>
+<td><code>main_window.py:1469-1470</code></td>
+</tr>
+</tbody>
+</table>
+<p>The threshold steps move QSlider values by 1 unit out of 100, i.e. 0.01 in
+probability units (<code>main_window.py:1474</code>), and re-apply thresholds live if a detection
+result already exists.</p>
+<h3 id="14-thresholds-and-detection-parameters-defaults">1.4 Thresholds and detection parameters (defaults)</h3>
+<p>Loaded from <code>QSettings</code> with these fallbacks at <code>main_window.py:147-151</code>. On an app
+<strong>version bump</strong> (<code>APP_VERSION = "1.2.0"</code>, <code>main_window.py:44</code>) the threshold settings are
+wiped so these defaults are forced (<code>main_window.py:103-125</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Meaning</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>high_threshold</code> (onset)</td>
+<td><strong>0.60</strong></td>
+<td>A USV interval <em>starts</em> when CNN prob crosses this</td>
+<td><code>main_window.py:147</code></td>
+</tr>
+<tr>
+<td><code>low_threshold</code> (sustain)</td>
+<td><strong>0.40</strong></td>
+<td>The interval <em>continues</em> until prob drops below this</td>
+<td><code>main_window.py:148</code></td>
+</tr>
+<tr>
+<td><code>min_sustained_prob</code></td>
+<td><strong>0.0</strong></td>
+<td>Continuity gate (disabled)</td>
+<td><code>main_window.py:149</code></td>
+</tr>
+<tr>
+<td><code>exclude_start_sec</code></td>
+<td><strong>0.0</strong></td>
+<td>Seconds excluded at file start</td>
+<td><code>main_window.py:150</code></td>
+</tr>
+<tr>
+<td><code>exclude_end_sec</code></td>
+<td><strong>0.0</strong></td>
+<td>Seconds excluded at file end</td>
+<td><code>main_window.py:151</code></td>
+</tr>
+</tbody>
+</table>
+<p>These defaults are deliberately aligned to the production batch hysteresis (onset 0.60 /
+sustain 0.40) so the live view matches <code>run_batch_detection.py</code> output
+(<code>main_window.py:142-146</code>). <strong>Note:</strong> <a href="../USV_DETECTION_APP_SHORTCUTS.html">USV_DETECTION_APP_SHORTCUTS.md</a>
+still lists "High = 0.40, Low = 0.28" — that document is <strong>stale</strong>; the code value is
+0.60 / 0.40.</p>
+<p>Settings are stored under <code>QSettings("USV Lab", "USV Detection")</code>
+(<code>main_window.py:101</code>) — Windows Registry on Windows, an INI/plist elsewhere. Window
+geometry, last thresholds, and the output directory persist across sessions
+(<code>_save_settings</code>, <code>main_window.py:1510-1519</code>).</p>
+<h3 id="15-output-locations-and-file-formats">1.5 Output locations and file formats</h3>
+<p><strong>Default output directory:</strong> <code>&lt;repo_root&gt;/USV_Detections/</code>
+(<code>main_window.py:138-140</code>). Change it via <em>File → Set Output Directory…</em> (<code>Ctrl</code>-less
+menu action, <code>main_window.py:262-264</code>); the choice persists.</p>
+<p>What lands where:</p>
+<table>
+<thead>
+<tr>
+<th>Output</th>
+<th>Path</th>
+<th>Written by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Per-WAV saved labels (manual <code>Ctrl+S</code>)</td>
+<td>wherever you point the Save dialog; defaults to <code>&lt;wav&gt;.json</code> next to the WAV</td>
+<td><code>_save_labels</code>, <code>main_window.py:1257-1297</code></td>
+</tr>
+<tr>
+<td>Whole-file noise label (auto)</td>
+<td><code>&lt;output_dir&gt;/noise_labeled_files/&lt;wav_stem&gt;.json</code></td>
+<td><code>_auto_save_noise_label</code>, <code>main_window.py:1111-1135</code></td>
+</tr>
+<tr>
+<td>Rejected detections</td>
+<td><code>&lt;output_dir&gt;/rejected_detections/</code></td>
+<td><code>main_window.py:1008-1009</code></td>
+</tr>
+<tr>
+<td>Annotated image (<code>Ctrl+E</code>)</td>
+<td>wherever you point the Export dialog; defaults to <code>&lt;wav&gt;.png</code></td>
+<td><code>_export_image</code> → <code>LabelStorage.export_annotated_image</code></td>
+</tr>
+<tr>
+<td>Reviewed WAVs (moved on file switch/close)</td>
+<td>parallel folder with the first <code>USV</code>/<code>usv</code> path component suffixed <code>_reviewed</code> (e.g. <code>USV_1/usv_lmt_034/file.wav</code> → <code>USV_1_reviewed/usv_lmt_034/file.wav</code>); falls back to renaming the WAV's parent folder if no <code>USV</code>/<code>usv</code> component is found</td>
+<td><code>_move_reviewed_file</code>, <code>main_window.py:630-676</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="labels-json-schema">Labels JSON schema</h4>
+<p>Written by <code>LabelStorage.save</code> (<code>app/core/label_storage.py:27-111</code>). Top-level keys:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;wav_file&quot;</span><span class="p">:</span><span class="w">   </span><span class="s2">&quot;&lt;absolute path to WAV&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;model_file&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;absolute path to best_model.pt, or null&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;ISO-8601 timestamp&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;duration_s&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">30.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;sample_rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;n_detections&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;file_label&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;detection_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;high_threshold&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.60</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;low_threshold&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.40</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;detections&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="cm">/* one object per USV, see below */</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;probability_curve&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;times&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;column_indices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Each entry in <code>detections</code> (<code>label_storage.py:70-99</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start_time_s</code>, <code>end_time_s</code></td>
+<td>float</td>
+<td>Detection interval in seconds</td>
+</tr>
+<tr>
+<td><code>duration_s</code></td>
+<td>float</td>
+<td><code>end - start</code></td>
+</tr>
+<tr>
+<td><code>start_col</code>, <code>end_col</code></td>
+<td>int</td>
+<td>Spectrogram column indices</td>
+</tr>
+<tr>
+<td><code>max_probability</code>, <code>mean_probability</code></td>
+<td>float</td>
+<td>CNN prob over the interval</td>
+</tr>
+<tr>
+<td><code>user_adjusted</code></td>
+<td>bool</td>
+<td>Present only if the human moved a boundary</td>
+</tr>
+<tr>
+<td><code>original_start_time_s</code>, <code>original_end_time_s</code></td>
+<td>float</td>
+<td>Pre-edit boundaries (only when adjusted)</td>
+</tr>
+<tr>
+<td><code>user_action</code></td>
+<td>str</td>
+<td>e.g. <code>"added_manually"</code> (only when set)</td>
+</tr>
+<tr>
+<td><code>save_state</code></td>
+<td>str</td>
+<td><code>"unsaved"</code> / reviewed state (only when set)</td>
+</tr>
+<tr>
+<td><code>original_cnn_probability</code></td>
+<td>float</td>
+<td>CNN prob before a manual edit/deletion (only when set)</td>
+</tr>
+</tbody>
+</table>
+<p><code>probability_curve</code> always carries the full CNN trace so a reload reconstructs the exact
+view (<code>LabelStorage.reconstruct_detection_result</code>, <code>label_storage.py:162-193</code>).</p>
+<h4 id="annotated-png-export">Annotated PNG export</h4>
+<p><code>LabelStorage.export_annotated_image</code> (<code>label_storage.py:195-314</code>): a 2-panel figure —
+spectrogram (<code>cmap='magma'</code>, frequency axis in <strong>kHz</strong>) with green start / red end lines
+per USV, and below it the probability curve with high (red dashed) and low (orange
+dashed) threshold lines and green-shaded detected regions. Defaults: <code>dpi=100</code>,
+<code>figsize=(16, 6)</code> (<code>label_storage.py:202-203</code>).</p>
+<h3 id="16-worked-example">1.6 Worked example</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 1. Launch</span>
+.venv/bin/python<span class="w"> </span>scripts/run_app.py
+
+<span class="c1"># 2. In the GUI:</span>
+<span class="c1">#    Ctrl+O  -&gt; pick e.g.  5970 USV/0004954.wav</span>
+<span class="c1">#    Space   -&gt; run CNN + hysteresis detection</span>
+<span class="c1">#    Up/Down -&gt; nudge the onset (high) threshold; Left/Right -&gt; sustain (low)</span>
+<span class="c1">#    click a detection, drag its edge to fix boundaries, or Delete to remove it</span>
+<span class="c1">#    if the whole file is noise: click &quot;Label File as Noise&quot;</span>
+<span class="c1">#        -&gt; auto-writes USV_Detections/noise_labeled_files/0004954.json</span>
+<span class="c1">#    Ctrl+S  -&gt; save labels JSON (defaults to 0004954.json beside the WAV)</span>
+<span class="c1">#    Ctrl+E  -&gt; export annotated PNG</span>
+</code></pre></div>
+
+<h3 id="17-label-categories">1.7 Label categories</h3>
+<p>The live app is built around <strong>per-detection USV intervals</strong> plus a <strong>whole-file noise
+flag</strong> (the <em>Label File as Noise</em> button, <code>main_window.py:323-329</code>). It does not use the
+three-way <em>USV / Not USV / Uncertain</em> button set — that taxonomy belongs to the retired
+Streamlit app (§3.1). For the human criteria distinguishing a real USV from noise/
+artifact (narrow-band, coherent contour, 25–110 kHz, 10–500 ms, etc.), follow
+<a href="../labeling_guide.html">labeling_guide.md</a>.</p>
+<h3 id="18-troubleshooting-gotchas">1.8 Troubleshooting / Gotchas</h3>
+<ul>
+<li><strong>"The Streamlit labeling tool exits immediately."</strong> Expected — it is retired. Use
+  <code>scripts/run_app.py</code>. The launcher <code>scripts/usv_labeling_tool.py</code> the old README cites
+  is gone.</li>
+<li><strong>App detections differ from <code>run_batch_detection.py</code>.</strong> Expected: the app is CNN +
+  hysteresis only; the batch pipeline adds temperature, FP-filter, and soft-notch. Do not
+  "fix" the app to match — they are different stages by design.</li>
+<li><strong>Thresholds reset after an update.</strong> A version bump clears threshold settings on
+  purpose (<code>main_window.py:106-125</code>); they reload to 0.60 / 0.40.</li>
+<li><strong>A WAV "disappeared" from its folder.</strong> Files are moved to a parallel <code>*_reviewed</code>
+  folder when you switch/close (<code>main_window.py:584</code>, <code>:1530</code>; logic at <code>:630-676</code>) —
+  the first <code>USV</code>/<code>usv</code> path component is renamed with a <code>_reviewed</code> suffix (e.g.
+  <code>USV_1/...</code> → <code>USV_1_reviewed/...</code>), not a subfolder of the WAV's directory. Look there.</li>
+<li><strong>Save is greyed out / "No Detections" warning.</strong> You must run detection (<code>Space</code>)
+  before Save/Export (<code>main_window.py:1259-1265</code>, <code>:1301-1307</code>).</li>
+<li><strong>Stale noise label.</strong> Toggling the noise flag off removes
+  <code>noise_labeled_files/&lt;stem&gt;.json</code> (<code>_remove_noise_label_file</code>, <code>main_window.py:1146-1159</code>).</li>
+<li><strong>No window on WSL.</strong> Ensure WSLg / an X server is running; PyQt6 needs a display.</li>
+</ul>
+<hr />
+<h2 id="2-internals-pyqt6-app">2. Internals (PyQt6 app)</h2>
+<h3 id="21-architecture-data-flow">2.1 Architecture / data flow</h3>
+<div class="codehilite"><pre><span></span><code>scripts/run_app.py
+  └─ import torch (before PyQt6)            # DLL ordering, run_app.py:10-13
+  └─ app.main.main()                        # main.py:13
+       └─ MainWindow(default_model_path=models/hard_neg_retrain/best_model.pt)
+</code></pre></div>
+
+<p><code>MainWindow</code> (<code>src/usv_spectrogram/app/main_window.py</code>, <strong>1819 lines</strong> — read in
+≤500-line chunks per the Large File Protocol) owns the whole GUI. Core logic is delegated
+to <code>app/core/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core/audio_loader.py</code></td>
+<td>WAV → <code>AudioData</code> (samples, spectrogram, times, frequencies)</td>
+</tr>
+<tr>
+<td><code>core/sliding_inference.py</code></td>
+<td>CNN sliding-window probability curve</td>
+</tr>
+<tr>
+<td><code>core/detection_logic.py</code></td>
+<td>Hysteresis → <code>DetectionResult</code> / <code>DetectedUSV</code></td>
+</tr>
+<tr>
+<td><code>core/label_storage.py</code></td>
+<td>JSON save/load + annotated-PNG export</td>
+</tr>
+<tr>
+<td><code>core/detection_exporter.py</code></td>
+<td>Per-detection clip/PNG export (<code>context_ms=20.0</code>)</td>
+</tr>
+<tr>
+<td><code>core/saved_detection_tracker.py</code></td>
+<td>Tracks which detections are saved per WAV</td>
+</tr>
+<tr>
+<td><code>core/notch.py</code>, <code>core/denoise.py</code>, <code>core/preset_config.py</code></td>
+<td>DSP options &amp; presets</td>
+</tr>
+</tbody>
+</table>
+<p>Views live in <code>app/widgets/</code>: <code>spectrogram_view.py</code>, <code>probability_view.py</code>,
+<code>sonic_view.py</code>. Horizontal scrolling is synchronized across the spectrogram and
+probability panels.</p>
+<h3 id="22-key-signatures-fileline">2.2 Key signatures (file:line)</h3>
+<ul>
+<li><code>MainWindow.__init__(self, default_model_path: Path | None = None)</code> — <code>main_window.py:91</code></li>
+<li><code>LabelStorage.save(output_path, audio_data, detection_result, wav_path, model_path, high_threshold, low_threshold) -&gt; None</code> — <code>label_storage.py:27</code></li>
+<li><code>LabelStorage.load(input_path) -&gt; Dict[str, Any]</code> — <code>label_storage.py:113</code></li>
+<li><code>LabelStorage.reconstruct_detected_usv(detection_dict) -&gt; DetectedUSV</code> — <code>label_storage.py:137</code></li>
+<li><code>LabelStorage.reconstruct_detection_result(data) -&gt; DetectionResult</code> — <code>label_storage.py:162</code></li>
+<li><code>LabelStorage.export_annotated_image(output_path, audio_data, detection_result, high_threshold, low_threshold, dpi=100, figsize=(16, 6)) -&gt; None</code> — <code>label_storage.py:195</code></li>
+<li><code>MainWindow._setup_keyboard_shortcuts(self)</code> — <code>main_window.py:1448</code></li>
+<li><code>MainWindow._save_labels</code>, <code>_export_image</code>, <code>_load_labels</code> — <code>main_window.py:1257</code>, <code>:1299</code>, <code>:1339</code></li>
+<li><code>MainWindow._auto_save_noise_label</code> — <code>main_window.py:1111</code></li>
+</ul>
+<h3 id="23-signalslot-wiring-where-to-change-shortcuts-buttons">2.3 Signal/slot wiring (where to change shortcuts &amp; buttons)</h3>
+<ul>
+<li><strong>Menu actions</strong> (Open/Save/Load/Export/Quit) are <code>QAction</code>s built in <code>_init_ui</code>
+  around <code>main_window.py:238-271</code>; each <code>.setShortcut(...)</code> and <code>.triggered.connect(...)</code>
+  there.</li>
+<li><strong>Hotkeys</strong> (arrows, Space, Delete) are <code>QShortcut(QKeySequence(...))</code> objects created
+  in <code>_setup_keyboard_shortcuts</code>, <code>main_window.py:1448-1470</code>; rebind here.</li>
+<li><strong>Noise button:</strong> <code>self.label_noise_btn</code> created at <code>main_window.py:323</code>, connected to
+  <code>_toggle_noise_label</code> at <code>:324</code>.</li>
+</ul>
+<h3 id="24-invariants">2.4 Invariants</h3>
+<ul>
+<li><strong>Sample rate is 300 kHz</strong>, enforced via <code>corpus.py</code>
+  (<code>SAMPLE_RATE_HZ = 300_000</code>, <code>src/usv_spectrogram/corpus.py:30</code>;
+  <code>USV_FREQ_MIN_HZ = 20_000</code> <code>:32</code>, <code>USV_FREQ_MAX_HZ = 120_000</code> <code>:33</code>,
+  <code>STFT_N_FFT = 512</code> <code>:35</code>). Never restate these — import from <code>corpus</code>.</li>
+<li>The model path is the <strong>production</strong> CNN; do not point the app at the deprecated
+  <code>matched_windows</code> / <code>production</code> checkpoints.</li>
+<li>The app's detection is CNN + hysteresis <strong>only</strong> (no FP-filter / temperature /
+  soft-notch). Keep that boundary; the offline pipeline owns those stages.</li>
+</ul>
+<hr />
+<h2 id="3-the-retired-streamlit-apps-historical">3. The retired Streamlit apps (historical)</h2>
+<p>Kept under <code>src/usv_spectrogram/labeling/</code>. <strong>Both refuse to run.</strong> Their <code>run()</code>
+functions write a deprecation banner and <code>sys.exit(1)</code>, pointing to
+<code>scripts/run_app.py</code>:</p>
+<ul>
+<li><code>labeling_app.py:633-642</code> (<code>run()</code> deprecation guard; legacy body <code>:644-853</code> is
+  unreachable).</li>
+<li><code>noise_review_app.py:395-404</code> (same pattern; legacy body <code>:406-492</code> unreachable).</li>
+</ul>
+<p>Documented here so you can interpret <strong>old output files</strong> and old code.</p>
+<h3 id="31-labeling_apppy-three-way-candidate-labeling-retired">3.1 <code>labeling_app.py</code> — three-way candidate labeling (retired)</h3>
+<ul>
+<li><strong>Label classes:</strong> <code>LABEL_OPTIONS = ["USV", "Not USV", "Uncertain"]</code>
+  (<code>labeling_app.py:22</code>). Keyboard 1/2/3 mapped via injected JS, not real Qt hotkeys
+  (<code>labeling_app.py:445</code>).</li>
+<li><strong>Inputs (repo root):</strong> <code>candidates_optimized.csv</code> and a <code>spectrograms_review/</code>
+  folder of <code>&lt;candidate_id&gt;.png</code> images (<code>labeling_app.py:653-654</code>).</li>
+<li><strong>Output:</strong> <code>labels.csv</code> at repo root (<code>labeling_app.py:655</code>), rewritten in full on
+  every label (<code>save_label</code>, <code>labeling_app.py:122-152</code>). Columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>candidate_id</code></td>
+<td>matches the PNG / CSV row</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>USV</code> / <code>Not USV</code> / <code>Uncertain</code></td>
+</tr>
+<tr>
+<td><code>labeled_at</code></td>
+<td>ISO timestamp</td>
+</tr>
+<tr>
+<td><code>expand_ms</code></td>
+<td>signed ms of boundary expansion (&gt;0 = start earlier, &lt;0 = end later)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Expanded PNGs:</strong> <code>spectrograms_review/expanded/</code> (and <code>…/expanded/preview/</code>),
+  re-extracted via <code>SpectrogramExtractor</code> with <code>ExtractionConfig(sample_rate=300000,
+  default_render_mode="review")</code> (<code>labeling_app.py:116-119</code>, README lines 59-62).</li>
+<li><strong>Archive/reset:</strong> moves labeled PNGs and <code>labels.csv</code> into
+  <code>labeling_archives/labeling_archive_&lt;timestamp&gt;/</code> (<code>labeling_app.py:155-213</code>).</li>
+</ul>
+<h3 id="32-noise_review_apppy-noiseusv-triage-retired">3.2 <code>noise_review_app.py</code> — noise/USV triage (retired)</h3>
+<ul>
+<li><strong>Triage classes:</strong> <code>LABEL_OPTIONS = ["Clean", "Contains USV", "Skip"]</code>
+  (<code>noise_review_app.py:25</code>); "Contains USV" can be <strong>Trimmed</strong> to remove the USV portion,
+  yielding a 4th status (<code>noise_review_app.py:350</code>, <code>:485</code>).</li>
+<li><strong>Inputs:</strong> <code>noise_samples/noise_samples.csv</code> + <code>noise_samples/*.png</code>; WAVs from
+  <code>5970 USV/</code> (<code>noise_review_app.py:411-414</code>).</li>
+<li><strong>Output:</strong> <code>noise_samples/noise_reviews.csv</code> (<code>save_review</code>,
+  <code>noise_review_app.py:50-74</code>). Columns: <code>candidate_id</code>, <code>status</code>
+  (<code>Clean</code>/<code>Contains USV</code>/<code>Trimmed</code>/<code>Skip</code>), <code>trim_ms</code> (signed; &gt;0 trims start, &lt;0 trims
+  end), <code>reviewed_at</code>.</li>
+<li><strong>Min trimmed segment:</strong> 10 ms (<code>noise_review_app.py:151</code>).</li>
+</ul>
+<h3 id="33-relationship-between-the-two-retired-apps">3.3 Relationship between the two retired apps</h3>
+<p><code>labeling_app</code> assigned <strong>syllable-level USV/Not-USV/Uncertain</strong> to candidate
+spectrograms; <code>noise_review_app</code> did <strong>whole-sample Clean/Contains-USV/Skip</strong> triage with
+optional trimming. Both have been superseded by the single PyQt6 desktop app, where
+per-detection review and the whole-file noise flag now live together.</p>
+<blockquote>
+<p>The <strong>stable-ID review-folder convention</strong> (copying the current batch into one folder
+with prefixed filenames like <code>typ01_*.png</code> for interactive Option-A labeling) is an
+operator workflow used when staging PNGs for review — it is <strong>not</strong> implemented by
+either retired app. If you adopt it, stage PNGs by stable prefix yourself; don't dump
+absolute paths.</p>
+</blockquote>
+</div>
+</body>
+</html>

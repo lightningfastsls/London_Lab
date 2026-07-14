@@ -1,0 +1,852 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Code Deadweight Audit — 2026-06-08</title><style>
+body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;color:#1e293b;max-width:1180px;margin:0 auto;padding:28px;background:#f8fafc}
+h1{font-size:1.7rem;margin-bottom:.2rem}
+h2{font-size:1.25rem;margin-top:2rem;border-bottom:2px solid #e2e8f0;padding-bottom:.3rem}
+h3{font-size:1.02rem;margin-top:1.3rem}
+code{background:#eef2ff;padding:1px 5px;border-radius:4px;font-size:.85em}
+table{border-collapse:collapse;width:100%;margin:.6rem 0;font-size:.85rem;background:#fff}
+th{background:#1e293b;color:#fff;text-align:left;padding:7px 9px;font-size:.78rem}
+td{border-bottom:1px solid #e2e8f0;padding:7px 9px;vertical-align:top}
+tr:nth-child(even){background:#f1f5f9}
+.kpi{display:inline-block;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 18px;margin:5px 8px 5px 0;text-align:center;min-width:108px}
+.kpi .n{font-size:1.7rem;font-weight:800;display:block}
+.kpi .l{font-size:.72rem;color:#64748b;text-transform:uppercase;letter-spacing:.03em}
+.callout{border-left:5px solid;padding:12px 16px;margin:14px 0;border-radius:0 8px 8px 0}
+.danger{background:#fef2f2;border-color:#dc2626}
+.ok{background:#f0fdf4;border-color:#16a34a}
+.warn{background:#fffbeb;border-color:#d97706}
+.info{background:#eff6ff;border-color:#3b82f6}
+details{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin:6px 0}
+summary{cursor:pointer;font-size:.9rem}
+.muted{color:#64748b;font-size:.85rem}
+ul{margin:.4rem 0}
+</style></head><body>
+
+<h1>Code Deadweight Audit</h1>
+<p class="muted">Generated 2026-06-08 · ultracode multi-agent Workflow (21 agents, 10 audit dimensions → synthesize → adversarial safety-critic) ·
+Safety net: <code>git tag pre-deadcode-audit-2026-06-08</code> @ <code>efb3c1b4</code> · <b>Nothing has been deleted.</b></p>
+
+<div class="callout info">
+<b>What this is.</b> A read-only, tiered, risk-ranked audit of <i>code</i> that may be dead, stale, duplicated, or unneeded —
+the successor to the 2026-06-08 data/clutter cleanup. Every "dead" claim was put through an <b>adversarial safety-critic</b>
+that tried to prove the file is actually reachable (subprocess, importlib, config refs, doc rerun-instructions, notebooks).
+<b>No file is removed by this report.</b> Removal is gated on per-tier human approval.
+</div>
+
+<h2>Headline</h2>
+<div>
+  <div class="kpi"><span class="n">148</span><span class="l">raw findings</span></div>
+  <div class="kpi"><span class="n">82</span><span class="l">deduped items</span></div>
+  <div class="kpi"><span class="n">64</span><span class="l">claims verified</span></div>
+  <div class="kpi"><span class="n" style="color:#dc2626">6</span><span class="l">confirmed dead</span></div>
+  <div class="kpi"><span class="n" style="color:#16a34a">16</span><span class="l">rescued (live!)</span></div>
+  <div class="kpi"><span class="n" style="color:#d97706">42</span><span class="l">needs decision</span></div>
+</div>
+
+<div class="callout ok">
+<b>The safety-critic earned its cost.</b> Of 64 dead/duplicate/stale claims, only <b>6 survived as truly dead</b>.
+<b>16 were rescued</b> — proven live by reachability paths a naive name-grep misses. The "154 scripts" headline
+overstates the deadweight badly: this is a lean tree where the real risk is <i>deleting live code</i>, not leftover cruft.
+</div>
+
+<h2>⚠ Two near-misses a naive cleanup would have gotten wrong</h2>
+
+<div class="callout danger">
+<b>1. <code>archive/</code> is NOT actually archived — live code imports it at runtime.</b>
+Three files under <code>archive/cleaning_legacy/</code> are imported and executed by LIVE git-tracked scripts
+(<code>render_v1_faithful_patches.py</code>, <code>render_vocalmat_gt_sample.py</code>) via <code>sys.path.insert</code> + import.
+Deleting <code>archive/</code> as "old" would break the VocalMat patch-rendering pipeline.
+<ul><li><code>archive/cleaning_legacy/stack1/src/classifier/cleaning_pipeline.py</code><br><span class='muted'>Archived but imported at runtime by live git-tracked render_v1_faithful_patches.py:78 (`from classifier.cleaning_pipeline import CleaningConfig, clean_spectrogram`) via sys.path.insert of stack1/src (lines 59-63). Only live caller outside a</span></li>
+<li><code>archive/cleaning_legacy/stack1/scripts/cnn_prepare_training_data.py</code><br><span class='muted'>Archived but imported at runtime by TWO live git-tracked scripts: render_v1_faithful_patches.py:87 (_PATCH_SIDE/_VOCALMAT_STFT_HOP/_spec_to_uint8_patch byte-fidelity constants) and render_vocalmat_style_patches.py (sys.path bootstrap lines </span></li>
+<li><code>archive/cleaning_legacy/stack3/src/features/spectrogram_filter.py</code><br><span class='muted'>Archived but imported and CALLED at runtime by live git-tracked render_vocalmat_gt_sample.py: ARCHIVE_SRC + sys.path.insert (lines 29-30), `from features.spectrogram_filter import FilterConfig, prefilter_spectrogram` (line 31), invoked line</span></li></ul>
+<b>Decision needed:</b> either promote these 3 back into the live tree (they are dependencies, not archive), or refactor the
+3 live scripts to stop importing from <code>archive/</code>. Do not delete <code>archive/cleaning_legacy/</code> until then.
+</div>
+
+<div class="callout danger">
+<b>2. A git worktree holds the ONLY copy of live analysis code.</b>
+<ul><li><code>.claude/worktrees/couple-vs-wild-analysis</code><br><span class='muted'>This worktree holds the ONLY copy of scripts/couple_vs_wild_analysis.py (589 lines, untracked &#x27;??&#x27; in this worktree, NOT in main tree — `find` confirms it exists nowhere else). The repo explicitly considers this script live KEEP: (a) docs/h</span></li></ul>
+<code>git worktree remove</code> on that worktree would permanently destroy a 589-line script that exists nowhere else
+(it is untracked and absent from <code>main</code>). This is precisely the dirty-worktree trap the handoff flagged.
+<b>Decision needed:</b> commit <code>scripts/couple_vs_wild_analysis.py</code> into <code>main</code> FIRST, then the worktree is safe to remove.
+</div>
+
+<h2>Tier 0 — Zero-risk (7)</h2>
+<p class="muted">Unreferenced one-off scripts + stale doc rows to update. The one <b>confirmed-dead</b> script here is the safest single removal in the repo.</p>
+<table>
+      <thead><tr><th>Path</th><th>Class</th><th>Critic verdict</th><th>Risk</th><th>Proposed action</th><th>Evidence</th></tr></thead>
+      <tbody><tr>
+      <td><code>scripts/migrate_schema_drift_2026_04_17.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fee2e2;color:#7f1d1d;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">CONFIRMED DEAD</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Archive to scripts/archive/ (completed one-shot migration). Only confident dead script in the audit.</td>
+      <td style="font-size:.78rem;color:#334155">Independently re-verified: whole-repo grep (excl .venv/worktrees) for the basename returns ONLY its own file — zero importers/subprocess/importlib/doc/config/MEMORY refs. Docstring + dated filename confirm a one-time 2026-04-17 migration of 13 drifted confidence values that already ran. No __main__ <br><span style="color:#475569"><b>critic:</b> Checked all vectors after independent re-verification. Whole-repo grep (excl .venv/.git/worktrees) for &#x27;migrate_schema_drift&#x27; returns ONLY the file itself — zero importers, zero subprocess/os.system string invocations, zero importlib/spec_from_file_location/__import__, zero .md/handoff/CLAUDE.md/REA</span></td>
+    </tr>
+<tr>
+      <td><code>docs/scripts-index.md</code></td>
+      <td>stale</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>Regenerate from scripts/ ground truth: drop the 7 Notion rows, ADD run_batch_detection.py as production pipeline, add experiments/ section + missing MATLAB. Doc</td>
+      <td style="font-size:.78rem;color:#334155">Re-verified: grep -c run_batch_detection.py = 0 (omits the CANONICAL production pipeline) and grep -c notion = 1 (still lists 7 deleted Notion scripts removed in commit a1a37b80). Also omits scripts/experiments/ (35) and 7 of 12 MATLAB scripts. Hand-maintained (no generator found).<br><span style="color:#475569"><b>critic:</b> REFUTED &#x27;unreachable&#x27; framing (claim is &#x27;stale&#x27;, not &#x27;dead&#x27;, and the doc IS live-referenced): README.md, docs/architecture/project-structure.md (line 45: &#x27;see docs/scripts-index.md&#x27;), .claude/rules/task-routing.md, and codex_context_briefing.md all reference it. It is a referenced index doc. SEPARAT</span></td>
+    </tr>
+<tr>
+      <td><code>docs/architecture/project-structure.md</code></td>
+      <td>stale</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Update count to 154 (+35 experiments); remove parts-finder/ + notion_notes/; add classifier/, postprocessing/, training/. Doc-update only.</td>
+      <td style="font-size:.78rem;color:#334155">Says scripts/ &#x27;~76 entry points&#x27; (actual 154); lists removed parts-finder/ and notion_notes/ at repo root; omits real src subpackages classifier/, postprocessing/ (LOCKED), training/.<br><span style="color:#475569"><b>critic:</b> REFUTED dead/removal: directly referenced by CLAUDE.md (&#x27;See docs/architecture/project-structure.md for the full directory tree&#x27;) and by REPO_CLEANUP_PLAN + dead-code-audit handoff. It is a live, CLAUDE.md-canonical doc. Staleness CLAIM verified TRUE: line 45 says scripts/ &#x27;~76 entry points&#x27; (actual</span></td>
+    </tr>
+<tr>
+      <td><code>docs/codex_index.md</code></td>
+      <td>stale</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>Repoint the VQ-VAE link to an existing doc (docs/human/vqvae-deep-dive.md or a VQ-VAE handoff) or drop it; replace PowerShell block with .venv/bin/python. Doc-u</td>
+      <td style="font-size:.78rem;color:#334155">Links removed docs/plans/vq_vae_transformer_plan.md (gone, not renamed); uses Windows PowerShell .venv\Scripts paths README says to ignore (env is POSIX).<br><span style="color:#475569"><b>critic:</b> REFUTED removal: referenced by AGENTS.md and multiple handoffs (codex_context_briefing.md, knowledge-activation-briefing.md, presentation-assets-plan.md). Live agent-facing index. Staleness CLAIM verified TRUE: line 47 links docs/plans/vq_vae_transformer_plan.md which is confirmed GONE (ls = GONE, n</span></td>
+    </tr>
+<tr>
+      <td><code>archive/cleaning_legacy/README.md</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Narrow the README claim to &#x27;not imported by the PRODUCTION detection pipeline; still imported by scripts/experiments/{render_v1_faithful_patches,render_vocalmat</td>
+      <td style="font-size:.78rem;color:#334155">Re-verified false claim: README says archived code is &#x27;no longer imported by any live code path&#x27;, but scripts/experiments/render_v1_faithful_patches.py (line 71) and render_vocalmat_gt_sample.py (line 29) bootstrap archive/cleaning_legacy/stack1 + stack3 onto sys.path and import archived symbols at <br><span style="color:#475569"><b>critic:</b> REFUTED the README&#x27;s own correctness claim AND confirmed runtime reachability of the archived code it describes: scripts/experiments/render_v1_faithful_patches.py lines 59-78 insert archive/cleaning_legacy/stack1/{src,scripts} onto sys.path and at runtime execute &#x27;from classifier.cleaning_pipeline i</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/REFACTORING_SUMMARY.md</code></td>
+      <td>stale</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive alongside the param_lab package or move to docs/historical/. Doc-only.</td>
+      <td style="font-size:.78rem;color:#334155">Documents the app_legacy-&gt;ui/ refactor and instructs launching via the now-tombstoned scripts/usv_parameter_lab.py; describes only dead code overtaken by full Streamlit deprecation.<br><span style="color:#475569"><b>critic:</b> Found live references: docs/scripts-index.md, docs/REPO_CLEANUP_PLAN, and dead-code-audit handoff reference it; it sits inside the live src/usv_spectrogram/param_lab/ package. Staleness CLAIM verified TRUE: line 86 instructs &#x27;.venv\Scripts\streamlit.exe run scripts/usv_parameter_lab.py&#x27;, but scripts</span></td>
+    </tr>
+<tr>
+      <td><code>README.md</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Optional low-priority: refresh &#x27;~1584 tests&#x27; via pytest --collect-only. No removed-code reference.</td>
+      <td style="font-size:.78rem;color:#334155">Structure section verified accurate (154 scripts, no parts-finder/notion_notes). Only soft drift: &#x27;~1584 tests&#x27; approximate vs ~1740 test defs (norecursedirs excludes tests/archive so counts legitimately differ; &#x27;~&#x27; is hedged).</td>
+    </tr></tbody></table>
+
+<h2>Tier 1 — Consolidate duplicates (2)</h2>
+<table>
+      <thead><tr><th>Path</th><th>Class</th><th>Critic verdict</th><th>Risk</th><th>Proposed action</th><th>Evidence</th></tr></thead>
+      <tbody><tr>
+      <td><code>scripts/run_app_safe.py</code></td>
+      <td>duplicate</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Consolidate into scripts/run_app.py (delete run_app_safe.py; if the version print is wanted, add it to run_app.py). Update scripts-index.md L88.</td>
+      <td style="font-size:.78rem;color:#334155">Re-verified body: functionally identical to canonical scripts/run_app.py (add src to path -&gt; import torch before PyQt6 -&gt; usv_spectrogram.app.main.main); only diff is one print(torch.__version__). scripts-index.md claims it &#x27;catches import errors&#x27; but there is NO try/except — the stated distinction <br><span style="color:#475569"><b>critic:</b> Confirmed near-duplicate of canonical scripts/run_app.py: both add src to sys.path, import torch BEFORE PyQt6, then &#x27;from usv_spectrogram.app.main import main&#x27; under __main__. Only diff is one extra print(f&#x27;Loaded PyTorch {torch.__version__}&#x27;). VERIFIED scripts-index&#x27;s distinction is FALSE — there i</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/run_app.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>keep (canonical app launcher).</td>
+      <td style="font-size:.78rem;color:#334155">Canonical PyQt6 launcher (README, run-app skill, scripts-index; 19 inbound refs). The consolidation target for run_app_safe.py.</td>
+    </tr></tbody></table>
+
+<h2>Tier 2 — Needs confirmation (65)</h2>
+<p class="muted">The bulk of the audit. Read the <b>critic verdict</b> column: green = leave alone (live), red = confirmed dead,
+amber = your decision. The Streamlit <code>param_lab/</code> subsystem and the 18 worktrees dominate this tier.</p>
+<table>
+      <thead><tr><th>Path</th><th>Class</th><th>Critic verdict</th><th>Risk</th><th>Proposed action</th><th>Evidence</th></tr></thead>
+      <tbody><tr>
+      <td><code>src/usv_spectrogram/param_lab/app.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fee2e2;color:#7f1d1d;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">CONFIRMED DEAD</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Archive whole param_lab/ Streamlit subsystem as a unit; its smoke test travels to tests/archive/.</td>
+      <td style="font-size:.78rem;color:#334155">run() sys.exit(1) BEFORE any Streamlit body (lines marked &#x27;# unreachable&#x27;); launcher scripts/usv_parameter_lab.py is an os._exit(1) tombstone. Only importer is tests/test_param_lab_imports.py. Streamlit retired (PyQt6 canonical).<br><span style="color:#475569"><b>critic:</b> Tried to refute via: (a) direct imports — only importer outside the closed dead graph is tests/test_param_lab_imports.py:8 (import-only assertion); (b) subprocess/string launch — only launcher scripts/usv_parameter_lab.py calls os._exit(1) at import time (line 32), and run() itself sys.exit(1) at ap</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/app_legacy.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fee2e2;color:#7f1d1d;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">CONFIRMED DEAD</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Archive with param_lab subsystem.</td>
+      <td style="font-size:.78rem;color:#334155">662-LOC monolith; run() sys.exit(1) before body (&#x27;unreachable: legacy implementation preserved&#x27;); ZERO importers tree-wide. Superseded by ui/ split.<br><span style="color:#475569"><b>critic:</b> ZERO importers tree-wide in any .py (no test imports it either). run() sys.exit(1) before body. Only references are REFACTORING_SUMMARY.md, docs/historical/PARAMETER_LAB_REFACTORING.md, and the dead-code audit handoff — all documentation calling it &#x27;preserved for reference&#x27;. No subprocess, importlib</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/explain.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fee2e2;color:#7f1d1d;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">CONFIRMED DEAD</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive with param_lab; optionally copy explanation strings into PyQt tooltips first.</td>
+      <td style="font-size:.78rem;color:#334155">parameter_explanations() static markdown; imported only by app_legacy (dead) + ui/main_content (dead). No live importer.<br><span style="color:#475569"><b>critic:</b> parameter_explanations() imported only by ui/main_content.py:12 (part of the dead app.py graph) and app_legacy.py:18 (dead, zero importers). No live runtime path: app.py exits before render_main_content runs, and its only launcher is an os._exit tombstone. test_param_lab_imports.py:56 references ren</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/heuristic_detect.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Salvage detect_candidates/summarize_candidates into PyQt (carry test_param_lab_heuristic.py) OR archive per handoff §4 decision.</td>
+      <td style="font-size:.78rem;color:#334155">Framework-agnostic (numpy+scipy). Imported only by app_legacy (dead) + ui/main_content (dead) + test_param_lab_heuristic.py. Predecessor handoff §4 flags it as a SALVAGE-into-PyQt candidate (quick heuristic overlay), distinct from the CNN pipeline.<br><span style="color:#475569"><b>critic:</b> No live runtime importer: only ui/main_content.py:13 (dead graph) and app_legacy.py:19 (dead); tests/test_param_lab_heuristic.py:16 is import+behavior test. Did NOT find any subprocess/importlib/config/ipynb path. Reason for needs_human (not confirmed_dead): framework-agnostic numpy/scipy module exp</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/metrics.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Salvage compute_metrics into PyQt (carry test_metrics.py) OR archive — but FIRST resolve the labeling_app.py importer (it re-imports this and touches LOCKED con</td>
+      <td style="font-size:.78rem;color:#334155">Framework-agnostic numpy. Imported by app_legacy (dead) + ui/main_content (dead) + labeling/labeling_app.py (deprecated-but-functional, touches LOCKED ExtractionConfig) + test_metrics.py. No PyQt importer. Handoff §4 salvage candidate.<br><span style="color:#475569"><b>critic:</b> CLAIM PREMISE PARTLY FALSE: labeling/labeling_app.py does NOT import param_lab.metrics (rg over labeling_app.py for &#x27;metrics|param_lab&#x27; returns zero hits), and labeling_app&#x27;s own launcher scripts/usv_labeling_tool.py is itself an os._exit(1) tombstone (line 33) — so that &#x27;live&#x27; importer does not exi</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/sweep.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Salvage run_sweep into a PyQt action or standalone scripts/ utility, then archive.</td>
+      <td style="font-size:.78rem;color:#334155">Framework-agnostic (io_wav/render_tiles/spectrogram/utils+metrics). Imported only by app_legacy + ui/main_content (both dead). Handoff §4 salvage candidate (config sweep -&gt; PNG/report).<br><span style="color:#475569"><b>critic:</b> run_sweep imported only by ui/main_content.py:26 (dead graph) and app_legacy.py:25 (dead). No test, no subprocess, no importlib, no config, no ipynb reference found. Runtime-dead. needs_human (not confirmed_dead): framework-agnostic (io_wav/render_tiles/spectrogram/metrics) and explicitly listed as </span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/plotting.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fee2e2;color:#7f1d1d;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">CONFIRMED DEAD</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive with param_lab (optional: reuse plot_difference for a PyQt diff view).</td>
+      <td style="font-size:.78rem;color:#334155">Matplotlib plot_spectrogram/plot_difference; imported only by ui/main_content (dead) + smoke test. Modest salvage value (diff view).<br><span style="color:#475569"><b>critic:</b> plot_spectrogram/plot_difference imported only by ui/main_content.py:19 (dead graph, app.py exits before it runs and its launcher is an os._exit tombstone). tests/test_param_lab_imports.py:14 references it import-only. app_legacy.py defines its own copies (lines 63/121) rather than importing this mo</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/state.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive with param_lab (pure helpers trivially re-derivable in PyQt if needed).</td>
+      <td style="font-size:.78rem;color:#334155">Streamlit-coupled (@st.cache_data); imported only by ui/main_content + ui/sidebar (dead) + smoke test. Low salvage value.<br><span style="color:#475569"><b>critic:</b> Live import path exists: tests/test_param_lab_imports.py:21 imports compute_segment_spectrogram/config_from_controls/parse_sweep_values/read_wav_info/stft_cache_key from param_lab.state, and sidebar.py:10 + main_content.py:20 import it. Tests are SPEC per binding constraints; the test is live (not a</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/ui/components.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive with param_lab.</td>
+      <td style="font-size:.78rem;color:#334155">Streamlit-bound widget; imported only within dead param_lab chain + smoke test. Not a PyQt salvage candidate.<br><span style="color:#475569"><b>critic:</b> Live import: tests/test_param_lab_imports.py:37 imports WINDOW_OPTIONS + render_parameter_controls; sidebar.py:11 imports render_parameter_controls. Test is live SPEC and asserts these are callable — removal breaks it. No other vector found (no entry_points, no CI, no importlib). Exercised by live t</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/ui/sidebar.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive with param_lab.</td>
+      <td style="font-size:.78rem;color:#334155">render_sidebar imported only by app.py (dead) + smoke test.<br><span style="color:#475569"><b>critic:</b> Live import: tests/test_param_lab_imports.py:47 imports render_sidebar and asserts callable; also imported by the (dead) app.py:14 and re-imports state+components. Test is live SPEC. No runtime entrypoint reaches it (app.py run() sys.exit(1) before render_sidebar; usv_parameter_lab.py os._exit(1) at</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/ui/main_content.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive with param_lab.</td>
+      <td style="font-size:.78rem;color:#334155">render_main_content imported only by app.py (dead) + smoke test; pulls in explain/heuristic_detect/metrics/plotting/state/sweep.<br><span style="color:#475569"><b>critic:</b> Live import: tests/test_param_lab_imports.py:53 imports render_diff_view/render_main_content/render_parameter_explanations/render_spectrogram_panel/render_sweep_export and asserts callable. Also imports explain/heuristic_detect/metrics/plotting/state/sweep (lines 12-26). Test is live SPEC. Runtime e</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/__init__.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive with package.</td>
+      <td style="font-size:.78rem;color:#334155">One-line docstring package marker for the dead param_lab package.<br><span style="color:#475569"><b>critic:</b> One-line docstring package marker (no re-exports). But it is the package __init__ for param_lab, which tests/test_param_lab_imports.py, test_metrics.py, and test_param_lab_heuristic.py all import sub-modules from — the package must be importable for those live tests. Removing it breaks the live test</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/param_lab/ui/__init__.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#16a34a;font-weight:700;font-size:.78rem">none</span></td>
+      <td>Archive with package.</td>
+      <td style="font-size:.78rem;color:#334155">Package marker for the dead ui/ subpackage.<br><span style="color:#475569"><b>critic:</b> Package marker (docstring only) for ui/ subpackage. tests/test_param_lab_imports.py:37,47,53 import from usv_spectrogram.param_lab.ui.components/sidebar/main_content — these require the ui package __init__ to exist. Live test dependency; not confirmed_dead.</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/usv_parameter_lab.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Archive — pure tombstone. Confirm (documented historical entry point).</td>
+      <td style="font-size:.78rem;color:#334155">TOMBSTONE: os._exit(1) at import (line 32) after deprecation banner; never renders UI. Resurrection pointer is param_lab/app.py (itself dead). No .py importer; doc refs are historical/descriptive only.<br><span style="color:#475569"><b>critic:</b> Confirmed tombstone at runtime: os._exit(1) at line 32 before any UI; no .py file imports it; pyproject has no console_scripts; no CI/sh/yaml invokes `streamlit run scripts/usv_parameter_lab.py` (only docs/historical/archive .md files reference it). HOWEVER it remains the documented canonical launch</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/usv_labeling_tool.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fee2e2;color:#7f1d1d;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">CONFIRMED DEAD</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Archive — pure tombstone. Confirm with user (documented historical entry point).</td>
+      <td style="font-size:.78rem;color:#334155">TOMBSTONE: os._exit(1) at import (line 33) after deprecation banner; labeling is now in the PyQt app. No .py importer; doc refs descriptive only. Resurrection pointer is labeling/labeling_app.py.<br><span style="color:#475569"><b>critic:</b> Checked all vectors. (a) No live .py importer. (b) No subprocess/os.system string invocation (grep empty). (c) No importlib/spec_from_file_location/__import__. (d) Refs in ROADMAP.md:82, docs/scripts-index.md, docs/LABELING_TOOL_QUICKSTART.md, docs/historical/*, tasks/* are all descriptive/launch-in</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/labeling/labeling_app.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep — LOCKED ExtractionConfig dependency. Flag that retiring param_lab/metrics.py must account for this importer. Confirm labeling-workflow status before any c</td>
+      <td style="font-size:.78rem;color:#334155">Its only launcher (usv_labeling_tool.py) is a tombstone, but the app is still-functional and imports LOCKED ExtractionConfig + Candidate + SpectrogramExtractor, and imports param_lab/metrics.compute_metrics. LOCKED-config dependency =&gt; never classify dead.</td>
+    </tr>
+<tr>
+      <td><code>scripts/noise_review_tool.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>keep pending confirmation the noise-review workflow is retired; do NOT archive the launched app (LOCKED config).</td>
+      <td style="font-size:.78rem;color:#334155">NOT a tombstone — STILL RUNS: subprocess-launches `streamlit run labeling/noise_review_app.py`, which imports LOCKED ExtractionConfig. This is the &#x27;one Streamlit tool still runs&#x27; case.<br><span style="color:#475569"><b>critic:</b> REFUTES &#x27;tombstone&#x27; framing AND is production-adjacent. This script STILL RUNS: main() does subprocess.call([sys.executable, &#x27;-m&#x27;,&#x27;streamlit&#x27;,&#x27;run&#x27;, src/usv_spectrogram/labeling/noise_review_app.py]). noise_review_app.py EXISTS and at line 21 imports the LOCKED ExtractionConfig (from usv_spectrogram</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/labeling/noise_review_app.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep — LOCKED ExtractionConfig dependency; retire only after user confirms the workflow is dead (then handle launcher + app together).</td>
+      <td style="font-size:.78rem;color:#334155">Live Streamlit app launched by the working scripts/noise_review_tool.py; imports LOCKED ExtractionConfig + Candidate + SpectrogramExtractor; reads/writes noise_reviews.csv.</td>
+    </tr>
+<tr>
+      <td><code>tests/test_param_lab_imports.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Move to tests/archive/ IF/WHEN param_lab is archived; otherwise keep. Never delete (targets exist).</td>
+      <td style="font-size:.78rem;color:#334155">SPEC import-smoke test for param_lab.app/plotting/state/ui; targets still exist tree-wide so NOT stale, but it exercises only dead code.</td>
+    </tr>
+<tr>
+      <td><code>tests/test_param_lab_heuristic.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>keep and carry with heuristic_detect during salvage; tests/archive/ only if heuristic logic is dropped entirely.</td>
+      <td style="font-size:.78rem;color:#334155">SPEC test for heuristic_detect; target exists. Should travel WITH heuristic_detect when salvaged into PyQt.</td>
+    </tr>
+<tr>
+      <td><code>tests/test_metrics.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>keep and carry with metrics during salvage; never delete (target exists).</td>
+      <td style="font-size:.78rem;color:#334155">SPEC test for compute_metrics; target exists and metrics.py is a salvage candidate.</td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/stft_stream.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Archive module + its test together (or remove both). Needs-confirmation-grade because it is a documented original-architecture module — confirm no manual reuse.</td>
+      <td style="font-size:.78rem;color:#334155">Only importer is tests/test_streaming_equivalence.py; no live script/src import. Other refs are docs + a 2026-01 task brief. Original streaming-STFT feature superseded by the in-memory PyQt/batch pipeline. Imports _stft_core (live elsewhere) so removing stft_stream doesn&#x27;t affect _stft_core.<br><span style="color:#475569"><b>critic:</b> Sole live importer is tests/test_streaming_equivalence.py:21 (from usv_spectrogram.stft_stream import stream_wav_spectrogram_db) — a live, git-tracked, non-archived test. Confirmed NOT re-exported by src/usv_spectrogram/__init__.py or labeling/__init__.py (grep empty). No script/subprocess/importlib</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/storage_zarr.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Archive module + test together; confirm no external Zarr stores are read by hand. If archived, re-evaluate the zarr dependency.</td>
+      <td style="font-size:.78rem;color:#334155">Only importer is tests/test_storage_zarr.py; no live script/src import. Original Zarr incremental-storage feature never wired into production. (NOTE: zarr the dependency stays valid only via this module — if archived, zarr in requirements.txt becomes a removal candidate too.)<br><span style="color:#475569"><b>critic:</b> Sole live importer is tests/test_storage_zarr.py:19 (from usv_spectrogram.storage_zarr import ...), a live git-tracked test that also does `import zarr`. Confirmed NOT re-exported in any package __init__ (grep empty). No script/subprocess/importlib/entry-point/notebook references; all other hits are</span></td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/classification/cross_population.py</code></td>
+      <td>dead</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>Confirm the worktree analysis script is abandoned, then archive module + test; if analysis may resume, keep (and the T3 split proposal applies).</td>
+      <td style="font-size:.78rem;color:#334155">Importers are ONLY tests/test_cross_population.py, the package __init__ eager re-export, and its own docstring. Live scripts import classification submodules DIRECTLY (not the package), so the eager __init__ pulls cross_population only under tests. Its driver (couple_vs_wild_analysis.py) lives only <br><span style="color:#475569"><b>critic:</b> REFUTED. The claim asserts the eager __init__ re-export pulls cross_population &#x27;only under tests&#x27; because live scripts import submodules directly — this is factually wrong about Python import semantics. src/usv_spectrogram/classification/__init__.py lines 42-61 UNCONDITIONALLY execute `from .cross_p</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/train_lab_classifier.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>RESTORE preferred: git mv archive/cleaning_legacy/stack1/scripts/train_lab_classifier.py scripts/ — re-greens 13+ live tests and unbreaks render_confusion_matri</td>
+      <td style="font-size:.78rem;color:#334155">Re-verified MISSING from live scripts/ (ls -&gt; No such file) while present at archive/cleaning_legacy/stack1/scripts/. CONFIRMED two live git-tracked tests (tests/classifier/test_train_lab_classifier.py + _adversarial.py) subprocess-invoke this exact path -&gt; they FAIL (not skip), and live scripts/ren<br><span style="color:#475569"><b>critic:</b> File is genuinely MISSING from live scripts/ (ls -&gt; No such file) and present only at archive/cleaning_legacy/stack1/scripts/train_lab_classifier.py. BUT it is production-adjacent (the training CLI for the PRODUCTION lab classifier results/lab_classifier_v1/best.pt per docs/modules/lab-classifier-v1</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/render_confusion_matrix.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>Resolve together with train_lab_classifier.py restoration (restoring the CLI fixes this import). Do not remove independently.</td>
+      <td style="font-size:.78rem;color:#334155">Live git-tracked (2026-05-26); line 31 imports from train_lab_classifier (missing in live tree) -&gt; broken import. Referenced in handoffs + results/lab_classifier_v1/eval_report.md as the confusion-matrix back-fill helper.<br><span style="color:#475569"><b>critic:</b> Live, git-tracked (May 26). Not dead-confirmable: it is referenced as the confusion-matrix back-fill helper in docs/handoffs/2026-05-25_module-18.4-dann-orchestrator.md:105, 2026-05-26_module-18.4-dann-resume.md:136, and results/lab_classifier_v1/eval_report.md:106. Its own line-31 import (`from tra</span></td>
+    </tr>
+<tr>
+      <td><code>tests/classifier/test_train_lab_classifier.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep (test = spec). Restore the script to re-green; only archive to tests/archive/ if owner confirms training path permanently dead. Per test-as-spec rule prefe</td>
+      <td style="font-size:.78rem;color:#334155">Live git-tracked test-architect SPEC. subprocess-invokes the missing scripts/train_lab_classifier.py -&gt; --help non-zero + py_compile of nonexistent path -&gt; FAILS not skips. Docstring: &#x27;Create scripts/train_lab_classifier.py before running Module 18.3.&#x27; Underlying classifier library src/usv_spectrogr<br><span style="color:#475569"><b>critic:</b> Live + git-tracked. No module-level pytest skip and no conftest skip guard (grep for pytestmark/importorskip/collect_ignore returned nothing; tests/conftest.py has no train_lab_classifier handling). _SCRIPT = REPO_ROOT/scripts/train_lab_classifier.py (line 68) is invoked via subprocess --help (line </span></td>
+    </tr>
+<tr>
+      <td><code>tests/classifier/test_train_lab_classifier_adversarial.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>Same as test_train_lab_classifier.py: restore the script to re-green, or (only on owner confirmation) move both test files to tests/archive/.</td>
+      <td style="font-size:.78rem;color:#334155">Live git-tracked test-hardener suite (8 tests); same _SCRIPT = scripts/train_lab_classifier.py subprocess pattern vs missing file -&gt; failing not skipping.<br><span style="color:#475569"><b>critic:</b> Live + git-tracked test-hardener suite (8 tests). Same _SCRIPT = REPO_ROOT/scripts/train_lab_classifier.py (line 34) subprocess pattern (line 40). The only pytest.skip (line 200) is CUDA-host-conditional, NOT a missing-script guard. With the script missing tree-wide the --help subprocess tests FAIL.</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/experiments/render_v1_faithful_patches.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep the render. Resolve archive-coherence: correct the README (done as separate T0 item) OR promote the archived Stack-1 modules back to live src/. Do NOT dele</td>
+      <td style="font-size:.78rem;color:#334155">Re-verified live + git-tracked: bootstraps archive/cleaning_legacy/stack1 onto sys.path (line 71) and imports archived Stack-1 cleaning_pipeline + cnn_prepare_training_data, monkey-patching them back onto live usv_spectrogram.classifier. Documented in DATA_REGENERATION_RECIPES.md and transitively im<br><span style="color:#475569"><b>critic:</b> Live + git-tracked. Imported by scripts/experiments/render_human_view_patches.py:34 (`from render_v1_faithful_patches import _extract_patch, CleaningConfig`) — the live human shape-labeling substrate (MEMORY feedback_shape_labeling_substrate). Documented runnable CLI in docs/DATA_REGENERATION_RECIPE</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/experiments/render_vocalmat_gt_sample.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep. Resolve archive-coherence (README correction or promote Stack-3 spectrogram_filter back to live). Do NOT delete.</td>
+      <td style="font-size:.78rem;color:#334155">Re-verified live + git-tracked: line 29 sets ARCHIVE_SRC = archive/cleaning_legacy/stack3/src then imports + calls features.spectrogram_filter.prefilter_spectrogram (archived Stack-3 SIS denoiser). Distinct function (OSF GT download + raw-vs-denoised validation gallery), not a duplicate of the patch<br><span style="color:#475569"><b>critic:</b> Live + git-tracked self-standing CLI (no external .py/.md/.json/.ipynb caller — grep returned only its own file). Reachable as a documented invokable tool: lines 29-31 set ARCHIVE_SRC=archive/cleaning_legacy/stack3/src and import/call archived Stack-3 prefilter_spectrogram + FilterConfig (lines 118,</span></td>
+    </tr>
+<tr>
+      <td><code>archive/cleaning_legacy/stack1/src/classifier/cleaning_pipeline.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>Keep in place. Resolve README inconsistency; owner decides whether to promote back to src/usv_spectrogram/classifier/.</td>
+      <td style="font-size:.78rem;color:#334155">Archived module imported at runtime by live render_v1_faithful_patches.py (CleaningConfig + clean_spectrogram). Not in production pipeline but reached by the committed+documented experiment tier — so not fully &#x27;archived&#x27; in the no-live-caller sense.<br><span style="color:#475569"><b>critic:</b> Archived but imported at runtime by live git-tracked render_v1_faithful_patches.py:78 (`from classifier.cleaning_pipeline import CleaningConfig, clean_spectrogram`) via sys.path.insert of stack1/src (lines 59-63). Only live caller outside archive/. Contradicts archive/cleaning_legacy/README.md claim</span></td>
+    </tr>
+<tr>
+      <td><code>archive/cleaning_legacy/stack1/scripts/cnn_prepare_training_data.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>Keep. Folds into the same README-correction / promotion decision as render_v1_faithful_patches.py.</td>
+      <td style="font-size:.78rem;color:#334155">Archived Stack-1 module imported at runtime by live render_v1_faithful_patches.py (_PATCH_SIDE, _VOCALMAT_STFT_HOP, _spec_to_uint8_patch) — the byte-fidelity render constants.<br><span style="color:#475569"><b>critic:</b> Archived but imported at runtime by TWO live git-tracked scripts: render_v1_faithful_patches.py:87 (_PATCH_SIDE/_VOCALMAT_STFT_HOP/_spec_to_uint8_patch byte-fidelity constants) and render_vocalmat_style_patches.py (sys.path bootstrap lines 103-104 + _spec_to_uint8_patch references lines 47,55-56,146</span></td>
+    </tr>
+<tr>
+      <td><code>archive/cleaning_legacy/stack3/src/features/spectrogram_filter.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>Keep. Correct the README&#x27;s blanket no-live-caller claim; owner decides on promotion back to live src/.</td>
+      <td style="font-size:.78rem;color:#334155">Archived Stack-3 module whose prefilter_spectrogram + FilterConfig are imported and called by live render_vocalmat_gt_sample.py. No live src/ re-export exists.<br><span style="color:#475569"><b>critic:</b> Archived but imported and CALLED at runtime by live git-tracked render_vocalmat_gt_sample.py: ARCHIVE_SRC + sys.path.insert (lines 29-30), `from features.spectrogram_filter import FilterConfig, prefilter_spectrogram` (line 31), invoked lines 118,129. Confirmed NO live src/usv_spectrogram/features/sp</span></td>
+    </tr>
+<tr>
+      <td><code>tests/test_analyze_detection_confidence.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>KEEP (binding spec). Flag scripts/analyze_detection_confidence.py for implementation (ROADMAP module 17.9). Do NOT archive or weaken expectations.</td>
+      <td style="font-size:.78rem;color:#334155">29 failures, all FileNotFoundError loading scripts/analyze_detection_confidence.py via spec_from_file_location. Target ABSENT tree-wide but documented as PLANNED: ROADMAP_ANALYSIS.md:165 &#x27;(NEW)&#x27; + IMPLEMENTATION_PROGRESS.md:208 &#x27;pre-impl for module 17.9 not yet built&#x27;. Test-architect spec ahead of c<br><span style="color:#475569"><b>critic:</b> Could not refute the gap. Target scripts/analyze_detection_confidence.py is ABSENT tree-wide (checked find + grep across .py/.md/.json/.yaml/.ipynb/.toml). All references are documentation/spec: IMPLEMENTATION_PROGRESS.md, docs/plans/ROADMAP_ANALYSIS.md, .claude/agents/detection-validator.md, .codex</span></td>
+    </tr>
+<tr>
+      <td><code>tests/test_sis_benchmark.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>KEEP (binding spec). Flag scripts/run_sis_benchmark.py for implementation. Do NOT archive.</td>
+      <td style="font-size:.78rem;color:#334155">12 failures: subprocess of scripts/run_sis_benchmark.py exits code 2 (file absent). Only run_sis_baselines.py exists. Docstring: &#x27;written by test-architect BEFORE implementation.&#x27; Aggregator script specced but never built = real gap.<br><span style="color:#475569"><b>critic:</b> Could not refute the gap. Subprocess target scripts/run_sis_benchmark.py is ABSENT (find returned only scripts/run_sis_baselines.py). ROADMAP_SIS_BENCHMARK.md references BOTH: line 78 &#x27;scripts/run_sis_baselines.py (NEW) — Driver&#x27; (exists) AND line 857 &#x27;scripts/run_sis_benchmark.py (NEW) — Driver&#x27; (a</span></td>
+    </tr>
+<tr>
+      <td><code>tests/classifier/test_train_lab_classifier_pre_impl_gap</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>See tests/classifier/test_train_lab_classifier.py and _adversarial.py items. Restore scripts/train_lab_classifier.py CLI (wraps existing src classifier library)</td>
+      <td style="font-size:.78rem;color:#334155">DUPLICATE-OF-PATH NOTE: the train_lab_classifier test failures are already captured under the merged tests/classifier/test_train_lab_classifier.py and _adversarial.py items above (archive-coherence + stale-tests). This placeholder records that the stale-tests dimension also flagged them as Module 18<br><span style="color:#475569"><b>critic:</b> This is not a real filesystem path — it is an explicit DUPLICATE/cross-reference note (the &#x27;why&#x27; states &#x27;No separate file&#x27;). It records that the stale-tests dimension also flagged the train_lab_classifier failures already captured under the merged tests/classifier/test_train_lab_classifier.py items </span></td>
+    </tr>
+<tr>
+      <td><code>tests/test_analyze_acoustic_features.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>KEEP expectations untouched. Human decision: reconcile the script to the spec API, OR (if the passing sibling is sufficient coverage) MOVE this superseded spec </td>
+      <td style="font-size:.78rem;color:#334155">31 failures: AttributeError/TypeError for API the pre-impl spec expected (compute_correlation_matrix, plot_pca, run_pca(n_components=...)). TARGET EXISTS: scripts/analyze_acoustic_features.py present but implemented (8cbe136d) with a DIFFERENT API than the spec (6f3cccfe) — e.g. plot_correlation_mat<br><span style="color:#475569"><b>critic:</b> REFUTED &#x27;stale-target&#x27; — target scripts/analyze_acoustic_features.py EXISTS. The failures are a test-vs-built-API mismatch, not a missing target. Spec (test) expects run_pca(df, n_components=5) and plot_pca_scatter and compute_correlation_matrix (tests/test_analyze_acoustic_features.py:268-512,309);</span></td>
+    </tr>
+<tr>
+      <td><code>tests/test_audit_corpus.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>KEEP. Out of scope for removal (target exists). Treat as code-vs-test discussion if revisited; never silently edit the expected value.</td>
+      <td style="font-size:.78rem;color:#334155">1 failure (CLI exit-code expectation). Target scripts/audit_corpus.py EXISTS. Behavioral assertion mismatch vs a live target, NOT a missing/changed target — outside the stale-test dimension.</td>
+    </tr>
+<tr>
+      <td><code>tests/test_hysteresis_hardened.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>KEEP. LOCKED production target — never archive/modify. Behavioral failure discussed separately, not via test-expectation edits.</td>
+      <td style="font-size:.78rem;color:#334155">1 failure (assert 0 == 1). Target imports usv_spectrogram.postprocessing.hysteresis = LOCKED production. Target exists; behavioral mismatch, not a missing target.</td>
+    </tr>
+<tr>
+      <td><code>requirements.txt</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Remove notion-client from requirements.txt after confirming no external/manual ops script uses it. It is a top-level SDK, not a transitive dep.</td>
+      <td style="font-size:.78rem;color:#334155">Declares notion-client (import notion_client) with ZERO references tree-wide (only the English word &#x27;notion&#x27; in a docstring). anthropic was CLEARED (used in monitor.py). All other root deps imported.<br><span style="color:#475569"><b>critic:</b> Could not find a live Python use. notion-client declared at requirements.txt:17; grep for &#x27;import notion_client&#x27;/&#x27;from notion_client&#x27;/&#x27;notion_client.&#x27; across *.py/*.ipynb (excluding worktrees) = ZERO hits. All references are docs/roadmaps: NOTION_NOTES_ROADMAP.md:79,142,163,167 describes a PLANNED n</span></td>
+    </tr>
+<tr>
+      <td><code>usv_language/requirements.txt</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Remove wandb OR keep as explicitly-optional (matching the &#x27;# hmmlearn (optional)&#x27; style). Confirm with author whether wandb is still on the roadmap.</td>
+      <td style="font-size:.78rem;color:#334155">Declares wandb&gt;=0.15 with no Python import anywhere; only a dormant config flag use_wandb:false in training.yaml + ROADMAP/plan prose. Planned-but-unimplemented logging backend.<br><span style="color:#475569"><b>critic:</b> Could not find a live import. wandb&gt;=0.15 declared in usv_language/requirements.txt; grep &#x27;import wandb&#x27;/&#x27;wandb.&#x27; across all *.py = ZERO hits. Only reference is the dormant config flag in usv_language/configs/training.yaml (use_wandb, set false) plus roadmap/plan prose. Planned logging backend, unim</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/reminder-2026-05-19-html-reports</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>Do NOT remove yet. Human confirms whether commit faaf6fe6 is obsolete vs main&#x27;s reconciled ops/reminders.md; if obsolete, git worktree remove + branch delete.</td>
+      <td style="font-size:.78rem;color:#334155">The ONLY UNMERGED worktree: branch absent from `git branch --merged main`; 1 commit ahead/97 behind; git cherry shows unmerged commit faaf6fe6 (adds one line to ops/reminders.md) NOT applied to main. Dirty=1 file (settings.local.json, machine-local). main later ran 55013813 &#x27;reconcile stale reminder<br><span style="color:#475569"><b>critic:</b> Confirmed UNMERGED but possibly superseded — cannot rule out either way. git branch --merged main does NOT list worktree-reminder-2026-05-19-html-reports; git merge-base --is-ancestor faaf6fe6 main = NOT ancestor; git cherry main shows &#x27;+ faaf6fe6&#x27; (unmerged). Commit faaf6fe6 adds 1 line to ops/remi</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/contour-masked-vae-pipeline</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 49 dirty changes disposable (high file count — review first).</td>
+      <td style="font-size:.78rem;color:#334155">branch merged into main=YES; dirty=49 files (largest); last commit 2026-04-17 (~7wk stale).<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree (git worktree list -&gt; [worktree-contour-masked-vae-pipeline]). The authoritative repo-housekeeping triage docs/handoffs/2026-05-27_repo-housekeeping-triage.md line 60 explicitly marks it &#x27;KEEP -- sole copy&#x27; (16G results/masked_patches/ incl 13G patches.npz + VAE .pt + 20</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/parallel-analytics-h06</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 37 dirty changes disposable (review first).</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=37 files (2nd largest); last commit 2026-05-11.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Triage doc line 62 marks &#x27;KEEP -- sole copy&#x27; (results/ 216M q1-q9 + ~14 scripts). Dirty files include classified_detections_lab_131204_clean.csv -- the CANONICAL lab working set named in MEMORY (project_lab_data_pipeline.md, 40,787 rows) -- plus data/corpus_facts/lab_13</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/vae-pytorch-pivot</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 22 dirty changes disposable (historically significant — review first).</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=22 files; last commit 2026-04-17. Per MEMORY both VAE training runs DONE on this worktree; verdict captured in comparison memo elsewhere.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Triage doc line 61 &#x27;KEEP -- sole copy&#x27; (results/vae_5970_lab/ 1.3G + 10 memos + image-VAE code). Referenced by tracked doc docs/modules/cnn-cleaning-validation.md line 5 (&#x27;VAE diagnostic from the vae-pytorch-pivot worktree&#x27;). MEMORY (project_vae_training_pipeline / proj</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/deepsqueak-classification-audit</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 13 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=13 files; last commit 2026-04-17.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Triage doc line 64 &#x27;KEEP&#x27; (results/ds_audit_2026-05-17/ + 7 scripts + 4 handoffs). Referenced in docs/handoffs/2026-05-17_deepsqueak_classification_audit.md line 162. 13 dirty files are sole-copy audit artifacts. Not safe to remove. needs_human.</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/cnn-progression-slide</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 8 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=8 files; last commit 2026-05-22.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Triage doc line 66 &#x27;KEEP&#x27; (5 slide-builder scripts). docs/handoffs/2026-05-26_cnn-improvement-slide-handoff.md lines 18,75 reference branch worktree-cnn-progression-slide and note scripts also copied to main -- so PARTIALLY backed up, but 8 dirty files remain unverified</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/deepsqueak-vae-wrapper</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 7 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=7 files; last commit 2026-04-17.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Triage doc line 65 &#x27;KEEP&#x27; (MATLAB VAE-train wrappers + runbook). 7 dirty files are sole-copy MATLAB wrappers feeding the contour-VAE pipeline (Stack A per MEMORY project_cleaning_stacks_three_distinct). Not abandonment cruft. needs_human.</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/lab-noise-triage</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 7 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=7 files; last commit 2026-04-17.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Triage doc line 67 &#x27;KEEP&#x27; (6 cluster-verdict/soft-notch scripts). Confirmed dirty files: scripts/analyze_lab_cluster{0,1,2}_verdicts.py, analyze_lab_noise_verdicts.py, filter_softnotch_short_detections.py, render_lab_noise_review_gallery.py -- sole copies of the lab clu</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/contour-vae-denoised-retrain</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 6 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=6 files; last commit 2026-05-22.<br><span style="color:#475569"><b>critic:</b> LIVE git worktree (appears in `git worktree list` as [worktree-contour-vae-denoised-retrain]). Holds untracked content that exists nowhere else in git: docs/handoffs/2026-05-26_denoised-retrain-result-and-next.md, scripts/eval_denoised_vae_shape.py, scripts/mass_apply_denoised_patches.py, scripts/re</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/traditional-taxonomy-gallery</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 4 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=4 files; last commit 2026-04-17.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Untracked unique content: HANDOFF_contour_masked_vae_orchestrator.md, results/traditional_gallery/, scripts/generate_traditional_gallery.py (confirmed absent from main). Removal = data loss + git metadata corruption if done via rm. Human decision required.</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/feature-viewer-html</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 3 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=3 files; last commit 2026-04-17.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Untracked unique scripts absent from main: scripts/build_feature_extraction_viewer.py, scripts/cnn_feature_extraction_viewer.py. Branch merged but these files never committed. Defer to human.</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/lab-cnn-classifier-plan</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 3 dirty changes disposable (note: the train CLI restoration should come from archive/, not this worktre</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=3 files; last commit 2026-05-25 (most recent). Holds a byte-identical copy of the archived train_lab_classifier.py.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree, most recent commit 1dce087c 2026-05-25 (feat lab-cnn Module 18.3 GPU results). Production-adjacent: lab classifier v1 is PRODUCTION per MEMORY. Untracked results/lab_classifier_v1/training.log present. Holds scripts/train_lab_classifier.py (also archived at archive/clea</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/syllable-splitter</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 3 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=3 files; last commit 2026-04-17.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Holds UNTRACKED source under the LOCKED postprocessing/ package path: src/usv_spectrogram/postprocessing/cnn_prob_splitter.py and syllable_splitter.py — confirmed NOT present in main&#x27;s postprocessing/ dir, i.e. unique uncommitted code touching a LOCKED path. Strong reas</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/vocalmat-classifier-test</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 3 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=3 files; last commit 2026-04-17. Per MEMORY VocalMat transfer deferred; port lives here.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. MEMORY (project_vocalmat_transfer_test) states VocalMat transfer is DEFERRED with the port living in this worktree. Untracked unique content absent from main: scripts/vocalmat_test/, results/vocalmat_test/. Explicitly flagged as not-dead future work =&gt; human decision.</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/corpus-skill</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 2 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=2 files; last commit 2026-04-17. Name references corpus but is a worktree checkout — removing it does NOT affect the LOCKED src/usv_spectrogram/corpus.py in main.<br><span style="color:#475569"><b>critic:</b> LIVE registered git worktree. Claim&#x27;s reasoning is correct that removal does NOT affect the LOCKED src/usv_spectrogram/corpus.py (verified: corpus.py is in main, unaffected). HOWEVER the worktree holds untracked unique content .claude/skills/corpus/ (main only has .claude/skills/corpus/references, n</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/couple-vs-wild-analysis</code></td>
+      <td>stale</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 2 dirty changes disposable (and the cross_population deadness decision).</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=2 files; last commit 2026-05-22. Holds the cross_population.py driver (couple_vs_wild_analysis.py) not present in scripts/.<br><span style="color:#475569"><b>critic:</b> This worktree holds the ONLY copy of scripts/couple_vs_wild_analysis.py (589 lines, untracked &#x27;??&#x27; in this worktree, NOT in main tree — `find` confirms it exists nowhere else). The repo explicitly considers this script live KEEP: (a) docs/handoffs/2026-05-27_repo-housekeeping-triage.md:68 table row </span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/mickey-monday-briefing</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 2 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=2 files; last commit 2026-05-22.<br><span style="color:#475569"><b>critic:</b> Branch worktree-mickey-monday-briefing IS merged into main (git branch --merged main lists it) and last commit is a shared merge (6b7a03d2, 2026-05-22), consistent with the &#x27;stale&#x27; claim. However it carries untracked content not in main: docs/handoffs/2026-05-25_mickey_cleaning_pipeline_and_vae_brie</span></td>
+    </tr>
+<tr>
+      <td><code>.claude/worktrees/mickey-report-readability-v2</code></td>
+      <td>stale</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>git worktree remove + branch delete AFTER human confirms 2 dirty changes disposable.</td>
+      <td style="font-size:.78rem;color:#334155">branch merged=YES; dirty=2 files; last commit 2026-04-17.<br><span style="color:#475569"><b>critic:</b> Branch worktree-mickey-report-readability-v2 IS merged into main (git branch --merged main lists it), last commit 737af4b1 dated 2026-04-17 — consistent with &#x27;stale&#x27;. But it has an untracked reports/ directory and a modified .claude/settings.local.json. The untracked reports/ may contain generated a</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/experiments/shape_invariance/methods/m3_persistence.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>do NOT delete; confirm against the rig copy — encoder module whose runner is plausibly rig-only.</td>
+      <td style="font-size:.78rem;color:#334155">Never imported in-repo; appears ONLY as a string literal in CONTRACT.md save_features(&#x27;m3_persistence&#x27;,...). Sibling encoders m2a/m2b/m5 each have a runner that imports them; m3 has no in-repo runner. MEMORY notes rig-only M-scripts, so the m3 runner likely lives on the rig.<br><span style="color:#475569"><b>critic:</b> The &#x27;no in-repo runner&#x27; premise is false: m3_persistence.py IS its own runner — it has def _main() at line 294 and `if __name__ == &quot;__main__&quot;:` at line 604, and _main calls io.save_features(&#x27;m3_persistence&#x27;,...) (line 398) and &#x27;m3_persistence_dir&#x27; (line 425). It produced results/shape_invariance/m3_</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/experiments/shape_invariance/methods/m4_rqa.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>do NOT delete; confirm against the rig copy.</td>
+      <td style="font-size:.78rem;color:#334155">Never imported in-repo; not even named by module in CONTRACT.md. RQA method-bake-off encoder with no in-repo runner while m2a/m2b/m5 have runners. Runner plausibly rig-only.<br><span style="color:#475569"><b>critic:</b> Same refutation: m4_rqa.py is self-running — def _main() at line 270 and `if __name__ == &quot;__main__&quot;:` at line 541, with io.save_features(&#x27;m4_rqa&#x27;,...) at line 372 (and a _dir variant at 430). It produced results/shape_invariance/m4_rqa_result.json and has __pycache__/m4_rqa.cpython-312.pyc (executed</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/rerender_detection_pngs.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>confirm with user before any move — data-mutating maintenance utility; keep if PNG re-render is an ongoing need.</td>
+      <td style="font-size:.78rem;color:#334155">Zero inbound refs in repo/docs/MEMORY, BUT docstring describes a DESTRUCTIVE in-place op (&#x27;overwrites the PNG with properly normalized rendering&#x27; walking detection dirs); provides --dry-run. Could be a recurring maintenance tool, not a pure one-off.<br><span style="color:#475569"><b>critic:</b> After checking all vectors (imports, subprocess strings, importlib, .md/handoff/CLAUDE.md, config/JSON/yaml, docstring CLI, .ipynb): the ONLY references are self-references inside its own docstring CLI examples (lines 9,12,15). Zero inbound references anywhere else in repo/docs/MEMORY. BUT the docst</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/train_cnn_finetune.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#fef3c7;color:#78350f;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">NEEDS DECISION</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>keep or confirm — model-training utility with re-use value despite no current caller.</td>
+      <td style="font-size:.78rem;color:#334155">Zero inbound refs (repo/docs/MEMORY), but it is the &#x27;Path C&#x27; fine-tune trainer (lab runs 4 &amp; 5) — a model-building tool a successor might reuse (--init-from, freeze modes, lower LR). Higher-value than analysis one-offs.<br><span style="color:#475569"><b>critic:</b> All vectors checked: the only reference is a self-reference in its own docstring CLI example (line 13). Zero inbound refs in repo/docs/MEMORY. BUT this is a model-BUILDING tool — the &#x27;Path C&#x27; fine-tune trainer for lab classifier (--init-from, freeze modes, lower LR), production-adjacent to the CNN t</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/build_unified_lab_summary.py</code></td>
+      <td>needs-confirmation</td>
+      <td><span style="background:#d1fae5;color:#064e3b;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">RESCUED — LIVE</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>Treat as a BATCH: confirm with user which campaigns (lab-summary, spectral-flatness trio, 3452-review, lab-finetune, 2dpca, VocalMat) are closed, then archive t</td>
+      <td style="font-size:.78rem;color:#334155">Representative of ~20 zero-in-repo-hit standalone analysis/render CLI tools (build_unified_lab_summary, render_lab_review_pngs, generate_*_pngs, profile/sweep/test spectral_flatness, plot_eyeball_picks, render_paired_comparison_subtraction, compare_lab_finetune_variants, merge_lab_finetune_v1_csvs, <br><span style="color:#475569"><b>critic:</b> This script is the SOLE PRODUCER of merged_events_full.parquet and merged_summary_full.parquet (declared in its docstring lines 16-19). Those exact outputs are: (1) registered as canonical inputs &#x27;events_input&#x27;/&#x27;summary_input&#x27; in data/corpus_facts/lab_131204.json:8-9 (a canonical corpus-facts artifa</span></td>
+    </tr>
+<tr>
+      <td><code>scripts/cnn_wholefile_roc.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>keep as shared module — deleting it breaks native_first + faithful_ablation. Representative of the CNN-ROC cluster (native_first, faithful_ablation, expanded, c</td>
+      <td style="font-size:.78rem;color:#334155">REACHABILITY TRAP confirmed: dynamically imported via importlib.spec_from_file_location(&#x27;wfroc&#x27;,...) by BOTH cnn_wholefile_roc_native_first.py and cnn_first_roc_faithful_ablation.py. A name-grep importer scan would miss it. Its standalone PNG is superseded but the file is a LIVE shared library.</td>
+    </tr></tbody></table>
+
+<h2>Tier 3 — Oversized files (refactor proposals, NOT deletions) (8)</h2>
+<p class="muted">Propose-only. LOCKED production files appear here marked <i>keep</i>; only 4 are genuine refactor candidates.</p>
+<table>
+      <thead><tr><th>Path</th><th>Class</th><th>Critic verdict</th><th>Risk</th><th>Proposed action</th><th>Evidence</th></tr></thead>
+      <tbody><tr>
+      <td><code>scripts/run_batch_detection.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep (LOCKED production pipeline). No action. Note: add it to docs/scripts-index.md (separate T0 doc-update).</td>
+      <td style="font-size:.78rem;color:#334155">LOCKED production. CLAUDE.md mandates this exact 5-flag script as THE canonical batch-detection entrypoint; 79 inbound refs; grep verified it imports NOTHING from archive/. (Placed in T3/keep per binding constraint — never any other tier.)</td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/corpus.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep (LOCKED). No action.</td>
+      <td style="font-size:.78rem;color:#334155">LOCKED production — canonical sample-rate/STFT constants enforced in code; ~229 refs.</td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/app/core/sliding_inference.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep (LOCKED). No action.</td>
+      <td style="font-size:.78rem;color:#334155">LOCKED production detection pipeline (PyQt app + CNN sliding inference); imported by main_window; imports models.cnn_classifier.</td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/postprocessing/__init__.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#dc2626;font-weight:700;font-size:.78rem">high</span></td>
+      <td>keep (LOCKED). No action.</td>
+      <td style="font-size:.78rem;color:#334155">LOCKED production — entire postprocessing package (hysteresis, fp_filter, calibration, triage, event_features, event_scoring, batch_output, normalization) is the run_batch_detection pipeline; verified clean of archive coupling.</td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/app/main_window.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>PROPOSE-ONLY refactor: split into app/inference_worker.py, slim main_window.py shell, ui_builder mixin, threshold_controller mixin, detection_io mixin. Do NOT a</td>
+      <td style="font-size:.78rem;color:#334155">1823 LOC, reachable via run-app skill; NOT LOCKED. Two top-level classes (InferenceWorker QThread + MainWindow with ~50 methods spanning UI construction, threshold/preset handling, WAV I/O, detection lifecycle, detection editing, persistence/export). Flagged in CLAUDE.md Large File Protocol.</td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/dataset/assembler.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#d97706;font-weight:700;font-size:.78rem">medium</span></td>
+      <td>PROPOSE-ONLY: split into dataset/assembly_config.py, candidate_generation.py, window_rendering.py, assembler.py (orchestration). Do NOT auto-refactor — verify w</td>
+      <td style="font-size:.78rem;color:#334155">1490 LOC; classes AssemblyConfig/AssemblyReport/DatasetAssembler (~28 methods: orchestration, candidate generation, window/PNG rendering, split/output). Touches CNN training-grid window geometry (ExtractionConfig-adjacent) so sensitive, though the file itself is NOT LOCKED.</td>
+    </tr>
+<tr>
+      <td><code>src/usv_spectrogram/classification/repertoire_stats.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>PROPOSE-ONLY: split into repertoire_stats_tests.py, repertoire_plots.py, repertoire_stats.py (config + core + compare + entrypoints). Do NOT auto-refactor.</td>
+      <td style="font-size:.78rem;color:#334155">1142 LOC (CLAUDE.md Large File Protocol). RepertoireConfig + core stats + statistical tests (_permanova/_jsd/_chi_square) + comparison drivers + plotting + reporting. Analysis module, not LOCKED, low blast radius.</td>
+    </tr>
+<tr>
+      <td><code>usv_language/analysis/information_theory.py</code></td>
+      <td>keep</td>
+      <td><span style="background:#e5e7eb;color:#374151;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap">keep</span></td>
+      <td><span style="color:#65a30d;font-weight:700;font-size:.78rem">low</span></td>
+      <td>PROPOSE-ONLY: split into info_theory_results.py, zipf.py, entropy_mi.py, ngram_burstiness.py. Do NOT auto-refactor.</td>
+      <td style="font-size:.78rem;color:#334155">1092 LOC (CLAUDE.md Large File Protocol). 6 result dataclasses + math helpers + Zipf estimators + entropy/MI + n-gram + burstiness. Cohesive analysis module, not LOCKED.</td>
+    </tr></tbody></table>
+
+<h2>✅ Actionable now (pending your approval): 6 confirmed-dead files</h2>
+<p class="muted">These are the only items the safety-critic cleared for removal. Even these wait for your go-ahead, tier by tier.</p>
+<ul><li><code>scripts/migrate_schema_drift_2026_04_17.py</code> — <span class='muted'>Checked all vectors after independent re-verification. Whole-repo grep (excl .venv/.git/worktrees) for &#x27;migrate_schema_drift&#x27; returns ONLY the file itself — zero importers, zero subprocess/os.system s</span></li>
+<li><code>src/usv_spectrogram/param_lab/app.py</code> — <span class='muted'>Tried to refute via: (a) direct imports — only importer outside the closed dead graph is tests/test_param_lab_imports.py:8 (import-only assertion); (b) subprocess/string launch — only launcher scripts</span></li>
+<li><code>src/usv_spectrogram/param_lab/app_legacy.py</code> — <span class='muted'>ZERO importers tree-wide in any .py (no test imports it either). run() sys.exit(1) before body. Only references are REFACTORING_SUMMARY.md, docs/historical/PARAMETER_LAB_REFACTORING.md, and the dead-c</span></li>
+<li><code>src/usv_spectrogram/param_lab/explain.py</code> — <span class='muted'>parameter_explanations() imported only by ui/main_content.py:12 (part of the dead app.py graph) and app_legacy.py:18 (dead, zero importers). No live runtime path: app.py exits before render_main_conte</span></li>
+<li><code>src/usv_spectrogram/param_lab/plotting.py</code> — <span class='muted'>plot_spectrogram/plot_difference imported only by ui/main_content.py:19 (dead graph, app.py exits before it runs and its launcher is an os._exit tombstone). tests/test_param_lab_imports.py:14 referenc</span></li>
+<li><code>scripts/usv_labeling_tool.py</code> — <span class='muted'>Checked all vectors. (a) No live .py importer. (b) No subprocess/os.system string invocation (grep empty). (c) No importlib/spec_from_file_location/__import__. (d) Refs in ROADMAP.md:82, docs/scripts-</span></li></ul>
+<p><b>Note on <code>param_lab/</code>:</b> 4 of the 6 confirmed-dead are the Streamlit <code>param_lab</code> graph
+(<code>app.py</code>, <code>app_legacy.py</code>, <code>explain.py</code>, <code>plotting.py</code>). The rest of that package
+(<code>metrics.py</code>, <code>sweep.py</code>, <code>heuristic_detect.py</code>, <code>ui/</code>, <code>state.py</code>) is
+<b>needs-decision</b> — the handoff suggests salvaging <code>metrics/sweep/heuristic_detect</code> into the PyQt app before
+archiving the rest. Recommend deciding the <i>whole subsystem</i> as one unit rather than piecemeal.</p>
+
+<h2>🤔 Needs your decision (42)</h2>
+<details><summary>Show all 42 needs-decision items</summary><ul><li><code>archive/cleaning_legacy/README.md</code> — <span class='muted'>REFUTED the README&#x27;s own correctness claim AND confirmed runtime reachability of the archived code it describes: scripts/experiments/render_v1_faithful_patches.</span></li>
+<li><code>scripts/run_app_safe.py</code> — <span class='muted'>Confirmed near-duplicate of canonical scripts/run_app.py: both add src to sys.path, import torch BEFORE PyQt6, then &#x27;from usv_spectrogram.app.main import main&#x27; </span></li>
+<li><code>src/usv_spectrogram/param_lab/heuristic_detect.py</code> — <span class='muted'>No live runtime importer: only ui/main_content.py:13 (dead graph) and app_legacy.py:19 (dead); tests/test_param_lab_heuristic.py:16 is import+behavior test. Did</span></li>
+<li><code>src/usv_spectrogram/param_lab/metrics.py</code> — <span class='muted'>CLAIM PREMISE PARTLY FALSE: labeling/labeling_app.py does NOT import param_lab.metrics (rg over labeling_app.py for &#x27;metrics|param_lab&#x27; returns zero hits), and </span></li>
+<li><code>src/usv_spectrogram/param_lab/sweep.py</code> — <span class='muted'>run_sweep imported only by ui/main_content.py:26 (dead graph) and app_legacy.py:25 (dead). No test, no subprocess, no importlib, no config, no ipynb reference f</span></li>
+<li><code>src/usv_spectrogram/param_lab/state.py</code> — <span class='muted'>Live import path exists: tests/test_param_lab_imports.py:21 imports compute_segment_spectrogram/config_from_controls/parse_sweep_values/read_wav_info/stft_cache</span></li>
+<li><code>src/usv_spectrogram/param_lab/ui/components.py</code> — <span class='muted'>Live import: tests/test_param_lab_imports.py:37 imports WINDOW_OPTIONS + render_parameter_controls; sidebar.py:11 imports render_parameter_controls. Test is liv</span></li>
+<li><code>src/usv_spectrogram/param_lab/ui/sidebar.py</code> — <span class='muted'>Live import: tests/test_param_lab_imports.py:47 imports render_sidebar and asserts callable; also imported by the (dead) app.py:14 and re-imports state+componen</span></li>
+<li><code>src/usv_spectrogram/param_lab/ui/main_content.py</code> — <span class='muted'>Live import: tests/test_param_lab_imports.py:53 imports render_diff_view/render_main_content/render_parameter_explanations/render_spectrogram_panel/render_sweep</span></li>
+<li><code>src/usv_spectrogram/param_lab/__init__.py</code> — <span class='muted'>One-line docstring package marker (no re-exports). But it is the package __init__ for param_lab, which tests/test_param_lab_imports.py, test_metrics.py, and tes</span></li>
+<li><code>src/usv_spectrogram/param_lab/ui/__init__.py</code> — <span class='muted'>Package marker (docstring only) for ui/ subpackage. tests/test_param_lab_imports.py:37,47,53 import from usv_spectrogram.param_lab.ui.components/sidebar/main_co</span></li>
+<li><code>scripts/usv_parameter_lab.py</code> — <span class='muted'>Confirmed tombstone at runtime: os._exit(1) at line 32 before any UI; no .py file imports it; pyproject has no console_scripts; no CI/sh/yaml invokes `streamlit</span></li>
+<li><code>scripts/noise_review_tool.py</code> — <span class='muted'>REFUTES &#x27;tombstone&#x27; framing AND is production-adjacent. This script STILL RUNS: main() does subprocess.call([sys.executable, &#x27;-m&#x27;,&#x27;streamlit&#x27;,&#x27;run&#x27;, src/usv_spe</span></li>
+<li><code>src/usv_spectrogram/stft_stream.py</code> — <span class='muted'>Sole live importer is tests/test_streaming_equivalence.py:21 (from usv_spectrogram.stft_stream import stream_wav_spectrogram_db) — a live, git-tracked, non-arch</span></li>
+<li><code>src/usv_spectrogram/storage_zarr.py</code> — <span class='muted'>Sole live importer is tests/test_storage_zarr.py:19 (from usv_spectrogram.storage_zarr import ...), a live git-tracked test that also does `import zarr`. Confir</span></li>
+<li><code>scripts/train_lab_classifier.py</code> — <span class='muted'>File is genuinely MISSING from live scripts/ (ls -&gt; No such file) and present only at archive/cleaning_legacy/stack1/scripts/train_lab_classifier.py. BUT it is </span></li>
+<li><code>scripts/render_confusion_matrix.py</code> — <span class='muted'>Live, git-tracked (May 26). Not dead-confirmable: it is referenced as the confusion-matrix back-fill helper in docs/handoffs/2026-05-25_module-18.4-dann-orchest</span></li>
+<li><code>tests/test_analyze_detection_confidence.py</code> — <span class='muted'>Could not refute the gap. Target scripts/analyze_detection_confidence.py is ABSENT tree-wide (checked find + grep across .py/.md/.json/.yaml/.ipynb/.toml). All </span></li>
+<li><code>tests/test_sis_benchmark.py</code> — <span class='muted'>Could not refute the gap. Subprocess target scripts/run_sis_benchmark.py is ABSENT (find returned only scripts/run_sis_baselines.py). ROADMAP_SIS_BENCHMARK.md r</span></li>
+<li><code>tests/classifier/test_train_lab_classifier_pre_impl_gap</code> — <span class='muted'>This is not a real filesystem path — it is an explicit DUPLICATE/cross-reference note (the &#x27;why&#x27; states &#x27;No separate file&#x27;). It records that the stale-tests dim</span></li>
+<li><code>tests/test_analyze_acoustic_features.py</code> — <span class='muted'>REFUTED &#x27;stale-target&#x27; — target scripts/analyze_acoustic_features.py EXISTS. The failures are a test-vs-built-API mismatch, not a missing target. Spec (test) ex</span></li>
+<li><code>requirements.txt</code> — <span class='muted'>Could not find a live Python use. notion-client declared at requirements.txt:17; grep for &#x27;import notion_client&#x27;/&#x27;from notion_client&#x27;/&#x27;notion_client.&#x27; across *.</span></li>
+<li><code>usv_language/requirements.txt</code> — <span class='muted'>Could not find a live import. wandb&gt;=0.15 declared in usv_language/requirements.txt; grep &#x27;import wandb&#x27;/&#x27;wandb.&#x27; across all *.py = ZERO hits. Only reference is</span></li>
+<li><code>.claude/worktrees/reminder-2026-05-19-html-reports</code> — <span class='muted'>Confirmed UNMERGED but possibly superseded — cannot rule out either way. git branch --merged main does NOT list worktree-reminder-2026-05-19-html-reports; git m</span></li>
+<li><code>.claude/worktrees/contour-masked-vae-pipeline</code> — <span class='muted'>LIVE registered git worktree (git worktree list -&gt; [worktree-contour-masked-vae-pipeline]). The authoritative repo-housekeeping triage docs/handoffs/2026-05-27_</span></li>
+<li><code>.claude/worktrees/parallel-analytics-h06</code> — <span class='muted'>LIVE registered git worktree. Triage doc line 62 marks &#x27;KEEP -- sole copy&#x27; (results/ 216M q1-q9 + ~14 scripts). Dirty files include classified_detections_lab_13</span></li>
+<li><code>.claude/worktrees/vae-pytorch-pivot</code> — <span class='muted'>LIVE registered git worktree. Triage doc line 61 &#x27;KEEP -- sole copy&#x27; (results/vae_5970_lab/ 1.3G + 10 memos + image-VAE code). Referenced by tracked doc docs/mo</span></li>
+<li><code>.claude/worktrees/deepsqueak-classification-audit</code> — <span class='muted'>LIVE registered git worktree. Triage doc line 64 &#x27;KEEP&#x27; (results/ds_audit_2026-05-17/ + 7 scripts + 4 handoffs). Referenced in docs/handoffs/2026-05-17_deepsque</span></li>
+<li><code>.claude/worktrees/cnn-progression-slide</code> — <span class='muted'>LIVE registered git worktree. Triage doc line 66 &#x27;KEEP&#x27; (5 slide-builder scripts). docs/handoffs/2026-05-26_cnn-improvement-slide-handoff.md lines 18,75 referen</span></li>
+<li><code>.claude/worktrees/deepsqueak-vae-wrapper</code> — <span class='muted'>LIVE registered git worktree. Triage doc line 65 &#x27;KEEP&#x27; (MATLAB VAE-train wrappers + runbook). 7 dirty files are sole-copy MATLAB wrappers feeding the contour-V</span></li>
+<li><code>.claude/worktrees/lab-noise-triage</code> — <span class='muted'>LIVE registered git worktree. Triage doc line 67 &#x27;KEEP&#x27; (6 cluster-verdict/soft-notch scripts). Confirmed dirty files: scripts/analyze_lab_cluster{0,1,2}_verdic</span></li>
+<li><code>.claude/worktrees/contour-vae-denoised-retrain</code> — <span class='muted'>LIVE git worktree (appears in `git worktree list` as [worktree-contour-vae-denoised-retrain]). Holds untracked content that exists nowhere else in git: docs/han</span></li>
+<li><code>.claude/worktrees/traditional-taxonomy-gallery</code> — <span class='muted'>LIVE registered git worktree. Untracked unique content: HANDOFF_contour_masked_vae_orchestrator.md, results/traditional_gallery/, scripts/generate_traditional_g</span></li>
+<li><code>.claude/worktrees/feature-viewer-html</code> — <span class='muted'>LIVE registered git worktree. Untracked unique scripts absent from main: scripts/build_feature_extraction_viewer.py, scripts/cnn_feature_extraction_viewer.py. B</span></li>
+<li><code>.claude/worktrees/lab-cnn-classifier-plan</code> — <span class='muted'>LIVE registered git worktree, most recent commit 1dce087c 2026-05-25 (feat lab-cnn Module 18.3 GPU results). Production-adjacent: lab classifier v1 is PRODUCTIO</span></li>
+<li><code>.claude/worktrees/syllable-splitter</code> — <span class='muted'>LIVE registered git worktree. Holds UNTRACKED source under the LOCKED postprocessing/ package path: src/usv_spectrogram/postprocessing/cnn_prob_splitter.py and </span></li>
+<li><code>.claude/worktrees/vocalmat-classifier-test</code> — <span class='muted'>LIVE registered git worktree. MEMORY (project_vocalmat_transfer_test) states VocalMat transfer is DEFERRED with the port living in this worktree. Untracked uniq</span></li>
+<li><code>.claude/worktrees/corpus-skill</code> — <span class='muted'>LIVE registered git worktree. Claim&#x27;s reasoning is correct that removal does NOT affect the LOCKED src/usv_spectrogram/corpus.py (verified: corpus.py is in main</span></li>
+<li><code>.claude/worktrees/mickey-monday-briefing</code> — <span class='muted'>Branch worktree-mickey-monday-briefing IS merged into main (git branch --merged main lists it) and last commit is a shared merge (6b7a03d2, 2026-05-22), consist</span></li>
+<li><code>.claude/worktrees/mickey-report-readability-v2</code> — <span class='muted'>Branch worktree-mickey-report-readability-v2 IS merged into main (git branch --merged main lists it), last commit 737af4b1 dated 2026-04-17 — consistent with &#x27;s</span></li>
+<li><code>scripts/rerender_detection_pngs.py</code> — <span class='muted'>After checking all vectors (imports, subprocess strings, importlib, .md/handoff/CLAUDE.md, config/JSON/yaml, docstring CLI, .ipynb): the ONLY references are sel</span></li>
+<li><code>scripts/train_cnn_finetune.py</code> — <span class='muted'>All vectors checked: the only reference is a self-reference in its own docstring CLI example (line 13). Zero inbound refs in repo/docs/MEMORY. BUT this is a mod</span></li></ul></details>
+
+<h2>Recommended phased plan (each phase = one approval)</h2>
+<ol>
+<li><b>Phase A (T0, lowest risk):</b> archive <code>scripts/migrate_schema_drift_2026_04_17.py</code> (completed one-shot); update the 7 stale doc rows in <code>docs/scripts-index.md</code> / <code>project-structure.md</code> (these are <i>edits</i>, not deletions).</li>
+<li><b>Phase B (T1):</b> consolidate <code>run_app_safe.py</code> → <code>run_app.py</code> after confirming no divergent behavior.</li>
+<li><b>Phase C (param_lab subsystem decision):</b> decide salvage-then-archive vs archive-whole for the entire Streamlit <code>param_lab/</code> package + its 3 launcher tombstones, as one unit.</li>
+<li><b>Phase D (archive coherence — fix the dependency inversion):</b> promote the 3 runtime-imported <code>archive/cleaning_legacy/</code> files into the live tree (or de-import them). Structural fix, not a deletion.</li>
+<li><b>Phase E (worktrees):</b> commit the worktree-only script first; then remove merged/disposable worktrees one at a time after you confirm each one's dirty changes are disposable.</li>
+<li><b>Phase F (T3, optional):</b> the 4 oversized-file refactors — separate work, propose-only here.</li>
+</ol>
+<p class="muted">After each phase: stage by exact path (<code>git rm</code> for code, no <code>-r</code>; no <code>git add -A</code>),
+then confirm <code>pytest</code> still collects 1584 / 0 errors with no new failures vs baseline.</p>
+
+<h2>Appendix — per-dimension summaries</h2>
+<details><summary><b>UNREFERENCED SCRIPTS (scripts/*.py + scripts/experiments/ + scripts/labeling/)</b> — 32 findings</summary>
+        <p style="color:#334155;font-size:.86rem">Enumerated 205 .py files under scripts/ (154 top-level, 35 in experiments/, 1 in labeling/, plus 15 in experiments/shape_invariance/{,methods/}). For each I ran whole-repo reachability checks: (a) module imports, (b) subprocess/path-string mentions of the basename, (c) dynamic importlib/spec_from_file_location loading, (d) every .md/.html doc incl. CLAUDE.md, docs/scripts-index.md, handoffs/plans AND the out-of-repo user MEMORY.md, (e) json/yaml config via the same grep, (f) docstring CLI usage, (g) the 4 .ipynb notebooks (no script refs — only matplotlib noise). Findings: 18 top-level scripts have ZERO hits in repo, docs, AND MEMORY.md; 5 experiments scripts + 2 method modules (m3/m4) are likewise unreferenced (m3/m4 appear only as string labels in CONTRACT.md, never imported). I split these by confidence: the dated one-shot migration (migrate_schema_drift_2026_04_17.py, already executed) is the only confident &quot;dead&quot;; everything else is &quot;needs-confirmation&quot; because they are well-documented standalone CLI tools/analysis runners a successor could legitimately re-run, and the seed warned the inventory is a working scratchpad. Corrections to naive grep: reversal.py looked 0-hit but IS imported (from shape_invariance import reversal) — KEEP; 4 cnn_*/graphify scripts are 0-hit in-repo but explicitly named with rerun instructions in MEMORY.md — needs-confirmation not dead; ~20 experiment scripts that looked low-hit are each cited in handoff/plan docs — reachable. No LOCKED production file (run_batch_detection.py, sliding_inference.py, postprocessing/, corpus.py, models/hard_neg_retrain/*) is among the candidates. NOTE: seed audit&#x27;s notion/personal-KB scripts (find_course_55008.py etc.) are already deleted from the tree — confirmed gone. scripts/test_*.py are NOT pytest spec (testpaths=[&quot;tests&quot;] only) — they are standalone dev runners, so test-as-spec protection does not apply to them.</p></details>
+<details><summary><b>duplicate / near-duplicate code</b> — 21 findings</summary>
+        <p style="color:#334155;font-size:.86rem">Investigated all four named clusters plus adjacent ones. KEY FINDING: most &quot;near-dupe&quot; clusters are NOT duplicates — they are corrective lineages or experiment/render suites where each file has a documented distinct role, and several superficially-redundant files are actually shared libraries reached via importlib dynamic loading (the reachability!=grep trap). (1) CNN ROC cluster: cnn_wholefile_roc.py is dynamically imported (importlib.spec_from_file_location) by BOTH native_first and faithful_ablation as a shared module — so it is NOT removable despite its own PNG being a documented &quot;feeding artifact&quot;; native_first + faithful_ablation are corrective successors that fix the first-CNN feed (MEMORY project_cnn_auc_comparison_slide); expanded is a separate matched-vs-prod-at-scale test. All keep. (2) render_*_patches: the four scripts render four DIFFERENT substrates (human tight-crop / v1-faithful byte-identical oracle input / contour-masked vocalmat-style / OSF gt_sample download), each documented in DATA_REGENERATION_RECIPES.md as a live distinct artifact. NOT duplicates — all keep. (3) 2dpca: a 7-script adversarial-verification campaign around the canonical driver train_2dpca_classifier.py (parity, leakage, class-weight, resolution, UMAP, Olivetti benchmark), documented in 2026-06-02_2dpca_verification_handoff.md and MEMORY (VERIFIED CORRECT). NOT duplicates — all keep. (4) CNN slide generators: four distinct slides (metrics/composite/progression/growing) telling different parts of one story — distinct, keep. The ONE genuine near-duplicate found: run_app_safe.py is byte-for-byte equivalent to canonical run_app.py except for a print() line; scripts-index claims it &quot;catches import errors&quot; but the body has no try/except, so that distinction is false. NOTE: git timestamps are uniform (single bulk import commit 2026-06-08 13:17:38) so recency was derived from filesystem mtimes + doc refs + MEMORY, not git log.</p></details>
+<details><summary><b>Dead modules/functions in src/usv_spectrogram/ — reachability sweep from real entry points (scripts/run_batch_detection.py, scripts/run_app.py→app.main→MainWindow, train_* scripts, PyQt app, Streamlit apps)</b> — 21 findings</summary>
+        <p style="color:#334155;font-size:.86rem">Swept all ~75 src/usv_spectrogram modules for reachability from real entry points. The vast majority are live: the PyQt app (app/main.py → main_window.py pulls in every app/core + app/widgets module), models/* (eager __init__ re-exports + sliding_inference + many CNN scripts), detection/*, dataset/* (assembler + assemble_training_data.py), classification/* (each submodule has a dedicated live script: export_raven_tables, import_deepsqueak_results, analyze_repertoire, run_sis_baselines), classifier/* (lab VocalMat v1 inference via evaluate_held_out_844.py + package __init__), clustering/* (clustering_* scripts), lmt/* (run_event_triggered_analysis.py + eager __init__), and render_tiles.py (make_spectrogram.py, in README). LOCKED production (corpus.py, sliding_inference.py, postprocessing/*, detection/extraction_config.py) confirmed reachable and marked keep/high.
+
+DEAD findings cluster in two retired subsystems plus three orphaned modules: (1) The entire Streamlit param_lab/ package (12 modules) is reachable ONLY through two launchers that were converted to os._exit(1) tombstones (scripts/usv_parameter_lab.py) and a self-disabling run() (param_lab/app.py exits before any UI). No live script or src module imports any param_lab.* module; only the package&#x27;s own tests do. NOTE: heuristic_detect.py / metrics.py / sweep.py are flagged in the predecessor handoff as salvage-into-PyQt candidates, so &#x27;archive&#x27; not &#x27;delete&#x27;. (2) labeling/labeling_app.py — its only launcher (scripts/usv_labeling_tool.py) is also a tombstone; dead. Its sibling noise_review_app.py is NOT dead (scripts/noise_review_tool.py is a real working subprocess streamlit launcher). (3) Three top-level/classification orphans imported only by their own tests / package __init__: stft_stream.py, storage_zarr.py, classification/cross_population.py — these are the original streaming-STFT+Zarr feature (superseded by the PyQt/batch pipeline) and the lab-vs-wild cross-population analysis (whose driver script lives only in a worktree, not in scripts/).
+
+Every &#x27;dead&#x27; claim was checked for: direct imports, subprocess/string launchers, importlib, doc/README/scripts-index references, __main__ blocks, and config refs. Ambiguous cases (package __init__ eager-imports, salvage candidates, documented original architecture) are marked needs-confirmation, not dead.</p></details>
+<details><summary><b>RETIRED STREAMLIT param_lab</b> — 22 findings</summary>
+        <p style="color:#334155;font-size:.86rem">The Streamlit Parameter Lab and its launchers are deprecated in favor of the canonical PyQt6 desktop app (scripts/run_app.py -&gt; usv_spectrogram.app.main). Reachability verified across imports, subprocess strings, docs, and tests. Two of the three launchers are true tombstones (os._exit(1) at import); the third (noise_review_tool.py) STILL RUNS — it subprocess-launches a functional Streamlit app (labeling/noise_review_app.py) that imports the LOCKED ExtractionConfig, so it is out of pure-archive scope. Inside param_lab/, both entry points (app.py and app_legacy.py) have sys.exit(1) BEFORE the Streamlit body, making the entire UI unreachable dead code preserved for reference. The reusable logic modules (metrics.py, sweep.py, heuristic_detect.py, plotting.py, explain.py) are framework-agnostic and consumed only by the dead UI + their own tests — genuine salvage candidates to fold into the PyQt app before archiving. state.py is Streamlit-coupled (@st.cache_data) and not worth lifting as-is. Three param_lab test files are SPEC: their import targets still exist tree-wide, so they should travel WITH the code (keep if salvaged, move to tests/archive/ if the package is archived), never be deleted. NOTE: labeling/labeling_app.py and noise_review_app.py are NOT tombstoned — they are still-functional Streamlit apps importing the LOCKED ExtractionConfig and are only adjacent to this dimension, not part of the dead param_lab package.</p></details>
+<details><summary><b>Stale tests beyond tests/archive/ — runtime failures vs missing/changed targets</b> — 7 findings</summary>
+        <p style="color:#334155;font-size:.86rem">Re-verified the live suite (not the seed): all 96 collected test files now COLLECT cleanly (the seed&#x27;s 19 collection-error files are already in tests/archive/). The &quot;~82 failing&quot; are RUNTIME failures, and they concentrate in exactly 7 files (82 failures: 31+29+12+4+4+1+1). I triaged each by locating its target tree-wide (excluding .claude/worktrees/, which are independent checkouts, and .venv/). CRITICAL TRIAGE RESULT: none of these are classic &quot;stale test against a deleted target&quot; — they split into two groups. (1) PRE-IMPLEMENTATION TEST-AS-SPEC where the target script was never built in the main tree and is documented as planned/not-yet-built: analyze_detection_confidence.py (ROADMAP_ANALYSIS module 17.9; IMPLEMENTATION_PROGRESS.md line 208 says &#x27;pre-impl for module 17.9 not yet built&#x27;), run_sis_benchmark.py (test docstring &#x27;written by test-architect BEFORE implementation&#x27;; only run_sis_baselines.py exists), and scripts/train_lab_classifier.py (Module 18.3 CLI; the classifier LIBRARY src/usv_spectrogram/classifier/ exists and its sibling tests pass, but the thin CLI wrapper script was never created). These are REAL CODE GAPS, not stale tests — per the test-as-spec rule they must NOT be deleted; flag for restore/build. (2) PRE-IMPLEMENTATION SPEC THAT DIVERGED FROM WHAT WAS BUILT: test_analyze_acoustic_features.py — its target scripts/analyze_acoustic_features.py DOES exist but was implemented (commit 8cbe136d) with a different API than the pre-impl test expected (commit 6f3cccfe); e.g. test wants compute_correlation_matrix/plot_pca/run_pca(n_components=...), script has plot_correlation_matrix/run_pca(features_scaled,...). A separate sibling test_acoustic_feature_analysis.py targets the SAME script and PASSES, so the script&#x27;s real behavior is already covered. Two further single-test failures (test_audit_corpus, test_hysteresis_hardened) hit targets that EXIST (scripts/audit_corpus.py present; postprocessing/hysteresis.py is LOCKED production) and are behavioral assertion mismatches, strictly outside this dimension — classified keep. Because every failing target is either (a) a documented planned-but-unbuilt script or (b) a present script, ZERO files qualify as &#x27;stale/dead&#x27;. No deletions proposed; nothing modified.</p></details>
+<details><summary><b>Docs referencing removed/renamed code &amp; drifted counts</b> — 6 findings</summary>
+        <p style="color:#334155;font-size:.86rem">Audited docs/scripts-index.md, README.md, docs/architecture/project-structure.md, docs/codex_index.md against the live tree. Root cause for most drift: commit a1a37b80 &#x27;remove notion_notes subsystem&#x27; deleted 7 Notion CLI scripts and the notion_notes/ dir, and parts-finder/ is gone, but indexing docs were never updated. Findings: scripts-index.md lists 7 now-deleted Notion scripts and omits the canonical scripts/run_batch_detection.py plus scripts/experiments/ (35) and 7 MATLAB scripts; project-structure.md says &#x27;~76 entry points&#x27; (actual 154) and references gone parts-finder/ + notion_notes/ while omitting real src subpackages classifier/, postprocessing/, training/; codex_index.md links a removed docs/plans/vq_vae_transformer_plan.md and uses Windows PowerShell paths README says to ignore. README structure section is accurate (kept); its &#x27;~1584 tests&#x27; is approximate vs 1740 test defs (low). All actions are update/regenerate, not delete. No LOCKED production files implicated.&lt;/parameter&gt;
+&lt;/invoke&gt;
+</p></details>
+<details><summary><b>archive/ COHERENCE — Dimension 7</b> — 12 findings</summary>
+        <p style="color:#334155;font-size:.86rem">archive/ is genuinely retired from the PRODUCTION detection pipeline: scripts/run_batch_detection.py, src/usv_spectrogram/app/core/sliding_inference.py, and src/usv_spectrogram/postprocessing/ import NOTHING from archive/ (verified by grep — zero hits). However, the archive README&#x27;s blanket claim &quot;no longer imported by any live code path&quot; is INACCURATE for the research/experiment tier. Five committed, git-tracked scripts under scripts/experiments/ deliberately add archive/cleaning_legacy/stack1/ or /stack3/ onto sys.path and import archived symbols at runtime (render_v1_faithful_patches.py -&gt; classifier.cleaning_pipeline + cnn_prepare_training_data [Stack-1]; render_vocalmat_gt_sample.py -&gt; features.spectrogram_filter.prefilter_spectrogram [Stack-3]). render_v1_faithful_patches.py is documented in docs/DATA_REGENERATION_RECIPES.md and is transitively imported by render_human_view_patches.py, so the coupling is real and reachable, not orphaned. This is INTENTIONAL &quot;import the canonical original, never copy the math&quot; coupling — the archive is being used as the source of truth for byte-fidelity renders — so the right classification is needs-confirmation (the user/owner should decide: relax the README claim, or pull these specific archived modules back to live since live code depends on them). Separately, the train_lab_classifier.py special lead is a REAL GAP: scripts/train_lab_classifier.py is absent from the live tree (exists only in archive/cleaning_legacy/stack1/scripts/ and an out-of-tree worktree), yet (a) two LIVE git-tracked tests tests/classifier/test_train_lab_classifier.py + _adversarial.py subprocess-invoke and py_compile that exact path and will FAIL (not skip) because the file is missing, and (b) the LIVE git-tracked scripts/render_confusion_matrix.py does `from train_lab_classifier import _render_confusion_matrix_png` after putting scripts/ on sys.path, which will ImportError in the live tree. The production model results/lab_classifier_v1/best.pt IS frozen and present (44 MB, 2026-05-26), so retraining is not needed operationally — but the training CLI was archived while its tests and a helper importer were left live, breaking them. No case found of live code DUPLICATING archived logic (the pattern is the opposite — live code imports the archived original). No LOCKED production file references archive.</p></details>
+<details><summary><b>Dimension 8 — Stale git worktrees</b> — 18 findings</summary>
+        <p style="color:#334155;font-size:.86rem">18 worktrees live under .claude/worktrees/. ALL 18 are dirty (1–49 uncommitted files each), confirming the seed claim. 17 of 18 branches are fully merged into main (git branch --merged main) → removal candidates pending human sign-off on their dirty changes. Exactly 1 worktree is UNMERGED: reminder-2026-05-19-html-reports (1 commit ahead / 97 behind; git cherry confirms its single commit is not applied to main) → needs-confirmation. Last-commit dates span 2026-04-17 to 2026-05-25; the bulk (10 worktrees) are frozen at 2026-04-17, ~7 weeks stale. Two branches in `git branch --merged main` (worktree-execute-skill, worktree-latent-analysis-b-a-c) have NO corresponding worktree directory — they are merged branches without a checkout, out of scope for worktree removal but notable as deletable branches. NOTE: I am READ-ONLY and ran NO destructive git commands. No removals performed. Every &quot;removal candidate&quot; is gated on human confirmation that the dirty working-tree changes are disposable. No LOCKED production files are touched by removing a worktree directory (worktrees are separate checkouts; production lives in main).</p></details>
+<details><summary><b>Dimension 9 — Unused Dependencies</b> — 4 findings</summary>
+        <p style="color:#334155;font-size:.86rem">Parsed 4 dependency files: requirements.txt (root, 18 pkgs), usv_language/requirements.txt (9 pkgs), requirements_frozen.txt (78 pins), and pyproject.toml (dependencies=[], deliberately empty per its own comment — runtime deps live in requirements_frozen.txt). Cross-referenced every top-level declared package against actual imports across src/, scripts/, usv_language/, tests/, and notebooks, accounting for import-name != package-name (Pillow-&gt;PIL, scikit-learn-&gt;sklearn, PyYAML-&gt;yaml, notion-client-&gt;notion_client). Two clear installed-but-never-imported packages found: (1) notion-client in root requirements.txt — zero references anywhere tree-wide (the only &#x27;notion&#x27; hit is the English word in a docstring); (2) wandb in usv_language/requirements.txt — no Python imports at all; only a dormant config flag use_wandb:false in training.yaml and ROADMAP/plan prose mentions (planned-but-unimplemented logging backend). One initial suspect, anthropic, was CLEARED: it is imported and instantiated in /home/shachar/projects/mickey_london_lab/monitor.py (anthropic.Anthropic()). requirements_frozen.txt was NOT flagged entry-by-entry: pyproject.toml documents it as the reproducible pin set used to train the production model, so most entries (cffi, certifi, idna, blinker, smmap, etc.) are legitimate transitive deps — flagging them would be a false positive. All other root deps (numpy, scipy, soundfile, matplotlib, zarr, tqdm, streamlit, pytest, torch, torchvision, pandas, pyarrow, pillow, scikit-learn, PyQt6, sounddevice) are imported in src/ or scripts/. All usv_language deps except wandb (torch, numpy, scipy, soundfile, h5py, pyyaml, matplotlib, seaborn) are imported.</p></details>
+<details><summary><b>Oversized files (refactor, not delete)</b> — 5 findings</summary>
+        <p style="color:#334155;font-size:.86rem">Five tracked production .py files exceed ~1000 LOC: app/main_window.py (1823), dataset/assembler.py (1490), classification/cross_population.py (1484), classification/repertoire_stats.py (1142), usv_language/analysis/information_theory.py (1092). All are reachable/in-use production code (classified &quot;keep&quot;) and NONE fall under LOCKED paths (corpus.py, run_batch_detection.py, app/core/sliding_inference.py, postprocessing/, models/hard_neg_retrain/). For each I propose a logical split by responsibility/class derived from its actual top-level classes and method groupings (extracted via grep). These are PROPOSALS ONLY — no auto-refactoring. Refactoring main_window.py (PyQt6 app) and assembler.py (training-data builder) carries higher risk because both touch the detection/training surface indirectly; cross_population/repertoire_stats/information_theory are analysis modules with lower blast radius. Test files over 1000 LOC (tests/test_sis_baselines.py 1412, tests/test_fp_filter.py 1119, tests/test_triage_hardened.py 983, plus archive/cleaning_legacy tests) are out of scope for this dimension (tests are spec, not refactor targets) and were not included.</p></details>
+
+<hr><p class="muted">Audit-only fan-out · 21 agents · 1.2M tokens · ~29 min · revert with <code>git reset --hard pre-deadcode-audit-2026-06-08</code>.
+Source: <code>docs/handoffs/2026-06-08_dead-code-staleness-audit.md</code>.</p>
+</body></html>

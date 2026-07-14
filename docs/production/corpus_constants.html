@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corpus Constants — Canonical Signal-Processing Parameters</title>
+<style>
+:root {
+  --bg:#0f1115; --panel:#181b22; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2a2f3a;
+  --accent:#6ea8fe; --accent2:#7ee0a8; --warn:#f0b86c; --code:#11141a;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.topbar {
+  position:sticky; top:0; z-index:10; background:rgba(15,17,21,.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); padding:10px 24px; font-size:13.5px;
+}
+.topbar a { color:var(--accent); text-decoration:none; }
+.topbar a:hover { text-decoration:underline; }
+.topbar .sep { color:var(--muted); margin:0 8px; }
+.wrap { max-width:900px; margin:0 auto; padding:34px 24px 90px; }
+h1,h2,h3,h4 { line-height:1.3; letter-spacing:-.2px; scroll-margin-top:60px; }
+h1 { font-size:30px; margin:.2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h2 { font-size:22px; margin:1.7em 0 .6em; color:#fff; }
+h3 { font-size:17px; margin:1.4em 0 .5em; color:var(--accent2); }
+h4 { font-size:15px; margin:1.2em 0 .4em; color:var(--ink); }
+a { color:var(--accent); }
+p,li { color:var(--ink); }
+hr { border:none; border-top:1px solid var(--line); margin:2em 0; }
+blockquote {
+  margin:1.2em 0; padding:.6em 1.1em; background:var(--panel);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0; color:var(--ink);
+}
+blockquote p { margin:.4em 0; }
+code {
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:.88em;
+  background:#222733; color:#cfe3ff; padding:.12em .4em; border-radius:5px;
+}
+pre {
+  background:var(--code); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; line-height:1.5;
+}
+pre code { background:none; color:#e7e9ee; padding:0; font-size:13px; }
+.codehilite { background:var(--code); border:1px solid var(--line); border-radius:10px; margin:1em 0; }
+.codehilite pre { background:none; border:none; margin:0; }
+table {
+  border-collapse:collapse; width:100%; margin:1.3em 0; font-size:14px; display:block; overflow-x:auto;
+}
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+th { background:var(--panel); color:#fff; font-weight:650; }
+tr:nth-child(even) td { background:rgba(255,255,255,.015); }
+ul,ol { padding-left:1.5em; }
+li { margin:.25em 0; }
+img { max-width:100%; border-radius:8px; }
+.toc {
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:10px 18px; margin:1.4em 0; font-size:14px;
+}
+.toc ul { margin:.3em 0; }
+::selection { background:#2d4a7a; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #404040 }
+.codehilite { background: #202020; color: #D0D0D0 }
+.codehilite .c { color: #ABABAB; font-style: italic } /* Comment */
+.codehilite .err { color: #A61717; background-color: #E3D2D2 } /* Error */
+.codehilite .esc { color: #D0D0D0 } /* Escape */
+.codehilite .g { color: #D0D0D0 } /* Generic */
+.codehilite .k { color: #6EBF26; font-weight: bold } /* Keyword */
+.codehilite .l { color: #D0D0D0 } /* Literal */
+.codehilite .n { color: #D0D0D0 } /* Name */
+.codehilite .o { color: #D0D0D0 } /* Operator */
+.codehilite .x { color: #D0D0D0 } /* Other */
+.codehilite .p { color: #D0D0D0 } /* Punctuation */
+.codehilite .ch { color: #ABABAB; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #ABABAB; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #FF3A3A; font-weight: bold } /* Comment.Preproc */
+.codehilite .cpf { color: #ABABAB; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #ABABAB; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #E50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.codehilite .gd { color: #FF3A3A } /* Generic.Deleted */
+.codehilite .ge { color: #D0D0D0; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #D0D0D0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF3A3A } /* Generic.Error */
+.codehilite .gh { color: #FFF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #589819 } /* Generic.Inserted */
+.codehilite .go { color: #CCC } /* Generic.Output */
+.codehilite .gp { color: #AAA } /* Generic.Prompt */
+.codehilite .gs { color: #D0D0D0; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #FFF; text-decoration: underline } /* Generic.Subheading */
+.codehilite .gt { color: #FF3A3A } /* Generic.Traceback */
+.codehilite .kc { color: #6EBF26; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #6EBF26; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #6EBF26; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #6EBF26 } /* Keyword.Pseudo */
+.codehilite .kr { color: #6EBF26; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #6EBF26; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #D0D0D0 } /* Literal.Date */
+.codehilite .m { color: #51B2FD } /* Literal.Number */
+.codehilite .s { color: #ED9D13 } /* Literal.String */
+.codehilite .na { color: #BBB } /* Name.Attribute */
+.codehilite .nb { color: #2FBCCD } /* Name.Builtin */
+.codehilite .nc { color: #71ADFF; text-decoration: underline } /* Name.Class */
+.codehilite .no { color: #40FFFF } /* Name.Constant */
+.codehilite .nd { color: #FFA500 } /* Name.Decorator */
+.codehilite .ni { color: #D0D0D0 } /* Name.Entity */
+.codehilite .ne { color: #BBB } /* Name.Exception */
+.codehilite .nf { color: #71ADFF } /* Name.Function */
+.codehilite .nl { color: #D0D0D0 } /* Name.Label */
+.codehilite .nn { color: #71ADFF; text-decoration: underline } /* Name.Namespace */
+.codehilite .nx { color: #D0D0D0 } /* Name.Other */
+.codehilite .py { color: #D0D0D0 } /* Name.Property */
+.codehilite .nt { color: #6EBF26; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #40FFFF } /* Name.Variable */
+.codehilite .ow { color: #6EBF26; font-weight: bold } /* Operator.Word */
+.codehilite .pm { color: #D0D0D0 } /* Punctuation.Marker */
+.codehilite .w { color: #666 } /* Text.Whitespace */
+.codehilite .mb { color: #51B2FD } /* Literal.Number.Bin */
+.codehilite .mf { color: #51B2FD } /* Literal.Number.Float */
+.codehilite .mh { color: #51B2FD } /* Literal.Number.Hex */
+.codehilite .mi { color: #51B2FD } /* Literal.Number.Integer */
+.codehilite .mo { color: #51B2FD } /* Literal.Number.Oct */
+.codehilite .sa { color: #ED9D13 } /* Literal.String.Affix */
+.codehilite .sb { color: #ED9D13 } /* Literal.String.Backtick */
+.codehilite .sc { color: #ED9D13 } /* Literal.String.Char */
+.codehilite .dl { color: #ED9D13 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #ED9D13 } /* Literal.String.Doc */
+.codehilite .s2 { color: #ED9D13 } /* Literal.String.Double */
+.codehilite .se { color: #ED9D13 } /* Literal.String.Escape */
+.codehilite .sh { color: #ED9D13 } /* Literal.String.Heredoc */
+.codehilite .si { color: #ED9D13 } /* Literal.String.Interpol */
+.codehilite .sx { color: #FFA500 } /* Literal.String.Other */
+.codehilite .sr { color: #ED9D13 } /* Literal.String.Regex */
+.codehilite .s1 { color: #ED9D13 } /* Literal.String.Single */
+.codehilite .ss { color: #ED9D13 } /* Literal.String.Symbol */
+.codehilite .bp { color: #2FBCCD } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #71ADFF } /* Name.Function.Magic */
+.codehilite .vc { color: #40FFFF } /* Name.Variable.Class */
+.codehilite .vg { color: #40FFFF } /* Name.Variable.Global */
+.codehilite .vi { color: #40FFFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #40FFFF } /* Name.Variable.Magic */
+.codehilite .il { color: #51B2FD } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="topbar"><a href="00_INDEX.html">&larr; Production docs index</a><span class="sep">/</span><span style="color:var(--muted)">Corpus Constants — Canonical Signal-Processing Parameters</span></div>
+<div class="wrap">
+<h1 id="corpus-constants-canonical-signal-processing-parameters">Corpus Constants — Canonical Signal-Processing Parameters</h1>
+<blockquote>
+<p><strong>What this is:</strong> The single source of truth for the physical signal-processing
+constants (sample rate, USV frequency band, STFT parameters) that <em>every</em> other
+module in this lab depends on, plus the empirical per-dataset facts layer.
+<strong>Status:</strong> Live / current. Layer 1 landed 2026-04-17; values are LOCKED to the
+production CNN training grid.
+<strong>Production artifact (Layer 1 code):</strong> <code>src/usv_spectrogram/corpus.py</code> (52 lines).
+<strong>Production artifact (Layer 2 data):</strong> <code>data/corpus_facts/{5970,3452,9252,lab_131204}.json</code>.
+<strong>Danger rule:</strong> Changing <code>USV_FREQ_MIN_HZ</code>/<code>USV_FREQ_MAX_HZ</code> in <code>corpus.py</code> without
+retraining the CNN silently corrupts inference. See <a href="#the-cnn-freeze-the-one-rule-you-must-not-break">CNN freeze</a>.</p>
+</blockquote>
+<p>This is the foundation document. Most other production docs point back here for
+their sample rate, band, and STFT numbers. If you change anything described here,
+assume you are touching every downstream pipeline.</p>
+<hr />
+<h2 id="1-operate">1. Operate</h2>
+<p>There is nothing to "run" in the traditional sense for Layer 1 — <code>corpus.py</code> is a
+set of constants you <strong>import</strong>. Layer 2 (<code>data/corpus_facts/*.json</code>) is generated
+by a script and read as data. This section covers both: how to consume the
+constants in code, and how to regenerate / read the empirical facts.</p>
+<h3 id="11-consuming-layer-1-constants-the-normal-case">1.1 Consuming Layer 1 constants (the normal case)</h3>
+<p>Import from <code>usv_spectrogram.corpus</code>. Never re-type the numbers.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">usv_spectrogram.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SAMPLE_RATE_HZ</span><span class="p">,</span>      <span class="c1"># 300_000</span>
+    <span class="n">USV_FREQ_MIN_HZ</span><span class="p">,</span>     <span class="c1"># 20_000</span>
+    <span class="n">USV_FREQ_MAX_HZ</span><span class="p">,</span>     <span class="c1"># 120_000</span>
+    <span class="n">STFT_N_FFT</span><span class="p">,</span>          <span class="c1"># 512</span>
+    <span class="n">STFT_HOP</span><span class="p">,</span>            <span class="c1"># 128</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">usv_spectrogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">corpus</span>
+
+<span class="c1"># Always pass sr explicitly to any DSP call — never rely on a library default:</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">SAMPLE_RATE_HZ</span><span class="p">)</span>   <span class="c1"># forces 300 kHz, no resample surprise</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="n">STFT_N_FFT</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">STFT_HOP</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="s2">&quot;hann&quot;</span><span class="p">)</span>
+
+<span class="c1"># Derived quantities are functions (the formula stays visible), not constants:</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">nyquist_hz</span><span class="p">()</span>              <span class="c1"># 150000</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">stft_freq_resolution_hz</span><span class="p">()</span> <span class="c1"># 585.9375   (Hz per frequency bin)</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">stft_time_resolution_ms</span><span class="p">()</span> <span class="c1"># 1.7066...  (window length in ms)</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">stft_hop_ms</span><span class="p">()</span>             <span class="c1"># 0.4266...  (hop length in ms)</span>
+</code></pre></div>
+
+<p>To run this on the repo interpreter (note <code>PYTHONPATH=src</code>, the package lives under <code>src/</code>):</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>.venv/bin/python<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">&quot;from usv_spectrogram import corpus as c; \</span>
+<span class="s2">   print(c.nyquist_hz(), c.stft_freq_resolution_hz(), \</span>
+<span class="s2">         c.stft_time_resolution_ms(), c.stft_hop_ms())&quot;</span>
+<span class="c1"># -&gt; 150000 585.9375 1.7066666666666666 0.42666666666666664</span>
+</code></pre></div>
+
+<h4 id="layer-1-constant-reference">Layer 1 constant reference</h4>
+<p>Source: <code>src/usv_spectrogram/corpus.py:30-36</code>. Values verified against source.</p>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Value</th>
+<th>Unit</th>
+<th>Meaning</th>
+<th>Source line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SAMPLE_RATE_HZ</code></td>
+<td><code>300_000</code></td>
+<td>Hz</td>
+<td>Recording sample rate (LMT rig). Nyquist = 150 kHz.</td>
+<td><code>corpus.py:30</code></td>
+</tr>
+<tr>
+<td><code>USV_FREQ_MIN_HZ</code></td>
+<td><code>20_000</code></td>
+<td>Hz</td>
+<td>Lower edge of the analyzed USV band. Locked to CNN training.</td>
+<td><code>corpus.py:32</code></td>
+</tr>
+<tr>
+<td><code>USV_FREQ_MAX_HZ</code></td>
+<td><code>120_000</code></td>
+<td>Hz</td>
+<td>Upper edge of the analyzed USV band. Locked to CNN training.</td>
+<td><code>corpus.py:33</code></td>
+</tr>
+<tr>
+<td><code>STFT_N_FFT</code></td>
+<td><code>512</code></td>
+<td>samples</td>
+<td>FFT window length for the detection/analysis STFT.</td>
+<td><code>corpus.py:35</code></td>
+</tr>
+<tr>
+<td><code>STFT_HOP</code></td>
+<td><code>128</code></td>
+<td>samples</td>
+<td>STFT hop (75% overlap: <code>1 - 128/512</code>).</td>
+<td><code>corpus.py:36</code></td>
+</tr>
+</tbody>
+</table>
+<p>Derived helper functions (defined <code>corpus.py:39-52</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Returns</th>
+<th>Formula</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nyquist_hz()</code></td>
+<td><code>150000</code></td>
+<td><code>SAMPLE_RATE_HZ // 2</code></td>
+<td>Hard ceiling on representable frequency; 120 kHz band leaves headroom.</td>
+</tr>
+<tr>
+<td><code>stft_freq_resolution_hz()</code></td>
+<td><code>585.9375</code></td>
+<td><code>SAMPLE_RATE_HZ / STFT_N_FFT</code></td>
+<td><strong>Frequency resolution</strong> = Hz per FFT bin. Smaller <code>n_fft</code> -&gt; coarser frequency, finer time.</td>
+</tr>
+<tr>
+<td><code>stft_time_resolution_ms()</code></td>
+<td><code>1.7067</code></td>
+<td><code>(STFT_N_FFT / SAMPLE_RATE_HZ) * 1000</code></td>
+<td>Window duration in ms; the smallest time event a single frame can represent.</td>
+</tr>
+<tr>
+<td><code>stft_hop_ms()</code></td>
+<td><code>0.4267</code></td>
+<td><code>(STFT_HOP / SAMPLE_RATE_HZ) * 1000</code></td>
+<td>Time step between successive frames; the spectrogram's effective time grid spacing.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Intuition for a new lab member (the time/frequency trade-off).</strong> An STFT chops
+the signal into windows of <code>n_fft</code> samples and runs an FFT on each. A <em>longer</em>
+window (bigger <code>n_fft</code>) gives you <em>finer frequency</em> resolution (<code>sr/n_fft</code> gets
+smaller) but <em>coarser time</em> resolution (you average over a longer slice). A
+<em>shorter</em> window does the opposite. At <code>n_fft=512</code> and 300 kHz we get ~586 Hz per
+bin and a ~1.7 ms window — a deliberate compromise: USVs are short (10–500 ms)
+and narrow-band, so we favor time resolution to catch onset/offset while keeping
+just enough frequency resolution to tell subtypes apart. <code>hop=128</code> (75% overlap)
+oversamples in time so the spectrogram looks smooth rather than blocky.</p>
+</blockquote>
+<h3 id="12-regenerating-layer-2-empirical-facts-datacorpus_facts">1.2 Regenerating Layer 2 empirical facts (<code>data/corpus_facts/</code>)</h3>
+<p>Layer 2 stores <em>measured</em> per-dataset statistics that are expensive to recompute
+(median inter-call interval, bout counts, transition mutual information, labeling
+distributions). These are produced by <code>scripts/audit_corpus.py</code> (575 lines) from
+already-computed classified CSVs and Phase A1/A2 outputs.</p>
+<p>Single dataset:</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/audit_corpus.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataset<span class="w"> </span><span class="m">5970</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>data/corpus_facts/5970.json
+</code></pre></div>
+
+<p>All registered datasets at once (outputs to <code>data/corpus_facts/&lt;dataset&gt;.json</code>):</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/audit_corpus.py<span class="w"> </span>--all
+</code></pre></div>
+
+<p>Validate the lab tonal-line libraries instead of corpus facts:</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/audit_corpus.py<span class="w"> </span>--lab-tonal-lines
+</code></pre></div>
+
+<h4 id="audit_corpuspy-flags"><code>audit_corpus.py</code> flags</h4>
+<p>Defined in the argparse block at <code>scripts/audit_corpus.py:130-160</code>. Exactly one of
+<code>--dataset</code>, <code>--all</code>, <code>--lab-tonal-lines</code> is required (mutually exclusive group).</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Required?</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dataset &lt;name&gt;</code></td>
+<td>one-of group</td>
+<td>—</td>
+<td>Process a single dataset. Choices are the keys of <code>DATASET_REGISTRY</code>: <code>3452</code>, <code>5970</code>, <code>9252</code> (<code>audit_corpus.py:131-132</code>). <strong>Requires <code>--output</code></strong> (<code>audit_corpus.py:558</code>).</td>
+</tr>
+<tr>
+<td><code>--all</code></td>
+<td>one-of group</td>
+<td>—</td>
+<td>Process every dataset in <code>DATASET_REGISTRY</code>; writes to <code>--output-dir</code>. Warns (does not fail) when a dataset's input files are missing.</td>
+</tr>
+<tr>
+<td><code>--lab-tonal-lines</code></td>
+<td>one-of group</td>
+<td>—</td>
+<td>Validate every JSON in <code>data/lab_tonal_lines/</code> against the <code>TonalLibrary</code> schema instead of generating corpus facts. Non-zero exit on failure.</td>
+</tr>
+<tr>
+<td><code>--output &lt;path&gt;</code></td>
+<td>with <code>--dataset</code></td>
+<td>—</td>
+<td>Output JSON path. Required when <code>--dataset</code> is used (<code>audit_corpus.py:558</code>). Ignored by <code>--all</code>.</td>
+</tr>
+<tr>
+<td><code>--output-dir &lt;dir&gt;</code></td>
+<td>no</td>
+<td><code>data/corpus_facts/</code></td>
+<td>Output directory for <code>--all</code> (<code>audit_corpus.py:156-160</code>).</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Note the registry contains <code>3452</code>, <code>5970</code>, <code>9252</code> but <strong>not</strong> <code>lab_131204</code>. The
+<code>data/corpus_facts/lab_131204.json</code> file was created <strong>manually</strong> (its
+<code>"generator"</code> field says so) for the noise-filter section, not by this script.
+Do not expect <code>--dataset lab_131204</code> to work.</p>
+</blockquote>
+<h3 id="13-reading-the-layer-2-facts-output-schema">1.3 Reading the Layer 2 facts (output schema)</h3>
+<p>Each <code>data/corpus_facts/&lt;dataset&gt;.json</code> is a versioned artifact (commit it). The two
+schema variants seen in the repo:</p>
+<p><strong>Wild-dyad schema</strong> (<code>5970.json</code>, <code>3452.json</code>, <code>9252.json</code>) — keys and meaning,
+read from <code>data/corpus_facts/5970.json</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Top-level key</th>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dataset</code></td>
+<td>—</td>
+<td>Dataset id (e.g. <code>"5970"</code>).</td>
+</tr>
+<tr>
+<td><code>generated_at_utc</code></td>
+<td>—</td>
+<td>ISO-8601 generation timestamp.</td>
+</tr>
+<tr>
+<td><code>generator</code></td>
+<td>—</td>
+<td><code>"scripts/audit_corpus.py"</code> for the three wild dyads.</td>
+</tr>
+<tr>
+<td><code>sources</code></td>
+<td><code>classified_csv</code>, <code>hdbscan_csv</code>, <code>detection_csv</code>, <code>ici_*_npy</code>, <code>sequential_summary_csv</code>, <code>sis_baselines_csv</code></td>
+<td>Exact input paths every stat was derived from (traceability).</td>
+</tr>
+<tr>
+<td><code>counts</code></td>
+<td><code>n_calls_raw</code>, <code>n_calls_after_dropna_file</code>, <code>n_files</code>, <code>n_sessions</code></td>
+<td>Corpus size before/after dropping rows with no file id.</td>
+</tr>
+<tr>
+<td><code>timing</code></td>
+<td><code>median_ici_gap_ms</code>, <code>median_ioi_ms</code>, <code>median_call_duration_ms</code>, <code>q25_ici_gap_ms</code>, <code>q75_ici_gap_ms</code>, <code>n_cross_file_pairs_over_10s</code>, <code>n_negative_gaps</code>, <code>n_ici_samples</code></td>
+<td>ICI = inter-call interval (silent gap, onset−prev_offset). IOI = inter-onset interval (onset−prev_onset). All in ms.</td>
+</tr>
+<tr>
+<td><code>bout_detection_a2</code></td>
+<td><code>threshold_s</code>, <code>derivation</code>, <code>n_bouts</code>, <code>n_within_bout_pairs</code>, <code>n_cross_bout_pairs_excluded</code></td>
+<td>Bout = run of calls separated by &lt; <code>threshold_s</code>. Threshold derived as 3 × median(IOI).</td>
+</tr>
+<tr>
+<td><code>sequential_structure_mi</code></td>
+<td><code>scattoni_7_bout_aware.mi_lag1_bits</code>, <code>marginal_entropy_bits</code>, <code>conditional_entropy_bits</code>, <code>n_pairs</code>, <code>method</code>, <code>canonical_for_downstream</code></td>
+<td>Lag-1 mutual information (bits) between successive Scattoni-7 call types, bout-aware. <code>canonical_for_downstream: true</code> marks the entry you should cite.</td>
+</tr>
+<tr>
+<td><code>labeling_distributions</code></td>
+<td><code>scattoni_7</code>, <code>hdbscan</code></td>
+<td>Per-type call counts for the 7-class taxonomy and for HDBSCAN clusters.</td>
+</tr>
+<tr>
+<td><code>references</code></td>
+<td><code>median_within_bout_silent_gap_ms</code>, <code>inter_bout_threshold_ms_range</code>, <code>hertz_2020_*_sis_bits</code></td>
+<td>Literature anchors (not measured here) for sanity comparison.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab schema</strong> (<code>lab_131204.json</code>) is different — it carries a <code>noise_filter</code>
+block (algorithm <code>v2_per_bin_floor_excess</code>, <code>contrast_db: 3.0</code>, <code>reject_fraction:
+0.5</code>) and validated-chunk records rather than timing/MI. Read
+<code>data/corpus_facts/lab_131204.json</code> directly before relying on it; it is the
+exception, not the template.</p>
+<h4 id="the-measured-numbers-current-files-for-orientation">The measured numbers (current files, for orientation)</h4>
+<p>These are <em>Layer 2 empirical facts</em> — they change as the datasets evolve. Read the
+JSON for the live value; this table is a snapshot so you know what "normal" looks like.</p>
+<table>
+<thead>
+<tr>
+<th>Fact</th>
+<th>5970</th>
+<th>3452</th>
+<th>9252</th>
+<th>Source field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_calls_raw</code></td>
+<td>7921</td>
+<td>401</td>
+<td>604</td>
+<td><code>counts.n_calls_raw</code></td>
+</tr>
+<tr>
+<td><code>n_files</code></td>
+<td>1338</td>
+<td>110</td>
+<td>318</td>
+<td><code>counts.n_files</code></td>
+</tr>
+<tr>
+<td>median ICI gap (ms)</td>
+<td>86.68</td>
+<td>171.92</td>
+<td>1586.71</td>
+<td><code>timing.median_ici_gap_ms</code></td>
+</tr>
+<tr>
+<td>median IOI (ms)</td>
+<td>192.99</td>
+<td>212.26</td>
+<td>1625.57</td>
+<td><code>timing.median_ioi_ms</code></td>
+</tr>
+<tr>
+<td>median call duration (ms)</td>
+<td>60.12</td>
+<td>17.10</td>
+<td>22.94</td>
+<td><code>timing.median_call_duration_ms</code></td>
+</tr>
+<tr>
+<td>bout threshold (s)</td>
+<td>0.6</td>
+<td>0.6</td>
+<td>0.6</td>
+<td><code>bout_detection_a2.threshold_s</code></td>
+</tr>
+<tr>
+<td>n_bouts</td>
+<td>1238</td>
+<td>73</td>
+<td>104</td>
+<td><code>bout_detection_a2.n_bouts</code></td>
+</tr>
+<tr>
+<td>lag-1 MI (bits, bout-aware)</td>
+<td>0.0921</td>
+<td>0.1974</td>
+<td>0.1941</td>
+<td><code>sequential_structure_mi.scattoni_7_bout_aware.mi_lag1_bits</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Do not over-read cross-dataset differences.</strong> 5970, 3452, 9252 are all <em>wild
+dyads</em>, and several of these quantities (e.g. mean power, tonality, and arguably
+ICI on small-N sets like 3452/9252) are cage/recording-environment artifacts, not
+biology. The 9252 ICI of ~1.6 s is dominated by long cross-file gaps (note
+<code>q75_ici_gap_ms</code> ≈ 176 s and <code>n_cross_file_pairs_over_10s = 237</code>). Cite the
+population stratum when comparing.</p>
+</blockquote>
+<h3 id="14-troubleshooting-gotchas">1.4 Troubleshooting / Gotchas</h3>
+<ul>
+<li><strong><code>ModuleNotFoundError: No module named 'usv_spectrogram'</code></strong> — the package lives
+  under <code>src/</code>. Either run with <code>PYTHONPATH=src .venv/bin/python ...</code>, or rely on
+  the installed editable package if the venv has it. Scripts under <code>scripts/</code> add
+  the repo root / <code>src</code> to the path themselves; ad-hoc <code>-c</code> one-liners do not.</li>
+<li><strong>An import suddenly fails with an <code>AssertionError</code> mentioning "drifted from
+  corpus"</strong> — this is the <strong>drift guard</strong> in
+  <code>src/usv_spectrogram/detection/extraction_config.py:148-162</code> firing, not a bug.
+  Someone changed a <code>corpus.py</code> constant without updating the matching
+  <code>ExtractionConfig</code> literal (or vice versa). See
+  <a href="#the-cnn-freeze-the-one-rule-you-must-not-break">CNN freeze</a> for the correct
+  change sequence. Do <strong>not</strong> "fix" it by editing the assertion.</li>
+<li><strong><code>error: --output is required with --dataset</code></strong> — pass <code>--output &lt;path&gt;</code> when
+  using <code>--dataset</code>; only <code>--all</code> infers the path (<code>audit_corpus.py:558</code>).</li>
+<li><strong><code>--dataset lab_131204</code> rejected</strong> — <code>lab_131204</code> is not in <code>DATASET_REGISTRY</code>;
+  its facts JSON was hand-authored. Only <code>3452</code>, <code>5970</code>, <code>9252</code> are script-driven.</li>
+<li><strong><code>--all</code> silently skipped a dataset</strong> — <code>--all</code> <em>warns</em> rather than fails when a
+  dataset's input CSVs/NPYs are missing. Check stderr; a missing
+  <code>results/...</code> input means that dataset's pipeline hasn't been run yet.</li>
+<li><strong>Wrong frequency mapping in a spectrogram you generated</strong> — confirm you used the
+  detection/analysis STFT (<code>n_fft=512</code>), not the <em>visualization</em> STFT.
+  <code>SpectrogramConfig</code> deliberately uses different parameters (n_fft=2048, zero-pad
+  to 4096, ~61 Hz/bin) for display — see ADR-002. Mixing the two grids produces a
+  spectrogram the CNN cannot read.</li>
+<li><strong>You added a new config module and re-typed <code>sample_rate=300000</code></strong> — don't.
+  Import from <code>corpus</code>. Re-declaring is exactly the bug this module was built to
+  kill (four modules previously disagreed; one used 250 kHz — see Internals §2.1).</li>
+</ul>
+<hr />
+<h2 id="2-internals">2. Internals</h2>
+<h3 id="21-why-this-module-exists-the-bug-it-killed">2.1 Why this module exists (the bug it killed)</h3>
+<p>Before the 2026-04-17 refactor, four config classes each declared the same physical
+constants with <strong>different</strong> values (from <code>docs/modules/corpus-constants.md:14-19</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Sample rate</th>
+<th>freq_min</th>
+<th>freq_max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SpectrogramConfig</code></td>
+<td>250_000</td>
+<td>30_000</td>
+<td>125_000</td>
+</tr>
+<tr>
+<td><code>DetectionConfig</code></td>
+<td>300_000</td>
+<td>25_000</td>
+<td>110_000</td>
+</tr>
+<tr>
+<td><code>ExtractionConfig</code></td>
+<td>300_000</td>
+<td>20_000</td>
+<td>120_000</td>
+</tr>
+<tr>
+<td><code>AnalysisConfig</code></td>
+<td>n/a</td>
+<td>20_000</td>
+<td>120_000</td>
+</tr>
+</tbody>
+</table>
+<p><code>SpectrogramConfig</code>'s 250 kHz contradicted ADR-001 (300 kHz): any
+<code>SpectrogramConfig()</code> loaded against a real 300 kHz WAV would raise a sample-rate
+mismatch. The refactor collapsed all four onto the single canonical set in
+<code>corpus.py</code> and added a <em>drift assertion</em> so they can never silently diverge again.</p>
+<h3 id="22-three-layer-architecture">2.2 Three-layer architecture</h3>
+<div class="codehilite"><pre><span></span><code>Layer 1 — CORPUS CONSTANTS (physical facts)
+  src/usv_spectrogram/corpus.py
+  SAMPLE_RATE_HZ, USV_FREQ_{MIN,MAX}_HZ, STFT_N_FFT, STFT_HOP + derived helpers
+
+Layer 2 — EMPIRICAL DATA (per dataset)
+  data/corpus_facts/{5970,3452,9252,lab_131204}.json
+  Generated by scripts/audit_corpus.py (lab_131204 hand-authored)
+
+Layer 3 — ANALYSIS PARAMETERS (per-module)
+  SpectrogramConfig / DetectionConfig / ExtractionConfig / AnalysisConfig
+  Import Layer 1 constants instead of redeclaring them.
+</code></pre></div>
+
+<p>Layer 1 = facts of physics and the CNN grid (rarely change). Layer 2 = facts of a
+<em>dataset</em> (change as data evolves). Layer 3 = knobs of an <em>algorithm</em> (tuned freely,
+but borrow their physical constants from Layer 1).</p>
+<h3 id="23-key-signatures-fileline">2.3 Key signatures (file:line)</h3>
+<p><code>src/usv_spectrogram/corpus.py</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Line</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SAMPLE_RATE_HZ: Final[int]</code></td>
+<td><code>30</code></td>
+<td><code>= 300_000</code></td>
+</tr>
+<tr>
+<td><code>USV_FREQ_MIN_HZ: Final[int]</code></td>
+<td><code>32</code></td>
+<td><code>= 20_000</code></td>
+</tr>
+<tr>
+<td><code>USV_FREQ_MAX_HZ: Final[int]</code></td>
+<td><code>33</code></td>
+<td><code>= 120_000</code></td>
+</tr>
+<tr>
+<td><code>STFT_N_FFT: Final[int]</code></td>
+<td><code>35</code></td>
+<td><code>= 512</code></td>
+</tr>
+<tr>
+<td><code>STFT_HOP: Final[int]</code></td>
+<td><code>36</code></td>
+<td><code>= 128</code></td>
+</tr>
+<tr>
+<td><code>nyquist_hz() -&gt; int</code></td>
+<td><code>39-40</code></td>
+<td><code>SAMPLE_RATE_HZ // 2</code></td>
+</tr>
+<tr>
+<td><code>stft_freq_resolution_hz() -&gt; float</code></td>
+<td><code>43-44</code></td>
+<td><code>SAMPLE_RATE_HZ / STFT_N_FFT</code></td>
+</tr>
+<tr>
+<td><code>stft_time_resolution_ms() -&gt; float</code></td>
+<td><code>47-48</code></td>
+<td><code>(STFT_N_FFT / SAMPLE_RATE_HZ) * 1000.0</code></td>
+</tr>
+<tr>
+<td><code>stft_hop_ms() -&gt; float</code></td>
+<td><code>51-52</code></td>
+<td><code>(STFT_HOP / SAMPLE_RATE_HZ) * 1000.0</code></td>
+</tr>
+</tbody>
+</table>
+<p>The constants are typed <code>Final</code> (<code>from typing import Final</code>, <code>corpus.py:28</code>) — a
+static-analysis signal that they are not to be reassigned. (Note: mypy is not
+configured in this repo, so <code>Final</code> is documentation-grade, not enforced at CI.)</p>
+<h3 id="24-the-cnn-freeze-the-one-rule-you-must-not-break">2.4 The CNN freeze (the one rule you must not break)</h3>
+<p>The production CNN <code>models/hard_neg_retrain/best_model.pt</code> was trained on
+256-pixel-tall spectrograms covering <strong>exactly 20–120 kHz</strong>. The pixel grid is
+fixed at training time; the Hz-per-pixel mapping is implied by the band edges.</p>
+<p>If you change <code>USV_FREQ_MIN_HZ</code> or <code>USV_FREQ_MAX_HZ</code> in <code>corpus.py</code> <strong>without
+retraining</strong>, every spectrogram keeps the same 256 rows but each row now means a
+<em>different</em> frequency. The CNN sees features in the wrong rows and produces
+<strong>silently-wrong inference</strong> — no crash, no error, just degraded/garbage detections.
+This is called out at <code>corpus.py:15-23</code> and is one of the Red-Flag locked changes
+in <code>CLAUDE.md</code>.</p>
+<h4 id="the-drift-guard-mechanism">The drift guard (mechanism)</h4>
+<p><code>ExtractionConfig</code> (in <code>src/usv_spectrogram/detection/extraction_config.py</code>)
+<strong>intentionally hardcodes</strong> the CNN-training literals — it does <em>not</em> import them
+from <code>corpus.py</code> (<code>extraction_config.py:36-37</code> for the band;
+<code>extraction_config.py:30-32</code> for sr/n_fft/hop). At the bottom of the file, a
+module-level block late-imports the corpus values under aliases
+(<code>extraction_config.py:139-144</code>) and asserts every literal still matches
+(<code>extraction_config.py:148-162</code>):</p>
+<div class="codehilite"><pre><span></span><code><span class="k">assert</span> <span class="n">_FIELDS</span><span class="p">[</span><span class="s2">&quot;freq_min_hz&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default</span> <span class="o">==</span> <span class="n">_CORPUS_USV_FREQ_MIN_HZ</span><span class="p">,</span> <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">_FIELDS</span><span class="p">[</span><span class="s2">&quot;freq_max_hz&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default</span> <span class="o">==</span> <span class="n">_CORPUS_USV_FREQ_MAX_HZ</span><span class="p">,</span> <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">_FIELDS</span><span class="p">[</span><span class="s2">&quot;sample_rate&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default</span> <span class="o">==</span> <span class="n">_CORPUS_SAMPLE_RATE_HZ</span><span class="p">,</span> <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">_FIELDS</span><span class="p">[</span><span class="s2">&quot;n_fft&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default</span>       <span class="o">==</span> <span class="n">_CORPUS_STFT_N_FFT</span><span class="p">,</span>     <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">_FIELDS</span><span class="p">[</span><span class="s2">&quot;hop_length&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default</span>  <span class="o">==</span> <span class="n">_CORPUS_STFT_HOP</span><span class="p">,</span>       <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+
+<p>So if <code>corpus.py</code> and the CNN-grid literals ever disagree, <strong>importing
+<code>ExtractionConfig</code> fails at import time</strong> — a loud failure, by design, in place of
+silent inference corruption.</p>
+<h4 id="correct-change-sequence-never-reverse-it">Correct change sequence (never reverse it)</h4>
+<p>If the corpus band genuinely must change:</p>
+<ol>
+<li><strong>Retrain</strong> the CNN on the new band.</li>
+<li><strong>Update <code>ExtractionConfig</code></strong> literals (<code>extraction_config.py:36-37</code>) to match.</li>
+<li><strong>Update <code>corpus.py</code></strong> constants (<code>corpus.py:32-33</code>).</li>
+<li>The drift assertion passes on the next import.</li>
+</ol>
+<p>Doing 3 before 1–2 is exactly the failure mode the guard exists to catch.</p>
+<h3 id="25-invariants">2.5 Invariants</h3>
+<ul>
+<li><strong>Always specify <code>sr=300000</code> explicitly</strong> to any DSP call (or pass
+  <code>SAMPLE_RATE_HZ</code>). Never rely on librosa's default 22050 Hz — at the wrong sample
+  rate, every frequency and duration is wrong by a factor of <code>300000/default</code>.
+  (ADR-001; <code>CLAUDE.md</code> "Signal Processing Conventions".)</li>
+<li><strong>Never redeclare</strong> <code>sample_rate</code>, <code>freq_min_hz</code>, <code>freq_max_hz</code>, <code>n_fft</code>, or
+  <code>hop_length</code> in a new module. Import from <code>corpus</code>. The single exception is
+  <code>ExtractionConfig</code>, which hardcodes them <em>on purpose</em> and is policed by the drift
+  assertion.</li>
+<li><strong><code>corpus.py</code> constants are LOCKED to the CNN.</strong> Band edges cannot move without a
+  retrain (§2.4).</li>
+<li><strong>Layer 2 JSONs are versioned artifacts</strong> — regenerate with <code>audit_corpus.py</code> and
+  commit; don't hand-edit the script-generated ones (<code>5970/3452/9252</code>). The drift
+  check inside <code>5970.json</code> (<code>scattoni_7_bout_aware</code> vs deprecated <code>scattoni_7_sis_17_1</code>
+  must stay within 1e-3 bits) exists to catch silent pipeline changes.</li>
+<li><strong>The visualization STFT is deliberately different.</strong> <code>SpectrogramConfig</code> uses
+  n_fft=2048 / zero-pad 4096 (~61 Hz/bin) for display only (ADR-002 note). It is
+  <em>not</em> governed by <code>STFT_N_FFT</code>; do not "unify" them.</li>
+</ul>
+<h3 id="26-where-to-change-things">2.6 Where to change things</h3>
+<table>
+<thead>
+<tr>
+<th>You want to...</th>
+<th>Edit</th>
+<th>Then</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Change sample rate or STFT params globally</td>
+<td><code>src/usv_spectrogram/corpus.py:30-36</code></td>
+<td>Update <code>ExtractionConfig</code> literals to match (drift assert) + review every Layer-3 config. Sample-rate change implies re-rendering all training data.</td>
+</tr>
+<tr>
+<td>Change the analyzed band (20–120 kHz)</td>
+<td><code>corpus.py:32-33</code></td>
+<td><strong>Retrain CNN first</strong> (§2.4), then <code>extraction_config.py:36-37</code>, then <code>corpus.py</code>.</td>
+</tr>
+<tr>
+<td>Add a derived quantity</td>
+<td><code>corpus.py</code> (new helper fn, keep the formula visible)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Register a new dataset for Layer 2</td>
+<td><code>DATASET_REGISTRY</code> in <code>scripts/audit_corpus.py:68</code></td>
+<td>Run <code>audit_corpus.py --dataset &lt;name&gt; --output data/corpus_facts/&lt;name&gt;.json</code>, commit the JSON.</td>
+</tr>
+<tr>
+<td>Tune a per-algorithm knob</td>
+<td>the relevant Layer-3 config, <strong>not</strong> here</td>
+<td>Borrow physical constants from <code>corpus</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="27-adr-references">2.7 ADR references</h3>
+<ul>
+<li><strong>ADR-001 (Sample Rate — 300 kHz):</strong> <code>docs/human/DECISIONS.md:11</code>. Status:
+  Accepted. Rationale: USVs reach ~120 kHz; Nyquist needs ≥240 kHz; hardware runs at
+  300 kHz (Nyquist 150 kHz) for headroom. Mandates <code>sr=300000</code> everywhere and never
+  trusting librosa defaults. Notes the legacy 250 kHz <code>SpectrogramConfig</code> value as
+  outdated.</li>
+<li><strong>ADR-002 (STFT Parameters):</strong> <code>docs/human/DECISIONS.md:38</code>. Status: Accepted.
+  n_fft=512, hop=128, Hann; band 20–25k to 110–120k (detection historically used
+  25k–110k, VQ-VAE/analysis 20k–120k — the corpus now standardizes on 20k–120k).
+  Derived: frame 1.707 ms, hop 0.427 ms, 585.9 Hz/bin, ~171 bins in 20–120 kHz.
+  Explicitly states the visualization STFT (n_fft=2048, ~61 Hz/bin) is intentionally
+  different.</li>
+</ul>
+<blockquote>
+<p>Historical note on the band: ADR-002 records that the <em>detection</em> pipeline once
+used 25–110 kHz while VQ-VAE used 20–120 kHz. The 2026-04-17 unification settled
+the corpus on <strong>20–120 kHz</strong> to match the production CNN's training grid. If you
+read an older module citing 25–110 kHz, treat <code>corpus.py</code> as the truth.</p>
+</blockquote>
+<hr />
+<h2 id="related-docs">Related docs</h2>
+<ul>
+<li><a href="../modules/cnn-classifier.html">CNN classifier / detection pipeline</a> — consumes
+  these constants; the model whose grid locks the band.</li>
+<li><a href="../modules/cleaning-subsystems.html">Cleaning subsystems</a> — references the STFT grid.</li>
+<li><a href="../modules/sis-baselines.html">SIS baselines</a> — consumes the Layer 2 MI facts.</li>
+<li><code>docs/modules/corpus-constants.md</code> — the original module doc (also covers the
+  <code>data/lab_tonal_lines/&lt;rig_id&gt;.json</code> per-rig tonal libraries in detail).</li>
+<li><code>docs/human/DECISIONS.md</code> — ADR-001 (sample rate), ADR-002 (STFT), ADR-003
+  (detection thresholds).</li>
+<li><code>docs/handoffs/corpus-constants-unification-2026-04-17.md</code> — the refactor spec.</li>
+</ul>
+</div>
+</body>
+</html>

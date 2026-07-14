@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Labels &amp; Data — Where Everything Lives</title>
+<style>
+:root {
+  --bg:#0f1115; --panel:#181b22; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2a2f3a;
+  --accent:#6ea8fe; --accent2:#7ee0a8; --warn:#f0b86c; --code:#11141a;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.topbar {
+  position:sticky; top:0; z-index:10; background:rgba(15,17,21,.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); padding:10px 24px; font-size:13.5px;
+}
+.topbar a { color:var(--accent); text-decoration:none; }
+.topbar a:hover { text-decoration:underline; }
+.topbar .sep { color:var(--muted); margin:0 8px; }
+.wrap { max-width:900px; margin:0 auto; padding:34px 24px 90px; }
+h1,h2,h3,h4 { line-height:1.3; letter-spacing:-.2px; scroll-margin-top:60px; }
+h1 { font-size:30px; margin:.2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h2 { font-size:22px; margin:1.7em 0 .6em; color:#fff; }
+h3 { font-size:17px; margin:1.4em 0 .5em; color:var(--accent2); }
+h4 { font-size:15px; margin:1.2em 0 .4em; color:var(--ink); }
+a { color:var(--accent); }
+p,li { color:var(--ink); }
+hr { border:none; border-top:1px solid var(--line); margin:2em 0; }
+blockquote {
+  margin:1.2em 0; padding:.6em 1.1em; background:var(--panel);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0; color:var(--ink);
+}
+blockquote p { margin:.4em 0; }
+code {
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:.88em;
+  background:#222733; color:#cfe3ff; padding:.12em .4em; border-radius:5px;
+}
+pre {
+  background:var(--code); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; line-height:1.5;
+}
+pre code { background:none; color:#e7e9ee; padding:0; font-size:13px; }
+.codehilite { background:var(--code); border:1px solid var(--line); border-radius:10px; margin:1em 0; }
+.codehilite pre { background:none; border:none; margin:0; }
+table {
+  border-collapse:collapse; width:100%; margin:1.3em 0; font-size:14px; display:block; overflow-x:auto;
+}
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+th { background:var(--panel); color:#fff; font-weight:650; }
+tr:nth-child(even) td { background:rgba(255,255,255,.015); }
+ul,ol { padding-left:1.5em; }
+li { margin:.25em 0; }
+img { max-width:100%; border-radius:8px; }
+.toc {
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:10px 18px; margin:1.4em 0; font-size:14px;
+}
+.toc ul { margin:.3em 0; }
+::selection { background:#2d4a7a; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #404040 }
+.codehilite { background: #202020; color: #D0D0D0 }
+.codehilite .c { color: #ABABAB; font-style: italic } /* Comment */
+.codehilite .err { color: #A61717; background-color: #E3D2D2 } /* Error */
+.codehilite .esc { color: #D0D0D0 } /* Escape */
+.codehilite .g { color: #D0D0D0 } /* Generic */
+.codehilite .k { color: #6EBF26; font-weight: bold } /* Keyword */
+.codehilite .l { color: #D0D0D0 } /* Literal */
+.codehilite .n { color: #D0D0D0 } /* Name */
+.codehilite .o { color: #D0D0D0 } /* Operator */
+.codehilite .x { color: #D0D0D0 } /* Other */
+.codehilite .p { color: #D0D0D0 } /* Punctuation */
+.codehilite .ch { color: #ABABAB; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #ABABAB; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #FF3A3A; font-weight: bold } /* Comment.Preproc */
+.codehilite .cpf { color: #ABABAB; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #ABABAB; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #E50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.codehilite .gd { color: #FF3A3A } /* Generic.Deleted */
+.codehilite .ge { color: #D0D0D0; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #D0D0D0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF3A3A } /* Generic.Error */
+.codehilite .gh { color: #FFF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #589819 } /* Generic.Inserted */
+.codehilite .go { color: #CCC } /* Generic.Output */
+.codehilite .gp { color: #AAA } /* Generic.Prompt */
+.codehilite .gs { color: #D0D0D0; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #FFF; text-decoration: underline } /* Generic.Subheading */
+.codehilite .gt { color: #FF3A3A } /* Generic.Traceback */
+.codehilite .kc { color: #6EBF26; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #6EBF26; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #6EBF26; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #6EBF26 } /* Keyword.Pseudo */
+.codehilite .kr { color: #6EBF26; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #6EBF26; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #D0D0D0 } /* Literal.Date */
+.codehilite .m { color: #51B2FD } /* Literal.Number */
+.codehilite .s { color: #ED9D13 } /* Literal.String */
+.codehilite .na { color: #BBB } /* Name.Attribute */
+.codehilite .nb { color: #2FBCCD } /* Name.Builtin */
+.codehilite .nc { color: #71ADFF; text-decoration: underline } /* Name.Class */
+.codehilite .no { color: #40FFFF } /* Name.Constant */
+.codehilite .nd { color: #FFA500 } /* Name.Decorator */
+.codehilite .ni { color: #D0D0D0 } /* Name.Entity */
+.codehilite .ne { color: #BBB } /* Name.Exception */
+.codehilite .nf { color: #71ADFF } /* Name.Function */
+.codehilite .nl { color: #D0D0D0 } /* Name.Label */
+.codehilite .nn { color: #71ADFF; text-decoration: underline } /* Name.Namespace */
+.codehilite .nx { color: #D0D0D0 } /* Name.Other */
+.codehilite .py { color: #D0D0D0 } /* Name.Property */
+.codehilite .nt { color: #6EBF26; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #40FFFF } /* Name.Variable */
+.codehilite .ow { color: #6EBF26; font-weight: bold } /* Operator.Word */
+.codehilite .pm { color: #D0D0D0 } /* Punctuation.Marker */
+.codehilite .w { color: #666 } /* Text.Whitespace */
+.codehilite .mb { color: #51B2FD } /* Literal.Number.Bin */
+.codehilite .mf { color: #51B2FD } /* Literal.Number.Float */
+.codehilite .mh { color: #51B2FD } /* Literal.Number.Hex */
+.codehilite .mi { color: #51B2FD } /* Literal.Number.Integer */
+.codehilite .mo { color: #51B2FD } /* Literal.Number.Oct */
+.codehilite .sa { color: #ED9D13 } /* Literal.String.Affix */
+.codehilite .sb { color: #ED9D13 } /* Literal.String.Backtick */
+.codehilite .sc { color: #ED9D13 } /* Literal.String.Char */
+.codehilite .dl { color: #ED9D13 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #ED9D13 } /* Literal.String.Doc */
+.codehilite .s2 { color: #ED9D13 } /* Literal.String.Double */
+.codehilite .se { color: #ED9D13 } /* Literal.String.Escape */
+.codehilite .sh { color: #ED9D13 } /* Literal.String.Heredoc */
+.codehilite .si { color: #ED9D13 } /* Literal.String.Interpol */
+.codehilite .sx { color: #FFA500 } /* Literal.String.Other */
+.codehilite .sr { color: #ED9D13 } /* Literal.String.Regex */
+.codehilite .s1 { color: #ED9D13 } /* Literal.String.Single */
+.codehilite .ss { color: #ED9D13 } /* Literal.String.Symbol */
+.codehilite .bp { color: #2FBCCD } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #71ADFF } /* Name.Function.Magic */
+.codehilite .vc { color: #40FFFF } /* Name.Variable.Class */
+.codehilite .vg { color: #40FFFF } /* Name.Variable.Global */
+.codehilite .vi { color: #40FFFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #40FFFF } /* Name.Variable.Magic */
+.codehilite .il { color: #51B2FD } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="topbar"><a href="00_INDEX.html">&larr; Production docs index</a><span class="sep">/</span><span style="color:var(--muted)">Labels &amp; Data — Where Everything Lives</span></div>
+<div class="wrap">
+<h1 id="labels-data-where-everything-lives">Labels &amp; Data — Where Everything Lives</h1>
+<blockquote>
+<p><strong>What this is.</strong> The "where is everything" map for the USV lab: detection-label
+outputs (<code>USV_Detections/</code>), the master classified-detection tables
+(<code>classified_detections_*.csv</code>), WAV recording locations, human label sets, and
+the rig-vs-box split for large artifacts.
+<strong>Status.</strong> CURRENT (verified against the working tree 2026-06-21).
+<strong>Production artifact paths.</strong> Wild master table: <code>classified_detections_full.csv</code>
+(7,921 rows). Lab master table: <code>classified_detections_lab_131204_clean.csv</code>
+(40,787 rows). Human shape labels: <code>data/manual_shape_labels.csv</code> (758 rows;
+originally 204 — see <a href="#14-human-label-sets">§1.4</a>).
+<strong>Sibling docs.</strong> Large non-git artifacts: <a href="../DATA_LOCATIONS.html">DATA_LOCATIONS.md</a>.
+Detection pipeline that produces these files: see <code>scripts/run_batch_detection.py</code>
+and <code>docs/handoffs/v2-full-pipeline-results.md</code>.</p>
+</blockquote>
+<hr />
+<h2 id="1-operate">1. Operate</h2>
+<p>This component is <strong>data, not a program</strong> — there is no single command to "run". This
+section tells you how to <em>read</em> each file, what every column means, and the traps that
+have bitten people before.</p>
+<h3 id="11-the-detection-label-store-usv_detections">1.1 The detection-label store — <code>USV_Detections/</code></h3>
+<p><code>USV_Detections/</code> is the output of the <strong>PyQt6 desktop app's</strong> detection/review loop
+(written by <code>src/usv_spectrogram/app/core/detection_exporter.py</code>). Each WAV recording
+that has been reviewed gets one subdirectory named after the WAV stem, e.g.
+<code>USV_Detections/2024-09-30_20-59-55_0002986/</code>.</p>
+<div class="codehilite"><pre><span></span><code>USV_Detections/
+├── &lt;wav_stem&gt;/                     # one dir per reviewed recording (ACCEPTED detections)
+│   ├── detection_000_0.986s-1.097s.json   # per-detection metadata
+│   ├── detection_000_0.986s-1.097s.png    # cropped spectrogram image (the human view)
+│   ├── ...
+│   ├── detections_summary.csv             # flat table of THIS recording&#39;s detections
+│   └── _saved_tracking.json               # append-only log of every save action (accept + reject)
+├── rejected_detections/            # MIRROR of the above, for detections the user DELETED
+│   ├── &lt;wav_stem&gt;/ ...
+│   └── delete/                     # scratch bucket for ad-hoc single deletions
+└── noise_labeled_files/            # whole-file &quot;this file is pure noise&quot; labels (lab)
+    └── 131204_1400_m1fm1_chunk_000.json ...   (127 files)
+</code></pre></div>
+
+<ul>
+<li><strong>Accepted vs rejected.</strong> A detection the reviewer kept stays under
+  <code>USV_Detections/&lt;wav_stem&gt;/</code>. A detection the reviewer deleted is written under
+  <code>USV_Detections/rejected_detections/&lt;wav_stem&gt;/</code> instead. The same PNG/JSON naming
+  applies in both trees. The <code>_saved_tracking.json</code> inside an accepted dir logs <strong>both</strong>
+  outcomes with an <code>output_path</code> pointing into whichever tree the file landed in (see the
+  real example below — note rows whose <code>output_path</code> contains <code>rejected_detections/</code>).</li>
+<li>The naming convention <code>detection_{NNN}_{start:.3f}s-{end:.3f}s</code> is built at
+  <code>detection_exporter.py:77</code>.</li>
+</ul>
+<h4 id="per-detection-json-schema">Per-detection JSON schema</h4>
+<p>Written by <code>DetectionExporter._save_json_metadata</code> (method defined at
+<code>detection_exporter.py:210</code>; the <code>metadata</code> dict is built at <code>:235</code>). Real
+accepted example (<code>USV_Detections/2024-09-30_20-59-55_0002986/detection_000_0.986s-1.097s.json</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>detection_index</code></td>
+<td>int</td>
+<td>Index of this detection within the recording's detection list</td>
+</tr>
+<tr>
+<td><code>core_time.start_s</code> / <code>core_time.end_s</code></td>
+<td>float</td>
+<td>The detection's tight onset/offset, in seconds from file start</td>
+</tr>
+<tr>
+<td><code>core_time.duration_ms</code></td>
+<td>float</td>
+<td><code>(end_s - start_s) * 1000</code> (<code>detection_exporter.py:240</code>)</td>
+</tr>
+<tr>
+<td><code>saved_region.start_s</code> / <code>saved_region.end_s</code></td>
+<td>float</td>
+<td>The crop window actually saved — core time <strong>plus context padding</strong></td>
+</tr>
+<tr>
+<td><code>saved_region.context_ms</code></td>
+<td>float</td>
+<td>Padding added each side. Default <strong>20.0 ms</strong> (<code>DetectionExporter.__init__</code>, <code>detection_exporter.py:21</code>)</td>
+</tr>
+<tr>
+<td><code>probabilities.max</code></td>
+<td>float</td>
+<td>Max CNN probability over the detection window</td>
+</tr>
+<tr>
+<td><code>probabilities.mean</code></td>
+<td>float</td>
+<td>Mean CNN probability over the window</td>
+</tr>
+<tr>
+<td><code>probabilities.original_cnn_probability</code></td>
+<td>float | null</td>
+<td>Pre-recalibration probability; <code>null</code> for app-detected events that were never re-scored</td>
+</tr>
+<tr>
+<td><code>spectrogram_columns.start_col</code> / <code>end_col</code></td>
+<td>int</td>
+<td>STFT frame-column indices of the event in the full spectrogram</td>
+</tr>
+<tr>
+<td><code>user_action</code></td>
+<td>str | null</td>
+<td><code>null</code> = kept as-is; <code>"deleted_by_user"</code> = rejected; other review verbs possible</td>
+</tr>
+<tr>
+<td><code>session.session_id</code></td>
+<td>str (UUID)</td>
+<td>Review-session identifier</td>
+</tr>
+<tr>
+<td><code>session.threshold_preset</code></td>
+<td>str | null</td>
+<td>Named threshold preset if one was used</td>
+</tr>
+<tr>
+<td><code>session.threshold_high</code> / <code>threshold_low</code></td>
+<td>float</td>
+<td>Hysteresis onset/exit thresholds active when saved</td>
+</tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>ISO-8601 str</td>
+<td>When the JSON was written</td>
+</tr>
+<tr>
+<td><code>user_adjusted</code> <em>(optional)</em></td>
+<td>bool</td>
+<td>Present only if the reviewer dragged the boundaries (<code>detection_exporter.py:267</code>)</td>
+</tr>
+<tr>
+<td><code>original_boundaries</code> <em>(optional)</em></td>
+<td>object</td>
+<td>Pre-adjustment <code>start_s</code>/<code>end_s</code>, present only when <code>user_adjusted</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Threshold values are context-dependent, not a bug.</strong> Accepted app detections show
+<code>threshold_high: 0.04, threshold_low: 0.03</code> (the low-threshold operating point the app
+was run at). The <code>delete/</code> scratch example shows <code>0.6 / 0.4</code>. These are whatever the
+reviewer's session used; they are NOT the batch pipeline's calibrated thresholds.</p>
+</blockquote>
+<h4 id="detections_summarycsv-per-recording"><code>detections_summary.csv</code> (per recording)</h4>
+<p>Rewritten from the on-disk JSONs by <code>DetectionExporter._rewrite_csv_summary</code>
+(<code>detection_exporter.py:277</code>). Header (verified):</p>
+<div class="codehilite"><pre><span></span><code>wav_file,detection_index,start_time_s,end_time_s,duration_ms,max_prob,mean_prob,user_action,timestamp
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Source field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wav_file</code></td>
+<td>recording stem</td>
+</tr>
+<tr>
+<td><code>detection_index</code></td>
+<td><code>detection_index</code></td>
+</tr>
+<tr>
+<td><code>start_time_s</code> / <code>end_time_s</code></td>
+<td><code>core_time.start_s</code> / <code>core_time.end_s</code> (6 dp)</td>
+</tr>
+<tr>
+<td><code>duration_ms</code></td>
+<td><code>core_time.duration_ms</code> (2 dp)</td>
+</tr>
+<tr>
+<td><code>max_prob</code> / <code>mean_prob</code></td>
+<td><code>probabilities.max</code> / <code>.mean</code> (6 dp)</td>
+</tr>
+<tr>
+<td><code>user_action</code></td>
+<td><code>user_action</code> (empty string if <code>null</code>)</td>
+</tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>JSON <code>timestamp</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="_saved_trackingjson"><code>_saved_tracking.json</code></h4>
+<p>Append-only list of save events for the recording (managed by
+<code>src/usv_spectrogram/app/core/saved_detection_tracker.py</code>). Empty file = <code>[]</code>. Each entry:
+<code>start_time_s</code>, <code>end_time_s</code>, <code>save_timestamp</code>, <code>output_path</code> (absolute path to the saved
+PNG — <strong>this is how you tell accept from reject</strong>), <code>threshold_preset</code>, <code>threshold_high</code>,
+<code>threshold_low</code>, <code>session_id</code>, <code>user_action</code>.</p>
+<h4 id="noise_labeled_files-whole-file-noise-labels"><code>noise_labeled_files/</code> (whole-file noise labels)</h4>
+<p>127 JSON files, one per <strong>2-second lab chunk</strong> judged to be pure noise (<code>file_label: "noise"</code>).
+Schema differs from per-detection JSONs — top-level keys are <code>metadata</code>
+(<code>wav_file</code>, <code>model_file</code>, <code>created_at</code>, <code>duration_s</code>, <code>sample_rate: 300000</code>,
+<code>n_detections</code>, <code>file_label</code>), <code>detection_params</code> (<code>high_threshold: 0.04</code>,
+<code>low_threshold: 0.03</code>), <code>detections</code> (list), and <code>probability_curve</code>
+(<code>times</code> + probability arrays). These are produced by the <strong>noise-review app</strong>
+(<code>src/usv_spectrogram/labeling/noise_review_app.py</code>) using the production model
+<code>models/hard_neg_retrain/best_model.pt</code>. Used as a <strong>noise ground-truth</strong> set
+(see <a href="#14-human-label-sets">§1.4</a>).</p>
+<h3 id="12-the-master-classified-detection-tables">1.2 The master classified-detection tables</h3>
+<p>These wide CSVs are the analysis workhorses. They join the <strong>DeepSqueak acoustic
+features</strong> (one row per DS tonal sweep) against the <strong>production detection events</strong> (one
+row per hysteresis event) via a fuzzy time-overlap match.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Rows (excl. header)</th>
+<th>Cohort</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>classified_detections_full.csv</code></td>
+<td><strong>7,921</strong></td>
+<td>5970 (wild)</td>
+<td>The wild master table</td>
+</tr>
+<tr>
+<td><code>classified_detections_3452.csv</code></td>
+<td>—</td>
+<td>3452 (wild)</td>
+<td>per-cohort</td>
+</tr>
+<tr>
+<td><code>classified_detections_9252.csv</code></td>
+<td>—</td>
+<td>9252 (wild)</td>
+<td>per-cohort</td>
+</tr>
+<tr>
+<td><code>classified_detections_lab_131204_clean.csv</code></td>
+<td><strong>40,787</strong></td>
+<td>lab 131204</td>
+<td>The lab master table (see clean note below)</td>
+</tr>
+<tr>
+<td><code>classified_detections_lab_131204.csv</code></td>
+<td>40,787 + residue</td>
+<td>lab 131204</td>
+<td>RAW outer-join (has NaN-side rows + 597 wild residue) — do not analyze directly</td>
+</tr>
+<tr>
+<td><code>classified_detections_lab_131204_clean_filtered.csv</code></td>
+<td>—</td>
+<td>lab 131204</td>
+<td>clean + extra filtering</td>
+</tr>
+<tr>
+<td><code>classified_detections_lab_131204_downsampled_n7921.csv</code></td>
+<td>7,921</td>
+<td>lab 131204</td>
+<td>wild-matched downsample</td>
+</tr>
+<tr>
+<td><code>classified_detections.csv</code></td>
+<td>—</td>
+<td>5970 subset</td>
+<td>older/partial — prefer <code>_full</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Clean lab table provenance.</strong> <code>classified_detections_lab_131204_clean.csv</code> is produced
+from the raw import by <code>scripts/clean_classified_detections_lab.py</code>, which (per its
+docstring): drops outer-join NaN-side rows, filters to lab stems only (removes 597
+wild-mouse 3452 residue), joins <code>tier</code>/<code>couple</code> from <code>events_clean.parquet</code>, adds
+<code>couple_keep_set</code>, and <strong>asserts the final count is exactly 40,787</strong>.</p>
+<h4 id="columns-common-to-all-tables-header-verified">Columns common to all tables (header verified)</h4>
+<div class="codehilite"><pre><span></span><code>file,id,label,accepted,score,begin_time_s,end_time_s,call_length_s,
+principal_freq_hz,low_freq_hz,high_freq_hz,bandwidth_hz,freq_std_dev_hz,
+slope,sinuosity,mean_power_db,tonality,peak_freq_khz,source_file,wav_stem,
+det_start_s,det_end_s,det_duration_ms,det_index,det_prob_max,det_prob_mean,
+det_user_action,det_json_path,match_quality,match_distance_ms,peak_freq_hz
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Source</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td>DS</td>
+<td>recording stem the DS call came from</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>DS</td>
+<td>DeepSqueak call id within the file (1-based float)</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>classifier</td>
+<td>cluster/type label, e.g. <code>Cluster_27</code> (empty string if unlabeled)</td>
+</tr>
+<tr>
+<td><code>accepted</code></td>
+<td>DS</td>
+<td>DeepSqueak accept flag</td>
+</tr>
+<tr>
+<td><code>score</code></td>
+<td>DS</td>
+<td>DeepSqueak detection score</td>
+</tr>
+<tr>
+<td><code>begin_time_s</code> / <code>end_time_s</code></td>
+<td>DS</td>
+<td>DS tonal-sweep onset/offset</td>
+</tr>
+<tr>
+<td><strong><code>call_length_s</code></strong></td>
+<td><strong>DS</strong></td>
+<td><strong>DeepSqueak tonal-sweep duration (seconds). See the duration gotcha below.</strong></td>
+</tr>
+<tr>
+<td><code>principal_freq_hz</code></td>
+<td>DS</td>
+<td>dominant frequency</td>
+</tr>
+<tr>
+<td><code>low_freq_hz</code> / <code>high_freq_hz</code></td>
+<td>DS</td>
+<td>frequency extent</td>
+</tr>
+<tr>
+<td><code>bandwidth_hz</code></td>
+<td>DS</td>
+<td><code>high - low</code></td>
+</tr>
+<tr>
+<td><code>freq_std_dev_hz</code></td>
+<td>DS</td>
+<td>frequency spread</td>
+</tr>
+<tr>
+<td><code>slope</code></td>
+<td>DS</td>
+<td>mean spectral slope</td>
+</tr>
+<tr>
+<td><code>sinuosity</code></td>
+<td>DS</td>
+<td>contour wiggliness</td>
+</tr>
+<tr>
+<td><code>mean_power_db</code></td>
+<td>DS</td>
+<td><strong>cage/recording-environment artifact — NEVER cite as biology without cross-cage calibration</strong></td>
+</tr>
+<tr>
+<td><code>tonality</code></td>
+<td>DS</td>
+<td>tonal-vs-noise measure (same cage caveat)</td>
+</tr>
+<tr>
+<td><code>peak_freq_khz</code> / <code>peak_freq_hz</code></td>
+<td>DS</td>
+<td>peak frequency (kHz and Hz forms)</td>
+</tr>
+<tr>
+<td><code>source_file</code></td>
+<td>provenance</td>
+<td>e.g. <code>classified_Stats.xlsx</code></td>
+</tr>
+<tr>
+<td><code>wav_stem</code></td>
+<td>provenance</td>
+<td>recording stem (join key)</td>
+</tr>
+<tr>
+<td><code>det_start_s</code> / <code>det_end_s</code></td>
+<td><strong>detection event</strong></td>
+<td>hysteresis-event onset/offset (empty if the DS call had no matched detection)</td>
+</tr>
+<tr>
+<td><strong><code>det_duration_ms</code></strong></td>
+<td><strong>detection event</strong></td>
+<td><strong>hysteresis-event duration (ms). USE THIS for visual-verdict filters.</strong></td>
+</tr>
+<tr>
+<td><code>det_index</code></td>
+<td>detection event</td>
+<td>detection index within the recording</td>
+</tr>
+<tr>
+<td><code>det_prob_max</code> / <code>det_prob_mean</code></td>
+<td>detection event</td>
+<td>CNN probabilities from the matched detection</td>
+</tr>
+<tr>
+<td><code>det_user_action</code></td>
+<td>detection event</td>
+<td>review verb if any</td>
+</tr>
+<tr>
+<td><code>det_json_path</code></td>
+<td>detection event</td>
+<td>path to the source detection JSON (lab rows point into <code>results/batch_lab_full_softnotch_.../detections_clean/</code>)</td>
+</tr>
+<tr>
+<td><code>match_quality</code></td>
+<td>join</td>
+<td><code>fuzzy</code> (matched), <code>unmatched_ds</code> (DS call with no detection), <code>unmatched_det</code> (detection with no DS call). In <code>_full</code>: 7,518 fuzzy / 346 unmatched_ds / 57 unmatched_det</td>
+</tr>
+<tr>
+<td><code>match_distance_ms</code></td>
+<td>join</td>
+<td>time gap between the DS call and matched detection</td>
+</tr>
+</tbody>
+</table>
+<h4 id="lab-only-extra-columns">Lab-only extra columns</h4>
+<p><code>classified_detections_lab_131204_clean.csv</code> appends 4 columns (added by
+<code>clean_classified_detections_lab.py</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tier</code></td>
+<td>triage tier: <code>auto_accept</code> (29,790 rows) or <code>manual_review</code> (10,997 rows)</td>
+</tr>
+<tr>
+<td><code>couple</code></td>
+<td>partner-pairing id, e.g. <code>m1fm1</code> (17 distinct couples — this is a partner-swap matrix, NOT one couple)</td>
+</tr>
+<tr>
+<td><code>couple_keep_set</code></td>
+<td m1fm1_="m1fm1," m1fm2_="m1fm2," m1fm4_="m1fm4," m3fm3="m3fm3">bool: <code>True</code> for the 13 retained couples; <code>False</code> for the 4 noise-prone ones</td>
+</tr>
+<tr>
+<td><code>animal_id</code></td>
+<td>animal identifier — currently <strong>identical to <code>couple</code></strong> in every row (verified: 0 rows where <code>animal_id != couple</code>), i.e. it carries the pairing id, not a distinct per-animal id</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<h3 id="gotcha-the-two-duration-columns-most-common-analysis-bug">⚠ GOTCHA — the TWO duration columns (most common analysis bug)</h3>
+<p>Each table has <strong>two</strong> duration columns that can differ <strong>by up to 10×</strong>:
+- <code>call_length_s</code> — the <strong>DeepSqueak tonal-sweep</strong> duration (the bright contour DS traced).
+- <code>det_duration_ms</code> — the <strong>hysteresis-detection-event</strong> duration (the full event the
+  CNN+hysteresis fired on).</p>
+<p><strong>The PNGs in <code>USV_Detections/</code> show the HYSTERESIS EVENT.</strong> Therefore any filter whose
+result will be eyeballed against a PNG — exemplar selection, "show me calls &lt; X ms",
+visual-verdict review — <strong>MUST filter on <code>det_duration_ms</code>, not <code>call_length_s</code>.</strong>
+Filtering on <code>call_length_s</code> selects a window that does not match what you see.
+(Unit mismatch too: one is seconds, one is milliseconds.)</p>
+</blockquote>
+<h4 id="quick-read-example">Quick read example</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Count lab rows per triage tier</span>
+.venv/bin/python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">import csv, collections</span>
+<span class="s2">r = csv.DictReader(open(&#39;classified_detections_lab_131204_clean.csv&#39;))</span>
+<span class="s2">c = collections.Counter(row[&#39;tier&#39;] for row in r)</span>
+<span class="s2">print(c)</span>
+<span class="s2">&quot;</span>
+<span class="c1"># -&gt; Counter({&#39;auto_accept&#39;: 29790, &#39;manual_review&#39;: 10997})</span>
+</code></pre></div>
+
+<h3 id="13-wav-recording-locations-there-is-no-single-canonical-dir">1.3 WAV recording locations — there is NO single canonical dir</h3>
+<p>Recordings span multiple top-level directories. Never assume one. Counts verified in the
+working tree (2026-06-21):</p>
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>WAV count</th>
+<th>Cohort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>5970 USV/</code></td>
+<td>12</td>
+<td>5970 (wild) — note the <strong>space</strong> in the name</td>
+</tr>
+<tr>
+<td><code>USV_3452_sample/</code></td>
+<td>5,409</td>
+<td>3452 (wild)</td>
+</tr>
+<tr>
+<td><code>USV_3452_sample_reviewed/</code></td>
+<td>853</td>
+<td>3452 reviewed subset</td>
+</tr>
+<tr>
+<td><code>USV_9252/</code></td>
+<td>11,580</td>
+<td>9252 (wild)</td>
+</tr>
+<tr>
+<td><code>USV_lab_131204/</code></td>
+<td>83</td>
+<td>lab 131204 (un-chunked)</td>
+</tr>
+<tr>
+<td><code>USV_2379_sample/</code></td>
+<td>1,280</td>
+<td>2379</td>
+</tr>
+<tr>
+<td><code>USV_2379_sample_reviewed/</code></td>
+<td>77</td>
+<td>2379 reviewed</td>
+</tr>
+</tbody>
+</table>
+<p>The lab detection JSONs reference chunked 2-second WAVs under
+<code>USV_lab_131204_chunked_2s_full/</code> (e.g. <code>131204_1400_m1fm1_chunk_000.wav</code>). <strong>That
+chunked directory is NOT present in the box working tree</strong> — regenerate from
+<code>USV_lab_131204/</code> or pull from the rig if needed.</p>
+<p><strong>Resolving WAV paths in scripts.</strong> Use <code>--wav-search-dirs</code> (one or more dirs, searched
+recursively) in <code>scripts/unify_labels.py</code> (<code>scripts/unify_labels.py:305</code>; example at
+<code>:19</code>). Legacy fallback: the <code>USV_WAV_DIR</code> environment variable (referenced in CLAUDE.md;
+NOT referenced inside <code>unify_labels.py</code> itself).</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/unify_labels.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-search-dirs<span class="w"> </span><span class="s2">&quot;USV5/usv_lmt_034&quot;</span><span class="w"> </span><span class="s2">&quot;USV_3452_sample_reviewed&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>data/unified_labels.json
+</code></pre></div>
+
+<blockquote>
+<p>Note: <code>unify_labels.py</code> produces <code>data/unified_labels.json</code> (default
+<code>--output</code>, <code>unify_labels.py:309</code>) — it is the label-unifier, <strong>not</strong> the script that
+builds the classified-detection master CSVs.</p>
+</blockquote>
+<h3 id="14-human-label-sets">1.4 Human label sets</h3>
+<h4 id="shape-labels-datamanual_shape_labelscsv">Shape labels — <code>data/manual_shape_labels.csv</code></h4>
+<p>The lab's shape labels were made by a human on <strong>NORMAL spectrogram patches</strong>.</p>
+<ul>
+<li><strong>Substrate (correct one):</strong> <code>scripts/experiments/render_human_view_patches.py</code> →
+  output <code>data/alpha3_human_patches/&lt;call_id&gt;.png</code> + <code>manifest.csv</code>. This is a tight,
+  per-call crop on a normal spectrogram (see the script's module docstring,
+  <code>render_human_view_patches.py:1</code>).</li>
+<li><strong>NOT the substrate:</strong> the contour-masked VAE render
+  (<code>render_vocalmat_style_patches.py</code> / <code>alpha3_patches</code>) produces illegible vertical
+  bands and was <strong>not</strong> used for human shape labeling.</li>
+</ul>
+<p><code>data/manual_shape_labels.csv</code> header: <code>call_id,cohort,shape_label,labeled_at_index</code>.
+<code>call_id</code> form is <code>&lt;wav_stem&gt;__det&lt;N&gt;</code> (e.g. <code>131204_1400_m1fm1_chunk_033__det9</code>).</p>
+<blockquote>
+<p><strong>204 → 758.</strong> The label set started at <strong>204</strong> rows (preserved at
+<code>data/manual_shape_labels.backup_204_pre_relabel.csv</code>, 204 data rows). It has since
+been expanded; the live <code>data/manual_shape_labels.csv</code> currently holds <strong>758</strong> rows.
+If a doc or note says "204 labels", it refers to the original frozen set, not the
+current file. Other backups: <code>data/manual_shape_labels.backup_20260603_183046_pre_drop3wild.csv</code>.</p>
+</blockquote>
+<h4 id="noise-ground-truth-sets">Noise ground-truth sets</h4>
+<ul>
+<li><code>USV_Detections/noise_labeled_files/</code> — 127 whole-file lab-chunk noise labels
+  (<code>file_label: "noise"</code>), produced by <code>noise_review_app.py</code> (see <a href="#11-the-detection-label-store--usv_detections">§1.1</a>).</li>
+<li><code>results/batch_5970/1960_problem_examples/</code> — 12 curated 5970 problem PNGs
+  (the historical "1960 problem" known-noise / spectral-flatness examples; some
+  suffixed <code>_GOOD.png</code>). Plan context: <code>docs/plans/1960-spectral-flatness-plan.md</code>.</li>
+</ul>
+<p><strong>Why this matters:</strong> "this is noise" claims should be anchored on these
+human-confirmed sets, not on a visual read of a single spectrogram — short/faint USVs
+are not reliably eyeball-separable from broadband-noise transients.</p>
+<h3 id="15-rig-vs-box-where-the-large-artifacts-live">1.5 Rig vs box — where the LARGE artifacts live</h3>
+<p>Big, regeneratable artifacts (masked <code>patches.npz</code>, the contour-VAE, latent parquets,
+registered ridges) are <strong>deliberately kept out of git</strong> and live ONLY on the GPU rig:</p>
+<div class="codehilite"><pre><span></span><code>shachar@100.113.224.57:/data/shachar/contour_vae/        (cloudyclaude, 3× RTX 3060 Ti)
+</code></pre></div>
+
+<p>Examples (full table in <a href="../DATA_LOCATIONS.html">DATA_LOCATIONS.md</a>):
+<code>results/masked_patches/&lt;cohort&gt;_focus/patches.npz</code>,
+<code>results/masked_patches/combined_all_cohorts/patches.npz</code> (<strong>16 G</strong>),
+<code>models/contour_vae_combined/best.pt</code>,
+<code>results/contour_vae_combined/latents.parquet</code>,
+<code>models/shape_kmeans/k20.joblib</code>.</p>
+<blockquote>
+<p><strong>Do not "re-create" the rig patches from memory</strong> — a 2026-05-29 chat did exactly
+that and diverged on ~6 axes. The render is canonical: global Hann 512/128 @ 300 kHz,
+fixed 234-bin windows, raw-power <code>(N, 257, 234)</code>. <strong>Check the rig first.</strong> And
+<strong>never full-scan the 16 G combined <code>patches.npz</code> on the box</strong> — it OOM-crashed WSL.
+See <a href="../DATA_LOCATIONS.html">DATA_LOCATIONS.md</a> and auto-memory
+<code>feedback_cleaning_pipeline_impl_on_rig</code>.</p>
+</blockquote>
+<h3 id="troubleshooting-gotchas">Troubleshooting / Gotchas</h3>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause / Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Filtered-by-duration calls don't match their PNGs</td>
+<td>You used <code>call_length_s</code> (DS sweep). PNGs show the hysteresis event — filter on <strong><code>det_duration_ms</code></strong> (<a href="#12-the-master-classified-detection-tables">§1.2</a>).</td>
+</tr>
+<tr>
+<td>Lab CSV has NaN-filled rows / 597 stray wild rows</td>
+<td>You opened the RAW <code>classified_detections_lab_131204.csv</code>. Use the <code>_clean.csv</code> (40,787 rows, NaN-side rows dropped).</td>
+</tr>
+<tr>
+<td><code>mean_power_db</code> / <code>tonality</code> shows a "strain difference"</td>
+<td>Both are cage/recording-environment artifacts. Do not call it biology without cross-cage calibration.</td>
+</tr>
+<tr>
+<td>Can't find the WAV for a stem</td>
+<td>No single WAV dir. Search 5970 USV/, USV_3452_sample(_reviewed)/, USV_9252/, USV_lab_131204/, USV_2379_sample/. Use <code>--wav-search-dirs</code>.</td>
+</tr>
+<tr>
+<td>Lab detection JSON references a WAV that doesn't exist</td>
+<td>It points at <code>USV_lab_131204_chunked_2s_full/</code> (chunked 2 s) — not in the box tree; regenerate from <code>USV_lab_131204/</code> or pull from rig.</td>
+</tr>
+<tr>
+<td>Shape-label patches look like illegible vertical bands</td>
+<td>You rendered the contour-masked VAE patches. Human labels were made on <strong>normal</strong> spectrograms via <code>render_human_view_patches.py</code>.</td>
+</tr>
+<tr>
+<td>"We only have 204 shape labels" contradicts the file</td>
+<td>204 is the frozen original (<code>backup_204_pre_relabel.csv</code>). Live file is 758 rows.</td>
+</tr>
+<tr>
+<td><code>patches.npz</code> missing locally</td>
+<td>It only exists on the rig (<code>/data/shachar/contour_vae/</code>). It is git-ignored by design.</td>
+</tr>
+<tr>
+<td>Detection has <code>threshold_high: 0.6</code> not <code>0.04</code></td>
+<td>Thresholds are whatever the review session used; not the calibrated batch values. Not a corruption.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-internals">2. Internals</h2>
+<h3 id="producers-who-writes-each-file">Producers (who writes each file)</h3>
+<table>
+<thead>
+<tr>
+<th>Output</th>
+<th>Writer</th>
+<th>Key location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>USV_Detections/&lt;stem&gt;/detection_*.json</code></td>
+<td><code>DetectionExporter._save_json_metadata</code></td>
+<td><code>src/usv_spectrogram/app/core/detection_exporter.py:210</code> (metadata dict at <code>:235</code>)</td>
+</tr>
+<tr>
+<td><code>USV_Detections/&lt;stem&gt;/detections_summary.csv</code></td>
+<td><code>DetectionExporter._rewrite_csv_summary</code></td>
+<td><code>detection_exporter.py:277</code></td>
+</tr>
+<tr>
+<td><code>_saved_tracking.json</code></td>
+<td><code>saved_detection_tracker.py</code></td>
+<td><code>src/usv_spectrogram/app/core/saved_detection_tracker.py</code></td>
+</tr>
+<tr>
+<td><code>noise_labeled_files/*.json</code></td>
+<td>noise-review app</td>
+<td><code>src/usv_spectrogram/labeling/noise_review_app.py</code></td>
+</tr>
+<tr>
+<td><code>classified_detections_lab_131204_clean.csv</code></td>
+<td>clean script</td>
+<td><code>scripts/clean_classified_detections_lab.py</code></td>
+</tr>
+<tr>
+<td><code>data/alpha3_human_patches/*.png</code> + <code>manifest.csv</code></td>
+<td>human-view renderer</td>
+<td><code>scripts/experiments/render_human_view_patches.py</code></td>
+</tr>
+<tr>
+<td><code>data/unified_labels.json</code></td>
+<td>label unifier</td>
+<td><code>scripts/unify_labels.py:288</code> (<code>main</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-flow">Data flow</h3>
+<div class="codehilite"><pre><span></span><code>WAV ──CNN+hysteresis (app Detect or run_batch_detection)──▶ detections (events)
+                                                                  │
+        DeepSqueak ──acoustic features (tonal sweeps)──┐         │
+                                                        ▼         ▼
+                                   fuzzy time-overlap JOIN (match_quality, match_distance_ms)
+                                                        │
+                                                        ▼
+                                    classified_detections_&lt;cohort&gt;.csv
+                                       │ (lab: + clean script)
+                                       ▼
+                            classified_detections_lab_131204_clean.csv
+                                   (+ tier, couple, couple_keep_set, animal_id)
+
+PyQt6 app review loop ──accept/reject──▶ USV_Detections/{&lt;stem&gt;/, rejected_detections/&lt;stem&gt;/}
+                                                  (detection_*.json + .png + detections_summary.csv + _saved_tracking.json)
+</code></pre></div>
+
+<h3 id="key-signatures">Key signatures</h3>
+<ul>
+<li><code>DetectionExporter.__init__(self, output_dir: Path, context_ms: float = 20.0)</code> —
+  <code>detection_exporter.py:21</code>. The <strong>20 ms</strong> default context padding lives here.</li>
+<li><code>DetectionExporter._save_json_metadata(...)</code> — <code>detection_exporter.py:210</code> (metadata
+  dict at <code>:235</code>). The JSON schema is defined inline here; the optional <code>user_adjusted</code> /
+  <code>original_boundaries</code> keys are added at <code>:267</code>.</li>
+<li><code>DetectionExporter._rewrite_csv_summary(self, wav_filename: str) -&gt; Path</code> —
+  <code>detection_exporter.py:277</code>. The CSV is <strong>regenerated from the JSONs on disk</strong>, so the
+  JSONs are the source of truth; the CSV is a derived view.</li>
+</ul>
+<h3 id="invariants">Invariants</h3>
+<ul>
+<li><strong>JSONs are canonical; <code>detections_summary.csv</code> is derived.</strong> Editing the CSV by hand
+  is pointless — it is rewritten from the JSONs on the next save.</li>
+<li><strong>Accept/reject is encoded by directory + <code>user_action</code>/<code>output_path</code>.</strong> A file's tree
+  (<code>USV_Detections/&lt;stem&gt;/</code> vs <code>.../rejected_detections/&lt;stem&gt;/</code>) and its <code>user_action</code>
+  field together determine its disposition; cross-check via <code>_saved_tracking.json</code>'s
+  <code>output_path</code>.</li>
+<li><strong><code>classified_detections_lab_131204_clean.csv</code> row count == 40,787</strong> is <em>asserted</em> by
+  the producer (<code>clean_classified_detections_lab.py</code> docstring). A different count means
+  the upstream import changed.</li>
+<li><strong>Signal-processing constants are not in these data files.</strong> Sample rate, band, and STFT
+  are enforced once in <code>src/usv_spectrogram/corpus.py</code>:
+  <code>SAMPLE_RATE_HZ = 300_000</code> (<code>corpus.py:30</code>), <code>USV_FREQ_MIN_HZ = 20_000</code> (<code>:32</code>),
+  <code>USV_FREQ_MAX_HZ = 120_000</code> (<code>:33</code>), <code>STFT_N_FFT = 512</code> (<code>:35</code>), hop 128 (ADR-002,
+  <code>corpus.py:12</code>). Import from <code>corpus</code>; never restate these in analysis code.</li>
+</ul>
+<h3 id="where-to-change-things">Where to change things</h3>
+<ul>
+<li><strong>Add a field to the detection JSON / CSV:</strong> edit the <code>metadata</code> dict in
+  <code>_save_json_metadata</code> (<code>detection_exporter.py:235</code>) AND the row builder in
+  <code>_rewrite_csv_summary</code> (<code>detection_exporter.py:290</code>) — both, or the CSV will drift.</li>
+<li><strong>Change context padding:</strong> the <code>context_ms</code> default in <code>DetectionExporter.__init__</code>
+  (<code>detection_exporter.py:21</code>); callers may override it.</li>
+<li><strong>Change the lab clean/filter logic or the keep-set:</strong> <code>scripts/clean_classified_detections_lab.py</code>
+  (the {m1fm1, m1fm2, m1fm4, m3fm3} noise-prone exclusion lives there).</li>
+<li><strong>Change WAV resolution:</strong> <code>build_wav_index</code> / the <code>--wav-search-dirs</code> handling in
+  <code>scripts/unify_labels.py:332</code>.</li>
+</ul>
+</div>
+</body>
+</html>

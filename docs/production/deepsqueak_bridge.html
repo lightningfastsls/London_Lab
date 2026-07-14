@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeepSqueak Classification Bridge</title>
+<style>
+:root {
+  --bg:#0f1115; --panel:#181b22; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2a2f3a;
+  --accent:#6ea8fe; --accent2:#7ee0a8; --warn:#f0b86c; --code:#11141a;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.topbar {
+  position:sticky; top:0; z-index:10; background:rgba(15,17,21,.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); padding:10px 24px; font-size:13.5px;
+}
+.topbar a { color:var(--accent); text-decoration:none; }
+.topbar a:hover { text-decoration:underline; }
+.topbar .sep { color:var(--muted); margin:0 8px; }
+.wrap { max-width:900px; margin:0 auto; padding:34px 24px 90px; }
+h1,h2,h3,h4 { line-height:1.3; letter-spacing:-.2px; scroll-margin-top:60px; }
+h1 { font-size:30px; margin:.2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h2 { font-size:22px; margin:1.7em 0 .6em; color:#fff; }
+h3 { font-size:17px; margin:1.4em 0 .5em; color:var(--accent2); }
+h4 { font-size:15px; margin:1.2em 0 .4em; color:var(--ink); }
+a { color:var(--accent); }
+p,li { color:var(--ink); }
+hr { border:none; border-top:1px solid var(--line); margin:2em 0; }
+blockquote {
+  margin:1.2em 0; padding:.6em 1.1em; background:var(--panel);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0; color:var(--ink);
+}
+blockquote p { margin:.4em 0; }
+code {
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:.88em;
+  background:#222733; color:#cfe3ff; padding:.12em .4em; border-radius:5px;
+}
+pre {
+  background:var(--code); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; line-height:1.5;
+}
+pre code { background:none; color:#e7e9ee; padding:0; font-size:13px; }
+.codehilite { background:var(--code); border:1px solid var(--line); border-radius:10px; margin:1em 0; }
+.codehilite pre { background:none; border:none; margin:0; }
+table {
+  border-collapse:collapse; width:100%; margin:1.3em 0; font-size:14px; display:block; overflow-x:auto;
+}
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+th { background:var(--panel); color:#fff; font-weight:650; }
+tr:nth-child(even) td { background:rgba(255,255,255,.015); }
+ul,ol { padding-left:1.5em; }
+li { margin:.25em 0; }
+img { max-width:100%; border-radius:8px; }
+.toc {
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:10px 18px; margin:1.4em 0; font-size:14px;
+}
+.toc ul { margin:.3em 0; }
+::selection { background:#2d4a7a; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #404040 }
+.codehilite { background: #202020; color: #D0D0D0 }
+.codehilite .c { color: #ABABAB; font-style: italic } /* Comment */
+.codehilite .err { color: #A61717; background-color: #E3D2D2 } /* Error */
+.codehilite .esc { color: #D0D0D0 } /* Escape */
+.codehilite .g { color: #D0D0D0 } /* Generic */
+.codehilite .k { color: #6EBF26; font-weight: bold } /* Keyword */
+.codehilite .l { color: #D0D0D0 } /* Literal */
+.codehilite .n { color: #D0D0D0 } /* Name */
+.codehilite .o { color: #D0D0D0 } /* Operator */
+.codehilite .x { color: #D0D0D0 } /* Other */
+.codehilite .p { color: #D0D0D0 } /* Punctuation */
+.codehilite .ch { color: #ABABAB; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #ABABAB; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #FF3A3A; font-weight: bold } /* Comment.Preproc */
+.codehilite .cpf { color: #ABABAB; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #ABABAB; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #E50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.codehilite .gd { color: #FF3A3A } /* Generic.Deleted */
+.codehilite .ge { color: #D0D0D0; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #D0D0D0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF3A3A } /* Generic.Error */
+.codehilite .gh { color: #FFF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #589819 } /* Generic.Inserted */
+.codehilite .go { color: #CCC } /* Generic.Output */
+.codehilite .gp { color: #AAA } /* Generic.Prompt */
+.codehilite .gs { color: #D0D0D0; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #FFF; text-decoration: underline } /* Generic.Subheading */
+.codehilite .gt { color: #FF3A3A } /* Generic.Traceback */
+.codehilite .kc { color: #6EBF26; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #6EBF26; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #6EBF26; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #6EBF26 } /* Keyword.Pseudo */
+.codehilite .kr { color: #6EBF26; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #6EBF26; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #D0D0D0 } /* Literal.Date */
+.codehilite .m { color: #51B2FD } /* Literal.Number */
+.codehilite .s { color: #ED9D13 } /* Literal.String */
+.codehilite .na { color: #BBB } /* Name.Attribute */
+.codehilite .nb { color: #2FBCCD } /* Name.Builtin */
+.codehilite .nc { color: #71ADFF; text-decoration: underline } /* Name.Class */
+.codehilite .no { color: #40FFFF } /* Name.Constant */
+.codehilite .nd { color: #FFA500 } /* Name.Decorator */
+.codehilite .ni { color: #D0D0D0 } /* Name.Entity */
+.codehilite .ne { color: #BBB } /* Name.Exception */
+.codehilite .nf { color: #71ADFF } /* Name.Function */
+.codehilite .nl { color: #D0D0D0 } /* Name.Label */
+.codehilite .nn { color: #71ADFF; text-decoration: underline } /* Name.Namespace */
+.codehilite .nx { color: #D0D0D0 } /* Name.Other */
+.codehilite .py { color: #D0D0D0 } /* Name.Property */
+.codehilite .nt { color: #6EBF26; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #40FFFF } /* Name.Variable */
+.codehilite .ow { color: #6EBF26; font-weight: bold } /* Operator.Word */
+.codehilite .pm { color: #D0D0D0 } /* Punctuation.Marker */
+.codehilite .w { color: #666 } /* Text.Whitespace */
+.codehilite .mb { color: #51B2FD } /* Literal.Number.Bin */
+.codehilite .mf { color: #51B2FD } /* Literal.Number.Float */
+.codehilite .mh { color: #51B2FD } /* Literal.Number.Hex */
+.codehilite .mi { color: #51B2FD } /* Literal.Number.Integer */
+.codehilite .mo { color: #51B2FD } /* Literal.Number.Oct */
+.codehilite .sa { color: #ED9D13 } /* Literal.String.Affix */
+.codehilite .sb { color: #ED9D13 } /* Literal.String.Backtick */
+.codehilite .sc { color: #ED9D13 } /* Literal.String.Char */
+.codehilite .dl { color: #ED9D13 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #ED9D13 } /* Literal.String.Doc */
+.codehilite .s2 { color: #ED9D13 } /* Literal.String.Double */
+.codehilite .se { color: #ED9D13 } /* Literal.String.Escape */
+.codehilite .sh { color: #ED9D13 } /* Literal.String.Heredoc */
+.codehilite .si { color: #ED9D13 } /* Literal.String.Interpol */
+.codehilite .sx { color: #FFA500 } /* Literal.String.Other */
+.codehilite .sr { color: #ED9D13 } /* Literal.String.Regex */
+.codehilite .s1 { color: #ED9D13 } /* Literal.String.Single */
+.codehilite .ss { color: #ED9D13 } /* Literal.String.Symbol */
+.codehilite .bp { color: #2FBCCD } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #71ADFF } /* Name.Function.Magic */
+.codehilite .vc { color: #40FFFF } /* Name.Variable.Class */
+.codehilite .vg { color: #40FFFF } /* Name.Variable.Global */
+.codehilite .vi { color: #40FFFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #40FFFF } /* Name.Variable.Magic */
+.codehilite .il { color: #51B2FD } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="topbar"><a href="00_INDEX.html">&larr; Production docs index</a><span class="sep">/</span><span style="color:var(--muted)">DeepSqueak Classification Bridge</span></div>
+<div class="wrap">
+<h1 id="deepsqueak-classification-bridge">DeepSqueak Classification Bridge</h1>
+<blockquote>
+<p><strong>What this is:</strong> The round-trip pipeline that takes CNN-detected USVs, ships them
+through DeepSqueak (MATLAB) for unsupervised acoustic clustering + per-call feature
+extraction, and merges the result back into a single CSV keyed to our detections.
+It produced <code>classified_detections_full.csv</code> for the 5970 cohort (7,518 calls matched).</p>
+<p><strong>Status:</strong> Production / complete for 5970, 3452, 9252, and lab_131204 cohorts.
+The Python halves (<code>raven_export.py</code>, <code>deepsqueak_import.py</code>) are stable and tested.
+The MATLAB middle (clustering + stats) is run by hand on a Windows MATLAB host.</p>
+<p><strong>Production artifact (5970):</strong> <code>/home/shachar/projects/mickey_london_lab/classified_detections_full.csv</code>
+(7,921 rows, 31 columns). Other cohorts: <code>classified_detections_3452.csv</code>,
+<code>classified_detections_9252.csv</code>, <code>classified_detections_lab_131204.csv</code> (repo root).</p>
+<p><strong>Two taxonomies live here.</strong> DeepSqueak's k-means writes 27 acoustic <em>clusters</em>
+(<code>label</code> column). A separate rule-based pass (<a href="#26-the-7-type-traditional-taxonomy-vs-the-continuum">§2.6</a>)
+writes 7 literature-standard <em>syllable types</em>. Neither is "ground truth" — see the
+continuum caveat. See also <a href="labels_and_data.html">labels &amp; data</a> and
+<a href="cnn_detection_pipeline.html">CNN detection</a>.</p>
+</blockquote>
+<hr />
+<h2 id="pipeline-at-a-glance">Pipeline at a glance</h2>
+<div class="codehilite"><pre><span></span><code>CNN batch detection            results/batch_&lt;cohort&gt;/detections/&lt;stem&gt;.json   (run_batch_detection.py)
+  │
+  ▼  export_raven_tables.py --batch-format
+Raven selection tables         raven_tables_full/&lt;stem&gt;.Table.1.selections.txt
+  │
+  ▼  MATLAB: create_deepsqueak_mats.m
+DeepSqueak .mat detection files   &lt;DeepSqueak&gt;/Detections/&lt;stem&gt;.mat
+  │
+  ▼  MATLAB: deepsqueak_batch_classify.m  (k-means or artwarp)
+Cluster labels written back to .mat + clustering_model_kmeans.mat
+  │
+  ▼  MATLAB: deepsqueak_export_stats.m  (called automatically by batch_classify)
+deepsqueak_output_full/classified_Stats.xlsx   (18-column feature table)
+  │
+  ▼  import_deepsqueak_results.py --batch-format --tolerance-ms 75.0
+classified_detections_full.csv   (DeepSqueak features + our detection metadata, merged)
+  │
+  ▼  (optional) classify_traditional_taxonomy.py
+results/traditional_taxonomy/classified_traditional.csv   (+ syllable_type, confidence)
+</code></pre></div>
+
+<p>The two ends are <strong>Python on WSL/Linux</strong>; the middle three steps are <strong>MATLAB on a
+Windows host</strong> that reaches the repo over a UNC path (<code>\\wsl.localhost\Ubuntu\...</code>).
+DeepSqueak does not run headless on Linux, which is why the pipeline is split.</p>
+<hr />
+<h2 id="1-operate">1. Operate</h2>
+<h3 id="11-prerequisites">1.1 Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python env</td>
+<td><code>.venv/bin/python</code> (Linux/WSL). Needs <code>pandas</code>, <code>openpyxl</code> (Excel reading).</td>
+</tr>
+<tr>
+<td>MATLAB host</td>
+<td>Windows machine with MATLAB + a DeepSqueak v3.1 checkout (commit <code>1be0267</code>). The Functions/ folder must exist.</td>
+</tr>
+<tr>
+<td>Detections</td>
+<td>A completed CNN batch-detection run, e.g. <code>results/batch_5970/detections/</code> (flat <code>&lt;stem&gt;.json</code> per WAV). Produce these with the 5-flag pipeline in <a href="cnn_detection_pipeline.html">CNN detection</a>.</td>
+</tr>
+<tr>
+<td>WAV files</td>
+<td>The source WAVs must be reachable from the MATLAB host (DeepSqueak re-renders spectrograms from raw audio). WAVs span multiple dirs — see <a href="labels_and_data.html">labels &amp; data</a>.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Re-score before you trust probabilities.</strong> The <code>5970 USV/*_detections.json</code> files
+sitting <em>next to the WAVs</em> are frozen output from an <strong>older CNN</strong>. Their
+<code>max_probability</code> values do NOT match <code>models/hard_neg_retrain/best_model.pt</code>
+(example: a window scoring 0.9997 in the old JSON scores ≈0.001 under the current
+model). Always drive this bridge from a fresh <code>run_batch_detection.py</code> run
+(<code>results/batch_&lt;cohort&gt;/detections/</code>), never from the legacy companion JSONs.</p>
+</blockquote>
+<h3 id="12-step-1-export-raven-selection-tables-python">1.2 Step 1 — Export Raven selection tables (Python)</h3>
+<p>Script: <code>scripts/export_raven_tables.py</code> → wraps
+<code>src/usv_spectrogram/classification/raven_export.py</code>.</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/export_raven_tables.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--detections-dir<span class="w"> </span>results/batch_5970/detections<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--batch-format<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>raven_tables_full
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Meaning / when to change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--detections-dir</code></td>
+<td><code>USV_Detections/</code></td>
+<td>Where detection JSONs live. For batch runs point at <code>results/batch_&lt;cohort&gt;/detections/</code>.</td>
+</tr>
+<tr>
+<td><code>--batch-format</code></td>
+<td>off</td>
+<td><strong>Required for <code>run_batch_detection.py</code> output</strong> (flat <code>&lt;stem&gt;.json</code>, each a list). Omit only for the legacy per-detection-subdirectory layout used by the PyQt6 review app.</td>
+</tr>
+<tr>
+<td><code>--wav-dir</code></td>
+<td>none</td>
+<td>Required <strong>only</strong> when <code>--batch-format</code> is off (used to map subdir names → WAV stems). Batch JSONs encode their own stem, so leave unset.</td>
+</tr>
+<tr>
+<td><code>--output-dir</code></td>
+<td><code>raven_tables/</code></td>
+<td>Where <code>.txt</code> tables are written. Convention: <code>raven_tables_full/</code> for full runs, <code>raven_tables/</code> for smoke tests.</td>
+</tr>
+<tr>
+<td><code>--low-freq</code></td>
+<td><code>25000</code> (Hz)</td>
+<td>Lower frequency bound written into <strong>every</strong> row. DeepSqueak treats the box as a region-of-interest, not a precise bound, so the fixed band is fine.</td>
+</tr>
+<tr>
+<td><code>--high-freq</code></td>
+<td><code>125000</code> (Hz)</td>
+<td>Upper frequency bound written into every row.</td>
+</tr>
+<tr>
+<td><code>--dry-run</code></td>
+<td>off</td>
+<td>Print the WAV↔detection mapping and counts, write nothing.</td>
+</tr>
+<tr>
+<td><code>-v</code> / <code>--verbose</code></td>
+<td>off</td>
+<td>DEBUG-level logging.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Output:</strong> one tab-delimited file per WAV named <code>&lt;stem&gt;.Table.1.selections.txt</code>, plus
+an <code>export_summary.json</code> in the output dir. Each row is one detection:</p>
+<div class="codehilite"><pre><span></span><code>Selection   View    Channel Begin Time (s)  End Time (s)    Low Freq (Hz)   High Freq (Hz)
+1   Spectrogram 1   1   0.1417  0.2014  25000   125000
+</code></pre></div>
+
+<p><code>Begin/End Time</code> come from each detection's <code>core_time</code> (or <code>start_time_s</code>/<code>end_time_s</code>
+in batch JSONs), rounded to 4 decimals. Selection numbers are 1-indexed after sorting
+by start time. Frequency columns are integers.</p>
+<h3 id="13-steps-24-deepsqueak-classification-matlab-windows-host">1.3 Steps 2–4 — DeepSqueak classification (MATLAB, Windows host)</h3>
+<p>Run these from the MATLAB console on the Windows machine. Paths are UNC into WSL.</p>
+<p><strong>Step 2 — Raven TSV → DeepSqueak <code>.mat</code></strong> (<code>scripts/create_deepsqueak_mats.m</code>):</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">run</span><span class="p">(</span><span class="s">&#39;\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\scripts\create_deepsqueak_mats.m&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>This is a <strong>script, not a function</strong> — edit the config block at the top (lines 24–27)
+to point <code>ravenDir</code>, <code>wavDirs</code>, and <code>outDir</code> at the right cohort before running:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Set to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ravenDir</code></td>
+<td><code>...\raven_tables_full</code> (full) or <code>...\raven_tables</code> (smoke, 10 files)</td>
+</tr>
+<tr>
+<td><code>wavDirs</code></td>
+<td>Cell array of root dirs searched <strong>recursively</strong> (<code>**</code>) for WAVs by stem.</td>
+</tr>
+<tr>
+<td><code>outDir</code></td>
+<td><code>fullfile(fileparts(which('DeepSqueak')), 'Detections')</code> — DeepSqueak's own Detections/ folder.</td>
+</tr>
+</tbody>
+</table>
+<p>For each Raven table it builds a <code>Calls</code> table with the box
+<code>[BeginTime_s, LowFreq_kHz, DeltaTime_s, Bandwidth_kHz]</code> (<code>create_deepsqueak_mats.m:87-90</code>),
+attaches <code>audioinfo(wavPath)</code> metadata, saves as v7.3 MAT, then <strong>reloads and verifies</strong>
+(call count, variable names, audio path resolves, no zero-dimension boxes;
+<code>create_deepsqueak_mats.m:111-170</code>). <code>Type</code> is initialized to the placeholder <code>'USV'</code>.</p>
+<p><strong>Step 3 — classify</strong> (<code>scripts/deepsqueak_batch_classify.m</code>), a real function:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">deepsqueak_batch_classify</span><span class="p">(</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="s">&#39;\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_mats&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="s">&#39;C:\path\to\DeepSqueak&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="s">&#39;\\wsl.localhost\Ubuntu\home\shachar\projects\mickey_london_lab\deepsqueak_output_full&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="s">&#39;kmeans&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Arguments (positional): <code>matDir</code>, <code>dsFolder</code> (DeepSqueak install), <code>outputDir</code>, <code>method</code>.</p>
+<table>
+<thead>
+<tr>
+<th><code>method</code></th>
+<th>Behavior</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'kmeans'</code> (default)</td>
+<td>Contour-parameter k-means, <strong>k chosen automatically</strong> by elbow method (<code>kmeans_opt</code>, maxK=100). Default feature weights freq=2, slope=3, duration=1 (<code>deepsqueak_batch_classify.m:58-60</code>). This is what produced the 27 clusters.</td>
+<td><code>deepsqueak_batch_classify.m:256-312</code></td>
+</tr>
+<tr>
+<td><code>'artwarp'</code></td>
+<td>Adaptive Resonance Theory + DTW; finds cluster count dynamically. Slower; better for non-spherical shapes. Settings at <code>deepsqueak_batch_classify.m:63</code>.</td>
+<td><code>deepsqueak_batch_classify.m:314-339</code></td>
+</tr>
+</tbody>
+</table>
+<p>It writes cluster labels back into each <code>.mat</code> (<code>Calls.Type</code>), saves
+<code>clustering_model_kmeans.mat</code> (centroids <code>C</code> + weights, for reuse), then <strong>automatically
+calls Step 4</strong> to export the Excel. Per-call features are computed by DeepSqueak's
+<code>CalculateStats</code> with <code>EntropyThreshold=0.215</code>, <code>AmplitudeThreshold=0.825</code>
+(<code>deepsqueak_batch_classify.m:68-69</code>).</p>
+<p><strong>Step 4 — export Excel</strong> (<code>scripts/deepsqueak_export_stats.m</code>) — invoked by Step 3, not
+run by hand. Writes <code>&lt;outputDir&gt;/classified_Stats.xlsx</code> with <strong>18 columns</strong>:
+<code>File, ID, Label, Accepted, Score, Begin Time (s), End Time (s), Call Length (s),
+Principal Frequency (kHz), Low Freq (kHz), High Freq (kHz), Delta Freq (kHz),
+Frequency Standard Deviation (kHz), Slope (kHz/s), Sinuosity, Mean Power (dB/Hz),
+Tonality, Peak Freq (kHz)</code> (<code>deepsqueak_export_stats.m:51-56</code>). The single consolidated
+<code>classified_Stats.xlsx</code> (one file for all WAVs) carries a per-row <code>File</code> column — this
+matters for the merge (see Gotchas).</p>
+<blockquote>
+<p><code>Label</code> in the Excel = the DeepSqueak cluster name (<code>Cluster_1</code>…<code>Cluster_27</code>), NOT a
+behavioral label. <code>Tonality</code> is exported from <code>stats.SignalToNoise</code>
+(<code>deepsqueak_export_stats.m:122</code>). Frequency columns are in <strong>kHz</strong> despite the
+<code>_hz</code> suffix they later get in Python.</p>
+</blockquote>
+<h3 id="14-step-5-import-merge-back-python">1.4 Step 5 — Import &amp; merge back (Python)</h3>
+<p>Script: <code>scripts/import_deepsqueak_results.py</code> → wraps
+<code>src/usv_spectrogram/classification/deepsqueak_import.py</code>.</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/import_deepsqueak_results.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--results-dir<span class="w"> </span>deepsqueak_output_full<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--detections-dir<span class="w"> </span>results/batch_5970/detections<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--batch-format<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>classified_detections_full.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tolerance-ms<span class="w"> </span><span class="m">75</span>.0
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Meaning / when to change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--results-dir</code></td>
+<td>(required)</td>
+<td>Directory of DeepSqueak <code>.xlsx</code> output (e.g. <code>deepsqueak_output_full/</code>). All <code>*.xlsx</code> in it are loaded and concatenated.</td>
+</tr>
+<tr>
+<td><code>--detections-dir</code></td>
+<td><code>USV_Detections/</code></td>
+<td>The <strong>same</strong> detections used in Step 1. Must match, or timestamps won't line up.</td>
+</tr>
+<tr>
+<td><code>--batch-format</code></td>
+<td>off</td>
+<td><strong>Required</strong> when detections came from <code>run_batch_detection.py</code>. Pair it with the same flag you used in Step 1.</td>
+</tr>
+<tr>
+<td><code>--output</code></td>
+<td><code>classified_detections.csv</code></td>
+<td>Merged CSV destination. Use <code>classified_detections_full.csv</code> for full runs.</td>
+</tr>
+<tr>
+<td><code>--tolerance-ms</code></td>
+<td><code>5.0</code></td>
+<td>Max <code>\|ds.begin_time − det.start\|</code> to accept a match. <strong>The 5.0 default is wrong for this pipeline — use <code>75.0</code>.</strong> See Gotcha #1.</td>
+</tr>
+<tr>
+<td><code>--dry-run</code></td>
+<td>off</td>
+<td>Load + match, print counts, write nothing.</td>
+</tr>
+<tr>
+<td><code>-v</code> / <code>--verbose</code></td>
+<td>off</td>
+<td>DEBUG logging.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Outputs:</strong>
+- The merged CSV (default <code>classified_detections.csv</code>).
+- <code>import_summary.json</code> written <strong>next to the CSV</strong> (<code>deepsqueak_import.py:768</code>) with
+  <code>total_ds_calls</code>, <code>total_detections</code>, <code>matched</code>, <code>unmatched_ds</code>, <code>unmatched_det</code>,
+  <code>match_rate</code>, <code>per_file_counts</code>.</p>
+<h3 id="15-reading-the-merged-csv">1.5 Reading the merged CSV</h3>
+<p><code>classified_detections_full.csv</code> has <strong>31 columns</strong> (verified against the file). Grouped:</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Columns</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSqueak passthrough</td>
+<td><code>file</code>, <code>id</code>, <code>label</code>, <code>accepted</code>, <code>score</code></td>
+<td><code>label</code> = k-means cluster (<code>Cluster_N</code>). <code>file</code> = per-row WAV stem from the Excel.</td>
+</tr>
+<tr>
+<td>DeepSqueak features</td>
+<td><code>begin_time_s</code>, <code>end_time_s</code>, <code>call_length_s</code>, <code>principal_freq_hz</code>, <code>low_freq_hz</code>, <code>high_freq_hz</code>, <code>bandwidth_hz</code>, <code>freq_std_dev_hz</code>, <code>slope</code>, <code>sinuosity</code>, <code>mean_power_db</code>, <code>tonality</code>, <code>peak_freq_khz</code>, <code>peak_freq_hz</code></td>
+<td><strong>Frequencies are in kHz</strong> despite <code>_hz</code> (<code>classify_traditional_taxonomy.py:60</code> warns of this). <code>bandwidth_hz</code> = Delta Freq. <code>peak_freq_hz</code>/<code>peak_freq_khz</code> both appear due to column-name variation across DS Excel versions.</td>
+</tr>
+<tr>
+<td>Merge metadata</td>
+<td><code>source_file</code>, <code>wav_stem</code>, <code>match_quality</code>, <code>match_distance_ms</code></td>
+<td><code>source_file</code> = Excel filename; <code>wav_stem</code> = resolved stem used for matching.</td>
+</tr>
+<tr>
+<td>Our detection metadata</td>
+<td><code>det_start_s</code>, <code>det_end_s</code>, <code>det_duration_ms</code>, <code>det_index</code>, <code>det_prob_max</code>, <code>det_prob_mean</code>, <code>det_user_action</code>, <code>det_json_path</code></td>
+<td>From the detection JSON. <code>det_prob_*</code> are the <strong>current production CNN</strong> scores (because you fed fresh batch detections).</td>
+</tr>
+</tbody>
+</table>
+<p><code>match_quality</code> values: <code>exact</code> (distance == 0.0), <code>fuzzy</code> (matched within tolerance),
+<code>unmatched_ds</code> (a DS call with no detection within tolerance), <code>unmatched_det</code> (a
+detection with no DS call). <strong>For analysis, keep <code>exact</code> + <code>fuzzy</code> only.</strong> A non-trivial
+count of <code>unmatched_ds</code> rows means tolerance is too tight or you mixed mismatched
+detection/Excel sets.</p>
+<blockquote>
+<p><strong>Two duration columns, different meanings.</strong> <code>call_length_s</code> is DeepSqueak's
+ridge-derived tonal sweep length; <code>det_duration_ms</code> is our hysteresis-event duration.
+They can differ by up to ~10×. Visual/PNG verdicts must use <code>det_duration_ms</code> (the
+PNGs show the hysteresis event), not <code>call_length_s</code>. See
+<a href="labels_and_data.html">labels &amp; data</a>.</p>
+</blockquote>
+<h3 id="16-the-7-type-traditional-taxonomy-vs-the-continuum">1.6 The 7-type traditional taxonomy (vs the continuum)</h3>
+<p>After the merge you can optionally tag each call with a literature-standard syllable
+type (Holy &amp; Guo 2005 / Scattoni et al. 2008) using deterministic feature thresholds —
+no ML, no training data:</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/classify_traditional_taxonomy.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--csv<span class="w"> </span>classified_detections_full.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>results/traditional_taxonomy
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--csv</code></td>
+<td><code>classified_detections_full.csv</code></td>
+</tr>
+<tr>
+<td><code>--output-dir</code></td>
+<td><code>results/traditional_taxonomy</code></td>
+</tr>
+<tr>
+<td><code>--n-per-type</code></td>
+<td><code>5</code> (gallery examples per type)</td>
+</tr>
+<tr>
+<td><code>--seed</code></td>
+<td><code>42</code></td>
+</tr>
+<tr>
+<td><code>--skip-gallery</code></td>
+<td>off</td>
+</tr>
+</tbody>
+</table>
+<p>Priority-ordered cascade (first rule that fires wins; <code>classify_traditional_taxonomy.py:74-131</code>):</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Type</th>
+<th>Rule</th>
+<th>Threshold const</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Short</td>
+<td><code>call_length_s &lt; 0.015</code> (15 ms)</td>
+<td><code>THRESH_SHORT_DURATION_S</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Complex</td>
+<td><code>sinuosity &gt; 3.5</code></td>
+<td><code>THRESH_COMPLEX_SINUOSITY</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Chevron</td>
+<td><code>sinuosity &gt; 1.8</code> AND <code>bandwidth_hz &gt; 25.0</code> (kHz)</td>
+<td><code>THRESH_CHEVRON_*</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Frequency_Jump</td>
+<td><code>bandwidth_hz &gt; 55.0</code> (kHz) AND <code>sinuosity &lt; 1.8</code></td>
+<td><code>THRESH_FREQJUMP_*</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Up</td>
+<td><code>slope &gt; 200</code></td>
+<td><code>THRESH_SLOPE_DIRECTIONAL</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Down</td>
+<td><code>slope &lt; -200</code></td>
+<td><code>THRESH_SLOPE_DIRECTIONAL</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Flat</td>
+<td>default (low slope, low sinuosity)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Calls with any NaN feature → <code>unclassified</code>. Output adds <code>syllable_type</code> +
+<code>classification_confidence</code> (<code>high</code>/<code>medium</code>/<code>low</code>/<code>none</code>) and writes
+<code>classified_traditional.csv</code>, distribution/feature/cross-tab PNGs+CSVs, and a per-type
+spectrogram gallery.</p>
+<p><strong>The two taxonomies disagree on purpose.</strong> UMAP+HDBSCAN on the same 10 features
+(<code>scripts/recluster_umap_hdbscan.py</code>, <code>results/recluster_umap_hdbscan/</code>) finds <strong>one
+continuous manifold</strong>, not discrete types: ~96.6% of calls fall in a single cluster.
+The 27 k-means clusters and the 7 rule-based types are <strong>discretizations of a
+continuum</strong> (consistent with Goffinet et al. 2021). Use the 7 types for cross-study
+comparability and publication; do not treat the k-means clusters as biological
+categories. See <code>notes/</code> clustering record and <a href="labels_and_data.html">labels &amp; data</a>.</p>
+<h3 id="17-worked-example-5970-full-run">1.7 Worked example (5970, full run)</h3>
+<ol>
+<li>CNN batch detection → <code>results/batch_5970/detections/</code> (1,328 WAVs with USVs, 7,575 detections).</li>
+<li><code>export_raven_tables.py --batch-format --output-dir raven_tables_full</code> → 1,328 tables.</li>
+<li>MATLAB <code>create_deepsqueak_mats.m</code> → 1,328 <code>.mat</code> files.</li>
+<li>MATLAB <code>deepsqueak_batch_classify.m ... 'kmeans'</code> → 27 clusters, 7,864 classified calls, <code>classified_Stats.xlsx</code>.</li>
+<li><code>import_deepsqueak_results.py --batch-format --tolerance-ms 75.0 --output classified_detections_full.csv</code> → <strong>7,518 matched (99.2%)</strong>, mean match distance 20.28 ms, median 18.60 ms.</li>
+</ol>
+<p>Result: <code>classified_detections_full.csv</code>, 7,921 rows / 31 columns. (Row count =
+7,518 matched + 346 <code>unmatched_ds</code> + 57 <code>unmatched_det</code>. Of the 346 unmatched DS
+calls, 289 trace to smoke-test stem overlap and 57 are edge cases. Note: every
+matched row is <code>fuzzy</code> — there are zero <code>exact</code> matches in this run because
+DeepSqueak's ridge recompute perturbs every timestamp at least slightly.) Full
+record: <code>docs/handoffs/deepsqueak-full-pipeline-results.md</code>.</p>
+<h3 id="18-troubleshooting-gotchas">1.8 Troubleshooting / Gotchas</h3>
+<ol>
+<li><strong><code>--tolerance-ms 75.0</code> is mandatory; the 5.0 default silently drops almost
+   everything.</strong> DeepSqueak's <code>CalculateStats</code> <em>recomputes</em> Begin Time from spectrogram
+   ridge analysis instead of using the box value we imported, so timestamps drift:
+   most ~0.37 ms (STFT bin quantization), some 8–68 ms (ridge shifting). P95=42 ms,
+   P99=55 ms, max=74 ms. 75 ms is safe because the minimum inter-call gap is 39.6 ms,
+   so there's no cross-match risk (<code>docs/handoffs/deepsqueak-full-pipeline-results.md</code> §1).
+   At 5 ms you'd mark most calls <code>unmatched_ds</code>.</li>
+<li><strong><code>--batch-format</code> must match on both ends.</strong> Use it in Step 1 <em>and</em> Step 5 when
+   detections come from <code>run_batch_detection.py</code>. Forgetting it makes the loader expect
+   per-detection subdirectories and find nothing.</li>
+<li><strong>Don't drive from <code>5970 USV/*_detections.json</code>.</strong> Those are an older CNN's frozen
+   output; probabilities are stale. Always start from a fresh batch-detection run.</li>
+<li><strong>Consolidated Excel needs the per-row <code>File</code> column.</strong> The headless pipeline emits
+   one <code>classified_Stats.xlsx</code> for all WAVs. The importer detects this and uses each
+   row's <code>file</code> value as <code>wav_stem</code> rather than the Excel filename
+   (<code>deepsqueak_import.py:253-260</code>). If <code>wav_stem</code> is wrong, matching collapses.</li>
+<li><strong>MATLAB can't <code>save</code>/<code>load</code>/<code>writetable</code> to UNC paths.</strong> All three MATLAB scripts
+   write to <code>tempdir</code> then <code>copyfile</code> to the WSL UNC path
+   (<code>deepsqueak_batch_classify.m:306-311</code>, <code>deepsqueak_export_stats.m:151-157</code>).
+   Keep that pattern if you edit them.</li>
+<li><strong>Zero-dimension boxes are silently skipped</strong> by both <code>deepsqueak_batch_classify.m</code>
+   (line 186) and <code>deepsqueak_export_stats.m</code> (line 84). A WAV whose detections all have
+   zero width/height yields no DS rows → all <code>unmatched_det</code>.</li>
+<li><strong>Frequency columns are kHz, not Hz.</strong> The <code>_hz</code>-suffixed columns hold kHz values
+   downstream. <code>classify_traditional_taxonomy.py</code> thresholds (25.0, 55.0) are in kHz
+   accordingly.</li>
+<li><strong>Re-running with overlapping smoke + full sets inflates <code>unmatched_ds</code>.</strong> The 5970
+   run shows 289 spurious unmatched DS calls from smoke-test stems sharing names. Clear
+   stale <code>.mat</code>/Excel between runs or use disjoint output dirs.</li>
+</ol>
+<hr />
+<h2 id="2-internals">2. Internals</h2>
+<h3 id="21-module-layout">2.1 Module layout</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLI (export)</td>
+<td><code>scripts/export_raven_tables.py</code></td>
+<td>Arg parsing, dry-run, calls <code>export_raven_tables</code>.</td>
+</tr>
+<tr>
+<td>Lib (export)</td>
+<td><code>src/usv_spectrogram/classification/raven_export.py</code> (525 lines)</td>
+<td>Detection JSON → Raven TSV. <code># VAULT:</code> canary — run <code>/kcheck</code> before editing.</td>
+</tr>
+<tr>
+<td>MATLAB</td>
+<td><code>scripts/create_deepsqueak_mats.m</code>, <code>deepsqueak_batch_classify.m</code>, <code>deepsqueak_export_stats.m</code></td>
+<td>Raven → <code>.mat</code> → cluster → Excel.</td>
+</tr>
+<tr>
+<td>CLI (import)</td>
+<td><code>scripts/import_deepsqueak_results.py</code></td>
+<td>Arg parsing, dry-run, calls <code>import_deepsqueak_results</code>.</td>
+</tr>
+<tr>
+<td>Lib (import)</td>
+<td><code>src/usv_spectrogram/classification/deepsqueak_import.py</code> (773 lines)</td>
+<td>Excel + detections → merged CSV. <code># VAULT:</code> canary — run <code>/kcheck</code> before editing.</td>
+</tr>
+<tr>
+<td>Taxonomy</td>
+<td><code>scripts/classify_traditional_taxonomy.py</code> (444 lines)</td>
+<td>Rule-based 7-type tagging on the merged CSV.</td>
+</tr>
+</tbody>
+</table>
+<p>Both <code>raven_export.py</code> and <code>deepsqueak_import.py</code> carry <code># VAULT:</code> canary comments and
+<code># Run /kcheck before modifying this file.</code> headers — treat them as constrained.</p>
+<h3 id="22-raven-export-key-signatures">2.2 Raven export — key signatures</h3>
+<ul>
+<li><code>RavenExportConfig</code> (<code>raven_export.py:57-111</code>) — frozen dataclass. Validates
+  <code>low_freq_hz &lt; high_freq_hz</code>, non-negative freqs, and that <code>wav_dir</code> is present unless
+  <code>batch_format=True</code>. Defaults: <code>low_freq_hz=25_000.0</code>, <code>high_freq_hz=125_000.0</code>,
+  <code>output_dir=Path("raven_tables")</code>.</li>
+<li><code>load_detection_json(json_path) -&gt; dict</code> (<code>raven_export.py:142-177</code>) — reads only the
+  <code>core_time</code> block (<code>start_s</code>, <code>end_s</code>, <code>duration_ms</code>). Raises <code>ValueError</code> on bad JSON
+  or missing <code>core_time</code>. Deliberately ignores <code>saved_region</code> (padded extraction window).</li>
+<li><code>discover_wav_detection_mapping(detections_dir, wav_dir)</code> (<code>raven_export.py:189-258</code>) —
+  per-detection layout. Maps each subdir to a WAV stem by exact, else <strong>longest-prefix</strong>,
+  match.</li>
+<li><code>discover_batch_detection_mapping(detections_dir)</code> (<code>raven_export.py:261-323</code>) — batch
+  layout. Each flat <code>&lt;stem&gt;.json</code> is a list; normalizes <code>start_time_s</code>/<code>end_time_s</code>/
+  <code>duration_s</code> → <code>start_s</code>/<code>end_s</code>/<code>duration_ms</code>.</li>
+<li><code>detections_to_raven_table(detections, low, high)</code> (<code>raven_export.py:326-364</code>) — builds
+  the 7-column DataFrame (<code>_RAVEN_COLUMNS</code>, line 42), sorted by start, 1-indexed
+  <code>Selection</code>, times rounded to 4 dp, freqs cast to int.</li>
+<li><code>export_raven_tables(config)</code> (<code>raven_export.py:367-483</code>) — orchestrator; writes
+  <code>&lt;stem&gt;.Table.1.selections.txt</code> (tab-delimited, <code>\n</code> line terminator) and
+  <code>export_summary.json</code>. Batch path delegates to <code>_export_from_preloaded</code> (line 486).</li>
+</ul>
+<p><code>_SKIP_FILENAMES = {"_saved_tracking.json", "detections_summary.csv"}</code> and
+<code>_SKIP_SUFFIXES = {".png", ".csv"}</code> (<code>raven_export.py:38-39</code>) filter non-detection files;
+<code>_is_detection_json</code> (line 180) is reused by the importer.</p>
+<h3 id="23-deepsqueak-import-key-signatures">2.3 DeepSqueak import — key signatures</h3>
+<ul>
+<li><code>DeepSqueakImportConfig</code> (<code>deepsqueak_import.py:94-128</code>) — frozen dataclass. Fields:
+  <code>results_dir</code>, <code>detections_dir</code>, <code>output_path</code>, <code>tolerance_ms=5.0</code>, <code>batch_format=False</code>.
+  Validates <code>tolerance_ms &gt; 0</code>.</li>
+<li><code>_COLUMN_MAP</code> (<code>deepsqueak_import.py:48-65</code>) — maps the 16 raw DS Excel headers to
+  snake_case. Note <code>"Label"</code> <strong>and</strong> <code>"Type"</code> both → <code>label</code> (DS-version tolerance).
+  <code>_DS_OUTPUT_COLUMNS</code> (line 68) is the canonical ordered set.</li>
+<li><code>_extract_wav_stem(filename)</code> (<code>deepsqueak_import.py:165-186</code>) — strips DS suffixes
+  <code>_DS_SUFFIXES = ("_Detections","_detections","_calls","_Calls","_classified")</code>.</li>
+<li><code>load_deepsqueak_excel(path)</code> (<code>deepsqueak_import.py:221-261</code>) — reads via
+  <code>engine="openpyxl"</code>, normalizes columns, sets <code>source_file</code>, and resolves <code>wav_stem</code>
+  from the per-row <code>file</code> column when present (the consolidated-Excel fix, lines 253-260).</li>
+<li><code>load_all_deepsqueak_results(results_dir)</code> (line 264) — concatenates all <code>*.xlsx</code>.</li>
+<li><code>_load_detection_json_extended(json_path)</code> (<code>deepsqueak_import.py:308-351</code>) — like the
+  raven loader but also pulls <code>detection_index</code>, <code>probabilities.max/mean</code>, <code>user_action</code>,
+  <code>json_path</code>. <code>load_detections_for_merge</code> (line 354) / <code>load_batch_detections_for_merge</code>
+  (line 406) group by stem.</li>
+<li><code>merge_with_detections(ds_df, detections_by_stem, tolerance_ms)</code>
+  (<code>deepsqueak_import.py:477-614</code>) — the matcher (§2.4).</li>
+<li><code>_resolve_detection_stem_mapping(ds_stems, detection_stems)</code>
+  (<code>deepsqueak_import.py:617-649</code>) — exact-then-longest-prefix stem resolution mirroring
+  Raven export, so suffixed detection folders still round-trip.</li>
+<li><code>export_classified_detections(df, output_path)</code> (line 693) and
+  <code>import_deepsqueak_results(config)</code> (line 721, the orchestrator that also writes
+  <code>import_summary.json</code>).</li>
+</ul>
+<h3 id="24-matching-algorithm-the-load-bearing-invariant">2.4 Matching algorithm (the load-bearing invariant)</h3>
+<p><code>merge_with_detections</code> does <strong>greedy 1:1 nearest-neighbor</strong> matching per WAV stem
+(<code>deepsqueak_import.py:526-588</code>):</p>
+<ol>
+<li>Resolve each DS <code>wav_stem</code> to a detection stem (exact, else longest prefix).</li>
+<li>Within a stem, sort DS calls by <code>begin_time_s</code>; for each, pick the nearest <em>available</em>
+   detection by <code>|ds.begin_time_s − det.start_s|</code>.</li>
+<li>Accept if <code>best_dist &lt;= tolerance_ms/1000</code>. <code>exact</code> if distance == 0.0, else <code>fuzzy</code>.</li>
+<li>Remove the matched detection from the pool (prevents double-assignment).</li>
+<li>Leftover detections → <code>unmatched_det</code>; DS calls with no match → <code>unmatched_ds</code>.</li>
+<li>Detection stems with no DS results at all → all <code>unmatched_det</code> (lines 601-611).</li>
+</ol>
+<p><strong>Invariant:</strong> greedy 1:1 is correct <em>only because</em> each stem has the same number of DS
+calls and detections (DeepSqueak read our Raven tables) and the min inter-call gap
+(39.6 ms) exceeds the max timestamp drift (74 ms). Break either assumption and greedy
+matching can mis-pair. This is why tolerance is 75 ms, not larger.</p>
+<h3 id="25-matlab-internals">2.5 MATLAB internals</h3>
+<ul>
+<li><code>create_deepsqueak_mats.m</code> builds <code>Calls</code> with box
+  <code>[BeginTime_s, LowFreq_kHz, DeltaTime_s, Bandwidth_kHz]</code> (lines 87-90), matching
+  DeepSqueak's <code>import_raven_Callback.m:49</code> variable order. <code>Type</code> starts as <code>'USV'</code>.</li>
+<li><code>deepsqueak_batch_classify.m</code> Phase 1 (lines 149-250) re-renders each call's
+  spectrogram via <code>CreateFocusSpectrogram</code> and extracts features with <code>CalculateStats</code>.
+  Phase 2 (lines 252-344): k-means feature vector = z-scored freq(12) + slope(12) +
+  duration(12), weighted 2/3/1; <code>kmeans_opt</code> picks k (elbow). Phase 3 writes labels back
+  via <code>UpdateCluster</code>. Phase 4 calls <code>deepsqueak_export_stats</code>.</li>
+<li><code>deepsqueak_export_stats.m</code> maps <code>stats.SignalToNoise → Tonality</code> (line 122); skips
+  zero-dimension boxes (line 84).</li>
+</ul>
+<p>These are pinned to <strong>DeepSqueak v3.1, commit <code>1be0267</code></strong> (stated in both script headers).
+A different DeepSqueak version may rename Excel columns — the <code>_COLUMN_MAP</code> fallback
+(<code>deepsqueak_import.py:211-217</code>) will pass unknown columns through with basic
+snake-casing, which is why stray columns like <code>peak_freq_khz</code> appear alongside
+<code>peak_freq_hz</code>.</p>
+<h3 id="26-the-7-type-traditional-taxonomy-vs-the-continuum">2.6 The 7-type traditional taxonomy vs the continuum</h3>
+<p><code>classify_traditional_taxonomy.py</code> is a pure cascade (<code>classify_call</code>, lines 74-131) with
+constants at lines 62-71. It is independent of the DeepSqueak k-means labels — it reads
+<code>call_length_s</code>, <code>slope</code>, <code>sinuosity</code>, <code>bandwidth_hz</code> from the merged CSV. The
+cross-tabulation figure (<code>generate_cross_tabulation</code>, line 264) shows k-means clusters
+scatter across all 7 types — direct evidence the bins are arbitrary cuts of a continuum.
+The competing data-driven view (UMAP+HDBSCAN → one manifold) lives in
+<code>scripts/recluster_umap_hdbscan.py</code>; keep both framings and never present either cluster
+set as biological ground truth.</p>
+<h3 id="27-tests">2.7 Tests</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tests/test_classification/test_raven_export.py</code></td>
+<td>33</td>
+</tr>
+<tr>
+<td><code>tests/test_classification/test_deepsqueak_import.py</code></td>
+<td>23</td>
+</tr>
+<tr>
+<td><code>tests/test_classification/test_deepsqueak_import_hardened.py</code></td>
+<td>(hardening set)</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/test_classification/<span class="w"> </span>-v
+</code></pre></div>
+
+<h3 id="28-where-to-change-things">2.8 Where to change things</h3>
+<ul>
+<li><strong>Frequency band in Raven tables:</strong> <code>--low-freq</code>/<code>--high-freq</code> flags, or
+  <code>RavenExportConfig</code> defaults (<code>raven_export.py:84-85</code>). Cosmetic — DeepSqueak ignores
+  exact bounds.</li>
+<li><strong>Match tolerance:</strong> <code>--tolerance-ms</code>. Do not raise above the inter-call-gap floor
+  (39.6 ms gap vs 74 ms max drift → 75 ms is the ceiling of safety).</li>
+<li><strong>New DeepSqueak Excel column:</strong> add to <code>_COLUMN_MAP</code> (<code>deepsqueak_import.py:48</code>) and
+  <code>_DS_OUTPUT_COLUMNS</code> (line 68).</li>
+<li><strong>Clustering method/weights:</strong> <code>deepsqueak_batch_classify.m:58-60</code> (k-means weights) or
+  <code>:63</code> (ARTwarp settings). Changing weights changes the cluster geometry — re-run the
+  whole MATLAB middle.</li>
+<li><strong>Taxonomy thresholds:</strong> <code>classify_traditional_taxonomy.py:62-71</code>. These are calibrated
+  to the 5970 distributions; recalibrate per cohort if porting.</li>
+</ul>
+</div>
+</body>
+</html>

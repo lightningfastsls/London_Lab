@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>USV Lab — Production Systems Reference</title>
+<style>
+  :root {
+    --bg: #0f1115; --card: #181b22; --card2: #1f232c; --ink: #e7e9ee;
+    --muted: #9aa3b2; --line: #2a2f3a; --accent: #6ea8fe; --accent2: #7ee0a8;
+    --warn: #f0b86c; --code: #20242d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+  header h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.3px; }
+  header .sub { color: var(--muted); margin: 0 0 4px; }
+  header .meta { color: var(--muted); font-size: 13px; margin-top: 10px; }
+  .callout {
+    background: var(--card2); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    border-radius: 10px; padding: 14px 18px; margin: 26px 0; color: var(--ink); font-size: 14.5px;
+  }
+  .callout.warn { border-left-color: var(--warn); }
+  .callout b { color: #fff; }
+  h2.section {
+    font-size: 14px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent2);
+    margin: 38px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  a.card {
+    display: block; text-decoration: none; color: inherit; background: var(--card);
+    border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; transition: .12s ease;
+  }
+  a.card:hover { border-color: var(--accent); transform: translateY(-1px); background: #1b1f28; }
+  a.card .t { font-size: 16px; font-weight: 650; margin-bottom: 5px; color: #fff; }
+  a.card .t .file { color: var(--muted); font-weight: 400; font-size: 12.5px; }
+  a.card .d { color: var(--muted); font-size: 13.5px; }
+  a.card .tag {
+    display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 20px; margin-top: 9px;
+    background: #243; color: var(--accent2); border: 1px solid #2f5;
+  }
+  a.card .tag.found { background: #2a2433; color: var(--warn); border-color: #654; }
+  code, .mono { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; }
+  .cmd {
+    background: var(--code); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px;
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px;
+    color: #cfe3ff; overflow-x: auto; white-space: pre; margin: 8px 0 0;
+  }
+  footer { margin-top: 50px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); padding-top: 18px; }
+  ul.q { margin: 6px 0 0; padding-left: 20px; }
+  ul.q li { color: var(--muted); font-size: 13.5px; margin-bottom: 7px; }
+  ul.q b { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>USV Lab — Production Systems Reference</h1>
+    <p class="sub">Operate-without-me documentation for every production-ready system in the repo.</p>
+    <p class="meta">Generated 2026-06-21 · 10 reference docs · each written from source, then adversarially fact-checked against the code.</p>
+  </header>
+
+  <div class="callout">
+    <b>How to read these.</b> Every doc is layered: a <b>§1 Operate</b> section (exact commands,
+    every parameter explained, where inputs/outputs live, how to read results, troubleshooting),
+    followed by a <b>§2 Internals</b> section (architecture, data flow, function signatures, invariants).
+    If you only want to <i>run</i> something, read §1. Paths and CLI flags were each re-opened and
+    verified in the source — a wrong flag here is the failure mode we worked hardest to prevent.
+  </div>
+
+  <div class="callout warn">
+    <b>The single most important distinction.</b> The PyQt app's <b>Detect</b> button runs the CNN +
+    hysteresis <i>only</i> (raw probabilities, no FP-filter / temperature / soft-notch). The
+    <b>full production pipeline</b> (temperature + FP-filter + hysteresis + soft-notch + triage) is
+    <b>batch-only</b>, via <code>run_batch_detection.py</code>. They are not interchangeable — applying
+    the FP-filter in the app's context has previously suppressed real detections. See the CNN and
+    Batch docs below.
+  </div>
+
+  <h2 class="section">Run detection (start here)</h2>
+  <div class="grid">
+    <a class="card" href="cnn_detection_pipeline.html">
+      <div class="t">Production CNN &amp; its variables <span class="file">cnn_detection_pipeline.md</span></div>
+      <div class="d">The detection model <code>models/hard_neg_retrain/best_model.pt</code> and every companion
+        artifact: temperature calibration, FP-filter, hysteresis thresholds, triage tiers. Which models are
+        deprecated and why. The Detect-vs-batch distinction in full.</div>
+      <div class="tag">verified accurate</div>
+    </a>
+    <a class="card" href="batch_detection.html">
+      <div class="t">Batch detection — run it at scale <span class="file">batch_detection.md</span></div>
+      <div class="d">Literally "how to start detection with the CNN on a folder of WAVs."
+        Every <code>run_batch_detection.py</code> flag, the canonical 5-flag command, why each flag is
+        required, and the schema of every output file.</div>
+      <div class="tag">verified accurate</div>
+    </a>
+  </div>
+
+  <h2 class="section">Labeling &amp; review</h2>
+  <div class="grid">
+    <a class="card" href="labeling_app.html">
+      <div class="t">PyQt6 labeling / review app <span class="file">labeling_app.md</span></div>
+      <div class="d">Launch, keyboard shortcuts, the per-detection USV-interval + whole-file-noise workflow,
+        and where labels are written. <b>Note:</b> documents the <i>live</i> PyQt6 app under
+        <code>app/</code> — the older Streamlit <code>labeling/</code> apps are retired (see open questions).</div>
+      <div class="tag found">scope corrected — read below</div>
+    </a>
+    <a class="card" href="labels_and_data.html">
+      <div class="t">Where the labels &amp; data live <span class="file">labels_and_data.md</span></div>
+      <div class="d">The "where is everything" map: <code>USV_Detections/</code> JSON + summary schema,
+        the classified-detections master CSVs (and the two-duration-column trap), all WAV directories,
+        human label sets, and the rig-vs-box split.</div>
+      <div class="tag">verified · 4 fixes</div>
+    </a>
+  </div>
+
+  <h2 class="section">Classification &amp; shape</h2>
+  <div class="grid">
+    <a class="card" href="deepsqueak_bridge.html">
+      <div class="t">DeepSqueak taxonomy bridge <span class="file">deepsqueak_bridge.md</span></div>
+      <div class="d">The 7-type syllable taxonomy path that built <code>classified_detections_full.csv</code>:
+        detections → Raven export → DeepSqueak classify → merge back. The 75 ms tolerance, re-scoring gotcha,
+        and the 7-types-vs-continuum finding.</div>
+      <div class="tag">verified · 1 fix</div>
+    </a>
+    <a class="card" href="lab_classifier_v1.html">
+      <div class="t">Lab CNN classifier v1 <span class="file">lab_classifier_v1.md</span></div>
+      <div class="d">The production 12-class VocalMat ResNet-18 (<code>results/lab_classifier_v1/best.pt</code>):
+        classes, how to run inference, metrics, the patch-duration operating-point knob, and a clear warning
+        that v2/DANN is a shelved dead end.</div>
+      <div class="tag">verified · 2 fixes</div>
+    </a>
+    <a class="card" href="shape_clustering.html">
+      <div class="t">Shape-alphabet clustering <span class="file">shape_clustering.md</span></div>
+      <div class="d">Assigning a shape "letter" to each USV. The <i>current</i> production model
+        <code>k20_softdtw.joblib</code> (supersedes the older registration <code>k20</code>) and the
+        elastic-FPCA coordinate system. Join-key gotchas included.</div>
+      <div class="tag">verified · 2 fixes</div>
+    </a>
+  </div>
+
+  <h2 class="section">Cleaning &amp; representation</h2>
+  <div class="grid">
+    <a class="card" href="cleaning_pipeline.html">
+      <div class="t">Cleaning pipeline (all stacks) <span class="file">cleaning_pipeline.md</span></div>
+      <div class="d">Disambiguates the <b>three</b> distinct "cleaning" subsystems and names the canonical one
+        (Stack 4, the DeepSqueak focus-STFT port). Maps each: status, file, data representation, sample-rate,
+        and what it is canonical for.</div>
+      <div class="tag">verified · 1 fix</div>
+    </a>
+    <a class="card" href="production_vae.html">
+      <div class="t">Production VAE (32-D latent) <span class="file">production_vae.md</span></div>
+      <div class="d">The contour-VAE (<code>contour_vae_combined/best.pt</code>) and the 32-dimensional latent
+        analysis (<code>analyze_vae_embeddings.py</code>). What it's good for (cohort/latent geometry), its
+        limits, and the 16 GiB rig-only patches gotcha.</div>
+      <div class="tag">verified · 1 fix</div>
+    </a>
+  </div>
+
+  <h2 class="section">Foundations</h2>
+  <div class="grid">
+    <a class="card" href="corpus_constants.html">
+      <div class="t">Canonical parameter system <span class="file">corpus_constants.md</span></div>
+      <div class="d">The <code>corpus.py</code> physical constants (300 kHz sample rate, USV band, STFT) +
+        the empirical-facts layer that <i>everything else</i> depends on. The import-don't-redeclare invariant,
+        and why each value matters (frequency/time resolution).</div>
+      <div class="tag">verified accurate</div>
+    </a>
+  </div>
+
+  <h2 class="section">The one command you'll run most</h2>
+  <div class="cmd">.venv/bin/python scripts/run_batch_detection.py \
+    --wav-dir &lt;WAV_FOLDER&gt;/ \
+    --model models/hard_neg_retrain/best_model.pt \
+    --output-dir results/batch_&lt;NAME&gt;/ \
+    --temperature models/hard_neg_retrain/temperature.json \
+    --fp-filter models/hard_neg_retrain/fp_filter.pkl \
+    --hysteresis-config models/hard_neg_retrain/hysteresis_optimization_v2.json \
+    --workers 4</div>
+  <p style="color:var(--muted);font-size:13px;margin-top:8px">All five artifact flags are required — omitting
+  <code>--fp-filter</code> or <code>--hysteresis-config</code> produces an incomplete pipeline with unreliable
+  triage. Full explanation in <a href="batch_detection.html" style="color:var(--accent)">batch_detection.md</a>.</p>
+
+  <h2 class="section">Open questions for the author (your call)</h2>
+  <ul class="q">
+    <li><b>Labeling tool scope.</b> The file originally named ("PyQt6 labeling app",
+      <code>labeling/labeling_app.py</code>) is a <i>retired Streamlit</i> app whose <code>run()</code> now exits
+      immediately. The live labeling tool is the PyQt6 app under <code>app/</code>, which the doc covers. Confirm
+      this is the intended scope.</li>
+    <li><b>Three-way syllable taxonomy gap.</b> The live PyQt6 app records per-detection USV intervals + a
+      whole-file noise flag — <i>not</i> the three-way USV / Not-USV / Uncertain syllable labeling that existed
+      only in the retired Streamlit app. If the lab still needs three-way syllable labeling, there is currently
+      no supported tool for it.</li>
+    <li><b>Shape-clustering durability.</b> The registered-ridge meta NPZ that the shape builders depend on is
+      <i>not</i> git-tracked — it lives only in ephemeral job tmp dirs and is regenerable only on the rig. Worth
+      promoting to a durable tracked location before the next person needs it.</li>
+    <li><b>Two source-level inconsistencies to reconcile</b> (flagged, not silently "fixed"):
+      <code>eval_report.md</code> reports both 0.083 and 0.157 for the max confusion fraction; and
+      <code>denoise.py</code>'s docstring says "1170" where the computed kernel is 1172. The docs state the
+      correct computed values; the source comments should be reconciled by the code owner.</li>
+  </ul>
+
+  <footer>
+    Each doc was produced by a researcher-writer agent reading the actual source, then re-checked by an
+    independent adversarial verifier that re-opened every cited file. Verdicts: 6 docs corrected, 4 verified
+    accurate as written, 0 failures. Living documents — when code changes, update the doc in the same commit.
+  </footer>
+</div>
+</body>
+</html>

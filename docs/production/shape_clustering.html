@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production Shape Clustering — the shape "letter" per USV</title>
+<style>
+:root {
+  --bg:#0f1115; --panel:#181b22; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2a2f3a;
+  --accent:#6ea8fe; --accent2:#7ee0a8; --warn:#f0b86c; --code:#11141a;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.topbar {
+  position:sticky; top:0; z-index:10; background:rgba(15,17,21,.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); padding:10px 24px; font-size:13.5px;
+}
+.topbar a { color:var(--accent); text-decoration:none; }
+.topbar a:hover { text-decoration:underline; }
+.topbar .sep { color:var(--muted); margin:0 8px; }
+.wrap { max-width:900px; margin:0 auto; padding:34px 24px 90px; }
+h1,h2,h3,h4 { line-height:1.3; letter-spacing:-.2px; scroll-margin-top:60px; }
+h1 { font-size:30px; margin:.2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h2 { font-size:22px; margin:1.7em 0 .6em; color:#fff; }
+h3 { font-size:17px; margin:1.4em 0 .5em; color:var(--accent2); }
+h4 { font-size:15px; margin:1.2em 0 .4em; color:var(--ink); }
+a { color:var(--accent); }
+p,li { color:var(--ink); }
+hr { border:none; border-top:1px solid var(--line); margin:2em 0; }
+blockquote {
+  margin:1.2em 0; padding:.6em 1.1em; background:var(--panel);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0; color:var(--ink);
+}
+blockquote p { margin:.4em 0; }
+code {
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:.88em;
+  background:#222733; color:#cfe3ff; padding:.12em .4em; border-radius:5px;
+}
+pre {
+  background:var(--code); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; line-height:1.5;
+}
+pre code { background:none; color:#e7e9ee; padding:0; font-size:13px; }
+.codehilite { background:var(--code); border:1px solid var(--line); border-radius:10px; margin:1em 0; }
+.codehilite pre { background:none; border:none; margin:0; }
+table {
+  border-collapse:collapse; width:100%; margin:1.3em 0; font-size:14px; display:block; overflow-x:auto;
+}
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+th { background:var(--panel); color:#fff; font-weight:650; }
+tr:nth-child(even) td { background:rgba(255,255,255,.015); }
+ul,ol { padding-left:1.5em; }
+li { margin:.25em 0; }
+img { max-width:100%; border-radius:8px; }
+.toc {
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:10px 18px; margin:1.4em 0; font-size:14px;
+}
+.toc ul { margin:.3em 0; }
+::selection { background:#2d4a7a; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #404040 }
+.codehilite { background: #202020; color: #D0D0D0 }
+.codehilite .c { color: #ABABAB; font-style: italic } /* Comment */
+.codehilite .err { color: #A61717; background-color: #E3D2D2 } /* Error */
+.codehilite .esc { color: #D0D0D0 } /* Escape */
+.codehilite .g { color: #D0D0D0 } /* Generic */
+.codehilite .k { color: #6EBF26; font-weight: bold } /* Keyword */
+.codehilite .l { color: #D0D0D0 } /* Literal */
+.codehilite .n { color: #D0D0D0 } /* Name */
+.codehilite .o { color: #D0D0D0 } /* Operator */
+.codehilite .x { color: #D0D0D0 } /* Other */
+.codehilite .p { color: #D0D0D0 } /* Punctuation */
+.codehilite .ch { color: #ABABAB; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #ABABAB; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #FF3A3A; font-weight: bold } /* Comment.Preproc */
+.codehilite .cpf { color: #ABABAB; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #ABABAB; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #E50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.codehilite .gd { color: #FF3A3A } /* Generic.Deleted */
+.codehilite .ge { color: #D0D0D0; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #D0D0D0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF3A3A } /* Generic.Error */
+.codehilite .gh { color: #FFF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #589819 } /* Generic.Inserted */
+.codehilite .go { color: #CCC } /* Generic.Output */
+.codehilite .gp { color: #AAA } /* Generic.Prompt */
+.codehilite .gs { color: #D0D0D0; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #FFF; text-decoration: underline } /* Generic.Subheading */
+.codehilite .gt { color: #FF3A3A } /* Generic.Traceback */
+.codehilite .kc { color: #6EBF26; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #6EBF26; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #6EBF26; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #6EBF26 } /* Keyword.Pseudo */
+.codehilite .kr { color: #6EBF26; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #6EBF26; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #D0D0D0 } /* Literal.Date */
+.codehilite .m { color: #51B2FD } /* Literal.Number */
+.codehilite .s { color: #ED9D13 } /* Literal.String */
+.codehilite .na { color: #BBB } /* Name.Attribute */
+.codehilite .nb { color: #2FBCCD } /* Name.Builtin */
+.codehilite .nc { color: #71ADFF; text-decoration: underline } /* Name.Class */
+.codehilite .no { color: #40FFFF } /* Name.Constant */
+.codehilite .nd { color: #FFA500 } /* Name.Decorator */
+.codehilite .ni { color: #D0D0D0 } /* Name.Entity */
+.codehilite .ne { color: #BBB } /* Name.Exception */
+.codehilite .nf { color: #71ADFF } /* Name.Function */
+.codehilite .nl { color: #D0D0D0 } /* Name.Label */
+.codehilite .nn { color: #71ADFF; text-decoration: underline } /* Name.Namespace */
+.codehilite .nx { color: #D0D0D0 } /* Name.Other */
+.codehilite .py { color: #D0D0D0 } /* Name.Property */
+.codehilite .nt { color: #6EBF26; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #40FFFF } /* Name.Variable */
+.codehilite .ow { color: #6EBF26; font-weight: bold } /* Operator.Word */
+.codehilite .pm { color: #D0D0D0 } /* Punctuation.Marker */
+.codehilite .w { color: #666 } /* Text.Whitespace */
+.codehilite .mb { color: #51B2FD } /* Literal.Number.Bin */
+.codehilite .mf { color: #51B2FD } /* Literal.Number.Float */
+.codehilite .mh { color: #51B2FD } /* Literal.Number.Hex */
+.codehilite .mi { color: #51B2FD } /* Literal.Number.Integer */
+.codehilite .mo { color: #51B2FD } /* Literal.Number.Oct */
+.codehilite .sa { color: #ED9D13 } /* Literal.String.Affix */
+.codehilite .sb { color: #ED9D13 } /* Literal.String.Backtick */
+.codehilite .sc { color: #ED9D13 } /* Literal.String.Char */
+.codehilite .dl { color: #ED9D13 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #ED9D13 } /* Literal.String.Doc */
+.codehilite .s2 { color: #ED9D13 } /* Literal.String.Double */
+.codehilite .se { color: #ED9D13 } /* Literal.String.Escape */
+.codehilite .sh { color: #ED9D13 } /* Literal.String.Heredoc */
+.codehilite .si { color: #ED9D13 } /* Literal.String.Interpol */
+.codehilite .sx { color: #FFA500 } /* Literal.String.Other */
+.codehilite .sr { color: #ED9D13 } /* Literal.String.Regex */
+.codehilite .s1 { color: #ED9D13 } /* Literal.String.Single */
+.codehilite .ss { color: #ED9D13 } /* Literal.String.Symbol */
+.codehilite .bp { color: #2FBCCD } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #71ADFF } /* Name.Function.Magic */
+.codehilite .vc { color: #40FFFF } /* Name.Variable.Class */
+.codehilite .vg { color: #40FFFF } /* Name.Variable.Global */
+.codehilite .vi { color: #40FFFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #40FFFF } /* Name.Variable.Magic */
+.codehilite .il { color: #51B2FD } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="topbar"><a href="00_INDEX.html">&larr; Production docs index</a><span class="sep">/</span><span style="color:var(--muted)">Production Shape Clustering — the shape "letter" per USV</span></div>
+<div class="wrap">
+<h1 id="production-shape-clustering-the-shape-letter-per-usv">Production Shape Clustering — the shape "letter" per USV</h1>
+<blockquote>
+<p><strong>What this is</strong> — The system that assigns each USV a <em>shape</em> label ("letter")
+based on the geometry of its frequency contour (a chevron vs a jump vs a flat
+tone), with pitch, duration, and time-position factored OUT by registration.
+<strong>Status: CURRENT.</strong> Two production representations coexist by the
+2026-06-04 <strong>HYBRID</strong> decision: (1) a <strong>soft-DTW K=20 alphabet</strong> —
+<code>models/shape_kmeans/k20_softdtw.joblib</code> (+ <code>k20_softdtw_letters.parquet</code>) —
+the labeled-set metric that best matches human shape labels on <em>jump</em>/<em>complex</em>;
+(2) an <strong>elastic-FPCA coordinate system</strong> — <code>models/shape_fpca/elastic_fpca.joblib</code>
+(+ <code>elastic_fpca_scores.parquet</code>, 67,337 rows × {5 amp + 3 phase}) — the O(N)
+full-corpus coordinate producer consumed by the downstream grammar/manifold work.
+<strong>Historical / superseded:</strong> the registration-Euclidean K=20 model <code>k20.joblib</code>
+(NOT on disk — see Gotchas). The whole <strong>VAE family is CLOSED for shape
+clustering</strong> — see <a href="production_vae.html">Contour-VAE</a>.</p>
+</blockquote>
+<p>The shape pipeline answers "what <em>shape</em> is this call's pitch contour?" after
+deliberately discarding <em>how high</em> (pitch), <em>how long</em> (duration), and <em>where in
+the file</em> (time) it is. Those nuisance axes are removed by <strong>registration</strong>
+(subtract mean kHz, resample the active span to 50 points). What remains is a
+50-point unit-less shape curve per call. Two methods then operate on those curves:
+<strong>soft-DTW</strong> (elastic warp-aligned distance — the best human-anchored <em>metric</em>)
+and <strong>elastic FPCA</strong> (a low-dimensional <em>coordinate system</em> over the same curves).</p>
+<p>Sibling docs: <a href="cnn_detection_pipeline.html">CNN detection pipeline</a> ·
+<a href="batch_detection.html">batch detection</a> · <a href="corpus_constants.html">corpus constants</a> ·
+<a href="production_vae.html">Contour-VAE</a>.</p>
+<hr />
+<h2 id="1-operate">1. Operate</h2>
+<h3 id="11-what-you-can-do-with-these-artifacts">1.1 What you can do with these artifacts</h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Use</th>
+<th>Artifact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Look up the shape letter (0–19) already assigned to a call</td>
+<td>Read the parquet</td>
+<td><code>models/shape_kmeans/k20_softdtw_letters.parquet</code></td>
+</tr>
+<tr>
+<td>Get a call's continuous shape coordinates (amp/phase PCs)</td>
+<td>Read the parquet</td>
+<td><code>models/shape_fpca/elastic_fpca_scores.parquet</code></td>
+</tr>
+<tr>
+<td>Assign a letter to a NEW ridge</td>
+<td>Load joblib, soft-DTW to centroids</td>
+<td><code>models/shape_kmeans/k20_softdtw.joblib</code></td>
+</tr>
+<tr>
+<td>Re-evaluate which representation best matches humans</td>
+<td>Run the gate harness</td>
+<td><code>scripts/experiments/eval_shape_human_anchored.py</code></td>
+</tr>
+<tr>
+<td>Rebuild the alphabet / FPCA from ridges</td>
+<td>Run the builders</td>
+<td><code>build_softdtw_alphabet.py</code> / <code>build_elastic_fpca.py</code></td>
+</tr>
+</tbody>
+</table>
+<p>Both parquet files are <strong>per-call lookup tables keyed by <code>(wav_stem, call_id)</code></strong>.
+For the common case — "what letter / what coordinates does call X have?" — you do
+<strong>not</strong> run any model; you read the parquet. Re-running a model is only needed to
+score a call that is not already in the 67,337-row corpus.</p>
+<h3 id="12-output-schemas-read-these-first">1.2 Output schemas (read these first)</h3>
+<p><strong><code>models/shape_kmeans/k20_softdtw_letters.parquet</code></strong> — 67,337 rows × 4 cols
+(verified on disk):</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wav_stem</code></td>
+<td>str</td>
+<td>Recording stem, e.g. <code>2024-09-30_11-22-17_0000053</code></td>
+</tr>
+<tr>
+<td><code>call_id</code></td>
+<td>int</td>
+<td><strong>1-indexed</strong> call number within that recording</td>
+</tr>
+<tr>
+<td><code>cohort</code></td>
+<td>str</td>
+<td><code>5970</code> / <code>3452</code> / <code>9252</code> / <code>lab_131204</code></td>
+</tr>
+<tr>
+<td><code>softdtw_letter</code></td>
+<td>int32</td>
+<td>Shape letter, integer in <strong>[0, 19]</strong> (the K=20 cluster id)</td>
+</tr>
+</tbody>
+</table>
+<p>Letters are bare integers, not glyphs — there is no A/B/C mapping. A letter is
+just "which of the 20 soft-DTW barycenters is this ridge closest to". Letters are
+<strong>not</strong> ordered or named; cluster 6 is not "more chevron" than cluster 5.</p>
+<p><strong><code>models/shape_fpca/elastic_fpca_scores.parquet</code></strong> — 67,337 rows × 11 cols
+(verified on disk):</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wav_stem</code></td>
+<td>str</td>
+<td>Recording stem</td>
+</tr>
+<tr>
+<td><code>call_id</code></td>
+<td>int</td>
+<td><strong>1-indexed</strong> call number</td>
+</tr>
+<tr>
+<td><code>cohort</code></td>
+<td>str</td>
+<td>Cohort id</td>
+</tr>
+<tr>
+<td><code>amp_pc1</code> … <code>amp_pc5</code></td>
+<td>float64</td>
+<td>Amplitude (vertical) FPCA scores — the <em>shape</em> axes</td>
+</tr>
+<tr>
+<td><code>phase_pc1</code> … <code>phase_pc3</code></td>
+<td>float64</td>
+<td>Phase (warp) FPCA scores — the <em>timing/warp</em> axes</td>
+</tr>
+</tbody>
+</table>
+<p>The 5 amplitude PCs capture how the curve's <em>shape</em> deviates from the elastic
+Karcher mean; the 3 phase PCs capture how its <em>timing</em> (warp) deviates. These 8
+numbers are the coordinate system adopted for the downstream grammar / manifold
+analyses (WS-B/C/D/E).</p>
+<h3 id="13-environment">1.3 Environment</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># repo root = /home/shachar/projects/mickey_london_lab ; interpreter = .venv/bin/python</span>
+.venv/bin/python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import tslearn, fdasrsf, joblib, pandas; \</span>
+<span class="s2">  print(&#39;tslearn&#39;, tslearn.__version__, &#39;| fdasrsf&#39;, fdasrsf.__version__)&quot;</span>
+<span class="c1"># Expect fdasrsf 2.6.9 (prebuilt wheel — no Fortran/C toolchain needed).</span>
+</code></pre></div>
+
+<p><code>tslearn</code> (soft-DTW) and <code>fdasrsf</code> 2.6.9 (elastic FPCA) are the two non-stdlib
+dependencies. Both are in <code>.venv</code>.</p>
+<h3 id="14-worked-example-look-up-and-assign-a-shape-letter">1.4 Worked example — look up and assign a shape letter</h3>
+<p><strong>(a) Look up an existing call's letter and coordinates</strong> (no model needed):</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;&#39;PY&#39;</span>
+<span class="s">import pandas as pd</span>
+<span class="s">letters = pd.read_parquet(&quot;models/shape_kmeans/k20_softdtw_letters.parquet&quot;)</span>
+<span class="s">coords  = pd.read_parquet(&quot;models/shape_fpca/elastic_fpca_scores.parquet&quot;)</span>
+
+<span class="s">stem, cid = &quot;2024-09-30_11-22-17_0000053&quot;, 1</span>
+<span class="s">row_l = letters[(letters.wav_stem == stem) &amp; (letters.call_id == cid)]</span>
+<span class="s">row_c = coords [(coords.wav_stem  == stem) &amp; (coords.call_id  == cid)]</span>
+<span class="s">print(&quot;soft-DTW letter:&quot;, int(row_l.softdtw_letter.iloc[0]))</span>
+<span class="s">print(&quot;amp PCs:&quot;, row_c[[f&quot;amp_pc{i}&quot; for i in range(1,6)]].to_numpy().round(3))</span>
+<span class="s">PY</span>
+</code></pre></div>
+
+<p><strong>(b) Assign a letter to a NEW 50-point registered ridge.</strong> The soft-DTW model
+expects a <strong>registered ridge</strong>: a length-50 float curve, mean-subtracted and
+resampled to the active span (the exact transform <code>register_one</code> in the ridge
+builder applies — see §2.1). You feed it as shape <code>(1, 50, 1)</code>:</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;&#39;PY&#39;</span>
+<span class="s">import joblib, numpy as np</span>
+<span class="s">from tslearn.metrics import cdist_soft_dtw_normalized</span>
+
+<span class="s">bundle = joblib.load(&quot;models/shape_kmeans/k20_softdtw.joblib&quot;)</span>
+<span class="s">km     = bundle[&quot;kmeans&quot;]              # tslearn TimeSeriesKMeans</span>
+<span class="s">gamma  = bundle[&quot;gamma&quot;]              # 1.0</span>
+<span class="s">centroids = km.cluster_centers_       # (20, 50, 1)</span>
+
+<span class="s"># my_ridge: a length-50 registered ridge (see §2.1 for how to build one)</span>
+<span class="s">my_ridge = np.load(&quot;/path/to/registered_ridge_50pt.npy&quot;).astype(np.float64)</span>
+<span class="s">D = cdist_soft_dtw_normalized(my_ridge[None, :, None], centroids, gamma=gamma)  # (1, 20)</span>
+<span class="s">print(&quot;assigned letter:&quot;, int(D.argmin(axis=1)[0]))</span>
+<span class="s">PY</span>
+</code></pre></div>
+
+<blockquote>
+<p>This reproduces exactly the streamed-assignment step in
+<code>build_softdtw_alphabet.py:117-121</code>. The same <code>gamma=1.0</code> and
+<code>cdist_soft_dtw_normalized</code> must be used, or distances will not be comparable to
+how the corpus was assigned.</p>
+</blockquote>
+<h3 id="15-re-evaluate-the-representations-the-standing-gate-harness">1.5 Re-evaluate the representations (the standing GATE harness)</h3>
+<p>The single source of truth for "which shape representation is best" is
+<code>scripts/experiments/eval_shape_human_anchored.py</code>. It scores each representation
+by <strong>leave-one-out kNN retrieval purity</strong> against the human shape labels, with
+1000× bootstrap CIs, and decides on <strong>non-overlapping CIs</strong> (never point
+estimates). Its 5 core functions are unit-tested as a frozen spec:</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/experiments/test_eval_shape_human_anchored.py<span class="w"> </span>-q
+<span class="c1"># Expect: 33 passed.</span>
+
+.venv/bin/python<span class="w"> </span>scripts/experiments/eval_shape_human_anchored.py
+<span class="c1"># Writes results/shape_retrospective/human_anchored_eval_v2.{json,html}</span>
+</code></pre></div>
+
+<p><strong>Flags</strong> (all have defaults; defaults reproduce the current scorecard):</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Meaning / when to change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--meta</code></td>
+<td><code>…/jobs/9a954f32/tmp/shape_data/true_registered_ridges_meta.npz</code></td>
+<td>The registered-ridge meta (<code>shapes</code>, <code>wav_stem</code>, <code>call_id</code>, <code>cohort</code>). <strong>NOT git-tracked</strong> — see Gotchas.</td>
+</tr>
+<tr>
+<td><code>--lab</code></td>
+<td><code>…/jobs/9a954f32/tmp/shape_data/true_registered_ridges.npz</code></td>
+<td>The companion file holding <code>lab_shape</code> (incumbent K=20 alphabet) + <code>chevron_valley</code>.</td>
+</tr>
+<tr>
+<td><code>--human</code></td>
+<td><code>data/manual_shape_labels.csv</code></td>
+<td>The human gold labels.</td>
+</tr>
+<tr>
+<td><code>--out-json</code></td>
+<td><code>results/shape_retrospective/human_anchored_eval_v2.json</code></td>
+<td>Scorecard JSON.</td>
+</tr>
+<tr>
+<td><code>--out-html</code></td>
+<td><code>results/shape_retrospective/human_anchored_eval_v2.html</code></td>
+<td>HTML report (prints a <code>file://wsl.localhost/...</code> URL).</td>
+</tr>
+<tr>
+<td><code>--k</code></td>
+<td><code>10</code></td>
+<td>kNN neighbours for purity.</td>
+</tr>
+<tr>
+<td><code>--n-boot</code></td>
+<td><code>1000</code></td>
+<td>Bootstrap resamples for CIs.</td>
+</tr>
+<tr>
+<td><code>--seed</code></td>
+<td><code>42</code></td>
+<td>RNG seed (bootstrap + random control).</td>
+</tr>
+<tr>
+<td><code>--softdtw-gamma</code></td>
+<td><code>1.0</code></td>
+<td>Soft-DTW smoothing γ. Must match the alphabet's γ.</td>
+</tr>
+<tr>
+<td><code>--no-softdtw</code></td>
+<td>off</td>
+<td>Skip the elastic soft-DTW block (debug only — disables GATE 1 read).</td>
+</tr>
+<tr>
+<td><code>--fpca-lambda</code></td>
+<td><code>0.0</code></td>
+<td>Elasticity penalty λ for the SRVF elastic-FPCA distance used <em>inside the eval</em>. <strong>NB:</strong> the production FPCA <em>artifact</em> was built at λ=0.05 (§2.2).</td>
+</tr>
+<tr>
+<td><code>--no-elasticfpca</code></td>
+<td>off</td>
+<td>Skip the SRVF elastic-FPCA block.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to read the scorecard.</strong> Each cell is <code>purity [ci_lo, ci_hi]</code>. Compare the
+<strong>candidate's <code>ci_lo</code> against the incumbent's <code>ci_hi</code></strong> — if they do not overlap,
+that's a real win. Rows: <code>registration_euclidean(IDENTITY)</code> is the incumbent /
+baseline; <code>soft_dtw(ELASTIC)</code> is the production metric; <code>elastic_fpca(SRVF-WARP)</code>
+is the coordinate-system candidate; <code>random_control(BASE RATE)</code> is the floor.</p>
+<p><strong>Current result</strong> (<code>human_anchored_eval_v2.json</code>, 611 matched labels across all 4
+cohorts, verified on disk):</p>
+<table>
+<thead>
+<tr>
+<th>representation</th>
+<th>chevron</th>
+<th>jump</th>
+<th>flat</th>
+<th>complex</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>registration (IDENTITY)</td>
+<td>0.186 [.143,.232]</td>
+<td>0.415 [.377,.453]</td>
+<td>0.419 [.384,.456]</td>
+<td>0.194 [.148,.236]</td>
+</tr>
+<tr>
+<td><strong>soft-DTW (ELASTIC)</strong></td>
+<td>0.214 [.168,.261]</td>
+<td><strong>0.522 [.480,.570]</strong></td>
+<td>0.396 [.362,.433]</td>
+<td><strong>0.243 [.199,.284]</strong></td>
+</tr>
+<tr>
+<td>elastic-FPCA (SRVF-warp)</td>
+<td>0.230 [.177,.280]</td>
+<td>0.499 [.457,.540]</td>
+<td>0.381 [.346,.417]</td>
+<td>0.170 [.136,.206]</td>
+</tr>
+<tr>
+<td>random (BASE RATE)</td>
+<td>0.080</td>
+<td>0.332</td>
+<td>0.193</td>
+<td>0.118</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The headline result:</strong> soft-DTW beats registration on <strong>jump</strong> with
+non-overlapping CIs → GATE 1 verdict <code>PROCEED</code>. (On <strong>complex</strong> soft-DTW also
+<em>improves</em> the point estimate — 0.243 vs 0.194 — but the CIs OVERLAP
+(.199 &lt; .236), so the gate scores complex as a <em>tie</em>, not a beat: the v2
+<code>gate1.beats</code> list is <code>["jump"]</code> only. Treat the complex gain as suggestive, not
+yet established.) (The originally-reported
+Phase-1 figures were <strong>jump 0.452 vs registration 0.327</strong> on the first 200-label
+lab-only set; the result has only strengthened as labels expanded: 0.463 vs 0.373
+at 551 labels, 0.522 vs 0.415 at the current 611. The mechanism is unchanged — a
+step/jump is a discontinuity that warp-alignment lines up cheaply.) Secondary:
+NMI(incumbent K=20 alphabet vs human family) = <strong>0.178</strong>.</p>
+<h3 id="16-rebuild-the-artifacts-rarely-needed">1.6 Rebuild the artifacts (rarely needed)</h3>
+<p>Both builders read a registered-ridge meta npz and write <strong>parallel</strong>
+artifacts — they never overwrite the incumbent <code>k20.joblib</code>. <strong>Watch the default
+<code>--meta</code> paths: they differ.</strong> <code>build_softdtw_alphabet.py</code> and the eval default to
+job <code>9a954f32</code> (<code>build_softdtw_alphabet.py:61</code>, <code>eval_shape_human_anchored.py:241</code>),
+but <code>build_elastic_fpca.py</code> defaults to job <code>57976676</code>
+(<code>build_elastic_fpca.py:347</code>). The two meta npz are content-identical
+(<code>shapes (67337, 50)</code>, verified equal), so the artifacts are consistent — but pass
+<code>--meta</code> explicitly if either job dir has been purged.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Soft-DTW alphabet (CPU-bound; full fit ~1–3 h. Smoke first.)</span>
+.venv/bin/python<span class="w"> </span>scripts/experiments/build_softdtw_alphabet.py<span class="w"> </span>--smoke<span class="w">   </span><span class="c1"># validates pipeline, writes *_SMOKE</span>
+.venv/bin/python<span class="w"> </span>scripts/experiments/build_softdtw_alphabet.py<span class="w">           </span><span class="c1"># full: K=20, subsample 8000, γ=1.0</span>
+
+<span class="c1"># Elastic FPCA (full-corpus coordinate producer)</span>
+.venv/bin/python<span class="w"> </span>scripts/experiments/build_elastic_fpca.py<span class="w"> </span>--lam<span class="w"> </span><span class="m">0</span>.05<span class="w">    </span><span class="c1"># production λ (see Gotchas)</span>
+</code></pre></div>
+
+<p><code>build_softdtw_alphabet.py</code> flags (defaults at <code>:64-70</code>): <code>--k 20</code>,
+<code>--subsample 8000</code>, <code>--max-iter 15</code>, <code>--n-init 2</code>, <code>--gamma 1.0</code>,
+<code>--assign-batch 500</code>, <code>--seed 42</code>, <code>--smoke</code>.
+<code>build_elastic_fpca.py</code> flags (defaults at <code>:350-356</code>): <code>--lam 0.0</code> (production
+artifact used <strong>0.05</strong>), <code>--n-amp 5</code>, <code>--n-phase 3</code>, <code>--seed 42</code>,
+<code>--subset N</code> (smoke), <code>--max-itr 20</code>, <code>--no-parallel</code>.</p>
+<h3 id="17-troubleshooting-gotchas">1.7 Troubleshooting / Gotchas</h3>
+<ul>
+<li>
+<p><strong><code>k20.joblib</code> (registration model) is NOT on disk.</strong> Only <code>k20_softdtw.joblib</code>
+  and the FPCA artifacts exist under <code>models/shape_kmeans/</code> / <code>models/shape_fpca/</code>.
+  Every script <em>comment</em> that says it preserves the incumbent <code>k20.joblib</code> is
+  describing intent, not a file you will find. The registration representation is
+  reproducible from the ridge meta (<code>X_reg = Sh[rows]</code> is just the raw ridges,
+  <code>eval_shape_human_anchored.py:302</code>); it is the IDENTITY control, no model file.</p>
+</li>
+<li>
+<p><strong>The ridge meta npz is NOT git-tracked.</strong> Both builders and the eval default to
+  <code>…/.claude/jobs/&lt;id&gt;/tmp/shape_data/true_registered_ridges*.npz</code>. Those live in
+  ephemeral job tmp dirs (currently present in jobs <code>9a954f32</code> and <code>57976676</code>). If
+  they are gone, regenerate them with the rig builder
+  <code>archive/cleaning_legacy/stack3/scripts/experiments/rig_R1_true_ridges.py</code>,
+  which reads the contour-masked patches from the rig
+  (<code>/data/shachar/contour_vae/results/masked_patches/</code>). <strong>Before regenerating,
+  check the rig</strong> — the masked patches + the VAE artifacts live only there
+  (see <code>docs/DATA_LOCATIONS.md</code>). Do not reinvent the render.</p>
+</li>
+<li>
+<p><strong>FPCA join key gotcha (the most dangerous one).</strong> To join the FPCA scores to a
+  detection table, the key is <strong><code>(wav_stem, call_id - 1) == (wav_stem, det_index)</code></strong>
+  — <code>call_id</code> is 1-indexed, <code>det_index</code> is 0-indexed (the <code>offset=-1</code> in
+  <code>build_join</code>, <code>eval_shape_human_anchored.py:72-101</code>). Do <strong>not</strong> join on a raw
+  <code>id</code>. Also: <strong><code>(wav_stem, call_id)</code> is NON-UNIQUE</strong> in upstream tables — dedupe
+  first (the harness keeps the FIRST ridge row per composite id,
+  <code>eval_shape_human_anchored.py:91-94</code>). Joining without dedup silently fans out
+  rows.</p>
+</li>
+<li>
+<p><strong><code>--fpca-lambda</code> in the eval (0.0) ≠ the production FPCA artifact (0.05).</strong> The
+  eval's internal SRVF-distance λ defaults to 0.0; the <em>shipped</em>
+  <code>elastic_fpca.joblib</code> was built at <strong>λ=0.05</strong> (verified in the joblib:
+  <code>lam: 0.05</code>). The 0.05 value won GATE A. If you rebuild the artifact, pass
+  <code>--lam 0.05</code>.</p>
+</li>
+<li>
+<p><strong>Letters are integers in [0,19], not glyphs and not ordered.</strong> Don't assume
+  letter 0 is "flat" — inspect the centroid (<code>km.cluster_centers_[i]</code>) to see its
+  shape.</p>
+</li>
+<li>
+<p><strong>Soft-DTW is O(N²) and CPU-bound.</strong> A full 67k×67k matrix is ~36 GB and is
+  NEVER built. The alphabet is fit on a cohort-balanced subsample (~8000, realized
+  4840 in the shipped model) and the rest are assigned by streamed
+  centroid-vs-batch distance (<code>build_softdtw_alphabet.py:7-17, 112-124</code>). For new
+  per-call assignment use the centroid approach in §1.4(b), not a pairwise matrix.</p>
+</li>
+<li>
+<p><strong>Human labels: 758 in the CSV, 611 matched in the eval.</strong> Not all labels join
+  (different <code>call_id</code> format / unmatched recordings) and <code>unclear</code> labels are
+  dropped (<code>eval_shape_human_anchored.py:289-292</code>). The matched-count print
+  <code>[JOIN] matched N/…</code> is the number that actually scored.</p>
+</li>
+<li>
+<p><strong>Use the right metric for the right job.</strong> Soft-DTW is the <strong>labeled-set
+  metric</strong> (best on jump/complex). Elastic-FPCA scores are the <strong>full-corpus
+  coordinate system</strong> for downstream analysis. This split <em>is</em> the HYBRID decision
+  — soft-DTW does not give coordinates (it's O(N²) distances only); FPCA does, but
+  loses to soft-DTW on <code>complex</code>.</p>
+</li>
+</ul>
+<hr />
+<h2 id="2-internals">2. Internals</h2>
+<h3 id="21-data-flow">2.1 Data flow</h3>
+<div class="codehilite"><pre><span></span><code>contour-masked patches (rig: /data/shachar/contour_vae/results/masked_patches/)
+        │  rig_R1_true_ridges.py  (archive/cleaning_legacy/stack3/scripts/experiments/)
+        │    per call: band-crop rows [35:205] (20–120 kHz) → Viterbi ridge (track_ridge)
+        │              → register: subtract mean kHz (kill pitch), resample active span
+        │                to N_RESAMPLE=50 (kill duration + time-position)
+        ▼
+true_registered_ridges_meta.npz   shapes (67337, 50) float32  + wav_stem/call_id/cohort
+true_registered_ridges.npz        lab_shape (incumbent K=20), chevron_valley, srvf, …
+        │
+        ├── build_softdtw_alphabet.py ──► k20_softdtw.joblib + k20_softdtw_letters.parquet
+        ├── build_elastic_fpca.py     ──► elastic_fpca.joblib + elastic_fpca_scores.parquet
+        └── eval_shape_human_anchored.py (vs data/manual_shape_labels.csv) ──► v2 scorecard
+</code></pre></div>
+
+<p><strong>Registration</strong> is the core nuisance-removal step (in <code>rig_R1_true_ridges.py</code>):
+band-crop to USV rows <code>BAND0,BAND1 = 35,205</code> (170 bins, 20–120 kHz), Viterbi
+ridge-track to a per-call pitch curve, subtract the mean kHz (removes absolute
+pitch), and resample the active span to <code>N_RESAMPLE = 50</code> points (removes duration
+and time-position). The 50-point unit-less curve is what every downstream method
+consumes. Signal-processing band/STFT constants are upstream of this doc — see
+<a href="corpus_constants.html">corpus constants</a>; do not re-derive them here.</p>
+<h3 id="22-key-functions-fileline">2.2 Key functions (file:line)</h3>
+<p><strong>Soft-DTW alphabet</strong> — <code>scripts/experiments/build_softdtw_alphabet.py</code>:
+- <code>stratified_cohort_subsample(cohort, n_total, seed)</code> <code>:38</code> — cohort-balanced
+  subsample (quota = <code>n_total // n_cohorts</code>; small cohorts contribute all rows,
+  freed quota NOT redistributed). Shipped model subsampled to 4840 rows.
+- Fit: <code>TimeSeriesKMeans(n_clusters=k, metric="softdtw", metric_params={"gamma":gamma}, …)</code>
+  <code>:103-107</code>. Centroids = soft-DTW barycenters, shape <code>(20, 50, 1)</code>.
+- Streamed assignment: <code>cdist_soft_dtw_normalized(batch, centroids, gamma)</code> →
+  <code>argmin</code> <code>:117-121</code>. This is the assignment you reproduce for new calls.
+- Output bundle keys (<code>:129-130</code>): <code>kmeans</code>, <code>k</code>, <code>gamma</code>, <code>metric</code>,
+  <code>subsample_idx</code>, <code>seed</code>.</p>
+<p><strong>Elastic FPCA</strong> — <code>scripts/experiments/build_elastic_fpca.py</code>:
+- <code>elastic_amplitude_distance(f1, f2, time, lam, method)</code> <code>:49</code> — Fisher-Rao SRVF
+  amplitude distance WITH warp optimization (<code>fdasrsf.elastic_distance(...)[0]</code>).
+  This is the function the eval harness imports as its elastic-FPCA metric.
+- <code>elastic_amplitude_distance_matrix(X, lam, …)</code> <code>:83</code> — symmetric <code>(n,n)</code> matrix;
+  symmetrizes <code>(D+D.T)/2</code>, zero diagonal (raw library is ~1% directional).
+- <code>elastic_karcher_align(X, lam, max_itr, parallel)</code> <code>:245</code> — aligns all ridges to
+  the elastic Karcher mean via <code>fdasrsf.fdawarp.srsf_align</code>; returns
+  <code>mean_f / aligned_f / aligned_q / warps</code>.
+- <code>amplitude_fpca(aligned_q, n_components)</code> <code>:170</code> — vertical FPCA on aligned SRVFs
+  → 5 amplitude PCs. <code>phase_fpca(warps, n_components)</code> <code>:218</code> — horizontal FPCA in
+  ψ = √(dγ/dt) space (<code>_warp_to_psi</code> <code>:204</code>) → 3 phase PCs.
+- <code>build(...)</code> <code>:277</code> — full-corpus producer; model bundle keys (<code>:328-336</code>):
+  <code>lam, seed, n_amp, n_phase, time_grid, amp_mean, amp_components,
+  amp_recon_errors, phase_mean, phase_components, karcher_mean_f, n_rows</code>.
+- Constants: <code>DEFAULT_TIME_POINTS = 50</code> <code>:40</code>, <code>TIME_GRID = linspace(0,1,50)</code>
+  <code>:41</code>, <code>DEFAULT_METHOD = "DP2"</code> <code>:43</code>. <strong><code>DEFAULT_LAMBDA = 0.0</code> <code>:42</code> is a
+  placeholder</strong> — the shipped artifact was built at λ=0.05.</p>
+<p><strong>Eval / gate</strong> — <code>scripts/experiments/eval_shape_human_anchored.py</code>:
+- <code>group_family(label)</code> <code>:58</code> — maps Grimsley display labels to families
+  {chevron, jump, flat, complex}; unknown labels pass through unchanged.
+- <code>build_join(wav_stem, call_id, human_df, offset=-1)</code> <code>:72</code> — the join with the
+  <code>offset=-1</code> (1-indexed→0-indexed) correction and first-occurrence dedup.
+- <code>loo_knn_purity(X, labels, target, k=10)</code> <code>:129</code> / <code>knn_purity_from_distance(D, …)</code>
+  <code>:162</code> — purity from an embedding vs from a precomputed distance matrix (the
+  soft-DTW / elastic path).
+- <code>bootstrap_purity_ci(...)</code> <code>:178</code> / <code>bootstrap_purity_ci_from_distance(...)</code> <code>:199</code>
+  — 1000× bootstrap CIs.
+- <code>gate1_read(results, base)</code> <code>:418</code> — encodes "beats iff <code>ci_lo &gt; ident.ci_hi</code>,
+  regresses iff <code>ci_hi &lt; ident.ci_lo</code>"; PROCEED if soft-DTW beats identity on jump
+  OR complex AND chevron/flat don't regress.</p>
+<h3 id="23-invariants">2.3 Invariants</h3>
+<ul>
+<li><strong>These 5 functions are a frozen SPEC</strong> (<code>group_family</code>, <code>build_join</code>,
+  <code>loo_knn_purity</code>, <code>knn_purity_from_distance</code>, <code>bootstrap_purity_ci</code>), tested by
+  <code>tests/experiments/test_eval_shape_human_anchored.py</code> (<strong>33 tests</strong>). Do NOT
+  change their signatures.</li>
+<li><strong>Decisions are on non-overlapping bootstrap CIs, never point estimates</strong>
+  (<code>gate1_read</code>). The harness exists to replace the <em>circular</em> <code>shape η²</code> /
+  <code>chevron_valley</code> metric (which was computed on the same KMeans it graded);
+  <code>shape η²</code> is deliberately NOT computed here.</li>
+<li><strong>Parallel artifacts only.</strong> Builders must never overwrite the incumbent
+  <code>k20.joblib</code> — they write <code>k20_softdtw.*</code> and <code>elastic_fpca.*</code>.</li>
+<li><strong>γ must match.</strong> New per-call soft-DTW assignment must use the same
+  <code>gamma=1.0</code> and <code>cdist_soft_dtw_normalized</code> as the alphabet build.</li>
+<li><strong>Letters/coordinates are keyed by <code>(wav_stem, call_id)</code>; <code>call_id</code> is
+  1-indexed.</strong> Joins to 0-indexed detection tables need <code>call_id - 1</code>, and the key
+  is non-unique upstream → dedupe first.</li>
+</ul>
+<h3 id="24-where-to-change-things">2.4 Where to change things</h3>
+<table>
+<thead>
+<tr>
+<th>Change</th>
+<th>Edit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Different K, γ, subsample size for the alphabet</td>
+<td><code>build_softdtw_alphabet.py</code> CLI defaults <code>:64-70</code></td>
+</tr>
+<tr>
+<td>Different FPCA λ / #amp / #phase axes</td>
+<td><code>build_elastic_fpca.py</code> CLI defaults <code>:350-356</code>; rebuild at λ=0.05</td>
+</tr>
+<tr>
+<td>The decision rule / families / k / bootstrap</td>
+<td><code>eval_shape_human_anchored.py</code> (<code>FAMILIES :217</code>, <code>gate1_read :418</code>); update the SPEC tests in lockstep</td>
+</tr>
+<tr>
+<td>How a ridge is registered (band, resample length)</td>
+<td><code>archive/cleaning_legacy/stack3/scripts/experiments/rig_R1_true_ridges.py</code> (<code>BAND0/BAND1</code>, <code>N_RESAMPLE</code>) — touches the contour-masked render; check the rig first</td>
+</tr>
+<tr>
+<td>Add the wild-cohort gold labels (Phase 2 → production swap)</td>
+<td><code>data/manual_shape_labels.csv</code> + re-run the gate; see <code>docs/handoffs/2026-06-03_elastic-shape-phase2-labels.md</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-provenance-related-decisions">2.5 Provenance &amp; related decisions</h3>
+<ul>
+<li><strong>Plans:</strong> <code>PLAN_elastic_shape_clustering.md</code> (GATE 1 — soft-DTW vs
+  registration), <code>PLAN_continuum_repertoire_program.md</code> (§WS-A GATE A — the
+  HYBRID decision: adopt elastic-FPCA λ=0.05 as the coordinate system, carry
+  soft-DTW as the complex-sensitive metric).</li>
+<li><strong>Handoffs:</strong> <code>docs/handoffs/2026-06-04_ws-a-elastic-fpca-implementation.md</code>,
+  <code>docs/handoffs/2026-06-04_ws-bc-continuous-grammar-manifold.md</code>,
+  <code>docs/handoffs/2026-06-03_elastic-shape-phase2-labels.md</code>.</li>
+<li><strong>VAE closure:</strong> the VAE family was closed for shape clustering — see
+  <a href="production_vae.html">Contour-VAE</a>. Use that VAE for cohort / latent-geometry
+  analysis, NOT for shape.</li>
+<li><strong>Production swap is GATED.</strong> The soft-DTW alphabet is the current <em>metric</em>, but
+  swapping it in as <em>the</em> production shape alphabet (over registration) is gated on
+  Phase-2 label expansion to ≥2 wild cohorts holding the win on non-overlapping
+  CIs (the current 611-label set already spans all 4 cohorts, strengthening the
+  case — but read the Phase-2 handoff for the formal gate).</li>
+</ul>
+</div>
+</body>
+</html>

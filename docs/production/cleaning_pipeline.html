@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spectrogram Cleaning Pipeline</title>
+<style>
+:root {
+  --bg:#0f1115; --panel:#181b22; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2a2f3a;
+  --accent:#6ea8fe; --accent2:#7ee0a8; --warn:#f0b86c; --code:#11141a;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.topbar {
+  position:sticky; top:0; z-index:10; background:rgba(15,17,21,.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); padding:10px 24px; font-size:13.5px;
+}
+.topbar a { color:var(--accent); text-decoration:none; }
+.topbar a:hover { text-decoration:underline; }
+.topbar .sep { color:var(--muted); margin:0 8px; }
+.wrap { max-width:900px; margin:0 auto; padding:34px 24px 90px; }
+h1,h2,h3,h4 { line-height:1.3; letter-spacing:-.2px; scroll-margin-top:60px; }
+h1 { font-size:30px; margin:.2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h2 { font-size:22px; margin:1.7em 0 .6em; color:#fff; }
+h3 { font-size:17px; margin:1.4em 0 .5em; color:var(--accent2); }
+h4 { font-size:15px; margin:1.2em 0 .4em; color:var(--ink); }
+a { color:var(--accent); }
+p,li { color:var(--ink); }
+hr { border:none; border-top:1px solid var(--line); margin:2em 0; }
+blockquote {
+  margin:1.2em 0; padding:.6em 1.1em; background:var(--panel);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0; color:var(--ink);
+}
+blockquote p { margin:.4em 0; }
+code {
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:.88em;
+  background:#222733; color:#cfe3ff; padding:.12em .4em; border-radius:5px;
+}
+pre {
+  background:var(--code); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; line-height:1.5;
+}
+pre code { background:none; color:#e7e9ee; padding:0; font-size:13px; }
+.codehilite { background:var(--code); border:1px solid var(--line); border-radius:10px; margin:1em 0; }
+.codehilite pre { background:none; border:none; margin:0; }
+table {
+  border-collapse:collapse; width:100%; margin:1.3em 0; font-size:14px; display:block; overflow-x:auto;
+}
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+th { background:var(--panel); color:#fff; font-weight:650; }
+tr:nth-child(even) td { background:rgba(255,255,255,.015); }
+ul,ol { padding-left:1.5em; }
+li { margin:.25em 0; }
+img { max-width:100%; border-radius:8px; }
+.toc {
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:10px 18px; margin:1.4em 0; font-size:14px;
+}
+.toc ul { margin:.3em 0; }
+::selection { background:#2d4a7a; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #404040 }
+.codehilite { background: #202020; color: #D0D0D0 }
+.codehilite .c { color: #ABABAB; font-style: italic } /* Comment */
+.codehilite .err { color: #A61717; background-color: #E3D2D2 } /* Error */
+.codehilite .esc { color: #D0D0D0 } /* Escape */
+.codehilite .g { color: #D0D0D0 } /* Generic */
+.codehilite .k { color: #6EBF26; font-weight: bold } /* Keyword */
+.codehilite .l { color: #D0D0D0 } /* Literal */
+.codehilite .n { color: #D0D0D0 } /* Name */
+.codehilite .o { color: #D0D0D0 } /* Operator */
+.codehilite .x { color: #D0D0D0 } /* Other */
+.codehilite .p { color: #D0D0D0 } /* Punctuation */
+.codehilite .ch { color: #ABABAB; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #ABABAB; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #FF3A3A; font-weight: bold } /* Comment.Preproc */
+.codehilite .cpf { color: #ABABAB; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #ABABAB; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #E50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.codehilite .gd { color: #FF3A3A } /* Generic.Deleted */
+.codehilite .ge { color: #D0D0D0; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #D0D0D0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF3A3A } /* Generic.Error */
+.codehilite .gh { color: #FFF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #589819 } /* Generic.Inserted */
+.codehilite .go { color: #CCC } /* Generic.Output */
+.codehilite .gp { color: #AAA } /* Generic.Prompt */
+.codehilite .gs { color: #D0D0D0; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #FFF; text-decoration: underline } /* Generic.Subheading */
+.codehilite .gt { color: #FF3A3A } /* Generic.Traceback */
+.codehilite .kc { color: #6EBF26; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #6EBF26; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #6EBF26; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #6EBF26 } /* Keyword.Pseudo */
+.codehilite .kr { color: #6EBF26; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #6EBF26; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #D0D0D0 } /* Literal.Date */
+.codehilite .m { color: #51B2FD } /* Literal.Number */
+.codehilite .s { color: #ED9D13 } /* Literal.String */
+.codehilite .na { color: #BBB } /* Name.Attribute */
+.codehilite .nb { color: #2FBCCD } /* Name.Builtin */
+.codehilite .nc { color: #71ADFF; text-decoration: underline } /* Name.Class */
+.codehilite .no { color: #40FFFF } /* Name.Constant */
+.codehilite .nd { color: #FFA500 } /* Name.Decorator */
+.codehilite .ni { color: #D0D0D0 } /* Name.Entity */
+.codehilite .ne { color: #BBB } /* Name.Exception */
+.codehilite .nf { color: #71ADFF } /* Name.Function */
+.codehilite .nl { color: #D0D0D0 } /* Name.Label */
+.codehilite .nn { color: #71ADFF; text-decoration: underline } /* Name.Namespace */
+.codehilite .nx { color: #D0D0D0 } /* Name.Other */
+.codehilite .py { color: #D0D0D0 } /* Name.Property */
+.codehilite .nt { color: #6EBF26; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #40FFFF } /* Name.Variable */
+.codehilite .ow { color: #6EBF26; font-weight: bold } /* Operator.Word */
+.codehilite .pm { color: #D0D0D0 } /* Punctuation.Marker */
+.codehilite .w { color: #666 } /* Text.Whitespace */
+.codehilite .mb { color: #51B2FD } /* Literal.Number.Bin */
+.codehilite .mf { color: #51B2FD } /* Literal.Number.Float */
+.codehilite .mh { color: #51B2FD } /* Literal.Number.Hex */
+.codehilite .mi { color: #51B2FD } /* Literal.Number.Integer */
+.codehilite .mo { color: #51B2FD } /* Literal.Number.Oct */
+.codehilite .sa { color: #ED9D13 } /* Literal.String.Affix */
+.codehilite .sb { color: #ED9D13 } /* Literal.String.Backtick */
+.codehilite .sc { color: #ED9D13 } /* Literal.String.Char */
+.codehilite .dl { color: #ED9D13 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #ED9D13 } /* Literal.String.Doc */
+.codehilite .s2 { color: #ED9D13 } /* Literal.String.Double */
+.codehilite .se { color: #ED9D13 } /* Literal.String.Escape */
+.codehilite .sh { color: #ED9D13 } /* Literal.String.Heredoc */
+.codehilite .si { color: #ED9D13 } /* Literal.String.Interpol */
+.codehilite .sx { color: #FFA500 } /* Literal.String.Other */
+.codehilite .sr { color: #ED9D13 } /* Literal.String.Regex */
+.codehilite .s1 { color: #ED9D13 } /* Literal.String.Single */
+.codehilite .ss { color: #ED9D13 } /* Literal.String.Symbol */
+.codehilite .bp { color: #2FBCCD } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #71ADFF } /* Name.Function.Magic */
+.codehilite .vc { color: #40FFFF } /* Name.Variable.Class */
+.codehilite .vg { color: #40FFFF } /* Name.Variable.Global */
+.codehilite .vi { color: #40FFFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #40FFFF } /* Name.Variable.Magic */
+.codehilite .il { color: #51B2FD } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="topbar"><a href="00_INDEX.html">&larr; Production docs index</a><span class="sep">/</span><span style="color:var(--muted)">Spectrogram Cleaning Pipeline</span></div>
+<div class="wrap">
+<h1 id="spectrogram-cleaning-pipeline">Spectrogram Cleaning Pipeline</h1>
+<blockquote>
+<p><strong>What this is</strong> — The reference for the USV lab's spectrogram/audio <em>cleaning</em>
+code. There is no single "cleaning pipeline"; there are <strong>four distinct stacks</strong>
+that historically got conflated. This doc names each, then documents the two that
+are LIVE on <code>main</code> in operational detail.
+<strong>Status</strong> — Current as of 2026-06-21. Built from source at HEAD (read line-by-line,
+not from prior docs).
+<strong>Canonical "our cleaning pipeline"</strong> — <strong>Stack 4</strong>, the DeepSqueak focus-STFT contour
+port (<code>scripts/deepsqueak_focus_stft.py</code> + <code>scripts/contour_mask_utils.py</code>), designated
+canonical 2026-05-28 by user directive. It feeds the contour-masked VAE — see
+<a href="production_vae.html">production VAE</a>.
+<strong>Production-detection cleaning</strong> — <strong>Stacks 2a + 2b</strong> (<code>app/core/notch.py</code> +
+<code>app/core/denoise.py</code>). These are what the live PyQt6 app and <code>run_batch_detection.py</code>
+actually run. They are NOT "our cleaning pipeline" in conversation, but they ARE the
+cleaning in the production detection path.</p>
+</blockquote>
+<hr />
+<h2 id="read-this-first-the-canonical-vs-detection-distinction">Read this first: the canonical-vs-detection distinction</h2>
+<p>Two phrases mean two different things, and mixing them up is a documented past error
+(<a href="../modules/cleaning-subsystems.html">cleaning-subsystems.md</a>):</p>
+<table>
+<thead>
+<tr>
+<th>Phrase</th>
+<th>Means</th>
+<th>Stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"our cleaning pipeline" / "the canonical cleaning"</td>
+<td>the contour-mask port that produces VAE patches</td>
+<td><strong>Stack 4</strong></td>
+</tr>
+<tr>
+<td>"production-detection cleaning" / "the cleaning the app does"</td>
+<td>the pre-CNN audio/spectrogram cleaning in the detection path</td>
+<td><strong>Stacks 2a + 2b</strong></td>
+</tr>
+</tbody>
+</table>
+<p>If someone says "run our cleaning pipeline on these calls" they mean Stack 4. If someone
+asks "what cleaning does the detector apply" they mean Stacks 2a/2b. These are completely
+separate code paths operating on different data representations.</p>
+<h3 id="at-a-glance-all-four-stacks">At-a-glance: all four stacks</h3>
+<table>
+<thead>
+<tr>
+<th>Stack</th>
+<th>Status</th>
+<th>File</th>
+<th>Operates on</th>
+<th>Sample-rate convention</th>
+<th>Canonical FOR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Classifier 4-layer</strong></td>
+<td><strong>ARCHIVED 2026-05-28</strong></td>
+<td><code>archive/cleaning_legacy/stack1/src/classifier/cleaning_pipeline.py</code></td>
+<td>dB spectrogram</td>
+<td>250 kHz (VocalMat-aligned), default in code</td>
+<td>(was) pre-CNN cleaning for the Module 18.x lab VocalMat classifier train/eval</td>
+</tr>
+<tr>
+<td><strong>2a. Production — soft-notch</strong></td>
+<td><strong>LIVE (detection)</strong></td>
+<td><code>src/usv_spectrogram/app/core/notch.py</code></td>
+<td><strong>time-domain audio</strong> (before STFT)</td>
+<td>300 kHz (caller passes <code>fs_hz</code>)</td>
+<td>live PyQt6 + <code>run_batch_detection.py</code> equipment-tonal removal</td>
+</tr>
+<tr>
+<td><strong>2b. Production — baseline subtraction</strong></td>
+<td><strong>LIVE (detection)</strong></td>
+<td><code>src/usv_spectrogram/app/core/denoise.py</code></td>
+<td>linear-magnitude spectrogram (after STFT)</td>
+<td>300 kHz (kernel derived from <code>corpus.STFT_HOP</code>/<code>SAMPLE_RATE_HZ</code>)</td>
+<td>live PyQt6 + batch detection temporal-baseline subtraction</td>
+</tr>
+<tr>
+<td><strong>3. SIS prefilter</strong></td>
+<td><strong>ARCHIVED 2026-05-28</strong></td>
+<td><code>archive/cleaning_legacy/stack3/src/features/spectrogram_filter.py</code></td>
+<td>linear-magnitude spectrogram</td>
+<td>300 kHz</td>
+<td>(was) the SIS benchmark (ridge / Oren / AMVOC) + 6 shape-VAE experiments</td>
+</tr>
+<tr>
+<td><strong>4. DeepSqueak contour port</strong></td>
+<td><strong>LIVE (canonical "our cleaning")</strong></td>
+<td><code>scripts/deepsqueak_focus_stft.py</code> + <code>scripts/contour_mask_utils.py</code></td>
+<td>per-call focus STFT → power-spectrogram mask</td>
+<td>300 kHz (<code>corpus.SAMPLE_RATE_HZ</code>)</td>
+<td>contour-masked VAE patch generation; the canonical "our cleaning pipeline"</td>
+</tr>
+</tbody>
+</table>
+<p>Stacks 1 and 3 were archived (their analysis families dead-ended: 18.x DANN and all six
+shape-VAE attempts). <strong>They were NOT deleted</strong> — see the
+<a href="#gotcha-archived-stacks-are-still-imported-at-runtime">archive-still-imported gotcha</a>
+in Internals. Full inventory and rationale: <a href="../modules/cleaning-subsystems.html">cleaning-subsystems.md</a>.</p>
+<hr />
+<h1 id="1-operate">1. Operate</h1>
+<p>This section is split by the two things you might actually want to run:</p>
+<ul>
+<li><strong><a href="#1a--stack-4-the-canonical-cleaning">1A — Stack 4 (the canonical cleaning):</a></strong> generate contour-masked VAE patches.</li>
+<li><strong><a href="#1b--stacks-2a2b-production-detection-cleaning">1B — Stacks 2a/2b (production-detection cleaning):</a></strong> how the detector cleans, and the flags that turn it on.</li>
+</ul>
+<hr />
+<h2 id="1a-stack-4-the-canonical-cleaning">1A — Stack 4 (the canonical cleaning)</h2>
+<p>Stack 4 turns a folder of WAVs + a per-call contour parquet into <strong>masked power-spectrogram
+patches</strong> for the contour-masked VAE. Two scripts:</p>
+<table>
+<thead>
+<tr>
+<th>Script</th>
+<th>Purpose</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/sweep_contour_mask.py</code></td>
+<td>Render a 12-cell visual sweep (4 bandwidths × 3 tonality thresholds) + 1 raw-reference PNG, for <strong>human selection</strong> of the mask parameters.</td>
+<td>Run FIRST, review the PNGs, pick <code>(bandwidth, threshold)</code>.</td>
+</tr>
+<tr>
+<td><code>scripts/mass_apply_contour_mask.py</code></td>
+<td>Apply the chosen mask to <strong>all</strong> accepted windows; emit <code>patches.npz</code> + <code>patches_manifest.parquet</code>.</td>
+<td>Run SECOND with the chosen params.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="required-environment">Required environment</h3>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>&lt;script&gt;<span class="w">        </span><span class="c1"># repo interpreter (Linux/WSL)</span>
+</code></pre></div>
+
+<p>Both scripts add <code>scripts/</code> and <code>src/</code> to <code>sys.path</code> themselves, so cwd does not matter.
+Dependencies used at runtime: <code>numpy</code>, <code>scipy</code>, <code>statsmodels</code>, <code>librosa</code>, <code>pandas</code>,
+<code>matplotlib</code>. The focus-STFT port (<code>deepsqueak_focus_stft.py</code>) additionally needs
+<code>statsmodels</code> for the robust LOWESS smoother.</p>
+<h3 id="input-files">Input files</h3>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>What it is</th>
+<th>Schema (columns used)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--contours-parquet</code></td>
+<td>Per-call contour bins from the DeepSqueak port (produced upstream by the contour extractor; one row per ridge bin).</td>
+<td><code>wav_stem</code>, <code>call_id</code>, <code>time_bin_index</code>, <code>frequency_kHz</code>, <code>tonality</code>, <code>accepted</code> (bool)</td>
+</tr>
+<tr>
+<td><code>--window-index-parquet</code></td>
+<td>The fixed-width windowing of accepted calls (one row per patch window).</td>
+<td><code>wav_stem</code>, <code>call_id</code>, <code>window_idx</code>, <code>start_bin_index</code>, <code>end_bin_index</code>, <code>abs_time_start_s</code>, <code>abs_time_end_s</code>, <code>num_contour_bins_in_window</code></td>
+</tr>
+<tr>
+<td><code>--wav-search-dirs</code></td>
+<td>One or more directories searched recursively for <code>&lt;wav_stem&gt;.wav</code>. First match wins (search-dir order).</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Default parquet paths (5970 cohort) are baked into <code>mass_apply_contour_mask.py</code>:
+<code>results/contour_extraction/5970/contours.parquet</code> and
+<code>results/masked_patches/5970/window_index.parquet</code>
+(<code>scripts/mass_apply_contour_mask.py:60</code>, <code>:65</code>).</p>
+<h3 id="step-1-visual-sweep-sweep_contour_maskpy">Step 1 — visual sweep (<code>sweep_contour_mask.py</code>)</h3>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/sweep_contour_mask.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--contours-parquet<span class="w"> </span>results/contour_extraction/5970/contours.parquet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--window-index-parquet<span class="w"> </span>results/masked_patches/5970/window_index.parquet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-search-dirs<span class="w"> </span><span class="s2">&quot;5970 USV/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>results/masked_patches/5970/sweep/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--n-example-calls<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--seed<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--db-floor<span class="w"> </span>-60.0
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Meaning / when to change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--contours-parquet</code></td>
+<td>(required)</td>
+<td>Contour parquet (see schema above).</td>
+</tr>
+<tr>
+<td><code>--window-index-parquet</code></td>
+<td>(required)</td>
+<td>Window-index parquet.</td>
+</tr>
+<tr>
+<td><code>--wav-search-dirs</code></td>
+<td>(required)</td>
+<td>One or more WAV roots (nargs <code>+</code>).</td>
+</tr>
+<tr>
+<td><code>--output-dir</code></td>
+<td>(required)</td>
+<td>Where the 13 PNGs are written.</td>
+</tr>
+<tr>
+<td><code>--n-example-calls</code></td>
+<td><code>20</code></td>
+<td>How many accepted first-windows (<code>window_idx == 0</code>) to sample for the sweep grid. The grid is rendered 5×4, so 20 fills it exactly.</td>
+</tr>
+<tr>
+<td><code>--seed</code></td>
+<td><code>42</code></td>
+<td>Random seed for the deterministic sample of example calls.</td>
+</tr>
+<tr>
+<td><code>--db-floor</code></td>
+<td><code>-60.0</code></td>
+<td>vmin (dB power) shared across all panels for an honest visual comparison. Lower it to see more of the noise floor.</td>
+</tr>
+</tbody>
+</table>
+<p>The sweep matrix is <strong>hard-coded in the script</strong> (not flags):
+- Bandwidths (<code>scripts/sweep_contour_mask.py:87-92</code>): <code>bw_2kHz</code> (±2 kHz hard), <code>bw_5kHz</code>
+  (±5 kHz hard), <code>bw_10kHz</code> (±10 kHz hard), <code>bw_gauss3kHz</code> (Gaussian σ=3 kHz soft).
+- Tonality thresholds (<code>scripts/sweep_contour_mask.py:94-98</code>): <code>thr_p25</code> = <strong>94.4</strong>,
+  <code>thr_p50</code> = <strong>314.1</strong>, <code>thr_p75</code> = <strong>1254.7</strong>. These are percentile anchors on the
+  <em>peak-to-median tonality</em> distribution (NOT DeepSqueak's internal 0.3, which lived on a
+  different scale). Higher value = keep fewer / more-tonal contour bins.</p>
+<p><strong>Outputs</strong> (into <code>--output-dir</code>): <code>cell_raw_unmasked.png</code> (reference, no mask) plus
+<code>cell_&lt;bw&gt;_&lt;thr&gt;.png</code> for each of the 12 combinations. The script also prints, per cell,
+how many of the example patches were fully zeroed (no contour bin passed the threshold) —
+a high zeroed count means the threshold is too aggressive for that cell.</p>
+<h3 id="step-2-mass-apply-mass_apply_contour_maskpy">Step 2 — mass apply (<code>mass_apply_contour_mask.py</code>)</h3>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/mass_apply_contour_mask.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--contours-parquet<span class="w"> </span>results/contour_extraction/5970/contours.parquet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--window-index-parquet<span class="w"> </span>results/masked_patches/5970/window_index.parquet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-search-dirs<span class="w"> </span><span class="s2">&quot;5970 USV/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-patches-npz<span class="w"> </span>results/masked_patches/5970/patches.npz<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-manifest-parquet<span class="w"> </span>results/masked_patches/5970/patches_manifest.parquet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--bandwidth-kHz<span class="w"> </span><span class="m">5</span>.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tonality-threshold<span class="w"> </span><span class="m">0</span>.0
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Meaning / when to change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--contours-parquet</code></td>
+<td><code>results/contour_extraction/5970/contours.parquet</code></td>
+<td>Contour parquet.</td>
+</tr>
+<tr>
+<td><code>--window-index-parquet</code></td>
+<td><code>results/masked_patches/5970/window_index.parquet</code></td>
+<td>Window-index parquet.</td>
+</tr>
+<tr>
+<td><code>--wav-search-dirs</code></td>
+<td>(required)</td>
+<td>WAV roots (nargs <code>+</code>).</td>
+</tr>
+<tr>
+<td><code>--output-patches-npz</code></td>
+<td><code>results/masked_patches/5970/patches.npz</code></td>
+<td>Output patch tensor + freq axis.</td>
+</tr>
+<tr>
+<td><code>--output-manifest-parquet</code></td>
+<td><code>results/masked_patches/5970/patches_manifest.parquet</code></td>
+<td>Output manifest (one row per patch).</td>
+</tr>
+<tr>
+<td><code>--bandwidth-kHz</code></td>
+<td><code>5.0</code></td>
+<td>Half-width (kHz) of the <strong>hard</strong> bandwidth mask around the ridge. This is the chosen production value (<code>±5 kHz</code>).</td>
+</tr>
+<tr>
+<td><code>--tonality-threshold</code></td>
+<td><code>0.0</code></td>
+<td>Minimum tonality for a contour bin to qualify a column. <code>0.0</code> keeps every contour bin (the chosen production value).</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>The mass-apply step uses <strong>only</strong> the hard-bandwidth mask
+(<code>apply_hard_bandwidth_mask</code>); the Gaussian variant is sweep-only.</p>
+</blockquote>
+<p><strong>Production-chosen mask: hard ±5 kHz, tonality threshold 0.0</strong> — declared in the script
+docstring (<code>scripts/mass_apply_contour_mask.py:3-4</code>) and as the CLI defaults
+(<code>:78-79</code>).</p>
+<h3 id="stack-4-outputs-and-their-fields">Stack 4 outputs and their fields</h3>
+<p><code>patches.npz</code> (<code>np.savez</code>, <code>scripts/mass_apply_contour_mask.py:211</code>):
+| Key | Shape / dtype | Meaning |
+|-----|---------------|---------|
+| <code>patches</code> | <code>(N, F, T)</code> float32 | Masked <strong>raw power</strong> patches. <code>F = STFT_N_FFT//2 + 1 = 257</code>, <code>T</code> is the fixed window width (<code>234</code> bins = 100 ms; see Internals). Raw power, NOT normalized — per-patch normalization happens at VAE <em>training</em> time (Refinement D, <code>scripts/mass_apply_contour_mask.py:10-11</code>). |
+| <code>freqs_kHz</code> | <code>(F,)</code> float32 | The frequency axis in kHz (shared across all patches). |</p>
+<p><code>patches_manifest.parquet</code> (one row per patch, column order enforced at
+<code>scripts/mass_apply_contour_mask.py:259-276</code>):
+| Column | dtype | Meaning |
+|--------|-------|---------|
+| <code>patch_idx</code> | int32 | Row index into <code>patches</code> (0-based). |
+| <code>wav_stem</code> | string | Source WAV stem. |
+| <code>call_id</code> | int64 | Source DeepSqueak call id. |
+| <code>window_idx</code> | int32 | Which window of that call (0 = first). |
+| <code>start_bin_index</code>, <code>end_bin_index</code> | int32 | STFT-column span of the patch in the full recording. |
+| <code>abs_time_start_s</code>, <code>abs_time_end_s</code> | float32 | Absolute time span of the patch within the WAV. |
+| <code>num_contour_bins_in_window</code> | int32 | Contour bins falling in this window (provenance). |
+| <code>mask_kind</code> | string | <code>"hard"</code> (always, for this script). |
+| <code>bandwidth_kHz</code> | float32 | The <code>--bandwidth-kHz</code> used. |
+| <code>tonality_threshold</code> | float32 | The <code>--tonality-threshold</code> used. |
+| <code>n_nonzero_freqs</code> | int32 | Diagnostic: how many freq rows survived the mask. <code>0</code> = fully-zeroed patch. |
+| <code>patch_max_power</code> | float32 | Diagnostic: max power in the masked patch. |</p>
+<p>The script prints a summary: windows processed, WAV stems used, patch tensor shape,
+count of all-zero patches, and average mask coverage (<code>n_nonzero_freqs / F</code>).</p>
+<h3 id="worked-example-stack-4">Worked example (Stack 4)</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 1. Visual sweep — produces 13 PNGs for human review.</span>
+.venv/bin/python<span class="w"> </span>scripts/sweep_contour_mask.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--contours-parquet<span class="w"> </span>results/contour_extraction/5970/contours.parquet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--window-index-parquet<span class="w"> </span>results/masked_patches/5970/window_index.parquet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-search-dirs<span class="w"> </span><span class="s2">&quot;5970 USV/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>results/masked_patches/5970/sweep/
+
+<span class="c1"># (human reviews results/masked_patches/5970/sweep/*.png, picks ±5 kHz / thr 0.0)</span>
+
+<span class="c1"># 2. Mass-apply the chosen mask to every accepted window.</span>
+.venv/bin/python<span class="w"> </span>scripts/mass_apply_contour_mask.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-search-dirs<span class="w"> </span><span class="s2">&quot;5970 USV/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--bandwidth-kHz<span class="w"> </span><span class="m">5</span>.0<span class="w"> </span>--tonality-threshold<span class="w"> </span><span class="m">0</span>.0
+<span class="c1"># -&gt; writes results/masked_patches/5970/patches.npz (+ manifest)</span>
+</code></pre></div>
+
+<p>The resulting <code>patches.npz</code> is the input to the contour-masked VAE training script
+<code>scripts/train_contour_vae_v2.py</code> — see <a href="production_vae.html">production VAE</a>.</p>
+<h3 id="stack-4-troubleshooting-gotchas">Stack 4 — Troubleshooting / Gotchas</h3>
+<ul>
+<li><strong>WAV not found</strong> → both scripts raise <code>FileNotFoundError</code> listing the missing stems.
+  The lookup is <code>&lt;wav_stem&gt;.wav</code> recursively under <code>--wav-search-dirs</code>; first match wins.
+  WAVs span multiple roots (5970/, 3452*/, 9252/) — pass all relevant dirs.</li>
+<li><strong>"Not enough accepted first-windows"</strong> (sweep) → fewer than <code>--n-example-calls</code>
+  accepted windows with <code>window_idx == 0</code>. Lower <code>--n-example-calls</code>, or confirm the
+  contour extractor set <code>accepted == True</code> on enough calls.</li>
+<li><strong>"No accepted windows after merging"</strong> (mass-apply) → the <code>accepted</code> column in the
+  contour parquet is all-False or the merge keys don't line up. Confirm the upstream
+  contour extractor populated <code>accepted</code>.</li>
+<li><strong>All-zero / heavily-zeroed patches</strong> → mask is too aggressive (high tonality threshold
+  or tiny bandwidth). The sweep's per-cell zeroed count is the diagnostic; the mass-apply
+  manifest's <code>n_nonzero_freqs == 0</code> count is the post-hoc check.</li>
+<li><strong>Non-uniform window widths</strong> → mass-apply asserts a single fixed <code>T</code> across all windows
+  (<code>scripts/mass_apply_contour_mask.py:134-140</code>). If the window-index parquet has mixed
+  widths it raises <code>AssertionError</code>. The windowing script produces a fixed 234-bin width.</li>
+<li><strong>Memory</strong> — <code>patches.npz</code> for the lab cohort is large (an ~11 GiB box has OOM'd
+  full-scanning a lab <code>patches.npz</code> before; see memory note <code>project_c06_empty_cluster</code>).
+  Never load the whole array if you only need a slice; mass-apply itself holds one WAV's
+  STFT at a time, not all patches in RAM.</li>
+<li><strong>FFT join key gotcha (downstream, not these scripts)</strong> — the contour/FPCA join is
+  <code>(wav_stem, call_id-1) == (wav_stem, det_index)</code>, and <code>(wav_stem, call_id)</code> is
+  NON-unique; dedupe first. (From memory note on WS-B/WS-C.) Relevant if you cross-join
+  these patches with detection or FPCA tables.</li>
+</ul>
+<hr />
+<h2 id="1b-stacks-2a2b-production-detection-cleaning">1B — Stacks 2a/2b (production-detection cleaning)</h2>
+<p>This is the cleaning the <strong>detector</strong> applies. It lives behind opt-in flags and is
+<strong>default-OFF</strong> so wild-mouse runs are byte-identical without them. Both are invoked
+through <code>app/core/audio_loader.py</code> (live PyQt6 path) and <code>scripts/run_batch_detection.py</code>
+(batch path).</p>
+<blockquote>
+<p><strong>Hard invariant:</strong> wild-mouse batches (5970, 3452, 9252) MUST omit both
+<code>--soft-notch</code> and <code>--subtract-baseline</code> to reproduce the published detections
+byte-for-byte. These flags are <strong>lab-only opt-ins</strong> that target rig equipment tonals the
+wild-trained CNN never saw. (<code>notch.py:30-34</code>, <code>run_batch_detection.py:656-657</code>.)</p>
+</blockquote>
+<h3 id="where-they-sit-in-the-detection-path">Where they sit in the detection path</h3>
+<div class="codehilite"><pre><span></span><code>run_batch_detection.py
+  → audio_loader.SpectrogramAudioLoader
+      → (optional) notch.auto_soft_notch        # Stack 2a — on TIME-DOMAIN audio, before STFT
+      → STFT
+      → (optional) denoise.subtract_temporal_baseline   # Stack 2b — on LINEAR-MAG spectrogram, after STFT
+      → sliding_inference._apply_mad_normalization      # (MAD norm — NOT part of &quot;cleaning&quot;)
+</code></pre></div>
+
+<h3 id="stack-2a-soft-notch-notchpy">Stack 2a — soft-notch (<code>notch.py</code>)</h3>
+<p>Removes stationary equipment <strong>tonal lines</strong> from the time-domain audio before the STFT,
+via complementary-bandpass subtraction: <code>audio - alpha * bandpass(audio)</code>, with
+<code>alpha = 1 - 10**(-cut_depth_db/20)</code> (<code>notch.py:18-27</code>, <code>:313</code>). Two modes:
+- <strong>Library mode</strong> (preferred): a per-rig <code>TonalLibrary</code> JSON drives which bands to cut;
+  cut depth is measured per-chunk from the local PSD.
+- <strong>Auto mode</strong> (no library): <code>discover_tonals</code> finds tonals per-chunk via Welch PSD and
+  filters them all.</p>
+<p>CLI: <code>--soft-notch PATH|auto</code> on <code>run_batch_detection.py</code>
+(<code>scripts/run_batch_detection.py:671-682</code>) — pass a <code>TonalLibrary</code> JSON path (library
+mode) or the literal string <code>auto</code> (pure auto-detect). Default <code>None</code> (off).</p>
+<p>Key defaults (read from <code>notch.py</code>; these are function defaults, change only with reason):</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Source</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>discovery_threshold_db</code></td>
+<td><code>10.0</code></td>
+<td><code>notch.py:345</code></td>
+<td>A PSD bin must exceed its rolling-median neighborhood by this many dB to count as a tonal.</td>
+</tr>
+<tr>
+<td><code>median_window_hz</code></td>
+<td><code>4_000.0</code></td>
+<td><code>notch.py:346</code></td>
+<td>Width of the local-median neighborhood for tonal discovery / per-chunk cut-depth.</td>
+</tr>
+<tr>
+<td><code>nperseg</code></td>
+<td><code>8192</code></td>
+<td><code>notch.py:347</code></td>
+<td>Welch segment length (~37 Hz/bin at 300 kHz).</td>
+</tr>
+<tr>
+<td><code>usv_band_min_hz</code> / <code>usv_band_max_hz</code></td>
+<td><code>USV_FREQ_MIN_HZ</code> / <code>USV_FREQ_MAX_HZ</code> (<code>20_000</code> / <code>120_000</code>)</td>
+<td><code>notch.py:343-344</code>, <code>corpus.py:32-33</code></td>
+<td>Band searched for tonals.</td>
+</tr>
+<tr>
+<td><code>freq_tolerance_hz</code></td>
+<td><code>200.0</code></td>
+<td><code>notch.py:428</code></td>
+<td>Center-frequency match tolerance, library reconciliation.</td>
+</tr>
+<tr>
+<td><code>intensity_drift_sigma</code></td>
+<td><code>2.0</code></td>
+<td><code>notch.py:429</code></td>
+<td>Library-drift alarm: matched tonal deviates this many σ from the library mean.</td>
+</tr>
+<tr>
+<td><code>min_width_hz</code></td>
+<td><code>200.0</code></td>
+<td><code>notch.py:485</code></td>
+<td>Floor on filter bandwidth for auto-detected tonals.</td>
+</tr>
+<tr>
+<td><code>width_safety_factor</code></td>
+<td><code>2.0</code></td>
+<td><code>notch.py:486</code></td>
+<td>Auto-detected width is multiplied by this.</td>
+</tr>
+<tr>
+<td><code>safety_margin_db</code></td>
+<td><code>0.0</code></td>
+<td><code>notch.py:487</code></td>
+<td>Extra dB added to every cut depth.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td><code>4</code></td>
+<td><code>notch.py:488</code></td>
+<td>Butterworth order (effective <code>2*order</code> via <code>sosfiltfilt</code>).</td>
+</tr>
+</tbody>
+</table>
+<p><code>auto_soft_notch</code> returns <code>(cleaned_audio, ReconciliationResult)</code>. When no tonals are
+discovered and no library entries exist, <code>cleaned_audio</code> is the <strong>same ndarray</strong> as the
+input (byte-identical) — this is what guarantees the default-off invariant
+(<code>notch.py:599-600</code>, <code>:611-613</code>).</p>
+<h3 id="stack-2b-baseline-subtraction-denoisepy">Stack 2b — baseline subtraction (<code>denoise.py</code>)</h3>
+<p>Subtracts a per-frequency-bin <strong>temporal noise floor</strong> from the linear-magnitude
+spectrogram after the STFT (<code>subtract_temporal_baseline</code>). Two methods:</p>
+<p>CLI on <code>run_batch_detection.py</code>:
+- <code>--subtract-baseline</code> (store_true; default off) — enables it
+  (<code>scripts/run_batch_detection.py:650-660</code>).
+- <code>--subtraction-method {percentile,median_envelope}</code> (default <code>percentile</code>) — only
+  consulted with <code>--subtract-baseline</code> (<code>scripts/run_batch_detection.py:661-670</code>).</p>
+<p>Defaults (read from <code>denoise.py</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Source</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>method</code></td>
+<td><code>"percentile"</code></td>
+<td><code>denoise.py:62</code></td>
+<td><code>percentile</code> = Boll-1979 floor subtraction; <code>median_envelope</code> = sliding per-bin median (tracks slow band amplitude modulation).</td>
+</tr>
+<tr>
+<td><code>percentile</code></td>
+<td><code>10.0</code> (<code>DEFAULT_BASELINE_PERCENTILE</code>)</td>
+<td><code>denoise.py:45</code>, <code>:63</code></td>
+<td>The temporal percentile per bin used as the floor (percentile method only).</td>
+</tr>
+<tr>
+<td><code>envelope_kernel_frames</code></td>
+<td><code>DEFAULT_ENVELOPE_KERNEL_FRAMES</code> ≈ <code>1172</code></td>
+<td><code>denoise.py:54-57</code>, <code>:64</code></td>
+<td>Median-filter width in frames, derived as <code>round(0.5 s * SAMPLE_RATE_HZ / STFT_HOP)</code> = <code>round(0.5*300000/128)</code>. Wider than the longest USV (~300 ms) so bursts can't dominate the median.</td>
+</tr>
+<tr>
+<td><code>epsilon</code></td>
+<td><code>1e-10</code> (<code>DEFAULT_EPSILON</code>)</td>
+<td><code>denoise.py:46</code>, <code>:65</code></td>
+<td>Post-subtraction floor so downstream <code>log</code> is safe.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Why linear, not dB:</strong> subtraction must happen in linear magnitude — subtracting in dB
+is mathematically wrong (<code>denoise.py:22-24</code>). The caller owns the dB↔linear conversion.
+Baseline is computed <strong>per 2-second chunk</strong>, not per recording (<code>denoise.py:25-26</code>),
+keeping the function stateless.</p>
+</blockquote>
+<h3 id="worked-example-production-cleaning">Worked example (production cleaning)</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Wild cohort — NO cleaning flags (byte-identical to published results):</span>
+.venv/bin/python<span class="w"> </span>scripts/run_batch_detection.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-dir<span class="w"> </span><span class="s2">&quot;5970 USV/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>models/hard_neg_retrain/best_model.pt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>results/batch_5970/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--temperature<span class="w"> </span>models/hard_neg_retrain/temperature.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--fp-filter<span class="w"> </span>models/hard_neg_retrain/fp_filter.pkl<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--hysteresis-config<span class="w"> </span>models/hard_neg_retrain/hysteresis_optimization_v2.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--workers<span class="w"> </span><span class="m">4</span>
+
+<span class="c1"># Lab cohort — opt in to both cleaning layers:</span>
+.venv/bin/python<span class="w"> </span>scripts/run_batch_detection.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-dir<span class="w"> </span>lab_131204/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>models/hard_neg_retrain/best_model.pt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>results/batch_lab_131204/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--temperature<span class="w"> </span>models/hard_neg_retrain/temperature.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--fp-filter<span class="w"> </span>models/hard_neg_retrain/fp_filter.pkl<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--hysteresis-config<span class="w"> </span>models/hard_neg_retrain/hysteresis_optimization_v2.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--subtract-baseline<span class="w"> </span>--subtraction-method<span class="w"> </span>percentile<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--soft-notch<span class="w"> </span>data/lab_tonal_lines/&lt;rig_id&gt;.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--workers<span class="w"> </span><span class="m">4</span>
+</code></pre></div>
+
+<p>The five model flags are the canonical detection pipeline — see
+<a href="cnn_detection_pipeline.html">CNN detection pipeline</a>. The cleaning flags are additive
+lab-only options.</p>
+<h3 id="stacks-2a2b-troubleshooting-gotchas">Stacks 2a/2b — Troubleshooting / Gotchas</h3>
+<ul>
+<li><strong>PyQt6 "Detect" button does NOT run these.</strong> The app's live Detect path is CNN +
+  hysteresis only (raw probs, no FP-filter / no temperature / no soft-notch / no baseline
+  by default). Soft-notch and baseline are wired through <code>audio_loader</code> flags
+  (<code>subtract_baseline</code>, <code>auto_soft_notch</code>) but the batch CLI is where they are turned on
+  for production. (Memory note <code>feedback_app_detect_vs_batch_pipeline</code>.)</li>
+<li><strong>MAD normalization is not "cleaning."</strong> <code>sliding_inference._apply_mad_normalization</code>
+  runs after these but is part of the CNN input normalization, not this pipeline. It is
+  <strong>global</strong> (whole-spectrogram), never per-window — per-window MAD silently kills
+  high-confidence USVs (memory note <code>feedback_cnn_inference_global_mad</code>).</li>
+<li><strong>Soft-notch library is the source of truth; auto-detections are an alarm.</strong> In library
+  mode, unmatched discovered tonals are <em>logged, not filtered</em> — they signal a stale
+  library, they don't change the output (<code>notch.py:13-15</code>).</li>
+<li><strong>Never hardcode the kernel / sample rate.</strong> Stack 2b derives its kernel from
+  <code>corpus.STFT_HOP</code> / <code>SAMPLE_RATE_HZ</code>; Stack 2a takes <code>fs_hz</code> from the caller. Both are
+  300 kHz in production via <code>corpus</code>. Do not redeclare these (CLAUDE.md / ADR-001).</li>
+<li><strong>mean_power_db / tonality are cage artifacts.</strong> Cleaning changes the noise floor; don't
+  read post-cleaning <code>mean_power_db</code>/<code>tonality</code> as biology without cross-cage calibration
+  (memory note <code>feedback_rig_artifact_mean_power_db</code>).</li>
+</ul>
+<hr />
+<h1 id="2-internals">2. Internals</h1>
+<h2 id="stack-4-architecture-and-data-flow">Stack 4 architecture and data flow</h2>
+<p>Stack 4 is a line-by-line Python port of DeepSqueak's <code>CreateFocusSpectrogram.m</code> +
+<code>CalculateStats.m</code>. Unlike the older <code>ridge_tracker.py</code>, it computes a <strong>per-call adaptive
+focus STFT</strong> (window size adapts to the call's own duration and frequency range), which is
+why its time grid is coarser than the canonical hop-128 grid and why it fixed a prior
+2.39× density discrepancy (<code>scripts/deepsqueak_focus_stft.py:20-26</code>).</p>
+<p>Data flow:</p>
+<div class="codehilite"><pre><span></span><code>WAV + per-call contour parquet
+  → (upstream extractor uses deepsqueak_focus_stft) → contours.parquet
+  → window_calls_to_patches.py                      → window_index.parquet (fixed 234-bin windows)
+  → sweep_contour_mask.py (human picks params)
+  → mass_apply_contour_mask.py
+      load_full_power_spec(): librosa.stft, hann, n_fft=512, hop=128 @300 kHz → |S|^2  (sweep_contour_mask.py:169-189)
+      cut_patch(): slice fixed window
+      contour_mask_utils.apply_hard_bandwidth_mask(): keep ±bandwidth_kHz around ridge
+  → patches.npz (raw power float32) + patches_manifest.parquet
+  → train_contour_vae_v2.py  (see production_vae.md)
+</code></pre></div>
+
+<h3 id="focus-stft-render-convention-canonical">Focus-STFT render convention (canonical)</h3>
+<p>Two different STFTs live in Stack 4 — do not conflate them:</p>
+<ol>
+<li>
+<p><strong>Contour extraction</strong> (<code>deepsqueak_focus_stft.py</code>): a <em>per-call adaptive-window</em> STFT.
+   Window seconds come from <code>compute_optimal_window</code> (<code>deepsqueak_focus_stft.py:144-166</code>):
+   <code>optimalWindow = sqrt(duration / (2000 * freq_range_kHz))</code>, then <code>× 1.5</code>
+   (noverlap factor 0.5). Window/overlap/nfft samples = <code>round(sr * win_s)</code> etc.
+   (<code>:202-204</code>). Defensive bounds: <code>freq_range &gt;= 1 kHz</code>
+   (<code>MIN_FREQ_RANGE_KHZ = 1.0</code>, <code>:79</code>) and windowsize capped at <code>4096</code> samples
+   (<code>MAX_WINDOWSIZE_SAMPLES = 4096</code>, <code>:80</code>) so a degenerate CSV row can't trigger a
+   multi-GB STFT. Uses a <strong>Hamming</strong> window (<code>scipy_signal.windows.hamming(..., sym=False)</code>,
+   <code>:233</code>).</p>
+</li>
+<li>
+<p><strong>Patch render</strong> (<code>sweep_contour_mask.load_full_power_spec</code>,
+   <code>sweep_contour_mask.py:169-189</code>): the <em>global canonical</em> STFT used to build the patches
+   that get masked — <strong>Hann window, <code>n_fft = corpus.STFT_N_FFT = 512</code>,
+   <code>hop = corpus.STFT_HOP = 128</code>, <code>sr = corpus.SAMPLE_RATE_HZ = 300000</code>, <code>center=True</code>,
+   raw power <code>|S|^2</code></strong>. This is the "global Hann 512/128 @300 kHz, fixed 234-bin windows,
+   raw-power" convention from memory note <code>feedback_cleaning_pipeline_impl_on_rig</code>.</p>
+</li>
+</ol>
+<p><code>F = STFT_N_FFT // 2 + 1 = 257</code> (<code>mass_apply_contour_mask.py:133</code>). The window width
+   <code>T = 234</code> bins = 100 ms is <code>round(0.100 * SAMPLE_RATE_HZ / STFT_HOP)</code>
+   (<code>window_calls_to_patches.py:72</code>; verified <code>round(0.100*300000/128) = 234</code>). The long-call
+   sliding step is <code>STEP_BINS = round(0.050*...) = 117</code> (<code>window_calls_to_patches.py:75</code>).</p>
+<blockquote>
+<p><strong>The actual rig artifacts live elsewhere.</strong> The masking <em>scripts</em> are on the box, but
+the canonical <code>patches.npz</code> + the trained VAE + latents live ONLY on the GPU rig at
+<code>/data/shachar/contour_vae/</code> (memory note <code>feedback_cleaning_pipeline_impl_on_rig</code>,
+<code>docs/DATA_LOCATIONS.md</code>). Check the rig before re-rendering — a chat reinvented this
+render 2026-05-29 and diverged six ways.</p>
+</blockquote>
+<h3 id="key-function-signatures-stack-4">Key function signatures (Stack 4)</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>file:line</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compute_optimal_window(duration_s, freq_range_kHz, noverlap_fraction=0.5)</code></td>
+<td><code>deepsqueak_focus_stft.py:144</code></td>
+<td><code>(windowsize_s, overlap_s, nfft_s)</code></td>
+</tr>
+<tr>
+<td><code>create_focus_spectrogram(audio_full, sr, call_box, frequency_padding_kHz=0.0)</code></td>
+<td><code>deepsqueak_focus_stft.py:169</code></td>
+<td><code>FocusSpectrogramResult</code></td>
+</tr>
+<tr>
+<td><code>calculate_stats(I, windowsize, noverlap, nfft, sr, call_box, entropy_threshold=0.215, amplitude_threshold=0.825)</code></td>
+<td><code>deepsqueak_focus_stft.py:351</code></td>
+<td><code>CalculateStatsResult</code> (ridge bins + scales)</td>
+</tr>
+<tr>
+<td><code>extract_contour_for_call(audio_full, sr, call_box, ...)</code></td>
+<td><code>deepsqueak_focus_stft.py:474</code></td>
+<td><code>ContourBins(time_s, freq_kHz, tonality)</code></td>
+</tr>
+<tr>
+<td><code>apply_hard_bandwidth_mask(S_pow, contour_t_bins, contour_freqs_kHz, contour_tonalities, freqs_kHz_axis, bandwidth_kHz, tonality_threshold)</code></td>
+<td><code>contour_mask_utils.py:112</code></td>
+<td>masked <code>(F,T)</code> ndarray (fresh array)</td>
+</tr>
+<tr>
+<td><code>apply_soft_gaussian_mask(..., sigma_kHz, tonality_threshold)</code></td>
+<td><code>contour_mask_utils.py:164</code></td>
+<td>masked <code>(F,T)</code> ndarray</td>
+</tr>
+</tbody>
+</table>
+<p>DeepSqueak algorithm constants (<code>deepsqueak_focus_stft.py:54-62</code>): <code>DS_ENTROPY_THRESHOLD =
+0.215</code>, <code>DS_AMPLITUDE_THRESHOLD = 0.825</code>, <code>DS_NOVERLAP_FRACTION = 0.5</code>,
+<code>DS_ENTROPY_SMOOTH_SPAN = 0.1</code>, <code>DS_RIDGE_SMOOTH_SPAN = 0.025</code>, <code>DS_RLOWESS_ITERATIONS = 5</code>,
+<code>DS_LOWERING_FACTOR = 1.1</code>, <code>DS_MIN_RIDGE_POINTS = 5</code>, <code>DS_MAX_LOWERING_ITERS = 10</code>.</p>
+<h3 id="mask-semantics-contour_mask_utilspy">Mask semantics (<code>contour_mask_utils.py</code>)</h3>
+<p>For each time column, <code>_qualifying_contour_per_column</code>
+(<code>contour_mask_utils.py:73</code>) picks the contour bin with the <strong>highest</strong> tonality that is
+<code>&gt;= tonality_threshold</code> and in-range. Columns with no qualifying bin are zeroed entirely.
+The hard mask keeps <code>|freq_axis - f_ridge| &lt;= bandwidth_kHz</code> per active column
+(<code>:156</code>); the Gaussian mask multiplies by <code>exp(-0.5*((f - f_ridge)/sigma)^2)</code> on active
+columns (<code>:210-211</code>) and raises <code>ValueError</code> if <code>sigma_kHz &lt;= 0</code> (<code>:189</code>). Both are
+vectorized over time (no per-column Python loop over the F×T grid).</p>
+<h3 id="invariants-stack-4">Invariants (Stack 4)</h3>
+<ul>
+<li>Patch tensor: <code>F = STFT_N_FFT//2+1 = 257</code>; single fixed <code>T</code> (234) enforced by assertion
+  (<code>mass_apply_contour_mask.py:134-140</code>).</li>
+<li>Frequency axis must be identical across all WAVs (asserted, <code>:157-159</code>) — guaranteed by
+  the canonical STFT params.</li>
+<li>Patches stored as <strong>raw power float32, un-normalized</strong> — normalization is the VAE
+  trainer's job, not this stack's (<code>mass_apply_contour_mask.py:10-11</code>).</li>
+</ul>
+<h2 id="stacks-2a2b-internals-key-signatures">Stacks 2a/2b internals (key signatures)</h2>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>file:line</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auto_soft_notch(audio, fs_hz, library=None, ...)</code></td>
+<td><code>notch.py:568</code></td>
+<td><code>(cleaned_audio, ReconciliationResult)</code></td>
+</tr>
+<tr>
+<td><code>discover_tonals(audio, fs_hz, *, discovery_threshold_db=10.0, median_window_hz=4000.0, nperseg=8192, ...)</code></td>
+<td><code>notch.py:339</code></td>
+<td><code>list[DetectedTonal]</code></td>
+</tr>
+<tr>
+<td><code>apply_soft_notches(audio, fs_hz, tonals, *, min_width_hz=200.0, width_safety_factor=2.0, safety_margin_db=0.0, order=4, cut_depths_db=None)</code></td>
+<td><code>notch.py:480</code></td>
+<td>cleaned audio (same shape/dtype)</td>
+</tr>
+<tr>
+<td><code>reconcile(library, detections, *, freq_tolerance_hz=200.0, intensity_drift_sigma=2.0)</code></td>
+<td><code>notch.py:424</code></td>
+<td><code>ReconciliationResult</code></td>
+</tr>
+<tr>
+<td><code>subtract_temporal_baseline(spec_linear, method="percentile", percentile=10.0, envelope_kernel_frames=..., epsilon=1e-10)</code></td>
+<td><code>denoise.py:60</code></td>
+<td>cleaned linear-mag spectrogram</td>
+</tr>
+</tbody>
+</table>
+<h3 id="invariants-stacks-2a2b">Invariants (Stacks 2a/2b)</h3>
+<ul>
+<li><strong>Default-off / byte-identical:</strong> with no library and no discovered tonals,
+  <code>auto_soft_notch</code> returns the input array unchanged (<code>notch.py:611-613</code>,
+  <code>:599-600</code>). This is the published-result reproducibility guarantee.</li>
+<li><strong>Linear-domain subtraction only</strong> (<code>denoise.py:22-24</code>).</li>
+<li><strong>Kernel derived from corpus</strong> — <code>DEFAULT_ENVELOPE_KERNEL_FRAMES</code> recomputes from
+  <code>SAMPLE_RATE_HZ</code> / <code>STFT_HOP</code> (<code>denoise.py:55-57</code>); never hardcode the frame count.</li>
+</ul>
+<h2 id="gotcha-archived-stacks-are-still-imported-at-runtime">Gotcha: archived stacks are still imported at runtime</h2>
+<p>Stacks 1 and 3 were moved to <code>archive/cleaning_legacy/</code> (2026-05-28) but <strong>NOT deleted</strong>,
+because several LIVE render/experiment scripts import them at runtime by adding the archive
+dir to <code>sys.path</code>. Verified call sites:</p>
+<ul>
+<li><code>scripts/experiments/render_v1_faithful_patches.py:59-83</code> adds
+  <code>archive/cleaning_legacy/stack1/{src,scripts}</code> to <code>sys.path</code>, then <em>re-attaches</em> the
+  archived <code>CleaningConfig</code> / <code>clean_spectrogram</code> onto the live <code>usv_spectrogram.classifier</code>
+  namespace so the archived <code>cnn_prepare_training_data</code> imports unchanged (preserving
+  byte-identical 844-pixel patches).</li>
+<li><code>scripts/experiments/render_vocalmat_style_patches.py:55</code>,
+  <code>scripts/experiments/label_patches_v1.py:18</code> reference the Stack-1 archive.</li>
+<li><code>scripts/experiments/render_vocalmat_gt_sample.py:29-30</code> inserts the Stack-3 archive
+  onto <code>sys.path</code> at runtime (<code>ARCHIVE_SRC = archive/cleaning_legacy/stack3/src</code>).
+  <code>scripts/experiments/train_shape_vae_alpha3.py:15</code> references the Stack-3 archive in a
+  docstring only (points at <code>stack3/scripts/experiments/rig_M10_image_vae.py</code>) — it does
+  not itself add the archive to <code>sys.path</code>.</li>
+<li><code>src/usv_spectrogram/classifier/__init__.py:12</code> documents that <code>CleaningConfig</code> /
+  <code>clean_spectrogram</code> were moved to the Stack-1 archive.</li>
+</ul>
+<p><strong>Do not delete <code>archive/cleaning_legacy/</code></strong> — these live scripts break at import if you
+do. (Verified in the 2026-06-08 dead-code audit, memory note
+<code>project_deadcode_audit_2026-06-08</code>.)</p>
+<h2 id="where-to-change-things">Where to change things</h2>
+<table>
+<thead>
+<tr>
+<th>You want to...</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Adjust the canonical mask bandwidth/threshold</td>
+<td><code>--bandwidth-kHz</code> / <code>--tonality-threshold</code> on <code>mass_apply_contour_mask.py</code> (re-run sweep first).</td>
+</tr>
+<tr>
+<td>Add a sweep bandwidth/threshold variant</td>
+<td><code>BANDWIDTH_VARIANTS</code> / <code>THRESHOLD_VARIANTS</code> lists in <code>sweep_contour_mask.py:87-98</code>.</td>
+</tr>
+<tr>
+<td>Change the focus-STFT contour algorithm</td>
+<td><code>deepsqueak_focus_stft.py</code> (keep MATLAB line refs — it's a faithful port).</td>
+</tr>
+<tr>
+<td>Change the patch render STFT</td>
+<td><code>load_full_power_spec</code> in <code>sweep_contour_mask.py:169</code> — but it MUST stay on <code>corpus</code> constants (ADR-002).</td>
+</tr>
+<tr>
+<td>Tune production detection cleaning</td>
+<td><code>notch.py</code> (2a) / <code>denoise.py</code> (2b) defaults, or the <code>run_batch_detection.py</code> flags. <strong>High-risk: any change here alters what the CNN sees.</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="cross-references">Cross-references</h2>
+<ul>
+<li><a href="../modules/cleaning-subsystems.html">cleaning-subsystems.md</a> — the full four-stack
+  inventory, call-site map, and VocalMat-equivalence adjudication (H1b).</li>
+<li><a href="production_vae.html">production VAE</a> — consumer of Stack 4's <code>patches.npz</code>.</li>
+<li><a href="cnn_detection_pipeline.html">CNN detection pipeline</a> — the detection path Stacks 2a/2b
+  sit inside.</li>
+<li><code>docs/DATA_LOCATIONS.md</code> — where <code>patches.npz</code> / VAE artifacts actually live (rig).</li>
+<li>ADR-001 (sample rate 300 kHz) / ADR-002 (STFT 512/128) — <code>DECISIONS.md</code>; constants
+  enforced in <code>src/usv_spectrogram/corpus.py</code>.</li>
+</ul>
+</div>
+</body>
+</html>

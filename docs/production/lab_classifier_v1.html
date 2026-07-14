@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab Syllable-Type Classifier — v1 (PRODUCTION)</title>
+<style>
+:root {
+  --bg:#0f1115; --panel:#181b22; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2a2f3a;
+  --accent:#6ea8fe; --accent2:#7ee0a8; --warn:#f0b86c; --code:#11141a;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.topbar {
+  position:sticky; top:0; z-index:10; background:rgba(15,17,21,.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); padding:10px 24px; font-size:13.5px;
+}
+.topbar a { color:var(--accent); text-decoration:none; }
+.topbar a:hover { text-decoration:underline; }
+.topbar .sep { color:var(--muted); margin:0 8px; }
+.wrap { max-width:900px; margin:0 auto; padding:34px 24px 90px; }
+h1,h2,h3,h4 { line-height:1.3; letter-spacing:-.2px; scroll-margin-top:60px; }
+h1 { font-size:30px; margin:.2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h2 { font-size:22px; margin:1.7em 0 .6em; color:#fff; }
+h3 { font-size:17px; margin:1.4em 0 .5em; color:var(--accent2); }
+h4 { font-size:15px; margin:1.2em 0 .4em; color:var(--ink); }
+a { color:var(--accent); }
+p,li { color:var(--ink); }
+hr { border:none; border-top:1px solid var(--line); margin:2em 0; }
+blockquote {
+  margin:1.2em 0; padding:.6em 1.1em; background:var(--panel);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0; color:var(--ink);
+}
+blockquote p { margin:.4em 0; }
+code {
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:.88em;
+  background:#222733; color:#cfe3ff; padding:.12em .4em; border-radius:5px;
+}
+pre {
+  background:var(--code); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; line-height:1.5;
+}
+pre code { background:none; color:#e7e9ee; padding:0; font-size:13px; }
+.codehilite { background:var(--code); border:1px solid var(--line); border-radius:10px; margin:1em 0; }
+.codehilite pre { background:none; border:none; margin:0; }
+table {
+  border-collapse:collapse; width:100%; margin:1.3em 0; font-size:14px; display:block; overflow-x:auto;
+}
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+th { background:var(--panel); color:#fff; font-weight:650; }
+tr:nth-child(even) td { background:rgba(255,255,255,.015); }
+ul,ol { padding-left:1.5em; }
+li { margin:.25em 0; }
+img { max-width:100%; border-radius:8px; }
+.toc {
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:10px 18px; margin:1.4em 0; font-size:14px;
+}
+.toc ul { margin:.3em 0; }
+::selection { background:#2d4a7a; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #404040 }
+.codehilite { background: #202020; color: #D0D0D0 }
+.codehilite .c { color: #ABABAB; font-style: italic } /* Comment */
+.codehilite .err { color: #A61717; background-color: #E3D2D2 } /* Error */
+.codehilite .esc { color: #D0D0D0 } /* Escape */
+.codehilite .g { color: #D0D0D0 } /* Generic */
+.codehilite .k { color: #6EBF26; font-weight: bold } /* Keyword */
+.codehilite .l { color: #D0D0D0 } /* Literal */
+.codehilite .n { color: #D0D0D0 } /* Name */
+.codehilite .o { color: #D0D0D0 } /* Operator */
+.codehilite .x { color: #D0D0D0 } /* Other */
+.codehilite .p { color: #D0D0D0 } /* Punctuation */
+.codehilite .ch { color: #ABABAB; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #ABABAB; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #FF3A3A; font-weight: bold } /* Comment.Preproc */
+.codehilite .cpf { color: #ABABAB; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #ABABAB; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #E50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.codehilite .gd { color: #FF3A3A } /* Generic.Deleted */
+.codehilite .ge { color: #D0D0D0; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #D0D0D0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF3A3A } /* Generic.Error */
+.codehilite .gh { color: #FFF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #589819 } /* Generic.Inserted */
+.codehilite .go { color: #CCC } /* Generic.Output */
+.codehilite .gp { color: #AAA } /* Generic.Prompt */
+.codehilite .gs { color: #D0D0D0; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #FFF; text-decoration: underline } /* Generic.Subheading */
+.codehilite .gt { color: #FF3A3A } /* Generic.Traceback */
+.codehilite .kc { color: #6EBF26; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #6EBF26; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #6EBF26; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #6EBF26 } /* Keyword.Pseudo */
+.codehilite .kr { color: #6EBF26; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #6EBF26; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #D0D0D0 } /* Literal.Date */
+.codehilite .m { color: #51B2FD } /* Literal.Number */
+.codehilite .s { color: #ED9D13 } /* Literal.String */
+.codehilite .na { color: #BBB } /* Name.Attribute */
+.codehilite .nb { color: #2FBCCD } /* Name.Builtin */
+.codehilite .nc { color: #71ADFF; text-decoration: underline } /* Name.Class */
+.codehilite .no { color: #40FFFF } /* Name.Constant */
+.codehilite .nd { color: #FFA500 } /* Name.Decorator */
+.codehilite .ni { color: #D0D0D0 } /* Name.Entity */
+.codehilite .ne { color: #BBB } /* Name.Exception */
+.codehilite .nf { color: #71ADFF } /* Name.Function */
+.codehilite .nl { color: #D0D0D0 } /* Name.Label */
+.codehilite .nn { color: #71ADFF; text-decoration: underline } /* Name.Namespace */
+.codehilite .nx { color: #D0D0D0 } /* Name.Other */
+.codehilite .py { color: #D0D0D0 } /* Name.Property */
+.codehilite .nt { color: #6EBF26; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #40FFFF } /* Name.Variable */
+.codehilite .ow { color: #6EBF26; font-weight: bold } /* Operator.Word */
+.codehilite .pm { color: #D0D0D0 } /* Punctuation.Marker */
+.codehilite .w { color: #666 } /* Text.Whitespace */
+.codehilite .mb { color: #51B2FD } /* Literal.Number.Bin */
+.codehilite .mf { color: #51B2FD } /* Literal.Number.Float */
+.codehilite .mh { color: #51B2FD } /* Literal.Number.Hex */
+.codehilite .mi { color: #51B2FD } /* Literal.Number.Integer */
+.codehilite .mo { color: #51B2FD } /* Literal.Number.Oct */
+.codehilite .sa { color: #ED9D13 } /* Literal.String.Affix */
+.codehilite .sb { color: #ED9D13 } /* Literal.String.Backtick */
+.codehilite .sc { color: #ED9D13 } /* Literal.String.Char */
+.codehilite .dl { color: #ED9D13 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #ED9D13 } /* Literal.String.Doc */
+.codehilite .s2 { color: #ED9D13 } /* Literal.String.Double */
+.codehilite .se { color: #ED9D13 } /* Literal.String.Escape */
+.codehilite .sh { color: #ED9D13 } /* Literal.String.Heredoc */
+.codehilite .si { color: #ED9D13 } /* Literal.String.Interpol */
+.codehilite .sx { color: #FFA500 } /* Literal.String.Other */
+.codehilite .sr { color: #ED9D13 } /* Literal.String.Regex */
+.codehilite .s1 { color: #ED9D13 } /* Literal.String.Single */
+.codehilite .ss { color: #ED9D13 } /* Literal.String.Symbol */
+.codehilite .bp { color: #2FBCCD } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #71ADFF } /* Name.Function.Magic */
+.codehilite .vc { color: #40FFFF } /* Name.Variable.Class */
+.codehilite .vg { color: #40FFFF } /* Name.Variable.Global */
+.codehilite .vi { color: #40FFFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #40FFFF } /* Name.Variable.Magic */
+.codehilite .il { color: #51B2FD } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="topbar"><a href="00_INDEX.html">&larr; Production docs index</a><span class="sep">/</span><span style="color:var(--muted)">Lab Syllable-Type Classifier — v1 (PRODUCTION)</span></div>
+<div class="wrap">
+<h1 id="lab-syllable-type-classifier-v1-production">Lab Syllable-Type Classifier — v1 (PRODUCTION)</h1>
+<blockquote>
+<p><strong>What this is:</strong> A 12-class mouse-USV syllable-type classifier — a timm ImageNet-pretrained
+ResNet-18 fine-tuned on the VocalMat-curated (Grimsley 2011 taxonomy) image set. It takes one
+spectrogram patch per call and returns a syllable class + softmax probabilities. Index 0 is
+<code>Noise</code>, so it doubles as a usv/noise gate.
+<strong>Status:</strong> PRODUCTION (Module 18.3, trained 2026-05-25). This is the current shipping classifier.
+<strong>Production artifact:</strong> <code>results/lab_classifier_v1/best.pt</code> (44.8 MB; ResNet-18 + 12-class head).
+<strong>Do NOT use</strong> <code>results/lab_classifier_v2/best.pt</code> — the DANN successor (Module 18.4) is a SHELVED
+dead end; see <a href="#v2dann-is-a-shelved-dead-end">§ v2/DANN is a shelved dead end</a>.
+<strong>Sibling docs:</strong> module spec <code>../modules/lab-classifier-v1.md</code>; cleaning-domain notes
+<code>../modules/cleaning-subsystems.md</code>; CNN <em>detection</em> (a different model) <code>../modules/cnn-classifier.md</code>.</p>
+</blockquote>
+<p>The 12 classes (<code>Noise</code>, <code>Step up</code>, <code>Down-FM</code>, …) are syllable <em>types</em>, not the upstream USV
+<em>detector</em>. This classifier assumes you already have a detected call and want to know what kind of
+call it is. The detection pipeline (CNN + hysteresis) is separate — see
+<a href="../modules/cnn-classifier.html">CNN detection/classifier</a>.</p>
+<hr />
+<h2 id="1-operate">1. Operate</h2>
+<h3 id="11-the-12-classes">1.1 The 12 classes</h3>
+<p>The class list is <code>GRIMSLEY_12_CLASSES</code>, defined verbatim at
+<code>src/usv_spectrogram/classifier/dataset.py:46-59</code>. <strong>Order is load-bearing</strong> — the model's output
+column <code>i</code> maps to <code>GRIMSLEY_12_CLASSES[i]</code>, and index 0 (<code>Noise</code>) is the usv/noise collapse pivot.</p>
+<table>
+<thead>
+<tr>
+<th>Idx</th>
+<th>Class</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>Noise</code></td>
+<td>Non-USV. <code>argmax == 0</code> → "noise" verdict when collapsing to binary.</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>Step up</code></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>Down-FM</code></td>
+<td>Downward frequency-modulated sweep.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>Short</code></td>
+<td>Short-duration call.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>Chevron</code></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>Up-FM</code></td>
+<td>Upward frequency-modulated sweep.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>Flat</code></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>Two steps</code></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>Step down</code></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>Complex</code></td>
+<td>Natural absorber of borderline shapes (lowest precision class).</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>Reverse Chevron</code></td>
+<td>Minority class (~few hundred patches).</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>Multi-steps</code></td>
+<td>Minority class; lowest recall.</td>
+</tr>
+</tbody>
+</table>
+<p>Taxonomy source: Grimsley et al. 2011. The names match VocalMat's published categories so the
+VocalMat-curated training images transfer.</p>
+<h3 id="12-running-inference-on-new-patches">1.2 Running inference on new patches</h3>
+<p>The canonical, in-repo inference harness is
+<strong><code>scripts/experiments/label_patches_v1.py</code></strong>. It is the live equivalent of the original
+"v1 reproduction harness" (<code>archive/cleaning_legacy/stack1/scripts/experiments/patch_duration_sweep.py</code>)
+and uses the exact same preprocessing. The published <em>faithful VocalMat port</em>
+(<code>run_inference.py</code>) lives only inside the <code>vocalmat-classifier-test</code> worktree
+(<code>docs/modules/cleaning-subsystems.md:112</code>); <code>label_patches_v1.py</code> reproduces its convention and is
+the one to use day-to-day.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>.venv/bin/python<span class="w"> </span>scripts/experiments/label_patches_v1.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--manifest<span class="w"> </span>&lt;MANIFEST&gt;.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w">   </span>&lt;OUTPUT_LABELS&gt;.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--checkpoint<span class="w"> </span>results/lab_classifier_v1/best.pt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--device<span class="w"> </span>cpu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--batch-size<span class="w"> </span><span class="m">64</span>
+</code></pre></div>
+
+<p>Smoke command (reproduces the known held-out numbers — run this first to prove the model loads and
+infers correctly before spending time on a large render):</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>.venv/bin/python<span class="w"> </span>scripts/experiments/label_patches_v1.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--manifest<span class="w"> </span>data/lab_cnn_training/held_out_844/manifest.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w">   </span>/tmp/labels_v1_held_out_844.csv
+</code></pre></div>
+
+<p>Because the held-out manifest carries a <code>usv_verdict</code> column, this also prints an oracle smoke
+block whose <strong>balanced accuracy should land at ~0.81</strong> (see <a href="#15-headline-metrics">§1.5</a>).</p>
+<h4 id="arguments-label_patches_v1py122-136">Arguments (<code>label_patches_v1.py:122-136</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Type</th>
+<th>Default</th>
+<th>What it does / when to change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--manifest</code></td>
+<td>path</td>
+<td><strong>required</strong></td>
+<td>CSV with a column of PNG patch paths (default column name <code>path</code>). Paths may be absolute or relative to repo root.</td>
+</tr>
+<tr>
+<td><code>--output</code></td>
+<td>path</td>
+<td><strong>required</strong></td>
+<td>Where the per-patch labels CSV is written. Parent dirs are created.</td>
+</tr>
+<tr>
+<td><code>--checkpoint</code></td>
+<td>path</td>
+<td><code>results/lab_classifier_v1/best.pt</code></td>
+<td>The model. Leave at default for production.</td>
+</tr>
+<tr>
+<td><code>--path-column</code></td>
+<td>str</td>
+<td><code>path</code></td>
+<td>Manifest column holding the PNG path.</td>
+</tr>
+<tr>
+<td><code>--id-column</code></td>
+<td>str</td>
+<td><code>None</code></td>
+<td>Optional manifest column carried through as a <code>call_id</code> column (e.g. <code>wav_stem</code>).</td>
+</tr>
+<tr>
+<td><code>--device</code></td>
+<td>str</td>
+<td><code>cpu</code></td>
+<td><code>cpu</code> or <code>cuda</code>. CPU is fine for a few thousand patches; use <code>cuda</code> on the rig for ~40k.</td>
+</tr>
+<tr>
+<td><code>--batch-size</code></td>
+<td>int</td>
+<td><code>64</code></td>
+<td>DataLoader-free manual batching; raise on GPU.</td>
+</tr>
+<tr>
+<td><code>--high-conf-threshold</code></td>
+<td>float</td>
+<td><code>0.85</code></td>
+<td>Rows with <code>top1_prob &gt;=</code> this are flagged <code>high_confidence=True</code>. Used downstream as an "eval-gold" filter.</td>
+</tr>
+</tbody>
+</table>
+<p>The script <strong>exits with an error</strong> if the path column is missing, or if any referenced PNG does not
+exist on disk (<code>label_patches_v1.py:149-159</code>).</p>
+<h3 id="13-required-input-patch-format-critical-this-is-a-faithful-vocalmat-port">1.3 Required input patch format (CRITICAL — this is a faithful VocalMat port)</h3>
+<p>The model was trained on VocalMat-convention patches and the inference transform is transcribed
+verbatim from the reproduction harness. Patches MUST be produced the same way or the numbers are
+meaningless.</p>
+<p>The inference transform (<code>label_patches_v1.py:56-62</code>):</p>
+<div class="codehilite"><pre><span></span><code><span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">227</span><span class="p">,</span> <span class="mi">227</span><span class="p">)),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Grayscale</span><span class="p">(</span><span class="n">num_output_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+<span class="p">])</span>
+</code></pre></div>
+
+<p>applied to <code>Image.open(p).convert("L")</code>. <strong>There is NO ImageNet <code>Normalize</code></strong> — input pixels are
+raw <code>[0,1]</code> after <code>ToTensor</code>. The <code>227×227</code> size is VocalMat's patch convention
+(<code>docs/modules/lab-classifier-v1.md:52</code>); <code>Grayscale(num_output_channels=3)</code> replicates the single
+luminance channel three times to fit the 3-channel ImageNet backbone.</p>
+<p>The <strong>patch rendering chain</strong> that produced the training/eval PNGs (from
+<code>patch_duration_sweep.py:13-16, 96-119</code>):</p>
+<ol>
+<li>Resample source WAV <strong>300 kHz → 250 kHz</strong> (<code>scipy.signal.resample_poly</code>, factors <code>5/6</code>;
+   constants at <code>src/usv_spectrogram/classifier/__init__.py:32-34</code>:
+   <code>TARGET_SAMPLE_RATE_HZ=250_000</code>, <code>RESAMPLE_UP=5</code>, <code>RESAMPLE_DOWN=6</code>).
+   Note: this 250 kHz target is <strong>specific to this classifier</strong>; it is NOT the corpus 300 kHz used
+   everywhere else (<code>src/usv_spectrogram/corpus.py</code>). Do not propagate 250 kHz into other modules.</li>
+<li>STFT (Hamming window, n_fft 1024, win 256, hop 128) → dB spectrogram (<code>_spectrogram_db</code>).</li>
+<li><code>clean_spectrogram(spec, CleaningConfig(baseline_mode="percentile"), recording_id=...)</code>
+   (<code>patch_duration_sweep.py:108-109</code>). <code>baseline_mode="percentile"</code> is mandatory: the
+   <code>median_envelope</code> mode chains badly with <code>_apply_global_mad</code> and produces all-zero patches on
+   long lab WAVs (<code>docs/modules/lab-classifier-v1.md:301-307</code>).</li>
+<li>Call-centered crop to a fixed window (~0.22 s in the original extraction), min-max → uint8,
+   stack to 3-channel, save PNG.</li>
+</ol>
+<p>If you only have detected calls and need patches, re-extract from the chunked WAVs in
+<code>USV_lab_131204_chunked_2s_full/</code> using the chain above (this directory is <strong>not present on the CPU
+box</strong> — see §2.5; the un-chunked WAVs live in <code>USV_lab_131204/</code>); <strong>do not</strong> feed contour-masked VAE patches
+(<code>alpha3_patches</code>) — those are illegible vertical bands for this model. The human-readable substrate
+is the normal spectrogram render, per the project memory note <code>feedback_shape_labeling_substrate</code>.</p>
+<h3 id="14-output-format">1.4 Output format</h3>
+<p><code>label_patches_v1.py</code> writes one row per input patch (<code>label_patches_v1.py:167-178</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>call_id</code></td>
+<td>(only if <code>--id-column</code> given) value carried through from that manifest column.</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>the input PNG path (echoed from the manifest).</td>
+</tr>
+<tr>
+<td><code>top1_class</code></td>
+<td>predicted class name, <code>GRIMSLEY_12_CLASSES[argmax]</code>.</td>
+</tr>
+<tr>
+<td><code>top1_idx</code></td>
+<td>predicted class index 0–11.</td>
+</tr>
+<tr>
+<td><code>top1_prob</code></td>
+<td>softmax probability of the top-1 class (max over the 12).</td>
+</tr>
+<tr>
+<td><code>high_confidence</code></td>
+<td>bool, <code>top1_prob &gt;= --high-conf-threshold</code> (default 0.85).</td>
+</tr>
+<tr>
+<td><code>softmax_12</code></td>
+<td>JSON list of all 12 softmax probabilities (5-dp rounded), in <code>GRIMSLEY_12_CLASSES</code> order.</td>
+</tr>
+</tbody>
+</table>
+<p>The script also prints, to stdout, the top-1 class distribution and (if <code>usv_verdict</code> is present)
+the usv/noise smoke metrics.</p>
+<p>For the held-out smoke set, the binary collapse rule is:
+<strong><code>argmax == 0</code> (<code>Noise</code>) → noise verdict; any other class → usv verdict</strong>
+(<code>label_patches_v1.py:97-98</code>). This is how the 12-way head becomes a usv/noise gate.</p>
+<p>A real example output already on disk: <code>results/alpha3/labels_v1_held_out_844.csv</code> (the 844 held-out
+patches scored by this exact script).</p>
+<h3 id="15-headline-metrics">1.5 Headline metrics</h3>
+<p><strong>VocalMat test/val split (the SHIP gate; <code>results/lab_classifier_v1/metrics.json</code> &amp;
+<code>eval_report.md</code>):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Gate</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Macro-F1, VocalMat <strong>test</strong> split</td>
+<td><strong>0.7669</strong> (<code>metrics.json:3</code>)</td>
+<td>&gt; 0.65</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>Macro-F1, VocalMat <strong>val</strong> split</td>
+<td>0.7693 (<code>metrics.json:2</code>)</td>
+<td>informational</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Min per-class precision</td>
+<td>0.5957 (<code>Complex</code>, idx 9)</td>
+<td>≥ 0.40</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>Max off-diagonal confusion fraction</td>
+<td>0.083 (no class collapse)</td>
+<td>&lt; 0.40</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table>
+<p>Lowest recall is <code>Multi-steps</code> (idx 11) at 0.4286 (<code>metrics.json:30</code>) — not a gated metric but worth
+noting on the smallest class. Full per-class precision/recall: <code>eval_report.md:39-52</code>.</p>
+<blockquote>
+<p><strong>WARNING — stale fields in <code>metrics.json</code>:</strong> the keys <code>usv_noise_acc</code> (0.0) and
+<code>syllable_entropy_mean</code> (2.4849) at <code>metrics.json:202-203</code> are <strong>garbage</strong> from an accidental
+label-distribution fallback that keyed on the wrong CSV. <strong>Ignore them.</strong> The real held-out
+numbers come from the patch-loading evaluator below, not from <code>metrics.json</code>. See
+<code>eval_report.md:71-94</code>.</p>
+</blockquote>
+<p><strong>Held-out lab verdict set (844 calls, 705 usv / 139 noise = 83.5% usv), v1 scored via the patch
+loader:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Balanced accuracy (usv/noise)</td>
+<td><strong>0.812</strong></td>
+<td><code>docs/plans/ROADMAP_ALPHA3_VOCALMAT_LABELED.md:55,63</code>; reproduced by the smoke command above</td>
+</tr>
+<tr>
+<td>Noise recall</td>
+<td><strong>0.640</strong></td>
+<td>same</td>
+</tr>
+<tr>
+<td>USV recall</td>
+<td><strong>0.984</strong></td>
+<td>same</td>
+</tr>
+</tbody>
+</table>
+<p>Interpretation: v1 almost never misses a real USV (98.4%) but catches only 64% of noise. <strong>The 0.64
+noise-recall is a lab→VocalMat DOMAIN GAP, not a cleaning bug</strong> — <code>run_inference.py</code> is a faithful
+VocalMat port (<code>docs/modules/cleaning-subsystems.md:112</code>,
+<code>docs/handoffs/2026-05-27_repo-housekeeping-followup.md:13</code>). Closing it needs matched-domain data
+(human-in-the-loop fine-tune), not a preprocessing tweak.</p>
+<blockquote>
+<p><strong>Pooled accuracy is misleading here.</strong> On an 83.5%-usv set a trivial "always usv" classifier
+scores 0.835. Always read the per-class (noise-recall / usv-recall) rows, never pooled accuracy
+(<code>scripts/evaluate_held_out_844.py:25-30</code>).</p>
+</blockquote>
+<h3 id="16-patch-duration-is-an-operating-point-knob-not-a-fix">1.6 Patch duration is an operating-point knob, not a fix</h3>
+<p>The vault hypothesis was that shrinking the analysis window so a short call <em>fills</em> more of the
+227×227 patch would improve transfer. The sweep
+(<code>archive/cleaning_legacy/stack1/scripts/experiments/patch_duration_sweep.py</code>, durations
+<code>[0.22, 0.14, 0.08, 0.05]</code> s at line 47) <strong>falsified that</strong>: balanced accuracy stays flat at ~0.81
+across all four durations. Shrinking the window only <strong>trades usv-recall ↔ noise-recall</strong> — it moves
+the operating point along the same curve; it does not improve discrimination. Per the memory note
+<code>project_lab_transfer_v1_vs_dann_patchsweep</code>. So: if you need more noise rejection at the cost of
+some USV recall, a shorter window is a lever — but do not expect a better classifier from it.</p>
+<h3 id="17-v2dann-is-a-shelved-dead-end">1.7 v2/DANN is a SHELVED dead end</h3>
+<p><strong>Do NOT use <code>results/lab_classifier_v2/best.pt</code>.</strong> Module 18.4 trained a domain-adversarial (DANN)
+ResNet-18 to remove the cage confound. It <strong>destroyed base noise-rejection</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>v1 (production)</th>
+<th>v2 (DANN)</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Syllable macro-F1 (test)</td>
+<td>0.7669</td>
+<td>0.6359</td>
+<td><code>results/lab_classifier_v2/comparison_v1_vs_v2.md:5</code></td>
+</tr>
+<tr>
+<td>Held-out balanced accuracy</td>
+<td>0.812</td>
+<td><strong>0.5756</strong></td>
+<td><code>results/lab_classifier_v2/held_out_844_eval.md:16</code></td>
+</tr>
+<tr>
+<td>Held-out noise recall</td>
+<td>0.640</td>
+<td><strong>0.1583</strong></td>
+<td><code>held_out_844_eval.md:13</code></td>
+</tr>
+<tr>
+<td>Held-out usv recall</td>
+<td>0.984</td>
+<td>0.9929</td>
+<td><code>held_out_844_eval.md:14</code></td>
+</tr>
+<tr>
+<td>Cage linear-probe acc</td>
+<td>n/a</td>
+<td>1.000 (still cage-decodable)</td>
+<td><code>comparison_v1_vs_v2.md:7</code></td>
+</tr>
+</tbody>
+</table>
+<p>v2 tripped the collapse tripwire (F1 drop &gt; 0.05) <strong>and</strong> the cage gate (probe ≥ 0.65), verdict
+<strong>DO NOT SHIP</strong> (<code>comparison_v1_vs_v2.md:13-14</code>). The v2 checkpoint is a phantom — it was evaluated and
+rejected and <code>results/lab_classifier_v2/best.pt</code> <strong>is not on disk</strong> (verified 2026-06-21; only the v2
+eval artifacts — <code>comparison_v1_vs_v2.md</code>, <code>held_out_844_eval.{md,json}</code>, <code>metrics.json</code> — were kept).
+The DANN approach was SHELVED 2026-05-27 (<code>project_lab_cnn_classifier_scope</code>).</p>
+<h3 id="18-troubleshooting-gotchas">1.8 Troubleshooting / Gotchas</h3>
+<ul>
+<li><strong><code>ModuleNotFoundError: usv_spectrogram</code></strong> → you forgot <code>PYTHONPATH=src</code>. All commands above set it.</li>
+<li><strong>Wrong/garbage held-out numbers from <code>metrics.json</code></strong> → you read <code>usv_noise_acc</code> /
+  <code>syllable_entropy_mean</code>. Those are stale. Use the patch-loading smoke run instead (§1.2).</li>
+<li><strong>All-zero / black patches on long lab WAVs</strong> → you used <code>CleaningConfig(baseline_mode="median_envelope")</code>.
+  Use <code>baseline_mode="percentile"</code> (<code>patch_duration_sweep.py:109</code>).</li>
+<li><strong>Patches look like vertical bands and predictions are nonsense</strong> → you fed contour-masked VAE
+  patches (<code>alpha3_patches</code>). This model wants normal spectrogram renders.</li>
+<li><strong>Noise recall only ~0.64, seems low</strong> → expected. It is a lab→VocalMat domain gap, not a bug;
+  do not "fix" it by changing cleaning. v1 trades almost no USV recall for it (0.984).</li>
+<li><strong>You ran inference at 300 kHz</strong> → wrong. This classifier's chain resamples to <strong>250 kHz</strong>
+  (<code>classifier/__init__.py:32-34</code>). 250 kHz is local to this module only.</li>
+<li><strong><code>best.pt</code> loads with "missing/unexpected keys"</strong> → the loader uses <code>strict=False</code> and prints a
+  count (<code>label_patches_v1.py:70-74</code>); a small count from buffer naming differences is benign, but a
+  large missing-key count means you built the wrong architecture (it must be a plain
+  <code>build_resnet18_classifier(num_classes=12)</code>, NOT <code>ResNet18DANN</code>).</li>
+<li><strong>Checkpoint structure</strong>: <code>best.pt</code> is a dict; the weights are under <code>["state_dict"]</code>
+  (<code>label_patches_v1.py:67-68</code>, <code>eval_report.md:17</code>).</li>
+</ul>
+<hr />
+<h2 id="2-internals">2. Internals</h2>
+<h3 id="21-architecture">2.1 Architecture</h3>
+<p><code>build_resnet18_classifier(num_classes=12, pretrained=True)</code> at
+<code>src/usv_spectrogram/classifier/model.py:20-45</code> wraps
+<code>timm.create_model("resnet18", pretrained=pretrained, num_classes=12)</code>. Input <code>(B, 3, 227, 227)</code>,
+output <code>(B, 12)</code> logits. <code>NUM_CLASSES = 12</code> at <code>model.py:17</code>.</p>
+<p>ResNet-18 (not a deeper net) was chosen because the supervised set is small (~12k examples); deeper
+backbones overfit (<code>docs/modules/lab-classifier-v1.md:54-60</code>). EfficientNet-B0 is the documented
+fallback if it underfits — it didn't (0.77 macro-F1 cleared the 0.65 gate).</p>
+<p>At inference time <code>pretrained=False</code> is passed (<code>label_patches_v1.py:69</code>) — all weights come from
+<code>best.pt</code>, not from ImageNet.</p>
+<h3 id="22-class-mapping">2.2 Class mapping</h3>
+<p><code>GRIMSLEY_12_CLASSES</code> (<code>src/usv_spectrogram/classifier/dataset.py:46-59</code>) is the single source of
+truth for index↔name and is imported everywhere (training, inference, evaluators). <code>Noise</code> is
+<strong>index 0</strong> and is the usv/noise collapse pivot (<code>evaluate_held_out_844.py:62</code>,
+<code>label_patches_v1.py:52</code>).</p>
+<h3 id="23-inference-data-flow">2.3 Inference data flow</h3>
+<p><code>scripts/experiments/label_patches_v1.py</code>:
+- <code>load_oracle(ckpt, device)</code> (<code>:65-75</code>) — <code>torch.load(..., map_location="cpu")</code>, unwrap
+  <code>["state_dict"]</code>, <code>build_resnet18_classifier(num_classes=12, pretrained=False)</code>,
+  <code>load_state_dict(strict=False)</code>, <code>.eval().to(device)</code>.
+- <code>score_paths(model, paths, device, batch_size)</code> (<code>:78-87</code>) — manual batching, <code>_TF</code> transform per
+  PNG, <code>torch.softmax(logits, dim=-1)</code> → <code>(N, 12)</code> probability matrix. Decorated <code>@torch.no_grad()</code>.
+- <code>usv_noise_smoke(argmax12, verdict)</code> (<code>:90-119</code>) — binary collapse + balanced-accuracy smoke.
+- <code>main()</code> (<code>:122-203</code>) — arg parsing, path resolution/existence check, scoring, CSV write,
+  distribution print, optional smoke.</p>
+<p>The standalone binary evaluator <code>scripts/evaluate_held_out_844.py</code> is <strong>v2-targeted by default</strong>
+(<code>--checkpoint</code> defaults to <code>results/lab_classifier_v2/best.pt</code>, line 264) and builds a
+<code>ResNet18DANN</code>, so it is the wrong tool for v1. For v1, use <code>label_patches_v1.py</code>. (The evaluator's
+<code>_binary_metrics</code> / <code>_twelve_class_breakdown</code> at <code>:148-208</code> are the reference implementations for
+the per-class metric definitions, including the "pooled accuracy is misleading" guard at <code>:197</code>.)</p>
+<h3 id="24-training-for-the-record-already-done-do-not-re-run-casually">2.4 Training (for the record — already done, do not re-run casually)</h3>
+<p>Training code: <code>src/usv_spectrogram/classifier/{model,augmentation,losses,training}.py</code>. CLI:
+<code>scripts/train_lab_classifier.py</code> (the live copy now sits in
+<code>archive/cleaning_legacy/stack1/scripts/train_lab_classifier.py</code>; the canonical CLI flag table is
+<code>docs/modules/lab-classifier-v1.md:202-216</code>).</p>
+<p>Key training facts (<code>docs/modules/lab-classifier-v1.md</code>, <code>eval_report.md</code>):
+- Backbone: timm ResNet-18, ImageNet-pretrained.
+- Loss: class-weighted focal loss, <code>gamma=2.0</code>, <strong>plain-mean reduction</strong> (<code>sum/B</code>, NOT PyTorch's
+  weighted-mean) — see <code>losses.py</code> and <code>docs/modules/lab-classifier-v1.md:109-122</code>. The plain-mean
+  choice preserves the minority-class up-weighting that weighted-mean would cancel.
+- Class weights: inverse-frequency from the train split, normalized so the mean weight is 1.0
+  (sum = 12) — <code>dataset.py</code> <code>build_stratified_split</code>.
+- Optimizer: AdamW, <code>weight_decay=1e-4</code>; cosine LR with linear warmup (3 epochs in the real run).
+- Augmentation: SpecAugment (Park 2019; 2 time masks ≤20 frames, 2 freq masks ≤16 bins) +
+  cage-noise injection (prob 0.25, blend weight U[0.05, 0.30]) — <code>augmentation.py</code>,
+  <code>docs/modules/lab-classifier-v1.md:62-95</code>.
+- Run: 50 epochs, batch 64, 9,741 training patches, ~16 min on one RTX 3060 Ti (rig <code>cloudyclaude</code>),
+  2026-05-25 (<code>eval_report.md:5-8</code>).</p>
+<p><strong>Split invariant (do not violate when re-splitting):</strong> every <code>source_recording</code> lands in exactly
+one of train/val/test (recording-level grouping), because raw spectrograms cluster by recording
+environment ("cage"), not biology — splitting a recording across folds leaks the cage feature and
+inflates the score (<code>dataset.py:5-16</code>). Per-class stratification is kept within ±5%.</p>
+<h3 id="25-training-data-location">2.5 Training data location</h3>
+<ul>
+<li>Training/val/test manifests: <code>data/lab_cnn_training/{train,val,test}/manifest.csv</code> (per the
+  production training command, <code>docs/modules/lab-classifier-v1.md:225-232</code>). On this CPU box only the
+  held-out set is currently materialized under <code>data/lab_cnn_training/</code> — the train/val/test patch
+  folders were rig-side during training.</li>
+<li>Held-out lab verdict set (844 rows): <code>data/lab_cnn_training/held_out_844/manifest.csv</code> +
+  <code>data/lab_cnn_training/held_out_844/patches/*.png</code> (844 PNGs). Manifest columns:
+  <code>path, usv_verdict, wav_stem, det_start_s, det_end_s, source_review, traditional_label, couple</code>.
+  <code>usv_verdict ∈ {usv, noise}</code>. <strong>This set has only usv/noise verdicts, NOT Grimsley labels</strong> — lab
+  131204 was never 12-class labeled, which is why there is no Grimsley held-out macro-F1 gate
+  (<code>eval_report.md:71-83</code>).</li>
+<li>Source WAVs for re-extraction: <code>USV_lab_131204_chunked_2s_full/</code> (<code>patch_duration_sweep.py:46</code>).
+  <strong>Not materialized on the CPU box</strong> (verified 2026-06-21) — like the train/val/test patch folders
+  it was rig-side. The un-chunked source WAVs do exist locally under <code>USV_lab_131204/</code> (83 files);
+  the 2 s chunked-render directory must be regenerated (or rsynced from the rig) before any
+  re-extraction.</li>
+</ul>
+<h3 id="26-result-artifacts-resultslab_classifier_v1">2.6 Result artifacts (<code>results/lab_classifier_v1/</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>best.pt</code> (44.8 MB)</td>
+<td>the model; weights under <code>["state_dict"]</code>.</td>
+</tr>
+<tr>
+<td><code>metrics.json</code></td>
+<td>val/test macro-F1, per-class precision/recall, 12×12 confusion. <strong><code>usv_noise_acc</code> / <code>syllable_entropy_mean</code> are stale — ignore.</strong></td>
+</tr>
+<tr>
+<td><code>eval_report.md</code></td>
+<td>the SHIP-gate report (authoritative for VocalMat metrics).</td>
+</tr>
+<tr>
+<td><code>confusion_matrix.png</code></td>
+<td>12×12 confusion render.</td>
+</tr>
+<tr>
+<td><code>per_class_pr.png</code>, <code>cross_domain_usv_noise.png</code></td>
+<td>diagnostic plots.</td>
+</tr>
+<tr>
+<td><code>test_exemplars_correct.png</code>, <code>test_mistakes.png</code></td>
+<td>qualitative panels.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="27-where-to-change-things">2.7 Where to change things</h3>
+<ul>
+<li><strong>New patches to label</strong> → write a manifest with a <code>path</code> column, run <code>label_patches_v1.py</code>. No
+  code change.</li>
+<li><strong>Different usv/noise operating point</strong> → re-extract at a shorter window (§1.6). The collapse
+  threshold itself (<code>argmax==0</code>) is structural; don't change it.</li>
+<li><strong>Retrain / fine-tune</strong> → <code>src/usv_spectrogram/classifier/</code> + <code>scripts/train_lab_classifier.py</code>.
+  Honor the recording-level split invariant (§2.4) and the plain-mean focal reduction. The next
+  real improvement is matched-domain fine-tuning to close the noise-recall gap, NOT another DANN
+  attempt (which failed — §1.7).</li>
+<li><strong>Do NOT</strong> edit <code>corpus.py</code> or assume 300 kHz here; this module is 250 kHz internally.</li>
+</ul>
+</div>
+</body>
+</html>

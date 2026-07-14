@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batch USV Detection — `scripts/run_batch_detection.py`</title>
+<style>
+:root {
+  --bg:#0f1115; --panel:#181b22; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2a2f3a;
+  --accent:#6ea8fe; --accent2:#7ee0a8; --warn:#f0b86c; --code:#11141a;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+.topbar {
+  position:sticky; top:0; z-index:10; background:rgba(15,17,21,.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); padding:10px 24px; font-size:13.5px;
+}
+.topbar a { color:var(--accent); text-decoration:none; }
+.topbar a:hover { text-decoration:underline; }
+.topbar .sep { color:var(--muted); margin:0 8px; }
+.wrap { max-width:900px; margin:0 auto; padding:34px 24px 90px; }
+h1,h2,h3,h4 { line-height:1.3; letter-spacing:-.2px; scroll-margin-top:60px; }
+h1 { font-size:30px; margin:.2em 0 .5em; border-bottom:1px solid var(--line); padding-bottom:.3em; }
+h2 { font-size:22px; margin:1.7em 0 .6em; color:#fff; }
+h3 { font-size:17px; margin:1.4em 0 .5em; color:var(--accent2); }
+h4 { font-size:15px; margin:1.2em 0 .4em; color:var(--ink); }
+a { color:var(--accent); }
+p,li { color:var(--ink); }
+hr { border:none; border-top:1px solid var(--line); margin:2em 0; }
+blockquote {
+  margin:1.2em 0; padding:.6em 1.1em; background:var(--panel);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0; color:var(--ink);
+}
+blockquote p { margin:.4em 0; }
+code {
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:.88em;
+  background:#222733; color:#cfe3ff; padding:.12em .4em; border-radius:5px;
+}
+pre {
+  background:var(--code); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; line-height:1.5;
+}
+pre code { background:none; color:#e7e9ee; padding:0; font-size:13px; }
+.codehilite { background:var(--code); border:1px solid var(--line); border-radius:10px; margin:1em 0; }
+.codehilite pre { background:none; border:none; margin:0; }
+table {
+  border-collapse:collapse; width:100%; margin:1.3em 0; font-size:14px; display:block; overflow-x:auto;
+}
+th,td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+th { background:var(--panel); color:#fff; font-weight:650; }
+tr:nth-child(even) td { background:rgba(255,255,255,.015); }
+ul,ol { padding-left:1.5em; }
+li { margin:.25em 0; }
+img { max-width:100%; border-radius:8px; }
+.toc {
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:10px 18px; margin:1.4em 0; font-size:14px;
+}
+.toc ul { margin:.3em 0; }
+::selection { background:#2d4a7a; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #404040 }
+.codehilite { background: #202020; color: #D0D0D0 }
+.codehilite .c { color: #ABABAB; font-style: italic } /* Comment */
+.codehilite .err { color: #A61717; background-color: #E3D2D2 } /* Error */
+.codehilite .esc { color: #D0D0D0 } /* Escape */
+.codehilite .g { color: #D0D0D0 } /* Generic */
+.codehilite .k { color: #6EBF26; font-weight: bold } /* Keyword */
+.codehilite .l { color: #D0D0D0 } /* Literal */
+.codehilite .n { color: #D0D0D0 } /* Name */
+.codehilite .o { color: #D0D0D0 } /* Operator */
+.codehilite .x { color: #D0D0D0 } /* Other */
+.codehilite .p { color: #D0D0D0 } /* Punctuation */
+.codehilite .ch { color: #ABABAB; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #ABABAB; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #FF3A3A; font-weight: bold } /* Comment.Preproc */
+.codehilite .cpf { color: #ABABAB; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #ABABAB; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #E50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.codehilite .gd { color: #FF3A3A } /* Generic.Deleted */
+.codehilite .ge { color: #D0D0D0; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #D0D0D0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF3A3A } /* Generic.Error */
+.codehilite .gh { color: #FFF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #589819 } /* Generic.Inserted */
+.codehilite .go { color: #CCC } /* Generic.Output */
+.codehilite .gp { color: #AAA } /* Generic.Prompt */
+.codehilite .gs { color: #D0D0D0; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #FFF; text-decoration: underline } /* Generic.Subheading */
+.codehilite .gt { color: #FF3A3A } /* Generic.Traceback */
+.codehilite .kc { color: #6EBF26; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #6EBF26; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #6EBF26; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #6EBF26 } /* Keyword.Pseudo */
+.codehilite .kr { color: #6EBF26; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #6EBF26; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #D0D0D0 } /* Literal.Date */
+.codehilite .m { color: #51B2FD } /* Literal.Number */
+.codehilite .s { color: #ED9D13 } /* Literal.String */
+.codehilite .na { color: #BBB } /* Name.Attribute */
+.codehilite .nb { color: #2FBCCD } /* Name.Builtin */
+.codehilite .nc { color: #71ADFF; text-decoration: underline } /* Name.Class */
+.codehilite .no { color: #40FFFF } /* Name.Constant */
+.codehilite .nd { color: #FFA500 } /* Name.Decorator */
+.codehilite .ni { color: #D0D0D0 } /* Name.Entity */
+.codehilite .ne { color: #BBB } /* Name.Exception */
+.codehilite .nf { color: #71ADFF } /* Name.Function */
+.codehilite .nl { color: #D0D0D0 } /* Name.Label */
+.codehilite .nn { color: #71ADFF; text-decoration: underline } /* Name.Namespace */
+.codehilite .nx { color: #D0D0D0 } /* Name.Other */
+.codehilite .py { color: #D0D0D0 } /* Name.Property */
+.codehilite .nt { color: #6EBF26; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #40FFFF } /* Name.Variable */
+.codehilite .ow { color: #6EBF26; font-weight: bold } /* Operator.Word */
+.codehilite .pm { color: #D0D0D0 } /* Punctuation.Marker */
+.codehilite .w { color: #666 } /* Text.Whitespace */
+.codehilite .mb { color: #51B2FD } /* Literal.Number.Bin */
+.codehilite .mf { color: #51B2FD } /* Literal.Number.Float */
+.codehilite .mh { color: #51B2FD } /* Literal.Number.Hex */
+.codehilite .mi { color: #51B2FD } /* Literal.Number.Integer */
+.codehilite .mo { color: #51B2FD } /* Literal.Number.Oct */
+.codehilite .sa { color: #ED9D13 } /* Literal.String.Affix */
+.codehilite .sb { color: #ED9D13 } /* Literal.String.Backtick */
+.codehilite .sc { color: #ED9D13 } /* Literal.String.Char */
+.codehilite .dl { color: #ED9D13 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #ED9D13 } /* Literal.String.Doc */
+.codehilite .s2 { color: #ED9D13 } /* Literal.String.Double */
+.codehilite .se { color: #ED9D13 } /* Literal.String.Escape */
+.codehilite .sh { color: #ED9D13 } /* Literal.String.Heredoc */
+.codehilite .si { color: #ED9D13 } /* Literal.String.Interpol */
+.codehilite .sx { color: #FFA500 } /* Literal.String.Other */
+.codehilite .sr { color: #ED9D13 } /* Literal.String.Regex */
+.codehilite .s1 { color: #ED9D13 } /* Literal.String.Single */
+.codehilite .ss { color: #ED9D13 } /* Literal.String.Symbol */
+.codehilite .bp { color: #2FBCCD } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #71ADFF } /* Name.Function.Magic */
+.codehilite .vc { color: #40FFFF } /* Name.Variable.Class */
+.codehilite .vg { color: #40FFFF } /* Name.Variable.Global */
+.codehilite .vi { color: #40FFFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #40FFFF } /* Name.Variable.Magic */
+.codehilite .il { color: #51B2FD } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="topbar"><a href="00_INDEX.html">&larr; Production docs index</a><span class="sep">/</span><span style="color:var(--muted)">Batch USV Detection — `scripts/run_batch_detection.py`</span></div>
+<div class="wrap">
+<h1 id="batch-usv-detection-scriptsrun_batch_detectionpy">Batch USV Detection — <code>scripts/run_batch_detection.py</code></h1>
+<blockquote>
+<p><strong>What this is:</strong> the production entry point for running the CNN USV-detection
+pipeline across a whole folder of WAV files. One command in, a <code>summary.parquet</code>
+triage table + one <code>detections/&lt;stem&gt;.json</code> per recording out.
+<strong>Status:</strong> CURRENT / production. This is the canonical way to detect USVs at scale.
+<strong>Production model artifact:</strong> <code>models/hard_neg_retrain/best_model.pt</code> (with its
+sibling <code>temperature.json</code>, <code>fp_filter.pkl</code>, <code>hysteresis_optimization_v2.json</code>).
+<strong>Do NOT use</strong> <code>models/matched_windows/best_model.pt</code> or
+<code>models/production/best_model.pt</code> — older baselines, deprecated.
+<strong>Interpreter:</strong> <code>.venv/bin/python</code> (Linux/WSL).</p>
+</blockquote>
+<p>For the interactive desktop app's "Detect" button (a <em>different</em>, lighter pipeline —
+CNN + hysteresis only, <strong>no</strong> FP-filter/temperature/soft-notch), see the run-app
+skill and <code>docs/modules/cnn-classifier.md</code>. The two pipelines do <strong>not</strong> produce
+identical detections; this document covers the batch pipeline only.</p>
+<hr />
+<h2 id="1-operate">1. Operate</h2>
+<h3 id="11-the-canonical-command">1.1 The canonical command</h3>
+<p>This is the exact invocation from <code>CLAUDE.md</code>. Every flag below has been verified
+against the argparse block in <code>scripts/run_batch_detection.py:615-682</code>.</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/run_batch_detection.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-dir<span class="w"> </span>&lt;WAV_FOLDER&gt;/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>models/hard_neg_retrain/best_model.pt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>results/batch_&lt;NAME&gt;/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--temperature<span class="w"> </span>models/hard_neg_retrain/temperature.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--fp-filter<span class="w"> </span>models/hard_neg_retrain/fp_filter.pkl<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--hysteresis-config<span class="w"> </span>models/hard_neg_retrain/hysteresis_optimization_v2.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--workers<span class="w"> </span><span class="m">4</span>
+</code></pre></div>
+
+<p><strong>Why all five model-related flags are required for a correct production run.</strong>
+The script will <em>run</em> with only <code>--wav-dir</code>, <code>--model</code>, and <code>--output-dir</code> (those three
+are the only <code>required=True</code> args). But omitting the others silently degrades the
+pipeline:</p>
+<table>
+<thead>
+<tr>
+<th>Omitted flag</th>
+<th>What you lose</th>
+<th>Symptom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--temperature</code></td>
+<td>Probability calibration. Raw sigmoid outputs are over-confident; thresholds tuned on calibrated probs no longer mean what they should.</td>
+<td>Triage tiers drift; <code>noise_floor_p90</code> inflated.</td>
+</tr>
+<tr>
+<td><code>--fp-filter</code></td>
+<td>The learned false-positive rejector. <strong>Detection list is bloated with in-recording FPs and noise events.</strong></td>
+<td>More events per file; precision drops.</td>
+</tr>
+<tr>
+<td><code>--hysteresis-config</code></td>
+<td>The fitted onset/sustain/gap/min-duration grid. Falls back to <strong>library defaults</strong> (<code>onset=0.75, sustain=0.40, gap_fill=3, min_duration=5</code>, <code>hysteresis.py:36-40</code>), which are <strong>not</strong> the production-tuned values (<code>onset=0.6, sustain=0.4, gap_fill=0, min_duration=3</code>).</td>
+<td>Event boundaries and counts differ from the validated pipeline.</td>
+</tr>
+</tbody>
+</table>
+<p>Treat all five flags as mandatory. A run missing <code>--fp-filter</code> or <code>--hysteresis-config</code>
+is an <em>incomplete pipeline with unreliable triage</em> — do not report its numbers as
+production results.</p>
+<h3 id="12-every-command-line-flag">1.2 Every command-line flag</h3>
+<p>Defined in <code>main()</code> at <code>scripts/run_batch_detection.py:612-682</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Type</th>
+<th>Default</th>
+<th>Required</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--wav-dir</code></td>
+<td>Path</td>
+<td>—</td>
+<td><strong>yes</strong></td>
+<td>Directory of WAVs. Searched <strong>recursively</strong> (<code>**/*.wav</code>, line 361).</td>
+</tr>
+<tr>
+<td><code>--model</code></td>
+<td>Path</td>
+<td>—</td>
+<td><strong>yes</strong></td>
+<td>Trained CNN checkpoint (<code>.pt</code>). Use <code>models/hard_neg_retrain/best_model.pt</code>.</td>
+</tr>
+<tr>
+<td><code>--output-dir</code></td>
+<td>Path</td>
+<td>—</td>
+<td><strong>yes</strong></td>
+<td>Where <code>summary.parquet</code> + <code>detections/*.json</code> are written. Created if absent.</td>
+</tr>
+<tr>
+<td><code>--temperature</code></td>
+<td>Path</td>
+<td><code>None</code></td>
+<td>no</td>
+<td>Fitted temperature-scaling JSON. Calibrates logits → probabilities (<code>run_batch_detection.py:631-633</code>).</td>
+</tr>
+<tr>
+<td><code>--fp-filter</code></td>
+<td>Path</td>
+<td><code>None</code></td>
+<td>no</td>
+<td>Fitted false-positive-filter pickle. Drops events the classifier flags as FPs (<code>635-637</code>).</td>
+</tr>
+<tr>
+<td><code>--hysteresis-config</code></td>
+<td>Path</td>
+<td><code>None</code></td>
+<td>no</td>
+<td>Hysteresis-optimization JSON. Sets onset/sustain/gap/min-duration (<code>639-641</code>).</td>
+</tr>
+<tr>
+<td><code>--workers</code></td>
+<td>int</td>
+<td><code>1</code></td>
+<td>no</td>
+<td>Parallel worker processes. <code>&gt;1</code> → <code>multiprocessing.Pool</code> (<code>397-415</code>). Use <code>4</code>.</td>
+</tr>
+<tr>
+<td><code>--no-resume</code></td>
+<td>flag</td>
+<td>off</td>
+<td>no</td>
+<td>Reprocess everything. By default the run <strong>skips</strong> files that already have a JSON in <code>&lt;output-dir&gt;/detections/</code> (<code>646-649</code>, resume logic <code>372-379</code>).</td>
+</tr>
+<tr>
+<td><code>--subtract-baseline</code></td>
+<td>flag</td>
+<td>off</td>
+<td>no</td>
+<td><strong>Lab-only.</strong> Per-frequency-bin temporal-baseline subtraction <em>before</em> the CNN. Removes stationary equipment harmonics the wild-trained CNN never saw. <strong>Wild runs (5970/3452/9252) MUST omit this</strong> for byte-identical results (<code>650-660</code>).</td>
+</tr>
+<tr>
+<td><code>--subtraction-method</code></td>
+<td>str</td>
+<td><code>percentile</code></td>
+<td>no</td>
+<td>Only consulted with <code>--subtract-baseline</code>. Choices: <code>percentile</code> (Boll 1979 floor, p10) or <code>median_envelope</code> (sliding-median per bin, ~0.5 s kernel) (<code>661-670</code>).</td>
+</tr>
+<tr>
+<td><code>--soft-notch</code></td>
+<td>str (<code>PATH</code> or <code>auto</code>)</td>
+<td><code>None</code></td>
+<td>no</td>
+<td><strong>Lab-only.</strong> Adaptive soft-notch in the audio domain <em>before</em> STFT. Pass a <code>TonalLibrary</code> JSON path (library mode, preferred) or the literal <code>auto</code> (pure per-chunk detect, no library). <strong>Wild runs MUST omit this</strong> for byte-identical results (<code>671-682</code>, dispatch <code>700-712</code>). If a library path is given that does not exist, the script logs an error and exits with code <strong>2</strong> (<code>705-707</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>There is <strong>no</strong> flag to change <code>--workers</code>' batch size, the CNN window width, the
+energy threshold, or the triage thresholds from the CLI — those are code-level
+constants (see §2). The triage config is always <code>TriageConfig()</code> defaults
+(<code>run_batch_detection.py:393-394</code>).</p>
+<h3 id="13-required-environment">1.3 Required environment</h3>
+<ul>
+<li>Interpreter: <code>.venv/bin/python</code> (the repo venv; has torch, pandas, pyarrow, scipy, PIL).</li>
+<li>No environment variables are required by this script. <code>src/</code> is added to <code>sys.path</code>
+  automatically (<code>run_batch_detection.py:43-46</code>).</li>
+<li>GPU is used automatically if available (<code>SlidingInference</code> picks <code>cuda</code> when
+  <code>torch.cuda.is_available()</code>, else <code>cpu</code> — <code>sliding_inference.py:69-72</code>). CPU works; it
+  is just slower.</li>
+</ul>
+<h3 id="14-wav-input-locations">1.4 WAV input locations</h3>
+<p><strong>There is no single canonical WAV directory.</strong> Recordings span multiple folders
+(e.g. <code>5970 USV/</code>, the 3452 sample/reviewed dirs, <code>USV_9252/</code>, lab <code>131204</code> sets).
+Point <code>--wav-dir</code> at whichever cohort you are processing; the glob recurses, so a
+parent folder containing sub-cohorts works too. Never assume a fixed path. For the
+authoritative map of which WAVs live where and how labels resolve to them, see
+<a href="labels_and_data.html">labels &amp; data</a>.</p>
+<h3 id="15-outputs-written-to-output-dir">1.5 Outputs written to <code>--output-dir</code></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Written by</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>detections/&lt;stem&gt;.json</code></td>
+<td>per-recording, <strong>immediately</strong> after each file (crash-safe)</td>
+<td>List of detected events for that WAV, in ADR-010 dict format. Empty list <code>[]</code> if no events. (<code>run_batch_detection.py:247-253</code>)</td>
+</tr>
+<tr>
+<td><code>summary.parquet</code></td>
+<td>once, at end of batch</td>
+<td>One row per recording: tier + QC metrics. (<code>_write_summary_parquet</code>, <code>506-519</code>)</td>
+</tr>
+<tr>
+<td><code>soft_notch_applied.parquet</code></td>
+<td>only with <code>--soft-notch</code></td>
+<td>One row per applied/audit notch event. (<code>_write_soft_notch_sidecars</code>, <code>522-551</code>)</td>
+</tr>
+<tr>
+<td><code>soft_notch_summary.json</code></td>
+<td>only with <code>--soft-notch</code></td>
+<td>Library metadata + stale-library warning. (<code>553-601</code>)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="detectionsstemjson-per-event-schema"><code>detections/&lt;stem&gt;.json</code> — per-event schema</h4>
+<p>Each list element comes from <code>_event_to_adr010_dict</code> (<code>batch_output.py:32-47</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start_time_s</code></td>
+<td>Event start, seconds (window-center time of first window).</td>
+</tr>
+<tr>
+<td><code>end_time_s</code></td>
+<td>Event end, seconds (window-center time of last window).</td>
+</tr>
+<tr>
+<td><code>duration_s</code></td>
+<td><code>end_time_s − start_time_s</code>. <strong>Center-to-center</strong>; a single-window event is <code>0.0</code> (see <code>hysteresis.py:62-69</code>). To get physical span, add one window step.</td>
+</tr>
+<tr>
+<td><code>start_col</code></td>
+<td><code>start_window × hop_px</code> (hop_px=10). Spectrogram column index of the start window center.</td>
+</tr>
+<tr>
+<td><code>end_col</code></td>
+<td><code>end_window × hop_px</code>. Column index of the end window center.</td>
+</tr>
+<tr>
+<td><code>max_probability</code></td>
+<td>Peak per-window probability across the event (calibrated if <code>--temperature</code> used).</td>
+</tr>
+<tr>
+<td><code>mean_probability</code></td>
+<td>Mean per-window probability across the event.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="summaryparquet-per-recording-schema"><code>summary.parquet</code> — per-recording schema</h4>
+<p>Columns are <code>_PARQUET_COLUMNS</code> (<code>batch_output.py:19-29</code>); values come from
+<code>RecordingResult</code> (<code>triage.py:96-133</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filepath</code></td>
+<td>Path to the source WAV (verbatim).</td>
+</tr>
+<tr>
+<td><code>tier</code></td>
+<td><code>auto_accept</code>, <code>auto_reject</code>, or <code>manual_review</code> (see triage logic below).</td>
+</tr>
+<tr>
+<td><code>n_events</code></td>
+<td>Number of detected events after hysteresis + FP filter.</td>
+</tr>
+<tr>
+<td><code>max_confidence</code></td>
+<td>Max <code>peak_probability</code> across all events (<code>0.0</code> if none).</td>
+</tr>
+<tr>
+<td><code>mean_event_confidence</code></td>
+<td>Mean of per-event <code>peak_probability</code> (<code>0.0</code> if none).</td>
+</tr>
+<tr>
+<td><code>total_usv_duration_ms</code></td>
+<td>Sum of event <code>duration_ms</code> (center-to-center).</td>
+</tr>
+<tr>
+<td><code>noise_floor_p90</code></td>
+<td>90th-percentile of the <strong>raw window-probability array</strong> — a recording-level noise proxy.</td>
+</tr>
+<tr>
+<td><code>confidence_score</code></td>
+<td>Currently equals <code>mean_event_confidence</code> (<code>triage.py:232</code>).</td>
+</tr>
+<tr>
+<td><code>qc_flags</code></td>
+<td>List of QC strings (see below).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Triage tier rules</strong> (<code>triage.py:216-229</code>, order matters):
+1. <code>n_events == 0</code> → <code>auto_reject</code>.
+2. else if <code>max(prob) ≤ auto_reject_max_window</code> (0.10) → <code>auto_reject</code>.
+3. else if any of <code>{long_event_duration, event_spans_most_of_recording}</code> flagged → <code>manual_review</code>.
+4. else if <strong>every</strong> event has <code>peak_probability ≥ auto_accept_min_peak</code> (0.90) → <code>auto_accept</code>.
+5. else → <code>manual_review</code>.</p>
+<p><strong>QC flags</strong> (<code>triage.py:186-214</code>), with their <code>TriageConfig</code> defaults (<code>triage.py:50-57</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Raised when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>high_noise_floor</code></td>
+<td><code>noise_floor_p90 &gt; 0.4</code>.</td>
+</tr>
+<tr>
+<td><code>high_event_count</code></td>
+<td><code>n_events &gt; 10</code>.</td>
+</tr>
+<tr>
+<td><code>long_event_duration</code></td>
+<td>any event <code>duration_ms &gt; 600.0</code>.</td>
+</tr>
+<tr>
+<td><code>high_total_usv_duration</code></td>
+<td><code>total_usv_duration_ms &gt; 600.0</code>.</td>
+</tr>
+<tr>
+<td><code>event_spans_most_of_recording</code></td>
+<td>an event covers ≥ <code>0.8</code> of the probability timeline.</td>
+</tr>
+<tr>
+<td><code>outlier_event_count</code></td>
+<td><code>n_events</code> z-score <code>&gt; 2.0</code> vs the batch mean (added post-hoc in <code>run_batch_detection.py:475-485</code>).</td>
+</tr>
+</tbody>
+</table>
+<h4 id="soft-notch-sidecars-only-with-soft-notch">Soft-notch sidecars (only with <code>--soft-notch</code>)</h4>
+<p><code>soft_notch_applied.parquet</code> columns (<code>run_batch_detection.py:543-547</code>):
+<code>recording_path, chunk_idx (always 0), center_hz, width_hz, peak_db, local_median_db,
+cut_depth_db, source ("library"|"audit"), is_drift, intensity_drift_sigma</code>.</p>
+<p><code>soft_notch_summary.json</code> (<code>589-596</code>): library metadata (<code>library_path</code>,
+<code>library_rig_id</code>, <code>library_calibrated_at</code>, <code>library_n_entries</code>), <code>batch_n_chunks</code>,
+<code>n_chunks_with_unmatched</code>, <code>unmatched_rate</code>, and <code>stale_library_warning_fired</code>
+(true when <code>unmatched_rate &gt; 0.10</code>, <code>_UNMATCHED_RATE_WARNING_THRESHOLD</code>, line 68).</p>
+<h3 id="16-worked-example">1.6 Worked example</h3>
+<p>Detect USVs on a folder of wild-mouse recordings, 4 workers:</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>scripts/run_batch_detection.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--wav-dir<span class="w"> </span><span class="s2">&quot;5970 USV/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>models/hard_neg_retrain/best_model.pt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>results/batch_5970/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--temperature<span class="w"> </span>models/hard_neg_retrain/temperature.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--fp-filter<span class="w"> </span>models/hard_neg_retrain/fp_filter.pkl<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--hysteresis-config<span class="w"> </span>models/hard_neg_retrain/hysteresis_optimization_v2.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--workers<span class="w"> </span><span class="m">4</span>
+</code></pre></div>
+
+<p>Reading the result:</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">import pandas as pd</span>
+<span class="s2">df = pd.read_parquet(&#39;results/batch_5970/summary.parquet&#39;)</span>
+<span class="s2">print(df[&#39;tier&#39;].value_counts())</span>
+<span class="s2">print(df.loc[df.tier==&#39;manual_review&#39;, [&#39;filepath&#39;,&#39;n_events&#39;,&#39;max_confidence&#39;,&#39;qc_flags&#39;]].head())</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>A single recording's events:</p>
+<div class="codehilite"><pre><span></span><code>.venv/bin/python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">import json; print(json.load(open(&#39;results/batch_5970/detections/&lt;stem&gt;.json&#39;)))</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>Logs (INFO level, <code>run_batch_detection.py:686-689</code>) report file count, per-50-file
+progress + ETA, batch mean/std event count, and the final triage distribution
+(<code>auto_accept</code> / <code>auto_reject</code> / <code>manual_review</code>).</p>
+<h3 id="17-troubleshooting-gotchas">1.7 Troubleshooting / Gotchas</h3>
+<ul>
+<li><strong>A re-run "does nothing" / processes 0 files.</strong> Resume is <strong>on by default</strong>: any WAV
+  whose <code>&lt;stem&gt;.json</code> already exists in <code>&lt;output-dir&gt;/detections/</code> is skipped
+  (<code>run_batch_detection.py:372-379</code>). To force a full reprocess, add <code>--no-resume</code> or
+  point at a fresh <code>--output-dir</code>. Resume keys on <strong>stem</strong>, so two WAVs with the same
+  filename in different subfolders collide — one will be skipped.</li>
+<li><strong>A single file crashing does not abort the batch.</strong> Per-file exceptions are logged and
+  the file is dropped from results (<code>331-333</code> parallel, <code>471-472</code> serial). Check the log
+  for <code>Failed to process ...</code> lines; those recordings produce no JSON.</li>
+<li><strong><code>summary.parquet</code> only contains files processed <em>this</em> run.</strong> Resumed (already-done)
+  files are <strong>not</strong> re-added to the parquet (<code>_write_summary_parquet</code> only sees
+  <code>raw_results</code>). If you resumed a partial batch, the parquet is incomplete — rebuild from
+  the <code>detections/*.json</code> files or run once with <code>--no-resume</code>.</li>
+<li><strong>Don't pass raw logits as probabilities.</strong> Hysteresis rejects any non-finite or
+  out-of-<code>[0,1]</code> value (<code>hysteresis.py:111-114</code>). The pipeline always sigmoid-transforms;
+  this only bites if you call the internals directly.</li>
+<li><strong>Sample-rate mismatch raises.</strong> The loader requires 300 kHz WAVs and raises <code>ValueError</code>
+  if the file header says otherwise (<code>audio_loader.py:154-158</code>). Resampled/decimated WAVs
+  will not run.</li>
+<li><strong>Very short recordings yield no events.</strong> A spectrogram narrower than the CNN window
+  (100 px) raises inside inference (<code>sliding_inference.py:141-145</code>); the file then counts
+  as a per-file failure.</li>
+<li><strong><code>--soft-notch</code> library file missing → exit code 2</strong> (<code>705-707</code>). The literal <code>auto</code>
+  is always accepted (no file check).</li>
+<li><strong>Lab vs wild flags.</strong> <code>--subtract-baseline</code> and <code>--soft-notch</code> change the spectrogram
+  the CNN sees. For wild cohorts (5970/3452/9252) omit both, or you break byte-identity
+  with the validated wild results.</li>
+</ul>
+<hr />
+<h2 id="2-internals">2. Internals</h2>
+<h3 id="21-pipeline-data-flow">2.1 Pipeline data flow</h3>
+<p>Per recording (<code>process_one_recording</code>, <code>run_batch_detection.py:107-156</code>):</p>
+<div class="codehilite"><pre><span></span><code>WAV
+ └─ AudioLoader.load()                      audio_loader.py:133
+     ├─ load_wav_mono()                     (300 kHz mono float32)
+     ├─ [auto_soft_notch] in audio domain   audio_loader.py:166-169   (lab opt-in)
+     ├─ STFT → dB, band-limited 20–120 kHz  audio_loader.py:196-239   (n_fft=512, hop=128, Hann, magnitude-normalized so max dB = 0)
+     └─ [subtract_temporal_baseline]        audio_loader.py:247-…     (lab opt-in, dB↔linear round-trip)
+ └─ SlidingInference.infer()               sliding_inference.py:119
+     ├─ MAD-normalize WHOLE spectrogram ONCE sliding_inference.py:147-152  (global, NOT per-window)
+     ├─ slide 100 px window, hop 10 px      sliding_inference.py:157-165
+     ├─ energy pre-filter (skip quiet → p=0) sliding_inference.py:201-205
+     ├─ magma colormap + vertical flip → CNN sliding_inference.py:274-…   (matches training RGB pipeline)
+     └─ per-window probabilities (+ logits if return_logits)
+ └─ [TemperatureScaler.calibrate(logits)]  run_batch_detection.py:135-136   (if --temperature)
+ └─ [normalize_fn]                          run_batch_detection.py:139-140   (unused by CLI; always None here)
+ └─ hysteresis_detect(probs, times, cfg)    hysteresis.py:76          → List[USVEvent]
+ └─ [event_features → FPFilter.predict]     run_batch_detection.py:146-154   (if --fp-filter; drops events)
+ └─ triage_recording(...)                   triage.py:140             → RecordingResult
+ └─ write detections/&lt;stem&gt;.json            run_batch_detection.py:247-253
+</code></pre></div>
+
+<p>Then, batch-level: outlier z-score flagging (<code>474-485</code>) → <code>summary.parquet</code>
+(<code>488</code>) → optional soft-notch sidecars (<code>491-495</code>) → triage distribution log.</p>
+<h3 id="22-key-signatures-fileline">2.2 Key signatures (file:line)</h3>
+<ul>
+<li><code>process_one_recording(wav_path, loader, inference, hysteresis_config, temperature_scaler=None, normalize_fn=None, fp_filter=None, spectrogram_for_features=False) -&gt; (List[USVEvent], np.ndarray, ReconciliationResult|None)</code> — <code>run_batch_detection.py:107</code>.</li>
+<li><code>_process_and_save_one(...)</code> — runs one file + writes its JSON, returns <code>(RecordingResult|None, soft_notch_rows)</code> — <code>run_batch_detection.py:222</code>.</li>
+<li><code>_worker_init(...)</code> / <code>_worker_process_file(wav_path)</code> — multiprocessing worker setup + task; worker state held in module dict <code>_worker_state</code> — <code>run_batch_detection.py:267, 303</code>.</li>
+<li><code>run_batch(wav_dir, model_path, output_dir, temperature_path=None, fp_filter_path=None, hysteresis_config_path=None, triage_config=None, n_workers=1, resume=True, subtract_baseline=False, subtraction_method="percentile", soft_notch_enabled=False, soft_notch_library_path=None) -&gt; List[dict]</code> — <code>run_batch_detection.py:340</code>.</li>
+<li><code>_load_hysteresis_config(path) -&gt; HysteresisConfig</code> — reads <code>data["best_params"]</code> (falls back to the top-level dict), keys <code>onset_threshold, sustain_threshold, gap_fill_windows, min_duration_windows</code>, and optional <code>max_duration_ms</code> (default <code>600.0</code>) — <code>run_batch_detection.py:89-100</code>.</li>
+<li><code>SlidingInference.__init__(model_path, window_width_px=100, hop_px=10, batch_size=32, device=None, energy_threshold=0.1, enable_per_window_norm=False)</code> — <code>sliding_inference.py:41-49</code>.</li>
+<li><code>hysteresis_detect(probabilities, times, config=None) -&gt; List[USVEvent]</code> — <code>hysteresis.py:76</code>.</li>
+<li><code>triage_recording(filepath, events, probabilities, config=None, batch_stats=None) -&gt; RecordingResult</code> — <code>triage.py:140</code>.</li>
+<li><code>FalsePositiveFilter.load(path)</code> / <code>.predict(features) -&gt; List[bool]</code> — <code>fp_filter.py:177, 121</code>.</li>
+<li><code>TemperatureScaler.load(path)</code> / <code>.calibrate(logits) -&gt; np.ndarray</code> — <code>calibration.py:111, 72</code>.</li>
+<li><code>extract_event_features(event, spectrogram_db)</code> — <code>event_features.py:46</code>.</li>
+</ul>
+<h3 id="23-invariants-do-not-break">2.3 Invariants (do not break)</h3>
+<ul>
+<li><strong>Corpus constants are locked to the CNN.</strong> <code>sample_rate=300000</code>, band <code>20–120 kHz</code>,
+  <code>n_fft=512</code>, <code>hop=128</code> — single source of truth <code>src/usv_spectrogram/corpus.py:30-36</code>.
+  <code>ExtractionConfig</code> re-asserts these at import (<code>detection/extraction_config.py:148+</code>).
+  Changing the band silently corrupts inference (same pixel grid, different Hz/pixel).</li>
+<li><strong>Global MAD normalization, once, before windowing.</strong> Per-window MAD silently kills
+  high-confidence USVs (<code>sliding_inference.py:147-152</code>; see also memory note
+  <code>feedback_cnn_inference_global_mad</code>).</li>
+<li><strong>Hysteresis defaults ≠ production values.</strong> Library defaults are
+  <code>onset=0.75 / sustain=0.40 / gap_fill=3 / min_duration=5</code> (<code>hysteresis.py:36-40</code>).
+  Production uses the JSON: <code>onset=0.6 / sustain=0.4 / gap_fill=0 / min_duration=3</code>
+  (<code>models/hard_neg_retrain/hysteresis_optimization_v2.json</code>, <code>best_params</code>). Always pass
+  <code>--hysteresis-config</code>.</li>
+<li><strong><code>duration_ms</code> / <code>duration_s</code> are center-to-center.</strong> Single-window events report <code>0.0</code>
+  (<code>hysteresis.py:62-69</code>). Don't treat these as physical onset-to-offset spans without
+  adding a window step.</li>
+<li><strong><code>start_col</code>/<code>end_col</code> in JSON are <code>window_index × hop_px</code> (hop_px=10)</strong>
+  (<code>batch_output.py:43-44</code>) — these are coarse window-center columns, not the full event
+  span. (A separate <code>convert_to_detection_format</code> with <code>boundary_padding_cols</code> exists in
+  <code>hysteresis.py:176</code> but the batch JSON writer does <strong>not</strong> use it.)</li>
+<li><strong>Constants the CLI cannot change</strong> (edit code to change): triage thresholds are always
+  <code>TriageConfig()</code> defaults (<code>run_batch_detection.py:393-394</code>); CNN window <code>100 px</code>, hop
+  <code>10 px</code>, batch <code>32</code>, energy threshold <code>0.1</code> are <code>SlidingInference</code> defaults
+  (<code>sliding_inference.py:44-49</code>).</li>
+</ul>
+<h3 id="24-where-to-change-things">2.4 Where to change things</h3>
+<ul>
+<li><strong>Add a CLI knob</strong> (e.g. expose a triage threshold): add to the argparse block
+  (<code>run_batch_detection.py:615-682</code>), thread it through <code>run_batch</code> (<code>340</code>) into
+  <code>TriageConfig</code>/<code>HysteresisConfig</code>.</li>
+<li><strong>Change triage policy:</strong> <code>triage.py</code> — <code>TriageConfig</code> defaults (<code>50-57</code>) and tier
+  logic (<code>216-229</code>).</li>
+<li><strong>Change detection geometry</strong> (window, hop, energy gate): <code>SlidingInference.__init__</code>
+  (<code>sliding_inference.py:41-66</code>). These are not CLI-exposed by design (locked to the CNN).</li>
+<li><strong>Change the spectrogram the CNN sees:</strong> <code>AudioLoader._compute_spectrogram</code>
+  (<code>audio_loader.py:196-239</code>) — but this is a HIGH-risk path; corpus constants are locked.</li>
+<li><strong>Output schema:</strong> <code>batch_output.py</code> (<code>_PARQUET_COLUMNS</code> at <code>19</code>, <code>_event_to_adr010_dict</code>
+  at <code>32</code>).</li>
+</ul>
+<h3 id="25-production-artifacts-verified-present">2.5 Production artifacts (verified present)</h3>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Path</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CNN checkpoint</td>
+<td><code>models/hard_neg_retrain/best_model.pt</code></td>
+<td>Production model (2026-04-01).</td>
+</tr>
+<tr>
+<td>Temperature</td>
+<td><code>models/hard_neg_retrain/temperature.json</code></td>
+<td><code>temperature = 0.9019…</code>, <code>fitted: true</code>.</td>
+</tr>
+<tr>
+<td>FP filter</td>
+<td><code>models/hard_neg_retrain/fp_filter.pkl</code></td>
+<td>Learned false-positive rejector.</td>
+</tr>
+<tr>
+<td>Hysteresis config</td>
+<td><code>models/hard_neg_retrain/hysteresis_optimization_v2.json</code></td>
+<td><code>best_params</code>: onset 0.6 / sustain 0.4 / gap_fill 0 / min_duration 3 (no <code>max_duration_ms</code> key → falls back to 600.0 ms).</td>
+</tr>
+</tbody>
+</table>
+<p>Deprecated (do not use): <code>models/matched_windows/best_model.pt</code>,
+<code>models/production/best_model.pt</code>.</p>
+<h3 id="26-sibling-docs">2.6 Sibling docs</h3>
+<ul>
+<li><a href="labels_and_data.html">labels &amp; data</a> — where WAVs live, label resolution.</li>
+<li><a href="cnn_detection_pipeline.html">CNN detection / classifier</a> — model training &amp; the
+  classifier internals (also <code>docs/modules/cnn-classifier.md</code>).</li>
+<li>Full v2 pipeline results: <code>docs/handoffs/v2-full-pipeline-results.md</code>.</li>
+<li>Soft-notch design: <code>docs/handoffs/2026-05-11_adaptive-soft-notch.md</code>.</li>
+<li>Pre-CNN spectral subtraction: <code>docs/handoffs/2026-05-08_pre-cnn-spectral-subtraction-lab.md</code>.</li>
+</ul>
+</div>
+</body>
+</html>
