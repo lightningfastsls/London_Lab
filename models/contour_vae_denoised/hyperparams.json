@@ -1,0 +1,53 @@
+{
+  "architecture": "ImageVAE (port of ../vae-pytorch-pivot/usv_language/models/image_vae.py): encoder 4x stride-2 conv (1->32->64->128->256) BN+LeakyReLU; fc_latent -> (mu, logvar); decoder fc + 4x stride-2 tconv (256->128->64->32->16) + 2x stride-1 refinement tconv (16->16->1); sigmoid output. BCE reconstruction + KL ELBO.",
+  "image_vae_config": {
+    "image_size": 256,
+    "in_channels": 1,
+    "latent_dim": 32,
+    "base_channels": 32,
+    "beta": 1.0
+  },
+  "image_size": 256,
+  "in_channels": 1,
+  "latent_dim": 32,
+  "base_channels": 32,
+  "n_params": 7746673,
+  "lr": 0.00025,
+  "batch_size": 32,
+  "max_epochs": 120,
+  "patience": 30,
+  "beta": 1.0,
+  "optimizer": "Adam (weight_decay=0)",
+  "loss": "ELBO = BCE(recon, target) sum-over-pixels / batch + beta * KL sum-over-dim / batch",
+  "early_stopping_metric": "val_recon",
+  "seed": 42,
+  "cudnn_deterministic": true,
+  "torch_version": "2.12.0+cu130",
+  "device": "cuda",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 3060 Ti",
+  "patches_npz": "/data/shachar/contour_vae/results/denoised_patches/combined_denoised/patches.npz",
+  "manifest_parquet": "/data/shachar/contour_vae/results/denoised_patches/combined_denoised/patches_manifest.parquet",
+  "n_total": 69293,
+  "n_train": 55434,
+  "n_val": 13859,
+  "preprocessing": "1) band-crop to corpus USV band; 2) log1p; 3) per-patch min/max rescale to [0, 1] (refinement D, amplitude stripper compatible with BCE); 4) zero-pad to (image_size, image_size); 5) add channel dim.",
+  "band_slice": [
+    35,
+    205
+  ],
+  "F_in": 170,
+  "T_in": 234,
+  "padding": {
+    "pad_f_top": 43,
+    "pad_f_bot": 43,
+    "pad_t_left": 0,
+    "pad_t_right": 22,
+    "strategy": "symmetric on freq axis (centers USV band); right-pad-only on time axis (preserves onset at column 0)"
+  },
+  "corpus_USV_FREQ_MIN_HZ": 20000,
+  "corpus_USV_FREQ_MAX_HZ": 120000,
+  "corpus_SAMPLE_RATE_HZ": 300000,
+  "corpus_STFT_N_FFT": 512,
+  "corpus_STFT_HOP": 128
+}
