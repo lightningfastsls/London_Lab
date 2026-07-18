@@ -282,3 +282,5 @@ docs/VAE_VS_VQVAE_ASSESSMENT_*.html
 !models/shape_fpca/
 !models/latent_kmeans/
 !results/contour_vae_combined/latents.parquet
+# last-epoch checkpoint stays excluded (best.pt is the keeper), like contour_vae_*.
+models/shape_vae_v3_hybrid/**/last.pt
