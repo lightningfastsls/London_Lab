@@ -267,3 +267,18 @@ docs/claude-code-guide.md
 docs/codex_index.md
 docs/VQVAE_SHAPE_RESULTS_*.html
 docs/VAE_VS_VQVAE_ASSESSMENT_*.html
+
+# ── Lab handoff (2026-07-18): canonical analysis models intentionally tracked ──
+# The maintainer is leaving the lab; GitHub becomes the lab's working copy. These
+# small trained models / fitted clusterers / coordinate systems are un-ignored so the
+# lab can run the shape · latent · repertoire pipeline WITHOUT the rig. The broad
+# exclusions above still apply to the heavy regeneratable data (patches.npz, *last.pt*
+# checkpoints, raw audio, chunked spectrograms). A handful of small derived tables and
+# all human-label CSVs are force-added (git add -f) under otherwise-ignored dirs.
+# Canonical map: docs/DATA_LOCATIONS.md.
+!models/contour_vae_combined/best.pt
+!models/contour_vae_denoised/best.pt
+!models/shape_kmeans/
+!models/shape_fpca/
+!models/latent_kmeans/
+!results/contour_vae_combined/latents.parquet

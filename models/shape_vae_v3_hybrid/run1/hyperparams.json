@@ -1,0 +1,31 @@
+{
+  "config": {
+    "latent_dim": 32,
+    "image_size": 256,
+    "lambda_nt": 1.0,
+    "lambda_recon": 0.05,
+    "beta": 0.05,
+    "lambda_lc": 1.0,
+    "lambda_deriv": 0.1,
+    "nt_temperature": 0.2,
+    "max_df_hz": 15000.0,
+    "max_dt_frames": 20,
+    "time_warp_range": [
+      0.9,
+      1.1
+    ],
+    "recon_anneal_start": 10,
+    "recon_anneal_epochs": 20,
+    "softargmax_temp": 1.0
+  },
+  "patches_npz": "/data/shachar/contour_vae/results/denoised_patches/5970/patches.npz",
+  "ridge_npz": "/data/shachar/contour_vae/results/denoised_patches/5970/ridge_targets_v3.npz",
+  "n_patches": 12440,
+  "band_rows": [
+    43,
+    213
+  ],
+  "freq_per_bin_hz": 585.9375,
+  "lr": 0.00025,
+  "seed": 42
+}

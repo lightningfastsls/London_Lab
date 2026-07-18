@@ -6,6 +6,35 @@ regeneratable data artifacts that are deliberately kept **out of git** (see
 sections). This file is the canonical map so future sessions don't re-hunt.
 Written during the 2026-05-25 post-merge reconciliation (R-C).
 
+---
+
+## ⚠ LAB HANDOFF (2026-07-18) — what is now IN git
+
+The maintainer is leaving the lab; **GitHub is now the lab's working copy** and the
+rig is no longer a reachable canonical store. The small, high-value artifacts the lab
+needs to run the analysis pipeline **without the rig** have been committed directly
+(overriding the `.gitignore` exclusions). **Now in git:**
+
+| Artifact | In-git path | Was |
+|---|---|---|
+| Contour-VAE (combined) weights | `models/contour_vae_combined/best.pt` | rig/box-only |
+| Contour-VAE (denoised) weights | `models/contour_vae_denoised/best.pt` | rig-only |
+| Shape-VAE v3 (hybrid) weights | `models/shape_vae_v3_hybrid/run1/best.pt` | box-only |
+| Shape K=20 alphabet (registration→shape) | `models/shape_kmeans/k20.joblib` | rig-only |
+| Shape alphabet (soft-DTW, GATE-1 winner) | `models/shape_kmeans/k20_softdtw.joblib` (+ `_letters.parquet`) | box-only |
+| Latent K=20 model + labels | `models/latent_kmeans/k20.joblib`, `k20_labels.npy` | rig/box-only |
+| Elastic-FPCA coordinate system | `models/shape_fpca/elastic_fpca.joblib` (+ `_scores.parquet`) | box-only |
+| VAE latents (embeddings) | `results/contour_vae_combined/latents.parquet` | rig/box-only |
+| Per-call shape letters | `results/latent_transitions/shape_alphabet/shape_call_letters.parquet` | rig-only |
+| Human review verdicts / labels | `results/lab_{cluster0,cluster1,cluster2,noise}_review/review_index_annotated.csv`, `data/lab_finetune_v1/labels_audit_72.csv`, eyeball labels/picks, CNN detection-review verdicts | box-only, git-ignored |
+
+**Still NOT in git (deliberately):** the multi-GB `patches.npz` corpus, `*last.pt`
+checkpoints, registered-ridge `.npz`, chunked spectrograms, and all raw audio — these
+are regeneratable from the committed weights + code (raw audio is backed up in the
+lab's cloud). The tables below describe those rig/cloud artifacts for reference only.
+
+---
+
 **Canonical rig root:** `shachar@100.113.224.57:/data/shachar/contour_vae`
 (`cloudyclaude`, 3× RTX 3060 Ti; ~32 GB total). The rig cannot reach GitHub —
 code moves box→rig by rsync (see `reference_gpu_rig_cloudyclaude` memory note).
